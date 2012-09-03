@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="C:/proyecto-sie/jboss-6.1.0.Final/server/default/deployers/resteasy.deployer/commons-logging-1.1.0.jboss.jar"/>
+	<classpathentry kind="lib" path="C:/proyecto-sie/ws-sie/edicsemperu/WebContent/WEB-INF/lib/commons-beanutils.jar"/>
+	<classpathentry kind="lib" path="C:/proyecto-sie/jboss-6.1.0.Final/client/jboss-servlet-api_3.0_spec.jar"/>
+	<classpathentry kind="lib" path="C:/proyecto-sie/ws-sie/edicsemperu/WebContent/WEB-INF/lib/commons-lang.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre6">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/proyecto-sie/jboss-6.1.0.Final/server/default/deployers/jsf.deployer/Mojarra-2.0/jsf-libs/jsf-api-2.0.3-b05.jar"/>
+	<classpathentry kind="lib" path="C:/Edicsem-SIE/librerias/eclipselink/eclipselink.jar"/>
+	<classpathentry kind="lib" path="C:/Edicsem-SIE/librerias/eclipselink/eclipselink-jpa-modelgen_2.1.1.v20100817-r8050.jar"/>
+	<classpathentry kind="lib" path="C:/Edicsem-SIE/librerias/eclipselink/javax.persistence_2.0.1.v201006031150.jar"/>
+	<classpathentry kind="lib" path="C:/proyecto-sie/jboss-6.1.0.Final/common/lib/log4j.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
