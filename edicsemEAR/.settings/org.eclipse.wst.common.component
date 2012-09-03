@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="edicsemEAR">
+        <wb-resource deploy-path="/" source-path="/EarContent" tag="defaultRootSource"/>
+        <dependent-module archiveName="edicsemFacade.jar" deploy-path="/" handle="module:/resource/edicsemFacade/edicsemFacade">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="edicsemDAO.jar" deploy-path="/" handle="module:/resource/edicsemDAO/edicsemDAO">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="edicsemperu.war" deploy-path="/" handle="module:/resource/edicsemperu/edicsemperu">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="edicsemJPASie.jar" deploy-path="/lib" handle="module:/resource/edicsemJPASie/edicsemJPASie">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="edicsemUtil.jar" deploy-path="/lib" handle="module:/resource/edicsemUtil/edicsemUtil">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+    </wb-module>
+</project-modules>
