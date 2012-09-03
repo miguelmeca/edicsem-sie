@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<f:view contentType="text/html">
+	<h:head>
+		<ui:insert name="title">
+			<title>Men&uacute; Principal</title>
+		</ui:insert>
+		
+		<f:facet name="first">
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <title>Ediciones Sembrando</title>
+		</f:facet>
+		 <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/default.css" />
+        <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/syntaxhighlighter/syntaxhighlighter.css" />
+		
+		<style type="text/css">
+		body {
+			font-family: Calibri, Arial, Helvetica, sans-serif;
+			font-size: 90%;
+		}
+		
+		.ui-widget {
+			font-size: 75%;
+		}
+		</style>
+ <script type="text/javascript">
+            $(function() {$('.sidebar a').hover(function() {$(this).toggleClass('ui-state-hover');})});
+        </script>
+        
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-12200033-3']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+              var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+              ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+              var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+
+          </script>
+	</h:head>
+	<f:loadBundle var="message" basename="com.edicsem.pe.sie.client.properties.ApplicationResources"/>
+	<p:layout fullPage="true">
+	<p:layoutUnit position="north">
+	<div id="header" class="ui-widget ui-widget-header">
+            <div id="logo">
+            	<img src="#{request.contextPath}/images/logo.png" alt="Logo"/>
+            </div>
+            <div id="menu" class="ui-widget" >
+                <ul id="main">
+                    <li class="current_page_item"><a href="#" >Pagina principal</a></li>
+                    <li><a>Cambiar Contraseña</a></li>
+                    <li><a>Actualizar Datos</a></li>
+                    <li class="current_page_item"><a >Otra opcion</a></li>
+                </ul>
+            </div>
+    </div>
+	</p:layoutUnit>
+	<p:layoutUnit position="west" width="250" resizable="true" header="Options" minSize="180">
+			<h:form>
+				<p:menu style="width:100%">
+					<p:submenu label="Ejemplo Mantenimiento">
+						<p:menuitem value="Subir Archivos " update="messages" ajax="false" action="demo.jsf"/>
+					</p:submenu>
+					<p:submenu label="Opciones Secundarias">
+						<p:menuitem value="Proyectos" update="messages" ajax="false" />
+						<p:menuitem value="Visor de Datos" ajax="false" />
+						<p:menuitem value="Operadoras" ajax="false" />
+					</p:submenu>
+					<p:submenu label="Mantenimientos">
+						<p:menuitem value="Productos" update="messages" ajax="false" action="#" />
+						<p:menuitem value="Orden de Reposicion" update="messages" ajax="false" action="#" />
+						<p:menuitem value="Buscar Cliente" update="messages" ajax="false" action="#" />
+						<p:menuitem value="Registro de Contrato" ajax="false" action="#" />
+						<p:menuitem value="Gestion de Clientes/Seguimiento Cobranzas" ajax="false" action="#" />
+						<p:menuitem value="Kardex Valorizado" ajax="false" action="#" />
+						<p:menuitem value="Movimiento Mercader&iacute;a" ajax="false" action="#" />
+					</p:submenu>
+				</p:menu>
+			</h:form>
+		</p:layoutUnit>
+		
+		<p:layoutUnit id="center" position="center" scrollable="true">
+
+			<ui:insert name="body" />
+
+		</p:layoutUnit>
+	</p:layout>
+	<ui:insert name="highlight">
+                <script language="javascript" src="#{request.contextPath}/syntaxhighlighter/scripts/sh.js"></script>
+   </ui:insert>
+	
+</f:view>
+</html >
