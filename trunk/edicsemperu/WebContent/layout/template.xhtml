@@ -74,12 +74,12 @@
 						<p:menuitem value="Operadoras" ajax="false" />
 					</p:submenu>
 					<p:submenu label="Mantenimientos">
-						<p:menuitem value="Productos" update="messages" ajax="false" action="#" />
+						<p:menuitem value="Productos" update="messages" ajax="false" action="mantenimientoProductos.jsf" />
 						<p:menuitem value="Orden de Reposicion" update="messages" ajax="false" action="#" />
 						<p:menuitem value="Buscar Cliente" update="messages" ajax="false" action="#" />
 						<p:menuitem value="Registro de Contrato" ajax="false" action="#" />
 						<p:menuitem value="Gestion de Clientes/Seguimiento Cobranzas" ajax="false" action="#" />
-						<p:menuitem value="Kardex Valorizado" ajax="false" action="#" />
+						<p:menuitem value="Mantenimiento Valorizado" update="messages" ajax="false" action="mantenimientoKardex.jsf" />
 						<p:menuitem value="Movimiento Mercader&iacute;a" ajax="false" action="#" />
 					</p:submenu>
 				</p:menu>
@@ -87,14 +87,11 @@
 		</p:layoutUnit>
 		
 		<p:layoutUnit id="center" position="center" scrollable="true">
-
 			<ui:insert name="body" />
-
 		</p:layoutUnit>
 	</p:layout>
 	<ui:insert name="highlight">
                 <script language="javascript" src="#{request.contextPath}/syntaxhighlighter/scripts/sh.js"></script>
    </ui:insert>
-	
 </f:view>
 </html >
