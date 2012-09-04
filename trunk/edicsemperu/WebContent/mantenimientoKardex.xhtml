@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/layout/template.xhtml"> 
+	<ui:define name="body">
+	<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Kardex</h1>
+		<h:form >
+		<f:loadBundle var="msg" basename="com.edicsem.pe.sie.client.properties.ApplicationResources" />
+				<p:panel header="#{message['panel.seleccion.producto']}">
+				<table width="100%">
+					<tr>
+						<td><h:outputText value="#{message['producto.tipo']}" /></td>
+						<td><h:selectOneListbox size="1">
+								<f:selectItem itemLabel="Biblia" itemValue="1" />
+								<f:selectItem itemLabel="Libro" itemValue="2" />
+								<f:selectItem itemLabel="Otros" itemValue="3" />
+							</h:selectOneListbox></td>
+
+						<td><h:outputText value="#{msg.fabricante_editorial}" /></td>
+						<td><h:selectOneListbox size="1">
+								<f:selectItem itemLabel="Seleccione" itemValue="1" />
+							</h:selectOneListbox></td>
+
+						<td><h:outputText value="#{msg.producto}" /></td>
+						<td><h:selectOneListbox size="1">
+								<f:selectItem itemLabel="Seleccione" itemValue="1" />
+							</h:selectOneListbox></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+
+						<td></td>
+						<td></td>
+
+						<td><h:outputText value="#{msg.unidad_producto}" /></td>
+						<td><p:inputText id="unidad_producto" value="unidad"
+								size="20" disabled="true" /></td>
+					</tr>
+					<tr>
+						<td><h:outputText value="#{msg.almacen}" /></td>
+						<td><h:selectOneListbox size="1">
+								<f:selectItem itemLabel="Habich" itemValue="1" />
+								<f:selectItem itemLabel="Paulet" itemValue="2" />
+								<f:selectItem itemLabel="Megaplaza" itemValue="3" />
+								<f:selectItem itemLabel="Otros" itemValue="4" />
+							</h:selectOneListbox></td>
+						<td><h:outputText value="#{msg.desde_kardex}" /></td>
+						<td><p:calendar /></td>
+
+						<td><h:outputText value="#{msg.hasta_kardex}" /></td>
+						<td><p:calendar  /></td>
+					</tr>
+				</table>
+
+				<div align="center">
+					<p:commandLink title="Consultar">
+						<h:graphicImage value="/images/wgd/icono-buscar.png"
+							style="border:0" />
+					</p:commandLink>
+				</div>
+				<p:spacer width="40" />
+				<div align="center" style="width: 100%">
+					<p:dataTable emptyMessage="No se encuentran datos disponibles">
+						<p:column headerText="Tipo">
+							<h:outputText value="10620" />
+							<h:outputText value="15768" />
+							<h:outputText value="18742" />
+						</p:column>
+						<p:column headerText="Documento">
+							<h:outputText value="Edicsem" />
+							<h:outputText value="Edicsem" />
+							<h:outputText value="Edicsem" />
+						</p:column>
+						<p:column headerText="Nro de documento">
+							<h:outputText value="PERCY FALCON ALTAMIRANO" />
+							<h:outputText value="MERCEDES FELICITA BERROCAL MEJIA" />
+							<h:outputText value="SILVIA LEONOR PEREZ VELEZ" />
+						</p:column>
+						<p:column headerText="Fecha">
+							<h:outputText value="25/04/2011" />
+							<h:outputText value="22/02/2011" />
+							<h:outputText value="22/06/2011" />
+						</p:column>
+						<p:column headerText="Almacen">
+							<h:outputText value="Regular" />
+							<h:outputText value="Moroso" />
+							<h:outputText value="Regular" />
+						</p:column>
+						<p:column headerText="Entrada cantidad">
+							<h:outputText value="9" />
+							<h:outputText value="9" />
+							<h:outputText value="9" />
+						</p:column>
+
+						<p:column headerText="Entrada Costo Unit">
+							<h:outputText value="9" />
+							<h:outputText value="9" />
+							<h:outputText value="9" />
+						</p:column>
+						<p:column headerText="Entrada Costo Total">
+							<h:outputText value="9" />
+							<h:outputText value="9" />
+							<h:outputText value="9" />
+						</p:column>
+						<p:column headerText="Salida cantidad">
+							<h:outputText value="9" />
+							<h:outputText value="9" />
+							<h:outputText value="9" />
+						</p:column>
+						<p:column headerText="Salida Costo Unit">
+							<h:outputText value="9" />
+							<h:outputText value="9" />
+							<h:outputText value="9" />
+						</p:column>
+						<p:column headerText="Salida Costo Total">
+							<h:outputText value="9" />
+							<h:outputText value="9" />
+							<h:outputText value="9" />
+						</p:column>
+						<p:column headerText="Saldo cantidad">
+							<h:outputText value="9" />
+							<h:outputText value="9" />
+							<h:outputText value="9" />
+						</p:column>
+						<p:column headerText="Saldo Costo Unit">
+							<h:outputText value="9" />
+							<h:outputText value="9" />
+							<h:outputText value="9" />
+						</p:column>
+						<p:column headerText="Saldo Costo Total">
+							<h:outputText value="9" />
+							<h:outputText value="9" />
+							<h:outputText value="9" />
+						</p:column>
+					</p:dataTable>
+				</div>
+				<p:spacer width="40"></p:spacer>
+
+				<table width="100%">
+
+					<tr>
+						<td><h:outputText value="#{msg.stock_actual}" /></td>
+						<td><p:inputText id="stock_actual" size="15" /></td>
+
+						<td><h:outputText value="#{msg.cost_u}" /></td>
+						<td><p:inputText id="cost_u" size="15" /></td>
+
+						<td><h:outputText value="#{msg.stock_valoriz}" /></td>
+						<td><p:inputText id="stock_valoriz" size="15" /></td>
+					</tr>
+					<tr style="height: 20px"></tr>
+
+					<tr align="center">
+						<td colspan="6">
+							<div align="center">
+								<p:commandButton value="Exportar" ajax="false" />
+							</div>
+						</td>
+					</tr>
+				</table>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
