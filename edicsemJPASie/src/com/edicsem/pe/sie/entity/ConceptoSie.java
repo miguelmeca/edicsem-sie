@@ -2,6 +2,10 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
+
 import java.util.Set;
 
 
@@ -10,8 +14,8 @@ import java.util.Set;
  * 
  */
 @Entity
-@Table(name="tb_concepto")
-public class ConceptoSie implements Serializable {
+@Table(name="tb_concepto", schema = Constants.ESQUEMA_SIE_POSTGRE)
+public class ConceptoSie  extends BaseMantenimientoForm implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

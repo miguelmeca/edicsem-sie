@@ -3,12 +3,14 @@ package com.edicsem.pe.sie.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
+
 /**
  * The primary key class for the tb_contrato_empleado database table.
  * 
  */
 @Embeddable
-public class ContratoEmpleadoSiePK implements Serializable {
+public class ContratoEmpleadoSiePK  extends BaseMantenimientoForm implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 

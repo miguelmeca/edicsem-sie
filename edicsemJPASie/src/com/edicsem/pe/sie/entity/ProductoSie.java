@@ -2,6 +2,10 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
+
 import java.sql.Timestamp;
 import java.math.BigDecimal;
 import java.util.Set;
@@ -12,12 +16,12 @@ import java.util.Set;
  * 
  */
 @Entity
-@Table(name="tb_producto")
-public class ProductoSie implements Serializable {
+@Table(name="tb_producto", schema = Constants.ESQUEMA_SIE_POSTGRE)
+public class ProductoSie extends BaseMantenimientoForm  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_PRODUCTO_IDPRODUCTO_GENERATOR", sequenceName="TB_PRODUCTO_IDPRODUCTO_SEQ")
+	@SequenceGenerator(name="TB_PRODUCTO_IDPRODUCTO_GENERATOR", sequenceName="SIE.TB_PRODUCTO_IDPRODUCTO_SEQ", initialValue=1, allocationSize =1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_PRODUCTO_IDPRODUCTO_GENERATOR")
 	private Integer idproducto;
 

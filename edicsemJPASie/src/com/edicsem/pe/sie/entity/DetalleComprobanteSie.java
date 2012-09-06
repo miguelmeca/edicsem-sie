@@ -2,6 +2,10 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
+
 import java.math.BigDecimal;
 
 
@@ -10,8 +14,8 @@ import java.math.BigDecimal;
  * 
  */
 @Entity
-@Table(name="tb_detalle_comprobante")
-public class DetalleComprobanteSie implements Serializable {
+@Table(name="tb_detalle_comprobante", schema = Constants.ESQUEMA_SIE_POSTGRE)
+public class DetalleComprobanteSie  extends BaseMantenimientoForm implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId

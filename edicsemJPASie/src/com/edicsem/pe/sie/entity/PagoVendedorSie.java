@@ -3,14 +3,17 @@ package com.edicsem.pe.sie.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
+
 
 /**
  * The persistent class for the tb_pago_vendedor database table.
  * 
  */
 @Entity
-@Table(name="tb_pago_vendedor")
-public class PagoVendedorSie implements Serializable {
+@Table(name="tb_pago_vendedor", schema = Constants.ESQUEMA_SIE_POSTGRE)
+public class PagoVendedorSie extends BaseMantenimientoForm  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

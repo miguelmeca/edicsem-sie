@@ -2,6 +2,10 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
+
 import java.util.Set;
 
 
@@ -10,8 +14,8 @@ import java.util.Set;
  * 
  */
 @Entity
-@Table(name="tb_tipo_documento_identidad")
-public class TipoDocumentoIdentidadSie implements Serializable {
+@Table(name="tb_tipo_documento_identidad", schema = Constants.ESQUEMA_SIE_POSTGRE)
+public class TipoDocumentoIdentidadSie extends BaseMantenimientoForm  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

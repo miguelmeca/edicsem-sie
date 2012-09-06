@@ -3,18 +3,21 @@ package com.edicsem.pe.sie.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
+
 
 /**
  * The persistent class for the tb_parametro_sistema database table.
  * 
  */
 @Entity
-@Table(name="tb_parametro_sistema")
-public class ParametroSistemaSie implements Serializable {
+@Table(name="tb_parametro_sistema", schema = Constants.ESQUEMA_SIE_POSTGRE)
+public class ParametroSistemaSie extends BaseMantenimientoForm  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_PARAMETRO_SISTEMA_IDPARAMETROSISTEMA_GENERATOR", sequenceName="TB_PARAMETRO_SISTEMA_IDPARAMETROSISTEMA_SEQ")
+	@SequenceGenerator(name="TB_PARAMETRO_SISTEMA_IDPARAMETROSISTEMA_GENERATOR", sequenceName="SIE.TB_PARAMETRO_SISTEMA_IDPARAMETROSISTEMA_SEQ", initialValue=1, allocationSize =1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_PARAMETRO_SISTEMA_IDPARAMETROSISTEMA_GENERATOR")
 	private Integer idparametrosistema;
 

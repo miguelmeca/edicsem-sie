@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
 
 import java.sql.Timestamp;
 import java.util.Set;
@@ -14,13 +15,13 @@ import java.util.Set;
  * 
  */
 @Entity
-@Table(name=Constants.TB_TIPO_PRODUCTO_SIE)
-public class TipoProductoSie implements Serializable {
+@Table(name="tb_tipo_producto", schema = Constants.ESQUEMA_SIE_POSTGRE)
+public class TipoProductoSie  extends BaseMantenimientoForm implements  Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_TIPO_PRODUCTO_IDTIPOPRODUCTO_GENERATOR", sequenceName="TB_TIPO_PRODUCTO_IDTIPOPRODUCTO_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_TIPO_PRODUCTO_IDTIPOPRODUCTO_GENERATOR")
+	@SequenceGenerator(name="TB_TIPO_PRODUCTO_IDTIPOPRODUCTO_GENERATOR", sequenceName="SIE.TB_TIPO_PRODUCTO_IDTIPOPRODUCTO_SEQ", initialValue=1, allocationSize =1)
+	@GeneratedValue( strategy=GenerationType.SEQUENCE, generator="TB_TIPO_PRODUCTO_IDTIPOPRODUCTO_GENERATOR" )
 	private Integer idtipoproducto;
 
 	private String codtipoproducto;
