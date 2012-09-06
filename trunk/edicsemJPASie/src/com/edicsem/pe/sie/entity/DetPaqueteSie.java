@@ -2,6 +2,10 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
+
 import java.sql.Timestamp;
 
 
@@ -10,12 +14,12 @@ import java.sql.Timestamp;
  * 
  */
 @Entity
-@Table(name="tb_det_paquete")
-public class DetPaqueteSie implements Serializable {
+@Table(name="tb_det_paquete", schema = Constants.ESQUEMA_SIE_POSTGRE)
+public class DetPaqueteSie  extends BaseMantenimientoForm implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_DET_PAQUETE_IDDETPAQUETE_GENERATOR", sequenceName="TB_DET_PAQUETE_IDDETPAQUETE_SEQ")
+	@SequenceGenerator(name="TB_DET_PAQUETE_IDDETPAQUETE_GENERATOR", sequenceName="SIE.TB_DET_PAQUETE_IDDETPAQUETE_SEQ", initialValue=1, allocationSize =1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_DET_PAQUETE_IDDETPAQUETE_GENERATOR")
 	@Column(name="\"idDetPaquete\"")
 	private Integer idDetPaquete;

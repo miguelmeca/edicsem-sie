@@ -3,12 +3,14 @@ package com.edicsem.pe.sie.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
+
 /**
  * The primary key class for the tb_detalle_comprobante database table.
  * 
  */
 @Embeddable
-public class DetalleComprobanteSiePK implements Serializable {
+public class DetalleComprobanteSiePK  extends BaseMantenimientoForm implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 

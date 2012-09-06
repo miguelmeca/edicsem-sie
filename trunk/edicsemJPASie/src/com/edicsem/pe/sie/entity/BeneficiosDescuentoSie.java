@@ -2,6 +2,10 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
+
 import java.sql.Timestamp;
 import java.math.BigDecimal;
 
@@ -11,8 +15,8 @@ import java.math.BigDecimal;
  * 
  */
 @Entity
-@Table(name="tb_beneficios_descuento")
-public class BeneficiosDescuentoSie implements Serializable {
+@Table(name="tb_beneficios_descuento", schema = Constants.ESQUEMA_SIE_POSTGRE)
+public class BeneficiosDescuentoSie  extends BaseMantenimientoForm implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

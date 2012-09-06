@@ -2,6 +2,10 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
+
 import java.sql.Timestamp;
 import java.sql.Time;
 
@@ -11,8 +15,8 @@ import java.sql.Time;
  * 
  */
 @Entity
-@Table(name="tb_horario_asistencia")
-public class HorarioAsistenciaSie implements Serializable {
+@Table(name="tb_horario_asistencia", schema = Constants.ESQUEMA_SIE_POSTGRE)
+public class HorarioAsistenciaSie  extends BaseMantenimientoForm implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId

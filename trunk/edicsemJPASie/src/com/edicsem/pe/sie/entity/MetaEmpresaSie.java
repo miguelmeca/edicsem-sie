@@ -2,6 +2,10 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
+
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -11,12 +15,12 @@ import java.util.Date;
  * 
  */
 @Entity
-@Table(name="tb_meta_empresa")
-public class MetaEmpresaSie implements Serializable {
+@Table(name="tb_meta_empresa", schema = Constants.ESQUEMA_SIE_POSTGRE)
+public class MetaEmpresaSie extends BaseMantenimientoForm  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_META_EMPRESA_IDMETAMES_GENERATOR", sequenceName="TB_META_EMPRESA_IDMETAMES_SEQ")
+	@SequenceGenerator(name="TB_META_EMPRESA_IDMETAMES_GENERATOR", sequenceName="SIE.TB_META_EMPRESA_IDMETAMES_SEQ", initialValue=1, allocationSize =1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_META_EMPRESA_IDMETAMES_GENERATOR")
 	private Integer idmetames;
 

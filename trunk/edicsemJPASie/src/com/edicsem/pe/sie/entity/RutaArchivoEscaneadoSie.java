@@ -2,6 +2,10 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
+
 import java.sql.Timestamp;
 
 
@@ -10,12 +14,12 @@ import java.sql.Timestamp;
  * 
  */
 @Entity
-@Table(name="tb_ruta_archivo_escaneado")
-public class RutaArchivoEscaneadoSie implements Serializable {
+@Table(name="tb_ruta_archivo_escaneado", schema = Constants.ESQUEMA_SIE_POSTGRE)
+public class RutaArchivoEscaneadoSie extends BaseMantenimientoForm  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_RUTA_ARCHIVO_ESCANEADO_IDRUTAARCHIVOESCANEADO_GENERATOR", sequenceName="TB_RUTA_ARCHIVO_ESCANEADO_IDRUTAARCHIVOESCANEADO_SEQ")
+	@SequenceGenerator(name="TB_RUTA_ARCHIVO_ESCANEADO_IDRUTAARCHIVOESCANEADO_GENERATOR", sequenceName="SIE.TB_RUTA_ARCHIVO_ESCANEADO_IDRUTAARCHIVOESCANEADO_SEQ", initialValue=1, allocationSize =1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_RUTA_ARCHIVO_ESCANEADO_IDRUTAARCHIVOESCANEADO_GENERATOR")
 	private Integer idrutaarchivoescaneado;
 

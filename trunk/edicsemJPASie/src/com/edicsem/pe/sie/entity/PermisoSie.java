@@ -2,6 +2,10 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
+
 import java.sql.Timestamp;
 
 
@@ -10,12 +14,12 @@ import java.sql.Timestamp;
  * 
  */
 @Entity
-@Table(name="tb_permisos")
-public class PermisoSie implements Serializable {
+@Table(name="tb_permisos", schema = Constants.ESQUEMA_SIE_POSTGRE)
+public class PermisoSie extends BaseMantenimientoForm  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_PERMISOS_IDPERMISOS_GENERATOR", sequenceName="TB_PERMISOS_IDPERMISOS_SEQ")
+	@SequenceGenerator(name="TB_PERMISOS_IDPERMISOS_GENERATOR", sequenceName="SIE.TB_PERMISOS_IDPERMISOS_SEQ", initialValue=1, allocationSize =1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_PERMISOS_IDPERMISOS_GENERATOR")
 	private Integer idpermisos;
 
