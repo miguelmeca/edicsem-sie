@@ -3,13 +3,53 @@
 	<persistence-unit name="edicsemJPASie" transaction-type="JTA">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<jta-data-source>java:/edicsemJPADatasource</jta-data-source>
-		<class>com.edicsem.pe.sie.entity.Persona</class>
-		<class>com.edicsem.pe.sie.entity.Usuario</class>
+		<class>com.edicsem.pe.sie.entity.BeneficiosDescuentoSie</class>
+		<class>com.edicsem.pe.sie.entity.CargoEmpleadoSie</class>
+		<class>com.edicsem.pe.sie.entity.ClienteSie</class>
+		<class>com.edicsem.pe.sie.entity.CobranzaSie</class>
+		<class>com.edicsem.pe.sie.entity.CobranzaSiePK</class>
+		<class>com.edicsem.pe.sie.entity.CobranzaOperadoraSie</class>
+		<class>com.edicsem.pe.sie.entity.ComprobanteSie</class>
+		<class>com.edicsem.pe.sie.entity.ConceptoSie</class>
+		<class>com.edicsem.pe.sie.entity.ContratoSie</class>
+		<class>com.edicsem.pe.sie.entity.ContratoEmpleadoSie</class>
+		<class>com.edicsem.pe.sie.entity.ContratoEmpleadoSiePK</class>
+		<class>com.edicsem.pe.sie.entity.DetPaqueteSie</class>
+		<class>com.edicsem.pe.sie.entity.DetalleComprobanteSie</class>
+		<class>com.edicsem.pe.sie.entity.DetalleComprobanteSiePK</class>
+		<class>com.edicsem.pe.sie.entity.DomicilioPersonaSie</class>
+		<class>com.edicsem.pe.sie.entity.EmpleadoSie</class>
+		<class>com.edicsem.pe.sie.entity.EmpresaSie</class>
+		<class>com.edicsem.pe.sie.entity.EstadoGeneralSie</class>
+		<class>com.edicsem.pe.sie.entity.HorarioAsistenciaSie</class>
+		<class>com.edicsem.pe.sie.entity.HorarioAsistenciaSiePK</class>
+		<class>com.edicsem.pe.sie.entity.HorarioPersonalSie</class>
+		<class>com.edicsem.pe.sie.entity.HorariosPvSie</class>
+		<class>com.edicsem.pe.sie.entity.KardexSie</class>
+		<class>com.edicsem.pe.sie.entity.MetaEmpresaSie</class>
+		<class>com.edicsem.pe.sie.entity.ModuloOpcionSie</class>
+		<class>com.edicsem.pe.sie.entity.PagoVendedorSie</class>
+		<class>com.edicsem.pe.sie.entity.PaqueteSie</class>
+		<class>com.edicsem.pe.sie.entity.ParametroSistemaSie</class>
+		<class>com.edicsem.pe.sie.entity.PermisoSie</class>
+		<class>com.edicsem.pe.sie.entity.ProductoSie</class>
+		<class>com.edicsem.pe.sie.entity.ProveedorSie</class>
+		<class>com.edicsem.pe.sie.entity.PuntoVentaSie</class>
+		<class>com.edicsem.pe.sie.entity.RutaArchivoEscaneadoSie</class>
+		<class>com.edicsem.pe.sie.entity.TelefonoPersonaSie</class>
+		<class>com.edicsem.pe.sie.entity.TipoCasaSie</class>
+		<class>com.edicsem.pe.sie.entity.TipoDocumentoIdentidadSie</class>
+		<class>com.edicsem.pe.sie.entity.TipoKardexProductoSie</class>
+		<class>com.edicsem.pe.sie.entity.TipoLlamadaSie</class>
+		<class>com.edicsem.pe.sie.entity.TipoModuloSie</class>
+		<class>com.edicsem.pe.sie.entity.TipoProductoSie</class>
+		<class>com.edicsem.pe.sie.entity.UbigeoSie</class>
+		
 	<properties>
-			<property name="eclipselink.jdbc.driver" value="com.mysql.jdbc.Driver" />
-			<property name="eclipselink.jdbc.url" value="jdbc:mysql://localhost:3306/test" />
-			<property name="eclipselink.jdbc.user" value="root" />
-			<property name="eclipselink.jdbc.password" value="admin" />
+			<property name="eclipselink.jdbc.driver" value="org.postgresql.Driver" />
+			<property name="eclipselink.jdbc.url" value="jdbc:postgres://192.168.1.2:5432/bd_sie" />
+			<property name="eclipselink.jdbc.user" value="postgres" />
+			<property name="eclipselink.jdbc.password" value="Edicsem2011" />
 			<property name="eclipselink.logging.level" value="FINE" />
 			<property name="jboss.entity.manager.factory.jndi.name"
 				value="java:/sieSoftJPAEntityManagerFactory" />
