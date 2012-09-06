@@ -14,5 +14,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="/edicsemUtil"/>
+	<classpathentry kind="lib" path="C:/proyecto-sie/librerias/eclipselink/javax.persistence_2.0.3.v201010191057.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
