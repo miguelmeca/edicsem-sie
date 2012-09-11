@@ -1,0 +1,94 @@
+package com.edicsem.pe.sie.model.dao.impl;
+
+import java.util.List;
+
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
+import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
+
+import com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO;
+
+@Stateless
+public class DomicilioEmpleadoDAOImpl implements DomicilioEmpleadoDAO{
+
+	@PersistenceContext(name="edicsemJPASie")
+	private EntityManager em;
+	private static Log log = LogFactory.getLog(DomicilioEmpleadoDAOImpl.class);
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#insertDemo(com.edicsem.pe.sie.entity.Usuario)
+	 */
+	public void insertarDomicilioEmpleado(DomicilioPersonaSie domiciliopersona) {
+		//em.getTransaction().begin();
+		try {
+						
+                                           
+
+			em.persist(domiciliopersona);
+			//em.flush();
+			if (log.isInfoEnabled()) {
+				log.info("apunto de insertar Empleado");
+			}
+			//em.getTransaction().commit();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#updateDemo(com.edicsem.pe.sie.entity.Usuario)
+	 */
+	public void actualizarDomicilioEmpleado(DomicilioPersonaSie domiciliopersona) {
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("apunto de insertar Empleado");
+			}
+			em.merge(domiciliopersona);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#deleteDemo(java.lang.String)
+	 */
+	public void eliminarDomicilioEmpleado(int id) {
+	
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#findDemo(java.lang.String)
+	 */
+	public DomicilioPersonaSie buscarDomicilioEmpleado(int id) {
+		// TODO Auto-generated method stub
+				DomicilioPersonaSie domiciliopersona= new DomicilioPersonaSie();
+				try {
+				if (log.isInfoEnabled()) {
+				log.info("buscar DomicilioPersona");
+				} 
+				domiciliopersona=	em.find(DomicilioPersonaSie.class, id);
+				log.info(" DomicilioPersona " +domiciliopersona);
+				} catch (Exception e) {
+				e.printStackTrace();
+				}
+				return domiciliopersona;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#listarUsuarios(com.edicsem.pe.sie.entity.Usuario)
+	 */
+	public List listarDomicilioEmpleados() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+}
