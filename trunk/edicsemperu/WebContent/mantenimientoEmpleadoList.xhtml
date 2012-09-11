@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/layout/template.xhtml">
+	<ui:define name="title">Registrar Empleado</ui:define>
+	<ui:define name="body">
+		<h:form id="form">
+	    <p:panel header="Mantenimiento de Empleados"  id="panel">
+		
+		   <p:dataTable var="car" value="Empleados">  
+        <p:column headerText="Nombre">  
+            <h:outputText value="aaa" />  
+        </p:column>  
+  
+        <p:column headerText="Ape. Paterno">  
+            <h:outputText value="aaa" />  
+        </p:column>  
+  
+        <p:column headerText="Ape. Materno">  
+            <h:outputText value="aaa" />  
+        </p:column>  
+  
+        <p:column headerText="Usuario">  
+            <h:outputText value="aaa" />  
+        </p:column>  
+        
+        <p:column headerText="Tipo Doc.">  
+            <h:outputText value="aaa" />  
+        </p:column>
+        
+        <p:column headerText="Nro. Documento">  
+            <h:outputText value="aaa" />  
+        </p:column>
+        
+          <p:column headerText="Teléfono">  
+            <h:outputText value="aaa" />  
+        </p:column>
+        
+          <p:column headerText="Domicilio">  
+            <h:outputText value="aaa" />  
+        </p:column>
+        
+        <p:column headerText="Fecha de Nac.">  
+            <h:outputText value="aaa" />  
+        </p:column>
+        
+        <p:column headerText="Cargo">  
+            <h:outputText value="aaa" />  
+        </p:column>
+    </p:dataTable>  
+		
+		<p:commandLink value="Registrar" action="registrarempleado"></p:commandLink>
+		<p:commandLink value="Actualizar" action="actualizarempleado"></p:commandLink>
+		<p:commandLink value="Eliminar" action="eliminarempleado"></p:commandLink>
+		<p:commandLink value="Consultar" action="mostrarempleado"></p:commandLink>
+	    <p:commandLink value="Salir" action="index"></p:commandLink>
+	</p:panel>
+	            	
+</h:form>
+	</ui:define>
+</ui:composition>
