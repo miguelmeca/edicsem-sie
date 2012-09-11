@@ -9,8 +9,10 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.edicsem.pe.sie.entity.Usuario;
+//import com.edicsem.pe.sie.entity.Usuario;
+import com.edicsem.pe.sie.entity.TipoProductoSie;
 import com.edicsem.pe.sie.service.facade.DemoService;
+import com.edicsem.pe.sie.service.facade.TipoProductoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
@@ -19,11 +21,14 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 public class MantenimientoDemo extends BaseMantenimientoAbstractAction{
 	
 	private String mensaje;
-	private Usuario objUsuario;
+	private TipoProductoSie objTipo;
+//	private Usuario objUsuario;
+	
 	public static Log log = LogFactory.getLog(MantenimientoDemo.class);
 	
 	@EJB
-	private DemoService objDemoService;
+	private TipoProductoService objTipoService;
+ 
 	
 	public MantenimientoDemo() {
 		System.out.println("ESTOY EN MI CONSNTRUCTOR");
@@ -34,9 +39,11 @@ public class MantenimientoDemo extends BaseMantenimientoAbstractAction{
 	
 	public void init(){
 		log.info("init()");
-		objUsuario = new Usuario();
-		objUsuario.setNomUsu("");
-		objUsuario.setPassUsu("");
+	 objTipo= new TipoProductoSie();
+	 //objTipo.setIdtipoproducto(null);
+		objTipo.setCodtipoproducto("");
+		objTipo.setNombretipoproducto("");
+		
 	}
 	
 	
@@ -44,19 +51,21 @@ public class MantenimientoDemo extends BaseMantenimientoAbstractAction{
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
 	 */
 	public String insertar() throws Exception {
-		try {
+	 try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()'");
-			}
-			
-			if (objUsuario.isNewRecord()) {
-				log.info("objUsuario.isNewRecord() : "+ objUsuario.isNewRecord());
-				insertarValidation(objUsuario);
-				objDemoService.insertDemo(objUsuario);
-				objUsuario.setNewRecord(false);
-			}else {
-				log.info("objUsuario.isNewRecord() : "+ objUsuario.isNewRecord());
-				objDemoService.updateDemo(objUsuario);
+			} 
+			 
+				log.info("objTipo.isNewRecord() : "+ objTipo.getCodtipoproducto());
+			if (objTipo.isNewRecord()){
+				log.info("insertando..... ");
+				insertarValidation(objTipo);
+				objTipoService.insertTipoProducto(objTipo);
+				objTipo.setNewRecord(false);
+			} 
+			else {
+				log.info("objUsuario.isNewRecord() : "+ objTipo.isNewRecord());
+			//	objTipoService.updateDemo(objTipo);
 			}
 			
 		} catch (Exception e) {
@@ -67,7 +76,7 @@ public class MantenimientoDemo extends BaseMantenimientoAbstractAction{
 					mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
+		} 
 		return getViewList();
 	}
 	
@@ -75,20 +84,24 @@ public class MantenimientoDemo extends BaseMantenimientoAbstractAction{
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewList()
 	 */
 	public String getViewList() {
-		return "index";
+		return "demo";
 	}
-	
+
+
 	/**
-	 * @return the objUsuario
+	 * @return the objTipo
 	 */
-	public Usuario getObjUsuario() {
-		return objUsuario;
+	public TipoProductoSie getObjTipo() {
+		return objTipo;
 	}
+
+
 	/**
-	 * @param objUsuario the objUsuario to set
+	 * @param objTipo the objTipo to set
 	 */
-	public void setObjUsuario(Usuario objUsuario) {
-		this.objUsuario = objUsuario;
+	public void setObjTipo(TipoProductoSie objTipo) {
+		this.objTipo = objTipo;
 	}
+	 
 
 }
