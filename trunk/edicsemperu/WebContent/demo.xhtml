@@ -12,12 +12,12 @@
 		<h:panelGrid columns="3">
 		
 		<p:outputLabel for="nombre" value="#{message['usuario.nombre']}"/>
-		<p:inputText id="nombre" required="true" value="#{mantenimientoDemo.objUsuario.nomUsu}"
+		<p:inputText id="nombre" required="true" value="#{mantenimientoDemo.objTipo.codtipoproducto}"
 					requiredMessage="#{message['usuario.nombre.validation']}"/>
 		<p:message for="nombre" />
 		
 		<p:outputLabel for="pwd" value="#{message['usuario.contrasenya']}"/>
-		<p:inputText id="pwd" required="true" value="#{mantenimientoDemo.objUsuario.passUsu}"
+		<p:inputText id="pwd" required="true" value="#{mantenimientoDemo.objTipo.nombretipoproducto}"
 						requiredMessage="#{message['usuario.contrasenya.validation']}"/>
 		<p:message for="pwd" />
 		
