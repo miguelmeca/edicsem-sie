@@ -7,7 +7,7 @@ import javax.ejb.Local;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 
 @Local
-public interface EmpleadoDAO {
+public interface EmpleadoSieDAO {
 	
 	public abstract void insertarEmpleado (EmpleadoSie empleado);
 	public abstract void actualizarEmpleado (EmpleadoSie empleado);

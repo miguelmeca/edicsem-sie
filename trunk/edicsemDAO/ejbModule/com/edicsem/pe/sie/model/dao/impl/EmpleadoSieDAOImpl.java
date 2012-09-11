@@ -14,14 +14,14 @@ import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.entity.TipoDocumentoIdentidadSie;
-import com.edicsem.pe.sie.model.dao.EmpleadoDAO;
+import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
 
 @Stateless
-public class EmpleadoDAOImpl implements EmpleadoDAO{
+public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 
 	@PersistenceContext(name="edicsemJPASie")
 	private EntityManager em;
-	private static Log log = LogFactory.getLog(EmpleadoDAOImpl.class);
+	private static Log log = LogFactory.getLog(EmpleadoSieDAOImpl.class);
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#insertDemo(com.edicsem.pe.sie.entity.Usuario)
