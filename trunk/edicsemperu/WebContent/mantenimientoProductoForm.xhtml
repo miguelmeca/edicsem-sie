@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
+			Productos</h1>
+		<h:form id="formManteProd" prependId="false">
+			<p:growl id="message" showDetail="true" />
+
+			<p:panel>
+				<h:panelGrid columns="4">
+					<h:outputText for="codigo"
+						value="#{message['mantenimiento.producto.codigo']}" />
+					<p:inputText id="codigoProducto"
+						value="#{mantenimientoProducto.objProductoSie.codproducto}"
+						size="10" />
+					<h:outputText value="#{message['mantenimiento.producto.anio']}" />
+					<h:selectOneListbox size="1"
+						value="#{mantenimientoProducto.objProductoSie.anioproducto}">
+						<f:selectItem itemValue="1" itemLabel="2011" />
+						<f:selectItem itemValue="2" itemLabel="2012" />
+					</h:selectOneListbox>
+					<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
+					<h:selectOneMenu value="#{mantenimientoProducto.tipoProducto}"
+						required="true">
+						<f:selectItem itemValue="1" itemLabel="Seleccionar tipo" />
+						<f:selectItems value="#{mantenimientoProducto.selectItems}" />
+					</h:selectOneMenu>
+					<h:outputText value="#{message['mantenimiento.producto.nombre']}" />
+					<p:inputText id="desc_prod"
+						value="#{mantenimientoProducto.objProductoSie.descripcionproducto}"
+						size="10" />
+					<h:outputText value="#{message['mantenimiento.producto.detalle']}" />
+
+					<p:inputTextarea id="y" size="10"
+						value="#{mantenimientoProducto.objProductoSie.detalleproducto}"
+						rows="8" cols="50" />
+					<h:outputText value="#{message['mantenimiento.producto.unidad']}" />
+					<p:inputText id="unidadProducto" size="10"
+						value="#{mantenimientoProducto.objProductoSie.unidproducto}"
+						maxlength="10" />
+					<h:outputText
+						value="#{message['mantenimiento.producto.stock.minimo']}" />
+					<p:inputMask id="stock_minimo_producto" size="10"
+						value="#{mantenimientoProducto.objProductoSie.stkminimoproducto}"
+						required="true" requiredMessage="ingrese stock" mask="99999999" />
+					<h:outputText
+						value="#{message['mantenimiento.producto.stock.maximo']}" />
+					<p:inputText id="stock_mximo_producto" size="10"
+						value="#{mantenimientoProducto.objProductoSie.stkmaximo}"
+						maxlength="10" />
+					<h:outputText value="#{message['mantenimiento.producto.precio']}" />
+					<p:inputText id="precio_venta" size="10"
+						value="#{mantenimientoProducto.objProductoSie.precioventa}"
+						maxlength="10"  />
+					<p:spacer height="70px"></p:spacer>
+					<p:commandButton value="#{message['grabar']}"
+						action="#{mantenimientoProducto.insertar}" ajax="false" />
+					<p:commandButton value="#{message['limpiar']}"
+						action="#{login.login}" ajax="false" />
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
