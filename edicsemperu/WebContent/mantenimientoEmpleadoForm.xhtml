@@ -67,15 +67,15 @@
             <p:message for="fechanac" />            
               
 	        <h:outputLabel value="Cargo :"  />
-			<h:selectOneListbox size="1" value="#{mantenimientoEmpleado.cargoEmpleado}">  
+			<h:selectOneListbox size="1" value="#{mantenimientoEmpleadoFormAction.cargoEmpleado}">  
             <f:selectItem  itemLabel="Seleccione Cargo" itemValue="-1" />  
-            <f:selectItems Value="#{mantenimientoEmpleado.itemsCargoEmpl}" />
+            <f:selectItems Value="#{mantenimientoEmpleadoFormAction.itemsCargoEmpl}" />
             </h:selectOneListbox>  
             
             <h:outputLabel value="Cargo :"  />
-			<h:selectOneListbox size="1" value="#{mantenimientoEmpleado.tipoDocumento}">  
+			<h:selectOneListbox size="1" value="#{mantenimientoEmpleadoFormAction.tipoDocumento}">  
             <f:selectItem  itemLabel="Seleccione tipo" itemValue="-1" />  
-            <f:selectItems Value="#{mantenimientoEmpleado.itemsTipoDoc}" />
+            <f:selectItems Value="#{mantenimientoEmpleadoFormAction.itemsTipoDoc}" />
             </h:selectOneListbox>  
                   
 		
