@@ -53,9 +53,10 @@ public class CargoEmpleadoServiceImpl implements CargoEmpleadoService{
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.DemoService#listarUsuarios(com.edicsem.pe.sie.entity.Usuario)
 	 */
-	public List listarCargoEmpleado() {
+	public List listarCargoEmpleado(String descripcion) {
 		log.info("En el servicio ");
-		return objCargoEmpleadoDao.listarCargoEmpleado();
+		//te falta un parametro
+		return objCargoEmpleadoDao.listarCargoEmpleado(descripcion);
 	}
 
 	
