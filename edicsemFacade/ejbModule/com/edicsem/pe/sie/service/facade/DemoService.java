@@ -10,7 +10,7 @@ public interface DemoService {
 	/*public abstract void insertDemo (Usuario usuario);
 	public abstract void updateDemo (Usuario usuario);
 	public abstract void deleteDemo (String id);
-	public abstract Usuario findDemo (String id);*/
-	public abstract List listarUsuarios ();
+	public abstract Usuario findDemo (String id);
+	public abstract List listarUsuarios ();*/
 	
 }

@@ -45,10 +45,10 @@ public class DemoServiceImpl implements DemoService{
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.DemoService#listarUsuarios(com.edicsem.pe.sie.entity.Usuario)
 	 */
-	public List listarUsuarios() {
+/*/	public List listarUsuarios() {
 		return objDemoDao.listarUsuarios();
 	}
-
+*/
 	
 		
 }
