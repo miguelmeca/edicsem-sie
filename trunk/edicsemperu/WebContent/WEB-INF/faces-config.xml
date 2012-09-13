@@ -9,7 +9,7 @@
   </navigation-case>
  </navigation-rule>
  <application>
-  <locale-config>
+    <locale-config>
    <default-locale>en</default-locale>
   </locale-config>
   <message-bundle>com.edicsem.pe.sie.client.properties.ApplicationResources</message-bundle>
