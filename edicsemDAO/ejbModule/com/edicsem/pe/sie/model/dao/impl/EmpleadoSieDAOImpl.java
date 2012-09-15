@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -79,8 +80,15 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#listarUsuarios(com.edicsem.pe.sie.entity.Usuario)
 	 */
 	public List listarEmpleados() {
-		// TODO Auto-generated method stub
-		return null;
+		List lista = null;
+		try {
+			Query q = em.createQuery("select p from EmpleadoSie p");
+			lista = q.getResultList();
+			System.out.println("tamaño lista Empleados --> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
 	}
 	
 	
