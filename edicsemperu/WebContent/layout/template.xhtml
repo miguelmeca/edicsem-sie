@@ -47,7 +47,7 @@
 	</h:head>
 	<f:loadBundle var="message" basename="com.edicsem.pe.sie.client.properties.ApplicationResources"/>
 	<p:layout fullPage="true">
-	<p:layoutUnit position="north">
+	<p:layoutUnit position="north" size="102">
 	<div id="header" class="ui-widget ui-widget-header">
             <div id="logo">
             	<img src="#{request.contextPath}/images/logo.png" alt="Logo"/>
@@ -74,7 +74,7 @@
 						<p:menuitem value="Operadoras" ajax="false" />
 					</p:submenu>
 					<p:submenu label="Mantenimientos">
-						<p:menuitem value="Productos" update="messages" ajax="false" action="mantenimientoProductos.jsf" />
+					<p:menuitem value="Productos" update="messages" ajax="false" action="mantenimientoProductos.jsf" />
 						<p:menuitem value="Orden de Reposicion" update="messages" ajax="false" action="#" />
 						<p:menuitem value="Buscar Cliente" update="messages" ajax="false" action="#" />
 						<p:menuitem value="Registro de Contrato" ajax="false" action="#" />
