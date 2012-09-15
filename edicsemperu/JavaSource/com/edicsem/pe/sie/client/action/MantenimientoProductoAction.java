@@ -1,6 +1,7 @@
 package com.edicsem.pe.sie.client.action;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,14 +16,11 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.ServletContext;
-
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.LogFactory; 
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
-import org.primefaces.model.UploadedFile;
-
+import org.primefaces.model.StreamedContent; 
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.TipoProductoSie;
 import com.edicsem.pe.sie.service.facade.ProductoService;
@@ -44,6 +42,23 @@ public class MantenimientoProductoAction extends BaseMantenimientoAbstractAction
 	private ProductoSie selectedProducto;
 	private boolean editMode;
 	private ProductoSie nuevo ;
+	
+	@EJB
+	private TipoProductoService objTipoProductoService;
+	@EJB
+	private ProductoService objProductoService;
+	 
+	public MantenimientoProductoAction() {
+		log.info("inicializando constructor MantenimientoProducto");
+		init();
+	}
+	
+	public void init() {
+		log.info("init()");
+		selectItems = new ArrayList<SelectItem>();
+		objProductoSie = new ProductoSie();
+		nuevo = new ProductoSie();
+	}
 	
 	/**
 	 * @return the editMode
@@ -74,26 +89,13 @@ public class MantenimientoProductoAction extends BaseMantenimientoAbstractAction
 		this.productosmodel = productosmodel;
 	}
 
-	@EJB
-	private TipoProductoService objTipoProductoService;
-	@EJB
-	private ProductoService objProductoService;
 
-	public MantenimientoProductoAction() {
-		log.info("inicializando constructor MantenimientoProducto");
-		init();
-	}
-	public void init() {
-		log.info("init()");
-		// Colocar valores inicializados
-		selectItems = new ArrayList<SelectItem>();
-		objProductoSie = new ProductoSie();
-		objProductoSie.setCodproducto("");
-		nuevo = new ProductoSie();
-	}
-	public void Nuevo(ActionEvent e) throws Exception {
-
-		setObjProductoSie(null);
+	public String Nuevo() throws Exception { 
+		objProductoSie=new ProductoSie();
+		
+	return	getViewList();
+		
+		//
 	}
 	/**
 	 * @return the nuevo
@@ -147,20 +149,50 @@ public class MantenimientoProductoAction extends BaseMantenimientoAbstractAction
 		}
 		return selectItems;
 	}
+	public void cargarImagenInsertar(FileUploadEvent event) {  
+		log.info("cargarImagenInsertar");
+	    String photo = event.getFile().getFileName();
+    	log.info("XD " + event.getFile().getFileName());
+    	FileImageOutputStream imageOutput;
+    	ServletContext servletContext = (ServletContext) FacesContext .getCurrentInstance().getExternalContext().getContext();
+	   // String newFileName = servletContext.getRealPath("") + File.separator + "images" + File.separator + photo ;
+    	 String newFileName = "C:\\proyecto-sie\\ws-sie\\edicsemperu\\WebContent" + File.separator + "images" + File.separator + photo ;
+    	try {
+    	    image = new DefaultStreamedContent(event.getFile().getInputstream());
+    	    setImage(image);
+    	    log.info("ruta " + newFileName +" - "+ event.getFile().getFileName());
+    	    imageOutput = new FileImageOutputStream(new File(newFileName));
+    	    objProductoSie.setRutaimagenproducto(newFileName);
+    	    byte[] foto = event.getFile().getContents();
+    	    imageOutput.write(foto, 0, foto.length);
+			imageOutput.close();
+    	    FacesMessage msg = new FacesMessage("Acción Completada!!!", event.getFile().getFileName() + " se cargó.");
+    	    FacesContext.getCurrentInstance().addMessage(null, msg);
+    	  } catch (Exception ex) {
+    		  ex.printStackTrace();
+    	} 
+    }
 
-	public String insertar() throws Exception {
+
+	public String insertar(ActionEvent ae){
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()'");
 			}
-
-			TipoProductoSie t = objTipoProductoService
-					.findTipoProducto(TipoProducto);
-			log.info("seteo " + t.getIdtipoproducto() + " "
-					+ t.getNombretipoproducto());
+			
+			TipoProductoSie t = objTipoProductoService.findTipoProducto(TipoProducto);
+			log.info("seteo " + t.getIdtipoproducto() + " " + t.getNombretipoproducto());
 			objProductoSie.setTbTipoProducto(t);
 			if (objProductoSie.isNewRecord()) {
 				log.info("insertando..... ");
+				if(image==null){
+					log.info("imagen nula");
+					InputStream stream = ((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream("/images/bibliaXDefecto.png");
+					log.info("ruta" + stream.toString());
+					objProductoSie.setRutaimagenproducto(stream.toString());
+				}else{
+				log.info("image no nula");
+				}
 				insertarValidation(objProductoSie);
 				objProductoService.insertProducto(objProductoSie);
 				log.info("insertando..... ");
@@ -173,39 +205,11 @@ public class MantenimientoProductoAction extends BaseMantenimientoAbstractAction
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 		return getViewList();
-	}
-
-	public void cargarImG(FileUploadEvent event) {
-		log.info("a cargar imagen ");
-		String photo = event.getFile().getFileName();
-		 
-		UploadedFile data = event.getFile();
-
-		ServletContext servletContext = (ServletContext) FacesContext .getCurrentInstance().getExternalContext().getContext();
-		String newFileName = servletContext.getRealPath("") + File.separator + "img" + File.separator + photo + ".png";
-		log.info("imagen " +  photo + " FilName  " + newFileName ) ;
-		FileImageOutputStream imageOutput;
-		try {
-			 image = new DefaultStreamedContent(event.getFile().getInputstream());
-			imageOutput = new FileImageOutputStream(new File(newFileName));
-
-			byte[] data2 = data.getContents();
-			imageOutput.write(data2, 0, data2.length);
-			imageOutput.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-			mensaje = e.getMessage();
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-			log.error(e.getMessage());
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
 	}
 
 	/**
@@ -232,20 +236,24 @@ public class MantenimientoProductoAction extends BaseMantenimientoAbstractAction
 	public void setTipoProducto(int tipoProducto) {
 		TipoProducto = tipoProducto;
 	}
-
 	/**
 	 * @return the objProductoSie
 	 */
 	public ProductoSie getObjProductoSie() {
 		return objProductoSie;
 	}
-
 	/**
-	 * @param objProductoSie
-	 *            the objProductoSie to set
+	 * @param objProductoSie the objProductoSie to set
 	 */
 	public void setObjProductoSie(ProductoSie objProductoSie) {
 		this.objProductoSie = objProductoSie;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewList()
+	 */ 
+	public String getViewList() { 
+		return "mantenimientoProductoForm";
 	}
 
 }

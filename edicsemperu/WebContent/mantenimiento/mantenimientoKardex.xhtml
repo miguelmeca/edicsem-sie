@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
+			Kardex</h1>
+		<h:form  id="frmKardex" >
+			 
+			<p:panel header="#{message['panel.seleccion.producto']}">
+				<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
+				<h:selectOneListbox value="#{kardexSieAction.tipoProducto}"
+					onchange="submit()" required="true"  size="1" >
+					<f:selectItem itemValue="-1" itemLabel="Seleccionar tipo" />
+					<f:selectItems value="#{comboAction.tipoitems}" />
+				</h:selectOneListbox>
+				<h:outputText value="#{message['mantenimiento.producto']}" />
+				<h:selectOneListbox size="1" value="#{kardexSieAction.idproducto}" >
+					<f:selectItem itemLabel="Seleccione Producto" itemValue="-1" />
+					<f:selectItems value="#{kardexSieAction.productositems}" />
+				</h:selectOneListbox>
+				<h:outputText value="#{message['mantenimiento.kardex.almacen']}" />
+				<h:selectOneListbox size="1" value="#{kardexSieAction.idalmacen}" >
+					<f:selectItem itemLabel="Seleccione" itemValue="-1" />
+					<f:selectItems value="#{comboAction.almacenItems}" />
+				</h:selectOneListbox>
+				<h:outputText value="#{message['kardex.desde']}" />
+				<p:calendar />
+
+				<h:outputText value="#{message['kardex.hasta']}" />
+				<p:calendar />
+ 
+					<p:commandButton  value="Consultar" action="#{kardexSieAction.consultar}" update=":frmKardex:listakardex" ></p:commandButton> 
+					 
+			 
+				<p:spacer width="40" />
+				<p:dataTable value="#{kardexSieAction.listadoKardex}" var="p"
+					id="listakardex" paginator="true" rows="5"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" widgetVar="table"
+					emptyMessage="No se encontro registros">
+					<f:facet name="header">  
+         Listado Kardex
+        </f:facet>
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="Buscar :" />
+							<p:inputText id="globalFilter" onkeyup="table.filter()"
+								style="width:150px; align=Left; " />
+						</p:outputPanel>
+					</f:facet>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Codigo" />
+						</f:facet>
+						<h:outputText value="#{p.idkardex}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Descripción" />
+						</f:facet>
+						<h:outputText value="#{p.cantentrada}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Detalle" />
+						</f:facet>
+						<h:outputText value="#{p.cantsalida}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Precio" />
+						</f:facet>
+						<h:outputText value="#{p.tipokardex}" />
+					</p:column>
+					  
+					</p:dataTable>
+				 
+				<p:spacer width="40"></p:spacer>
+
+				<h:outputText value="#{message['mantenimiento.producto.stock.actual']}" />
+				<p:inputText id="stock_actual" value="#{kardexSieAction.listadoKardex}" size="15" />
+ 
+				<h:outputText value="#{message['kardex.Stock.valorizado']}" />
+				<p:inputText id="stock_valoriz" size="15" />
+
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

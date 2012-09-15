@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Movimiento	Mercadería</h1>
+		<h:form id="formMovMerc">
+			<p:growl id="message" showDetail="true" />
+			<p:panel header="#{message['panel.ingreso.mercaderia']}">
+				<p:panelGrid columns="6">
+
+					<h:outputText value="#{message['movimiento.tipo']}" />
+					<h:selectOneListbox size="1" id="idtipokardex"
+						value="#{movimientoMercaderia.idtipokardexproducto}">
+						<f:selectItem itemLabel="Seleccione" itemValue="-1" />
+						<f:selectItems value="#{movimientoMercaderia.tipoKardexItems}" />
+					</h:selectOneListbox>
+
+					<h:outputText value="#{message['mantenimiento.producto.cantidadEnt']}" />
+					<p:spinner id="entr" size="2" min="1"
+						value="#{movimientoMercaderia.objKardexSie.cantentrada}" />
+						 
+					<h:outputText value="#{message['mantenimiento.producto.cantidadSal']}" />
+					<p:spinner id="sal" size="2" min="1"
+						value="#{movimientoMercaderia.objKardexSie.cantsalida}" />
+						
+					<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
+					<h:selectOneListbox value="#{kardexSieAction.tipoProducto}"
+						onchange="submit()" required="true" size="1">
+						<f:selectItem itemLabel="Seleccionar tipo" itemValue="-1" />
+						<f:selectItems value="#{comboAction.tipoitems}" />
+					</h:selectOneListbox>
+
+					<h:outputText value="#{message['mantenimiento.producto']}" />
+					<h:selectOneListbox size="1"
+						value="#{movimientoMercaderia.idproducto}">
+						<f:selectItem itemLabel="Seleccione Producto" itemValue="-1" />
+						<f:selectItems value="#{kardexSieAction.productositems}" />
+					</h:selectOneListbox>
+
+					<h:outputText size="10" value="#{message['numero.documento']}" />
+					<p:inputText id="num" size="10"
+						value="#{movimientoMercaderia.objKardexSie.tipokardex}" />
+					
+					<h:outputText value="#{message['mantenimiento.kardex.almacen']}" />
+					<h:selectOneListbox size="1"
+						value="#{movimientoMercaderia.idAlmacen}">
+						<f:selectItem itemLabel="Seleccione" itemValue="-1" />
+						<f:selectItems value="#{comboAction.almacenItems}" />
+					</h:selectOneListbox>
+					
+				 <p:commandButton id="btn_add" value="Añadir"
+						update=":formMovMerc: message"
+						actionListener="#{movimientoMercaderia.anadir}"
+					  ajax="false">
+						</p:commandButton>
+				
+				</p:panelGrid>
+<p:dataTable id="booksTable" value="#{movimientoMercaderia.data}"
+					var="d">
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Tipo de Kardex" />
+						</f:facet>
+						<h:outputText value="#{d.tbTipoKardexProducto.descripcion}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Cant. Entrada" />
+						</f:facet>
+						<h:outputText value="#{d.cantentrada}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Cant. Salida" />
+						</f:facet>
+						<h:outputText value="#{d.cantsalida}" />
+					</p:column>
+						<p:column>
+						<f:facet name="header">
+							<h:outputText value="Cant. Salida" />
+						</f:facet>
+						<h:outputText value="#{d.tipokardex}" />
+					</p:column>
+				</p:dataTable>
+				
+				<p:commandButton id="id"
+					actionListener="#{movimientoMercaderia.insertar}"
+					value="Añadir Mercadería" ajax="false"
+					update="formMovMerc: message">
+				</p:commandButton>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -2,11 +2,10 @@ package com.edicsem.pe.sie.client.action;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;  
@@ -23,29 +22,24 @@ import com.edicsem.pe.sie.service.facade.TipoProductoService;
 import com.edicsem.pe.sie.service.facade.impl.TipoProductoServiceImpl;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
-
-@ManagedBean
+@ManagedBean( name="kardexSieAction" )
 @SessionScoped
 public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	public static Log log = LogFactory.getLog(KardexSieAction.class);
-
-	private List<SelectItem> selectItems, productosItems;
+ 
+	private ArrayList<SelectItem> productositems;
 	private DataModel<KardexSie> kardexmodel;
 	private KardexSie objKardexSie;
 	private String mensaje;
-	private int almacen;
-	private int idproducto, idalmacen, tipoProducto;
+	private int tipoProducto;
+	private int idproducto, idalmacen;
 	private Date fechaDesde, fechaHasta;
 	private List<KardexSie> listadoKardex;
-	private List<SelectItem> selectItems2;
-	private ArrayList<SelectItem> productositems;
-
+	private Map<String,String> tipoProd ;
+  
 	@EJB
-	private TipoProductoService objTipoProductoService;
-	@EJB
-	private ProductoService  objProductoService;
-	@EJB
-	private AlmacenService objAlmacenService;
+	private ProductoService objProductoService;
+ 
 	@EJB
 	private KardexService objKardexService;
 
@@ -56,47 +50,84 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 
 	public void init() {
 		log.info("init()");
-		selectItems2 = new ArrayList<SelectItem>();
-		selectItems = new ArrayList<SelectItem>();
 		objKardexSie = new KardexSie();
-		tipoProducto = -1;
+		productositems= new ArrayList<SelectItem>();
+	}
+	/**
+	 * @return the productositems
+	 */
+	public ArrayList<SelectItem> getProductositems() throws Exception {
+		log.info("tipo --> " + getTipoProducto());
+		productositems = new ArrayList<SelectItem>();
+	 
+			List listaP = new ArrayList<ProductoSie>();
+			listaP = (List<ProductoSie>) objProductoService
+					.listarProductosXTipo(tipoProducto);
+			log.info("tamaño productos X tipo --> " + listaP.size());
+			for (int i = 0; i < listaP.size(); i++) {
+				ProductoSie producto = new ProductoSie();
+				producto = (ProductoSie) listaP.get(i);
+				productositems.add(new SelectItem(producto.getIdproducto(),
+						producto.getDescripcionproducto()));
+			}
+		return productositems;
+	} 
+	
+	/**
+	 * @return the kardexmodel
+	 */
+	public DataModel<KardexSie> getKardexmodel() throws Exception {
+		String fechaDesde = "";
+		String fechaHasta = "";
+		kardexmodel = new ListDataModel<KardexSie>(
+				objKardexService.ConsultaProductos(getIdproducto(),
+						getIdalmacen(), fechaDesde, fechaHasta));
+		log.info(" DataModel Kardex " + kardexmodel.getRowCount());
+		return kardexmodel;
+	}
+	/**
+	 * @return the tipoProducto
+	 */
+	public int getTipoProducto() {
+		return tipoProducto;
 	}
 
 	/**
-	 * @return the selectItems2
+	 * @param tipoProducto the tipoProducto to set
 	 */
-	public List<SelectItem> getSelectItems2() {
-		selectItems2 = new ArrayList<SelectItem>();
-		List lista = new ArrayList<TipoProductoSie>();
-		try {
-			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'getListaTipoProducto()'");
-			}
-			lista = objTipoProductoService.listarTipo();
+	public void setTipoProducto(int tipoProducto) {
+		this.tipoProducto = tipoProducto;
+	} 
 
-			for (int i = 0; i < lista.size(); i++) {
-				TipoProductoSie tipo = new TipoProductoSie();
-					tipo = (TipoProductoSie) lista.get(i);
-					selectItems2.add(new SelectItem(tipo.getIdtipoproducto(),
-							tipo.getNombretipoproducto()));
-			}
-		
-		} catch (Exception e) {
-			e.printStackTrace();
-			mensaje = e.getMessage();
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-			log.error(e.getMessage());
-			FacesContext.getCurrentInstance().addMessage(null, msg);
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
+	 * #consultar()
+	 */
+	public String consultar() throws Exception {
+
+		List<KardexSie> lista = new ArrayList<KardexSie>();
+		for (KardexSie c : getKardexmodel()) {
+			lista.add(c);
 		}
-		return selectItems2;
+		setListadoKardex(lista);
+		return getViewList();
 	}
 
-	/**
-	 * @param selectItems2 the selectItems2 to set
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
+	 * #getViewList()
 	 */
-	public void setSelectItems2(List<SelectItem> selectItems2) {
-		this.selectItems2 = selectItems2;
+	
+	public String getViewList() {
+
+		return "mantenimientoKardex";
 	}
 
 	/**
@@ -160,20 +191,6 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	}
 
 	/**
-	 * @return the productosItems
-	 */
-	public List<SelectItem> getProductosItems() {
-		return productosItems;
-	}
-
-	/**
-	 * @param productosItems
-	 *            the productosItems to set
-	 */
-	public void setProductosItems(List<SelectItem> productosItems) {
-		this.productosItems = productosItems;
-	}
-	/**
 	 * @return the listadoKardex
 	 */
 	public List<KardexSie> getListadoKardex() {
@@ -187,55 +204,8 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	public void setListadoKardex(List<KardexSie> listadoKardex) {
 		this.listadoKardex = listadoKardex;
 	}
-	/**
-	 * @return the kardexmodel
-	 */
-	
-	public DataModel<KardexSie> getKardexmodel() throws Exception {
-		String fechaDesde = "";
-		String fechaHasta = "";
-		kardexmodel = new ListDataModel<KardexSie>(
-				objKardexService.ConsultaProductos(getIdproducto(),
-						getIdalmacen(), fechaDesde, fechaHasta));
-		log.info(" DataModel Kardex " + kardexmodel.getRowCount());
-		return kardexmodel;
-	}
-
-	/**
-	 * @return the productositems
-	 */
-	public ArrayList<SelectItem> getProductositems() throws Exception {
-		log.info("tipo --> " + getTipoProducto());
-		productositems = new ArrayList<SelectItem>();
 	 
-			List listaP = new ArrayList<ProductoSie>();
-			listaP = (List<ProductoSie>) objProductoService
-					.listarProductosXTipo(tipoProducto);
-			log.info("tamaño productos X tipo --> " + listaP.size());
-			for (int i = 0; i < listaP.size(); i++) {
-				ProductoSie producto = new ProductoSie();
-				producto = (ProductoSie) listaP.get(i);
-				productositems.add(new SelectItem(producto.getIdproducto(),
-						producto.getDescripcionproducto()));
-			}
-		return productositems;
-	}
-
-	/**
-	 * @return the tipoProducto
-	 */
-	public int getTipoProducto() {
-		return tipoProducto;
-	}
-
-	/**
-	 * @param tipoProducto
-	 *            the tipoProducto to set
-	 */
-	public void setTipoProducto(int tipoProducto) {
-		this.tipoProducto = tipoProducto;
-	}
-
+	
 	/**
 	 * @param productositems
 	 *            the productositems to set
@@ -251,93 +221,7 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	public void setKardexmodel(DataModel<KardexSie> kardexmodel) {
 		this.kardexmodel = kardexmodel;
 	}
-
-	/**
-	 * @return the almacen
-	 */
-	public int getAlmacen() {
-		return almacen;
-	}
-
-	/**
-	 * @param almacen
-	 *            the almacen to set
-	 */
-	public void setAlmacen(int almacen) {
-		this.almacen = almacen;
-	}
-
-	public List<SelectItem> getSelectItems() {
-		List lista = new ArrayList<PuntoVentaSie>();
-		selectItems = new ArrayList<SelectItem>();
-		try {
-			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'getListarAlmacenes()'");
-			}
-			lista = objAlmacenService.listarAlmacenes();
-			log.info(" tamaño " + lista.size());
-			PuntoVentaSie punto;
-			for (int i = 0; i < lista.size(); i++) {
-				punto = new PuntoVentaSie();
-				if (lista.get(i) != null) {
-					punto = (PuntoVentaSie) lista.get(i);
-					selectItems.add(new SelectItem(punto.getIdpuntoventa(),
-							punto.getDescripcion()));
-				} else {
-					break;
-				}
-			}
-			log.info("finalizacion del metodo 'getSelectItems' de Puntos de Venta");
-		} catch (Exception e) {
-			e.printStackTrace();
-			mensaje = e.getMessage();
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-			log.error(e.getMessage());
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
-		return selectItems;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
-	 * #consultar()
-	 */
-	@Override
-	public String consultar() throws Exception {
-
-		List<KardexSie> lista = new ArrayList<KardexSie>();
-		for (KardexSie c : getKardexmodel()) {
-			lista.add(c);
-		}
-		setListadoKardex(lista);
-		return getViewList();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
-	 * #getViewList()
-	 */
-	@Override
-	public String getViewList() {
-
-		return "mantenimientoKardex";
-	}
-
-	/**
-	 * @param selectItems
-	 *            the selectItems to set
-	 */
-	public void setSelectItems(List<SelectItem> selectItems) {
-		this.selectItems = selectItems;
-	}
-
+	 
 	/**
 	 * @return the objKardexSie
 	 */
