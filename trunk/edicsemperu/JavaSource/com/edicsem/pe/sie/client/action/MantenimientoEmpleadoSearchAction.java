@@ -121,7 +121,9 @@ public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstract
 				log.info("Entering my method 'getListaCargoEmpleado()'");
 			}
 			log.info("-----   +++ ");
-			lista = objCargoEmpleadoService.listarCargoEmpleado();
+			//igual no lleva parametros ha no ser de que llenes este combo dependiendo de otro.
+			//corregir eso !.
+			lista = objCargoEmpleadoService.listarCargoEmpleado("");
 
 			for (int i = 0; i < lista.size(); i++) {
 				CargoEmpleadoSie c = new CargoEmpleadoSie();

@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	
+	<h:form id="form">
+
+    <p:panel id="panel" header="INICIAR SESION">
+
+        <p:messages id="msgs"/>
+
+        <h:panelGrid columns="3">
+            <h:outputLabel for="usuario" value="usuario: *" />
+            <p:inputText id="usuario" value="#{loginBean.usuario}" required="true" label="usuario">
+                <f:validateLength minimum="2" />
+            </p:inputText>
+            <p:message for="usuario" display="icon"/>
+
+            <h:outputLabel for="contrasena" value="contrasena: *" />
+            <p:inputText id="contrasena" value="#{loginBean.contrasena}" label="contrasena" required="true">
+                <f:validateLength minim="2" />
+                <p:ajax update="msgcontrasenya" event="keyup" />
+            </p:inputText>
+            <p:message for="contrasena" id="msgcontrasenya" display="icon"/>
+
+        </h:panelGrid>
+
+        <p:commandButton id="btn" value="Save" update="panel" actionListener="#{loginBean.verificarLogin}"/>
+    </p:panel>
+
+</h:form>
+	
+</ui:composition>
