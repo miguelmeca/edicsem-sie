@@ -1,13 +1,21 @@
 package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
-
-import java.sql.Timestamp;
-import java.util.Set;
 
 
 /**
@@ -22,6 +30,7 @@ public class CargoEmpleadoSie  extends BaseMantenimientoForm implements Serializ
 	@Id
 	@SequenceGenerator(name="TB_CARGO_EMPLEADO_IDCARGOEMPLEADO_GENERATOR", sequenceName="SIE.TB_CARGO_EMPLEADO_IDCARGOEMPLEADO_SEQ", initialValue=1, allocationSize =1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_CARGO_EMPLEADO_IDCARGOEMPLEADO_GENERATOR")
+	
 	private Integer idcargoempleado;
 
 	private String descipcion;
@@ -57,7 +66,7 @@ public class CargoEmpleadoSie  extends BaseMantenimientoForm implements Serializ
 	public void setIdcargoempleado(Integer idcargoempleado) {
 		this.idcargoempleado = idcargoempleado;
 	}
-
+	
 	public String getDescipcion() {
 		return this.descipcion;
 	}
