@@ -45,7 +45,10 @@ public class EmpleadoSie  extends BaseMantenimientoForm implements Serializable 
 	private String usuariocreacion;
 
 	private String usuariomodifica;
-
+	
+	@Transient
+	private String nombresCompletos;
+	
 	//bi-directional many-to-one association to BeneficiosDescuentoSie
 	@OneToMany(mappedBy="tbEmpleado")
 	private Set<BeneficiosDescuentoSie> tbBeneficiosDescuentos;
@@ -303,6 +306,21 @@ public class EmpleadoSie  extends BaseMantenimientoForm implements Serializable 
 
 	public void setTbHorariosPvs3(Set<HorariosPvSie> tbHorariosPvs3) {
 		this.tbHorariosPvs3 = tbHorariosPvs3;
+	}
+
+	/**
+	 * @return the nombresCompletos
+	 */
+	public String getNombresCompletos() {
+		nombresCompletos =nombreemp + " " + apepatemp + " " +apematemp; 
+		return nombresCompletos;
+	}
+
+	/**
+	 * @param nombresCompletos the nombresCompletos to set
+	 */
+	public void setNombresCompletos(String nombresCompletos) {
+		this.nombresCompletos = nombresCompletos;
 	}
 	
 }
