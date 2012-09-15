@@ -20,6 +20,7 @@ import com.edicsem.pe.sie.service.facade.AlmacenService;
 import com.edicsem.pe.sie.service.facade.KardexService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.service.facade.TipoProductoService; 
+import com.edicsem.pe.sie.service.facade.impl.TipoProductoServiceImpl;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
@@ -42,7 +43,7 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	@EJB
 	private TipoProductoService objTipoProductoService;
 	@EJB
-	private ProductoService objProductoService;
+	private ProductoService  objProductoService;
 	@EJB
 	private AlmacenService objAlmacenService;
 	@EJB

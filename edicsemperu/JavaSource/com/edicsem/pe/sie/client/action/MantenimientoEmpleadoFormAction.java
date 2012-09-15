@@ -121,8 +121,10 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 				log.info("Entering my method 'getListaCargoEmpleado()'");
 			}
 			log.info("-----   +++ ");
-			lista = objCargoEmpleadoService.listarCargoEmpleado();
-
+			//un listado no lleva parametros, ya que el primefaces tiene busqueda en memoria
+			String params = "";
+			lista = objCargoEmpleadoService.listarCargoEmpleado(params);
+			/**TODO* */
 			for (int i = 0; i < lista.size(); i++) {
 				CargoEmpleadoSie c = new CargoEmpleadoSie();
 				if (lista.get(i) != null) {

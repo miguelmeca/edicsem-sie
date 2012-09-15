@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all"> Mantenimiento Cargo de Empleado</h1>
+		<h:form id="formManteProdList" prependId="false">
+		<p:growl id="message" showDetail="true" />
+		
+			<p:dataTable value="#{mantenimientoCargoEmpleadoSearchAction.cargoEmpleadomodel}"  var="m"
+					id="listaPersonas" paginator="true" rows="6"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" widgetVar="table"
+					emptyMessage="No se encontro registros">
+					<f:facet name="header">  
+          
+        </f:facet>
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="Buscar Cargo de Empleado:" />
+							<p:inputText id="globalFilter" onkeyup="table.filter()"
+								style="width:150px; align=Left; " />
+						</p:outputPanel>
+					</f:facet>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Codigo" />
+						</f:facet>
+						<h:outputText value="#{m.idcargoempleado}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Descripción de Cargo" />
+						</f:facet>
+						<h:outputText value="#{m.descipcion}" />
+					</p:column>
+					
+					 
+				
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Modificar" />
+						</f:facet>
+						<p:commandButton update=":formManteProdList:display"
+							oncomplete="carDialog.show()" image="ui-icon ui-icon-pencil"
+							title="Editar los Datos">
+							<f:setPropertyActionListener value="#{p}"
+								target="#{mantenimientoProductoAction.selectedProducto}" />
+							<f:setPropertyActionListener value="#{true}"
+								target="#{mantenimientoProductoAction.editMode}" />
+						</p:commandButton>
+					</p:column>
+					<f:facet name="footer">
+						<div align="left">
+							<h:commandLink value="Nuevo" action="NEWCARGOEMPLEADO"
+								actionListener="#{mantenimientoCargoEmpleadoSearchAction.NuevoCE}" />
+						</div>
+					</f:facet>
+				</p:dataTable>
+				<p:dialog header="Detalle Producto" widgetVar="carDialog"
+					id="carDlg"   showEffect="fade"
+					hideEffect="explode" 
+					 modal="true" width="450" position="center">
+					<h:panelGrid id="display" columns="2" cellpadding="2"
+						style="margin:0 auto;">
+
+						<h:outputText value="Codigo Producto" id="codProd" />
+						<h:panelGroup>
+							<h:outputText value="#{mantenimientoProductoAction.selectedProducto.codproducto}"
+								style="font-weight:bold" rendered="#{!mantenimientoProductoAction.editMode}" />
+
+						</h:panelGroup>
+
+						<h:outputText value="Descripcion" id="descProd" />
+						<h:panelGroup>
+							<h:outputText value="#{mantenimientoProductoAction.selectedProducto.descripcionproducto}"
+								style="font-weight:bold" rendered="#{!mantenimientoProductoAction.editMode}" />
+						</h:panelGroup>
+
+						<h:outputText value="Precio" id="precioProd" />
+						<h:panelGroup>
+							<h:outputText value="#{mantenimientoProductoAction.selectedProducto.precioventa}"
+								style="font-weight:bold" rendered="#{!mantenimientoProductoAction.editMode}" />
+						</h:panelGroup>
+ 
+				</h:panelGrid>
+				</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>
