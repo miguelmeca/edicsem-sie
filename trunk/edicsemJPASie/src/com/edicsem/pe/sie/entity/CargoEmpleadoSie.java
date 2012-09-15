@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,10 +31,9 @@ public class CargoEmpleadoSie  extends BaseMantenimientoForm implements Serializ
 	@Id
 	@SequenceGenerator(name="TB_CARGO_EMPLEADO_IDCARGOEMPLEADO_GENERATOR", sequenceName="SIE.TB_CARGO_EMPLEADO_IDCARGOEMPLEADO_SEQ", initialValue=1, allocationSize =1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_CARGO_EMPLEADO_IDCARGOEMPLEADO_GENERATOR")
-	
 	private Integer idcargoempleado;
-
-	private String descipcion;
+	@Column(name="descipcion")
+	private String descripcion;
 
 	private Timestamp fechacreacion;
 
@@ -66,13 +66,13 @@ public class CargoEmpleadoSie  extends BaseMantenimientoForm implements Serializ
 	public void setIdcargoempleado(Integer idcargoempleado) {
 		this.idcargoempleado = idcargoempleado;
 	}
-	
-	public String getDescipcion() {
-		return this.descipcion;
+
+	public String getDescripcion() {
+		return descripcion;
 	}
 
-	public void setDescipcion(String descipcion) {
-		this.descipcion = descipcion;
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 	public Timestamp getFechacreacion() {
