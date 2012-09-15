@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="C:/proyecto-sie/jboss-6.1.0.Final/server/default/deployers/resteasy.deployer/commons-logging-1.1.0.jboss.jar"/>
-	<classpathentry kind="lib" path="C:/proyecto-sie/ws_sie/edicsemperu/WebContent/WEB-INF/lib/commons-beanutils.jar"/>
+	<classpathentry kind="lib" path="C:/proyecto-sie/ws-sie/edicsemperu/WebContent/WEB-INF/lib/commons-beanutils.jar"/>
 	<classpathentry kind="lib" path="C:/proyecto-sie/jboss-6.1.0.Final/client/jboss-servlet-api_3.0_spec.jar"/>
-	<classpathentry kind="lib" path="C:/proyecto-sie/ws_sie/edicsemperu/WebContent/WEB-INF/lib/commons-lang.jar"/>
+	<classpathentry kind="lib" path="C:/proyecto-sie/ws-sie/edicsemperu/WebContent/WEB-INF/lib/commons-lang.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre6">
 		<attributes>
