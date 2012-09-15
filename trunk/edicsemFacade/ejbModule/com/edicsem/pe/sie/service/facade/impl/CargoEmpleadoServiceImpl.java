@@ -32,6 +32,7 @@ public class CargoEmpleadoServiceImpl implements CargoEmpleadoService{
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.DemoService#updateDemo(com.edicsem.pe.sie.entity.Usuario)
 	 */
+	
 	public void actualizarCargoEmpleado(CargoEmpleadoSie cargoempleado) {
 		objCargoEmpleadoDao.actualizarCargoEmpleado(cargoempleado);
 	}
@@ -55,7 +56,7 @@ public class CargoEmpleadoServiceImpl implements CargoEmpleadoService{
 	 */
 	public List listarCargoEmpleado(String descripcion) {
 		log.info("En el servicio ");
-		//te falta un parametro
+		
 		return objCargoEmpleadoDao.listarCargoEmpleado(descripcion);
 	}
 

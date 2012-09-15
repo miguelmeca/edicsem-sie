@@ -13,5 +13,6 @@ public interface CargoEmpleadoService {
 	public abstract void actualizarCargoEmpleado (CargoEmpleadoSie cargoempleado);
 	public abstract void eliminarCargoEmpleado (int id);
 	public abstract CargoEmpleadoSie buscarCargoEmpleado (int id);
-	public abstract List listarCargoEmpleado (String descripcion);
+	
+	public abstract List listarCargoEmpleado(String descripcion);
 }
