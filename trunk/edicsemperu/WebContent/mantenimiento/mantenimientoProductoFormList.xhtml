@@ -76,8 +76,7 @@
 					</p:column>
 					<f:facet name="footer">
 						<div align="left">
-							<h:commandLink value="Nuevo" action="NUEVOPRODUCTO"
-								actionListener="#{mantenimientoProductoAction.Nuevo}" />
+							<h:commandLink value="Nuevo" action="#{mantenimientoProductoAction.Nuevo}" />
 						</div>
 					</f:facet>
 				</p:dataTable>
@@ -87,12 +86,10 @@
 					 modal="true" width="450" position="center">
 					<h:panelGrid id="display" columns="2" cellpadding="2"
 						style="margin:0 auto;">
-
 						<h:outputText value="Codigo Producto" id="codProd" />
 						<h:panelGroup>
 							<h:outputText value="#{mantenimientoProductoAction.selectedProducto.codproducto}"
 								style="font-weight:bold" rendered="#{!mantenimientoProductoAction.editMode}" />
-
 						</h:panelGroup>
 
 						<h:outputText value="Descripcion" id="descProd" />
