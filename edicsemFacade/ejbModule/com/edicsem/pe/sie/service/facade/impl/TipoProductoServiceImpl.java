@@ -25,7 +25,7 @@ public class TipoProductoServiceImpl implements TipoProductoService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.TipoProductoService#insertTipoProducto(com.edicsem.pe.sie.entity.TipoProductoSie)
 	 */
-	@Override
+	
 	public void insertTipoProducto(TipoProductoSie producto) {
 		  objTipoProductoDao.insertTipoProducto(producto);
 	}
@@ -33,7 +33,7 @@ public class TipoProductoServiceImpl implements TipoProductoService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.TipoProductoService#findTipoProducto(int)
 	 */
-	@Override
+	
 	public TipoProductoSie findTipoProducto(int idtipoproducto) {
 		return  objTipoProductoDao.findTipoProducto(idtipoproducto);
 	}
