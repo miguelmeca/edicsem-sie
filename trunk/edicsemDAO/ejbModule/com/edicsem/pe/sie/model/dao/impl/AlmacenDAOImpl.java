@@ -30,7 +30,7 @@ public class AlmacenDAOImpl implements AlmacenDAO{
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.AlmacenDAO#insertAlmacen(com.edicsem.pe.sie.entity.PuntoVentaSie)
 	 */
-	@Override
+	
 	public void insertAlmacen(PuntoVentaSie almacen) {
 		try {
 			if (log.isInfoEnabled()) {
@@ -45,7 +45,7 @@ public class AlmacenDAOImpl implements AlmacenDAO{
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.AlmacenDAO#updateAlmacen(com.edicsem.pe.sie.entity.PuntoVentaSie)
 	 */
-	@Override
+	
 	public void updateAlmacen(PuntoVentaSie almacen) {
 		try {
 			if (log.isInfoEnabled()) {
@@ -60,8 +60,8 @@ public class AlmacenDAOImpl implements AlmacenDAO{
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.AlmacenDAO#findAlmacen(java.lang.String)
 	 */
-	@Override
-	public PuntoVentaSie findAlmacen(String id) {
+	
+	public PuntoVentaSie findAlmacen(int id) {
 		PuntoVentaSie almacen= new PuntoVentaSie();
 		try {
 			if (log.isInfoEnabled()) {
@@ -77,7 +77,7 @@ public class AlmacenDAOImpl implements AlmacenDAO{
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.AlmacenDAO#listarAlmacenes()
 	 */
-	@Override
+	
 	public List listarAlmacenes() {
 		List  lista = null;
 		try {
