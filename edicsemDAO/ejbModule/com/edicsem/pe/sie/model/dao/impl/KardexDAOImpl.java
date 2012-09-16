@@ -33,7 +33,6 @@ public class KardexDAOImpl implements KardexDAO {
 	 */
 	public List ConsultaProductos(int idproducto, int idalmacen,
 			String fechaDesde, String fechaHasta) {
-		log.info("ConsultaProductos");
 		List lista = new ArrayList();
 		try {
 			Query q = em.createQuery("select p from KardexSie p where p.tbProducto.idproducto =:x1 and p.tbPuntoVenta.idpuntoventa =:x2 ");
@@ -51,13 +50,17 @@ public class KardexDAOImpl implements KardexDAO {
 	}
 
 
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.KardexDAO#insertEntrada(com.edicsem.pe.sie.entity.ProductoSie)
-	 */
-	@Override
+	
 	public void insertMovimiento(KardexSie kardex) {
-		// TODO Auto-generated method stub
-		
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("insertar Movimiento- kardex"+ kardex.getTipokardex()+" - "+ kardex.getTbPuntoVenta().getAlmacen()+" - "+ 
+			kardex.getCantentrada()+" - "+ kardex.getTbProducto().getDescripcionproducto());
+			}
+			em.persist(kardex);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
  

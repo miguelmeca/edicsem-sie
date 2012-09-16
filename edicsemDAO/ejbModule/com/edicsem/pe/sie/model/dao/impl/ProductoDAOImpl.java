@@ -70,7 +70,7 @@ public class ProductoDAOImpl implements ProductoDAO {
 	 * com.edicsem.pe.sie.model.dao.ProductoDAO#findProducto(java.lang.String)
 	 */
 
-	public ProductoSie findProducto(String id) {
+	public ProductoSie findProducto(int id) {
 
 		ProductoSie producto = new ProductoSie();
 		try {

@@ -43,9 +43,7 @@ public class TipoProductoDAOImpl implements TipoProductoDAO{
 		}
 		return lista;
 	}
-
-
-	@Override
+	
 	public void insertTipoProducto(TipoProductoSie tipoproducto) {
 		 
 		try {
@@ -58,8 +56,6 @@ public class TipoProductoDAOImpl implements TipoProductoDAO{
 		}
 	}
 
-
-	@Override
 	public TipoProductoSie findTipoProducto(int idtipoproducto) {
 		TipoProductoSie tipoproducto= null;
 		try {
