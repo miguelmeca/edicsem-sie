@@ -16,4 +16,6 @@ public class Constants {
 	//Tablas
 	public static final String TB_COBRANZA_OPERADORA_SIE = ESQUEMA_SIE_POSTGRE+"."+"tb_cobranza_operadora";
 	public static final String TB_TIPO_PRODUCTO_SIE = ESQUEMA_SIE_POSTGRE+"."+ "tb_tipo_producto";
+	public static final String ENCRYPTION_SHA_512 = "SHA-512";
+
 }

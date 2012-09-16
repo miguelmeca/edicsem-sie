@@ -18,7 +18,7 @@ import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
  */
 public abstract class BaseMantenimientoAbstractAction  {
 	
-	public static Log log = LogFactory.getLog(BaseMantenimientoAbstractAction.class);
+	private Log log = LogFactory.getLog(BaseMantenimientoAbstractAction.class);
 	public static FacesMessage msg = null;
 	
 	private final String DEFAULT_VIEW_LIST = "";
@@ -40,7 +40,7 @@ public abstract class BaseMantenimientoAbstractAction  {
 	 * @return
 	 * @throws Exception
 	 */
-	public void insertarValidation(Object bean) throws Exception {
+	protected void insertarValidation(Object bean) throws Exception {
 		if (log.isInfoEnabled()) {
 			log.info("Entering 'insertarValidation' method");
 		}
@@ -58,7 +58,7 @@ public abstract class BaseMantenimientoAbstractAction  {
 	 * @return
 	 * @throws Exception
 	 */
-	public void editValidation(Object bean, String id) throws Exception {
+	protected void editValidation(Object bean, String id) throws Exception {
 		if (log.isDebugEnabled()) {
 			log.debug("Entering 'editValidation' method");
 		}
@@ -82,7 +82,7 @@ public abstract class BaseMantenimientoAbstractAction  {
 	 * @return
 	 * @throws Exception
 	 */
-	public void consultarValidation(Object bean, String id) throws Exception {
+	protected void consultarValidation(Object bean, String id) throws Exception {
 		if (log.isDebugEnabled()) {
 			log.debug("Entering 'consultarValidation' method");
 		}
@@ -103,7 +103,7 @@ public abstract class BaseMantenimientoAbstractAction  {
 	 * @return
 	 * @throws Exception
 	 */
-	public void deleteValidation (String id) throws Exception {
+	protected void deleteValidation (String id) throws Exception {
 		if (log.isDebugEnabled()) {
 			log.debug("Entering 'deleteValidation' method");
 		}
@@ -149,10 +149,26 @@ public abstract class BaseMantenimientoAbstractAction  {
 	}
 	
 	public String listar() {
-		if (log.isDebugEnabled()) {
-			log.debug("Entering 'update' method");
+		if (log.isInfoEnabled()) {
+			log.info("Entering 'update' method");
 		}
 		
 		return getViewList();
+	}
+	
+	/**
+	 * Metodo para inicializar los objetos
+	 * **/
+	public void init(){
+		
+	}
+	
+	/**
+	 * Metodo que realiza el seteo Nuevo registro
+	 * **/
+	protected void addNewRecord(){
+		if(log.isInfoEnabled()){
+			log.info("Entering my method 'addNewRecord()'");
+		}
 	}
 }
