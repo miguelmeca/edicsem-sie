@@ -9,7 +9,7 @@ public interface ProductoService {
 
 	public abstract void insertProducto (ProductoSie producto);
 	public abstract void updateProducto(ProductoSie producto);
-	public abstract ProductoSie findProducto (String id);
+	public abstract ProductoSie findProducto (int id);
 	public abstract List  listarProductos();
 	public abstract List  listarProductosXTipo(int tipoProducto);
 }

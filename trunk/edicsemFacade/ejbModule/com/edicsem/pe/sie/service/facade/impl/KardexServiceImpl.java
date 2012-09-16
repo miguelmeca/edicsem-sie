@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless; 
+
+import com.edicsem.pe.sie.entity.KardexSie;
 import com.edicsem.pe.sie.model.dao.KardexDAO;
 import com.edicsem.pe.sie.service.facade.KardexService;
  
@@ -18,5 +20,10 @@ public class KardexServiceImpl implements KardexService {
 			String fechaDesde, String fechaHasta) { 
 		
 		return objKardexDao.ConsultaProductos(idproducto, idalmacen, fechaDesde, fechaHasta); 
+	}
+
+ 
+	public void insertMovimiento(KardexSie kardex) {
+		objKardexDao.insertMovimiento(kardex);
 	}
 }

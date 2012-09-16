@@ -23,7 +23,7 @@ public class AlmacenServiceImpl implements AlmacenService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.AlmacenService#insertAlmacen(com.edicsem.pe.sie.entity.PuntoVentaSie)
 	 */
-	@Override
+	
 	public void insertAlmacen(PuntoVentaSie almacen) {
 		objAlmacenDao.insertAlmacen(almacen);
 	}
@@ -31,7 +31,7 @@ public class AlmacenServiceImpl implements AlmacenService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.AlmacenService#updateAlmacen(com.edicsem.pe.sie.entity.PuntoVentaSie)
 	 */
-	@Override
+	
 	public void updateAlmacen(PuntoVentaSie almacen) {
 		objAlmacenDao.updateAlmacen(almacen);
 	}
@@ -39,8 +39,8 @@ public class AlmacenServiceImpl implements AlmacenService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.AlmacenService#findAlmacen(java.lang.String)
 	 */
-	@Override
-	public PuntoVentaSie findAlmacen(String id) {
+	
+	public PuntoVentaSie findAlmacen(int id) {
 		 
 		return objAlmacenDao.findAlmacen(id); 
 	}
@@ -48,7 +48,7 @@ public class AlmacenServiceImpl implements AlmacenService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.AlmacenService#listarAlmacenes()
 	 */
-	@Override
+	
 	public List listarAlmacenes() {
 		 
 		return objAlmacenDao.listarAlmacenes();
