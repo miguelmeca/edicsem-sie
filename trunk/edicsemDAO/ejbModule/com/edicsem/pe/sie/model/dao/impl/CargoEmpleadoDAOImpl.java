@@ -29,7 +29,7 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 	 * .Usuario)
 	 */
 	public void insertarCargoEmpleado(CargoEmpleadoSie cargoempleado) {
-		log.info("apunto de insertar cargo empleado Empleado"+ cargoempleado.getDescipcion()+
+		log.info("apunto de insertar cargo empleado Empleado"+ cargoempleado.getDescripcion()+
 				" - ");
 		try {
 			em.persist(cargoempleado);
