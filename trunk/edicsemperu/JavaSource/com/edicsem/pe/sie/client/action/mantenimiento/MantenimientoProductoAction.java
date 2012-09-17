@@ -178,28 +178,31 @@ public class MantenimientoProductoAction extends BaseMantenimientoAbstractAction
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()'");
-			}
+			} 
 			
-			TipoProductoSie t = objTipoProductoService.findTipoProducto(TipoProducto);
-			log.info("seteo " + t.getIdtipoproducto() + " " + t.getNombretipoproducto());
+			if(TipoProducto==-1 || TipoProducto==-1){
+				msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, Constants.MESSAGE_ERROR_FATAL_TITULO, "Debe ingresar un tipo de producto válido");
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+				return getViewList();
+			}
+			TipoProductoSie t = objTipoProductoService.findTipoProducto(TipoProducto); 
 			objProductoSie.setTbTipoProducto(t);
-			if (objProductoSie.isNewRecord()) {
-				log.info("insertando..... ");
+			
+			if (objProductoSie.isNewRecord()) { 
 				if(image==null){
 					log.info("imagen nula");
 					InputStream stream = ((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream("/images/bibliaXDefecto.png");
-					log.info("ruta" + stream.toString());
-					objProductoSie.setRutaimagenproducto(stream.toString());
+					log.info("ruta" + "/images/bibliaXDefecto.png");
+					objProductoSie.setRutaimagenproducto("/images/bibliaXDefecto.png");
 				}else{
 				log.info("image no nula");
 				}
 				insertarValidation(objProductoSie);
 				objProductoService.insertProducto(objProductoSie);
-				log.info("insertando..... ");
+				 
 				objProductoSie.setNewRecord(false);
 			} else {
-				log.info("objProductoSie.isNewRecord() : "
-						+ objProductoSie.isNewRecord());
+				log.info("objProductoSie.isNewRecord() : " + objProductoSie.isNewRecord());
 			}
 
 		} catch (Exception e) {
