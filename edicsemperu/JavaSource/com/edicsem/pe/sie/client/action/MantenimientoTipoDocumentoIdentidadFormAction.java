@@ -123,8 +123,8 @@ public class MantenimientoTipoDocumentoIdentidadFormAction extends BaseMantenimi
 		return selectItems;
 	}
 
-	public String insertar() throws Exception {
-		return getViewList();
+	public void insertar() throws Exception {
+		//return getViewList();
 	}
 
 	
