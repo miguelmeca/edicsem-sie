@@ -7,75 +7,85 @@
 	<ui:define name="body">
 		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
 			Productos</h1>
-		<h:form id="formManteProd"  prependId="false"  enctype="multipart/form-data">
+		<h:form id="formManteProd" prependId="false"
+			enctype="multipart/form-data">
 			<p:growl id="message" showDetail="true" />
- 
-				<h:panelGrid columns="3">
-					<h:outputText for="codigo"
-						value="#{message['mantenimiento.producto.codigo']}" />
-					<p:inputText id="codigoProducto"
-						value="#{mantenimientoProductoAction.objProductoSie.codproducto}"
-						size="10" required="true" requiredMessage="#{message['mantenimiento.producto.codigo.validation']}" >
-						  <f:validateLength minimum="1" />
-						  </p:inputText>
-						<p:message for="codigoProducto" />
-					<h:outputText value="#{message['mantenimiento.producto.anio']}" />
-					<h:selectOneListbox id="anio" size="1" required="true"  
-						value="#{mantenimientoProductoAction.objProductoSie.anioproducto}">
-						<f:selectItem itemValue="1" itemLabel="2011" />
-						<f:selectItem itemValue="2" itemLabel="2012" />
-					</h:selectOneListbox>
-					<p:message for="anio" />
-					<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
-					<h:selectOneMenu id="tipoproducto" value="#{mantenimientoProductoAction.tipoProducto}"
-						required="true" requiredMessage="#{message['mantenimiento.producto.tipo.validation']}" >
-						<f:selectItem itemValue="1" itemLabel="Seleccionar tipo" />
-						<f:selectItems value="#{comboAction.tipoitems}" />
-					</h:selectOneMenu>
-					<p:message for="tipoproducto" />
-					<h:outputText value="#{message['mantenimiento.producto.descripcion']}" />
-					<p:inputText id="desc_prod"
-						value="#{mantenimientoProductoAction.objProductoSie.descripcionproducto}"
-						size="10" required="true" requiredMessage="#{message['mantenimiento.producto.descripcion.validation']}">
-						</p:inputText>
-						<p:message for="desc_prod" />
-					<h:outputText value="#{message['mantenimiento.producto.detalle']}" />
-					<p:inputTextarea id="detalle" size="10"
-						value="#{mantenimientoProductoAction.objProductoSie.detalleproducto}"
-						rows="8" cols="50" required="true" requiredMessage="#{message['mantenimiento.producto.detalle.validation']}" />
-						<p:message for="detalle" />
-					<h:outputText value="#{message['mantenimiento.producto.unidad']}" />
-					<p:inputText id="unidadProducto" size="10"
-						value="#{mantenimientoProductoAction.objProductoSie.unidproducto}" required="true"
-						maxlength="10" requiredMessage="#{message['mantenimiento.producto.unidad.validation']}"/>
-						<p:message for="unidadProducto" />
-					<h:outputText
-						value="#{message['mantenimiento.producto.stock.minimo']}" />
-					<p:inputText id="stock_minimo_producto" size="10"
-						value="#{mantenimientoProductoAction.objProductoSie.stkminimoproducto}"
-						required="true" requiredMessage="#{message['mantenimiento.producto.stockmin.validation']}"   />
-							<p:message for="stock_minimo_producto" />
-					<h:outputText
-						value="#{message['mantenimiento.producto.stock.maximo']}" />
-					<p:inputText id="stock_mximo_producto" size="10"
-						value="#{mantenimientoProductoAction.objProductoSie.stkmaximo}"  required="true"
-						 requiredMessage="#{message['mantenimiento.producto.stockmax.validation']}"  
-						maxlength="10" >
-						  <f:validateLength minimum="1" />
-						  </p:inputText>
-						  <p:message for="stock_mximo_producto" />
-					<h:outputText value="#{message['mantenimiento.producto.precio']}" />
-					<p:inputText id="precio_venta" size="10"
-						value="#{mantenimientoProductoAction.objProductoSie.precioventa}"
-						maxlength="10" required="true" requiredMessage="#{message['mantenimiento.producto.stockmax.validation']}"  />
-						<p:message for="precio_venta" />
+
+			<h:panelGrid columns="3">
+				<h:outputText for="codigo"
+					value="#{message['mantenimiento.producto.codigo']}" />
+				<p:inputText id="codigoProducto"
+					value="#{mantenimientoProductoAction.objProductoSie.codproducto}"
+					size="10" required="true"
+					requiredMessage="#{message['mantenimiento.producto.codigo.validation']}">
+					<f:validateLength minimum="1" />
+				</p:inputText>
+				<p:message for="codigoProducto" />
+				<h:outputText value="#{message['mantenimiento.producto.anio']}" />
+				<h:selectOneListbox id="anio" size="1" required="true"
+					value="#{mantenimientoProductoAction.objProductoSie.anioproducto}">
+					<f:selectItem itemValue="1" itemLabel="2011" />
+					<f:selectItem itemValue="2" itemLabel="2012" />
+				</h:selectOneListbox>
+				<p:message for="anio" />
+				<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
+				<p:selectOneMenu id="tipoproducto"
+					value="#{mantenimientoProductoAction.tipoProducto}" required="true"
+					requiredMessage="#{message['mantenimiento.producto.tipo.validation']}">
+					<f:selectItem itemValue="1" itemLabel="Seleccionar tipo" />
+					<f:selectItems value="#{comboAction.tipoitems}" />
+				</p:selectOneMenu>  
+				<p:message for="tipoproducto" />
+				<h:outputText
+					value="#{message['mantenimiento.producto.descripcion']}" />
+				<p:inputText id="desc_prod"
+					value="#{mantenimientoProductoAction.objProductoSie.descripcionproducto}"
+					size="10" required="true"
+					requiredMessage="#{message['mantenimiento.producto.descripcion.validation']}">
+				</p:inputText>
+				<p:message for="desc_prod" />
+				<h:outputText value="#{message['mantenimiento.producto.detalle']}" />
+				<p:inputTextarea id="detalle" size="10"
+					value="#{mantenimientoProductoAction.objProductoSie.detalleproducto}"
+					rows="8" cols="50" required="true"
+					requiredMessage="#{message['mantenimiento.producto.detalle.validation']}" />
+				<p:message for="detalle" />
+				<h:outputText value="#{message['mantenimiento.producto.unidad']}" />
+				<p:inputText id="unidadProducto" size="10"
+					value="#{mantenimientoProductoAction.objProductoSie.unidproducto}"
+					required="true" maxlength="10"
+					requiredMessage="#{message['mantenimiento.producto.unidad.validation']}" />
+				<p:message for="unidadProducto" />
+				<h:outputText
+					value="#{message['mantenimiento.producto.stock.minimo']}" />
+				<p:inputText id="stock_minimo_producto" size="10"
+					value="#{mantenimientoProductoAction.objProductoSie.stkminimoproducto}"
+					required="true"
+					requiredMessage="#{message['mantenimiento.producto.stockmin.validation']}" />
+				<p:message for="stock_minimo_producto" />
+				<h:outputText
+					value="#{message['mantenimiento.producto.stock.maximo']}" />
+				<p:inputText id="stock_mximo_producto" size="10"
+					value="#{mantenimientoProductoAction.objProductoSie.stkmaximo}"
+					required="true"
+					requiredMessage="#{message['mantenimiento.producto.stockmax.validation']}"
+					maxlength="10">
+					<f:validateLength minimum="1" />
+				</p:inputText>
+				<p:message for="stock_mximo_producto" />
+				<h:outputText value="#{message['mantenimiento.producto.precio']}" />
+				<p:inputText id="precio_venta" size="10"
+					value="#{mantenimientoProductoAction.objProductoSie.precioventa}"
+					maxlength="10" required="true"
+					requiredMessage="#{message['mantenimiento.producto.stockmax.validation']}" />
+				<p:message for="precio_venta" />
 				 
   		  <p:fileUpload   fileUploadListener="#{mantenimientoProductoAction.cargarImagenInsertar}"
       label="Cargar Imagen"
            allowTypes="/(\.|\/)(gif|jpe?g|png)$/" description="Images" 
            update="message,formManteProd:imgFotoInserta " multiple="false" customUI="true" required="true"/>
            <p:graphicImage id="imgFotoInserta"  value="#{mantenimientoProductoAction.image}" cache="false"
-             /> 
+            /> 
              
 		<f:facet name="footer"> 
                 <p:outputPanel rendered="true" layout="block" style="text-align:center">

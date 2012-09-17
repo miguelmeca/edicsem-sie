@@ -5,36 +5,37 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
-		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
-			Kardex</h1>
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Kardex</h1>
 		<h:form  id="frmKardex" >
 			 
 			<p:panel header="#{message['panel.seleccion.producto']}">
 				<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
-				<h:selectOneListbox value="#{kardexSieAction.tipoProducto}"
-					onchange="submit()" required="true"  size="1" >
+				<p:selectOneMenu value="#{comboAction.tipoProducto}"
+					 required="true">
 					<f:selectItem itemValue="-1" itemLabel="Seleccionar tipo" />
-					<f:selectItems value="#{comboAction.tipoitems}" />
-				</h:selectOneListbox>
+					<f:selectItems value="#{comboAction.tipoitems}"  itemValue="-1" />
+					<p:ajax update="product"  listener="#{comboAction.cambiar}"/>
+				</p:selectOneMenu>
+				
 				<h:outputText value="#{message['mantenimiento.producto']}" />
-				<h:selectOneListbox size="1" value="#{kardexSieAction.idproducto}" >
+				<p:selectOneMenu id="product"  value="#{kardexSieAction.idproducto}" >
 					<f:selectItem itemLabel="Seleccione Producto" itemValue="-1" />
-					<f:selectItems value="#{kardexSieAction.productositems}" />
-				</h:selectOneListbox>
+					<f:selectItems value="#{comboAction.productositems}" />
+				</p:selectOneMenu>
+				 
 				<h:outputText value="#{message['mantenimiento.kardex.almacen']}" />
-				<h:selectOneListbox size="1" value="#{kardexSieAction.idalmacen}" >
+				<p:selectOneMenu  size="1" value="#{kardexSieAction.idalmacen}" >
 					<f:selectItem itemLabel="Seleccione" itemValue="-1" />
 					<f:selectItems value="#{comboAction.almacenItems}" />
-				</h:selectOneListbox>
+				</p:selectOneMenu>
 				<h:outputText value="#{message['kardex.desde']}" />
 				<p:calendar />
 
 				<h:outputText value="#{message['kardex.hasta']}" />
 				<p:calendar />
  
-					<p:commandButton  value="Consultar" action="#{kardexSieAction.consultar}" update=":frmKardex:listakardex" ></p:commandButton> 
-					 
-			 
+				<p:commandButton  value="Consultar" action="#{kardexSieAction.consultar}" update=":frmKardex:listakardex" ></p:commandButton> 
+					  
 				<p:spacer width="40" />
 				<p:dataTable value="#{kardexSieAction.listadoKardex}" var="p"
 					id="listakardex" paginator="true" rows="5"
