@@ -64,7 +64,7 @@ public class MantenimientoCargoEmpleadoFormAction extends BaseMantenimientoAbstr
 		// Colocar valores inicializados
 		selectItems = new ArrayList<SelectItem>();
 		objCargoEmpleadoSie = new CargoEmpleadoSie();
-		objCargoEmpleadoSie.setDescipcion("");
+		objCargoEmpleadoSie.setDescripcion("");
 		nuevo = new CargoEmpleadoSie();
 	}
 	public void Nuevo(ActionEvent e) throws Exception {
@@ -107,7 +107,7 @@ public class MantenimientoCargoEmpleadoFormAction extends BaseMantenimientoAbstr
 				if (lista.get(i) != null) {
 					cargo = (CargoEmpleadoSie) lista.get(i);
 					selectItems.add(new SelectItem(cargo.getIdcargoempleado(),
-							cargo.getDescipcion()));
+							cargo.getDescripcion()));
 			}else {
 				break;
 			}
@@ -125,8 +125,8 @@ public class MantenimientoCargoEmpleadoFormAction extends BaseMantenimientoAbstr
 		return selectItems;
 	}
 
-	public String insertar() throws Exception {
-		return getViewList();
+	public void insertar() throws Exception {
+		//return getViewList();
 	}
 
 	

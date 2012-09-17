@@ -205,7 +205,7 @@ public class MantenimientoCargoEmpleadoSearchAction extends BaseMantenimientoAbs
 
 	public void insertar() throws Exception {
 		try {
-			if (log.isInfoEnabled()) {
+			if (log.isInfoEnabled()){
 				log.info("Entering my method 'insertar()'");
 			}
 				log.info(" ------ "+ idEstadoGeneral);	
