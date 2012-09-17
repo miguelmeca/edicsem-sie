@@ -8,10 +8,14 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.faces.model.DataModel;
+import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+//import org.primefaces.model.StreamedContent;
 
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
@@ -30,16 +34,47 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 @SessionScoped
 public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstractAction {
 
+	private String mensaje;
 	public static Log log = LogFactory.getLog(MantenimientoEmpleadoSearchAction.class);
 	private int cargoEmpleado;
 	private int DomicilioPersona;
 	private int TelefonoPersona;
 	private int tipoDocumento;
-	private String mensaje;
-	private EmpleadoSie objEmpleado;
 	private List<SelectItem> itemsTipoDoc;
 	private List<SelectItem> itemsCargoEmpl;
-	 
+	//private StreamedContent image; 
+	private EmpleadoSie objEmpleado;
+	private DataModel<EmpleadoSie> empleadosmodel;
+	private EmpleadoSie selectedEmpleado;
+	private boolean editMode;
+	private EmpleadoSie nuevo ;
+	
+	public boolean isEditMode() {
+		return editMode;
+	}
+	/**
+	 * @param editMode the editMode to set
+	 */
+	public void setEditMode(boolean editMode) {
+		this.editMode = editMode;
+	}
+	public EmpleadoSie getSelectedEmpleado() {
+		return selectedEmpleado;
+	}
+	public void setSelecteEmpleado(EmpleadoSie selectedEmpleado) {
+		this.selectedEmpleado = selectedEmpleado;
+	}
+	@SuppressWarnings("unchecked")
+	public DataModel<EmpleadoSie> getEmpleadosmodel()  throws Exception {
+		 
+		empleadosmodel = new ListDataModel<EmpleadoSie>(objEmpleadoService.listarEmpleados());
+		 
+		return empleadosmodel;
+	}
+	public void setEmpleadosmodel(DataModel<EmpleadoSie> empleadosmodel) {
+		this.empleadosmodel = empleadosmodel;
+	}
+	
 	@EJB 
 	private TelefonoEmpleadoService objTelefonoEmpleadoService;
 	@EJB 
@@ -59,14 +94,31 @@ public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstract
 
 	public void init() {
 		log.info("init()");
-		objEmpleado = new EmpleadoSie();
+		// Colocar valores inicializados
+		
 		itemsCargoEmpl = new ArrayList<SelectItem>();
 		itemsTipoDoc = new ArrayList<SelectItem>();
+		objEmpleado = new EmpleadoSie();
+		objEmpleado.setNombreemp("");
+		nuevo = new EmpleadoSie();
 		log.info("despues de inicializar  "); 
-		log.info("despues de inicializar 22 ");
+		
+	}
+	
+	public void Nuevo(ActionEvent e) throws Exception {
+
+		setObjEmpleado(null);
 	}
 
-	
+	public EmpleadoSie getNuevo() {
+		return nuevo;
+	}
+	/**
+	 * @param nuevo the nuevo to set
+	 */
+	public void setNuevo(EmpleadoSie nuevo) {
+		this.nuevo = nuevo;
+	}
 	/**
 	 * @return the itemsTipoDoc
 	 */
@@ -121,16 +173,14 @@ public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstract
 				log.info("Entering my method 'getListaCargoEmpleado()'");
 			}
 			log.info("-----   +++ ");
-			//igual no lleva parametros ha no ser de que llenes este combo dependiendo de otro.
-			//corregir eso !.
-			lista = objCargoEmpleadoService.listarCargoEmpleado("");
+			lista = objCargoEmpleadoService.listarCargoEmpleado();
 
 			for (int i = 0; i < lista.size(); i++) {
 				CargoEmpleadoSie c = new CargoEmpleadoSie();
 				if (lista.get(i) != null) {
 					c = (CargoEmpleadoSie) lista.get(i);
 					itemsCargoEmpl.add(new SelectItem(c.getIdcargoempleado(),
-							c.getDescripcion()));
+							c.getDescipcion()));
 				} else {
 					break;
 				}
@@ -195,7 +245,7 @@ public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstract
 	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
 	 * #insertar()
 	 */
-	public void insertar() throws Exception {
+	public String insertar() throws Exception {
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()'");
@@ -204,7 +254,7 @@ public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstract
 			CargoEmpleadoSie c = objCargoEmpleadoService
 					.buscarCargoEmpleado(cargoEmpleado);
 			log.info("seteo " + c.getIdcargoempleado() + " "
-					+ c.getDescripcion());
+					+ c.getDescipcion());
 			objEmpleado.setTbCargoEmpleado(c);
 
 			DomicilioPersonaSie d = objDomicilioEmpleadoService
@@ -245,7 +295,7 @@ public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstract
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		//return getViewList();
+		return getViewList();
 	}
 
 	/*

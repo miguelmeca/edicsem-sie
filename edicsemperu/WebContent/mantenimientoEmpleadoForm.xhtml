@@ -10,78 +10,80 @@
 	<p:panel header="Registrar Empleado"  id="panel">
 		
 			<h:panelGrid columns="3" cellpadding="5">
-					
+			<p:growl/>
 			<p:outputLabel value="#{message['empleado.nombre']}" for="nombre" />
-			<p:inputText id="nombre" value="#{mantenimientoEmpleado.objEmpleado.nombreemp}" required="true" label="Nombre" 
+			<p:inputText id="nombre" value="#{mantenimientoEmpleadoFormAction.objEmpleado.nombreemp}" required="true" label="Nombre" 
 			requiredMessage="#{message['empleado.nombre.validation']}">
 			</p:inputText>
 			<p:message for="nombre" />  
 			
 			<p:outputLabel value="#{message['empleado.apepaterno']}" for="apepaterno" />
-			<p:inputText id="apepaterno" value="#{mantenimientoEmpleado.objEmpleado.apepatemp}" required="true" label="Apellido paterno"
+			<p:inputText id="apepaterno" value="#{mantenimientoEmpleadoFormAction.objEmpleado.apepatemp}" required="true" label="Apellido paterno"
 			requiredMessage="#{message['empleado.apepaterno.validation']}">
 			</p:inputText>
 			<p:message for="apepaterno" /> 
 			
 			<p:outputLabel value="#{message['empleado.apematerno']}" for="apematerno" />
-			<p:inputText id="apematerno" value="#{mantenimientoEmpleado.objEmpleado.apematemp}" required="true" label="Apellido materno"
+			<p:inputText id="apematerno" value="#{mantenimientoEmpleadoFormAction.objEmpleado.apematemp}" required="true" label="Apellido materno"
 			requiredMessage="#{message['empleado.apematerno.validation']}">
 			</p:inputText>
 			<p:message for="apematerno" /> 
 					
 			<p:outputLabel value="#{message['empleado.usuario']}" for="usuario" />
-			<p:inputText id="usuario" value="#{mantenimientoEmpleado.objEmpleado.usuario}" required="true" label="Usuario" 
+			<p:inputText id="usuario" value="#{mantenimientoEmpleadoFormAction.objEmpleado.usuario}" required="true" label="Usuario" 
 			requiredMessage="#{message['empleado.usuario.validation']}">
 			</p:inputText>
             <p:message for="usuario" /> 			
 			
 			<p:outputLabel value="#{message['empleado.contrasenya']}" for="contrasenya" />
-			<p:password id="contrasenya" value="#{mantenimientoEmpleado.objEmpleado.contrasena}" required="true" label="Contrasenya"
+			<p:password id="contrasenya" value="#{mantenimientoEmpleadoFormAction.objEmpleado.contrasena}" required="true" label="Contrasenya"
 			requiredMessage="#{message['empleado.contrasenya.validation']}">
 			</p:password>
 		    <p:message for="contrasenya" /> 	
 			
+            
+            <h:outputLabel for="tipo" value="Tipo de Doc. :" styleClass="textoAzulFuerteGrande" id="tipoL"></h:outputLabel>
+            <h:selectOneMenu id="tipo" value="#{mantenimientoEmpleadoFormAction.codigoTipoDocumento}" styleClass="required" title="El tipo es obligatorio!" >
+            <f:selectItem  itemValue="-1" itemLabel="Seleccione una opción"/>
+            <f:selectItems  value="#{mantenimientoTipoDocumentoIdentidad.selectItems}" />
+            </h:selectOneMenu>
+            <p:message for="tipo" /> 
+
                              
             <p:outputLabel value="#{message['empleado.nrodoc']}" for="nrodoc" />
-			<p:inputText id="nrodoc" value="#{mantenimientoEmpleado.objEmpleado.numdocumento}" required="true" label="Nro del documento"
+			<p:inputText id="nrodoc" value="#{mantenimientoEmpleadoFormAction.objEmpleado.numdocumento}" required="true" label="Nro del documento"
 			requiredMessage="#{message['empleado.nrodoc.validation']}">
             </p:inputText>    
             <p:message for="nrodoc" /> 
         
             <p:outputLabel value="#{message['empleado.tel']}" for="telefono" />
-			<p:inputText id="telefono" value="#{mantenimientoEmpleado.telefonoPersona}" required="true" label="Teléfono"
+			<p:inputText id="telefono" value="#{mantenimientoEmpleadoFormAction.telefonoPersona}" required="true" label="Teléfono"
 			requiredMessage="#{message['empleado.tel.validation']}">
             </p:inputText>
             <p:message for="telefono" /> 
         
             <p:outputLabel value="#{message['empleado.domicilio']}" for="domicilio" />
-			<p:inputText id="domicilio" value="#{mantenimientoEmpleado.domicilioPersona}" required="true" label="Domicilio"
+			<p:inputText id="domicilio" value="#{mantenimientoEmpleadoFormAction.domicilioPersona}" required="true" label="Domicilio"
 			requiredMessage="#{message['empleado.domicilio.validation']}">
         	</p:inputText>
             <p:message for="domicilio" /> 
         
             <p:outputLabel value="#{message['empleado.fechanac']}" for="fechanac" />
-			<p:inputText id="fechanac" value="#{mantenimientoEmpleado.objEmpleado.fechanacimiento}" required="true" label="Fecha de nacimiento"
+			<p:inputText id="fechanac" value="#{mantenimientoEmpleadoFormAction.objEmpleado.fechanacimiento}" required="true" label="Fecha de nacimiento"
 			requiredMessage="#{message['empleado.fechanac.validation']}">
         	</p:inputText>
             <p:message for="fechanac" />            
-              
-	        <h:outputLabel value="Cargo :"  />
-			<h:selectOneListbox size="1" value="#{mantenimientoEmpleadoFormAction.cargoEmpleado}">  
-            <f:selectItem  itemLabel="Seleccione Cargo" itemValue="-1" />  
-            <f:selectItems Value="#{mantenimientoEmpleadoFormAction.itemsCargoEmpl}" />
-            </h:selectOneListbox>  
-            
-            <h:outputLabel value="Cargo :"  />
-			<h:selectOneListbox size="1" value="#{mantenimientoEmpleadoFormAction.tipoDocumento}">  
-            <f:selectItem  itemLabel="Seleccione tipo" itemValue="-1" />  
-            <f:selectItems Value="#{mantenimientoEmpleadoFormAction.itemsTipoDoc}" />
-            </h:selectOneListbox>  
-                  
+              <!-- 
+	        <h:outputLabel for="cargo" value="Cargo :" styleClass="textoAzulFuerteGrande" id="cargoL"></h:outputLabel>
+            <h:selectOneMenu id="cargo" value="#{mantenimientoCargoEmpleado.selectedCargoEmpleado}" styleClass="required" title="El cargo es obligatorio!" >
+            <f:selectItem id="cargo0" itemValue="-1" itemLabel="Seleccione una opción"/>
+            <f:selectItems id="selectItems2" value="#{mantenimientoCargoEmpleado.selectItems}" />
+            </h:selectOneMenu>
+            <p:message for="cargo" /> -->	               
 		
 		</h:panelGrid>
 		
-		<p:commandButton id="btn" value="Guardar" update="panel" action="#{mantenimientoEmpleado.insertar}" ajax="false"/>
+		<p:commandButton id="btn" value="Guardar" update="panel" action="#{mantenimientoEmpleadoFormAction.insertar}" ajax="false"/>
 		
 	</p:panel>
 	            	
