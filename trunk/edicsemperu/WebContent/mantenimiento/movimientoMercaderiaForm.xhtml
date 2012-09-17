@@ -27,29 +27,28 @@
 						value="#{movimientoMercaderia.objKardexSie.cantsalida}" />
 						
 					<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
-					<h:selectOneListbox value="#{kardexSieAction.tipoProducto}"
-						onchange="submit()" required="true" size="1">
+					<p:selectOneMenu value="#{comboAction.tipoProducto}" required="true"  >
 						<f:selectItem itemLabel="Seleccionar tipo" itemValue="-1" />
 						<f:selectItems value="#{comboAction.tipoitems}" />
-					</h:selectOneListbox>
+						  <p:ajax update="produc"  listener="#{comboAction.cambiar}"/>
+					</p:selectOneMenu>
 
 					<h:outputText value="#{message['mantenimiento.producto']}" />
-					<h:selectOneListbox size="1"
+					<p:selectOneMenu  id="produc"
 						value="#{movimientoMercaderia.idproducto}">
 						<f:selectItem itemLabel="Seleccione Producto" itemValue="-1" />
-						<f:selectItems value="#{kardexSieAction.productositems}" />
-					</h:selectOneListbox>
+						<f:selectItems value="#{comboAction.productositems}" />
+					</p:selectOneMenu>
 
 					<h:outputText size="10" value="#{message['numero.documento']}" />
-					<p:inputText id="num" size="10"
-						value="#{movimientoMercaderia.objKardexSie.tipokardex}" />
+					<p:inputText id="num" size="10" value="#{movimientoMercaderia.objKardexSie.tipokardex}" />
 					
 					<h:outputText value="#{message['mantenimiento.kardex.almacen']}" />
-					<h:selectOneListbox size="1"
+					<p:selectOneMenu  size="1"
 						value="#{movimientoMercaderia.idAlmacen}">
 						<f:selectItem itemLabel="Seleccione" itemValue="-1" />
 						<f:selectItems value="#{comboAction.almacenItems}" />
-					</h:selectOneListbox>
+					</p:selectOneMenu>
 					
 				 <p:commandButton id="btn_add" value="Añadir"
 						update=":formMovMerc: message"
@@ -81,7 +80,7 @@
 					</p:column>
 						<p:column>
 						<f:facet name="header">
-							<h:outputText value="Cant. Salida" />
+							<h:outputText value="Tipo Kardex" />
 						</f:facet>
 						<h:outputText value="#{d.tipokardex}" />
 					</p:column>
