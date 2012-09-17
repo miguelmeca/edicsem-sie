@@ -199,14 +199,11 @@ public class MantenimientoCargoEmpleadoSearchAction extends BaseMantenimientoAbs
 		nuevo = new CargoEmpleadoSie();
 	}
 	
-	public void NuevoCE(ActionEvent e) throws Exception {
-
 	
-		 
-	}
+	
 	
 
-	public String insertar() throws Exception {
+	public void insertar() throws Exception {
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()'");
@@ -222,7 +219,7 @@ public class MantenimientoCargoEmpleadoSearchAction extends BaseMantenimientoAbs
 				objCargoEmpleadoSie.setNewRecord(false);
 			} else {
 				log.info("objCargoEmpleadoSie.isNewRecord() : "
-						+ objCargoEmpleadoSie.isNewRecord());				
+						+ objCargoEmpleadoSie.isNewRecord());
 			}
 
 		} catch (Exception e) {
@@ -233,7 +230,7 @@ public class MantenimientoCargoEmpleadoSearchAction extends BaseMantenimientoAbs
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		return getViewList();
+		//return getViewList();
 	}
 
 	public void cargarImG(FileUploadEvent event) {
