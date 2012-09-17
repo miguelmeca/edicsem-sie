@@ -37,7 +37,7 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 			if (log.isInfoEnabled()) {
 				log.info("apunto de insertar cargo empleado Empleado");
 			}
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -50,6 +50,7 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 				log.info("modificar Cargo empleado");
 			}
 			em.merge(cargoempleado);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -105,7 +106,7 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 	 * q.getResultList(); log.info(" tamaño " + lista.size()); } catch
 	 * (Exception e) { e.printStackTrace(); } return lista; } }
 	 */
-	public List listarCargoEmpleado(String descripcion) {
+	public List listarCargoEmpleado() {
 		log.info("***************** listar cargoEmpleado");
 		List lista = null;
 		try {
