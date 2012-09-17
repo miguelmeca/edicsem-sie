@@ -1,33 +1,22 @@
 package com.edicsem.pe.sie.client.action;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.List; 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
-import javax.faces.model.SelectItem;  
+import javax.faces.model.ListDataModel;   
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;  
-import com.edicsem.pe.sie.entity.KardexSie;
-import com.edicsem.pe.sie.entity.ProductoSie;
-import com.edicsem.pe.sie.entity.PuntoVentaSie;
-import com.edicsem.pe.sie.entity.TipoProductoSie;
-import com.edicsem.pe.sie.service.facade.AlmacenService;
-import com.edicsem.pe.sie.service.facade.KardexService;
-import com.edicsem.pe.sie.service.facade.ProductoService;
-import com.edicsem.pe.sie.service.facade.TipoProductoService; 
-import com.edicsem.pe.sie.service.facade.impl.TipoProductoServiceImpl;
-import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.entity.KardexSie; 
+import com.edicsem.pe.sie.service.facade.KardexService; 
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 @ManagedBean( name="kardexSieAction" )
 @SessionScoped
 public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	public static Log log = LogFactory.getLog(KardexSieAction.class);
- 
-	private ArrayList<SelectItem> productositems;
+  
 	private DataModel<KardexSie> kardexmodel;
 	private KardexSie objKardexSie;
 	private String mensaje;
@@ -35,10 +24,6 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	private int idproducto, idalmacen;
 	private Date fechaDesde, fechaHasta;
 	private List<KardexSie> listadoKardex;
-	private Map<String,String> tipoProd ;
-  
-	@EJB
-	private ProductoService objProductoService;
  
 	@EJB
 	private KardexService objKardexService;
@@ -51,27 +36,8 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	public void init() {
 		log.info("init()");
 		objKardexSie = new KardexSie();
-		productositems= new ArrayList<SelectItem>();
+		 
 	}
-	/**
-	 * @return the productositems
-	 */
-	public ArrayList<SelectItem> getProductositems() throws Exception {
-		log.info("tipo --> " + getTipoProducto());
-		productositems = new ArrayList<SelectItem>();
-	 
-			List listaP = new ArrayList<ProductoSie>();
-			listaP = (List<ProductoSie>) objProductoService
-					.listarProductosXTipo(tipoProducto);
-			log.info("tamaño productos X tipo --> " + listaP.size());
-			for (int i = 0; i < listaP.size(); i++) {
-				ProductoSie producto = new ProductoSie();
-				producto = (ProductoSie) listaP.get(i);
-				productositems.add(new SelectItem(producto.getIdproducto(),
-						producto.getDescripcionproducto()));
-			}
-		return productositems;
-	} 
 	
 	/**
 	 * @return the kardexmodel
@@ -203,15 +169,6 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	 */
 	public void setListadoKardex(List<KardexSie> listadoKardex) {
 		this.listadoKardex = listadoKardex;
-	}
-	 
-	
-	/**
-	 * @param productositems
-	 *            the productositems to set
-	 */
-	public void setProductositems(ArrayList<SelectItem> productositems) {
-		this.productositems = productositems;
 	}
 
 	/**
