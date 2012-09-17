@@ -101,7 +101,7 @@ public class MantenimientoCargoEmpleadoSearchAction extends BaseMantenimientoAbs
 	public DataModel<CargoEmpleadoSie> getCargoEmpleadomodel() throws Exception {
 		
 
-		CargoEmpleadomodel = new ListDataModel<CargoEmpleadoSie>(objCargoEmpleadoService.listarCargoEmpleado(descripcion));
+		CargoEmpleadomodel = new ListDataModel<CargoEmpleadoSie>(objCargoEmpleadoService.listarCargoEmpleado());
 		return CargoEmpleadomodel;
 	}
 
@@ -206,7 +206,7 @@ public class MantenimientoCargoEmpleadoSearchAction extends BaseMantenimientoAbs
 	}
 	
 
-	public void insertar() throws Exception {
+	public String insertar() throws Exception {
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()'");
@@ -222,7 +222,7 @@ public class MantenimientoCargoEmpleadoSearchAction extends BaseMantenimientoAbs
 				objCargoEmpleadoSie.setNewRecord(false);
 			} else {
 				log.info("objCargoEmpleadoSie.isNewRecord() : "
-						+ objCargoEmpleadoSie.isNewRecord());
+						+ objCargoEmpleadoSie.isNewRecord());				
 			}
 
 		} catch (Exception e) {
@@ -233,7 +233,7 @@ public class MantenimientoCargoEmpleadoSearchAction extends BaseMantenimientoAbs
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		//return getViewList();
+		return getViewList();
 	}
 
 	public void cargarImG(FileUploadEvent event) {
