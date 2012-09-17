@@ -21,16 +21,9 @@ public abstract class BaseMantenimientoAbstractAction  {
 	private Log log = LogFactory.getLog(BaseMantenimientoAbstractAction.class);
 	public static FacesMessage msg = null;
 	
-	private final String DEFAULT_VIEW_LIST = "";
-	private final String DEFAULT_VIEW_MANT = "";
-	
-	
 	public String getViewList(){
-		return DEFAULT_VIEW_LIST;
-	}
-	public String getViewMant(){
-		return DEFAULT_VIEW_MANT;
-	}
+        return "";
+}
 	
 	/**
 	 * @param mapping
@@ -116,43 +109,34 @@ public abstract class BaseMantenimientoAbstractAction  {
 	}
 	
 	
-	public String insertar()throws Exception{
+	public void insertar()throws Exception{
 		if (log.isDebugEnabled()) {
 			log.debug("Entering 'insertar' method");
 		}
-		
-		return getViewList();
 	}
 	
-	public String update()throws Exception{
+	public void update()throws Exception{
 		if (log.isDebugEnabled()) {
 			log.debug("Entering 'update' method");
 		}
-		
-		return getViewList();
 	}
 	
-	public String delete()throws Exception{
+	public void delete()throws Exception{
 		if (log.isDebugEnabled()) {
 			log.debug("Entering 'update' method");
 		}
-		
-		return getViewList();
 	}
 	
-	public String consultar()throws Exception{
+	public void consultar()throws Exception{
 		if (log.isDebugEnabled()) {
 			log.debug("Entering 'update' method");
 		}
-		
-		return getViewMant();
 	}
 	
 	public String listar() {
 		if (log.isInfoEnabled()) {
 			log.info("Entering 'update' method");
 		}
-		
 		return getViewList();
 	}
 	
