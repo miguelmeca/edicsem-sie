@@ -42,6 +42,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	private EmpleadoSie objEmpleado;
 	private List<SelectItem> itemsTipoDoc;
 	private int codigoTipoDocumento;
+	private int codigoCargoEmpleado;
 	
 	@EJB 
 	private TelefonoEmpleadoService objTelefonoEmpleadoService;
@@ -160,7 +161,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
 	 * #insertar()
 	 */
-	public String insertar() throws Exception {
+	public void insertar() throws Exception {
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()'");
@@ -172,10 +173,14 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 			log.info("aaaa"+ codigoTipoDocumento);
 			
 			
-			if (codigoTipoDocumento !=-1) {
+			if (codigoTipoDocumento !=-1 || codigoCargoEmpleado!=-1) {
 				TipoDocumentoIdentidadSie tipo = objTipoDocumentoService.buscarTipoDocumento(TipoDocumento);
 				log.info("seteo " + tipo.getIdtipodocumentoidentidad() + " "+ tipo.getDescripcion());
 				objEmpleado.setTbTipoDocumentoIdentidad(tipo);
+				
+				CargoEmpleadoSie c = objCargoEmpleadoService.buscarCargoEmpleado(CargoEmpleado);
+				log.info("seteo " + c.getIdcargoempleado() + " "+ c.getDescripcion());
+				objEmpleado.setTbCargoEmpleado(c);
 				
 				DomicilioPersonaSie d = objDomicilioEmpleadoService.buscarDomicilioEmpleado(DomicilioPersona);
 				log.info("seteo " + d.getIddomiciliopersona() + " "+ d.getDomicilio());
@@ -185,9 +190,9 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 				log.info("seteo " + t.getIdtelefonopersona() + " "+ t.getTelefono());
 				objEmpleado.setTbTelefonoPersona(t);
 
-				TipoDocumentoIdentidadSie td = objTipoDocumentoService.buscarTipoDocumento(TipoDocumento);
+				/*TipoDocumentoIdentidadSie td = objTipoDocumentoService.buscarTipoDocumento(TipoDocumento);
 				log.info("seteo " + td.getIdtipodocumentoidentidad() + " "+ td.getDescripcion());
-				objEmpleado.setTbTipoDocumentoIdentidad(td);
+				objEmpleado.setTbTipoDocumentoIdentidad(td);*/
 				
 				if (objEmpleado.isNewRecord()) {
 					// objEmpleado.s
@@ -203,7 +208,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 			}else{
 				log.info("no se encontró tipoDocumento");
 				//FaceMessage.FaceMessageError(Constants.TITULO_MESSAGE_ERROR_COMBO, Constants.CODIGO_TIPO_DOCUMENTO_MESSAGE);
-				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, Constants.TITULO_MESSAGE_ERROR_COMBO, Constants.CODIGO_TIPO_DOCUMENTO_MESSAGE);
+				//FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, Constants.TITULO_MESSAGE_ERROR_COMBO, Constants.CODIGO_TIPO_DOCUMENTO_MESSAGE);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 			}
 			
@@ -216,7 +221,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		return getViewList();
+		//return getViewList();
 	}
 
 	/*
@@ -248,6 +253,17 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	/**
 	 * @return the codigoTipoDocumento
 	 */
+	public int getCodigoCargoEmpleado() {
+		return codigoCargoEmpleado;
+	}
+
+	/**
+	 * @param codigoTipoDocumento the codigoTipoDocumento to set
+	 */
+	public void setCodigoCargoEmpleado(int codigoCargoEmpleado) {
+		this.codigoCargoEmpleado = codigoCargoEmpleado;
+	}
+	
 	public int getCodigoTipoDocumento() {
 		return codigoTipoDocumento;
 	}
@@ -258,5 +274,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	public void setCodigoTipoDocumento(int codigoTipoDocumento) {
 		this.codigoTipoDocumento = codigoTipoDocumento;
 	}
+	
+	
 	
 }

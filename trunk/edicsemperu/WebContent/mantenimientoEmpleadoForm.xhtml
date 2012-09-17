@@ -35,7 +35,7 @@
 			</p:inputText>
             <p:message for="usuario" /> 			
 			
-			<p:outputLabel value="#{message['empleado.contrasenya']}" for="contrasenya" />
+			<p:outputLabel value="#{message['empleado.contrasena']}" for="contrasenya" />
 			<p:password id="contrasenya" value="#{mantenimientoEmpleadoFormAction.objEmpleado.contrasena}" required="true" label="Contrasenya"
 			requiredMessage="#{message['empleado.contrasenya.validation']}">
 			</p:password>
@@ -73,13 +73,13 @@
 			requiredMessage="#{message['empleado.fechanac.validation']}">
         	</p:inputText>
             <p:message for="fechanac" />            
-              <!-- 
+             
 	        <h:outputLabel for="cargo" value="Cargo :" styleClass="textoAzulFuerteGrande" id="cargoL"></h:outputLabel>
-            <h:selectOneMenu id="cargo" value="#{mantenimientoCargoEmpleado.selectedCargoEmpleado}" styleClass="required" title="El cargo es obligatorio!" >
-            <f:selectItem id="cargo0" itemValue="-1" itemLabel="Seleccione una opción"/>
-            <f:selectItems id="selectItems2" value="#{mantenimientoCargoEmpleado.selectItems}" />
+            <h:selectOneMenu id="cargo" value="#{mantenimientoEmpleadoFormAction.codigoCargoEmpleado}" styleClass="required" title="El cargo es obligatorio!" >
+            <f:selectItem  itemValue="-1" itemLabel="Seleccione una opción"/>
+            <f:selectItems value="#{mantenimientoCargoEmpleado.selectItems}" />
             </h:selectOneMenu>
-            <p:message for="cargo" /> -->	               
+            <p:message for="cargo" /> 	               
 		
 		</h:panelGrid>
 		
