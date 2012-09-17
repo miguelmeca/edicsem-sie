@@ -50,7 +50,7 @@ public class MantenimientoDemo extends BaseMantenimientoAbstractAction{
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
 	 */
-	public String insertar() throws Exception {
+	public void insertar() throws Exception {
 	 try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()'");
@@ -77,7 +77,7 @@ public class MantenimientoDemo extends BaseMantenimientoAbstractAction{
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		} 
-		return getViewList();
+		//return getViewList();
 	}
 	
 	/* (non-Javadoc)

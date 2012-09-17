@@ -107,14 +107,14 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
 	 * #consultar()
 	 */
-	public String consultar() throws Exception {
+	public void consultar() throws Exception {
 
 		List<KardexSie> lista = new ArrayList<KardexSie>();
 		for (KardexSie c : getKardexmodel()) {
 			lista.add(c);
 		}
 		setListadoKardex(lista);
-		return getViewList();
+		//return getViewList();
 	}
 
 	/*

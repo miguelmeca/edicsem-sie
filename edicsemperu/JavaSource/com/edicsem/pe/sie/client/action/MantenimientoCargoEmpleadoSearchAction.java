@@ -195,7 +195,7 @@ public class MantenimientoCargoEmpleadoSearchAction extends BaseMantenimientoAbs
 		// Colocar valores inicializados
 		estadosItems = new ArrayList<SelectItem>();
 		objCargoEmpleadoSie = new CargoEmpleadoSie();
-		objCargoEmpleadoSie.setDescipcion("");
+		objCargoEmpleadoSie.setDescripcion("");
 		nuevo = new CargoEmpleadoSie();
 	}
 	
@@ -206,7 +206,7 @@ public class MantenimientoCargoEmpleadoSearchAction extends BaseMantenimientoAbs
 	}
 	
 
-	public String insertar() throws Exception {
+	public void insertar() throws Exception {
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()'");
@@ -233,7 +233,7 @@ public class MantenimientoCargoEmpleadoSearchAction extends BaseMantenimientoAbs
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		return getViewList();
+		//return getViewList();
 	}
 
 	public void cargarImG(FileUploadEvent event) {

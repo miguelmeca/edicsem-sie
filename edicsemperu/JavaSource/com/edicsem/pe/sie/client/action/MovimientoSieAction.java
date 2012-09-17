@@ -12,6 +12,9 @@ import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.SelectItem;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.edicsem.pe.sie.entity.KardexSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.TipoKardexProductoSie;
@@ -33,7 +36,9 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 	private KardexSie objKardexSie = new KardexSie();
 	private List<SelectItem> tipoKardexItems;
 	private List<KardexSie> data;
-
+	
+	private Log log = LogFactory.getLog(MovimientoSieAction.class);
+	
 	@EJB
 	private TipoKardexService objTipoKardexService;
 
@@ -223,7 +228,7 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 	 * #insertar()
 	 */
 
-	public String insertar() throws Exception {
+	public void insertar() throws Exception {
 		/* Insertando kardex total */
 		try {
 			if (log.isInfoEnabled()) {
@@ -242,7 +247,7 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		return getViewList();
+		//return getViewList();
 	}
 
 	/*

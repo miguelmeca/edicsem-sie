@@ -1,4 +1,4 @@
-package com.edicsem.pe.sie.client.action;
+package com.edicsem.pe.sie.client.action.mantenimiento;
 
 import java.io.File;
 import java.io.InputStream;

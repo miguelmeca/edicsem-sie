@@ -130,7 +130,7 @@ public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstract
 				if (lista.get(i) != null) {
 					c = (CargoEmpleadoSie) lista.get(i);
 					itemsCargoEmpl.add(new SelectItem(c.getIdcargoempleado(),
-							c.getDescipcion()));
+							c.getDescripcion()));
 				} else {
 					break;
 				}
@@ -195,7 +195,7 @@ public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstract
 	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
 	 * #insertar()
 	 */
-	public String insertar() throws Exception {
+	public void insertar() throws Exception {
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()'");
@@ -204,7 +204,7 @@ public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstract
 			CargoEmpleadoSie c = objCargoEmpleadoService
 					.buscarCargoEmpleado(cargoEmpleado);
 			log.info("seteo " + c.getIdcargoempleado() + " "
-					+ c.getDescipcion());
+					+ c.getDescripcion());
 			objEmpleado.setTbCargoEmpleado(c);
 
 			DomicilioPersonaSie d = objDomicilioEmpleadoService
@@ -245,7 +245,7 @@ public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstract
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		return getViewList();
+		//return getViewList();
 	}
 
 	/*
