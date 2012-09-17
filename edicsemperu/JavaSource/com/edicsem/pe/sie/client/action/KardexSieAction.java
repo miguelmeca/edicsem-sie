@@ -114,7 +114,7 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 			lista.add(c);
 		}
 		setListadoKardex(lista);
-		//return getViewList();
+		// return getViewList();
 	}
 
 	/*
