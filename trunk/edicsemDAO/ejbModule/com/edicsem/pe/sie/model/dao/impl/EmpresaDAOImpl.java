@@ -11,9 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.EmpresaSie;
-import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.model.dao.EmpresaDAO;
-import com.edicsem.pe.sie.model.dao.ProductoDAO;
 
 /**
  * @author karen
@@ -50,7 +48,9 @@ public class EmpresaDAOImpl implements EmpresaDAO {
 			if (log.isInfoEnabled()) {
 				log.info("Actualizar Empresa");
 			}
-			em.merge(empresa);
+			EmpresaSie bean = findProducto(empresa.getIdempresa());
+			
+			em.merge(bean);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -59,7 +59,7 @@ public class EmpresaDAOImpl implements EmpresaDAO {
 	 * @see com.edicsem.pe.sie.model.dao.EmpresaDAO#findProducto(java.lang.String)
 	 */
 	 
-	public EmpresaSie findProducto(String id) {
+	public EmpresaSie findProducto(int id) {
 		EmpresaSie empresa = new EmpresaSie();
 		try {
 			if (log.isInfoEnabled()) {
@@ -75,8 +75,8 @@ public class EmpresaDAOImpl implements EmpresaDAO {
 	 * @see com.edicsem.pe.sie.model.dao.EmpresaDAO#listarEmpresas()
 	 */
 	 
-	public List listarEmpresas() {
-		List lista = null;
+	public List<EmpresaSie> listarEmpresas() {
+		List<EmpresaSie> lista = null;
 		try {
 			Query q = em.createQuery("select p from EmpresaSie p");
 			lista = q.getResultList();
