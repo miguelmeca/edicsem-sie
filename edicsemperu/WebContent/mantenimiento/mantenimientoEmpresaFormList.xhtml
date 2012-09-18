@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Lista de
+			Empresas</h1>
+		<h:form id="frmEmpresaFormList">
+		
+			<p:commandButton value="Agregar" action="#{empresaForm.addNewRecord}" ajax="false" />
+			
+			<p:dataTable value="#{empresaSearch.empresaList}" var="empresa"
+				paginator="true" rows="10" id="empresaTable">
+
+				<f:facet name="header">  
+            		<h:outputLabel value="#{message['lista.mantenimiento.empresa.titulo']}" />  
+        		</f:facet>
+
+				<p:column headerText="#{message['mantenimiento.empresa.razonSocial']}" 
+					sortBy="#{empresa.razonsocial}"  id="razonSocial">  
+            			#{empresa.razonsocial}
+        		</p:column>
+
+				<p:column headerText="#{message['mantenimiento.empresa.numeroTelefono']}" 
+						sortBy="#{empresa.numtelefono}" id="numeroRuc">  
+            			#{empresa.numtelefono}  
+        		</p:column>
+
+				<p:column headerText="#{message['mantenimiento.empresa.email']}" 
+					sortBy="#{empresa.email}" id="email">  
+            			#{empresa.email}
+        		</p:column>
+						
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
