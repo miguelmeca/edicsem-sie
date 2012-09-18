@@ -17,5 +17,8 @@ public class Constants {
 	public static final String TB_COBRANZA_OPERADORA_SIE = ESQUEMA_SIE_POSTGRE+"."+"tb_cobranza_operadora";
 	public static final String TB_TIPO_PRODUCTO_SIE = ESQUEMA_SIE_POSTGRE+"."+ "tb_tipo_producto";
 	public static final String ENCRYPTION_SHA_512 = "SHA-512";
-
+	
+	public static final String PAGE_MODULE = "mantenimiento";
+	public static final String LISTA_CARGO_PAGE = "../edicsemperu/mantenimientoCargoEmpleadoFormList";
+	
 }
