@@ -11,7 +11,7 @@ public class Redirections {
 	public static final void redirectionsPage(String modulo, String page) {
 		try {
 			FacesContext contex = FacesContext.getCurrentInstance();
-			contex.getExternalContext().redirect("../"+modulo+"/"+ page+".jsf");
+			contex.getExternalContext().redirect("edicsemperu/"+modulo+"/"+ page+".jsf");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
