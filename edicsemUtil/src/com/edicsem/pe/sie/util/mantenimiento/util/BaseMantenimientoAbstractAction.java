@@ -150,7 +150,7 @@ public abstract class BaseMantenimientoAbstractAction  {
 	/**
 	 * Metodo que realiza el seteo Nuevo registro
 	 * **/
-	protected void addNewRecord(){
+	public void addNewRecord(){
 		if(log.isInfoEnabled()){
 			log.info("Entering my method 'addNewRecord()'");
 		}
