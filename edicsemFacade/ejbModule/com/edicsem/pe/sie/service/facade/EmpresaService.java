@@ -9,6 +9,6 @@ public interface EmpresaService {
 
 	public abstract void insertEmpresa (EmpresaSie empresa);
 	public abstract void updateEmpresa(EmpresaSie empresa);
-	public abstract EmpresaSie findProducto (String id);
-	public abstract List  listarEmpresas(); 
+	public abstract EmpresaSie findProducto (int id);
+	public abstract List<EmpresaSie>  listarEmpresas();
 }
