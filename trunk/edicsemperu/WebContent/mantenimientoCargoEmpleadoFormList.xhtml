@@ -41,18 +41,30 @@
 						<f:facet name="header">
 							<h:outputText value="Modificar" />
 						</f:facet>
-						<p:commandButton update=":formManteProdList:display"
+						<!-- Boton MODIFICAR -->
+						<p:commandButton update=":ModificarCargoEmpleado:display"
 							oncomplete="carDialog.show()" image="ui-icon ui-icon-pencil"
 							title="Editar los Datos">
-							<f:setPropertyActionListener value="#{p}"
-								target="#{mantenimientoProductoAction.selectedProducto}" />
+							<f:setPropertyActionListener value="#{m}"
+								target="#{mantenimientoCargoEmpleadoSearchAction.listar()}" />
 							<f:setPropertyActionListener value="#{true}"
 								target="#{mantenimientoProductoAction.editMode}" />
 						</p:commandButton>
 					</p:column>
 
 				</p:dataTable>
-				
+						<!-- Boton NUEVO -->
+						<p:commandButton value="Nuevo Cargo" update=":NuevoCargoEmpleado:display"
+							oncomplete="carDialog.show()" 
+							title="Editar Cargo Empleado">
+							
+							<f:setPropertyActionListener value="#{false}"
+								target="#{mantenimientoProductoAction.editMode}" />
+						</p:commandButton>
+						
+						
+											
+
 		</h:form>
 	</ui:define>
 </ui:composition>
