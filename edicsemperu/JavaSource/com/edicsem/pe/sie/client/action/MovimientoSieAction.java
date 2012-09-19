@@ -228,7 +228,7 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 	 * #insertar()
 	 */
 
-	public void insertar() throws Exception {
+	public String insertar() throws Exception {
 		/* Insertando kardex total */
 		try {
 			if (log.isInfoEnabled()) {
@@ -247,7 +247,7 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		//return getViewList();
+		return getViewList();
 	}
 
 	/*

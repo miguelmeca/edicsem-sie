@@ -9,7 +9,7 @@
 			Empresas</h1>
 		<h:form id="frmEmpresaFormList">
 		
-			<p:commandButton value="Agregar" action="#{empresaForm.addNewRecord}" ajax="false" />
+			<p:commandButton value="Agregar" action="#{empresaForm.agregar}" ajax="false" />
 			
 			<p:dataTable value="#{empresaSearch.empresaList}" var="empresa"
 				paginator="true" rows="10" id="empresaTable">

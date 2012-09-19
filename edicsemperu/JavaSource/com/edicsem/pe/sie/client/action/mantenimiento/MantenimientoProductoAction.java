@@ -223,7 +223,6 @@ public class MantenimientoProductoAction extends
 				} else {
 					log.info("image no nula");
 				}
-				insertarValidation(objProductoSie);
 				objProductoService.insertProducto(objProductoSie);
 
 				objProductoSie.setNewRecord(false);
