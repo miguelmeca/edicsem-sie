@@ -9,14 +9,8 @@ import javax.persistence.Query;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.EstadoGeneralSie;
-import com.edicsem.pe.sie.entity.ProductoSie;
-import com.edicsem.pe.sie.entity.PuntoVentaSie;
-import com.edicsem.pe.sie.model.dao.EmpresaDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
-import com.edicsem.pe.sie.model.dao.ProductoDAO;
 
 
 @Stateless
@@ -93,7 +87,7 @@ public class EstadogeneralDAOImpl implements EstadoGeneralDAO {
 		EstadoGeneralSie e= new EstadoGeneralSie();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("buscar Almacen");
+				log.info("buscar Estado General");
 			} 
 		e=	em.find(EstadoGeneralSie.class, id);
 		} catch (Exception ex) {
