@@ -21,4 +21,7 @@ public class Constants {
 	public static final String PAGE_MODULE = "mantenimiento";
 	public static final String LISTA_CARGO_PAGE = "../edicsemperu/mantenimientoCargoEmpleadoFormList";
 	
+	public static final String MANT_EMPRESA_FORM_PAGE = "mantenimientoEmpresaForm";
+	public static final String MANT_EMPRESA_FORM_LIST_PAGE = "mantenimientoEmpresaFormList";
+	
 }
