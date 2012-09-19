@@ -21,118 +21,61 @@ public abstract class BaseMantenimientoAbstractAction  {
 	private Log log = LogFactory.getLog(BaseMantenimientoAbstractAction.class);
 	public static FacesMessage msg = null;
 	
+	
+	private final String DEFAULT_VIEW_LIST = "";
+    private final String DEFAULT_VIEW_MANT = "";
+     
 	public String getViewList(){
-        return "";
-}
-	
-	/**
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	protected void insertarValidation(Object bean) throws Exception {
-		if (log.isInfoEnabled()) {
-			log.info("Entering 'insertarValidation' method");
-		}
-		BaseMantenimientoForm f = (BaseMantenimientoForm) bean;
-		f.setEditable(true);
-		f.setModified(false);
-		f.setNewRecord(true);
-	}
-
-	/**
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	protected void editValidation(Object bean, String id) throws Exception {
-		if (log.isDebugEnabled()) {
-			log.debug("Entering 'editValidation' method");
-		}
-		BaseMantenimientoForm f = (BaseMantenimientoForm) bean;
-		f.setEditable(true);
-		f.setModified(false);
-		f.setNewRecord(false);
-		if (StringUtils.isBlank(id)) {
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO,
-					Constants.MESSAGE_ERROR_ID_NOT_FOUND);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
-	}
-
-	/**
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	protected void consultarValidation(Object bean, String id) throws Exception {
-		if (log.isDebugEnabled()) {
-			log.debug("Entering 'consultarValidation' method");
-		}
-		BaseMantenimientoForm f = (BaseMantenimientoForm) bean;
-		f.setEditable(false);
-		f.setModified(false);
-		f.setNewRecord(false);
-		if (StringUtils.isBlank(id)) {
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO,
-					Constants.MESSAGE_ERROR_ID_NOT_FOUND);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
-	}
-
-
-	/**
-	 * @return
-	 * @throws Exception
-	 */
-	protected void deleteValidation (String id) throws Exception {
-		if (log.isDebugEnabled()) {
-			log.debug("Entering 'deleteValidation' method");
-		}
-		if (StringUtils.isBlank(id)) {
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO,
-					Constants.MESSAGE_ERROR_ID_NOT_FOUND);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
+        return DEFAULT_VIEW_LIST;
 	}
 	
+	public String getViewMant(){
+        return DEFAULT_VIEW_MANT;
+	}
 	
-	public void insertar()throws Exception{
+	/**
+	 * Insertar la Entidad
+	 * */
+	public String insertar() throws Exception{
 		if (log.isDebugEnabled()) {
 			log.debug("Entering 'insertar' method");
 		}
+		return getViewList();
 	}
 	
-	public void update()throws Exception{
+	/**
+	 * Actualizar la Entidad
+	 * */
+	public String update()throws Exception{
+		
 		if (log.isDebugEnabled()) {
 			log.debug("Entering 'update' method");
 		}
+		
+		return getViewList();
 	}
-	
-	public void delete()throws Exception{
+	/**
+	 * Eliminar la Entidad
+	 ***/
+	public String delete()throws Exception{
 		if (log.isDebugEnabled()) {
 			log.debug("Entering 'update' method");
 		}
+		return getViewMant();
 	}
 	
-	public void consultar()throws Exception{
+	/**
+	 * Consultar la Entidad
+	 * */
+	public String consultar()throws Exception{
 		if (log.isDebugEnabled()) {
 			log.debug("Entering 'update' method");
 		}
+		return getViewMant();
 	}
-	
+	/**
+	 * Listar la tabla de Entidad
+	 * */
 	public String listar() {
 		if (log.isInfoEnabled()) {
 			log.info("Entering 'update' method");
@@ -150,9 +93,10 @@ public abstract class BaseMantenimientoAbstractAction  {
 	/**
 	 * Metodo que realiza el seteo Nuevo registro
 	 * **/
-	public void addNewRecord(){
+	public String agregar(){
 		if(log.isInfoEnabled()){
 			log.info("Entering my method 'addNewRecord()'");
 		}
+		return getViewMant();
 	}
 }
