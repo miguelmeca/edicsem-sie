@@ -14,8 +14,8 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
+import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
-import com.edicsem.pe.sie.util.redirections.Redirections;
 
 @ManagedBean(name="empresaSearch")
 @SessionScoped
@@ -46,20 +46,19 @@ public class MantenimientoEmpresaSearchAction extends BaseMantenimientoAbstractA
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#listar()
 	 */
-	public void listarEmpresas() {
+	public String listar() {
 		log.info("listarEmpresas 'MantenimientoEmpresaSearchAction' ");
 		empresaList = empresaService.listarEmpresas();
 		if (empresaList == null) {
 			empresaList = new ArrayList<EmpresaSie>();
 		}
-		Redirections.redirectionsPage("mantenimiento", "mantenimientoEmpresaFormList");
+		return getViewList();
 	}
-	
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#consultar()
 	 */
-	public void consultar() throws Exception {
+	public String consultar() throws Exception {
 		Map<String, String> paramMap = FacesContext.getCurrentInstance()
 				.getExternalContext().getRequestParameterMap();
 		
@@ -76,6 +75,7 @@ public class MantenimientoEmpresaSearchAction extends BaseMantenimientoAbstractA
 		// donde codUsuarioE es tu ID
 		int strCodigoParametro = Integer.parseInt(paramMap.get("codUsuarioE"));
 		empresaSie = empresaService.findProducto(strCodigoParametro);
+		return getViewMant();
 	}
 
 	
@@ -83,7 +83,7 @@ public class MantenimientoEmpresaSearchAction extends BaseMantenimientoAbstractA
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#delete()
 	 */
-	public void delete() throws Exception {
+	public String delete() throws Exception {
 		
 		Map<String, String> paramMap = FacesContext.getCurrentInstance()
 				.getExternalContext().getRequestParameterMap();
@@ -102,6 +102,21 @@ public class MantenimientoEmpresaSearchAction extends BaseMantenimientoAbstractA
 		int strCodigoParametro = Integer.parseInt(paramMap.get("codUsuarioE"));
 		
 		//empresaService.eliminarEmpresa(strCodigoParametro);
+		return getViewList();
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewList()
+	 */
+	public String getViewList() {
+		return Constants.MANT_EMPRESA_FORM_LIST_PAGE;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewMant()
+	 */
+	public String getViewMant() {
+		return Constants.MANT_EMPRESA_FORM_PAGE;
 	}
 
 	//Declaracion Getter and Setters

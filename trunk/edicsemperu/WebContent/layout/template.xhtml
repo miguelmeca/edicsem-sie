@@ -67,7 +67,7 @@
 						<p:menuitem value="Movimiento Mercader&iacute;a" ajax="false" action="#" />
 						<p:menuitem value="Mantenimiento de Empleados" ajax="false" action="mantenimientoEmpleadoList.jsf" />
 						<p:menuitem value="Mantenimiento Cargo Empleado" ajax="false" action="mantenimientoCargoEmpleadoFormList.jsf" />
-						<p:menuitem value="Mantenimiento Empresa" ajax="false" action="#{empresaSearch.listarEmpresas}"/>
+						<p:menuitem value="Mantenimiento Empresa" ajax="false" action="#{empresaSearch.listar}"/>
 					</p:submenu>
 				</p:menu>
 			</h:form>
@@ -120,7 +120,7 @@
 		<h:panelGrid id="display" columns="2" cellpadding="2"
 			style="margin:0 auto;">
 			
-				<h:outputText value="Codigo de Cargo" id="codCargo" />
+				<h:outputText value="Codigo de Cargo" />
 				<h:panelGroup>
 					<h:outputText
 						value="#{mantenimientoCargoEmpleadoFormAction.selectedCargoEmpleado.idcargoempleado}"
@@ -129,7 +129,7 @@
 
 				</h:panelGroup>
 
-				<h:outputText value="Descripcion" id="desCarEmp" />
+				<h:outputText value="Descripcion"  />
 				<h:panelGroup>
 					<h:outputText
 						value="#{mantenimientoCargoEmpleadoFormAction.selectedCargoEmpleado.descripcion}"
@@ -209,7 +209,7 @@
 		<h:panelGrid id="display" columns="2" cellpadding="2"
 			style="margin:0 auto;">
 			
-				<h:outputText value="id" id="desCarEmp" />
+				<h:outputText value="id" />
 				<h:panelGroup>
 				
 					<h:inputText 
@@ -219,7 +219,7 @@
 						 
 				</h:panelGroup>
 
-				<h:outputText value="Descripcion" id="desCarEmp" />
+				<h:outputText value="Descripcion"  />
 				<h:panelGroup>
 				
 					<h:inputText 

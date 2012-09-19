@@ -14,6 +14,18 @@
 				<td><p:inputText value="#{empresaForm.empresaSie.razonsocial}" /></td>
 			</tr>
 			<tr>
+				<td><p:outputLabel value="#{message['mantenimiento.empresa.numeroRuc']}"/></td>
+				<td><p:inputText value="#{empresaForm.empresaSie.numruc}"/> </td>
+			</tr>
+			<tr>
+				<td><p:outputLabel value="#{message['mantenimiento.empresa.numeroTelefono']}"/></td>
+				<td><p:inputText value="#{empresaForm.empresaSie.numtelefono}"/> </td>
+			</tr>
+			<tr>
+				<td><p:outputLabel value="#{message['mantenimiento.empresa.email']}"/> </td>
+				<td><p:inputText value="#{empresaForm.empresaSie.email}"/> </td>
+			</tr>
+			<tr>
 				<td colspan="2"><p:commandButton value="Aceptar" action="#{empresaForm.insertar}"/></td>
 			</tr>
 			</table>

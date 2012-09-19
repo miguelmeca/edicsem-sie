@@ -245,40 +245,32 @@ public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstract
 	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
 	 * #insertar()
 	 */
-	public void insertar() throws Exception {
+	public String insertar() throws Exception {
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()'");
 			}
 			// todo eso se hace en el Service, no se hace en el Action.
-			CargoEmpleadoSie c = objCargoEmpleadoService
-					.buscarCargoEmpleado(cargoEmpleado);
-			log.info("seteo " + c.getIdcargoempleado() + " "
-					+ c.getDescripcion());
+			CargoEmpleadoSie c = objCargoEmpleadoService.buscarCargoEmpleado(cargoEmpleado);
+			log.info("seteo " + c.getIdcargoempleado() + " "+ c.getDescripcion());
 			objEmpleado.setTbCargoEmpleado(c);
 
-			DomicilioPersonaSie d = objDomicilioEmpleadoService
-					.buscarDomicilioEmpleado(DomicilioPersona);
-			log.info("seteo " + d.getIddomiciliopersona() + " "
-					+ d.getDomicilio());
+			DomicilioPersonaSie d = objDomicilioEmpleadoService.buscarDomicilioEmpleado(DomicilioPersona);
+			log.info("seteo " + d.getIddomiciliopersona() + " "+ d.getDomicilio());
 			objEmpleado.setTbDomicilioPersona(d);
 
-			TelefonoPersonaSie t = objTelefonoEmpleadoService
-					.buscarTelefonoEmpleado(TelefonoPersona);
-			log.info("seteo " + t.getIdtelefonopersona() + " "
-					+ t.getTelefono());
+			TelefonoPersonaSie t = objTelefonoEmpleadoService.buscarTelefonoEmpleado(TelefonoPersona);
+			log.info("seteo " + t.getIdtelefonopersona() + " "+ t.getTelefono());
 			objEmpleado.setTbTelefonoPersona(t);
 
-			TipoDocumentoIdentidadSie td = objTipoDocumentoService
-					.buscarTipoDocumento(tipoDocumento);
-			log.info("seteo " + td.getIdtipodocumentoidentidad() + " "
-					+ td.getDescripcion());
+			TipoDocumentoIdentidadSie td = objTipoDocumentoService.buscarTipoDocumento(tipoDocumento);
+			log.info("seteo " + td.getIdtipodocumentoidentidad() + " "+ td.getDescripcion());
 			objEmpleado.setTbTipoDocumentoIdentidad(td);
 
 			if (objEmpleado.isNewRecord()) {
 				// objEmpleado.s
 				log.info("insertando.....");
-				insertarValidation(objEmpleado);
+				//insertarValidation(objEmpleado);
 				objEmpleadoService.insertarEmpleado(objEmpleado);
 				log.info("insertando.....");
 				objEmpleado.setNewRecord(false);
@@ -295,7 +287,7 @@ public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstract
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		//return getViewList();
+		return getViewList();
 	}
 
 	/*

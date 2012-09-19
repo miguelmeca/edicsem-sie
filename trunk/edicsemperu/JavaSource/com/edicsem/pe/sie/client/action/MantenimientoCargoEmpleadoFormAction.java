@@ -30,7 +30,7 @@ import com.edicsem.pe.sie.util.redirections.Redirections;
 public class MantenimientoCargoEmpleadoFormAction extends BaseMantenimientoAbstractAction {
 	private String mensaje;
 	public String descripcion;
-	public static Log log = LogFactory.getLog(MantenimientoCargoEmpleadoSearchAction.class);
+	private Log log = LogFactory.getLog(MantenimientoCargoEmpleadoSearchAction.class);
 	private List<SelectItem> estadosItems;
 	private StreamedContent image; 
 	private CargoEmpleadoSie objCargoEmpleadoSie;
@@ -139,23 +139,6 @@ public class MantenimientoCargoEmpleadoFormAction extends BaseMantenimientoAbstr
 		return nuevo;
 	}
 
-
-
-	
-	
-	
-	public static Log getLog() {
-		return log;
-	}
-
-
-
-	public static void setLog(Log log) {
-		MantenimientoCargoEmpleadoSearchAction.log = log;
-	}
-
-
-
 	public String getDescripcion() {
 		return descripcion;
 	}
@@ -192,11 +175,7 @@ public class MantenimientoCargoEmpleadoFormAction extends BaseMantenimientoAbstr
 		nuevo = new CargoEmpleadoSie();
 	}
 	
-	
-	
-	
-
-	public void insertar() throws Exception {
+	public String insertar() throws Exception {
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()'");
@@ -226,7 +205,7 @@ public class MantenimientoCargoEmpleadoFormAction extends BaseMantenimientoAbstr
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		//return getViewList();
+		return getViewList();
 	}
 
 	

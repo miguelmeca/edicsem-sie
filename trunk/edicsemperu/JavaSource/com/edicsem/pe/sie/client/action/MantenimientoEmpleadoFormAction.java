@@ -161,7 +161,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
 	 * #insertar()
 	 */
-	public void insertar() throws Exception {
+	public String insertar() throws Exception {
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()'");
@@ -197,7 +197,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 				if (objEmpleado.isNewRecord()) {
 					// objEmpleado.s
 					log.info("insertando.....");
-					insertarValidation(objEmpleado);
+					//insertarValidation(objEmpleado);
 					objEmpleadoService.insertarEmpleado(objEmpleado);
 					log.info("insertando.....");
 					objEmpleado.setNewRecord(false);
@@ -221,7 +221,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		//return getViewList();
+		return getViewList();
 	}
 
 	/*

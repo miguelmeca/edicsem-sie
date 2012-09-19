@@ -9,8 +9,8 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
+import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
-import com.edicsem.pe.sie.util.redirections.Redirections;
 
 @ManagedBean(name="empresaForm")
 @SessionScoped
@@ -18,6 +18,7 @@ public class MantenimientoEmpresaFormAction extends BaseMantenimientoAbstractAct
 	
 	private EmpresaSie empresaSie;
 	private Log log = LogFactory.getLog(MantenimientoEmpresaFormAction.class);
+	private boolean newRecord = false; 
 	
 	@EJB
 	private EmpresaService empresaService;
@@ -35,33 +36,48 @@ public class MantenimientoEmpresaFormAction extends BaseMantenimientoAbstractAct
 	}
 
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#addNewRecord()
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
 	 */
-	public void addNewRecord() {
+	public String agregar() {
 		log.info("addNewRecord");
-		empresaSie.setNewRecord(true);
-		Redirections.redirectionsPage("", "mantenimientoEmpresaForm");
+		setNewRecord(true);
+		return getViewMant();
 	}
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
 	 */
-	public void update() throws Exception {
-		empresaSie.setNewRecord(false);
-		insertar();
+	public String update() throws Exception {
+		setNewRecord(false);
+		return insertar();
 	}
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
 	 */
-	public void insertar() throws Exception {
-		if (empresaSie.isNewRecord()) {
+	public String insertar() throws Exception {
+		if (isNewRecord()) {
 			empresaService.insertEmpresa(empresaSie);
 		}else {
 			empresaService.updateEmpresa(empresaSie);
 		}
+		return getViewList();
 	}
 
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewList()
+	 */
+	public String getViewList() {
+		return Constants.MANT_EMPRESA_FORM_LIST_PAGE;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewMant()
+	 */
+	public String getViewMant() {
+		return Constants.MANT_EMPRESA_FORM_PAGE;
+	}
 	
 	
 	/**
@@ -77,4 +93,20 @@ public class MantenimientoEmpresaFormAction extends BaseMantenimientoAbstractAct
 	public void setEmpresaSie(EmpresaSie empresaSie) {
 		this.empresaSie = empresaSie;
 	}
+
+	/**
+	 * @return the newRecord
+	 */
+	public boolean isNewRecord() {
+		return newRecord;
+	}
+
+	/**
+	 * @param newRecord the newRecord to set
+	 */
+	public void setNewRecord(boolean newRecord) {
+		this.newRecord = newRecord;
+	}
+	
+	
 }
