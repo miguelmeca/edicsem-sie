@@ -34,7 +34,7 @@
 				<h:outputText value="#{message['kardex.hasta']}" />
 				<p:calendar />
  
-				<p:commandButton  value="Consultar" action="#{kardexSieAction.consultar}" update=":frmKardex:listakardex" ></p:commandButton> 
+				<p:commandButton  value="Consultar" action="#{kardexSieAction.consultar}" update=":frmKardex:listakardex,stock_actual" ></p:commandButton> 
 					  
 				<p:spacer width="40" />
 				<p:dataTable value="#{kardexSieAction.listadoKardex}" var="p"
@@ -45,13 +45,7 @@
 					<f:facet name="header">  
          Listado Kardex
         </f:facet>
-					<f:facet name="header">
-						<p:outputPanel>
-							<h:outputText value="Buscar :" />
-							<p:inputText id="globalFilter" onkeyup="table.filter()"
-								style="width:150px; align=Left; " />
-						</p:outputPanel>
-					</f:facet>
+					
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Codigo" />
@@ -60,13 +54,19 @@
 					</p:column>
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Descripción" />
+							<h:outputText value="Tipo " />
+						</f:facet>
+						<h:outputText value="#{p.tbTipoKardexProducto.descripcion}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Cant Entrada" />
 						</f:facet>
 						<h:outputText value="#{p.cantentrada}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Detalle" />
+							<h:outputText value="Cant Salida" />
 						</f:facet>
 						<h:outputText value="#{p.cantsalida}" />
 					</p:column>
@@ -76,13 +76,23 @@
 						</f:facet>
 						<h:outputText value="#{p.tipokardex}" />
 					</p:column>
-					  
+					  <p:column>
+						<f:facet name="header">
+							<h:outputText value="Ver detalle" />
+						</f:facet> 
+						<p:commandButton update=":formManteKardexList:display"
+							oncomplete="kardexDialog.show()" image="ui-icon ui-icon-pencil"
+							title="Ver detalle Kardex"> 
+							<f:setPropertyActionListener value="#{p}" target="#{kardexSieAction.objKardexSie}" />  
+                     <f:setPropertyActionListener value="#{true}" target="#{kardexSieAction.editMode}" />  
+						</p:commandButton> 
+					</p:column>
 					</p:dataTable>
 				 
 				<p:spacer width="40"></p:spacer>
 
 				<h:outputText value="#{message['mantenimiento.producto.stock.actual']}" />
-				<p:inputText id="stock_actual" value="#{kardexSieAction.listadoKardex}" size="15" />
+				<p:inputText id="stock_actual" value="#{kardexSieAction.stockActual}" size="15" />
  
 				<h:outputText value="#{message['kardex.Stock.valorizado']}" />
 				<p:inputText id="stock_valoriz" size="15" />

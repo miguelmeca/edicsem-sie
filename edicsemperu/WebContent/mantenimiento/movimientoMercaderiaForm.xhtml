@@ -3,6 +3,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
 		<h1 class="title ui-widget-header ui-corner-all">Movimiento	Mercadería</h1>
@@ -12,19 +13,19 @@
 				<p:panelGrid columns="6">
 
 					<h:outputText value="#{message['movimiento.tipo']}" />
-					<h:selectOneListbox size="1" id="idtipokardex"
-						value="#{movimientoMercaderia.idtipokardexproducto}">
-						<f:selectItem itemLabel="Seleccione" itemValue="-1" />
-						<f:selectItems value="#{movimientoMercaderia.tipoKardexItems}" />
-					</h:selectOneListbox>
-
-					<h:outputText value="#{message['mantenimiento.producto.cantidadEnt']}" />
-					<p:spinner id="entr" size="2" min="1"
-						value="#{movimientoMercaderia.objKardexSie.cantentrada}" />
+					<h:selectOneMenu   id="idtipokardex" valueChangeListener="#{movimientoMercaderia.cambioTipo}"
+						value="#{movimientoMercaderia.idtipokardexproducto}"   onchange="submit()">
+						<f:selectItem itemLabel="Seleccione tipo" itemValue="-1" />
+						<f:selectItems id="tipokardex" value="#{movimientoMercaderia.tipoKardexItems}" />
+					</h:selectOneMenu>
+					
+					<h:outputText value="#{message['mantenimiento.producto.cantidadEnt']}" rendered="#{movimientoMercaderia.editMode}" />
+					<p:spinner id="entr" size="2" min="1" 
+						value="#{movimientoMercaderia.objKardexSie.cantentrada}" rendered="#{movimientoMercaderia.editMode}" />
 						 
-					<h:outputText value="#{message['mantenimiento.producto.cantidadSal']}" />
+					<h:outputText value="#{message['mantenimiento.producto.cantidadSal']}" rendered="#{!movimientoMercaderia.editMode}"  />
 					<p:spinner id="sal" size="2" min="1"
-						value="#{movimientoMercaderia.objKardexSie.cantsalida}" />
+						value="#{movimientoMercaderia.objKardexSie.cantsalida}" rendered="#{!movimientoMercaderia.editMode}" />
 						
 					<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
 					<p:selectOneMenu value="#{comboAction.tipoProducto}" required="true"  >
@@ -55,16 +56,21 @@
 						actionListener="#{movimientoMercaderia.anadir}"
 					  ajax="false">
 						</p:commandButton>
-				
 				</p:panelGrid>
-<p:dataTable id="booksTable" value="#{movimientoMercaderia.data}"
-					var="d">
-
+				
+				<p:dataTable id="listaMovim" value="#{movimientoMercaderia.data}" var="d">
+				 
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Tipo de Kardex" />
 						</f:facet>
 						<h:outputText value="#{d.tbTipoKardexProducto.descripcion}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Producto" />
+						</f:facet>
+						<h:outputText value="#{d.tbProducto.descripcionproducto}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">
@@ -84,11 +90,19 @@
 						</f:facet>
 						<h:outputText value="#{d.tipokardex}" />
 					</p:column>
-				</p:dataTable>
-				
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Quitar" />
+						</f:facet> 
+							 <p:commandButton id="showConfirmMovim" value="Quitar" image="ui-icon ui-icon-pencil" 
+							 onclick="confirmation.show()" type="button"> 
+							 	<f:attribute name="d" value="#{d}" />
+					</p:commandButton>
+					</p:column> 
+				</p:dataTable> 
 				<p:commandButton id="id"
 					actionListener="#{movimientoMercaderia.insertar}"
-					value="Añadir Mercadería" ajax="false"
+					value="Grabar Mercadería" ajax="false"
 					update="formMovMerc: message">
 				</p:commandButton>
 			</p:panel>
