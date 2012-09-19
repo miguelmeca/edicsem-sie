@@ -77,42 +77,57 @@
 			<ui:insert name="body" />
 		</p:layoutUnit>		
 	</p:layout>
-
-<h:form id="formManteProdList">
-	<p:dialog header="Detalle Producto" widgetVar="carDialog" 
+<!--  Mantenimiento Kardex (Modificar) -->
+<h:form id="formManteKardexList">
+	<p:dialog header="Detalle Kardex" widgetVar="kardexDialog" 
 		showEffect="fade" hideEffect="explode" modal="true" width="450"
 		position="center">
 		<h:panelGrid id="display" columns="2" cellpadding="2"
 			style="margin:0 auto;">
 			
+				<h:outputText value="Id Kardex" id="precioProd" />
+				<h:outputText
+						value="#{kardexSieAction.objKardexSie.idkardex}"
+						style="font-weight:bold" rendered="#{kardexSieAction.editMode}" />
+						
 				<h:outputText value="Codigo Producto" id="codProd" />
-				<h:panelGroup>
-					<h:outputText
-						value="#{mantenimientoProductoAction.selectedProducto.codproducto}"
-						style="font-weight:bold"
-						rendered="#{!mantenimientoProductoAction.editMode}" />
-
-				</h:panelGroup>
+				<h:outputText
+						value="#{kardexSieAction.objKardexSie.tbProducto.idproducto}"
+						style="font-weight:bold" rendered="#{kardexSieAction.editMode}" />
 
 				<h:outputText value="Descripcion" id="descProd" />
-				<h:panelGroup>
-					<h:outputText
-						value="#{mantenimientoProductoAction.selectedProducto.descripcionproducto}"
+				<h:outputText
+						value="#{kardexSieAction.objKardexSie.tbTipoKardexProducto.descripcion}"
 						style="font-weight:bold"
-						rendered="#{!mantenimientoProductoAction.editMode}" />
-				</h:panelGroup>
-
-				<h:outputText value="Precio" id="precioProd" />
-				<h:panelGroup>
-					<h:outputText
-						value="#{mantenimientoProductoAction.selectedProducto.precioventa}"
-						style="font-weight:bold"
-						rendered="#{!mantenimientoProductoAction.editMode}" />
-				</h:panelGroup>
-			
+						rendered="#{kardexSieAction.editMode}" />
+				
+				<h:outputText value="Detalle" id="detProd" />
+				<h:inputTextarea  
+						value="#{kardexSieAction.objKardexSie.detallekardex}"
+						style="font-weight:bold" disabled="true"
+						rendered="#{kardexSieAction.editMode}" />
+						
+				<h:outputText value="Cantidad Existente" id="cantEx" />
+				<h:outputText  
+						value="#{kardexSieAction.objKardexSie.cantexistencia}"
+						style="font-weight:bold" disabled="true"
+						rendered="#{kardexSieAction.editMode}" />
+				 
 		</h:panelGrid>
 	</p:dialog>
 </h:form>
+
+<!-- Movimiento de Mercaderia  -->
+<h:form id="formMovMercList">
+<p:confirmDialog id="confirmMovim" message="Esta seguro de eliminar dicho movimiento?" width="350" height="200" showEffect="explode" 
+				hideEffect="explode"  header="Confirm" severity="alert" widgetVar="confirmation" position="center">  
+        <p:commandButton  type="submit" value="Si"  action="#{movimientoMercaderia.quitar}"  
+        update=":formMovMerc:listaMovim" oncomplete="confirmation.hide()" ajax="false">
+        </p:commandButton>  
+        <p:commandButton value="No" onclick="confirmation.hide()" type="button" />  
+    </p:confirmDialog>
+    </h:form>
+    
 <h:form id="formCarEmpList">
 	<p:dialog header="Detalle CargoEmpleado" widgetVar="carDialog" 
 		showEffect="fade" hideEffect="explode" modal="true" width="450"
@@ -253,19 +268,6 @@
 		</h:panelGrid>
 	</p:dialog>
 </h:form>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	<ui:insert name="highlight">
                 <script language="javascript" src="#{request.contextPath}/syntaxhighlighter/scripts/sh.js"></script>
