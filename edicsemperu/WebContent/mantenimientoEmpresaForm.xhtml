@@ -8,22 +8,32 @@
 		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
 			Empresa</h1>
 		<h:form id="frmEmpresaForm">
+		
 			<table>
 			<tr>
-				<td><p:outputLabel value="#{message['mantenimiento.empresa.razonSocial']}" /></td>
-				<td><p:inputText value="#{empresaForm.empresaSie.razonsocial}" /></td>
+				<td><h:outputText value="#{message['mantenimiento.empresa.razonSocial']}" /></td>
+				<td><p:inputText value="#{empresaForm.dto.razonsocial}" /></td>
 			</tr>
 			<tr>
-				<td><p:outputLabel value="#{message['mantenimiento.empresa.numeroRuc']}"/></td>
-				<td><p:inputText value="#{empresaForm.empresaSie.numruc}"/> </td>
+				<td><h:outputText value="#{message['mantenimiento.empresa.numeroRuc']}"/></td>
+				<td><p:inputText value="#{empresaForm.dto.numruc}"/> </td>
 			</tr>
 			<tr>
-				<td><p:outputLabel value="#{message['mantenimiento.empresa.numeroTelefono']}"/></td>
-				<td><p:inputText value="#{empresaForm.empresaSie.numtelefono}"/> </td>
+				<td><h:outputText value="#{message['mantenimiento.empresa.numeroTelefono']}"/></td>
+				<td><p:inputText value="#{empresaForm.dto.numtelefono}"/> </td>
 			</tr>
 			<tr>
-				<td><p:outputLabel value="#{message['mantenimiento.empresa.email']}"/> </td>
-				<td><p:inputText value="#{empresaForm.empresaSie.email}"/> </td>
+				<td><h:outputText value="#{message['mantenimiento.empresa.email']}"/> </td>
+				<td><p:inputText value="#{empresaForm.dto.email}"/> </td>
+			</tr>
+			<tr>
+				<td><h:outputText value="#{message['mantenimiento.estado']}" /></td>
+				<td><p:selectOneMenu id="tipoestado"
+					value="#{empresaForm.estado}" required="true"
+					requiredMessage="#{message['mantenimiento.producto.tipo.validation']}">
+					<f:selectItem itemValue="-1" itemLabel="Seleccionar Estado" />
+					<f:selectItems value="#{comboAction.estadoitems}" />
+				</p:selectOneMenu></td>
 			</tr>
 			<tr>
 				<td colspan="2"><p:commandButton value="Aceptar" action="#{empresaForm.insertar}"/></td>
