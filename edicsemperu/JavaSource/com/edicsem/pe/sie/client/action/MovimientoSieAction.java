@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.SelectItem;
 
@@ -32,11 +33,11 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 
 	private String mensaje;
-	private int idproducto, tipoKardex, idtipokardexproducto, idAlmacen;
+	private int idproducto, idtipokardexproducto, idAlmacen,item;
 	private KardexSie objKardexSie = new KardexSie();
 	private List<SelectItem> tipoKardexItems;
 	private List<KardexSie> data;
-	
+	private boolean editMode;
 	private Log log = LogFactory.getLog(MovimientoSieAction.class);
 	
 	@EJB
@@ -50,7 +51,17 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 
 	@EJB
 	private AlmacenService objAlmacenService;
-
+	
+	public void cambioTipo(ValueChangeEvent evento) {
+		log.info("TipoKardex " + evento.getNewValue().toString());
+		if("1".equalsIgnoreCase(evento.getNewValue().toString()))
+			 editMode =true;
+		else if("2".equalsIgnoreCase(evento.getNewValue().toString()))
+			editMode =false;
+		else
+			editMode =true;
+	}
+	
 	public MovimientoSieAction() {
 		log.info("inicializando constructor MovimientoSieAction");
 		init();
@@ -72,7 +83,7 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 		List lista = new ArrayList<TipoProductoSie>();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'getListaTipoProducto()'");
+				log.info("Entering my method 'getTipoKardexItems()'");
 			}
 			lista = objTipoKardexService.listaTipoKardex();
 
@@ -131,21 +142,7 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 	public void setData(List<KardexSie> data) {
 		this.data = data;
 	}
-
-	/**
-	 * @return the tipoKardex
-	 */
-	public int getTipoKardex() {
-		return tipoKardex;
-	}
-
-	/**
-	 * @param tipoKardex
-	 *            the tipoKardex to set
-	 */
-	public void setTipoKardex(int tipoKardex) {
-		this.tipoKardex = tipoKardex;
-	}
+ 
 
 	/**
 	 * @return the idAlmacen
@@ -198,22 +195,24 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'anadir()'");
 			}
-			/*3 servicios diferentes*/
-			
-			
-			objKardexSie.setTbProducto(objProductoService
-					.findProducto(getIdproducto()));
-			log.info("se capturo producto "
-					+ objKardexSie.getTbProducto().getDescripcionproducto());
-			objKardexSie.setTbTipoKardexProducto(objTipoKardexService
-					.findTipoKardex(getIdtipokardexproducto()));
 
-			objKardexSie.setTbPuntoVenta(objAlmacenService
-					.findAlmacen(getIdAlmacen()));
-			/* Invocar solo a un servicio o Dao   */
+			if (idtipokardexproducto == -1|| idAlmacen ==-1) {
+				msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+						Constants.MESSAGE_ERROR_FATAL_TITULO,
+						"Debe ingresar un tipo válido");
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+				return getViewList();
+			}else{
+			objKardexSie.setTbProducto(objProductoService.findProducto(getIdproducto()));
+			 
+			objKardexSie.setTbTipoKardexProducto(objTipoKardexService.findTipoKardex(getIdtipokardexproducto()));
+
+			objKardexSie.setTbPuntoVenta(objAlmacenService.findAlmacen(getIdAlmacen()));
+			
 			data.add(objKardexSie);
 			setData(data);
 			objKardexSie = new KardexSie();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -229,7 +228,7 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 	 */
 
 	public String insertar() throws Exception {
-		/* Insertando kardex total */
+
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()'");
@@ -238,7 +237,9 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 			for (KardexSie kardex : data) {
 				objKardexService.insertMovimiento(kardex);
 			}
-
+			mensaje= "Se registro";
+			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+			FacesContext.getCurrentInstance().addMessage(null, msg); 
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -247,18 +248,24 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
+
 		return getViewList();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
-	 * #getViewList()
+	/**
+	 * @return the editMode
 	 */
-	public String getViewList() {
-		return "movimientoMercaderiaForm";
+	public boolean isEditMode() {
+		return editMode;
 	}
 
+	/**
+	 * @param editMode the editMode to set
+	 */
+	public void setEditMode(boolean editMode) {
+		this.editMode = editMode;
+	}
+	public void quitar(){
+		log.info("en el metodo Quitar!!!");
+	}
 }
