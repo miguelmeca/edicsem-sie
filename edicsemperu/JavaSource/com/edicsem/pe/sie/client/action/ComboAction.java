@@ -16,10 +16,12 @@ import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.edicsem.pe.sie.entity.EstadoGeneralSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.entity.TipoProductoSie;
 import com.edicsem.pe.sie.service.facade.AlmacenService; 
+import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.service.facade.TipoProductoService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -34,20 +36,19 @@ public class ComboAction extends BaseMantenimientoAbstractAction {
 	   
 	private Map<String , Integer> tipoitems =  new HashMap<String, Integer>();
 	private Map<String , Integer> productositems =  new HashMap<String, Integer>();
-	 
 	private Map<String , Integer> almacenItems =  new HashMap<String, Integer>();
 	private int tipoProducto;
-	 
     private Map<String,Map<String,Integer>> dataProducto = new HashMap<String, Map<String,Integer>>();  
-   
+    private Map<String , Integer> estadoitems =  new HashMap<String, Integer>();
+    
 	@EJB
 	private AlmacenService objAlmacenService;
 	@EJB
 	private TipoProductoService objTipoProductoService;
-
 	@EJB
 	private ProductoService objProductoService;
- 
+	@EJB 
+	private EstadogeneralService objEstadoGeneralService;
 
 	public ComboAction() {
 		log.info("inicializando constructor");
@@ -183,5 +184,42 @@ public class ComboAction extends BaseMantenimientoAbstractAction {
 	 */
 	public void setTipoitems(Map<String, Integer> tipoitems) {
 		this.tipoitems = tipoitems;
+	}
+
+	/**
+	 * @return the estadoitems
+	 */
+	public Map<String, Integer> getEstadoitems() {
+		tipoitems =  new HashMap<String, Integer>();
+		List lista = new ArrayList<TipoProductoSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getEstadoitems()'");
+			}
+			lista = objEstadoGeneralService.listarEstados();
+
+			for (int i = 0; i < lista.size(); i++) {
+				EstadoGeneralSie entidad = new EstadoGeneralSie();
+				entidad = (EstadoGeneralSie) lista.get(i);
+					estadoitems.put(entidad.getDescripcion(), entidad.getIdestadogeneral());
+			}
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return estadoitems;
+	}
+
+	/**
+	 * @param estadoitems the estadoitems to set
+	 */
+	public void setEstadoitems(Map<String, Integer> estadoitems) {
+		this.estadoitems = estadoitems;
 	} 
+	
 }
