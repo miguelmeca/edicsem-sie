@@ -1,12 +1,11 @@
 package com.edicsem.pe.sie.client.action;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List; 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;   
+import javax.faces.bean.SessionScoped;  
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;  
 import com.edicsem.pe.sie.entity.KardexSie; 
@@ -44,15 +43,18 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	 * @return the kardexList
 	 */
 	@SuppressWarnings("unchecked")
-	public List<KardexSie> getKardexList() {
-		String fechaDesde = "";
-		String fechaHasta = "";
+	public List<KardexSie> getKardexList() { 
+		 
+		Date date = new Date(); 
+		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+		String fechaD = sdf.format(fechaDesde);
+		String fechaH = sdf.format(fechaHasta);
+		
 		kardexList = objKardexService.ConsultaProductos(getIdproducto(),
-						getIdalmacen(), fechaDesde, fechaHasta);
-		log.info(" DataModel Kardex " + kardexList.size());
+						getIdalmacen(), fechaD , fechaH );
+		log.info(" Kardex " + kardexList.size());
 		log.info("cantidad existente :D "  +kardexList.get(kardexList.size()-1).getCantexistencia());
-		stockActual=kardexList.get(kardexList.size()-1).getCantexistencia();
-		//setStockActual(kardexList.get(kardexList.size()).getCantexistencia());
+		stockActual=kardexList.get(kardexList.size()-1).getCantexistencia(); 
 		log.info("nuevo stock actual "+ getStockActual() );
 		return kardexList;
 	}
@@ -227,6 +229,20 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	 */
 	public void setStockActual(int stockActual) {
 		this.stockActual = stockActual;
+	}
+
+	/**
+	 * @return the mensaje
+	 */
+	public String getMensaje() {
+		return mensaje;
+	}
+
+	/**
+	 * @param mensaje the mensaje to set
+	 */
+	public void setMensaje(String mensaje) {
+		this.mensaje = mensaje;
 	}
 
 }
