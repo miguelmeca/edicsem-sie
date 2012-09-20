@@ -30,15 +30,17 @@ public class EmpresaDAOImpl implements EmpresaDAO {
 	 */
 	 
 	public void insertEmpresa(EmpresaSie empresa) {
+		 
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("insertar Empresa");
-			}
+				log.info("insertar Empresa"+ empresa.getIdempresa());
+			} 
 			em.persist(empresa);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.EmpresaDAO#updateEmpresa(com.edicsem.pe.sie.entity.EmpresaSie)
 	 */
