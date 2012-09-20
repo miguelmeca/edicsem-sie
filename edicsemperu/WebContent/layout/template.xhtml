@@ -7,12 +7,14 @@
 	xmlns:p="http://primefaces.org/ui">
 <f:view contentType="text/html">
 	<h:head>
+	<meta http-equiv="X-UA-Compatible" content="IE=9" />
 		<ui:insert name="title">
 			<title>Men&uacute; Principal</title>
 		</ui:insert>
 		
 		<f:facet name="first">
 			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+			
             <title>Ediciones Sembrando</title>
 		</f:facet>
 		 <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/default.css" />
@@ -121,7 +123,7 @@
 <h:form id="formMovMercList">
 <p:confirmDialog id="confirmMovim" message="Esta seguro de eliminar dicho movimiento?" width="350" height="200" showEffect="explode" 
 				hideEffect="explode"  header="Confirm" severity="alert" widgetVar="confirmation" position="center">  
-        <p:commandButton  type="submit" value="Si"  action="#{movimientoMercaderia.quitar}"  
+        <p:commandButton  type="submit" value="Si"  actionListener="#{movimientoMercaderia.quitar}"  
         update=":formMovMerc:listaMovim" oncomplete="confirmation.hide()" ajax="false">
         </p:commandButton>  
         <p:commandButton value="No" onclick="confirmation.hide()" type="button" />  
