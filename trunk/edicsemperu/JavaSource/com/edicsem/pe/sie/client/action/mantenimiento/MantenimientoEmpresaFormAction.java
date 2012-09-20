@@ -63,7 +63,7 @@ public class MantenimientoEmpresaFormAction extends BaseMantenimientoAbstractAct
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
 	 */
 	public String insertar() throws Exception {
-		empresaSie = new EmpresaSie();
+		
 		log.info("insertar()   "+ isNewRecord());
 		empresaSie.setDescripcion(dto.getDescripcion());
 		empresaSie.setEmail(dto.getEmail()); 
@@ -78,6 +78,7 @@ public class MantenimientoEmpresaFormAction extends BaseMantenimientoAbstractAct
 		}else {
 			empresaService.updateEmpresa(empresaSie);
 		}
+		empresaSie = new EmpresaSie();
 		return getViewList();
 	}
 	
