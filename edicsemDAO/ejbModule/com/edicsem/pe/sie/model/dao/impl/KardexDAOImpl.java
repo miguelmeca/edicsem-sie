@@ -1,20 +1,15 @@
 package com.edicsem.pe.sie.model.dao.impl;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.List;
-
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import com.edicsem.pe.sie.entity.KardexSie;
-import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.model.dao.KardexDAO;
-import com.edicsem.pe.sie.model.dao.ProductoDAO;
 
 /**
  * @author karen
@@ -34,14 +29,15 @@ public class KardexDAOImpl implements KardexDAO {
 	public List ConsultaProductos(int idproducto, int idalmacen,
 			String fechaDesde, String fechaHasta) {
 		List lista = new ArrayList();
+		
+		log.info("fechas " + fechaDesde +" fecha hasta " + fechaHasta);
 		try {
-			Query q = em.createQuery("select p from KardexSie p where p.tbProducto.idproducto =:x1 and p.tbPuntoVenta.idpuntoventa =:x2 ");
+			Query q = em.createQuery("select p from KardexSie p where p.tbProducto.idproducto =:x1 and " +
+					"p.tbPuntoVenta.idpuntoventa =:x2 and p.fechacreacion between '"+ fechaDesde + "' and  '" +fechaHasta +"'");
 			q.setParameter("x1", idproducto);
-			q.setParameter("x2", idalmacen);
-			//q.setParameter("x3", fechaDesde);
-		//	q.setParameter("x4", fechaHasta);
+			q.setParameter("x2", idalmacen); 
 			lista = q.getResultList();
-			//and   p.fechacreacion between :x3 and :x4 
+
 			log.info("tamaño lista Productos kardex --> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
