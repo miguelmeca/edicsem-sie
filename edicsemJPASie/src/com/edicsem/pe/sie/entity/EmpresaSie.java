@@ -17,10 +17,11 @@ import java.util.Set;
 @Table(name="tb_empresa", schema = Constants.ESQUEMA_SIE_POSTGRE)
 public class EmpresaSie  extends BaseMantenimientoForm implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	 
 	@Id
-	@SequenceGenerator(name="TB_EMPRESA_IDEMPRESA_GENERATOR", sequenceName="SIE.TB_EMPRESA_IDEMPRESA_SEQ", initialValue=1, allocationSize =1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_EMPRESA_IDEMPRESA_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEC_TB_EMPRESA_IDEMPRESA")
+	@SequenceGenerator(name="SEC_TB_EMPRESA_IDEMPRESA", sequenceName="SIE.TB_EMPRESA_IDEMPRESA_SEQ")
+	@Column(name="idempresa")
 	private Integer idempresa;
 
 	private String descripcion;
