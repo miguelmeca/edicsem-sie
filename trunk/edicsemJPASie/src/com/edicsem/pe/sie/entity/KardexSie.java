@@ -51,6 +51,9 @@ public class KardexSie extends BaseMantenimientoForm  implements Serializable {
 	private String valorunitarioexistencia;
 
 	private String valorunitariosalida;
+	
+	@Transient
+	private int item;
 
 	//bi-directional many-to-one association to DetalleComprobanteSie
 	@OneToMany(mappedBy="tbKardex")
@@ -216,6 +219,20 @@ public class KardexSie extends BaseMantenimientoForm  implements Serializable {
 
 	public void setTbTipoKardexProducto(TipoKardexProductoSie tbTipoKardexProducto) {
 		this.tbTipoKardexProducto = tbTipoKardexProducto;
+	}
+
+	/**
+	 * @return the item
+	 */
+	public int getItem() {
+		return item;
+	}
+
+	/**
+	 * @param item the item to set
+	 */
+	public void setItem(int item) {
+		this.item = item;
 	}
 	
 }
