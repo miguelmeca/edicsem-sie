@@ -9,7 +9,8 @@ package com.edicsem.pe.sie.util.constants;
  * @author <a href="mailto:jvelasquez@edicsem.com">Jorge Luis Velasquez</a>
  */
 public class Constants {
-
+	
+	public static final String MESSAGE_INFO_TITULO = "Se registro correctamente";
 	public static final String MESSAGE_ERROR_FATAL_TITULO = "Mensaje de Error";
 	public static final String MESSAGE_ERROR_ID_NOT_FOUND = "No se encuentra el Id";
 	public static final String ESQUEMA_SIE_POSTGRE = "sie";
@@ -24,4 +25,6 @@ public class Constants {
 	public static final String MANT_EMPRESA_FORM_PAGE = "mantenimientoEmpresaForm";
 	public static final String MANT_EMPRESA_FORM_LIST_PAGE = "mantenimientoEmpresaFormList";
 	
+	public static final String MANT_PRODUCTO_FORM_PAGE = "mantenimientoProductoForm";
+	public static final String MANT_PRODUCTO_FORM_LIST_PAGE = "mantenimientoProductoFormList";
 }
