@@ -28,11 +28,13 @@
 					<f:selectItem itemLabel="Seleccione" itemValue="-1" />
 					<f:selectItems value="#{comboAction.almacenItems}" />
 				</p:selectOneMenu>
+				
 				<h:outputText value="#{message['kardex.desde']}" />
-				<p:calendar />
+				<p:calendar pattern="dd/MM/yyyy"  locale="br" effect="explode"  required="true" 
+				value="#{kardexSieAction.fechaDesde}"  requiredMessage="Ingresa fecha!" />
 
 				<h:outputText value="#{message['kardex.hasta']}" />
-				<p:calendar />
+				<p:calendar pattern="dd/MM/yyyy" required="true" value="#{kardexSieAction.fechaHasta}"  />
  
 				<p:commandButton  value="Consultar" action="#{kardexSieAction.consultar}" update=":frmKardex:listakardex,stock_actual" ></p:commandButton> 
 					  

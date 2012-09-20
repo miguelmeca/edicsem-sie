@@ -11,46 +11,53 @@
 			<p:growl id="message" showDetail="true" />
 			<p:panel header="#{message['panel.ingreso.mercaderia']}">
 				<p:panelGrid columns="6">
-
 					<h:outputText value="#{message['movimiento.tipo']}" />
 					<h:selectOneMenu   id="idtipokardex" valueChangeListener="#{movimientoMercaderia.cambioTipo}"
 						value="#{movimientoMercaderia.idtipokardexproducto}"   onchange="submit()">
-						<f:selectItem itemLabel="Seleccione tipo" itemValue="-1" />
+						<f:selectItem itemLabel="Seleccionar tipo de kardex" itemValue="-1" />
 						<f:selectItems id="tipokardex" value="#{movimientoMercaderia.tipoKardexItems}" />
 					</h:selectOneMenu>
-					
+					<p:message for="idtipokardex" />
 					<h:outputText value="#{message['mantenimiento.producto.cantidadEnt']}" rendered="#{movimientoMercaderia.editMode}" />
-					<p:spinner id="entr" size="2" min="1" 
-						value="#{movimientoMercaderia.objKardexSie.cantentrada}" rendered="#{movimientoMercaderia.editMode}" />
-						 
+					<p:spinner id="cantEntrada" min="1" value="#{movimientoMercaderia.objKardexSie.cantentrada}" 
+					rendered="#{movimientoMercaderia.editMode}" requiredMessage="#{message['movimiento.cantEntrada.validation']}"  >
+						<f:validateLength minimum="1" />
+						</p:spinner>
+						 <p:message for="cantEntrada" />
 					<h:outputText value="#{message['mantenimiento.producto.cantidadSal']}" rendered="#{!movimientoMercaderia.editMode}"  />
-					<p:spinner id="sal" size="2" min="1"
-						value="#{movimientoMercaderia.objKardexSie.cantsalida}" rendered="#{!movimientoMercaderia.editMode}" />
-						
+					<p:spinner id="cantSalida" min="1"
+						value="#{movimientoMercaderia.objKardexSie.cantsalida}" rendered="#{!movimientoMercaderia.editMode}"   >
+						<f:validateLength minimum="1" />
+						</p:spinner>
+						 <p:message for="cantSalida" />
 					<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
-					<p:selectOneMenu value="#{comboAction.tipoProducto}" required="true"  >
+					<p:selectOneMenu id="tipoProd" value="#{comboAction.tipoProducto}" required="true" >
 						<f:selectItem itemLabel="Seleccionar tipo" itemValue="-1" />
 						<f:selectItems value="#{comboAction.tipoitems}" />
 						  <p:ajax update="produc"  listener="#{comboAction.cambiar}"/>
 					</p:selectOneMenu>
-
+					<p:message for="tipoProd" />
 					<h:outputText value="#{message['mantenimiento.producto']}" />
-					<p:selectOneMenu  id="produc"
-						value="#{movimientoMercaderia.idproducto}">
+					<p:selectOneMenu  id="produc" value="#{movimientoMercaderia.idproducto}" 
+					required="true"  >
 						<f:selectItem itemLabel="Seleccione Producto" itemValue="-1" />
 						<f:selectItems value="#{comboAction.productositems}" />
 					</p:selectOneMenu>
-
-					<h:outputText size="10" value="#{message['numero.documento']}" />
-					<p:inputText id="num" size="10" value="#{movimientoMercaderia.objKardexSie.tipokardex}" />
-					
+					<p:message for="produc" />
+				 
 					<h:outputText value="#{message['mantenimiento.kardex.almacen']}" />
-					<p:selectOneMenu  size="1"
+					<p:selectOneMenu id="idAlmacen" size="1" required="true" 
 						value="#{movimientoMercaderia.idAlmacen}">
 						<f:selectItem itemLabel="Seleccione" itemValue="-1" />
 						<f:selectItems value="#{comboAction.almacenItems}" />
 					</p:selectOneMenu>
 					
+					<h:outputText value="Detalle" id="detProd" />
+				<p:inputTextarea  
+						value="#{movimientoMercaderia.objKardexSie.detallekardex}"
+						  />
+						
+					<p:message for="idAlmacen" />
 				 <p:commandButton id="btn_add" value="Añadir"
 						update=":formMovMerc: message"
 						actionListener="#{movimientoMercaderia.anadir}"
@@ -59,7 +66,12 @@
 				</p:panelGrid>
 				
 				<p:dataTable id="listaMovim" value="#{movimientoMercaderia.data}" var="d">
-				 
+				 <p:column>
+						<f:facet name="header">
+							<h:outputText value="Item" />
+						</f:facet>
+						<h:outputText value="#{d.item}" />
+					</p:column>
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Tipo de Kardex" />
@@ -94,10 +106,11 @@
 						<f:facet name="header">
 							<h:outputText value="Quitar" />
 						</f:facet> 
-							 <p:commandButton id="showConfirmMovim" value="Quitar" image="ui-icon ui-icon-pencil" 
-							 onclick="confirmation.show()" type="button"> 
-							 	<f:attribute name="d" value="#{d}" />
+							 <p:commandButton id="showConfirmMovim" value="Quitar" icon="ui-icon ui-icon-pencil" 
+							  actionListener="#{movimientoMercaderia.quitar}" update=":formMovMerc:listaMovim"  > 
+							 	<f:attribute    name="d" value="#{d.item}"  />
 					</p:commandButton>
+					    
 					</p:column> 
 				</p:dataTable> 
 				<p:commandButton id="id"
