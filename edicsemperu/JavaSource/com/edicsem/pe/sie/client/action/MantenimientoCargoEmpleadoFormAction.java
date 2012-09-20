@@ -11,11 +11,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.primefaces.model.StreamedContent;
-
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.EstadoGeneralSie;
 import com.edicsem.pe.sie.entity.TipoProductoSie;
@@ -32,7 +29,6 @@ public class MantenimientoCargoEmpleadoFormAction extends BaseMantenimientoAbstr
 	public String descripcion;
 	private Log log = LogFactory.getLog(MantenimientoCargoEmpleadoSearchAction.class);
 	private List<SelectItem> estadosItems;
-	private StreamedContent image; 
 	private CargoEmpleadoSie objCargoEmpleadoSie;
 	private DataModel<CargoEmpleadoSie> CargoEmpleadomodel;
 	private CargoEmpleadoSie selectedCargoEmpleado;
@@ -61,62 +57,32 @@ public class MantenimientoCargoEmpleadoFormAction extends BaseMantenimientoAbstr
 	public void setIdEstadoGeneral(int idEstadoGeneral) {
 		this.idEstadoGeneral = idEstadoGeneral;
 	}
-
-
-
-	public StreamedContent getImage() {
-		return image;
-	}
-
-
-
-	public void setImage(StreamedContent image) {
-		this.image = image;
-	}
-
-
-
+	
 	public CargoEmpleadoSie getObjCargoEmpleadoSie() {
 		return objCargoEmpleadoSie;
 	}
 
-
-
 	public void setObjCargoEmpleadoSie(CargoEmpleadoSie objCargoEmpleadoSie) {
 		this.objCargoEmpleadoSie = objCargoEmpleadoSie;
 	}
-
-
-
-	
-	 
 	
 	public DataModel<CargoEmpleadoSie> getCargoEmpleadomodel() throws Exception {
 		
-
 		CargoEmpleadomodel = new ListDataModel<CargoEmpleadoSie>(objCargoEmpleadoService.listarCargoEmpleado());
 		return CargoEmpleadomodel;
 	}
-
-
 
 	public void setCargoEmpleadomodel(DataModel<CargoEmpleadoSie> cargoEmpleadomodel) {
 		CargoEmpleadomodel = cargoEmpleadomodel;
 	}
 
-
-
 	public CargoEmpleadoSie getSelectedCargoEmpleado() {
 		return selectedCargoEmpleado;
 	}
 
-
-
 	public void setSelectedCargoEmpleado(CargoEmpleadoSie selectedCargoEmpleado) {
 		this.selectedCargoEmpleado = selectedCargoEmpleado;
 	}
-
-
 
 	public boolean isEditMode() {
 		return editMode;
