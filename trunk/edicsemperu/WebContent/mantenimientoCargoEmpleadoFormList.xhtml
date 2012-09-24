@@ -17,6 +17,8 @@
 					<f:facet name="header">  
           
         </f:facet>
+        
+        
 					<f:facet name="header">
 						<p:outputPanel>
 							<h:outputText value="Buscar Cargo de Empleado:" />
@@ -24,45 +26,68 @@
 								style="width:150px; align:Left; " />
 						</p:outputPanel>
 					</f:facet>
+
+					
+					
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Codigo" />
 						</f:facet>
 						<h:outputText value="#{m.idcargoempleado}" />
 					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Descripción de Cargo" />
-						</f:facet>
-						<h:outputText value="#{m.descripcion}" />
+					
+					<p:column sortBy="#{m.descripcion}" id="descripcion" filterBy="#{m.descripcion}"  
+					headerText="Descripcion" footerText="startsWith">  
+					<h:outputText value="#{m.descripcion}" />  
 					</p:column>
+							
+						
 
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Modificar" />
-						</f:facet>
-						<!-- Boton MODIFICAR -->
-						<p:commandButton update=":ModificarCargoEmpleado:display"
-							oncomplete="carDialog.show()" image="ui-icon ui-icon-pencil"
-							title="Editar los Datos">
-							<f:setPropertyActionListener value="#{m}"
-								target="#{mantenimientoCargoEmpleadoSearchAction.listar()}" />
-							<f:setPropertyActionListener value="#{true}"
-								target="#{mantenimientoProductoAction.editMode}" />
-						</p:commandButton>
-					</p:column>
+					
+					<!-- Boton Editar -->
+		
+	 <p:column headerText="Editar">
+		<p:commandButton value="Editar"  oncomplete="carDialog.show()"
+			actionListener="#{mantenimientoCargoEmpleadoFormAction.buscarCargoEmpleado}" update=":ModificarCargoEmpleado:display">
+		<f:attribute  name="idcargoempleado" value="#{m.idcargoempleado}" />	
+		</p:commandButton>
+		</p:column>
+ 
+<!-- Fin Editar -->
+
+<!-- DESACTIVAR -->
+<p:column headerText="Deshabilitar">
+
+ <p:commandButton id="showConfirmDeshabilitar" value="Quitar" image="ui-icon ui-icon-pencil" 
+ onclick="confirmation.show()" type="button"> 
+ 
+<f:attribute  name="idc" value="#{m.idcargoempleado}" />
+							 
+</p:commandButton>
+
+
+</p:column>
+<!-- DESACTIVAR -->
+
+
+
+
 
 				</p:dataTable>
 						<!-- Boton NUEVO -->
-						<p:commandButton value="Nuevo Cargo" update=":NuevoCargoEmpleado:display"
-							oncomplete="carDialog.show()" 
-							title="Editar Cargo Empleado">
+						<p:commandButton value="Nuevo Empleado"  update=":NuevoCargoEmpleado:display"
+							oncomplete="carDialogNuevo.show()" 
+							title="Ingresar Empleado">
 							
 							<f:setPropertyActionListener value="#{false}"
 								target="#{mantenimientoProductoAction.editMode}" />
 						</p:commandButton>
 						
+						<!-- Fin Nuevo -->
 						
+						
+
+			
 											
 
 		</h:form>
