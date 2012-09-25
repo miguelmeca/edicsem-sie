@@ -67,7 +67,7 @@ public class ProductoSie extends BaseMantenimientoForm  implements Serializable 
 
 	//bi-directional many-to-one association to EstadoGeneralSie
     @ManyToOne
-	@JoinColumn(name="tb_estado_general_idestadogeneral")
+	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
 
 	//bi-directional many-to-one association to TipoProductoSie
