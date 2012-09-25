@@ -19,7 +19,7 @@ public class TipoDocumentoIdentidadSie extends BaseMantenimientoForm  implements
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_TIPO_DOCUMENTO_IDENTIDAD_IDTIPODOCUMENTOIDENTIDAD_GENERATOR" )
+	@SequenceGenerator(name="TB_TIPO_DOCUMENTO_IDENTIDAD_IDTIPODOCUMENTOIDENTIDAD_GENERATOR", sequenceName="SIE.TB_TIPO_DOCUMENTO_IDENTIDAD_IDTIPODOCUMENTOIDENTIDAD_SEQ", initialValue=1, allocationSize =1 )
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_TIPO_DOCUMENTO_IDENTIDAD_IDTIPODOCUMENTOIDENTIDAD_GENERATOR")
 	private Integer idtipodocumentoidentidad;
 

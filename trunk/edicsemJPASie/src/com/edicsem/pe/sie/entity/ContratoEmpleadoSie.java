@@ -7,6 +7,7 @@ import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.math.BigDecimal;
 
 
@@ -27,6 +28,12 @@ public class ContratoEmpleadoSie  extends BaseMantenimientoForm implements Seria
 	private Timestamp fechacreacion;
 
 	private String pago;
+	
+	@Temporal( TemporalType.DATE)
+	private Date fechainiciopatrocinio;
+	
+	@Temporal( TemporalType.DATE)
+	private Date fechafinpatrocinio;
 
 	//bi-directional many-to-one association to ContratoSie
     @ManyToOne
@@ -47,7 +54,12 @@ public class ContratoEmpleadoSie  extends BaseMantenimientoForm implements Seria
     @ManyToOne
 	@JoinColumn(name="idproducto")
 	private ProductoSie tbProducto;
-
+    
+    //bi-directional many-to-one association to EstadoGeneralSie
+    @ManyToOne
+	@JoinColumn(name="idestadogeneral")
+	private EstadoGeneralSie tbEstadoGeneral;
+    
     public ContratoEmpleadoSie() {
     }
 
@@ -113,6 +125,30 @@ public class ContratoEmpleadoSie  extends BaseMantenimientoForm implements Seria
 
 	public void setTbProducto(ProductoSie tbProducto) {
 		this.tbProducto = tbProducto;
+	}
+	
+	public Date getFechainiciopatrocinio() {
+		return fechainiciopatrocinio;
+	}
+
+	public void setFechainiciopatrocinio(Date fechainiciopatrocinio) {
+		this.fechainiciopatrocinio = fechainiciopatrocinio;
+	}
+	
+	public Date getFechafinpatrocinio() {
+		return fechafinpatrocinio;
+	}
+	
+	public void setFechafinpatrocinio(Date fechafinpatrocinio) {
+		this.fechafinpatrocinio = fechafinpatrocinio;
+	}
+
+	public EstadoGeneralSie getTbEstadoGeneral() {
+		return tbEstadoGeneral;
+	}
+
+	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
+		this.tbEstadoGeneral = tbEstadoGeneral;
 	}
 	
 }

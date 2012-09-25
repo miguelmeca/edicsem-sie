@@ -6,6 +6,7 @@ import javax.persistence.*;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Set;
 
@@ -31,14 +32,11 @@ public class KardexSie extends BaseMantenimientoForm  implements Serializable {
 	private Integer cantsalida;
 
 	private String detallekardex;
-
-    @Temporal( TemporalType.DATE)
-	private Date fechacreacion;
+ 
+	private Timestamp fechacreacion;
 
     @Temporal( TemporalType.DATE)
 	private Date fechamodifica;
-
-	private String tipokardex;
 
 	private String usuariocreacion;
 
@@ -51,9 +49,6 @@ public class KardexSie extends BaseMantenimientoForm  implements Serializable {
 	private String valorunitarioexistencia;
 
 	private String valorunitariosalida;
-	
-	@Transient
-	private int item;
 
 	//bi-directional many-to-one association to DetalleComprobanteSie
 	@OneToMany(mappedBy="tbKardex")
@@ -117,11 +112,11 @@ public class KardexSie extends BaseMantenimientoForm  implements Serializable {
 		this.detallekardex = detallekardex;
 	}
 
-	public Date getFechacreacion() {
-		return this.fechacreacion;
+	public Timestamp getFechacreacion() {
+		return fechacreacion;
 	}
 
-	public void setFechacreacion(Date fechacreacion) {
+	public void setFechacreacion(Timestamp fechacreacion) {
 		this.fechacreacion = fechacreacion;
 	}
 
@@ -131,14 +126,6 @@ public class KardexSie extends BaseMantenimientoForm  implements Serializable {
 
 	public void setFechamodifica(Date fechamodifica) {
 		this.fechamodifica = fechamodifica;
-	}
-
-	public String getTipokardex() {
-		return this.tipokardex;
-	}
-
-	public void setTipokardex(String tipokardex) {
-		this.tipokardex = tipokardex;
 	}
 
 	public String getUsuariocreacion() {
@@ -220,19 +207,4 @@ public class KardexSie extends BaseMantenimientoForm  implements Serializable {
 	public void setTbTipoKardexProducto(TipoKardexProductoSie tbTipoKardexProducto) {
 		this.tbTipoKardexProducto = tbTipoKardexProducto;
 	}
-
-	/**
-	 * @return the item
-	 */
-	public int getItem() {
-		return item;
-	}
-
-	/**
-	 * @param item the item to set
-	 */
-	public void setItem(int item) {
-		this.item = item;
-	}
-	
 }

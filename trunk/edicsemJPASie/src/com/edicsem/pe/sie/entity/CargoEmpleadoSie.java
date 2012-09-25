@@ -3,8 +3,6 @@ package com.edicsem.pe.sie.entity;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Set;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,7 +30,7 @@ public class CargoEmpleadoSie  extends BaseMantenimientoForm implements Serializ
 	@SequenceGenerator(name="TB_CARGO_EMPLEADO_IDCARGOEMPLEADO_GENERATOR", sequenceName="SIE.TB_CARGO_EMPLEADO_IDCARGOEMPLEADO_SEQ", initialValue=1, allocationSize =1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_CARGO_EMPLEADO_IDCARGOEMPLEADO_GENERATOR")
 	private Integer idcargoempleado;
-	@Column(name="descipcion")
+	
 	private String descripcion;
 
 	private Timestamp fechacreacion;

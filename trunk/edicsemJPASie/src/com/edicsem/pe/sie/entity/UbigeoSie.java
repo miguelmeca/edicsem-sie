@@ -19,7 +19,7 @@ public class UbigeoSie extends BaseMantenimientoForm  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_UBIGEO_IDUBIGEO_GENERATOR" )
+	@SequenceGenerator(name="TB_UBIGEO_IDUBIGEO_GENERATOR", sequenceName="SIE.TB_UBIGEO_IDUBIGEO_SEQ", initialValue=1, allocationSize =1 )
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_UBIGEO_IDUBIGEO_GENERATOR")
 	private Integer idubigeo;
 

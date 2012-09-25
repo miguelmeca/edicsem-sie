@@ -13,11 +13,11 @@ import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
 public class CobranzaSiePK  extends BaseMantenimientoForm implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
-
+	
 	private Integer idcobranza;
-
+	
 	private Integer idcliente;
-
+	
 	private Integer idcontrato;
 
     public CobranzaSiePK() {
