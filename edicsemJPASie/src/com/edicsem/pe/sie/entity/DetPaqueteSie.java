@@ -15,7 +15,7 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name="tb_det_paquete", schema = Constants.ESQUEMA_SIE_POSTGRE)
-public class DetPaqueteSie  extends BaseMantenimientoForm implements Serializable {
+public class DetPaqueteSie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

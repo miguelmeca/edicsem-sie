@@ -17,7 +17,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name="tb_contrato_empleado", schema = Constants.ESQUEMA_SIE_POSTGRE)
-public class ContratoEmpleadoSie  extends BaseMantenimientoForm implements Serializable {
+public class ContratoEmpleadoSie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId

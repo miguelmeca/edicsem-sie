@@ -16,7 +16,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name="tb_meta_empresa", schema = Constants.ESQUEMA_SIE_POSTGRE)
-public class MetaEmpresaSie extends BaseMantenimientoForm  implements Serializable {
+public class MetaEmpresaSie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

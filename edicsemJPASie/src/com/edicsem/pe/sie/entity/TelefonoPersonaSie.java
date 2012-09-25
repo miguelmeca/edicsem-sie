@@ -13,7 +13,7 @@ import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
  */
 @Entity
 @Table(name="tb_telefono_persona", schema = Constants.ESQUEMA_SIE_POSTGRE)
-public class TelefonoPersonaSie extends BaseMantenimientoForm  implements Serializable {
+public class TelefonoPersonaSie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

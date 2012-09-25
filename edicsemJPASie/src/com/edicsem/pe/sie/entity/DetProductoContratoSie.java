@@ -11,7 +11,7 @@ import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
  */
 @Entity
 @Table(name="tb_det_producto_contrato", schema = Constants.ESQUEMA_SIE_POSTGRE)
-public class DetProductoContratoSie  extends BaseMantenimientoForm implements Serializable {
+public class DetProductoContratoSie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

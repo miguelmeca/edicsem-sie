@@ -15,7 +15,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name="tb_ubigeo", schema = Constants.ESQUEMA_SIE_POSTGRE)
-public class UbigeoSie extends BaseMantenimientoForm  implements Serializable {
+public class UbigeoSie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

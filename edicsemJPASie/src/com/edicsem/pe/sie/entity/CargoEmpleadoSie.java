@@ -23,7 +23,7 @@ import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
  */
 @Entity
 @Table(name="tb_cargo_empleado", schema = Constants.ESQUEMA_SIE_POSTGRE)
-public class CargoEmpleadoSie  extends BaseMantenimientoForm implements Serializable {
+public class CargoEmpleadoSie  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

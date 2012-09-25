@@ -15,7 +15,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name="tb_tipo_kardex_producto", schema = Constants.ESQUEMA_SIE_POSTGRE)
-public class TipoKardexProductoSie extends BaseMantenimientoForm  implements Serializable {
+public class TipoKardexProductoSie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
