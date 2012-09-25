@@ -18,7 +18,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name="tb_cobranza", schema = Constants.ESQUEMA_SIE_POSTGRE)
-public class CobranzaSie  extends BaseMantenimientoForm implements Serializable {
+public class CobranzaSie   implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId

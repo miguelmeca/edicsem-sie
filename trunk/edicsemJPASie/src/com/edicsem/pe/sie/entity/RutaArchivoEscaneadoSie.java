@@ -15,7 +15,7 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name="tb_ruta_archivo_escaneado", schema = Constants.ESQUEMA_SIE_POSTGRE)
-public class RutaArchivoEscaneadoSie extends BaseMantenimientoForm  implements Serializable {
+public class RutaArchivoEscaneadoSie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

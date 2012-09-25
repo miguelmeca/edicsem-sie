@@ -15,7 +15,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name="tb_tipo_documento_identidad", schema = Constants.ESQUEMA_SIE_POSTGRE)
-public class TipoDocumentoIdentidadSie extends BaseMantenimientoForm  implements Serializable {
+public class TipoDocumentoIdentidadSie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

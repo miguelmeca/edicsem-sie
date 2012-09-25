@@ -17,7 +17,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name="tb_comprobante", schema = Constants.ESQUEMA_SIE_POSTGRE)
-public class ComprobanteSie  extends BaseMantenimientoForm implements Serializable {
+public class ComprobanteSie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

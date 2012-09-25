@@ -13,7 +13,7 @@ import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
  */
 @Entity
 @Table(name="tb_parametro_sistema", schema = Constants.ESQUEMA_SIE_POSTGRE)
-public class ParametroSistemaSie extends BaseMantenimientoForm  implements Serializable {
+public class ParametroSistemaSie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

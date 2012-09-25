@@ -16,7 +16,7 @@ import java.sql.Time;
  */
 @Entity
 @Table(name="tb_horario_asistencia", schema = Constants.ESQUEMA_SIE_POSTGRE)
-public class HorarioAsistenciaSie  extends BaseMantenimientoForm implements Serializable {
+public class HorarioAsistenciaSie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId

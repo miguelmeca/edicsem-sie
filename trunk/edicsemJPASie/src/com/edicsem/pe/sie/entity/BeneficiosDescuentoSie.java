@@ -24,7 +24,7 @@ import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
  */
 @Entity
 @Table(name="tb_beneficios_descuento", schema = Constants.ESQUEMA_SIE_POSTGRE)
-public class BeneficiosDescuentoSie  extends BaseMantenimientoForm implements Serializable {
+public class BeneficiosDescuentoSie  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
