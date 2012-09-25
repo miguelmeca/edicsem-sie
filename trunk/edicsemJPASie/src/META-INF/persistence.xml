@@ -47,7 +47,7 @@
 		<class>com.edicsem.pe.sie.entity.DetProductoContratoSie</class>
 	<properties>
 			<property name="eclipselink.jdbc.driver" value="org.postgresql.Driver" />
-			<property name="eclipselink.jdbc.url" value="jdbc:postgres://192.168.1.2:5432/bd" />
+			<property name="eclipselink.jdbc.url" value="jdbc:postgres://192.168.1.2:5432/bd_sie" />
 			<property name="eclipselink.jdbc.user" value="postgres" />
 			<property name="eclipselink.jdbc.password" value="Edicsem2011" />
 			<property name="eclipselink.logging.level" value="FINE" />
