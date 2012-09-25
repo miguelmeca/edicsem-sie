@@ -7,6 +7,7 @@ import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Set;
 
 
@@ -33,8 +34,9 @@ public class EmpleadoSie  extends BaseMantenimientoForm implements Serializable 
 	private Timestamp fechacreacion;
 
 	private Timestamp fechamodifica;
-
-	private String fechanacimiento;
+	
+    @Temporal( TemporalType.DATE)
+	private Date fechanacimiento;
 
 	private String nombreemp;
 
@@ -155,11 +157,11 @@ public class EmpleadoSie  extends BaseMantenimientoForm implements Serializable 
 		this.fechamodifica = fechamodifica;
 	}
 
-	public String getFechanacimiento() {
-		return this.fechanacimiento;
+	public Date getFechanacimiento() {
+		return fechanacimiento;
 	}
 
-	public void setFechanacimiento(String fechanacimiento) {
+	public void setFechanacimiento(Date fechanacimiento) {
 		this.fechanacimiento = fechanacimiento;
 	}
 
