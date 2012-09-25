@@ -69,6 +69,10 @@ public class EstadoGeneralSie  extends BaseMantenimientoForm implements Serializ
 	//bi-directional many-to-one association to TelefonoPersonaSie
 	@OneToMany(mappedBy="tbEstadoGeneral")
 	private Set<TelefonoPersonaSie> tbTelefonoPersonas;
+	
+	//bi-directional many-to-one association to ContratoEmpleadoSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<TelefonoPersonaSie> tbContratoEmpleados;
 
 	//bi-directional many-to-one association to TipoCasaSie
 	@OneToMany(mappedBy="tbEstadoGeneral")
@@ -219,6 +223,14 @@ public class EstadoGeneralSie  extends BaseMantenimientoForm implements Serializ
 
 	public void setTbTipoKardexProductos(Set<TipoKardexProductoSie> tbTipoKardexProductos) {
 		this.tbTipoKardexProductos = tbTipoKardexProductos;
+	}
+
+	public Set<TelefonoPersonaSie> getTbContratoEmpleados() {
+		return tbContratoEmpleados;
+	}
+
+	public void setTbContratoEmpleados(Set<TelefonoPersonaSie> tbContratoEmpleados) {
+		this.tbContratoEmpleados = tbContratoEmpleados;
 	}
 	
 }

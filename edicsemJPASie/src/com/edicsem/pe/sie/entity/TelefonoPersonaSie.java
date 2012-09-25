@@ -6,8 +6,6 @@ import javax.persistence.*;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
 
-import java.util.Set;
-
 
 /**
  * The persistent class for the tb_telefono_persona database table.
@@ -28,12 +26,14 @@ public class TelefonoPersonaSie extends BaseMantenimientoForm  implements Serial
 	private String tipotelefono;
 
 	//bi-directional many-to-one association to ClienteSie
-	@OneToMany(mappedBy="tbTelefonoPersona")
-	private Set<ClienteSie> tbClientes;
-
-	//bi-directional many-to-one association to EmpleadoSie
-	@OneToMany(mappedBy="tbTelefonoPersona")
-	private Set<EmpleadoSie> tbEmpleados;
+    @ManyToOne
+	@JoinColumn(name="idcliente")
+	private ClienteSie idcliente;
+    
+    //bi-directional many-to-one association to EmpleadoSie
+    @ManyToOne
+	@JoinColumn(name="idempleado")
+	private EmpleadoSie idempleado;
 
 	//bi-directional many-to-one association to EstadoGeneralSie
     @ManyToOne
@@ -66,29 +66,29 @@ public class TelefonoPersonaSie extends BaseMantenimientoForm  implements Serial
 	public void setTipotelefono(String tipotelefono) {
 		this.tipotelefono = tipotelefono;
 	}
-
-	public Set<ClienteSie> getTbClientes() {
-		return this.tbClientes;
-	}
-
-	public void setTbClientes(Set<ClienteSie> tbClientes) {
-		this.tbClientes = tbClientes;
-	}
 	
-	public Set<EmpleadoSie> getTbEmpleados() {
-		return this.tbEmpleados;
+	public EmpleadoSie getIdempleado() {
+		return idempleado;
 	}
 
-	public void setTbEmpleados(Set<EmpleadoSie> tbEmpleados) {
-		this.tbEmpleados = tbEmpleados;
+	public void setIdempleado(EmpleadoSie idempleado) {
+		this.idempleado = idempleado;
 	}
-	
+
 	public EstadoGeneralSie getTbEstadoGeneral() {
 		return this.tbEstadoGeneral;
 	}
 
 	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
 		this.tbEstadoGeneral = tbEstadoGeneral;
+	}
+
+	public ClienteSie getIdcliente() {
+		return idcliente;
+	}
+
+	public void setIdcliente(ClienteSie idcliente) {
+		this.idcliente = idcliente;
 	}
 	
 }

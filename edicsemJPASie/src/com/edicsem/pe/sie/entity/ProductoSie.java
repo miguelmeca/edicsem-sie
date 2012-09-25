@@ -74,6 +74,10 @@ public class ProductoSie extends BaseMantenimientoForm  implements Serializable 
     @ManyToOne
 	@JoinColumn(name="idtipoproducto")
 	private TipoProductoSie tbTipoProducto;
+    
+    //bi-directional many-to-one association to DetProductoContratoSie
+  	@OneToMany(mappedBy="tbProducto")
+  	private Set<DetProductoContratoSie> tbDetProductoContrato;
 
     public ProductoSie() {
     }
@@ -236,6 +240,15 @@ public class ProductoSie extends BaseMantenimientoForm  implements Serializable 
 
 	public void setTbTipoProducto(TipoProductoSie tbTipoProducto) {
 		this.tbTipoProducto = tbTipoProducto;
+	}
+
+	public Set<DetProductoContratoSie> getTbDetProductoContrato() {
+		return tbDetProductoContrato;
+	}
+
+	public void setTbDetProductoContrato(
+			Set<DetProductoContratoSie> tbDetProductoContrato) {
+		this.tbDetProductoContrato = tbDetProductoContrato;
 	}
 	
 }

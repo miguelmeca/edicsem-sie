@@ -21,7 +21,7 @@ public class DetPaqueteSie  extends BaseMantenimientoForm implements Serializabl
 	@Id
 	@SequenceGenerator(name="TB_DET_PAQUETE_IDDETPAQUETE_GENERATOR", sequenceName="SIE.TB_DET_PAQUETE_IDDETPAQUETE_SEQ", initialValue=1, allocationSize =1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_DET_PAQUETE_IDDETPAQUETE_GENERATOR")
-	@Column(name="\"idDetPaquete\"")
+	@Column(name="idDetPaquete")
 	private Integer idDetPaquete;
 
 	private Timestamp fechacreacion;

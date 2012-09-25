@@ -82,7 +82,11 @@ public class ContratoSie  extends BaseMantenimientoForm implements Serializable 
 	//bi-directional many-to-one association to RutaArchivoEscaneadoSie
 	@OneToMany(mappedBy="tbContrato")
 	private Set<RutaArchivoEscaneadoSie> tbRutaArchivoEscaneados;
-
+	
+	//bi-directional many-to-one association to DetProductoContratoSie
+  	@OneToMany(mappedBy="tbContrato")
+  	private Set<DetProductoContratoSie> tbDetProductoContrato;
+	
     public ContratoSie() {
     }
 
@@ -252,6 +256,15 @@ public class ContratoSie  extends BaseMantenimientoForm implements Serializable 
 
 	public void setTbRutaArchivoEscaneados(Set<RutaArchivoEscaneadoSie> tbRutaArchivoEscaneados) {
 		this.tbRutaArchivoEscaneados = tbRutaArchivoEscaneados;
+	}
+
+	public Set<DetProductoContratoSie> getTbDetProductoContrato() {
+		return tbDetProductoContrato;
+	}
+
+	public void setTbDetProductoContrato(
+			Set<DetProductoContratoSie> tbDetProductoContrato) {
+		this.tbDetProductoContrato = tbDetProductoContrato;
 	}
 	
 }

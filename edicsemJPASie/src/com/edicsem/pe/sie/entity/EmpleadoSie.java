@@ -74,12 +74,11 @@ public class EmpleadoSie  extends BaseMantenimientoForm implements Serializable 
     @ManyToOne
 	@JoinColumn(name="iddomicilioempleado")
 	private DomicilioPersonaSie tbDomicilioPersona;
-
-	//bi-directional many-to-one association to TelefonoPersonaSie
-    @ManyToOne
-	@JoinColumn(name="idtelefonoempleado")
-	private TelefonoPersonaSie tbTelefonoPersona;
-
+    
+    //bi-directional many-to-one association to TelefonoPersonaSie
+  	@OneToMany(mappedBy="idempleado")
+  	private Set<TelefonoPersonaSie> tbTelefonoPersona;
+  	
 	//bi-directional many-to-one association to TipoDocumentoIdentidadSie
     @ManyToOne
 	@JoinColumn(name="idtipodocumentoidentidad")
@@ -252,14 +251,15 @@ public class EmpleadoSie  extends BaseMantenimientoForm implements Serializable 
 		this.tbDomicilioPersona = tbDomicilioPersona;
 	}
 	
-	public TelefonoPersonaSie getTbTelefonoPersona() {
-		return this.tbTelefonoPersona;
+	
+	public Set<TelefonoPersonaSie> getTbTelefonoPersona() {
+		return tbTelefonoPersona;
 	}
 
-	public void setTbTelefonoPersona(TelefonoPersonaSie tbTelefonoPersona) {
+	public void setTbTelefonoPersona(Set<TelefonoPersonaSie> tbTelefonoPersona) {
 		this.tbTelefonoPersona = tbTelefonoPersona;
 	}
-	
+
 	public TipoDocumentoIdentidadSie getTbTipoDocumentoIdentidad() {
 		return this.tbTipoDocumentoIdentidad;
 	}

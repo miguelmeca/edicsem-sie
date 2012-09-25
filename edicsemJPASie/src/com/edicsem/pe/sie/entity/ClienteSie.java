@@ -54,11 +54,10 @@ public class ClienteSie  extends BaseMantenimientoForm implements Serializable {
     @ManyToOne
 	@JoinColumn(name="iddomiciliocliente")
 	private DomicilioPersonaSie tbDomicilioPersona;
-
-	//bi-directional many-to-one association to TelefonoPersonaSie
-    @ManyToOne
-	@JoinColumn(name="idtelefonocliente")
-	private TelefonoPersonaSie tbTelefonoPersona;
+    
+    //bi-directional many-to-one association to TelefonoPersonaSie
+  	@OneToMany(mappedBy="idcliente")
+  	private Set<TelefonoPersonaSie> tbTelefonoPersona;
 
 	//bi-directional many-to-one association to TipoDocumentoIdentidadSie
     @ManyToOne
@@ -195,14 +194,7 @@ public class ClienteSie  extends BaseMantenimientoForm implements Serializable {
 	public void setTbDomicilioPersona(DomicilioPersonaSie tbDomicilioPersona) {
 		this.tbDomicilioPersona = tbDomicilioPersona;
 	}
-	
-	public TelefonoPersonaSie getTbTelefonoPersona() {
-		return this.tbTelefonoPersona;
-	}
-
-	public void setTbTelefonoPersona(TelefonoPersonaSie tbTelefonoPersona) {
-		this.tbTelefonoPersona = tbTelefonoPersona;
-	}
+	 
 	
 	public TipoDocumentoIdentidadSie getTbTipoDocumentoIdentidad() {
 		return this.tbTipoDocumentoIdentidad;
@@ -226,6 +218,14 @@ public class ClienteSie  extends BaseMantenimientoForm implements Serializable {
 
 	public void setTbContratos(Set<ContratoSie> tbContratos) {
 		this.tbContratos = tbContratos;
+	}
+
+	public Set<TelefonoPersonaSie> getTbTelefonoPersona() {
+		return tbTelefonoPersona;
+	}
+
+	public void setTbTelefonoPersona(Set<TelefonoPersonaSie> tbTelefonoPersona) {
+		this.tbTelefonoPersona = tbTelefonoPersona;
 	}
 	
 }
