@@ -45,7 +45,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 	
 	private boolean editMode;
 	private CargoEmpleadoSie nuevo;
-	private int idEstadoGeneral;
+	private int idEstadoGeneral, idc;
 	private boolean newRecord = false;
 
 	@EJB
@@ -226,7 +226,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 	 * #agregar()
 	 */
 
-	public String agregar() throws Exception {
+	public String agregar(){
 		log.info("agregar()");
 		setNewRecord(true);
 		return insertar();
@@ -238,12 +238,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		return insertar();
 	}
 	
-	
-	
-	
-	
-	
-	public String insertar() throws Exception {
+	public String insertar(){
 		log.info("insertar() " + isNewRecord());
 
 /*  --->  */objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService
@@ -376,7 +371,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 				log.info("Entering my method 'updateDESHABILITAR()'");
 			}
 
-			parametroObtenido = Integer.parseInt(ae.getComponent().getAttributes().get("idc").toString());
+			parametroObtenido =  getIdc();
 			log.info(" ------>>>>>>aqui cactura el parametro ID " + parametroObtenido);
 			
 			
@@ -407,6 +402,15 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		objCargoEmpleadoSie = new CargoEmpleadoSie();
 		
 		return getViewList();
+	}
+
+	public int getIdc() {
+		log.info("IDC *** " +idc ) ;
+		return idc;
+	}
+
+	public void setIdc(int idc) {
+		this.idc = idc;
 	}
 
 }
