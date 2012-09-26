@@ -1,5 +1,4 @@
 package com.edicsem.pe.sie.client.action;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +14,7 @@ import org.apache.commons.logging.LogFactory;
 import org.primefaces.model.StreamedContent;
 
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
+import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
@@ -33,6 +33,7 @@ public class MantenimientoCargoEmpleadoSearchAction extends BaseMantenimientoAbs
 	private boolean editMode;
 	private CargoEmpleadoSie nuevo ; 
 	private  int idEstadoGeneral;
+	private List<CargoEmpleadoService> cargoempresaList;
 
 	@EJB 
 	private CargoEmpleadoService objCargoEmpleadoService;
@@ -40,6 +41,40 @@ public class MantenimientoCargoEmpleadoSearchAction extends BaseMantenimientoAbs
 	@EJB 
 	private EstadogeneralService objEstadoGeneralService;
  
+	
+
+
+/*aqui hay otra manera de listar los cargos de los empleados......*/
+		
+	public DataModel<CargoEmpleadoSie> getCargoEmpleadomodel() throws Exception {
+		
+
+		CargoEmpleadomodel = new ListDataModel<CargoEmpleadoSie>(objCargoEmpleadoService.listarCargoEmpleado());
+		return CargoEmpleadomodel;
+	}
+
+	/* 
+	  	
+		public String listar() {
+	   log.info("listarCargo EMpleado 'MantenimientoCargoEmpleadoSearchAction' ");
+	   cargoempresaList = objCargoEmpleadoService.listarCargoEmpleado(); 
+	   if (cargoempresaList == null) {
+		   cargoempresaList = new ArrayList<CargoEmpleadoService>();
+	   }
+		
+	  return getViewList();
+	   }
+*/
+
+		
+		
+		
+		
+		
+	public void setCargoEmpleadomodel(DataModel<CargoEmpleadoSie> cargoEmpleadomodel) {
+		CargoEmpleadomodel = cargoEmpleadomodel;
+	}
+
 	/**
 	 * @return the idEstadoGeneral
 	 */
@@ -79,26 +114,6 @@ public class MantenimientoCargoEmpleadoSearchAction extends BaseMantenimientoAbs
 	public void setObjCargoEmpleadoSie(CargoEmpleadoSie objCargoEmpleadoSie) {
 		this.objCargoEmpleadoSie = objCargoEmpleadoSie;
 	}
-
-
-
-	
-	 
-	
-	public DataModel<CargoEmpleadoSie> getCargoEmpleadomodel() throws Exception {
-		
-
-		CargoEmpleadomodel = new ListDataModel<CargoEmpleadoSie>(objCargoEmpleadoService.listarCargoEmpleado());
-		return CargoEmpleadomodel;
-	}
-
-
-
-	public void setCargoEmpleadomodel(DataModel<CargoEmpleadoSie> cargoEmpleadomodel) {
-		CargoEmpleadomodel = cargoEmpleadomodel;
-	}
-
-
 
 	public CargoEmpleadoSie getSelectedCargoEmpleado() {
 		return selectedCargoEmpleado;
@@ -186,10 +201,6 @@ public class MantenimientoCargoEmpleadoSearchAction extends BaseMantenimientoAbs
 		nuevo = new CargoEmpleadoSie();
 	}
 	
-	
-	
-	
-
 	
 
 	/**
