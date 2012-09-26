@@ -57,39 +57,20 @@
 
 <!-- DESACTIVAR -->
 <p:column headerText="Deshabilitar">
-
- <p:commandButton id="showConfirmDeshabilitar" value="Quitar" image="ui-icon ui-icon-pencil" 
- onclick="confirmation.show()" type="button"> 
- 
-<f:attribute  name="idc" value="#{m.idcargoempleado}" />
-							 
+ <p:commandButton id="showConfirmDeshabilitar" value="Quitar" icon="ui-icon ui-icon-pencil" 
+ onclick="confirmation.show()"> 
+<f:setPropertyActionListener value="#{m.idcargoempleado}" target="#{mantenimientoCargoEmpleadoFormAction.idc}" />
 </p:commandButton>
-
-<!--<h:outputText value="#{m.idcargoempleado}" /> aquita -->
 </p:column>
-<!-- DESACTIVAR -->
-
-
-
-
 
 				</p:dataTable>
 						<!-- Boton NUEVO -->
 						<p:commandButton value="Nuevo Empleado"  update=":NuevoCargoEmpleado:display"
 							oncomplete="carDialogNuevo.show()" 
 							title="Ingresar Empleado">
-							
-							<f:setPropertyActionListener value="#{false}"
-								target="#{mantenimientoProductoAction.editMode}" />
 						</p:commandButton>
 						
 						<!-- Fin Nuevo -->
-						
-						
-
-			
-											
-
 		</h:form>
 	</ui:define>
 </ui:composition>
