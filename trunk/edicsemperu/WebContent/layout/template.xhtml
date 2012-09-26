@@ -7,14 +7,12 @@
 	xmlns:p="http://primefaces.org/ui">
 <f:view contentType="text/html">
 	<h:head>
-	<meta http-equiv="X-UA-Compatible" content="IE=9" />
 		<ui:insert name="title">
 			<title>Men&uacute; Principal</title>
 		</ui:insert>
 		
 		<f:facet name="first">
 			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-			
             <title>Ediciones Sembrando</title>
 		</f:facet>
 		 <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/default.css" />
@@ -123,7 +121,7 @@
 <h:form id="formMovMercList">
 <p:confirmDialog id="confirmMovim" message="Esta seguro de eliminar dicho movimiento?" width="350" height="200" showEffect="explode" 
 				hideEffect="explode"  header="Confirm" severity="alert" widgetVar="confirmation" position="center">  
-        <p:commandButton  type="submit" value="Si"  actionListener="#{movimientoMercaderia.quitar}"  
+        <p:commandButton  type="submit" value="Si"  action="#{movimientoMercaderia.quitar}"  
         update=":formMovMerc:listaMovim" oncomplete="confirmation.hide()" ajax="false">
         </p:commandButton>  
         <p:commandButton value="No" onclick="confirmation.hide()" type="button" />  
@@ -168,12 +166,12 @@
 
 
 
-<!-- PUPAD DE CARGO EMPLEADO -->
+<!-- PUPAD DE NUEVO CARGO EMPLEADO -->
 
 
 
 <h:form id="NuevoCargoEmpleado">
-	<p:dialog header="Detalle CargoEmpleado" widgetVar="carDialog" 
+	<p:dialog header="Ingrese Nuevo Cargo" widgetVar="carDialogNuevo" 
 		showEffect="fade" hideEffect="explode" modal="true" width="450"
 		position="center">
 		<h:panelGrid id="display" columns="2" cellpadding="2"
@@ -197,7 +195,7 @@
 						<h:selectOneListbox size="1" id="est_general"
 						value="#{mantenimientoCargoEmpleadoFormAction.idEstadoGeneral}">
 						<f:selectItem itemValue="1" itemLabel="Seleccionar tipo" />
-						<f:selectItems value="#{mantenimientoCargoEmpleadoFormAction.estadosItems}" />
+						<f:selectItems value="#{comboAction.estadoitems}" />
 					</h:selectOneListbox>
 						
 						
@@ -208,7 +206,7 @@
 				<p:message  for="est_general"></p:message>
 					
 					<p:spacer height="70px"></p:spacer>
-					<p:commandButton id="btn" value="Guardar" update="panel" action="#{mantenimientoCargoEmpleadoFormAction.insertar}" ajax="false"/>
+					<p:commandButton id="btn" value="Guardar" update="panel" action="#{mantenimientoCargoEmpleadoFormAction.agregar}" ajax="false"/>
 				
 				</h:panelGroup>
 			
@@ -216,11 +214,11 @@
 	</p:dialog>
 </h:form>
 
-<!-- PUPAD CARGO EMPLEADO MODIFICAR -->
+<!-- PUPAD CARGO EMPLEADO EDITAR -->
 
 
 <h:form id="ModificarCargoEmpleado">
-	<p:dialog header="Modificar Cargo Empleado" widgetVar="carDialog" 
+	<p:dialog header="Modificar" widgetVar="carDialog" 
 		showEffect="fade" hideEffect="explode" modal="true" width="450"
 		position="center">
 		<h:panelGrid id="display" columns="2" cellpadding="2"
@@ -230,8 +228,8 @@
 				<h:panelGroup>
 				
 					<h:inputText 
-						value="#{mantenimientoCargoEmpleadoFormAction.objCargoEmpleadoSie.descripcion}"
-						style="font-weight:bold"
+						value="#{mantenimientoCargoEmpleadoFormAction.idcargoempleado}"
+						style="font-weight:bold" readonly="true"
 						 />
 						 
 				</h:panelGroup>
@@ -240,7 +238,7 @@
 				<h:panelGroup>
 				
 					<h:inputText 
-						value="#{mantenimientoCargoEmpleadoFormAction.objCargoEmpleadoSie.descripcion}"
+						value="#{mantenimientoCargoEmpleadoFormAction.descripcion}"
 						style="font-weight:bold"
 						 />
 						 
@@ -250,26 +248,65 @@
 				<h:panelGroup>
 					
 						<h:selectOneListbox size="1" id="est_general"
-						value="#{mantenimientoCargoEmpleadoFormAction.idEstadoGeneral}">
+						value="#{mantenimientoCargoEmpleadoFormAction.idEstadoGeneral}" readonly="true">
 						<f:selectItem itemValue="1" itemLabel="Seleccionar tipo" />
-						<f:selectItems value="#{mantenimientoCargoEmpleadoFormAction.estadosItems}" />
+						<f:selectItems value="#{comboAction.estadoitems}"  />
 					</h:selectOneListbox>
 						
 						
 				</h:panelGroup>
+				
 				
 				<h:panelGroup>
 				
 				<p:message  for="est_general"></p:message>
 					
 					<p:spacer height="70px"></p:spacer>
-					<p:commandButton id="btn" value="Guardar" update="panel" action="#{mantenimientoCargoEmpleadoFormAction.insertar}" ajax="false"/>
+					<p:commandButton id="btn" value="Guardar" update="panel" action="#{mantenimientoCargoEmpleadoFormAction.update}" ajax="false"/>
 				
 				</h:panelGroup>
 			
 		</h:panelGrid>
 	</p:dialog>
 </h:form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--DESACTIVAR  -->
+<h:form>
+<p:confirmDialog id="confirmDeshabilitar" message="Esta seguro de deshabilitar dicho movimiento?" width="350" height="200" showEffect="explode" 
+				hideEffect="explode"  header="Confirm" severity="alert" widgetVar="confirmation" position="center">
+		<!-- coje el widgetVar="confirmation" -->
+					  
+		
+<h:outputText value="#{m.idcargoempleado}" /><!-- diego -->
+			  
+        <p:commandButton  type="submit" value="Si"  actionListener="#{mantenimientoCargoEmpleadoFormAction.updateDeshabilitar}"  
+        update=":manteCargoEmpleado:listaPersonas" oncomplete="confirmation.hide()" ajax="false">
+        </p:commandButton>  
+        <p:commandButton value="No" onclick="confirmation.hide()" type="button" />  
+    </p:confirmDialog>
+    </h:form>
+    <!-- Fin DESACTICAR (ESTADOS) -->
+
+
+
+
+
 
 	<ui:insert name="highlight">
                 <script language="javascript" src="#{request.contextPath}/syntaxhighlighter/scripts/sh.js"></script>
