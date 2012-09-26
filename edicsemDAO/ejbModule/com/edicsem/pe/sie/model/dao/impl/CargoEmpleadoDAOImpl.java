@@ -44,13 +44,15 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 	}
 
 	public void actualizarCargoEmpleado(CargoEmpleadoSie cargoempleado) {
-		em.getTransaction().begin();
+		
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("modificar Cargo empleado");
 			}
+			//CargoEmpleadoSie bean= buscarCargoEmpleado(cargoempleado.getIdcargoempleado());
+			log.info("bean" + cargoempleado.getDescripcion() + " " + cargoempleado.getIdcargoempleado());
 			em.merge(cargoempleado);
-			
+			log.info("--- ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -77,14 +79,14 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#findDemo(java.lang.String)
 	 */
 	public CargoEmpleadoSie buscarCargoEmpleado(int id) {
-		// TODO Auto-generated method stub
+		
 		CargoEmpleadoSie cargoempleado = new CargoEmpleadoSie();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("buscar CargoEmpleado");
+				log.info("buscar CargoEmpleado " +id);
 			}
 			cargoempleado = em.find(CargoEmpleadoSie.class, id);
-			log.info(" CargoEmpleado " + cargoempleado);
+			log.info(" CargoEmpleado " + cargoempleado.getDescripcion());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -110,7 +112,7 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 		log.info("***************** listar cargoEmpleado");
 		List lista = null;
 		try {
-			Query q = em.createQuery("select p from CargoEmpleadoSie p");
+			Query q = em.createQuery("select c from CargoEmpleadoSie c where c.tbEstadoGeneral.idestadogeneral = "+ 1);
 			lista = q.getResultList();
 			log.info("tamaño de lista de cargo empleado--->" + lista.size());
 		} catch (Exception e) {
