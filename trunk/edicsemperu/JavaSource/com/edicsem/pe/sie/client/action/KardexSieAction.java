@@ -1,21 +1,27 @@
 package com.edicsem.pe.sie.client.action;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List; 
+import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;  
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;  
-import com.edicsem.pe.sie.entity.KardexSie; 
-import com.edicsem.pe.sie.service.facade.KardexService; 
+import org.apache.commons.logging.LogFactory;
+import com.edicsem.pe.sie.entity.KardexSie;
+import com.edicsem.pe.sie.service.facade.KardexService;
+import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
-@ManagedBean( name="kardexSieAction" )
+
+@ManagedBean(name = "kardexSieAction")
 @SessionScoped
 public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	public static Log log = LogFactory.getLog(KardexSieAction.class);
-  
+
 	private List<KardexSie> kardexList;
 	private KardexSie objKardexSie;
 	private String mensaje;
@@ -24,7 +30,7 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	private Date fechaDesde, fechaHasta;
 	private List<KardexSie> listadoKardex;
 	private boolean editMode;
- 
+
 	@EJB
 	private KardexService objKardexService;
 
@@ -35,51 +41,47 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 
 	public void init() {
 		log.info("init()");
+		mensaje="";
 		objKardexSie = new KardexSie();
-		stockActual=0;
+		stockActual = 0;
 	}
-	
+
 	/**
 	 * @return the kardexList
 	 */
-	@SuppressWarnings("unchecked")
-	public List<KardexSie> getKardexList() { 
-		 
-		Date date = new Date(); 
-		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
-		String fechaD = sdf.format(fechaDesde);
-		String fechaH = sdf.format(fechaHasta);
-		
-		kardexList = objKardexService.ConsultaProductos(getIdproducto(),
-						getIdalmacen(), fechaD , fechaH );
-		log.info(" Kardex " + kardexList.size());
-		log.info("cantidad existente :D "  +kardexList.get(kardexList.size()-1).getCantexistencia());
-		stockActual=kardexList.get(kardexList.size()-1).getCantexistencia(); 
-		log.info("nuevo stock actual "+ getStockActual() );
+	public List<KardexSie> getKardexList() {
+		log.info(" dentro de getKardexList  " + getTipoProducto() + ""
+				+ getIdproducto() + "" + getIdalmacen());
+ 
+		if (getIdproducto() == -1) {
+			setMensaje(" Debe seleccionar un Producto");
+			kardexList = new ArrayList<KardexSie>();
+
+		} else if (getIdalmacen() == -1) {
+			setMensaje("debe seleccionar un almacen");
+		} else {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			String fechaD = "", fechaH = "";
+			if (fechaDesde == null)
+				fechaD = "";
+			if (fechaDesde == null)
+				fechaH = "";
+			else {
+				fechaD = "" + sdf.format(fechaDesde);
+				fechaH = "" + sdf.format(fechaHasta);
+			}
+			kardexList = objKardexService.ConsultaProductos(getIdproducto(),
+					getIdalmacen(), fechaD, fechaH);
+			log.info(" Kardex " + kardexList.size());
+			log.info("cantidad existente :D "
+					+ kardexList.get(kardexList.size() - 1).getCantexistencia());
+			stockActual = kardexList.get(kardexList.size() - 1)
+					.getCantexistencia();
+			log.info("nuevo stock actual " + getStockActual());
+			setMensaje(" consulta realizada ");
+		}
 		return kardexList;
 	}
-
-	/**
-	 * @param kardexList the kardexList to set
-	 */
-	public void setKardexList(List<KardexSie> kardexList) {
-		this.kardexList = kardexList;
-	}
- 
-	/**
-	 * @return the tipoProducto
-	 */
-	public int getTipoProducto() {
-		return tipoProducto;
-	}
-
-	/**
-	 * @param tipoProducto the tipoProducto to set
-	 */
-	public void setTipoProducto(int tipoProducto) {
-		this.tipoProducto = tipoProducto;
-	} 
-
 
 	/*
 	 * (non-Javadoc)
@@ -89,12 +91,22 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	 * #consultar()
 	 */
 	public String consultar() throws Exception {
-
+		log.info("entreando a consultar()");
 		List<KardexSie> lista = new ArrayList<KardexSie>();
-		for (KardexSie c : getKardexList()) {
-			lista.add(c);
+		 
+		if (getKardexList().size() <= 0) { 
+			return getViewList();
+		} else {
+			for (KardexSie c : getKardexList()) {
+			 
+				lista.add(c);
+			}
+
+			setListadoKardex(lista);
 		}
-		setListadoKardex(lista);
+		msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return getViewList();
 	}
 
@@ -105,12 +117,12 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
 	 * #getViewList()
 	 */
-	
+
 	public String getViewList() {
 
 		return "mantenimientoKardex";
 	}
-	
+
 	/**
 	 * @return the idproducto
 	 */
@@ -186,8 +198,6 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 		this.listadoKardex = listadoKardex;
 	}
 
- 
-	 
 	/**
 	 * @return the objKardexSie
 	 */
@@ -211,7 +221,8 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	}
 
 	/**
-	 * @param editMode the editMode to set
+	 * @param editMode
+	 *            the editMode to set
 	 */
 	public void setEditMode(boolean editMode) {
 		this.editMode = editMode;
@@ -225,7 +236,8 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	}
 
 	/**
-	 * @param stockActual the stockActual to set
+	 * @param stockActual
+	 *            the stockActual to set
 	 */
 	public void setStockActual(int stockActual) {
 		this.stockActual = stockActual;
@@ -239,10 +251,36 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	}
 
 	/**
-	 * @param mensaje the mensaje to set
+	 * @param mensaje
+	 *            the mensaje to set
 	 */
 	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
 	}
+	
+
+	/**
+	 * @param kardexList
+	 *            the kardexList to set
+	 */
+	public void setKardexList(List<KardexSie> kardexList) {
+		this.kardexList = kardexList;
+	}
+
+	/**
+	 * @return the tipoProducto
+	 */
+	public int getTipoProducto() {
+		return tipoProducto;
+	}
+
+	/**
+	 * @param tipoProducto
+	 *            the tipoProducto to set
+	 */
+	public void setTipoProducto(int tipoProducto) {
+		this.tipoProducto = tipoProducto;
+	}
+
 
 }
