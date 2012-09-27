@@ -42,7 +42,7 @@ public class EstadogeneralServiceImpl implements EstadogeneralService{
 	 */
 
 	public EstadoGeneralSie findEstadogeneral(int id) {
-		// TODO Auto-generated method stub
+		log.info( " ++++++++++++++++++++ "+ id ); 
 		return objEstadogeneralDao.findEstadoGeneral(id); 
 	}
 
