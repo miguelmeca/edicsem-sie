@@ -35,7 +35,7 @@ public class ProductoDAOImpl implements ProductoDAO {
 
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("insertar Producto");
+				log.info("insertar Producto "+ producto.getCodproducto());
 			}
 			em.persist(producto);
 		} catch (Exception e) {
@@ -52,7 +52,6 @@ public class ProductoDAOImpl implements ProductoDAO {
 	 */
 
 	public void updateProducto(ProductoSie producto) {
-		em.getTransaction().begin();
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("modificar Producto");
@@ -108,7 +107,6 @@ public class ProductoDAOImpl implements ProductoDAO {
 		try {
 			Query q = em
 					.createQuery("select p from ProductoSie p where p.tbTipoProducto.idtipoproducto = "+ tipoProducto);
-			//q.setParameter("x1", tipoProducto);
 			lista = q.getResultList();
 			System.out.println("tamaño lista Productos x Tipo  --> " + lista.size());
 		} catch (Exception e) {

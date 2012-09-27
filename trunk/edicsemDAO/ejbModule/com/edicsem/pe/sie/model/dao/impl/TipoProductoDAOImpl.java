@@ -63,7 +63,7 @@ public class TipoProductoDAOImpl implements TipoProductoDAO{
 				log.info("buscar TipoProducto");
 			} 
 			tipoproducto=	em.find(TipoProductoSie.class, idtipoproducto);
-			log.info(" TipoProducto " +tipoproducto);
+			log.info(" TipoProducto " +idtipoproducto);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
