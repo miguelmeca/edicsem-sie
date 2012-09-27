@@ -2,20 +2,13 @@ package com.edicsem.pe.sie.model.dao.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.edicsem.pe.sie.entity.KardexSie;
-import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.TipoKardexProductoSie;
-import com.edicsem.pe.sie.model.dao.KardexDAO;
-import com.edicsem.pe.sie.model.dao.ProductoDAO;
 import com.edicsem.pe.sie.model.dao.TipoKardexProductoDAO;
 
 /**
@@ -51,15 +44,15 @@ public class TipoKardexDAOImpl implements TipoKardexProductoDAO {
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.TipoKardexProductoDAO#findTipoKardex(int)
-	 */
-	@Override
+	 */ 
 	public TipoKardexProductoSie findTipoKardex(int id) {
 		TipoKardexProductoSie tipo = new TipoKardexProductoSie();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("buscar Tipo Kardex");
+				log.info("buscar Tipo Kardex "+ id);
 			}
 			tipo = em.find(TipoKardexProductoSie.class, id);
+			log.info("obtenido "+   tipo.getDescripcion() +" " + tipo.getIdtipokardexproducto() );
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
