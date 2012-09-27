@@ -7,10 +7,10 @@
 	<ui:define name="body">
 		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Kardex</h1>
 		<h:form  id="frmKardex" >
-			 
+			 <p:growl id="message" showDetail="true" />
 			<p:panel header="#{message['panel.seleccion.producto']}">
 				<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
-				<p:selectOneMenu value="#{comboAction.tipoProducto}"
+				<p:selectOneMenu value="#{comboAction.tipoProducto}" 
 					 required="true">
 					<f:selectItem itemValue="-1" itemLabel="Seleccionar tipo" />
 					<f:selectItems value="#{comboAction.tipoitems}"  itemValue="-1" />
@@ -24,19 +24,21 @@
 				</p:selectOneMenu>
 				 
 				<h:outputText value="#{message['mantenimiento.kardex.almacen']}" />
-				<p:selectOneMenu  size="1" value="#{kardexSieAction.idalmacen}" >
+				<p:selectOneMenu  value="#{kardexSieAction.idalmacen}" >
 					<f:selectItem itemLabel="Seleccione" itemValue="-1" />
 					<f:selectItems value="#{comboAction.almacenItems}" />
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['kardex.desde']}" />
-				<p:calendar pattern="dd/MM/yyyy"  locale="br" effect="explode"  required="true" 
-				value="#{kardexSieAction.fechaDesde}"  requiredMessage="Ingresa fecha!" />
+				<p:calendar pattern="dd/MM/yyyy"  locale="br" effect="explode" 
+				value="#{kardexSieAction.fechaDesde}"  />
 
 				<h:outputText value="#{message['kardex.hasta']}" />
-				<p:calendar pattern="dd/MM/yyyy" required="true" value="#{kardexSieAction.fechaHasta}"  />
+				<p:calendar pattern="dd/MM/yyyy"  locale="br" effect="explode"
+				value="#{kardexSieAction.fechaHasta}"  />
  
-				<p:commandButton  value="Consultar" action="#{kardexSieAction.consultar}" update=":frmKardex:listakardex,stock_actual" ></p:commandButton> 
+				<p:commandButton  value="Consultar" action="#{kardexSieAction.consultar}" 
+				update=":frmKardex:listakardex,stock_actual, message" />
 					  
 				<p:spacer width="40" />
 				<p:dataTable value="#{kardexSieAction.listadoKardex}" var="p"
@@ -79,15 +81,20 @@
 						<h:outputText value="#{p.tipokardex}" />
 					</p:column>
 					  <p:column>
-						<f:facet name="header">
-							<h:outputText value="Ver detalle" />
-						</f:facet> 
-						<p:commandButton update=":formManteKardexList:display"
-							oncomplete="kardexDialog.show()" image="ui-icon ui-icon-pencil"
+					    <h:panelGroup>
+						 <p:commandButton update=":formManteKardexList:display" value="editar"
+							oncomplete="kardexDialog.show()" icon="ui-icon ui-icon-pencil" 
+							title="Editar Kardex"> 
+							<f:setPropertyActionListener value="#{p}" target="#{kardexSieAction.objKardexSie}" />  
+							<f:setPropertyActionListener value="#{false}" target="#{kardexSieAction.editMode}" />  
+						</p:commandButton> 
+						<p:commandButton update=":formManteKardexList:display" value="Ver detalle"
+							oncomplete="kardexDialog.show()" icon="ui-icon ui-icon-pencil"
 							title="Ver detalle Kardex"> 
 							<f:setPropertyActionListener value="#{p}" target="#{kardexSieAction.objKardexSie}" />  
-                     <f:setPropertyActionListener value="#{true}" target="#{kardexSieAction.editMode}" />  
+							<f:setPropertyActionListener value="#{true}" target="#{kardexSieAction.editMode}" />  
 						</p:commandButton> 
+						</h:panelGroup>
 					</p:column>
 					</p:dataTable>
 				 
