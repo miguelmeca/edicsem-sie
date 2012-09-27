@@ -1,9 +1,5 @@
 package com.edicsem.pe.sie.client.action;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -12,21 +8,16 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
-import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.primefaces.model.StreamedContent;
 
-import com.edicsem.pe.sie.beans.EmpresaDTO;
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
-import com.edicsem.pe.sie.entity.EstadoGeneralSie;
-import com.edicsem.pe.sie.entity.TipoProductoSie;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
-import com.edicsem.pe.sie.util.redirections.Redirections;
 
 @ManagedBean(name = "mantenimientoCargoEmpleadoFormAction")
 @SessionScoped
@@ -242,7 +233,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		log.info("insertar() " + isNewRecord());
 
 /*  --->  */objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService
-				.findEstadogeneral(idEstadoGeneral));
+				.findEstadogeneral(1));
 		/*Esto se setea cuando pertenece a una segunda tabla (--->)*/
 		log.info("seteo()");
 		try {
@@ -253,8 +244,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 						.insertarCargoEmpleado(objCargoEmpleadoSie);
 			} else {
 
-				objCargoEmpleadoSie.setIdcargoempleado(Integer
-						.parseInt(getIdcargoempleado()));
+				objCargoEmpleadoSie.setIdcargoempleado(Integer.parseInt(getIdcargoempleado()));
 				objCargoEmpleadoSie.setDescripcion(getDescripcion());
 				objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService
 						.findEstadogeneral(getIdEstadoGeneral()));
@@ -319,12 +309,10 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		try {
 			log.info("llego");
 
-			parametroObtenido = Integer.parseInt(ae.getComponent()
-					.getAttributes().get("idcargoempleado").toString());
+			parametroObtenido = Integer.parseInt(ae.getComponent().getAttributes().get("idcargoempleado").toString());
 			log.info("probarCamapana1 : " + parametroObtenido);
 			// se busca el objeto campaña
-			CargoEmpleadoSie c = objCargoEmpleadoService
-					.buscarCargoEmpleado(parametroObtenido);
+			CargoEmpleadoSie c = objCargoEmpleadoService.buscarCargoEmpleado(parametroObtenido);
 			log.info(" id cargo " + c.getIdcargoempleado() + " des "
 					+ c.getDescripcion());
 			setIdcargoempleado(c.getIdcargoempleado().toString());
@@ -378,18 +366,18 @@ public class MantenimientoCargoEmpleadoFormAction extends
 			c = objCargoEmpleadoService.buscarCargoEmpleado(parametroObtenido);
 			log.info(" ------lechuga>" + c.getDescripcion() + " " + c.getIdcargoempleado());
 
-//			objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(2));
-//			objCargoEmpleadoSie.setIdcargoempleado(c.getIdcargoempleado());
-//			objCargoEmpleadoSie.setDescripcion(c.getDescripcion());
-//			log.info("-----AJI>>>"
-//					+ objCargoEmpleadoSie.getTbEstadoGeneral()
-//							.getIdestadogeneral());
-//
-//			log.info("actualizando ESTADO..... ");
-//
-//			objCargoEmpleadoService.actualizarCargoEmpleado(objCargoEmpleadoSie);
-//			log.info("actualizando..... ");
-//			
+			objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(2));
+			objCargoEmpleadoSie.setIdcargoempleado(c.getIdcargoempleado());
+		objCargoEmpleadoSie.setDescripcion(c.getDescripcion());
+			log.info("-----AJI>>>"
+					+ objCargoEmpleadoSie.getTbEstadoGeneral()
+							.getIdestadogeneral());
+
+			log.info("actualizando ESTADO..... ");
+
+			objCargoEmpleadoService.actualizarCargoEmpleado(objCargoEmpleadoSie);
+			log.info("actualizando..... ");
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
