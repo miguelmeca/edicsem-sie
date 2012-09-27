@@ -1,29 +1,70 @@
 package com.edicsem.pe.sie.service.facade.impl;
 
 import java.util.List;
-
 import javax.ejb.EJB;
-import javax.ejb.Stateless; 
-
+import javax.ejb.Stateless;
 import com.edicsem.pe.sie.entity.KardexSie;
+import com.edicsem.pe.sie.model.dao.AlmacenDAO;
 import com.edicsem.pe.sie.model.dao.KardexDAO;
+import com.edicsem.pe.sie.model.dao.ProductoDAO;
+import com.edicsem.pe.sie.model.dao.TipoKardexProductoDAO;
 import com.edicsem.pe.sie.service.facade.KardexService;
- 
+
 @Stateless
 public class KardexServiceImpl implements KardexService {
 
 	@EJB
 	private  KardexDAO objKardexDao;
- 
- 
+	@EJB
+	private  TipoKardexProductoDAO objTipoKardexDao;
+	@EJB
+	private  ProductoDAO objProductoDao;
+	@EJB
+	private  AlmacenDAO objAlmacenDao;
+	
 	public List ConsultaProductos(int idproducto, int idalmacen,
 			String fechaDesde, String fechaHasta) { 
 		
 		return objKardexDao.ConsultaProductos(idproducto, idalmacen, fechaDesde, fechaHasta); 
-	}
-
+	} 
  
-	public void insertMovimiento(KardexSie kardex) {
-		objKardexDao.insertMovimiento(kardex);
+	public void insertMovimiento(int cantsalida, int cantentrada,String detalle,
+			int idproducto, int idtipokardexproducto, int idAlmacenSalida, int idAlmacenEntrada) {
+		
+		KardexSie objKardex = new KardexSie(); 
+		objKardex.setTbProducto(objProductoDao.findProducto(idproducto));
+		objKardex.setTbPuntoVenta(objAlmacenDao.findAlmacen(idAlmacenSalida));
+		objKardex.setTbTipoKardexProducto(objTipoKardexDao.findTipoKardex(idtipokardexproducto));
+		objKardex.setCantentrada(cantentrada);
+		objKardex.setCantsalida(cantsalida);
+		objKardex.setDetallekardex(detalle);
+		objKardexDao.insertMovimiento(idproducto,objKardex);
+		
+		/**Si hubiese otro id de almacen 
+		 * */
+		
+		if(idAlmacenEntrada!=0){
+			KardexSie objKardex2 = new KardexSie();
+			objKardex2.setTbProducto(objProductoDao.findProducto(idproducto));
+			objKardex2.setDetallekardex(detalle);
+			objKardex2.setTbPuntoVenta(objAlmacenDao.findAlmacen(idAlmacenEntrada));
+			objKardex2.setCantentrada(cantsalida);
+			objKardex2.setCantsalida(cantentrada);
+			if(idtipokardexproducto==1){
+				idtipokardexproducto=2;
+			}else if(idtipokardexproducto==2){
+				idtipokardexproducto=1;
+			}
+			objKardex2.setTbTipoKardexProducto(objTipoKardexDao.findTipoKardex(idtipokardexproducto));
+			objKardexDao.insertMovimiento(idproducto,objKardex2);
+		}
+	}
+	
+	public List ConsultaKardexDiario() {
+		return objKardexDao.ConsultaKardexDiario();
+	}
+	
+	public KardexSie ConsultaStockActual(int idProducto) {
+		return objKardexDao.ConsultaStockActual(idProducto);
 	}
 }
