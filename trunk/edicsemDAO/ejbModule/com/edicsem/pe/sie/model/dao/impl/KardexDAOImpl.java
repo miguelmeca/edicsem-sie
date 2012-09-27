@@ -22,7 +22,7 @@ public class KardexDAOImpl implements KardexDAO {
 	@PersistenceContext(name = "edicsemJPASie")
 	private EntityManager em;
 	private static Log log = LogFactory.getLog(KardexDAOImpl.class);
-
+	private AlmacenDAOImpl a ;
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -58,10 +58,6 @@ public class KardexDAOImpl implements KardexDAO {
 		KardexSie kardextmp = null;
 		int cantiExist = 0;
 		try {
-//			if (kardex.getCantentrada() == null)
-//				kardex.setCantentrada(0);
-//			if (kardex.getCantsalida() == null)
-//				kardex.setCantsalida(0);
 
 			if (log.isInfoEnabled()) {
 
@@ -130,35 +126,42 @@ public class KardexDAOImpl implements KardexDAO {
 	 */
 	
 	public KardexSie ConsultaStockActual(int idProducto) {
-	log.info(" ID: " + idProducto);
-	 KardexSie  k=null;
-	 List<KardexSie> lista= new ArrayList();
-	 List<PuntoVentaSie> listaAlmacen= new ArrayList();
+	log.info(" ID: ** " + idProducto);
+	 KardexSie  k = null;
+	 List<KardexSie> lista= null; 
 	 int cantExistTotalAlm=0;
-		try {
-			Query qa = em.createQuery(" select  p  from PuntoVentaSie  p ");
-			listaAlmacen =  qa.getResultList();
+		List<PuntoVentaSie>   listaAlmacenes = listarAlmacenes() ;
+		try { 
 			
-			for (int i = 0; i < listaAlmacen.size(); i++) {
+			for (int i = 0; i < listaAlmacenes.size() ; i++) {
 				
 			Query q = em.createQuery(" select  a  from  KardexSie a where " +
-					" a.tbProducto.idproducto =" + idProducto + " and a.tbPuntoVenta.idpuntoventa =" + listaAlmacen.get(i).getIdpuntoventa()+
-					" order by a.idkardex ");
+					" a.tbProducto.idproducto = " + idProducto + " and a.tbPuntoVenta.idpuntoventa = " +
+					listaAlmacenes.get(i).getIdpuntoventa() + " order by a.idkardex ");
 			lista =  q.getResultList();
 			
-				cantExistTotalAlm += lista.get(lista.size()-1).getCantexistencia();
-				log.info("i "+i+" "+ lista.get(lista.size()-1).getCantexistencia());
-			}
-			
-			log.info("tamaño --> " + " *  " + lista.size());
+				cantExistTotalAlm += lista.get(lista.size()-1).getCantexistencia(); 
+			 }
+			 
 			k = lista.get(lista.size()-1);
 			k.setCantexistencia(cantExistTotalAlm);
-			log.info("tamaño --> " + " *  " + cantExistTotalAlm + " min "+ k.getTbProducto().getStkminimoproducto() + " max " +
+			log.info(" *  " + " min "+ k.getTbProducto().getStkminimoproducto() + " max " +
 					"  "+ k.getTbProducto().getStkmaximo() +" existe "+ k.getCantexistencia() ); 
 			 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return k;
+	}
+	public List<PuntoVentaSie> listarAlmacenes() {
+		List<PuntoVentaSie>   lista = null;
+		try {
+			Query q = em.createQuery("select p from PuntoVentaSie p");
+			lista =  q.getResultList(); 
+		   System.out.println("tamaño lista Almacen --> " + lista.size()+"  ");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
 	}
 }
