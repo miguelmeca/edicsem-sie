@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
+			Productos</h1>
+		<h:form id="formManteProdLista" prependId="false">
+			<p:dataTable value="#{productoSearch.productoList}" var="p"
+					id="listaPersonas" paginator="true" rows="5"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" widgetVar="table"
+					emptyMessage="No se encontro registros">
+					<f:facet name="header">  
+            Mantenimiento Producto 
+        </f:facet> 
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Codigo" />
+						</f:facet>
+						<h:outputText value="#{p.codproducto}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Descripción" />
+						</f:facet>
+						<h:outputText value="#{p.descripcionproducto}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Detalle" />
+						</f:facet>
+						<h:outputText value="#{p.detalleproducto}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Precio" />
+						</f:facet>
+						<h:outputText value="#{p.precioventa}" />
+					</p:column>
+					 
+					<p:column id="columna">
+						<f:facet name="header">
+							<h:outputText value="Ver detalle" />
+						</f:facet>
+							<p:commandButton id="btn1" update=":formManteProdDetalle:display"
+								oncomplete="prodDialog.show()" value="ver detalle"
+								title="Vea datos del producto">
+								<f:setPropertyActionListener value="#{p}"
+									target="#{productoForm.selectedProducto}" />
+										<f:setPropertyActionListener value="#{false}" target="#{productoForm.editMode}" />
+							</p:commandButton>
+						</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Modificar" />
+						</f:facet>
+						<p:commandButton update=":formManteProdDetalle:display"
+							  icon="ui-icon ui-icon-pencil"
+							title="Editar los Datos" action="#{productoForm.update}" >
+							<f:setPropertyActionListener value="#{p}"
+								target="#{productoForm.objProductoSie}" /> 
+								<f:setPropertyActionListener value="#{false}" target="#{productoForm.editMode}" />
+						</p:commandButton>
+					</p:column>
+					<f:facet name="footer">
+						<div align="left">
+							<h:commandLink value="Nuevo" action="#{productoForm.agregar}">
+							<f:setPropertyActionListener value="#{true}" target="#{productoForm.editMode}" />
+							</h:commandLink>
+						</div>
+					</f:facet>
+				</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
