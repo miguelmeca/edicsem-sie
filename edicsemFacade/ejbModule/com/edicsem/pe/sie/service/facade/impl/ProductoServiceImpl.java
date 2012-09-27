@@ -1,28 +1,32 @@
 package com.edicsem.pe.sie.service.facade.impl;
 
 import java.util.List;
-
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-
 import com.edicsem.pe.sie.entity.ProductoSie;
+import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
 import com.edicsem.pe.sie.model.dao.ProductoDAO;
 import com.edicsem.pe.sie.model.dao.TipoProductoDAO;
 import com.edicsem.pe.sie.service.facade.ProductoService;
-import com.edicsem.pe.sie.service.facade.TipoProductoService;
 
 @Stateless
 public class ProductoServiceImpl implements ProductoService {
 
 	@EJB
 	private  ProductoDAO objProductoDao;
+	@EJB
+	private TipoProductoDAO objTipoProductoDao;
+	@EJB
+	private EstadoGeneralDAO objestadoDao;
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ProductoService#insertProducto(com.edicsem.pe.sie.entity.ProductoSie)
 	 */
 	
-	public void insertProducto(ProductoSie producto) {
-		 
+	public void insertProducto(ProductoSie producto,int TipoProducto,int estadoProducto) {
+		
+		producto.setTbTipoProducto(objTipoProductoDao.findTipoProducto(TipoProducto));
+		producto.setTbEstadoGeneral(objestadoDao.findEstadoGeneral(estadoProducto));
 		objProductoDao.insertProducto(producto);
 	}
 
@@ -30,7 +34,9 @@ public class ProductoServiceImpl implements ProductoService {
 	 * @see com.edicsem.pe.sie.service.facade.ProductoService#updateProducto(com.edicsem.pe.sie.entity.ProductoSie)
 	 */
 	
-	public void updateProducto(ProductoSie producto) {
+	public void updateProducto(ProductoSie producto,int TipoProducto,int estadoProducto) {
+		producto.setTbTipoProducto(objTipoProductoDao.findTipoProducto(TipoProducto));
+		producto.setTbEstadoGeneral(objestadoDao.findEstadoGeneral(estadoProducto));
 		objProductoDao.updateProducto(producto);
 	}
 
