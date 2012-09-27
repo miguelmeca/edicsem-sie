@@ -22,6 +22,19 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 @ManagedBean(name="mantenimientoCargoEmpleadoSearchAction")
 @SessionScoped
 public class MantenimientoCargoEmpleadoSearchAction extends BaseMantenimientoAbstractAction {
+	
+	
+	/**private int idcargoempleado;
+	/**
+	 * @return the idcargoempleado	
+	*public int getIdcargoempleado() {
+		*return idcargoempleado;	*}	
+	 * @param idcargoempleado the idcargoempleado to set	 
+	*public void setIdcargoempleado(int idcargoempleado) {
+	*	this.idcargoempleado = idcargoempleado;
+	*}
+	 */
+
 	private String mensaje;
 	public String descripcion;
 	public static Log log = LogFactory.getLog(MantenimientoCargoEmpleadoSearchAction.class);
