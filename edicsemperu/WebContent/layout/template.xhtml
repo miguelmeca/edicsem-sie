@@ -174,18 +174,75 @@
 	</p:dialog>
 </h:form>
 
-<!-- Movimiento de Mercaderia  -->
-<h:form id="formMovMercList">
-<p:confirmDialog id="confirmMovim" message="Esta seguro de eliminar dicho movimiento?" width="350" height="200" showEffect="explode" 
-				hideEffect="explode"  header="Confirm" severity="alert" widgetVar="confirmation" position="center">  
-        <p:commandButton  type="submit" value="Si"  action="#{movimientoMercaderia.quitar}"  
-        update=":formMovMerc:listaMovim" oncomplete="confirmation.hide()" ajax="false">
-        	<f:attribute name="d" value="#{d.item}" />
-        </p:commandButton>  
-        <p:commandButton value="No" onclick="confirmation.hide()" type="button" />  
-    </p:confirmDialog>
-    </h:form>
-    
+<!--  Mantenimiento Producto - Imagen-->
+<h:form id="formInsertImageProduc">
+	<p:dialog header="Imagen Producto" widgetVar="imageProducDialog" 
+		showEffect="fade" hideEffect="explode" modal="true" width="450"
+		position="center">
+		<h:panelGrid id="display" columns="2" cellpadding="2"
+			style="margin:0 auto;">
+			
+				<h:outputText value="#{message['mantenimiento.producto.imagen']}" id="idimagen" />
+			   
+  		  <p:fileUpload fileUploadListener="#{productoForm.cargarImagenInsertar}" 
+      label="Cargar Imagen" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" description="Images" 
+           multiple="false" customUI="true" required="true"  />
+       
+		</h:panelGrid>
+	</p:dialog>
+</h:form> 
+
+
+<!--  Mantenimiento Producto Detalle -->
+<h:form id="formManteProdDetalle">
+    <p:dialog header="Detalle Producto" widgetVar="prodDialog" id="carDlg"   showEffect="fade"
+					hideEffect="explode"  modal="true" width="450" position="center">
+			<h:panelGrid id="display" columns="2" cellpadding="2"
+						style="margin:0 auto;">
+						<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
+					<h:panelGroup>
+					<h:outputText value="#{productoForm.selectedProducto.tbTipoProducto.nombretipoproducto}"
+					rendered="#{!productoForm.editMode}" />
+					</h:panelGroup>
+						<h:outputText value="#{message['mantenimiento.producto.codigo']}" id="codProd" />
+						<h:panelGroup>
+							<h:outputText value="#{productoForm.selectedProducto.codproducto}"
+								style="font-weight:bold" rendered="#{!productoForm.editMode}" />
+						</h:panelGroup>
+
+						<h:outputText value="#{message['mantenimiento.producto.descripcion']}" id="descProd" />
+						<h:panelGroup>
+							<h:outputText value="#{productoForm.selectedProducto.descripcionproducto}"
+								style="font-weight:bold" rendered="#{!productoForm.editMode}" />
+						</h:panelGroup>
+
+						<h:outputText value="#{message['mantenimiento.producto.precio']}" id="precioProd" />
+						<h:panelGroup>
+							<h:outputText value="#{productoForm.selectedProducto.precioventa}"
+								style="font-weight:bold" rendered="#{!productoForm.editMode}" />
+						</h:panelGroup>
+						
+						<h:outputText value="#{message['mantenimiento.producto.stock.minimo']}" id="stckMinProd" />
+						<h:panelGroup>
+							<h:outputText value="#{productoForm.selectedProducto.stkminimoproducto}"
+								style="font-weight:bold" rendered="#{!productoForm.editMode}" />
+						</h:panelGroup>
+						
+						<h:outputText value="#{message['mantenimiento.producto.stock.maximo']}" id="stcKMaxProd" />
+						<h:panelGroup>
+							<h:outputText value="#{productoForm.selectedProducto.stkmaximo}"
+								style="font-weight:bold" rendered="#{!productoForm.editMode}" />
+						</h:panelGroup>
+						
+						<h:outputText value="#{message['mantenimiento.producto.detalle']}" />
+						<h:panelGroup><p:inputTextarea id="detalle"  
+						value="#{productoForm.selectedProducto.detalleproducto}" rows="4" cols="30" 
+						rendered="#{!productoForm.editMode}"/>
+					</h:panelGroup>
+			</h:panelGrid>
+		</p:dialog>
+</h:form>
+		
 <h:form id="formCarEmpList">
 	<p:dialog header="Detalle CargoEmpleado" widgetVar="carDialog" 
 		showEffect="fade" hideEffect="explode" modal="true" width="450"
