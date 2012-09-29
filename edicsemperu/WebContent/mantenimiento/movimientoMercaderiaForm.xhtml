@@ -11,31 +11,29 @@
 		<h:form id="formMovMerc">
 			<p:growl id="message" showDetail="true" />
 			<p:panel header="#{message['panel.ingreso.mercaderia']}">
-				<p:panelGrid columns="6">
+				<p:panelGrid columns="6" id="panel"   >
 					<h:outputText value="#{message['movimiento.tipo']}" />
 
-					<p:selectOneMenu id="idtipokardex" required="true" requiredMessage="#{message['movimiento.tipokardex.validation']}"
+					<p:selectOneMenu id="idtipokardex" required="true" requiredMessage="#{message['movimiento.tipokardex.validation']}" 
 						value="#{movimientoMercaderia.idtipokardexproducto}">
 						<f:selectItem itemLabel="Seleccionar tipo de kardex" itemValue="#{null}" />
 						<f:selectItems id="tipokardex" value="#{movimientoMercaderia.tipoKardexItems}"  />
-						<p:ajax listener="#{movimientoMercaderia.cambiar}" />
+						<p:ajax update="panel" listener="#{movimientoMercaderia.cambiar}" />
 					</p:selectOneMenu>
 						<p:message for="idtipokardex" />
-					 <h:panelGroup>
+				 
 						<h:outputText id="ide"
-							value="#{message['mantenimiento.producto.cantidadEnt']}" rendered="#{!movimientoMercaderia.editMode}"   />
-								
+							value="#{message['mantenimiento.producto.cantidadEnt']}"   rendered="#{!movimientoMercaderia.editMode}" />
+							
+							<p:spinner id="spinnerE" size="2" min="1"  required="true" requiredMessage="#{message['movimiento.cantEntrada.validation']}" 
+							value="#{movimientoMercaderia.objKardexSie.cantentrada}" rendered="#{!movimientoMercaderia.editMode}"/>
+						 
+						 
 						<h:outputText id="ids"
 							value="#{message['mantenimiento.producto.cantidadSal']}" rendered="#{movimientoMercaderia.editMode}"/>
-							</h:panelGroup>
-							
-							 <h:panelGroup>
-						<p:spinner id="spinnerE" size="2" min="1"  required="true" requiredMessage="#{message['movimiento.cantEntrada.validation']}"
-							value="#{movimientoMercaderia.objKardexSie.cantentrada}" rendered="#{!movimientoMercaderia.editMode}"/>
-						
-						<p:spinner id="spinnerS" size="2" min="1"  required="true" requiredMessage="#{message['movimiento.cantSalida.validation']}"
+							<p:spinner id="spinnerS" size="2" min="1"  required="true" requiredMessage="#{message['movimiento.cantSalida.validation']}" 
 							value="#{movimientoMercaderia.objKardexSie.cantsalida}" rendered="#{movimientoMercaderia.editMode}"/>
-					 </h:panelGroup>
+							 		 
 					 <h:panelGroup>
 					 <p:message for="spinnerE" />
 					 <p:message for="spinnerS" />
@@ -62,10 +60,10 @@
 						<f:selectItem itemLabel="Seleccione almacen" itemValue="#{null}" />
 						<f:selectItems value="#{comboAction.almacenItems}" />
 					</p:selectOneMenu>
-					
+					<p:message for="idAlmacen" />
 					<h:outputText value="almacen 2" />
 					<p:selectOneMenu id="idAlmacen2" size="1"
-						value="#{movimientoMercaderia.idAlmacenEntrada}"   >
+						value="#{movimientoMercaderia.idAlmacen2}"   >
 						<f:selectItem itemLabel="Seleccione almacen" itemValue="0" />
 						<f:selectItems value="#{comboAction.almacenItems}" />
 					</p:selectOneMenu>
