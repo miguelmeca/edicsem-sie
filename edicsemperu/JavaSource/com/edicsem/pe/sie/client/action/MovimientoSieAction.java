@@ -11,10 +11,11 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import com.edicsem.pe.sie.entity.KardexSie;
-import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.TipoKardexProductoSie;
 import com.edicsem.pe.sie.entity.TipoProductoSie;
 import com.edicsem.pe.sie.service.facade.KardexService;
@@ -27,11 +28,11 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 
 	private String mensaje;
-	private int idproducto, idtipokardexproducto, idAlmacen, idAlmacenEntrada=0;
+	private int idproducto, idtipokardexproducto, idAlmacen, idAlmacen2 = 0;
 	private KardexSie objKardexSie = new KardexSie();
 	private List<SelectItem> tipoKardexItems;
 	private List<KardexSie> data;
-	
+
 	public Map<String, Object> lasession;
 	private boolean editMode;
 	private Log log = LogFactory.getLog(MovimientoSieAction.class);
@@ -46,16 +47,6 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 		log.info("inicializando constructor MovimientoSieAction");
 		init();
 	}
-
-	/*public void cambiar() {
-		log.info("idTipoKardex " + idtipokardexproducto);
-		if (idtipokardexproducto == 1 || idtipokardexproducto == 2)
-			editMode = true;
-		else
-			editMode = false;
-		log.info("Bolean  " + editMode);
-
-	}*/
 
 	public void init() {
 		log.info("init()");
@@ -112,90 +103,152 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
 	 * #insertar()
 	 */
-	
 	public String insertar() throws Exception {
-		boolean validado=false;
+		boolean validado = false;
 		try {
-
 			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'insertar()' :D  "+ objKardexSie.getCantentrada()+objKardexSie.getCantsalida());
+				log.info("Entering my method 'insertar()' :D  "
+						+ objKardexSie.getCantentrada()
+						+ objKardexSie.getCantsalida()+"  "+ idAlmacen+" - " + idAlmacen2);
 			}
-			if(!(idAlmacenEntrada>0)){
-				log.info("   nu  " +idAlmacenEntrada );
-				idAlmacenEntrada =0;
-			}
-			if (objKardexSie.getCantentrada() == null){
-				log.info("   nul entr");
+			if (objKardexSie.getCantentrada() == null) {
 				objKardexSie.setCantentrada(0);
-			}if (objKardexSie.getCantsalida() == null){
-				log.info("   nul sal");
+			}
+			if (objKardexSie.getCantsalida() == null) {
 				objKardexSie.setCantsalida(0);
-
-			} if (objKardexSie.getCantentrada() == 0
-					&& objKardexSie.getCantsalida() == 0) {
-				mensaje = "Debe ingresar cantidad";
 			}
-			 if (objKardexSie.getCantentrada() >0
-					&& objKardexSie.getCantsalida() >0) {
-				log.info("  >0");
-				mensaje = "Debe ingresar solol cantidad de entrada o salida";
+			if(idAlmacen == idAlmacen2){
+					mensaje = "No se puede realizar un movimiento de entrada y salida del mismo almacen";
 			}
-			 if (objKardexSie.getCantentrada() == null
-					&& objKardexSie.getCantsalida() == null) {
-				mensaje = "Debe ingresar cantidad de entrada o salida";
-			}else {
+			else{
 				log.info("   antes de la consulta");
-				KardexSie k =  objKardexService.ConsultaStockActual(idproducto);
-				int stkmaximo,stkminimo,cantexistencia;
-				
-				if(k!=null){
-					
-				log.info("   despues de la consulta");
-				 
-					stkmaximo= k.getTbProducto().getStkmaximo();
-					stkminimo=  k.getTbProducto().getStkminimoproducto();
-					cantexistencia= k.getCantexistencia();
-					
-					if(objKardexSie.getCantsalida()>0){
-						if(cantexistencia-objKardexSie.getCantsalida()<stkminimo){
-							mensaje=" No puede excederse del stock minimo, el cual es " + stkminimo ;
-						}
-						else if(cantexistencia-objKardexSie.getCantsalida()<0){
-							mensaje=" No puede exceder la cantidad de salida al stock actual del producto, el cual es " + cantexistencia ;
+				List<KardexSie> k = objKardexService.ConsultaStockActual(idproducto);
+
+				if (k != null && k.size()!=0) {
+
+					int cantExistenteTotalAlmacenes = 0, stkmaximo = 0, stkminimo = 0;
+
+					log.info("   despues de la consulta");
+					for (int i = 0; i < k.size(); i++) {
+						cantExistenteTotalAlmacenes += k.get(i).getCantexistencia();
+						stkmaximo = k.get(i).getTbProducto().getStkmaximo();
+						stkminimo = k.get(i).getTbProducto().getStkminimoproducto();
+					}
+					log.info(" **  " + cantExistenteTotalAlmacenes + " " + stkminimo + " " + stkmaximo + " " + validado);
+					 
+					if (objKardexSie.getCantsalida() > 0) {
+						log.info(" cantexist "+ cantExistenteTotalAlmacenes +" cant Sal "+objKardexSie.getCantsalida() +" stk min " +stkminimo+ " almacen 2 " + idAlmacen2);
+						if (cantExistenteTotalAlmacenes - objKardexSie.getCantsalida() < stkminimo && idAlmacen2==0 ){
+							mensaje = " No puede excederse del stock minimo, el cual es " + stkminimo;
+							log.info(mensaje);
+						}else if (cantExistenteTotalAlmacenes - objKardexSie.getCantsalida() < 0) {
+							mensaje = " No puede exceder la cantidad de salida al stock actual del producto, el cual es " + cantExistenteTotalAlmacenes;
+							log.info(mensaje);
+						}else {
+							log.info("en el for 1 ");
+							for (int j = 0; j< k.size(); j++) {
+								log.info("en el for 1 2");
+							if (objKardexSie.getCantsalida() > 0) {
+								if (k.get(j).getCantexistencia()- objKardexSie.getCantsalida() < 0) {
+									mensaje = "La cantidad existente del producto es "
+											+ k.get(j).getCantexistencia();
+								}
+								else if(idAlmacen2!=0 ){
+									for (int i = 0; i < k.size(); i++) {
+										//la cantidad existente en un almacen no puede resultar menor que 0
+										if( k.get(i).getTbPuntoVenta().getIdpuntoventa() == idAlmacen ){
+											
+											if( k.get(i).getCantexistencia()- objKardexSie.getCantsalida()<0){
+												mensaje = "La cantidad de salida de dicho producto no puede ser mayor al actual: " + k.get(i).getCantexistencia();
+											}else{
+												validado=true;
+											}
+										}
+									}
+								}
+							}
 						}
 					}
-					else if(objKardexSie.getCantentrada()>0){
-						if(cantexistencia+objKardexSie.getCantentrada()>stkmaximo){
-							mensaje=" No puede excederse del stock máximo, el cual es " + stkmaximo ;
+						 
+					} else if (objKardexSie.getCantentrada() > 0) {
+						if (cantExistenteTotalAlmacenes + objKardexSie.getCantentrada() > stkmaximo && idAlmacen2==0 ) {
+							mensaje = " No puede excederse del stock máximo, el cual es "+ stkmaximo;
 						}
-						// validar la cantidad existente por almacen no quede menor que 0
-						//que la cantidad existente en un almacen - la cantidad de salida de dicho almacen sea menor q 0
-						//total 100 min 30 y kito 50 mientras en dicho almacen solo tenia 40  = -10
+						else{
+							for (int j = 0; j< k.size(); j++) {
+								log.info("en el for de entrada "+k.get(j).getTbPuntoVenta().getIdpuntoventa()+ " * "+  idAlmacen);
+								 if (k.get(j).getTbPuntoVenta().getIdpuntoventa() == idAlmacen) {
+									 log.info("almacen   " +k.get(j).getTbPuntoVenta().getIdpuntoventa() +"  "+ idAlmacen );
+									// es entrada pero no salida de otro almacen
+									if (objKardexSie.getCantentrada() > 0 && idAlmacen2==0  ) {
+										log.info(" si solo hay entrada " +objKardexSie.getCantentrada() +" "+ idAlmacen2);
+										
+										if (k.get(j).getCantexistencia() + objKardexSie.getCantentrada() > stkmaximo) {
+											log.info("existe "+k.get(j).getCantexistencia()+" "+ objKardexSie.getCantsalida()+" max "+ stkmaximo ); 
+											mensaje = "No debe excederse el stock máximo permitido";
+										}else{
+											validado=true;
+										}
+										
+										// es entrada y salida de otro almacen 
+										// se analiza la cantidad existente en dicho almacen
+									}else if(objKardexSie.getCantentrada() > 0 && idAlmacen2!=0  ){
+										log.info(" entrada y salida " +objKardexSie.getCantentrada() +" "+ idAlmacen2);
+										
+										for (int i = 0; i < k.size(); i++) {
+											//la cantidad existente en un almacen no puede resultar menor que 0
+											if( k.get(i).getTbPuntoVenta().getIdpuntoventa() == idAlmacen2 ){
+												//getCantidadEntrada() vendria a ser la salida del almacen2
+												if( k.get(i).getCantexistencia()- objKardexSie.getCantentrada()<0){
+													mensaje = "La cantidad de salida de dicho producto no puede ser mayor al actual: " + k.get(i).getCantexistencia() ;
+												}else{
+													validado=true;
+												}
+											}
+										}
+										
+									}
+								}
+							}
+						}
 						
-						
-					}else{
-						validado=true;
+					} else {
+						log.info(" es true! :D");
+						validado = true;
 					}
-					log.info(  " **  "  + cantexistencia +" "+ stkminimo+" "+ stkmaximo +" " +validado);
-				}else
-				{
-					log.info(" * null *");
-					k= new KardexSie();
-					validado=true;
+					log.info(" *2*  " + cantExistenteTotalAlmacenes + " "
+							+ stkminimo + " " + stkmaximo + " " + validado);
+					log.info(mensaje);
 				}
-				if(validado==true ){
+				//Falta verificar la cantidad que va ingresar con el stock maximo permitido para dicho producto
+				else if(k.size()==0){
+					
+					validado = true;	log.info(mensaje);
+				}
+				else {
+					log.info(" * null *");
+					k = new ArrayList<KardexSie>();
+					validado = true;	log.info(mensaje);
+				}
+				}
+				if (validado == true) {
+					log.info(mensaje);
 					log.info(" *************** INSERTAR *********");
-					objKardexService.insertMovimiento(objKardexSie.getCantsalida(),
-							objKardexSie.getCantentrada(), objKardexSie.getDetallekardex(), idproducto,
-							idtipokardexproducto, idAlmacen, idAlmacenEntrada);
+					objKardexService.insertMovimiento(
+							objKardexSie.getCantsalida(),
+							objKardexSie.getCantentrada(),
+							objKardexSie.getDetallekardex(), idproducto,
+							idtipokardexproducto, idAlmacen, idAlmacen2);
 
 					mensaje = "Se registro";
+					
 				}
-				log.info(" *valor *" + validado);
+				if(mensaje !=null){
+				log.info(" *valor *" + validado + " mensaje :" + mensaje);
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 						Constants.MESSAGE_INFO_TITULO, mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
-			}
+				}
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -212,29 +265,28 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 	 * @return the idtipokardexproducto
 	 */
 	public int getIdtipokardexproducto() {
-		
 		return idtipokardexproducto;
 	}
-	 public void cambiar() {  
-		log.info("idTipoKardex " + idtipokardexproducto );
-		lasession=FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+
+	public void cambiar() {
+		log.info("idTipoKardex " + idtipokardexproducto);
+		lasession = FacesContext.getCurrentInstance().getExternalContext()
+				.getSessionMap();
 		lasession.put("tipoKardex", idtipokardexproducto);
-		log.info("tipo :D  --- "   + idtipokardexproducto );  
-		if(idtipokardexproducto ==1||idtipokardexproducto ==3){
-			editMode=false;
-		}else
-			editMode=true;
-		log.info("EDitmode  :D  --- "   +idtipokardexproducto+"   "+ editMode );  
-	 }
-	 
+		log.info("tipo :D  --- " + idtipokardexproducto);
+		if (idtipokardexproducto == 1 || idtipokardexproducto == 3) {
+			editMode = false;
+		} else
+			editMode = true;
+		log.info("EDitmode  :D  --- " + idtipokardexproducto + "   " + editMode);
+	}
+
 	/**
 	 * @param idtipokardexproducto
 	 *            the idtipokardexproducto to set
 	 */
 	public void setIdtipokardexproducto(int idtipokardexproducto) {
-		
 		this.idtipokardexproducto = idtipokardexproducto;
-		
 	}
 
 	/**
@@ -249,8 +301,7 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 	 * @return the data
 	 */
 	public List<KardexSie> getData() {
-		
-		
+
 		return data;
 	}
 
@@ -337,10 +388,13 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 		this.mensaje = mensaje;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#listar()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
+	 * #listar()
 	 */
-	
 	public String listar() {
 		log.info("listarProductos 'MantenimientoProductoSearchAction' ");
 		data = objKardexService.ConsultaKardexDiario();
@@ -351,17 +405,18 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 	}
 
 	/**
-	 * @return the idAlmacenEntrada
+	 * @return the idAlmacen2
 	 */
-	public int getIdAlmacenEntrada() {
-		return idAlmacenEntrada;
+	public int getIdAlmacen2() {
+		return idAlmacen2;
 	}
 
 	/**
-	 * @param idAlmacenEntrada the idAlmacenEntrada to set
+	 * @param idAlmacen2
+	 *            the idAlmacen2 to set
 	 */
-	public void setIdAlmacenEntrada(int idAlmacenEntrada) {
-		this.idAlmacenEntrada = idAlmacenEntrada;
+	public void setIdAlmacen2(int idAlmacen2) {
+		this.idAlmacen2 = idAlmacen2;
 	}
-	
+
 }
