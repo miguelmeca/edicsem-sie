@@ -1,19 +1,13 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
-import javax.faces.model.SelectItem;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.ServletContext;
 import org.apache.commons.logging.Log;
@@ -21,30 +15,27 @@ import org.apache.commons.logging.LogFactory;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
-
-import com.edicsem.pe.sie.beans.EmpresaDTO;
 import com.edicsem.pe.sie.entity.ProductoSie;
-import com.edicsem.pe.sie.entity.TipoProductoSie;
 import com.edicsem.pe.sie.service.facade.ProductoService;
-import com.edicsem.pe.sie.service.facade.TipoProductoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name = "productoForm")
 @SessionScoped
-public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAction {
+public class MantenimientoProductoFormAction extends
+		BaseMantenimientoAbstractAction {
 
 	private String mensaje;
-	public static Log log = LogFactory.getLog(MantenimientoProductoFormAction.class);
-	private int TipoProducto; 
+	public static Log log = LogFactory
+			.getLog(MantenimientoProductoFormAction.class);
+	private int TipoProducto, estadoProducto;
 	private StreamedContent image;
 	private ProductoSie objProductoSie;
 	private ProductoSie selectedProducto;
 	private boolean editMode;
 	private ProductoSie nuevo;
-	private boolean newRecord = false; 
-	@EJB
-	private TipoProductoService objTipoProductoService;
+	private boolean newRecord = false;
+
 	@EJB
 	private ProductoService objProductoService;
 
@@ -54,9 +45,133 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 	}
 
 	public void init() {
-		log.info("init()"); 
+		log.info("init()");
 		objProductoSie = new ProductoSie();
 		nuevo = new ProductoSie();
+		image = null;
+		editMode=true;
+	}
+
+	public void cargarImagenInsertar(FileUploadEvent event) {
+		log.info("cargarImagenInsertar");
+		String photo = event.getFile().getFileName();
+		log.info("XD " + event.getFile().getFileName());
+		FileImageOutputStream imageOutput;
+		ServletContext servletContext = (ServletContext) FacesContext
+				.getCurrentInstance().getExternalContext().getContext();
+		// String newFileName = servletContext.getRealPath("") + File.separator
+		// + "images" + File.separator + photo ;
+		String newFileName = "C:\\proyecto-sie\\ws-sie\\edicsemperu\\WebContent"
+				+ File.separator + "images" + File.separator + photo;
+		try {
+			image = new DefaultStreamedContent(event.getFile().getInputstream());
+			setImage(image);
+			log.info("ruta " + newFileName + " - "
+					+ event.getFile().getFileName());
+			imageOutput = new FileImageOutputStream(new File(newFileName));
+			if(objProductoSie.getRutaimagenproducto()==null){
+			objProductoSie.setRutaimagenproducto(newFileName);
+			log.info(" Ruta " + objProductoSie.getRutaimagenproducto()   );
+			byte[] foto = event.getFile().getContents();
+			imageOutput.write(foto, 0, foto.length);
+			imageOutput.close();
+			 
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
+	 * #agregar()
+	 */
+	public String agregar() {
+		log.info("agregar()");
+		objProductoSie = new ProductoSie();
+		setNewRecord(true);
+		return getViewList();
+		
+	}
+ 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
+	 * #update()
+	 */
+	public String update() throws Exception {
+		log.info("update()"+ objProductoSie.getRutaimagenproducto() );
+		TipoProducto = objProductoSie.getTbTipoProducto().getIdtipoproducto();
+		estadoProducto = objProductoSie.getTbEstadoGeneral().getIdestadogeneral();
+		InputStream stream = new FileInputStream(objProductoSie.getRutaimagenproducto());
+		setImage( new DefaultStreamedContent(stream));
+		setNewRecord(false);
+		return getViewList();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
+	 * #insertar()
+	 */
+	public String insertar() {
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'insertar()' " + objProductoSie.getRutaimagenproducto());
+			}
+			
+			if (isNewRecord()) {
+				if (image == null) {
+					log.info("imagen nula");
+					String rutaDefecto ="C:\\proyecto-sie\\ws-sie\\edicsemperu\\WebContent\\images\\bibliaXDefecto.png";
+					InputStream stream =  new FileInputStream(rutaDefecto);
+					log.info("ruta" + rutaDefecto);
+					objProductoSie.setRutaimagenproducto(rutaDefecto);
+				}
+				log.info("a insertar "+TipoProducto +" " +estadoProducto);
+				objProductoService.insertProducto(objProductoSie,TipoProducto, estadoProducto);
+				objProductoSie = new ProductoSie();
+				setImage(null);
+				TipoProducto=0;
+				estadoProducto=0;
+			} else {
+				log.info("a actualizar "+ TipoProducto +" " +estadoProducto+ " ruta " + objProductoSie.getRutaimagenproducto());
+				if(TipoProducto>0||estadoProducto>0){
+					log.info(" ohhhhhh ");
+				objProductoService.updateProducto(objProductoSie,TipoProducto, estadoProducto);
+				log.info(" ahh ");
+				objProductoSie = new ProductoSie();
+				setImage(null);
+				TipoProducto=0;
+				estadoProducto=0;
+				
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		
+		return getViewList();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#consultar()
+	 */
+	
+	public String consultar() throws Exception {
+		return getViewMant();
 	}
 
 	/**
@@ -81,11 +196,7 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 	public void setSelectedProducto(ProductoSie selectedProducto) {
 		this.selectedProducto = selectedProducto;
 	}
-	
-	public String Nuevo() throws Exception {
-		objProductoSie = new ProductoSie();
-		return getViewList();
-	}
+
 
 	/**
 	 * @return the nuevo
@@ -117,85 +228,6 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 		this.image = image;
 	}
 
-	public void cargarImagenInsertar(FileUploadEvent event) {
-		log.info("cargarImagenInsertar");
-		String photo = event.getFile().getFileName();
-		log.info("XD " + event.getFile().getFileName());
-		FileImageOutputStream imageOutput;
-		ServletContext servletContext = (ServletContext) FacesContext
-				.getCurrentInstance().getExternalContext().getContext();
-		// String newFileName = servletContext.getRealPath("") + File.separator
-		// + "images" + File.separator + photo ;
-		String newFileName = "C:\\proyecto-sie\\ws-sie\\edicsemperu\\WebContent"
-				+ File.separator + "images" + File.separator + photo;
-		try {
-			image = new DefaultStreamedContent(event.getFile().getInputstream());
-			setImage(image);
-			log.info("ruta " + newFileName + " - "
-					+ event.getFile().getFileName());
-			imageOutput = new FileImageOutputStream(new File(newFileName));
-			objProductoSie.setRutaimagenproducto(newFileName);
-			byte[] foto = event.getFile().getContents();
-			imageOutput.write(foto, 0, foto.length);
-			imageOutput.close();
-			FacesMessage msg = new FacesMessage("Acción Completada!!!", event
-					.getFile().getFileName() + " se cargó.");
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
-	 */
-	public String insertar() {
-		try {
-			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'insertar()' " + TipoProducto);
-			}
-
-			if (TipoProducto == -1) {
-				msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-						Constants.MESSAGE_ERROR_FATAL_TITULO,
-						"Debe ingresar un tipo de producto válido");
-				FacesContext.getCurrentInstance().addMessage(null, msg);
-				return getViewList();
-			} else {
-				objProductoSie.setTbTipoProducto(objTipoProductoService.findTipoProducto(TipoProducto));
-
-				if (objProductoSie.isNewRecord()) {
-					if (image == null) {
-						log.info("imagen nula");
-						InputStream stream = ((ServletContext) FacesContext
-								.getCurrentInstance().getExternalContext()
-								.getContext())
-								.getResourceAsStream("/images/bibliaXDefecto.png");
-						log.info("ruta" + "/images/bibliaXDefecto.png");
-						objProductoSie
-								.setRutaimagenproducto("/images/bibliaXDefecto.png");
-					}
-					if (isNewRecord()) {
-						objProductoService.insertProducto(objProductoSie);
-					}else {
-						objProductoService.updateProducto(objProductoSie);
-					}
-					 
-				} else {
-					log.info("objProductoSie.isNewRecord() : " + objProductoSie.isNewRecord());
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			mensaje = e.getMessage();
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-			log.error(e.getMessage());
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
-		return getViewList();
-	}
-	
 	/**
 	 * @return the tipoProducto
 	 */
@@ -228,6 +260,7 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see
 	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
 	 * #getViewList()
@@ -235,33 +268,18 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 	public String getViewList() {
 		return "mantenimientoProductoForm";
 	}
- 
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewMant()
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
+	 * #getViewMant()
 	 */
 	public String getViewMant() {
 		return "mantenimientoProductoFormList";
 	}
 
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
-	 */
-	public String update() throws Exception {
-		log.info("update()");
-		setNewRecord(false);
-		return getViewList() ;
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
-	 */
-	public String agregar() {
-		objProductoSie= new ProductoSie();
-		log.info("agregar()");
-		setNewRecord(true);
-		return getViewMant();
-	}
-	
 	/**
 	 * @return the newRecord
 	 */
@@ -270,9 +288,26 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 	}
 
 	/**
-	 * @param newRecord the newRecord to set
+	 * @param newRecord
+	 *            the newRecord to set
 	 */
 	public void setNewRecord(boolean newRecord) {
 		this.newRecord = newRecord;
 	}
+
+	/**
+	 * @return the estadoProducto
+	 */
+	public int getEstadoProducto() {
+		return estadoProducto;
+	}
+
+	/**
+	 * @param estadoProducto
+	 *            the estadoProducto to set
+	 */
+	public void setEstadoProducto(int estadoProducto) {
+		this.estadoProducto = estadoProducto;
+	}
+
 }
