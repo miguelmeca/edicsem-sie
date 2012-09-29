@@ -125,12 +125,13 @@ public class KardexDAOImpl implements KardexDAO {
 	 * @see com.edicsem.pe.sie.model.dao.KardexDAO#ConsultaStockActual(int)
 	 */
 	
-	public KardexSie ConsultaStockActual(int idProducto) {
+	public List<KardexSie> ConsultaStockActual(int idProducto) {
 	log.info(" ID: ** " + idProducto);
-	 KardexSie  k = null;
-	 List<KardexSie> lista= null; 
+	 List<KardexSie> listaTmp= null; 
+	 List<KardexSie> lista= new ArrayList();
 	 int cantExistTotalAlm=0;
-		List<PuntoVentaSie>   listaAlmacenes = listarAlmacenes() ;
+	 List<PuntoVentaSie>   listaAlmacenes = listarAlmacenes() ;
+	 
 		try { 
 			
 			for (int i = 0; i < listaAlmacenes.size() ; i++) {
@@ -138,27 +139,25 @@ public class KardexDAOImpl implements KardexDAO {
 			Query q = em.createQuery(" select  a  from  KardexSie a where " +
 					" a.tbProducto.idproducto = " + idProducto + " and a.tbPuntoVenta.idpuntoventa = " +
 					listaAlmacenes.get(i).getIdpuntoventa() + " order by a.idkardex ");
-			lista =  q.getResultList();
+			listaTmp =  q.getResultList();
 			
-				cantExistTotalAlm += lista.get(lista.size()-1).getCantexistencia(); 
+			if(listaTmp.size()-1!=-1){
+			 if(listaTmp.get(listaTmp.size()-1)!=null ){
+				 lista.add(listaTmp.get(listaTmp.size()-1));
 			 }
-			 
-			k = lista.get(lista.size()-1);
-			k.setCantexistencia(cantExistTotalAlm);
-			log.info(" *  " + " min "+ k.getTbProducto().getStkminimoproducto() + " max " +
-					"  "+ k.getTbProducto().getStkmaximo() +" existe "+ k.getCantexistencia() ); 
-			 
+			}log.info(" * tamano "+ lista.size()); 
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return k;
+		return lista;
 	}
+	
 	public List<PuntoVentaSie> listarAlmacenes() {
 		List<PuntoVentaSie>   lista = null;
 		try {
 			Query q = em.createQuery("select p from PuntoVentaSie p");
-			lista =  q.getResultList(); 
-		   System.out.println("tamaño lista Almacen --> " + lista.size()+"  ");
+			lista =  q.getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
