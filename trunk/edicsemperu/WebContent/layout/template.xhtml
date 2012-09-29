@@ -7,6 +7,8 @@
 	xmlns:p="http://primefaces.org/ui">
 <f:view contentType="text/html">
 	<h:head>
+	
+	
 		<ui:insert name="title">
 			<title>Men&uacute; Principal</title>
 		</ui:insert>
@@ -283,187 +285,84 @@
 
 
 
-<!-- PUPAP DE NUEVO CARGO EMPLEADO -->
+<!--EN UN SOLO PUPAP NUEVO Y EDITAR  -->
 
 
-
-<h:form id="NuevoCargoEmpleado">
+<h:form id="NuevoModificaCargoEmpleado">
 	<p:dialog header="Ingrese Nuevo Cargo" widgetVar="carDialogNuevo" 
-		showEffect="fade" hideEffect="explode" modal="true" width="300"
-		position="center">
-		<h:panelGrid id="display" columns="2" cellpadding="2"
-			style="margin:0 auto;">
+			showEffect="fade" hideEffect="explode" modal="true" width="300"	position="center">
 			
+		<h:panelGrid id="display" columns="2" cellpadding="2" style="margin:0 auto;">
+				<h:outputText  value="#{message['Cargoempleado.descripcion']}" for="descripcion"	/>
 				
-
-				<h:outputText  value="#{message['Cargoempleado.descripcion']}" for="descripcion"  />
-				<h:panelGroup>
+				<h:panelGroup>		
+						
+						<h:inputText id="descripcion1"
+								value="#{mantenimientoCargoEmpleadoFormAction.objCargoEmpleadoSie.descripcion}"
+								required="true"  label="descripcion"
+								requiredMessage="#{message['Cargoempleado.descripcion.validation']}"
+								style="font-weight:bold" rendered="#{mantenimientoCargoEmpleadoFormAction.editMode}"	
+					 />				
 				
-					<h:inputText id="descripcion"
-						value="#{mantenimientoCargoEmpleadoFormAction.objCargoEmpleadoSie.descripcion}"
-						required="true"  label="descripcion"
-						requiredMessage="#{message['Cargoempleado.descripcion.validation']}"
-						style="font-weight:bold"
-						 />
-						 <p:message for="descripcion" />
+						<p:inputText id="descripcion2"
+								value="#{mantenimientoCargoEmpleadoFormAction.descripcion}"  required="true"  label="descripcion"
+								requiredMessage="#{message['Cargoempleado.descripcion.validation']}"
+								style="font-weight:bold" rendered="#{!mantenimientoCargoEmpleadoFormAction.editMode}"	
+					 />
+						 <p:message for="descripcion1" />
 						 
 				</h:panelGroup>
-
-				<h:outputText value="Estado de Cargo" id="EstCar" />
+						<h:outputText value="Estado de Cargo" id="EstCar"/>
+					
 				<h:panelGroup>
 					
 						<h:selectOneListbox size="1" id="est_general" disabled="true"
-						value="#{mantenimientoCargoEmpleadoFormAction.idEstadoGeneral}">
 						
-						<!-- <f:selectItem itemValue="1" itemLabel="Seleccionar tipo" /> -->
-						<f:selectItems value="#{comboAction.estadoitems}" />
-					</h:selectOneListbox>
-						
-						
-				</h:panelGroup>
-				
-				<h:panelGroup>
-				
-				<p:message  for="est_general"></p:message>
+								value="#{mantenimientoCargoEmpleadoFormAction.idEstadoGeneral}">
+								<f:selectItems value="#{comboAction.estadoitems}" />
+								
+						</h:selectOneListbox>
 					
-					<p:spacer height="20px"></p:spacer>
-					<p:commandButton id="btn" value="Guardar" update="panel" action="#{mantenimientoCargoEmpleadoFormAction.agregar}" ajax="false"/>
-				
-				</h:panelGroup>
-			
-		</h:panelGrid>
-	</p:dialog>
-</h:form>
-
-<!-- PUPAD CARGO EMPLEADO EDITAR -->
-<h:form id="ModificarCargoEmpleado">
-	<p:dialog header="Modificar" widgetVar="carDialog" 
-		showEffect="fade" hideEffect="explode" modal="true" width="300"
-		position="center">
-		<h:panelGrid id="display" columns="3" cellpadding="2"
-			style="margin:0 auto;">
-				<h:outputText value="id" rendered="#{mantenimientoCargoEmpleadoFormAction.idcargoempleado==null}"/>
-				<h:panelGroup>
-					<h:inputText 
-						value="#{mantenimientoCargoEmpleadoFormAction.idcargoempleado}"
-						style="font-weight:bold" readonly="true" rendered="#{mantenimientoCargoEmpleadoFormAction.idcargoempleado==null}" />						 
 				</h:panelGroup>
 				
-				<h:outputText value="#{message['Cargoempleado.descripcion']}" for="descripcion"  />
-				<h:panelGroup>
-				
-					<p:inputText id="descripcion"
-						value="#{mantenimientoCargoEmpleadoFormAction.descripcion}"  required="true"  label="descripcion"
-						requiredMessage="#{message['Cargoempleado.descripcion.validation']}"
-						style="font-weight:bold"
-						 />
-				<p:message for="descripcion" />		 
-				</h:panelGroup>
-				
-
-				<h:outputText value="Estado de Cargo" id="EstCar" rendered="#{mantenimientoCargoEmpleadoFormAction.idEstadoGeneral==null}"/>
 				<h:panelGroup>					
-						<p:selectOneMenu size="1" id="est_general" rendered="#{mantenimientoCargoEmpleadoFormAction.idEstadoGeneral==null}"
-						value="#{mantenimientoCargoEmpleadoFormAction.idEstadoGeneral}" readonly="true">
-						<f:selectItem itemValue="1" itemLabel="Seleccionar tipo" />
-						<f:selectItems value="#{comboAction.estadoitems}"  />
-					</p:selectOneMenu>				
-						
-				</h:panelGroup>				
+							<p:message  for="est_general"></p:message>					
+							<p:spacer height="20px"></p:spacer>
+					<p:commandButton id="btn" value="Guardar" update="panel" action="#{mantenimientoCargoEmpleadoFormAction.insertar}" ajax="false"
 				
-				<h:panelGroup>
-				
-				<p:message  for="est_general"></p:message>					
-					<p:spacer height="20px"></p:spacer>
-<p:commandButton id="btn" value="Guardar" update="panel" actionListener="#{mantenimientoCargoEmpleadoFormAction.update}" ajax="false"/>
+					 icon="ui-icon ui-icon-disk"/>
 				
 				</h:panelGroup>
 			
 		</h:panelGrid>
-	</p:dialog>
-</h:form>
-<!-- FIN EDITAR -->
-
-<!-- UNION -->
-
-
-
-<h:form id="ModificarCargoEmpleado">
-	<p:dialog header="Modificar" widgetVar="carDialog" 
-		showEffect="fade" hideEffect="explode" modal="true" width="300"
-		position="center">
-		<h:panelGrid id="display" columns="3" cellpadding="2"
-			style="margin:0 auto;"
-			
 		
-			>
-				<h:outputText value="id" rendered="#{mantenimientoCargoEmpleadoFormAction.idcargoempleado==null}"/>
-				<h:panelGroup>
-					<h:inputText 
-						value="#{mantenimientoCargoEmpleadoFormAction.idcargoempleado}"
-						style="font-weight:bold" readonly="true" rendered="#{mantenimientoCargoEmpleadoFormAction.idcargoempleado==null}" />						 
-				</h:panelGroup>
-				
-				<h:outputText value="#{message['Cargoempleado.descripcion']}" for="descripcion"  />
-				<h:panelGroup>
-				
-					<p:inputText id="descripcion"
-						value="#{mantenimientoCargoEmpleadoFormAction.descripcion}"  required="true"  label="descripcion"
-						requiredMessage="#{message['Cargoempleado.descripcion.validation']}"
-						style="font-weight:bold"
-						 />
-				<p:message for="descripcion" />		 
-				</h:panelGroup>
-				
-
-				<h:outputText value="Estado de Cargo" id="EstCar" rendered="#{mantenimientoCargoEmpleadoFormAction.idEstadoGeneral==null}"/>
-				<h:panelGroup>
-					
-						<p:selectOneMenu size="1" id="est_general" rendered="#{mantenimientoCargoEmpleadoFormAction.idEstadoGeneral==null}"
-						value="#{mantenimientoCargoEmpleadoFormAction.idEstadoGeneral}" readonly="true">
-						<f:selectItem itemValue="1" itemLabel="Seleccionar tipo" />
-						<f:selectItems value="#{comboAction.estadoitems}"  />
-					</p:selectOneMenu>
-						
-						
-				</h:panelGroup>
-				
-				
-				<h:panelGroup>
-				
-				<p:message  for="est_general"></p:message>
-					
-					<p:spacer height="20px"></p:spacer>
-					<p:commandButton id="btn" value="Guardar" update="panel" 
-							actionListener="#{mantenimientoCargoEmpleadoFormAction.update}" ajax="false"/>
-				
-				</h:panelGroup>
-			
-		</h:panelGrid>
 	</p:dialog>
+	
 </h:form>
+<!-- FIN PUPAP NUEVO Y EDITAR  -->
 
 
-<!-- FIN UNION -->
+<!--	  INICIO DESACTIVAR	   -->
 
-
-
-<!--DESACTIVAR  -->
 <h:form>
-<p:confirmDialog id="confirmDeshabilitar" message="Esta seguro de deshabilitar dicho movimiento?" width="325" height="100" showEffect="explode" 
+
+	<p:confirmDialog id="confirmDeshabilitar" message="Esta seguro de deshabilitar dicho movimiento?" width="325" height="100" showEffect="explode" 
 				hideEffect="explode"  header="Confirm" severity="alert" widgetVar="confirmation" position="center">
 					   
-        <p:commandButton  type="submit" value="Si"  actionListener="#{mantenimientoCargoEmpleadoFormAction.updateDeshabilitar}"  
-        update=":manteCargoEmpleado:listaPersonas" oncomplete="confirmation.hide()" ajax="false">
-        </p:commandButton>  
+       			 <p:commandButton  type="submit" value="Si"  action="#{mantenimientoCargoEmpleadoFormAction.updateDeshabilitar}"  
+       			 update=":manteCargoEmpleado:listaPersonas" oncomplete="confirmation.hide()" ajax="false">
+      			 </p:commandButton>  
         
-        <p:commandButton value="No" onclick="confirmation.hide()" type="button" />  
+        		<p:commandButton value="No" onclick="confirmation.hide()" type="button" />  
+        		
     </p:confirmDialog>
-    </h:form>
-    <!-- Fin DESACTICAR (ESTADOS) -->
+    
+</h:form>
+
+<!-- 	FIN DESACTICAR (ESTADOS)  -->
 
 
-	<ui:insert name="highlight">
+<ui:insert name="highlight">
                 <script language="javascript" src="#{request.contextPath}/syntaxhighlighter/scripts/sh.js"></script>
    </ui:insert>
 </f:view>
