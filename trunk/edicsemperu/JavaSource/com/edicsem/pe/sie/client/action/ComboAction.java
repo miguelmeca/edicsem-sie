@@ -10,9 +10,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -20,7 +18,7 @@ import com.edicsem.pe.sie.entity.EstadoGeneralSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.entity.TipoProductoSie;
-import com.edicsem.pe.sie.service.facade.AlmacenService; 
+import com.edicsem.pe.sie.service.facade.AlmacenService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.service.facade.TipoProductoService;
@@ -196,7 +194,7 @@ public class ComboAction extends BaseMantenimientoAbstractAction {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'getEstadoitems()'");
 			}
-			lista = objEstadoGeneralService.listarEstados();
+			lista = objEstadoGeneralService.listarEstados(Constants.COD_ESTADO_TB_PRODUCTO);
 
 			for (int i = 0; i < lista.size(); i++) {
 				EstadoGeneralSie entidad = new EstadoGeneralSie();
