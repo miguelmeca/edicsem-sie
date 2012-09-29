@@ -4,74 +4,100 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
-	<ui:define name="body">
+<ui:define name="body">
 		<h1 class="title ui-widget-header ui-corner-all"> Mantenimiento Cargo de Empleado</h1>
+		
 		<h:form id="manteCargoEmpleado" prependId="false">
-		<p:growl id="message" showDetail="true" />
+		<p:growl id="message" showDetail="true" />		
 		
-		
-			<p:dataTable value="#{mantenimientoCargoEmpleadoSearchAction.cargoEmpleadomodel}"  var="m"
+		<p:dataTable value="#{mantenimientoCargoEmpleadoSearchAction.cargoEmpleadomodel}"  var="m"
 					id="listaPersonas" paginator="true" rows="6"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15" widgetVar="table"
-					emptyMessage="No se encontro registros">
-					<f:facet name="header">  
-          
-        </f:facet>
-        
-        
-					<f:facet name="header">
-						<p:outputPanel>
-							<h:outputText value="Buscar Cargo de Empleado:" />
-							<p:inputText id="globalFilter" onkeyup="table.filter()"
-								style="width:150px; align:Left; " />
-						</p:outputPanel>
-					</f:facet>
-
+					emptyMessage="No se encontro registros"
+					>
+					<f:facet name="header">  </f:facet>
+                
+	<f:facet name="header">			
+			<p:outputPanel>	<h:outputText  value="Buscar Cargo de Empleado:" />		
+			
+						<p:inputText id="globalFilter" onkeyup="table.filter()"	style="width:150px; align:Left; "
+						
+						filteredValue="#{m.descripcion}"  />
+						
+	    	</p:outputPanel>
+	</f:facet>
 					
 					
-					<p:column >
-						<f:facet name="header">
-							<h:outputText value="Codigo" />
-						</f:facet>
-						<h:outputText value="#{m.idcargoempleado}" />
-					</p:column>
-					
-					<p:column headerText="Descripcion" sortBy="#{m.descripcion}" id="descripcion" filterBy="#{m.descripcion}" >  
-					<h:outputText value="#{m.descripcion}" />  
-					</p:column>
+			<p:column headerText="Descripcion"  id="descripcion" sortBy="#{m.descripcion}" filterBy="#{m.descripcion}"
+												>
+				  
+						<h:outputText value="#{m.descripcion}" />
+											 
+			</p:column>
 							
 						
-<!-- Boton Editar -->
+<!--********** BOTON EDITAR **********-->
 		
 	<p:column headerText="Editar">
-		<p:commandButton value="Editar"  oncomplete="carDialog.show()"
-			actionListener="#{mantenimientoCargoEmpleadoFormAction.buscarCargoEmpleado}"
-			                   update=":ModificarCargoEmpleado:display">
-		<f:attribute  name="idcargoempleado" value="#{m.idcargoempleado}" />	
-		</p:commandButton>
+	
+			<p:commandButton value="Editar"  oncomplete="carDialogNuevo.show()"
+								action="#{mantenimientoCargoEmpleadoFormAction.update}"
+			                    update=":NuevoModificaCargoEmpleado:display"
+			                    icon="ui-icon ui-icon-pencil"
+			  >
+			                    
+			<f:setPropertyActionListener value="#{m}" 
+			 target="#{mantenimientoCargoEmpleadoFormAction.objCargoEmpleadoSie}" />
+			 
+			</p:commandButton>
+					
 	</p:column>
  
- <!-- Fin Editar -->
+ <!--**********FIN EDITAR**********-->
+ 
+ 
+ 
 
-<!-- DESACTIVAR -->
-<p:column headerText="Deshabilitar">
- 	<p:commandButton id="showConfirmDeshabilitar" value="Quitar" icon="ui-icon ui-icon-pencil" 
- 	onclick="confirmation.show()"> 
-<f:setPropertyActionListener value="#{m.idcargoempleado}" target="#{mantenimientoCargoEmpleadoFormAction.idc}" />
-</p:commandButton>
-</p:column>
+<!--**********INICIO 	DESACTIVAR**********-->
 
-	</p:dataTable>
-<!-- fin de la lista -->
+		<p:column headerText="Deshabilitar">
 	
-<!-- Boton NUEVO -->
+	 			<p:commandButton id="showConfirmDeshabilitar" value="Quitar"  icon="ui-icon ui-icon-close"
+	 			
+	 							onclick="confirmation.show()"> 
+								<f:setPropertyActionListener value="#{m.idcargoempleado}" target="#{mantenimientoCargoEmpleadoFormAction.idc}" />
 
-<p:commandButton value="Nuevo Cargo Empleado"  update=":NuevoCargoEmpleado:display"
-						oncomplete="carDialogNuevo.show()" 	title="Ingresar Cargo Empleado">
-</p:commandButton>
+				</p:commandButton>
+				
+		</p:column>
+
+<f:facet name="footer">
+<div align="left">
+	
+<!--********** BOTON NUEVO **********-->
+
+<p:commandLink value="Nuevo Cargo Empleado"  update=":NuevoModificaCargoEmpleado:display" 
+				
+				action="#{mantenimientoCargoEmpleadoFormAction.agregar}"
+				oncomplete="carDialogNuevo.show()" 	title="Ingresar Cargo Empleado"
+>
+</p:commandLink>
 						
-<!-- Fin Nuevo -->
+<!--**********FIN NUEVO**********-->
+
+</div>
+
+
+</f:facet>
+
+		</p:dataTable>
+<!--**********fin de la lista**********-->
+
+
+
+
+
 
 </h:form>
 </ui:define>
