@@ -10,6 +10,10 @@ import com.edicsem.pe.sie.model.dao.ProductoDAO;
 import com.edicsem.pe.sie.model.dao.TipoKardexProductoDAO;
 import com.edicsem.pe.sie.service.facade.KardexService;
 
+/**
+ * @author karen
+ *
+ */
 @Stateless
 public class KardexServiceImpl implements KardexService {
 
@@ -22,12 +26,18 @@ public class KardexServiceImpl implements KardexService {
 	@EJB
 	private  AlmacenDAO objAlmacenDao;
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.KardexService#ConsultaProductos(int, int, java.lang.String, java.lang.String)
+	 */
 	public List ConsultaProductos(int idproducto, int idalmacen,
 			String fechaDesde, String fechaHasta) { 
 		
 		return objKardexDao.ConsultaProductos(idproducto, idalmacen, fechaDesde, fechaHasta); 
 	} 
  
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.KardexService#insertMovimiento(int, int, java.lang.String, int, int, int, int)
+	 */
 	public void insertMovimiento(int cantsalida, int cantentrada,String detalle,
 			int idproducto, int idtipokardexproducto, int idAlmacenSalida, int idAlmacenEntrada) {
 		
@@ -60,11 +70,17 @@ public class KardexServiceImpl implements KardexService {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.KardexService#ConsultaKardexDiario()
+	 */
 	public List ConsultaKardexDiario() {
 		return objKardexDao.ConsultaKardexDiario();
 	}
 	
-	public KardexSie ConsultaStockActual(int idProducto) {
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.KardexService#ConsultaStockActual(int)
+	 */
+	public List<KardexSie> ConsultaStockActual(int idProducto) {
 		return objKardexDao.ConsultaStockActual(idProducto);
 	}
 }

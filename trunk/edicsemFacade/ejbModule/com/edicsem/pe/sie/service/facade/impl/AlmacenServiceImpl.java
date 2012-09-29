@@ -5,14 +5,9 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
-import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.model.dao.AlmacenDAO;
-import com.edicsem.pe.sie.model.dao.ProductoDAO;
-import com.edicsem.pe.sie.model.dao.TipoProductoDAO;
 import com.edicsem.pe.sie.service.facade.AlmacenService;
-import com.edicsem.pe.sie.service.facade.ProductoService;
-import com.edicsem.pe.sie.service.facade.TipoProductoService;
 
 @Stateless
 public class AlmacenServiceImpl implements AlmacenService {
