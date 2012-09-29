@@ -65,8 +65,4 @@ public class ProductoServiceImpl implements ProductoService {
 		
 		return objProductoDao.listarProductosXTipo(tipoProducto); 
 	}
-
- 
-
-
 }

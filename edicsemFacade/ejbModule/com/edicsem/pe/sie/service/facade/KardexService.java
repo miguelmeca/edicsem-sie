@@ -11,5 +11,5 @@ public interface KardexService {
 	public abstract List  ConsultaProductos(int idproducto, int idalmacen, String fechaDesde, String fechaHasta);
 	public abstract void insertMovimiento (int cantsalida,int cantentrada,String detalle,int idproducto,int idtipokardexproducto,int idAlmacenSalida, int idAlmacenEntrada );
 	public abstract List  ConsultaKardexDiario();
-	public abstract KardexSie ConsultaStockActual(int idProducto);
+	public abstract List<KardexSie> ConsultaStockActual(int idProducto);
 }

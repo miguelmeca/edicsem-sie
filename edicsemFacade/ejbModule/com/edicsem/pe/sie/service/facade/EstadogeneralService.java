@@ -15,6 +15,6 @@ public interface EstadogeneralService {
 	public abstract void updateEstadogeneral(EstadoGeneralSie estadogeneral);
 	public abstract void eliminarEstadogeneral(int id);
 	public abstract EstadoGeneralSie findEstadogeneral (int id);
-	public abstract List  listarEstados(); 
+	public abstract List  listarEstados(String codigo); 
 	
 }
