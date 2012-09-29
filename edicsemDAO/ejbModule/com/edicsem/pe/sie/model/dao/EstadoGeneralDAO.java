@@ -13,6 +13,6 @@ public interface EstadoGeneralDAO {
 	public abstract void updateEstadogeneral(EstadoGeneralSie estadogeneral);
 	public abstract void eliminarEstadogeneral(int id);
 	public abstract EstadoGeneralSie findEstadoGeneral (int id);
-	public abstract List  listarEstados(); 
+	public abstract List  listarEstados(String codigo); 
 	
 }

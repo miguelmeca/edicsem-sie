@@ -97,10 +97,10 @@ public class EstadogeneralDAOImpl implements EstadoGeneralDAO {
 	}
 
  
-	public List listarEstados() {
+	public List listarEstados(String codigo) {
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from EstadoGeneralSie p");
+			Query q = em.createQuery("select p from EstadoGeneralSie p where p.codestadogeneral  like  '%"+ codigo + "%'");
 			lista =  q.getResultList(); 
 		   System.out.println("tamaño lista EstadoGeneral  --> " + lista.size()+"  ");
 		} catch (Exception e) {
@@ -108,6 +108,5 @@ public class EstadogeneralDAOImpl implements EstadoGeneralDAO {
 		}
 		return lista;
 	}
- 
-	
+  
 }

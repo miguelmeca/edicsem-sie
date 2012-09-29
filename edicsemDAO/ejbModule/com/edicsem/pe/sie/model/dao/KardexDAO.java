@@ -15,5 +15,5 @@ public interface KardexDAO {
 	
 	public abstract List  ConsultaKardexDiario();
 	
-	public abstract KardexSie ConsultaStockActual(int idProducto);
+	public abstract List<KardexSie> ConsultaStockActual(int idProducto);
 }
