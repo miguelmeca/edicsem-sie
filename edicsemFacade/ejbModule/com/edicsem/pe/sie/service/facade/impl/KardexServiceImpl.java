@@ -83,4 +83,13 @@ public class KardexServiceImpl implements KardexService {
 	public List<KardexSie> ConsultaStockActual(int idProducto) {
 		return objKardexDao.ConsultaStockActual(idProducto);
 	}
+	
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.KardexService#updateKardex(com.edicsem.pe.sie.entity.KardexSie)
+	 */
+	public void updateKardex(KardexSie kardex) {
+		objKardexDao.updateKardex(kardex);
+	}
+	
 }
