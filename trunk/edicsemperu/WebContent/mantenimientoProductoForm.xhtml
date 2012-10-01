@@ -8,7 +8,7 @@
 	<ui:define name="body">
 		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
 			Productos</h1>
-		<h:form id="formManteProd" prependId="false"
+		<h:form id="formManteProducto" prependId="false"
 			enctype="multipart/form-data">
 			<p:growl id="message" showDetail="true" />
 			<h:panelGrid columns="3">
@@ -98,7 +98,8 @@
 				</p:selectOneMenu> 
 				<p:message for="estproducto1" />
  
-           <p:graphicImage id="imgFotoInserta"  value="#{productoForm.image}" cache="false" rendered="#{productoForm.image != null}"/> 
+           <p:graphicImage id="imgFotoInserta"  value="#{productoForm.image}" cache="false" rendered="#{productoForm.image != null}" 
+           style="height:90px;width:90px" /> 
              <p:commandButton value="Insertar Imagen"  update=":formInsertImageProduc:display"
 							oncomplete="imageProducDialog.show()" title="Ingresar Empleado">
 						</p:commandButton>
@@ -112,7 +113,7 @@
                        </p:commandButton>
                        
                       </h:panelGroup>
-                    <p:commandButton value="Cancelar" actionListener="#{productoForm.consultar}"
+                    <p:commandButton value="Cancelar" action="#{productoForm.consultar}"
                     icon="ui-icon ui-icon-close" ajax="false" />
   				
               </p:outputPanel>  

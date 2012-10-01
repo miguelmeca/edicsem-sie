@@ -67,12 +67,20 @@
 						<f:selectItem itemLabel="Seleccione almacen" itemValue="0" />
 						<f:selectItems value="#{comboAction.almacenItems}" />
 					</p:selectOneMenu>
-	<p:spacer></p:spacer>
+					
+					<p:spacer/>
+					
 					<h:outputText value="Detalle" id="detProd" />
 					<p:inputTextarea
 						value="#{movimientoMercaderia.objKardexSie.detallekardex}" />
 				
-
+					<h:outputText value="#{message['movimiento.empresa.descripcion']}" rendered="#{!movimientoMercaderia.editMode}"/>
+					<p:selectOneMenu size="1" rendered="#{!movimientoMercaderia.editMode}"
+						value="#{movimientoMercaderia.idempresa}">
+						<f:selectItem itemLabel="Seleccione Empresa" itemValue="0" />
+						<f:selectItems value="#{comboAction.empresaitems}" />
+					</p:selectOneMenu>
+					
 					<p:commandButton id="id"
 						actionListener="#{movimientoMercaderia.insertar}"
 						value="Grabar Mercadería" ajax="false"
@@ -80,13 +88,19 @@
 					</p:commandButton>
 				</p:panelGrid>
 
-				<p:dataTable id="listaMovim" value="#{movimientoMercaderia.data}"
+				<p:dataTable id="listaMovim" value="#{movimientoMercaderia.data}"  selectionMode="single"
 					var="d">
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Id Kardex" />
 						</f:facet>
 						<h:outputText value="#{d.idkardex}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Almacen" />
+						</f:facet>
+						<h:outputText value="#{d.tbPuntoVenta.descripcion}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">
