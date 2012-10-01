@@ -56,6 +56,7 @@ public class MantenimientoEmpresaFormAction extends BaseMantenimientoAbstractAct
 	public String update() throws Exception {
 		log.info("update()");
 		setNewRecord(false);
+		//Consultar
 		return insertar();
 	}
 

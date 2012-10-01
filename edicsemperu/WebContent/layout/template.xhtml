@@ -66,7 +66,7 @@
 						<p:menuitem value="Registro de Contrato" ajax="false" action="#" />
 						<p:menuitem value="Gestion de Clientes/Seguimiento Cobranzas" ajax="false" action="#" />
 						<p:menuitem value="Mantenimiento Valorizado" update="messages" ajax="false" action="mantenimientoKardex.jsf" />
-						<p:menuitem value="Movimiento Mercader&iacute;a" ajax="false" action="#" />
+						<p:menuitem value="Movimiento Mercader&iacute;a" ajax="false" action="movimientoMercaderiaForm.listar" />
 						<p:menuitem value="Mantenimiento de Empleados" ajax="false" action="mantenimientoEmpleadoList.jsf" />
 						<p:menuitem value="Mantenimiento Cargo Empleado" ajax="false" action="mantenimientoCargoEmpleadoFormList.jsf" />
 						<p:menuitem value="Mantenimiento Empresa" ajax="false" action="#{empresaSearch.listar}"/>
@@ -89,64 +89,39 @@
 			
 				<h:outputText value="#{message['kardex.idKardex']}" id="idKardex" />
 				<h:panelGroup>
-				<h:outputText
-						value="#{kardexSieAction.objKardexSie.idkardex}"
-						style="font-weight:bold" rendered="#{kardexSieAction.editMode}" />
-				<h:outputText value="#{kardexSieAction.objKardexSie.idkardex}" style="font-weight:bold" rendered="#{!kardexSieAction.editMode}" />
-				 </h:panelGroup>  
+				<h:outputText value="#{kardexSieAction.objKardexSie.idkardex}"
+						style="font-weight:bold" />
+				</h:panelGroup>
 				 
 				<h:outputText value="#{message['mantenimiento.producto.codigo']}" id="codProd" />
 				<h:panelGroup>
-				<h:outputText
-						value="#{kardexSieAction.objKardexSie.tbProducto.idproducto}"
-						style="font-weight:bold" rendered="#{kardexSieAction.editMode}" />
-					 <h:outputText
-						value="#{kardexSieAction.objKardexSie.tbProducto.idproducto}"
-						style="font-weight:bold" rendered="#{!kardexSieAction.editMode}" />
+				<h:outputText value="#{kardexSieAction.objKardexSie.tbProducto.idproducto}"
+						style="font-weight:bold"  /> 
 				</h:panelGroup>
-					 
+				
 				<h:outputText value="#{message['mantenimiento.producto.descripcion']}"  />
 				<h:panelGroup>
 				<h:outputText
 						value="#{kardexSieAction.objKardexSie.tbTipoKardexProducto.descripcion}"
-						style="font-weight:bold"
-						rendered="#{kardexSieAction.editMode}" />
-				<h:outputText
-						value="#{kardexSieAction.objKardexSie.tbTipoKardexProducto.descripcion}"
-						style="font-weight:bold"
-						rendered="#{!kardexSieAction.editMode}" />
-				</h:panelGroup> 
+						style="font-weight:bold"  />
+				</h:panelGroup>
 				
 				<h:outputText value="Detalle" id="detProd" />
 				<h:panelGroup>
-				<h:inputTextarea  
-						value="#{kardexSieAction.objKardexSie.detallekardex}"
-						style="font-weight:bold" disabled="true"
-						rendered="#{kardexSieAction.editMode}" />
-				<h:inputTextarea id="apellidoPaternoAl" value="#{kardexSieAction.objKardexSie.detallekardex}" 
-				rendered="#{!kardexSieAction.editMode}" required="true" style="font-weight:bold"/>  
+				<h:inputTextarea value="#{kardexSieAction.objKardexSie.detallekardex}"
+						style="font-weight:bold" disabled="true"/>
 				</h:panelGroup>
 				
 				<h:outputText value="Fecha Creación" id="fecCreacProd" />
 				<h:panelGroup>
-				<h:outputText
-						value="#{kardexSieAction.objKardexSie.fechacreacion}"
-						style="font-weight:bold" rendered="#{kardexSieAction.editMode}" />
-				<h:outputText
-						value="#{kardexSieAction.objKardexSie.fechacreacion}"
-						style="font-weight:bold" rendered="#{!kardexSieAction.editMode}" />
-				</h:panelGroup>	
+				<h:outputText value="#{kardexSieAction.objKardexSie.fechacreacion}"
+						style="font-weight:bold"  />
+				</h:panelGroup>
 				
 				<h:outputText value="#{message['mantenimiento.producto.cantidadEnt']}" />
 				<h:panelGroup>
-				<h:outputText  
-						value="#{kardexSieAction.objKardexSie.cantentrada}"
-						style="font-weight:bold" disabled="true"
-						rendered="#{kardexSieAction.editMode}" />
-				<h:inputText  
-						value="#{kardexSieAction.objKardexSie.cantentrada}"
-						style="font-weight:bold"  
-						rendered="#{!kardexSieAction.editMode}" />
+				<h:outputText  value="#{kardexSieAction.objKardexSie.cantentrada}"
+						style="font-weight:bold" disabled="true"  />
 				</h:panelGroup>
 				
 				<h:outputText value="#{message['mantenimiento.producto.cantidadSal']}"/>
@@ -155,23 +130,33 @@
 						value="#{kardexSieAction.objKardexSie.cantsalida}"
 						style="font-weight:bold" disabled="true"
 						rendered="#{kardexSieAction.editMode}" />
-				<h:inputText  
-						value="#{kardexSieAction.objKardexSie.cantsalida}"
-						style="font-weight:bold"  
-						rendered="#{!kardexSieAction.editMode}" />
 				</h:panelGroup>
 				
 				<h:outputText value="#{message['kardex.cantExistente']}"  />
 				<h:panelGroup>
 				<h:outputText  
 						value="#{kardexSieAction.objKardexSie.cantexistencia}"
-						style="font-weight:bold" disabled="true"
-						rendered="#{kardexSieAction.editMode}" />
-				<h:outputText  
-						value="#{kardexSieAction.objKardexSie.cantexistencia}"
-						style="font-weight:bold" disabled="true"
-						rendered="#{!kardexSieAction.editMode}" />
+						style="font-weight:bold" />
 				 </h:panelGroup>
+				 
+				 <h:outputText value="#{message['kardex.empresa']}"  />
+				<h:panelGroup>
+				<p:selectOneMenu  size="1" rendered="#{!kardexSieAction.editMode}"  
+						value="#{kardexSieAction.idempresa}">
+						<f:selectItem itemLabel="Seleccione Empresa" itemValue="#{null}"  />
+						<f:selectItems value="#{comboAction.empresaitems}" />
+				</p:selectOneMenu>
+				
+				<p:selectOneMenu  size="1" rendered="#{kardexSieAction.editMode}"
+						value="#{kardexSieAction.objKardexSie.tbEmpresa.idempresa}">
+						<f:selectItem itemLabel="Seleccione Empresa" itemValue="#{null}" />
+						<f:selectItems value="#{comboAction.empresaitems}" />
+				</p:selectOneMenu>
+				 </h:panelGroup>
+				<p:commandButton id="id"
+						actionListener="#{kardexSieAction.insertar}"
+						value="Actualizar kardex " ajax="false" />
+				
 		</h:panelGrid>
 	</p:dialog>
 </h:form>

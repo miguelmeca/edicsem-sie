@@ -6,6 +6,7 @@ import java.io.InputStream;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.imageio.stream.FileImageOutputStream;
@@ -15,6 +16,8 @@ import org.apache.commons.logging.LogFactory;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
+
+import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -24,10 +27,12 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 @SessionScoped
 public class MantenimientoProductoFormAction extends
 		BaseMantenimientoAbstractAction {
+	
+	@ManagedProperty(value="#{comboAction}") 
+	private ComboAction comboManager;
 
 	private String mensaje;
-	public static Log log = LogFactory
-			.getLog(MantenimientoProductoFormAction.class);
+	public static Log log = LogFactory.getLog(MantenimientoProductoFormAction.class);
 	private int TipoProducto, estadoProducto;
 	private StreamedContent image;
 	private ProductoSie objProductoSie;
@@ -92,6 +97,8 @@ public class MantenimientoProductoFormAction extends
 	public String agregar() {
 		log.info("agregar()");
 		objProductoSie = new ProductoSie();
+		comboManager.setCodigoEstado(Constants.COD_ESTADO_TB_PRODUCTO);
+		log.info("agregar()");
 		setNewRecord(true);
 		return getViewList();
 		
@@ -108,6 +115,7 @@ public class MantenimientoProductoFormAction extends
 		log.info("update()"+ objProductoSie.getRutaimagenproducto() );
 		TipoProducto = objProductoSie.getTbTipoProducto().getIdtipoproducto();
 		estadoProducto = objProductoSie.getTbEstadoGeneral().getIdestadogeneral();
+		log.info("update()"+ TipoProducto +"  "+estadoProducto );
 		InputStream stream = new FileInputStream(objProductoSie.getRutaimagenproducto());
 		setImage( new DefaultStreamedContent(stream));
 		setNewRecord(false);
@@ -171,6 +179,7 @@ public class MantenimientoProductoFormAction extends
 	 */
 	
 	public String consultar() throws Exception {
+		log.info("en el consultar ");
 		return getViewMant();
 	}
 
@@ -308,6 +317,21 @@ public class MantenimientoProductoFormAction extends
 	 */
 	public void setEstadoProducto(int estadoProducto) {
 		this.estadoProducto = estadoProducto;
+	}
+
+	/**
+	 * @return the comboManager
+	 */
+	public ComboAction getComboManager() {
+		return comboManager;
+	}
+
+	/**
+	 * @param comboManager the comboManager to set
+	 */
+	public void setComboManager(ComboAction comboManager) {
+		
+		this.comboManager = comboManager;
 	}
 
 }

@@ -75,7 +75,7 @@ public class MantenimientoEmpresaSearchAction extends BaseMantenimientoAbstractA
 		 * **/
 		// donde codUsuarioE es tu ID
 		int strCodigoParametro = Integer.parseInt(paramMap.get("codUsuarioE"));
-		empresaSie = empresaService.findProducto(strCodigoParametro);
+		empresaSie = empresaService.findEmpresa(strCodigoParametro);
 		return getViewMant();
 	}
 

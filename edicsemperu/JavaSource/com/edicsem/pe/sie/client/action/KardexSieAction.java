@@ -1,20 +1,23 @@
 package com.edicsem.pe.sie.client.action;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.primefaces.model.DefaultStreamedContent;
+
 import com.edicsem.pe.sie.entity.KardexSie;
+import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.KardexService;
-import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name = "kardexSieAction")
@@ -26,13 +29,15 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	private KardexSie objKardexSie;
 	private String mensaje;
 	private int tipoProducto, stockActual;
-	private int idproducto, idalmacen;
+	private int idproducto, idalmacen, idempresa;
 	private Date fechaDesde, fechaHasta;
 	private List<KardexSie> listadoKardex;
-	private boolean editMode;
+	private boolean editMode, newRecord;
 
 	@EJB
 	private KardexService objKardexService;
+	@EJB
+	private EmpresaService objEmpresaService;
 
 	public KardexSieAction() {
 		log.info("inicializando constructor MantenimientoKardex");
@@ -50,16 +55,24 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	 * @return the kardexList
 	 */
 	public List<KardexSie> getKardexList() {
+		
+		return kardexList;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
+	 * #consultar()
+	 */
+	public String consultar() throws Exception {
+		stockActual=0;
+		log.info("entreando a consultar()");
+		
 		log.info(" dentro de getKardexList  " + getTipoProducto() + ""
 				+ getIdproducto() + "" + getIdalmacen());
- 
-		if (getIdproducto() == -1) {
-			setMensaje(" Debe seleccionar un Producto");
-			kardexList = new ArrayList<KardexSie>();
 
-		} else if (getIdalmacen() == -1) {
-			setMensaje("debe seleccionar un almacen");
-		} else {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			String fechaD = "", fechaH = "";
 			if (fechaDesde == null)
@@ -72,41 +85,16 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 			}
 			kardexList = objKardexService.ConsultaProductos(getIdproducto(),
 					getIdalmacen(), fechaD, fechaH);
-			log.info(" Kardex " + kardexList.size());
-			log.info("cantidad existente :D "
-					+ kardexList.get(kardexList.size() - 1).getCantexistencia());
-			stockActual = kardexList.get(kardexList.size() - 1)
-					.getCantexistencia();
+			if(kardexList.size()==0){
+				kardexList = new ArrayList<KardexSie>();
+				stockActual=0;
+			}else{ 
+				
+			log.info("cantidad existente :D "+ kardexList.get(kardexList.size() - 1).getCantexistencia());
+			stockActual = kardexList.get(kardexList.size() - 1).getCantexistencia();
 			log.info("nuevo stock actual " + getStockActual());
 			setMensaje(" consulta realizada ");
-		}
-		return kardexList;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
-	 * #consultar()
-	 */
-	public String consultar() throws Exception {
-		log.info("entreando a consultar()");
-		List<KardexSie> lista = new ArrayList<KardexSie>();
-		 
-		if (getKardexList().size() <= 0) { 
-			return getViewList();
-		} else {
-			for (KardexSie c : getKardexList()) {
-			 
-				lista.add(c);
 			}
-
-			setListadoKardex(lista);
-		}
-		msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-				Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return getViewList();
 	}
 
@@ -282,5 +270,57 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 		this.tipoProducto = tipoProducto;
 	}
 
+	/**
+	 * @return the idempresa
+	 */
+	public int getIdempresa() {
+		return idempresa;
+	}
 
+	/**
+	 * @param idempresa the idempresa to set
+	 */
+	public void setIdempresa(int idempresa) {
+		this.idempresa = idempresa;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
+	 */
+	
+	public String update() throws Exception {
+		log.info("update() "+ idempresa  );  
+		objKardexSie.setTbEmpresa(objEmpresaService.findEmpresa(idempresa));
+		setNewRecord(false); 
+		return getViewList();
+	}
+
+	/**
+	 * @return the newRecord
+	 */
+	public boolean isNewRecord() {
+		return newRecord;
+	}
+
+	/**
+	 * @param newRecord the newRecord to set
+	 */
+	public void setNewRecord(boolean newRecord) {
+		this.newRecord = newRecord;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
+	 */
+	
+	public String insertar() throws Exception {
+		log.info(" insertar() ");
+		objKardexSie.setTbEmpresa(objEmpresaService.findEmpresa(idempresa));
+		
+		objKardexService.updateKardex(objKardexSie);
+		 
+		return getViewList();
+	}
+	
+	
 }

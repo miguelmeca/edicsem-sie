@@ -57,16 +57,16 @@ public class MantenimientoDemo extends BaseMantenimientoAbstractAction{
 			} 
 			 
 				log.info("objTipo.isNewRecord() : "+ objTipo.getCodtipoproducto());
-			if (objTipo.isNewRecord()){
-				log.info("insertando..... ");
+//			if (objTipo.isNewRecord()){
+//				log.info("insertando..... ");
 				//insertarValidation(objTipo);
 				objTipoService.insertTipoProducto(objTipo);
-				objTipo.setNewRecord(false);
-			} 
-			else {
-				log.info("objUsuario.isNewRecord() : "+ objTipo.isNewRecord());
+//				objTipo.setNewRecord(false);
+//			} 
+//			else {
+//				log.info("objUsuario.isNewRecord() : "+ objTipo.isNewRecord());
 			//	objTipoService.updateDemo(objTipo);
-			}
+//			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();

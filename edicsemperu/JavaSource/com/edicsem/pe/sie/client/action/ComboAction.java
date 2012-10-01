@@ -14,30 +14,34 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.EstadoGeneralSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.entity.TipoProductoSie;
 import com.edicsem.pe.sie.service.facade.AlmacenService;
+import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.service.facade.TipoProductoService;
 import com.edicsem.pe.sie.util.constants.Constants;
-import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name = "comboAction")
 @SessionScoped
-public class ComboAction extends BaseMantenimientoAbstractAction {
+public class ComboAction {
 	
-	public static Log log = LogFactory.getLog(ComboAction.class);
+	private static Log log = LogFactory.getLog(ComboAction.class);
+	private static FacesMessage msg = null;
 	private String mensaje;
-	   
+	private String codigoEstado;
+	
 	private Map<String , Integer> tipoitems =  new HashMap<String, Integer>();
 	private Map<String , Integer> productositems =  new HashMap<String, Integer>();
 	private Map<String , Integer> almacenItems =  new HashMap<String, Integer>();
 	private int tipoProducto;
     private Map<String,Map<String,Integer>> dataProducto = new HashMap<String, Map<String,Integer>>();  
     private Map<String , Integer> estadoitems =  new HashMap<String, Integer>();
+    private Map<String , Integer> empresaitems =  new HashMap<String, Integer>();
     
 	@EJB
 	private AlmacenService objAlmacenService;
@@ -47,6 +51,8 @@ public class ComboAction extends BaseMantenimientoAbstractAction {
 	private ProductoService objProductoService;
 	@EJB 
 	private EstadogeneralService objEstadoGeneralService;
+	@EJB 
+	private EmpresaService objEmpresaService;
 
 	public ComboAction() {
 		log.info("inicializando constructor");
@@ -183,18 +189,18 @@ public class ComboAction extends BaseMantenimientoAbstractAction {
 	public void setTipoitems(Map<String, Integer> tipoitems) {
 		this.tipoitems = tipoitems;
 	}
+	
 
 	/**
 	 * @return the estadoitems
 	 */
 	public Map<String, Integer> getEstadoitems() {
-		tipoitems =  new HashMap<String, Integer>();
 		List lista = new ArrayList<TipoProductoSie>();
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'getEstadoitems()'");
 			}
-			lista = objEstadoGeneralService.listarEstados(Constants.COD_ESTADO_TB_PRODUCTO);
+			lista = objEstadoGeneralService.listarEstados(this.getCodigoEstado());
 
 			for (int i = 0; i < lista.size(); i++) {
 				EstadoGeneralSie entidad = new EstadoGeneralSie();
@@ -218,6 +224,55 @@ public class ComboAction extends BaseMantenimientoAbstractAction {
 	 */
 	public void setEstadoitems(Map<String, Integer> estadoitems) {
 		this.estadoitems = estadoitems;
+	}
+
+	/**
+	 * @return the empresaitems
+	 */
+	public Map<String, Integer> getEmpresaitems() {
+		List lista = new ArrayList<EmpresaSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getEstadoitems()'");
+			}
+			lista = objEmpresaService.listarEmpresas();
+
+			for (int i = 0; i < lista.size(); i++) {
+				EmpresaSie entidad = new EmpresaSie();
+				entidad = (EmpresaSie) lista.get(i);
+				empresaitems.put(entidad.getDescripcion(), entidad.getIdempresa());
+			}
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return empresaitems;
+	}
+
+	/**
+	 * @param empresaitems the empresaitems to set
+	 */
+	public void setEmpresaitems(Map<String, Integer> empresaitems) {
+		this.empresaitems = empresaitems;
+	}
+
+	/**
+	 * @return the codigoEstado
+	 */
+	public String getCodigoEstado() {
+		return codigoEstado;
+	}
+
+	/**
+	 * @param codigoEstado the codigoEstado to set
+	 */
+	public void setCodigoEstado(String codigoEstado) {
+		this.codigoEstado = codigoEstado;
 	} 
 	
 }
