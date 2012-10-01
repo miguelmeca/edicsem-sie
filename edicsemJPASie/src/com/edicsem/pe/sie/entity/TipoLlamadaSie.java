@@ -34,7 +34,8 @@ public class TipoLlamadaSie  implements Serializable {
 	private String descripcion;
 
 	private String descripcionabreviado;
-
+	
+	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
 
 	private Timestamp fechamodifica;

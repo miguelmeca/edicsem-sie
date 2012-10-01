@@ -3,6 +3,7 @@ package com.edicsem.pe.sie.entity;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,7 +31,8 @@ public class DomicilioPersonaSie implements Serializable {
 	private Integer iddomiciliopersona;
 
 	private String domicilio;
-
+	
+	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
 
 	private String referencia;
