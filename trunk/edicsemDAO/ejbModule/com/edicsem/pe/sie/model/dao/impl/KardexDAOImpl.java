@@ -2,14 +2,19 @@ package com.edicsem.pe.sie.model.dao.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import com.edicsem.pe.sie.entity.KardexSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
+import com.edicsem.pe.sie.model.dao.AlmacenDAO;
 import com.edicsem.pe.sie.model.dao.KardexDAO;
 
 /**
@@ -22,7 +27,10 @@ public class KardexDAOImpl implements KardexDAO {
 	@PersistenceContext(name = "edicsemJPASie")
 	private EntityManager em;
 	private static Log log = LogFactory.getLog(KardexDAOImpl.class);
-	private AlmacenDAOImpl a ;
+	
+	@EJB
+	private AlmacenDAO almacenDAOService;
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -110,7 +118,7 @@ public class KardexDAOImpl implements KardexDAO {
 		List lista = new ArrayList();
 		try {
 			Query q = em
-					.createQuery("select p from KardexSie p where p.fechacreacion = CURRENT_DATE order by p.idkardex asc");
+					.createQuery("select p from KardexSie p where DATE(p.fechacreacion) = CURRENT_DATE order by p.idkardex asc");
 			lista = q.getResultList();
 
 			log.info("tamaño lista Productos kardex --> " + lista.size());
@@ -130,7 +138,7 @@ public class KardexDAOImpl implements KardexDAO {
 	 List<KardexSie> listaTmp= null; 
 	 List<KardexSie> lista= new ArrayList();
 	 int cantExistTotalAlm=0;
-	 List<PuntoVentaSie>   listaAlmacenes = listarAlmacenes() ;
+	 List<PuntoVentaSie>   listaAlmacenes = almacenDAOService.listarAlmacenes();
 	 
 		try { 
 			
@@ -152,8 +160,23 @@ public class KardexDAOImpl implements KardexDAO {
 		}
 		return lista;
 	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.KardexDAO#updateKardex(com.edicsem.pe.sie.entity.KardexSie)
+	 */
 	
-	public List<PuntoVentaSie> listarAlmacenes() {
+	public void updateKardex(KardexSie kardex) {
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("modificar Kardex");
+			}
+			em.merge(kardex);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*public List<PuntoVentaSie> listarAlmacenes() {
 		List<PuntoVentaSie>   lista = null;
 		try {
 			Query q = em.createQuery("select p from PuntoVentaSie p");
@@ -163,4 +186,5 @@ public class KardexDAOImpl implements KardexDAO {
 		}
 		return lista;
 	}
+	 */
 }
