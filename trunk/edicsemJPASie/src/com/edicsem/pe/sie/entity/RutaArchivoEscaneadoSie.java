@@ -3,6 +3,7 @@ package com.edicsem.pe.sie.entity;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,7 +29,8 @@ public class RutaArchivoEscaneadoSie implements Serializable {
 	@SequenceGenerator(name="TB_RUTA_ARCHIVO_ESCANEADO_IDRUTAARCHIVOESCANEADO_GENERATOR", sequenceName="SIE.TB_RUTA_ARCHIVO_ESCANEADO_IDRUTAARCHIVOESCANEADO_SEQ", initialValue=1, allocationSize =1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_RUTA_ARCHIVO_ESCANEADO_IDRUTAARCHIVOESCANEADO_GENERATOR")
 	private Integer idrutaarchivoescaneado;
-
+	
+	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
 
 	private String ruta;
