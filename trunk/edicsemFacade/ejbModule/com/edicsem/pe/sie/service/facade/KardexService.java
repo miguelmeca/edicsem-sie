@@ -12,4 +12,5 @@ public interface KardexService {
 	public abstract void insertMovimiento (int cantsalida,int cantentrada,String detalle,int idproducto,int idtipokardexproducto,int idAlmacenSalida, int idAlmacenEntrada );
 	public abstract List  ConsultaKardexDiario();
 	public abstract List<KardexSie> ConsultaStockActual(int idProducto);
+	public abstract void updateKardex(KardexSie kardex);
 }

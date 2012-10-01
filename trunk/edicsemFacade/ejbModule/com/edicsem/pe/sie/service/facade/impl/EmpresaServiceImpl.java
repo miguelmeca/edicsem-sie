@@ -48,7 +48,7 @@ public class EmpresaServiceImpl implements EmpresaService {
 	 * @see com.edicsem.pe.sie.service.facade.EmpresaService#findProducto(java.lang.String)
 	 */
 	 
-	public EmpresaSie findProducto(int id) {
-		return objEmpresaDao.findProducto(id); 
+	public EmpresaSie findEmpresa(int id) {
+		return objEmpresaDao.findEmpresa(id); 
 	}
 }
