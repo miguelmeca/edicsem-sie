@@ -1,13 +1,18 @@
 package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.sql.Timestamp;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import com.edicsem.pe.sie.util.constants.Constants;
-import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
-
-import java.sql.Timestamp;
-import java.util.Set;
 
 
 /**
@@ -29,11 +34,17 @@ public class DomicilioPersonaSie implements Serializable {
 	private Timestamp fechacreacion;
 
 	private String referencia;
-
+ 
 	//bi-directional many-to-one association to ClienteSie
-	@OneToMany(mappedBy="tbDomicilioPersona")
-	private Set<ClienteSie> tbClientes;
-
+    @ManyToOne
+	@JoinColumn(name="idcliente")
+	private ClienteSie idcliente;
+    
+    //bi-directional many-to-one association to EmpleadoSie
+    @ManyToOne
+	@JoinColumn(name="idempleado")
+	private EmpleadoSie idempleado;
+    
 	//bi-directional many-to-one association to EstadoGeneralSie
     @ManyToOne
 	@JoinColumn(name="idestadogeneral")
@@ -48,10 +59,6 @@ public class DomicilioPersonaSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idubigeo")
 	private UbigeoSie tbUbigeo;
-
-	//bi-directional many-to-one association to EmpleadoSie
-	@OneToMany(mappedBy="tbDomicilioPersona")
-	private Set<EmpleadoSie> tbEmpleados;
 
     public DomicilioPersonaSie() {
     }
@@ -87,14 +94,7 @@ public class DomicilioPersonaSie implements Serializable {
 	public void setReferencia(String referencia) {
 		this.referencia = referencia;
 	}
-
-	public Set<ClienteSie> getTbClientes() {
-		return this.tbClientes;
-	}
-
-	public void setTbClientes(Set<ClienteSie> tbClientes) {
-		this.tbClientes = tbClientes;
-	}
+ 
 	
 	public EstadoGeneralSie getTbEstadoGeneral() {
 		return this.tbEstadoGeneral;
@@ -119,13 +119,21 @@ public class DomicilioPersonaSie implements Serializable {
 	public void setTbUbigeo(UbigeoSie tbUbigeo) {
 		this.tbUbigeo = tbUbigeo;
 	}
-	
-	public Set<EmpleadoSie> getTbEmpleados() {
-		return this.tbEmpleados;
+
+	public ClienteSie getIdcliente() {
+		return idcliente;
 	}
 
-	public void setTbEmpleados(Set<EmpleadoSie> tbEmpleados) {
-		this.tbEmpleados = tbEmpleados;
+	public void setIdcliente(ClienteSie idcliente) {
+		this.idcliente = idcliente;
+	}
+
+	public EmpleadoSie getIdempleado() {
+		return idempleado;
+	}
+
+	public void setIdempleado(EmpleadoSie idempleado) {
+		this.idempleado = idempleado;
 	}
 	
 }

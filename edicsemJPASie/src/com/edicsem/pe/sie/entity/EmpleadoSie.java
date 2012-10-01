@@ -1,14 +1,24 @@
 package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
-
-import com.edicsem.pe.sie.util.constants.Constants;
-import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
-
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import com.edicsem.pe.sie.util.constants.Constants;
 
 
 /**
@@ -71,15 +81,14 @@ public class EmpleadoSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idcargoempleado")
 	private CargoEmpleadoSie tbCargoEmpleado;
-
-	//bi-directional many-to-one association to DomicilioPersonaSie
-    @ManyToOne
-	@JoinColumn(name="iddomicilioempleado")
-	private DomicilioPersonaSie tbDomicilioPersona;
     
     //bi-directional many-to-one association to TelefonoPersonaSie
   	@OneToMany(mappedBy="idempleado")
   	private Set<TelefonoPersonaSie> tbTelefonoPersona;
+  	
+	//bi-directional many-to-one association to TelefonoPersonaSie
+  	@OneToMany(mappedBy="idempleado")
+  	private Set<DomicilioPersonaSie> tbDomicilioPersona;
   	
 	//bi-directional many-to-one association to TipoDocumentoIdentidadSie
     @ManyToOne
@@ -105,6 +114,11 @@ public class EmpleadoSie implements Serializable {
 	//bi-directional many-to-one association to HorariosPvSie
 	@OneToMany(mappedBy="tbEmpleado3")
 	private Set<HorariosPvSie> tbHorariosPvs3;
+	
+	//bi-directional many-to-one association to EstadoGeneralSie
+    @ManyToOne
+	@JoinColumn(name="idestadogeneral")
+	private EstadoGeneralSie tbEstadoGeneral;
 
     public EmpleadoSie() {
     }
@@ -245,15 +259,6 @@ public class EmpleadoSie implements Serializable {
 		this.tbCargoEmpleado = tbCargoEmpleado;
 	}
 	
-	public DomicilioPersonaSie getTbDomicilioPersona() {
-		return this.tbDomicilioPersona;
-	}
-
-	public void setTbDomicilioPersona(DomicilioPersonaSie tbDomicilioPersona) {
-		this.tbDomicilioPersona = tbDomicilioPersona;
-	}
-	
-	
 	public Set<TelefonoPersonaSie> getTbTelefonoPersona() {
 		return tbTelefonoPersona;
 	}
@@ -323,6 +328,22 @@ public class EmpleadoSie implements Serializable {
 	 */
 	public void setNombresCompletos(String nombresCompletos) {
 		this.nombresCompletos = nombresCompletos;
+	}
+
+	public Set<DomicilioPersonaSie> getTbDomicilioPersona() {
+		return tbDomicilioPersona;
+	}
+
+	public void setTbDomicilioPersona(Set<DomicilioPersonaSie> tbDomicilioPersona) {
+		this.tbDomicilioPersona = tbDomicilioPersona;
+	}
+
+	public EstadoGeneralSie getTbEstadoGeneral() {
+		return tbEstadoGeneral;
+	}
+
+	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
+		this.tbEstadoGeneral = tbEstadoGeneral;
 	}
 	
 }
