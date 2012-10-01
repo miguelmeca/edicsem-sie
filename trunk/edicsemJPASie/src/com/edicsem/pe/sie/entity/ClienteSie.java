@@ -1,13 +1,20 @@
 package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
-
-import com.edicsem.pe.sie.util.constants.Constants;
-import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
-
 import java.sql.Timestamp;
 import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import com.edicsem.pe.sie.util.constants.Constants;
 
 
 /**
@@ -50,10 +57,9 @@ public class ClienteSie implements Serializable {
 
 	private String titulartelefono;
 
-	//bi-directional many-to-one association to DomicilioPersonaSie
-    @ManyToOne
-	@JoinColumn(name="iddomiciliocliente")
-	private DomicilioPersonaSie tbDomicilioPersona;
+	//bi-directional many-to-one association to TelefonoPersonaSie
+  	@OneToMany(mappedBy="idcliente")
+  	private Set<DomicilioPersonaSie> tbDomicilioPersona;
     
     //bi-directional many-to-one association to TelefonoPersonaSie
   	@OneToMany(mappedBy="idcliente")
@@ -63,6 +69,11 @@ public class ClienteSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idtipodocumentoidentidad")
 	private TipoDocumentoIdentidadSie tbTipoDocumentoIdentidad;
+    
+	//bi-directional many-to-one association to EstadoGeneralSie
+    @ManyToOne
+	@JoinColumn(name="idestadogeneral")
+	private EstadoGeneralSie tbEstadoGeneral;
 
 	//bi-directional many-to-one association to CobranzaSie
 	@OneToMany(mappedBy="tbCliente")
@@ -186,16 +197,16 @@ public class ClienteSie implements Serializable {
 	public void setTitulartelefono(String titulartelefono) {
 		this.titulartelefono = titulartelefono;
 	}
-
-	public DomicilioPersonaSie getTbDomicilioPersona() {
-		return this.tbDomicilioPersona;
+ 
+	
+	public Set<DomicilioPersonaSie> getTbDomicilioPersona() {
+		return tbDomicilioPersona;
 	}
 
-	public void setTbDomicilioPersona(DomicilioPersonaSie tbDomicilioPersona) {
+	public void setTbDomicilioPersona(Set<DomicilioPersonaSie> tbDomicilioPersona) {
 		this.tbDomicilioPersona = tbDomicilioPersona;
 	}
-	 
-	
+
 	public TipoDocumentoIdentidadSie getTbTipoDocumentoIdentidad() {
 		return this.tbTipoDocumentoIdentidad;
 	}
@@ -226,6 +237,14 @@ public class ClienteSie implements Serializable {
 
 	public void setTbTelefonoPersona(Set<TelefonoPersonaSie> tbTelefonoPersona) {
 		this.tbTelefonoPersona = tbTelefonoPersona;
+	}
+
+	public EstadoGeneralSie getTbEstadoGeneral() {
+		return tbEstadoGeneral;
+	}
+
+	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
+		this.tbEstadoGeneral = tbEstadoGeneral;
 	}
 	
 }

@@ -1,13 +1,18 @@
 package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
-
-import com.edicsem.pe.sie.util.constants.Constants;
-import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
-
 import java.sql.Timestamp;
 import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import com.edicsem.pe.sie.util.constants.Constants;
 
 
 /**
@@ -77,6 +82,14 @@ public class EstadoGeneralSie implements Serializable {
 	//bi-directional many-to-one association to TipoCasaSie
 	@OneToMany(mappedBy="tbEstadoGeneral")
 	private Set<TipoCasaSie> tbTipoCasas;
+	
+	//bi-directional many-to-one association to ClienteSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<ClienteSie> tbClientes;
+	
+	//bi-directional many-to-one association to EmpleadoSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<EmpleadoSie> tbEmpleados;
 
 	//bi-directional many-to-one association to TipoDocumentoIdentidadSie
 	@OneToMany(mappedBy="tbEstadoGeneral")
@@ -232,5 +245,22 @@ public class EstadoGeneralSie implements Serializable {
 	public void setTbContratoEmpleados(Set<TelefonoPersonaSie> tbContratoEmpleados) {
 		this.tbContratoEmpleados = tbContratoEmpleados;
 	}
+
+	public Set<ClienteSie> getTbClientes() {
+		return tbClientes;
+	}
+
+	public void setTbClientes(Set<ClienteSie> tbClientes) {
+		this.tbClientes = tbClientes;
+	}
+
+	public Set<EmpleadoSie> getTbEmpleados() {
+		return tbEmpleados;
+	}
+
+	public void setTbEmpleados(Set<EmpleadoSie> tbEmpleados) {
+		this.tbEmpleados = tbEmpleados;
+	}
+
 	
 }

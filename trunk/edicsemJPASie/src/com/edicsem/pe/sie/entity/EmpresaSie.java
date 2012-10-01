@@ -1,12 +1,20 @@
 package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import com.edicsem.pe.sie.util.constants.Constants;
-import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
-
-import java.util.Set;
 
 
 /**
@@ -46,6 +54,10 @@ public class EmpresaSie  implements Serializable {
 	//bi-directional many-to-one association to MetaEmpresaSie
 	@OneToMany(mappedBy="tbEmpresa")
 	private Set<MetaEmpresaSie> tbMetaEmpresas;
+	
+	//bi-directional many-to-one association to ContratoSie
+	@OneToMany(mappedBy="tbEmpresa")
+	private Set<ContratoSie> tbKardex;
 
     public EmpresaSie() {
     }
@@ -120,6 +132,14 @@ public class EmpresaSie  implements Serializable {
 
 	public void setTbMetaEmpresas(Set<MetaEmpresaSie> tbMetaEmpresas) {
 		this.tbMetaEmpresas = tbMetaEmpresas;
+	}
+
+	public Set<ContratoSie> getTbKardex() {
+		return tbKardex;
+	}
+
+	public void setTbKardex(Set<ContratoSie> tbKardex) {
+		this.tbKardex = tbKardex;
 	}
 	
 }

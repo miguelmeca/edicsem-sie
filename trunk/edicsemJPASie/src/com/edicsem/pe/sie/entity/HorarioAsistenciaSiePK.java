@@ -1,9 +1,9 @@
 package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 
-import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 
 /**
  * The primary key class for the tb_horario_asistencia database table.

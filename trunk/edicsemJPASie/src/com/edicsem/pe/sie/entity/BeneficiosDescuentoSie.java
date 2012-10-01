@@ -15,7 +15,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.edicsem.pe.sie.util.constants.Constants;
-import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
 
 
 /**

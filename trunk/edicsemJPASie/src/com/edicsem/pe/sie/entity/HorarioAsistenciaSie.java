@@ -1,13 +1,17 @@
 package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.sql.Time;
+import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import com.edicsem.pe.sie.util.constants.Constants;
-import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
-
-import java.sql.Timestamp;
-import java.sql.Time;
 
 
 /**

@@ -1,12 +1,15 @@
 package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.math.BigDecimal;
+
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import com.edicsem.pe.sie.util.constants.Constants;
-import com.edicsem.pe.sie.util.form.BaseMantenimientoForm;
-
-import java.math.BigDecimal;
 
 
 /**
@@ -16,7 +19,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name="tb_detalle_comprobante", schema = Constants.ESQUEMA_SIE_POSTGRE)
 public class DetalleComprobanteSie implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersiOonUID = 1L;
 
 	@EmbeddedId
 	private DetalleComprobanteSiePK id;
