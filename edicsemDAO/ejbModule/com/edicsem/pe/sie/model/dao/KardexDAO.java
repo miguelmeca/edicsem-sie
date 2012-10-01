@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.ejb.Local;
 
-import com.edicsem.pe.sie.entity.KardexSie; 
+import com.edicsem.pe.sie.entity.KardexSie;
 
 @Local
 public interface KardexDAO {
@@ -16,4 +16,6 @@ public interface KardexDAO {
 	public abstract List  ConsultaKardexDiario();
 	
 	public abstract List<KardexSie> ConsultaStockActual(int idProducto);
+	
+	public abstract void updateKardex(KardexSie kardex);
 }

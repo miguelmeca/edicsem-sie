@@ -50,7 +50,7 @@ public class EmpresaDAOImpl implements EmpresaDAO {
 			if (log.isInfoEnabled()) {
 				log.info("Actualizar Empresa");
 			}
-			EmpresaSie bean = findProducto(empresa.getIdempresa());
+			EmpresaSie bean = findEmpresa(empresa.getIdempresa());
 			
 			em.merge(bean);
 		} catch (Exception e) {
@@ -61,11 +61,11 @@ public class EmpresaDAOImpl implements EmpresaDAO {
 	 * @see com.edicsem.pe.sie.model.dao.EmpresaDAO#findProducto(java.lang.String)
 	 */
 	 
-	public EmpresaSie findProducto(int id) {
+	public EmpresaSie findEmpresa(int id) {
 		EmpresaSie empresa = new EmpresaSie();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("buscar Producto");
+				log.info("buscar Empresa");
 			}
 			empresa = em.find(EmpresaSie.class, id);
 		} catch (Exception e) {
