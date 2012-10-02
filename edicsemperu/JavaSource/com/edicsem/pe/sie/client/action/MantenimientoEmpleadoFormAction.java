@@ -1,59 +1,58 @@
 package com.edicsem.pe.sie.client.action;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import bsh.Console;
-
-import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
-import com.edicsem.pe.sie.entity.TipoDocumentoIdentidadSie;
-import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
-import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.DomicilioEmpleadoService;
+import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
-import com.edicsem.pe.sie.service.facade.TipoDocumentoService;
-import com.edicsem.pe.sie.util.FaceMessage.FaceMessage;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name="mantenimientoEmpleadoFormAction")
 @SessionScoped
 public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAction {
-
-	public static Log log = LogFactory.getLog(MantenimientoEmpleadoFormAction.class);
+    /*Se crean los objetos de las entidades empleado, domicilio y telefono*/	
+	private EmpleadoSie objEmpleado;
+	private TelefonoPersonaSie objTelefono;
+	private DomicilioPersonaSie objDomicilio;
+	/*variables para telefono*/
+	private String mensaje;
+	private String fijo;
+	private int estado;
+	/*variables para domicilio*/
+	private String direccion;
+	private int ubigeo;
+	private int estado2;
+	private int tipo;
+	/*variables para empleado*/
+	private String nombre;
 	private int CargoEmpleado;
 	private int DomicilioPersona;
 	private int TelefonoPersona;
 	private int TipoDocumento;
-	private String mensaje;
-	private EmpleadoSie objEmpleado;
-	private List<SelectItem> itemsTipoDoc;
+	private int codigoEmpleado;
 	private int codigoTipoDocumento;
 	private int codigoCargoEmpleado;
+	private int estadoe;
+	/*variable bolean necesaria*/
+	private boolean newRecord =false;
 	
-	@EJB 
-	private TelefonoEmpleadoService objTelefonoEmpleadoService;
-	@EJB 
-	private TipoDocumentoService objTipoDocumentoService;
-	@EJB 
-	private CargoEmpleadoService objCargoEmpleadoService;
 	@EJB 
 	private EmpleadoSieService objEmpleadoService;
 	@EJB 
-	private DomicilioEmpleadoService objDomicilioEmpleadoService;
+	private DomicilioEmpleadoService objDomicilioService;
+	@EJB 
+	private TelefonoEmpleadoService objTelefonoService;
+	
+	public static Log log = LogFactory.getLog(MantenimientoEmpleadoFormAction.class);
 	
 	public MantenimientoEmpleadoFormAction() {
 		System.out.println("ESTOY EN MI CONSNTRUCTOR");
@@ -61,167 +60,108 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		init();
 	}
 
+	/*inicializamos los  objetos utilizados*/
 	public void init() {
 		log.info("init()");
 		objEmpleado = new EmpleadoSie();
-		itemsTipoDoc = new ArrayList<SelectItem>();
-		log.info("despues de inicializar 22 ");
+		objTelefono = new TelefonoPersonaSie();
+		objDomicilio = new DomicilioPersonaSie();
 	}
-
 	
-	/**
-	 * @return the itemsTipoDoc
-	 */
-	public List<SelectItem> getItemsTipoDoc() {
-		log.info("prueba2*******************");
-		List lista = new ArrayList<TipoDocumentoIdentidadSie>();
-		try {
-			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'getListaTipoDoc()'");
-			}
-			log.info("-----   +++ ");
-			lista = objTipoDocumentoService.listarTipoDocumentos();
-
-			for (int i = 0; i < lista.size(); i++) {
-				TipoDocumentoIdentidadSie tipo = new TipoDocumentoIdentidadSie();
-				if (lista.get(i) != null) {
-					tipo = (TipoDocumentoIdentidadSie) lista.get(i);
-					itemsTipoDoc.add(new SelectItem(tipo.getIdtipodocumentoidentidad(),
-							tipo.getDescripcion()));
-				} else {
-					
-					break;
-				}
-			}
-			log.info("finalizacion del metodo 'getItemstipoDoc'");
-		} catch (Exception e) {
-			e.printStackTrace();
-			mensaje = e.getMessage();
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-			log.error(e.getMessage());
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
-		return itemsTipoDoc;
+	/*método que se ejecuta haciendo click en el link NUEVO de la lista*/
+	public String addNewRecord() throws Exception {
+		log.info("insertar");
+		setNewRecord(true);
+		return getViewMant();
 	}
-
-	/**
-	 * @param itemsTipoDoc the itemsTipoDoc to set
-	 */
-	public void setItemsTipoDoc(List<SelectItem> itemsTipoDoc) {
-		this.itemsTipoDoc = itemsTipoDoc;
-	}
-
-	/**
-	 * @return the itemsCargoEmpl
-	 */
 	
-
-	/**
-	 * @param itemsCargoEmpl the itemsCargoEmpl to set
-	 */
+	/*método que se ejecuta al hacer click en el botón EDITAR de la lista*/
+	public String update() throws Exception {
+	    log.info("actualizar");
+		log.info("update()" + objEmpleado.getIdempleado());
+		/*busca el empleado por medio del id del datatable*/
+		EmpleadoSie c = objEmpleadoService.buscarEmpleado(objEmpleado.getIdempleado());
+		/*código aún por verse*/
+		DomicilioPersonaSie d = objDomicilioService.buscarDomicilioXIdempleado(objEmpleado.getIdempleado());
+		TelefonoPersonaSie t = objTelefonoService.buscarTelefonoXIdempleado(objEmpleado.getIdempleado());
+		log.info(" id " + c.getIdempleado()+ " nombre " + c.getNombreemp() ); 
+		log.info(" id " + d.getIddomiciliopersona()+ " nombre " + d.getDomicilio() );
+		log.info(" id " + t.getIdtelefonopersona()+ " nombre " + t.getTelefono() );
+		/*Seteo para mostrar los datos en el form*/
+		objEmpleado.setIdempleado(c.getIdempleado());
+		objEmpleado.setNombreemp(c.getNombreemp());
+        objEmpleado.setApepatemp(c.getApepatemp());
+        objEmpleado.setApematemp(c.getApematemp());
+        objEmpleado.setUsuario(c.getUsuario());
+        objEmpleado.setContrasena(c.getContrasena());
+        setTipoDocumento(c.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad());
+        objEmpleado.setNumdocumento(c.getNumdocumento());
+        setCargoEmpleado(c.getTbCargoEmpleado().getIdcargoempleado());
+        objEmpleado.setFechanacimiento(c.getFechanacimiento());
+        setEstadoe(c.getTbEstadoGeneral().getIdestadogeneral());
+        
+        objDomicilio.setIddomiciliopersona(d.getIddomiciliopersona());
+        setDireccion(d.getDomicilio());
+        setTipo(d.getTbTipoCasa().getIdtipocasa());
+        setUbigeo(d.getTbUbigeo().getIdubigeo());
+        setEstado2(d.getTbEstadoGeneral().getIdestadogeneral());
+        
+        objTelefono.setIdtelefonopersona(t.getIdtelefonopersona());
+        setFijo(t.getTelefono());
+        setEstado(t.getTbEstadoGeneral().getIdestadogeneral());
+        
+        /*método bolean necesario para actualizar que retorna al form */  
+		setNewRecord(false);
+		return getViewMant();
+	}
 	
-	public int getCargoEmpleado() {
-		return CargoEmpleado;
-	}
-
-	public void setCargoEmpleado(int cargoEmpleado) {
-		CargoEmpleado = cargoEmpleado;
-	}
-
-	public int getDomicilioPersona() {
-		return DomicilioPersona;
-	}
-
-	public void setDomicilioPersona(int domicilioPersona) {
-		DomicilioPersona = domicilioPersona;
-	}
-
-	public int getTelefonoPersona() {
-		return TelefonoPersona;
-	}
-
-	public void setTelefonoPersona(int telefonoPersona) {
-		TelefonoPersona = telefonoPersona;
-	}
-
-	public int getTipoDocumento() {
-		return TipoDocumento;
-	}
-
-	public void setTipoDocumento(int tipoDocumento) {
-		TipoDocumento = tipoDocumento;
-	}
-
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
-	 * #insertar()
-	 */
+	/*método del botón GUARDAR(inserta o actualiza el empleado, domicilio y telefono)*/
 	public String insertar() throws Exception {
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'insertar()'");
+				log.info("Entering my method 'insertar(registrar, actualizar)'"+ objEmpleado.getNombreemp());
 			}
-			/*// todo eso se hace en el Service, no se hace en el Action.
-			CargoEmpleadoSie c = objCargoEmpleadoService.buscarCargoEmpleado(CargoEmpleado);
-			log.info("seteo " + c.getIdcargoempleado() + " "+ c.getDescipcion());
-			objEmpleado.setTbCargoEmpleado(c);*/
-			log.info("aaaa"+ codigoTipoDocumento);
-			
-			
-			if (codigoTipoDocumento !=-1 || codigoCargoEmpleado!=-1) {
-				TipoDocumentoIdentidadSie tipo = objTipoDocumentoService.buscarTipoDocumento(TipoDocumento);
-				log.info("seteo " + tipo.getIdtipodocumentoidentidad() + " "+ tipo.getDescripcion());
-				objEmpleado.setTbTipoDocumentoIdentidad(tipo);
-				
-				CargoEmpleadoSie c = objCargoEmpleadoService.buscarCargoEmpleado(CargoEmpleado);
-				log.info("seteo " + c.getIdcargoempleado() + " "+ c.getDescripcion());
-				objEmpleado.setTbCargoEmpleado(c);
-				
-				DomicilioPersonaSie d = objDomicilioEmpleadoService.buscarDomicilioEmpleado(DomicilioPersona);
-				log.info("seteo " + d.getIddomiciliopersona() + " "+ d.getDomicilio());
-				objEmpleado.setTbDomicilioPersona(d);
-
-				TelefonoPersonaSie t = objTelefonoEmpleadoService.buscarTelefonoEmpleado(TelefonoPersona);
-				log.info("seteo " + t.getIdtelefonopersona() + " "+ t.getTelefono());
-				objEmpleado.setTbTelefonoPersona(t);
-
-				/*TipoDocumentoIdentidadSie td = objTipoDocumentoService.buscarTipoDocumento(TipoDocumento);
-				log.info("seteo " + td.getIdtipodocumentoidentidad() + " "+ td.getDescripcion());
-				objEmpleado.setTbTipoDocumentoIdentidad(td);*/
-				
-				if (objEmpleado.isNewRecord()) {
-					// objEmpleado.s
-					log.info("insertando.....");
-					//insertarValidation(objEmpleado);
-					objEmpleadoService.insertarEmpleado(objEmpleado);
-					log.info("insertando.....");
-					objEmpleado.setNewRecord(false);
-				} else {
-					log.info("objEmpleado.isNewRecord() : "
-							+ objEmpleado.isNewRecord());
-				}
-			}else{
-				log.info("no se encontró tipoDocumento");
-				//FaceMessage.FaceMessageError(Constants.TITULO_MESSAGE_ERROR_COMBO, Constants.CODIGO_TIPO_DOCUMENTO_MESSAGE);
-				//FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, Constants.TITULO_MESSAGE_ERROR_COMBO, Constants.CODIGO_TIPO_DOCUMENTO_MESSAGE);
-				FacesContext.getCurrentInstance().addMessage(null, msg);
-			}
-			
-		
+			/*if: inserta al empleado, domicilio y telefono
+			  else: actualiza al empleado, domicilio y telefono*/
+			if (isNewRecord()) {
+				log.info("insertando..... ");
+				objEmpleadoService.insertarEmpleado(objEmpleado,objDomicilio,objTelefono, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
+						estado, direccion,  ubigeo,  estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
+						TipoDocumento, codigoEmpleado, estadoe);
+				log.info("insertando..... ");
+				setNewRecord(false);
+			} else {
+				log.info("actualizando..... ");
+				objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, objTelefono, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
+						estado, direccion,  ubigeo,  estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
+						TipoDocumento, codigoEmpleado, estadoe);
+				log.info("insertando..... ");
+			} 
 		} catch (Exception e) {
 			e.printStackTrace();
-			mensaje = e.getMessage();
+			nombre = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+					Constants.MESSAGE_ERROR_FATAL_TITULO, nombre);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
+		objEmpleado = new EmpleadoSie();
 		return getViewList();
+	}
+    
+    /*métodos GET y SET*/
+	/**
+	 * @return the codigoEmpleado
+	 */
+	public int getCodigoEmpleado() {
+		return codigoEmpleado;
+	}
+
+	/**
+	 * @param codigoEmpleado the codigoEmpleado to set
+	 */
+	public void setCodigoEmpleado(int codigoEmpleado) {
+		this.codigoEmpleado = codigoEmpleado;
 	}
 
 	/*
@@ -232,7 +172,11 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	 * #getViewList()
 	 */
 	public String getViewList() {
-		return "index";
+		return "mantenimientoEmpleadoList";
+	}
+	
+	public String getViewMant() {
+		return "mantenimientoEmpleadoForm";
 	}
 
 	/**
@@ -275,6 +219,260 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		this.codigoTipoDocumento = codigoTipoDocumento;
 	}
 	
+	/**
+	 * @return the nombre
+	 */
+	public String getNombre() {
+		return nombre;
+	}
+
+	/**
+	 * @param nombre the nombre to set
+	 */
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 	
-	
+	public int getCargoEmpleado() {
+		return CargoEmpleado;
+	}
+
+	public void setCargoEmpleado(int cargoEmpleado) {
+		CargoEmpleado = cargoEmpleado;
+	}
+
+	public int getDomicilioPersona() {
+		return DomicilioPersona;
+	}
+
+	public void setDomicilioPersona(int domicilioPersona) {
+		DomicilioPersona = domicilioPersona;
+	}
+
+	public int getTelefonoPersona() {
+		return TelefonoPersona;
+	}
+
+	public void setTelefonoPersona(int telefonoPersona) {
+		TelefonoPersona = telefonoPersona;
+	}
+
+	public int getTipoDocumento() {
+		return TipoDocumento;
+	}
+
+	public void setTipoDocumento(int tipoDocumento) {
+		TipoDocumento = tipoDocumento;
+	}
+
+	/**
+	 * @return the objTelefono
+	 */
+	public TelefonoPersonaSie getObjTelefono() {
+		return objTelefono;
+	}
+
+	/**
+	 * @param objTelefono the objTelefono to set
+	 */
+	public void setObjTelefono(TelefonoPersonaSie objTelefono) {
+		this.objTelefono = objTelefono;
+	}
+
+	/**
+	 * @return the objDomicilio
+	 */
+	public DomicilioPersonaSie getObjDomicilio() {
+		return objDomicilio;
+	}
+
+	/**
+	 * @param objDomicilio the objDomicilio to set
+	 */
+	public void setObjDomicilio(DomicilioPersonaSie objDomicilio) {
+		this.objDomicilio = objDomicilio;
+	}
+
+	/**
+	 * @return the mensaje
+	 */
+	public String getMensaje() {
+		return mensaje;
+	}
+
+	/**
+	 * @param mensaje the mensaje to set
+	 */
+	public void setMensaje(String mensaje) {
+		this.mensaje = mensaje;
+	}
+
+	/**
+	 * @return the fijo
+	 */
+	public String getFijo() {
+		return fijo;
+	}
+
+	/**
+	 * @param fijo the fijo to set
+	 */
+	public void setFijo(String fijo) {
+		this.fijo = fijo;
+	}
+
+	/**
+	 * @return the estado
+	 */
+	public int getEstado() {
+		return estado;
+	}
+
+	/**
+	 * @param estado the estado to set
+	 */
+	public void setEstado(int estado) {
+		this.estado = estado;
+	}
+
+	/**
+	 * @return the direccion
+	 */
+	public String getDireccion() {
+		return direccion;
+	}
+
+	/**
+	 * @param direccion the direccion to set
+	 */
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	/**
+	 * @return the ubigeo
+	 */
+	public int getUbigeo() {
+		return ubigeo;
+	}
+	public String insertar() throws Exception {
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'insertar()'");
+			}
+			/*// todo eso se hace en el Service, no se hace en el Action.
+			CargoEmpleadoSie c = objCargoEmpleadoService.buscarCargoEmpleado(CargoEmpleado);
+			log.info("seteo " + c.getIdcargoempleado() + " "+ c.getDescipcion());
+			objEmpleado.setTbCargoEmpleado(c);*/
+			log.info("aaaa"+ codigoTipoDocumento);
+			
+			
+			if (codigoTipoDocumento !=-1 || codigoCargoEmpleado!=-1) {
+				TipoDocumentoIdentidadSie tipo = objTipoDocumentoService.buscarTipoDocumento(TipoDocumento);
+				log.info("seteo " + tipo.getIdtipodocumentoidentidad() + " "+ tipo.getDescripcion());
+				objEmpleado.setTbTipoDocumentoIdentidad(tipo);
+				
+				CargoEmpleadoSie c = objCargoEmpleadoService.buscarCargoEmpleado(CargoEmpleado);
+				log.info("seteo " + c.getIdcargoempleado() + " "+ c.getDescripcion());
+				objEmpleado.setTbCargoEmpleado(c);
+				
+				DomicilioPersonaSie d = objDomicilioEmpleadoService.buscarDomicilioEmpleado(DomicilioPersona);
+				log.info("seteo " + d.getIddomiciliopersona() + " "+ d.getDomicilio());
+				objEmpleado.setTbDomicilioPersona(d);
+
+	/**
+	 * @param ubigeo the ubigeo to set
+	 */
+	public void setUbigeo(int ubigeo) {
+		this.ubigeo = ubigeo;
+	}
+
+	/**
+	 * @return the estado2
+	 */
+	public int getEstado2() {
+		return estado2;
+				/*TipoDocumentoIdentidadSie td = objTipoDocumentoService.buscarTipoDocumento(TipoDocumento);
+				log.info("seteo " + td.getIdtipodocumentoidentidad() + " "+ td.getDescripcion());
+				objEmpleado.setTbTipoDocumentoIdentidad(td);*/
+				
+				if (objEmpleado.isNewRecord()) {
+					// objEmpleado.s
+					log.info("insertando.....");
+					//insertarValidation(objEmpleado);
+					objEmpleadoService.insertarEmpleado(objEmpleado);
+					log.info("insertando.....");
+					objEmpleado.setNewRecord(false);
+				} else {
+					log.info("objEmpleado.isNewRecord() : "
+							+ objEmpleado.isNewRecord());
+				}
+			}else{
+				log.info("no se encontró tipoDocumento");
+				//FaceMessage.FaceMessageError(Constants.TITULO_MESSAGE_ERROR_COMBO, Constants.CODIGO_TIPO_DOCUMENTO_MESSAGE);
+				//FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, Constants.TITULO_MESSAGE_ERROR_COMBO, Constants.CODIGO_TIPO_DOCUMENTO_MESSAGE);
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+			}
+			
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return getViewList();
+	}
+
+	/**
+	 * @param estado2 the estado2 to set
+	 */
+	public void setEstado2(int estado2) {
+		this.estado2 = estado2;
+	}
+
+	/**
+	 * @return the tipo
+	 */
+	public int getTipo() {
+		return tipo;
+	}
+
+	/**
+	 * @param tipo the tipo to set
+	 */
+	public void setTipo(int tipo) {
+		this.tipo = tipo;
+	}
+
+	/**
+	 * @return the estadoe
+	 */
+	public int getEstadoe() {
+		return estadoe;
+	}
+
+	/**
+	 * @param estadoe the estadoe to set
+	 */
+	public void setEstadoe(int estadoe) {
+		this.estadoe = estadoe;
+	}
+
+	/**
+	 * @return the newRecord
+	 */
+	public boolean isNewRecord() {
+		return newRecord;
+	}
+
+	/**
+	 * @param newRecord the newRecord to set
+	 */
+	public void setNewRecord(boolean newRecord) {
+		this.newRecord = newRecord;
+	}
+		
 }
