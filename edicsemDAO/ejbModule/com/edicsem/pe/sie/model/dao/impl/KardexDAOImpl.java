@@ -13,6 +13,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.KardexSie;
+import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.model.dao.AlmacenDAO;
 import com.edicsem.pe.sie.model.dao.KardexDAO;
@@ -46,8 +47,8 @@ public class KardexDAOImpl implements KardexDAO {
 			consulta = "select p from KardexSie p where p.tbProducto.idproducto =:x1 and "
 					+ "p.tbPuntoVenta.idpuntoventa =:x2 ";
 			if (fechaDesde != "" && fechaHasta != "")
-				consulta += " and p.fechacreacion between '" + fechaDesde
-						+ "' and  '" + fechaHasta + "'";
+				consulta += " and DATE(p.fechacreacion) between DATE('" + fechaDesde
+						+ "') and  DATE('" + fechaHasta + "')";
 
 			Query q = em.createQuery(consulta);
 			q.setParameter("x1", idproducto);
@@ -175,16 +176,22 @@ public class KardexDAOImpl implements KardexDAO {
 			e.printStackTrace();
 		}
 	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.KardexDAO#findKardex(int)
+	 */
 	
-	/*public List<PuntoVentaSie> listarAlmacenes() {
-		List<PuntoVentaSie>   lista = null;
+	public KardexSie findKardex(int id) {
+		KardexSie obj = new KardexSie();
 		try {
-			Query q = em.createQuery("select p from PuntoVentaSie p");
-			lista =  q.getResultList();
+			if (log.isInfoEnabled()) {
+				log.info("buscar Kardex");
+			}
+			obj = em.find(KardexSie.class, id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return lista;
+		return obj;
 	}
-	 */
+	
 }
