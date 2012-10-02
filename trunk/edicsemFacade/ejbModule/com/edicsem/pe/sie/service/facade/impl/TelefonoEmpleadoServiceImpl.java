@@ -53,6 +53,9 @@ public class TelefonoEmpleadoServiceImpl implements TelefonoEmpleadoService{
 		return objTelefonoEmpleadoDao.listarTelefonoEmpleados();
 	}
 
-	
+    public TelefonoPersonaSie buscarTelefonoXIdempleado(int id) { 
+		
+		return objTelefonoEmpleadoDao.buscarTelefonoXIdempleado(id); 
+	}
 		
 }
