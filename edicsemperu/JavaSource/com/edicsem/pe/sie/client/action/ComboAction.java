@@ -14,15 +14,20 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+
+import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
+
 import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.EstadoGeneralSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
+import com.edicsem.pe.sie.entity.TipoDocumentoIdentidadSie;
 import com.edicsem.pe.sie.entity.TipoProductoSie;
-import com.edicsem.pe.sie.service.facade.AlmacenService;
-import com.edicsem.pe.sie.service.facade.EmpresaService;
+import com.edicsem.pe.sie.service.facade.AlmacenService; 
+import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
+import com.edicsem.pe.sie.service.facade.TipoDocumentoService;
 import com.edicsem.pe.sie.service.facade.TipoProductoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 
@@ -38,6 +43,8 @@ public class ComboAction {
 	private Map<String , Integer> tipoitems =  new HashMap<String, Integer>();
 	private Map<String , Integer> productositems =  new HashMap<String, Integer>();
 	private Map<String , Integer> almacenItems =  new HashMap<String, Integer>();
+	private Map<String , Integer> tipoDocumentoItems =  new HashMap<String, Integer>();
+	private Map<String , Integer> cargoEmpleadoItems =  new HashMap<String, Integer>();
 	private int tipoProducto;
     private Map<String,Map<String,Integer>> dataProducto = new HashMap<String, Map<String,Integer>>();  
     private Map<String , Integer> estadoitems =  new HashMap<String, Integer>();
@@ -52,6 +59,11 @@ public class ComboAction {
 	@EJB 
 	private EstadogeneralService objEstadoGeneralService;
 	@EJB 
+	private TipoDocumentoService objTipoDocumentoService;
+	@EJB 
+	private CargoEmpleadoService objCargoEmpleadoService;
+	
+	@EJB 
 	private EmpresaService objEmpresaService;
 
 	public ComboAction() {
@@ -62,7 +74,9 @@ public class ComboAction {
 	public void init() {
 		log.info("init()");
 		tipoitems =  new HashMap<String, Integer>(); 
-		almacenItems = new HashMap<String, Integer>(); 
+		almacenItems = new HashMap<String, Integer>();
+		tipoDocumentoItems =  new HashMap<String, Integer>(); 
+		cargoEmpleadoItems = new HashMap<String, Integer>();
 	}
 	 public void cambiar() {  
 	        if( tipoProducto!=-1)  
@@ -273,6 +287,74 @@ public class ComboAction {
 	 */
 	public void setCodigoEstado(String codigoEstado) {
 		this.codigoEstado = codigoEstado;
+	} 
+	
+	/*Combobox TipoDocumento*/
+	public Map<String, Integer> getTipoDocumentoitems() {
+		tipoDocumentoItems =  new HashMap<String, Integer>();
+		List lista = new ArrayList<TipoDocumentoIdentidadSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getTipoDocumentoitems()'");
+			}
+			lista = objTipoDocumentoService.listarTipoDocumentos();
+
+			for (int i = 0; i < lista.size(); i++) {
+				TipoDocumentoIdentidadSie entidad = new TipoDocumentoIdentidadSie();
+				entidad = (TipoDocumentoIdentidadSie) lista.get(i);
+					tipoDocumentoItems.put(entidad.getDescripcion(), entidad.getIdtipodocumentoidentidad());
+			}
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return tipoDocumentoItems;
+	}
+
+	/**
+	 * @param estadoitems the estadoitems to set
+	 */
+	public void setTipoDocumentoitems(Map<String, Integer> tipodocumento) {
+		this.tipoDocumentoItems = tipodocumento;
+	} 
+	
+	/*Combobox Cargo Empleado*/
+	public Map<String, Integer> getCargoEmpleadoItems() {
+		cargoEmpleadoItems =  new HashMap<String, Integer>();
+		List lista = new ArrayList<CargoEmpleadoSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getcargoEmpleadoItems()'");
+			}
+			lista = objCargoEmpleadoService.listarCargoEmpleado();
+
+			for (int i = 0; i < lista.size(); i++) {
+				CargoEmpleadoSie entidad = new CargoEmpleadoSie();
+				entidad = (CargoEmpleadoSie) lista.get(i);
+				cargoEmpleadoItems.put(entidad.getDescripcion(), entidad.getIdcargoempleado());
+			}
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return cargoEmpleadoItems;
+	}
+
+	/**
+	 * @param estadoitems the estadoitems to set
+	 */
+	public void setCargoEmpleadoitems(Map<String, Integer> cargoempleado) {
+		this.cargoEmpleadoItems = cargoempleado;
 	} 
 	
 }
