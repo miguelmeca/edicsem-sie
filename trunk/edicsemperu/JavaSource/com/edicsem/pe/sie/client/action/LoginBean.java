@@ -89,7 +89,7 @@ public class LoginBean  {
 			//Declara una variable
 		if (objLoginService.validacionLogin(usuario, contrasena)) {
 				// contex.getExternalContext().redirect("/inbound/bien.xhtml");
-			contex.getExternalContext().redirect("/edicsemperu/menu.jsf");//y si quieres redireccionar no es mnue.xhtml,
+			contex.getExternalContext().redirect("/edicsemperu/mantenimientoCargoEmpleadoFormList.jsf");//y si quieres redireccionar no es mnue.xhtml,
 					//por lo que es un formato xml, y nunca te va a mostrar nada, pero si pones con jsf de seguro
 			//que te mostrará algo.
 		} else {
