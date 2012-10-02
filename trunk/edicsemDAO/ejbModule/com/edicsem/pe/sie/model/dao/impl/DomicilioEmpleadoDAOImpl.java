@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,7 +26,8 @@ public class DomicilioEmpleadoDAOImpl implements DomicilioEmpleadoDAO{
 	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#insertDemo(com.edicsem.pe.sie.entity.Usuario)
 	 */
 	public void insertarDomicilioEmpleado(DomicilioPersonaSie domiciliopersona) {
-		//em.getTransaction().begin();
+		log.info("apunto de insertar domicilio"+ domiciliopersona.getDomicilio()+
+				" - ");
 		try {
 						
                                            
@@ -33,7 +35,7 @@ public class DomicilioEmpleadoDAOImpl implements DomicilioEmpleadoDAO{
 			em.persist(domiciliopersona);
 			//em.flush();
 			if (log.isInfoEnabled()) {
-				log.info("apunto de insertar Empleado");
+				log.info("apunto de insertar Domicilio");
 			}
 			//em.getTransaction().commit();
 			
@@ -49,7 +51,7 @@ public class DomicilioEmpleadoDAOImpl implements DomicilioEmpleadoDAO{
 	public void actualizarDomicilioEmpleado(DomicilioPersonaSie domiciliopersona) {
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("apunto de insertar Empleado");
+				log.info("apunto de actualizar domicilio del Empleado");
 			}
 			em.merge(domiciliopersona);
 		} catch (Exception e) {
@@ -90,5 +92,18 @@ public class DomicilioEmpleadoDAOImpl implements DomicilioEmpleadoDAO{
 		return null;
 	}
 	
-	
+	/*buscar domicilio por idempleado*/
+	public DomicilioPersonaSie buscarDomicilioXIdempleado(int id) {
+		log.info(" idempleado "+ id);
+		DomicilioPersonaSie domicilio =new DomicilioPersonaSie();
+		try {
+			Query q = em.createQuery("select p from DomicilioPersonaSie p where p.idempleado = "+ id);
+			domicilio = (DomicilioPersonaSie) q.getResultList().get(0);
+			//System.out.println("Domicilio x idempleado  --> " + domicilio.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return domicilio;
+	}
+		
 }
