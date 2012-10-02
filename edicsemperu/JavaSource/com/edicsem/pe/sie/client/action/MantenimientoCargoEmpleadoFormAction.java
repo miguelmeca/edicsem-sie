@@ -97,15 +97,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		try {
 
 			if (isNewRecord()) {
-				/**
-				 * Trim es para borrar los espacios en blanco despues de la
-				 * palabra (los ultimos)
-				 **/
-				/** toUpperCase convierte la primera letra en mayuscula **/
-				// mayuscula=descripcion.charAt(0)+"";
-				// mayuscula=mayuscula.toUpperCase();
-				// descripcion=descripcion.replaceFirst(descripcion.charAt(0)+"",
-				// mayuscula);
+				
 				objCargoEmpleadoSie.getDescripcion();
 				/* cuando esta vacio () es true */
 				// List<CargoEmpleadoSie> list=
