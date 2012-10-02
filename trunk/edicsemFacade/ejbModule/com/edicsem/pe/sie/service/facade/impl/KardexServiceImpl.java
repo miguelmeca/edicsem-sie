@@ -38,10 +38,38 @@ public class KardexServiceImpl implements KardexService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.KardexService#insertMovimiento(int, int, java.lang.String, int, int, int, int)
 	 */
-	public void insertMovimiento(int cantsalida, int cantentrada,String detalle,
+	public void insertMovimiento( KardexSie obj,
 			int idproducto, int idtipokardexproducto, int idAlmacenSalida, int idAlmacenEntrada) {
 		
-		KardexSie objKardex = new KardexSie(); 
+		KardexSie objKardex =obj; 
+		objKardex.setTbProducto(objProductoDao.findProducto(idproducto));
+		objKardex.setTbPuntoVenta(objAlmacenDao.findAlmacen(idAlmacenSalida));
+		objKardex.setTbTipoKardexProducto(objTipoKardexDao.findTipoKardex(idtipokardexproducto));
+		objKardex.setCantentrada(obj.getCantentrada());
+		objKardex.setCantsalida(obj.getCantsalida());
+		objKardex.setDetallekardex(obj.getDetallekardex());
+		objKardexDao.insertMovimiento(idproducto,objKardex);
+		
+		/**Si hubiese otro id de almacen 
+		 * */
+		
+		if(idAlmacenEntrada!=0){
+			KardexSie objKardex2 = new KardexSie();
+			objKardex2.setTbProducto(objProductoDao.findProducto(idproducto));
+			objKardex2.setDetallekardex(obj.getDetallekardex());
+			objKardex2.setTbPuntoVenta(objAlmacenDao.findAlmacen(idAlmacenEntrada));
+			objKardex2.setCantentrada(obj.getCantsalida());
+			objKardex2.setCantsalida(obj.getCantentrada());
+			if(idtipokardexproducto==1){
+				idtipokardexproducto=2;
+			}else if(idtipokardexproducto==2){
+				idtipokardexproducto=1;
+			}
+			objKardex2.setTbTipoKardexProducto(objTipoKardexDao.findTipoKardex(idtipokardexproducto));
+			objKardexDao.insertMovimiento(idproducto,objKardex2);
+		}
+		
+		/*KardexSie objKardex = new KardexSie(); 
 		objKardex.setTbProducto(objProductoDao.findProducto(idproducto));
 		objKardex.setTbPuntoVenta(objAlmacenDao.findAlmacen(idAlmacenSalida));
 		objKardex.setTbTipoKardexProducto(objTipoKardexDao.findTipoKardex(idtipokardexproducto));
@@ -50,8 +78,7 @@ public class KardexServiceImpl implements KardexService {
 		objKardex.setDetallekardex(detalle);
 		objKardexDao.insertMovimiento(idproducto,objKardex);
 		
-		/**Si hubiese otro id de almacen 
-		 * */
+		 
 		
 		if(idAlmacenEntrada!=0){
 			KardexSie objKardex2 = new KardexSie();
@@ -67,7 +94,7 @@ public class KardexServiceImpl implements KardexService {
 			}
 			objKardex2.setTbTipoKardexProducto(objTipoKardexDao.findTipoKardex(idtipokardexproducto));
 			objKardexDao.insertMovimiento(idproducto,objKardex2);
-		}
+		}*/
 	}
 	
 	/* (non-Javadoc)
@@ -90,6 +117,14 @@ public class KardexServiceImpl implements KardexService {
 	 */
 	public void updateKardex(KardexSie kardex) {
 		objKardexDao.updateKardex(kardex);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.KardexService#findKardex(int)
+	 */
+	
+	public KardexSie findKardex(int id) {
+		return objKardexDao.findKardex(id);
 	}
 	
 }
