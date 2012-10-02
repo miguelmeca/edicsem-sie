@@ -13,6 +13,8 @@ public interface KardexDAO {
 	
 	public abstract void insertMovimiento (int idProducto,KardexSie kardex);
 	
+	public abstract KardexSie findKardex (int id);
+	
 	public abstract List  ConsultaKardexDiario();
 	
 	public abstract List<KardexSie> ConsultaStockActual(int idProducto);
