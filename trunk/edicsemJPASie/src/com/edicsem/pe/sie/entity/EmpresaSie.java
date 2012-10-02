@@ -57,7 +57,7 @@ public class EmpresaSie  implements Serializable {
 	
 	//bi-directional many-to-one association to ContratoSie
 	@OneToMany(mappedBy="tbEmpresa")
-	private Set<ContratoSie> tbKardex;
+	private Set<KardexSie> tbKardex;
 
     public EmpresaSie() {
     }
@@ -134,11 +134,11 @@ public class EmpresaSie  implements Serializable {
 		this.tbMetaEmpresas = tbMetaEmpresas;
 	}
 
-	public Set<ContratoSie> getTbKardex() {
+	public Set<KardexSie> getTbKardex() {
 		return tbKardex;
 	}
 
-	public void setTbKardex(Set<ContratoSie> tbKardex) {
+	public void setTbKardex(Set<KardexSie> tbKardex) {
 		this.tbKardex = tbKardex;
 	}
 	
