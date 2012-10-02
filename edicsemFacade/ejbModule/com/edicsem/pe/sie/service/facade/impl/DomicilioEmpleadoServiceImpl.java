@@ -53,6 +53,8 @@ public class DomicilioEmpleadoServiceImpl implements DomicilioEmpleadoService{
 		return objDomicilioEmpleadoDao.listarDomicilioEmpleados();
 	}
 
-	
+    public DomicilioPersonaSie buscarDomicilioXIdempleado(int id) { 
+		return objDomicilioEmpleadoDao.buscarDomicilioXIdempleado(id); 
+	}
 		
 }
