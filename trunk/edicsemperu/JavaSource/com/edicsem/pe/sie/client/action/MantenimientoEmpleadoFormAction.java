@@ -355,30 +355,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	public int getUbigeo() {
 		return ubigeo;
 	}
-	public String insertar() throws Exception {
-		try {
-			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'insertar()'");
-			}
-			/*// todo eso se hace en el Service, no se hace en el Action.
-			CargoEmpleadoSie c = objCargoEmpleadoService.buscarCargoEmpleado(CargoEmpleado);
-			log.info("seteo " + c.getIdcargoempleado() + " "+ c.getDescipcion());
-			objEmpleado.setTbCargoEmpleado(c);*/
-			log.info("aaaa"+ codigoTipoDocumento);
-			
-			
-			if (codigoTipoDocumento !=-1 || codigoCargoEmpleado!=-1) {
-				TipoDocumentoIdentidadSie tipo = objTipoDocumentoService.buscarTipoDocumento(TipoDocumento);
-				log.info("seteo " + tipo.getIdtipodocumentoidentidad() + " "+ tipo.getDescripcion());
-				objEmpleado.setTbTipoDocumentoIdentidad(tipo);
-				
-				CargoEmpleadoSie c = objCargoEmpleadoService.buscarCargoEmpleado(CargoEmpleado);
-				log.info("seteo " + c.getIdcargoempleado() + " "+ c.getDescripcion());
-				objEmpleado.setTbCargoEmpleado(c);
-				
-				DomicilioPersonaSie d = objDomicilioEmpleadoService.buscarDomicilioEmpleado(DomicilioPersona);
-				log.info("seteo " + d.getIddomiciliopersona() + " "+ d.getDomicilio());
-				objEmpleado.setTbDomicilioPersona(d);
 
 	/**
 	 * @param ubigeo the ubigeo to set
@@ -392,38 +368,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	 */
 	public int getEstado2() {
 		return estado2;
-				/*TipoDocumentoIdentidadSie td = objTipoDocumentoService.buscarTipoDocumento(TipoDocumento);
-				log.info("seteo " + td.getIdtipodocumentoidentidad() + " "+ td.getDescripcion());
-				objEmpleado.setTbTipoDocumentoIdentidad(td);*/
-				
-				if (objEmpleado.isNewRecord()) {
-					// objEmpleado.s
-					log.info("insertando.....");
-					//insertarValidation(objEmpleado);
-					objEmpleadoService.insertarEmpleado(objEmpleado);
-					log.info("insertando.....");
-					objEmpleado.setNewRecord(false);
-				} else {
-					log.info("objEmpleado.isNewRecord() : "
-							+ objEmpleado.isNewRecord());
-				}
-			}else{
-				log.info("no se encontró tipoDocumento");
-				//FaceMessage.FaceMessageError(Constants.TITULO_MESSAGE_ERROR_COMBO, Constants.CODIGO_TIPO_DOCUMENTO_MESSAGE);
-				//FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, Constants.TITULO_MESSAGE_ERROR_COMBO, Constants.CODIGO_TIPO_DOCUMENTO_MESSAGE);
-				FacesContext.getCurrentInstance().addMessage(null, msg);
-			}
-			
-		
-		} catch (Exception e) {
-			e.printStackTrace();
-			mensaje = e.getMessage();
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-			log.error(e.getMessage());
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
-		return getViewList();
 	}
 
 	/**
