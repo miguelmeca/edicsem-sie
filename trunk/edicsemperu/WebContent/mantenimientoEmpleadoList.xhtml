@@ -1,188 +1,146 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
-	<ui:define name="body">
-		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
-			Empleados</h1>
-		<h:form id="formManteEmpList" prependId="false">
-			<p:dataTable value="#{mantenimientoEmpleadoSearchAction.empleadosmodel}" var="p"
-					id="listaPersonas" paginator="true" rows="5"
-					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="5,10,15" widgetVar="table"
-					emptyMessage="No se encontro registros">
-					<f:facet name="header">  
-            Mantenimiento Empleado 
-        </f:facet>
-					<f:facet name="header">
-						<p:outputPanel>
-							<h:outputText value="Buscar :" />
-							<p:inputText id="globalFilter" onkeyup="table.filter()"
-								style="width:150px; align=Left; " />
-						</p:outputPanel>
-					</f:facet>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Nombre" />
-						</f:facet>
-						<h:outputText value="#{p.nombreemp}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Ape. Paterno" />
-						</f:facet>
-						<h:outputText value="#{p.apepatemp}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Ape. Materno" />
-						</f:facet>
-						<h:outputText value="#{p.apematemp}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Usuario" />
-						</f:facet>
-						<h:outputText value="#{p.usuario}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Contraseña" />
-						</f:facet>
-						<h:outputText value="#{p.contrasena}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Tipo de Doc." />
-						</f:facet>
-						<h:outputText value="#{p.tbTipoDocumentoIdentidad.descripcion}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Nro. de Doc." />
-						</f:facet>
-						<h:outputText value="#{p.numdocumento}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Teléfono" />
-						</f:facet>
-						<h:outputText value="#{p.tbTelefonoPersona.telefono}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Domicilio" />
-						</f:facet>
-						<h:outputText value="#{p.tbDomicilioPersona.domicilio}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Usu. Creación" />
-						</f:facet>
-						<h:outputText value="#{p.usuariocreacion}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Fecha de Creación" />
-						</f:facet>
-						<h:outputText value="#{p.fechacreacion}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Usu. modifica" />
-						</f:facet>
-						<h:outputText value="#{p.usuariomodifica}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Fecha modifica" />
-						</f:facet>
-						<h:outputText value="#{p.fechamodifica}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Fecha de Nac." />
-						</f:facet>
-						<h:outputText value="#{p.fechanacimiento}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Cargo" />
-						</f:facet>
-						<h:outputText value="#{p.tbCargoEmpleado.descripcion}" />
-					</p:column>
-					
-					<p:column id="columna">
-					<f:facet name="header">
-						<h:outputText value="Ver detalle" />
-					</f:facet>
-					<h:panelGrid id="panelgrid" styleClass="actions">
-						<p:commandButton id="btn1" update=":formManteEmpList:display"
-							oncomplete="carDialog.show()" value="ver detalle"
-							title="Vea datos del empleado">
-							<f:setPropertyActionListener value="#{p}"
-								target="#{mantenimientoEmpleadoSearchAction.selectedEmpleado}" />
-						</p:commandButton>
-					</h:panelGrid>
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Modificar" />
-					</f:facet>
-					<p:commandButton update=":formManteEmpList:display"
-						oncomplete="carDialog.show()" image="ui-icon ui-icon-pencil"
-						title="Editar los Datos">
-						<f:setPropertyActionListener value="#{p}"
-							target="#{mantenimientoEmpleadoSearchAction.selectedEmpleado}" />
-						<f:setPropertyActionListener value="#{true}"
-							target="#{mantenimientoEmpleadoSearchAction.editMode}" />
-					</p:commandButton>
-				</p:column>
-				<f:facet name="footer">
-					<div align="left">
-						<h:commandLink value="Nuevo" 
-							actionListener="#{mantenimientoEmpleadoSearchAction.Nuevo}" />
-					</div>
-				</f:facet>
-					
-				</p:dataTable>
-				
-				<p:dialog header="Detalle Empleado" widgetVar="carDialog" id="carDlg"
-				showEffect="fade" hideEffect="explode" modal="true" width="450"
-				position="center">
-				<h:panelGrid id="display" columns="2" cellpadding="2"
-					style="margin:0 auto;">
-
-					<h:outputText value="Nombre Empleado" id="nomEmp" />
-					<h:panelGroup>
-						<h:outputText
-							value="#{mantenimientoEmpleadoSearchAction.selectedEmpleado.nombreemp}"
-							style="font-weight:bold"
-							rendered="#{!mantenimientoEmpleadoSearchAction.editMode}" />
-
-					</h:panelGroup>
-
-					<h:outputText value="Apellido Paterno" id="apepat" />
-					<h:panelGroup>
-						<h:outputText
-							value="#{mantenimientoEmpleadoSearchAction.selectedEmpleado.apepatemp}"
-							style="font-weight:bold"
-							rendered="#{!mantenimientoEmpleadoSearchAction.editMode}" />
-					</h:panelGroup>
-
-					<h:outputText value="Apellido Materno" id="apemat" />
-					<h:panelGroup>
-						<h:outputText
-							value="#{mantenimientoEmpleadoSearchAction.selectedEmpleado.apematemp}"
-							style="font-weight:bold"
-							rendered="#{!mantenimientoEmpleadoSearchAction.editMode}" />
-					</h:panelGroup>
-
-				</h:panelGrid>
-			</p:dialog>		
- 
-		</h:form>
-	</ui:define>
+ <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+   <ui:define name="body">
+    <h1 class="title ui-widget-header ui-corner-all">MantenimientoEmpleados</h1>
+     <h:form id="formManteEmpList" prependId="false">
+	  <p:dataTable value="#{mantenimientoEmpleadoSearchAction.empleadoList}" var="p"
+	   id="listaPersonas" paginator="true" rows="5"
+       paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	   rowsPerPageTemplate="5,10,15" widgetVar="table"
+	   emptyMessage="No se encontro registros">
+	   <f:facet name="header">Mantenimiento Empleado </f:facet>
+	   <f:facet name="header">
+	    <p:outputPanel>
+		 <h:outputText value="Buscar :"/>
+		 <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px; align=Left; "/>
+		</p:outputPanel>
+	   </f:facet>
+	   <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Codigo"/>
+		</f:facet>
+		<h:outputText value="#{p.idempleado}"/>
+	   </p:column>
+	   <p:column sortBy="#{p.nombreemp}" id="nombre" filterBy="#{p.nombreemp}" headerText="Nombre" footerText="startsWith">
+		<f:facet name="header">
+		 <h:outputText value="Nombre" />
+		</f:facet>
+		<h:outputText value="#{p.nombreemp}" />
+	   </p:column>
+	   <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Ape. Paterno" />
+		</f:facet>
+		<h:outputText value="#{p.apepatemp}" />
+	   </p:column>
+	   <p:column>
+	    <f:facet name="header">
+		 <h:outputText value="Ape. Materno" />
+		</f:facet>
+		<h:outputText value="#{p.apematemp}" />
+	   </p:column>
+	   <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Usuario" />
+		</f:facet>
+		<h:outputText value="#{p.usuario}" />
+	   </p:column>
+	   <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Tipo de Doc." />
+		</f:facet>
+		<h:outputText value="#{p.tbTipoDocumentoIdentidad.descripcion}" />
+	   </p:column>
+	   <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Nro. de Doc." />
+		</f:facet>
+	    <h:outputText value="#{p.numdocumento}" />
+	   </p:column>
+	   <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Fecha de Nac." />
+		</f:facet>
+		<h:outputText value="#{p.fechanacimiento}" />
+	   </p:column>
+	   <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Cargo" />
+		</f:facet>
+		<h:outputText value="#{p.tbCargoEmpleado.descripcion}" />
+	   </p:column>
+	   <p:column>
+	    <f:facet name="header">
+		 <h:outputText value="Fecha de Creación" />
+		</f:facet>
+		<h:outputText value="#{p.fechacreacion}" />
+	   </p:column>
+	   <p:column>
+		<f:facet name="header">
+		<h:outputText value="Fecha modifica" />
+		</f:facet>
+		<h:outputText value="#{p.fechamodifica}" />
+	   </p:column>
+	   <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Usu. Creación" />
+		</f:facet>
+	    <h:outputText value="#{p.usuariocreacion}" />
+	   </p:column>
+	   <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Usu. modifica" />
+		</f:facet>
+		<h:outputText value="#{p.usuariomodifica}" />
+	   </p:column>
+	   <p:column headerText="Editar">
+	    <p:commandButton value="Editar" ajax="false" 
+		 action="#{mantenimientoEmpleadoFormAction.update}">
+		 <f:setPropertyActionListener value="#{p}"  
+		  target="#{mantenimientoEmpleadoFormAction.objEmpleado}" />
+		</p:commandButton>  
+	   </p:column>
+	   <p:column headerText="Deshabilitar">
+		<p:commandButton value="Deshabilitar" action="#{mantenimientoEmpleadoFormAction}" >
+		 <f:attribute  name="idempleado2" value="#{m.idempleado2}" />	
+		</p:commandButton>
+	   </p:column>
+	   <f:facet name="footer">
+		<div align="left">
+	     <h:commandLink value="Nuevo" action="#{mantenimientoEmpleadoFormAction.addNewRecord}" />
+		</div>
+	   </f:facet>
+	  </p:dataTable>	
+	  <p:dialog header="Detalle Empleado" widgetVar="carDialog" id="carDlg"
+	   showEffect="fade" hideEffect="explode" modal="true" width="450"
+	   position="center">
+	   <h:panelGrid id="display" columns="2" cellpadding="2"
+		style="margin:0 auto;">
+	    <h:outputText value="Nombre Empleado" id="nomEmp" />
+		<h:panelGroup>
+		 <h:outputText
+		  value="#{mantenimientoEmpleadoSearchAction.selectedEmpleado.nombreemp}"
+		  style="font-weight:bold"
+		  rendered="#{!mantenimientoEmpleadoSearchAction.editMode}" />
+		</h:panelGroup>
+		<h:outputText value="Apellido Paterno" id="apepat" />
+		<h:panelGroup>
+		 <h:outputText
+		  value="#{mantenimientoEmpleadoSearchAction.selectedEmpleado.apepatemp}"
+		  style="font-weight:bold"
+		  rendered="#{!mantenimientoEmpleadoSearchAction.editMode}" />
+		</h:panelGroup>
+		<h:outputText value="Apellido Materno" id="apemat" />
+		<h:panelGroup>
+		 <h:outputText value="#{mantenimientoEmpleadoSearchAction.selectedEmpleado.apematemp}"
+		  style="font-weight:bold" rendered="#{!mantenimientoEmpleadoSearchAction.editMode}" />
+	 </h:panelGroup>
+	</h:panelGrid>
+   </p:dialog>		
+  </h:form>
+ </ui:define>
 </ui:composition>
