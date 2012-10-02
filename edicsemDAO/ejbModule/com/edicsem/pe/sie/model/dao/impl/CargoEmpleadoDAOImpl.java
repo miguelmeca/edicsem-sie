@@ -58,7 +58,7 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 		}
 	}
 
-	/*
+	/**
 	 * (non-Javadoc)
 	 * 
 	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#deleteDemo(java.lang.String)
@@ -73,7 +73,7 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 		}
 	}
 
-	/*
+	/**
 	 * (non-Javadoc)
 	 * 
 	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#findDemo(java.lang.String)
@@ -93,20 +93,13 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 		return cargoempleado;
 	}
 
-	/*
+	/**
 	 * (non-Javadoc)
 	 * 
 	 * @see
 	 * com.edicsem.pe.sie.model.dao.DemoDAO#listarUsuarios(com.edicsem.pe.sie
 	 * .entity.Usuario)
 	 * 
-	 * public List listarCargoEmpleado(String descripcion) {
-	 * log.info("***************** listar cargoEmpleado"); List lista= null; try
-	 * { if (log.isInfoEnabled()) {
-	 * log.info("apunto de insertar cargoEmpleado"); } Query q=
-	 * em.createQuery("select p from CargoEmpleadoSie p"); lista=
-	 * q.getResultList(); log.info(" tamaño " + lista.size()); } catch
-	 * (Exception e) { e.printStackTrace(); } return lista; } }
 	 */
 	public List listarCargoEmpleado() {
 		log.info("***************** listar cargoEmpleado");
