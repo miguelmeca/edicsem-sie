@@ -83,7 +83,7 @@ public class TipoDocumentoDAOImpl implements TipoDocumentoDAO{
 		List lista= null;
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("apunto de insertar tipodocumento");
+				log.info("empezando a listar tipodocumento");
 			}
 			Query q= em.createQuery("select p from TipoDocumentoIdentidadSie p");
 			lista= q.getResultList();
