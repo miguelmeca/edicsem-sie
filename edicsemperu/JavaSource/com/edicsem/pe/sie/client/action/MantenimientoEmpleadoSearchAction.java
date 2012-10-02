@@ -13,12 +13,11 @@ import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 import com.edicsem.pe.sie.util.redirections.Redirections;
 
-@ManagedBean(name = "mantenimientoEmpleadoSearchAction")
+@ManagedBean(name="mantenimientoEmpleadoSearchAction")
 @SessionScoped
-public class MantenimientoEmpleadoSearchAction extends
-		BaseMantenimientoAbstractAction {
-
-	/* variables */
+public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstractAction {
+    
+	/*variables*/
 	private int cargoEmpleado;
 	private int DomicilioPersona;
 	private int TelefonoPersona;
@@ -27,41 +26,39 @@ public class MantenimientoEmpleadoSearchAction extends
 	private List<EmpleadoSie> empleadoList;
 	private EmpleadoSie selectedEmpleado;
 	private boolean editMode;
-	private EmpleadoSie nuevo;
-
-	@EJB
+	private EmpleadoSie nuevo ;
+	
+	@EJB 
 	private EmpleadoSieService objEmpleadoService;
-
-	public static Log log = LogFactory
-			.getLog(MantenimientoEmpleadoSearchAction.class);
-
+	
+	public static Log log = LogFactory.getLog(MantenimientoEmpleadoSearchAction.class);
+	
 	public MantenimientoEmpleadoSearchAction() {
 		System.out.println("ESTOY EN MI CONSNTRUCTOR");
 		log.info("inicializando mi constructor");
 		init();
 	}
 
-	/* inicializamos los objetos utilizados */
+	/*inicializamos los  objetos utilizados*/
 	public void init() {
 		log.info("init()");
 		// Colocar valores inicializados
 		objEmpleado = new EmpleadoSie();
 		objEmpleado.setNombreemp("");
 		nuevo = new EmpleadoSie();
-		log.info("despues de inicializar  ");
+		log.info("despues de inicializar  ");		
 	}
-
-	/* método para listar a los empleados */
+	
+	/*método para listar a los empleados*/
 	public void listarEmpleados() {
 		log.info("listarEmpleados 'MantenimientoEmpleadoSearchAction' ");
 		empleadoList = objEmpleadoService.listarEmpleados();
 		if (empleadoList == null) {
 			empleadoList = new ArrayList<EmpleadoSie>();
 		}
-		Redirections.redirectionsPage("mantenimiento",
-				"mantenimientoEmpleadoFormList");
+		Redirections.redirectionsPage("mantenimiento", "mantenimientoEmpleadoFormList");
 	}
-
+		
 	public void Nuevo(ActionEvent e) throws Exception {
 		setObjEmpleado(null);
 	}
@@ -69,10 +66,9 @@ public class MantenimientoEmpleadoSearchAction extends
 	public EmpleadoSie getNuevo() {
 		return nuevo;
 	}
-
+	
 	/**
-	 * @param nuevo
-	 *            the nuevo to set
+	 * @param nuevo the nuevo to set
 	 */
 	public void setNuevo(EmpleadoSie nuevo) {
 		this.nuevo = nuevo;
@@ -109,68 +105,7 @@ public class MantenimientoEmpleadoSearchAction extends
 	public void setTipoDocumento(int tipoDocumento1) {
 		tipoDocumento = tipoDocumento1;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
-	 * 
-	 * #insertar()
-	 */
-	public String insertar() throws Exception {
-		try {
-			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'insertar()'");
-			}
-			// todo eso se hace en el Service, no se hace en el Action.
-			CargoEmpleadoSie c = objCargoEmpleadoService
-					.buscarCargoEmpleado(cargoEmpleado);
-			log.info("seteo " + c.getIdcargoempleado() + " "
-					+ c.getDescripcion());
-			objEmpleado.setTbCargoEmpleado(c);
-
-			DomicilioPersonaSie d = objDomicilioEmpleadoService
-					.buscarDomicilioEmpleado(DomicilioPersona);
-			log.info("seteo " + d.getIddomiciliopersona() + " "
-					+ d.getDomicilio());
-			objEmpleado.setTbDomicilioPersona(d);
-
-			TelefonoPersonaSie t = objTelefonoEmpleadoService
-					.buscarTelefonoEmpleado(TelefonoPersona);
-			log.info("seteo " + t.getIdtelefonopersona() + " "
-					+ t.getTelefono());
-			objEmpleado.setTbTelefonoPersona(t);
-
-			TipoDocumentoIdentidadSie td = objTipoDocumentoService
-					.buscarTipoDocumento(tipoDocumento);
-			log.info("seteo " + td.getIdtipodocumentoidentidad() + " "
-					+ td.getDescripcion());
-			objEmpleado.setTbTipoDocumentoIdentidad(td);
-
-			if (objEmpleado.isNewRecord()) {
-				// objEmpleado.s
-				log.info("insertando.....");
-				// insertarValidation(objEmpleado);
-				objEmpleadoService.insertarEmpleado(objEmpleado);
-				log.info("insertando.....");
-				objEmpleado.setNewRecord(false);
-			} else {
-				log.info("objEmpleado.isNewRecord() : "
-						+ objEmpleado.isNewRecord());
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			mensaje = e.getMessage();
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-			log.error(e.getMessage());
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
-		return getViewList();
-	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -196,23 +131,22 @@ public class MantenimientoEmpleadoSearchAction extends
 	public void setObjEmpleado(EmpleadoSie objEmpleado) {
 		this.objEmpleado = objEmpleado;
 	}
-
+	
 	public boolean isEditMode() {
 		return editMode;
 	}
-
+	
 	/**
-	 * @param editMode
-	 *            the editMode to set
+	 * @param editMode the editMode to set
 	 */
 	public void setEditMode(boolean editMode) {
 		this.editMode = editMode;
 	}
-
+	
 	public EmpleadoSie getSelectedEmpleado() {
 		return selectedEmpleado;
 	}
-
+	
 	public void setSelecteEmpleado(EmpleadoSie selectedEmpleado) {
 		this.selectedEmpleado = selectedEmpleado;
 	}
@@ -220,17 +154,16 @@ public class MantenimientoEmpleadoSearchAction extends
 	/**
 	 * @return the empleadoList
 	 */
-	/* GET para listar empleados */
+	/*GET para listar empleados*/
 	public List<EmpleadoSie> getEmpleadoList() {
-		return empleadoList = objEmpleadoService.listarEmpleados();
+		return empleadoList=objEmpleadoService.listarEmpleados();
 	}
 
 	/**
-	 * @param empleadoList
-	 *            the empleadoList to set
+	 * @param empleadoList the empleadoList to set
 	 */
 	public void setEmpleadoList(List<EmpleadoSie> empleadoList) {
 		this.empleadoList = empleadoList;
-	}
-
+	}	
+	
 }
