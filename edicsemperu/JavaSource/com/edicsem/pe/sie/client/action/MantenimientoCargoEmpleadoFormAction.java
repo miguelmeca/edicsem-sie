@@ -1,13 +1,18 @@
+/**
+ * @author FUCKING
+ *
+ */
+
 package com.edicsem.pe.sie.client.action;
+
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,24 +28,231 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 @SessionScoped
 public class MantenimientoCargoEmpleadoFormAction extends
 		BaseMantenimientoAbstractAction {
-	private String mensaje;
+
 	public String idcargoempleado;
 	public String descripcion;
-	public static Log log = LogFactory.getLog(MantenimientoCargoEmpleadoSearchAction.class);
-	private StreamedContent image;
-	
-	
-	private CargoEmpleadoSie objCargoEmpleadoSie;
-	private DataModel<CargoEmpleadoSie> CargoEmpleadomodel;
-	private CargoEmpleadoSie selectedCargoEmpleado;
-	
-	private boolean editMode;
-	private CargoEmpleadoSie nuevo;
 	private int idEstadoGeneral, idc;
+	private StreamedContent image;
+	private String mensaje;
+	private CargoEmpleadoSie nuevo;
+	private CargoEmpleadoSie objCargoEmpleadoSie;
+	private CargoEmpleadoSie selectedCargoEmpleado;
 	private boolean newRecord = false;
+	private boolean editMode;
+	/*
+	 * private boolean editMode: haceq los dos popup (New-Edith) sean utilizados
+	 * con un solo popup
+	 */
+	
+
+	@ManagedProperty(value = "#{mantenimientoCargoEmpleadoSearchAction}")
+	private MantenimientoCargoEmpleadoSearchAction mantenimientoCargoEmpleadoSearch;
+
+	private static Log log = LogFactory
+			.getLog(MantenimientoCargoEmpleadoSearchAction.class);
 
 	@EJB
 	private CargoEmpleadoService objCargoEmpleadoService;
+
+	@EJB
+	private EstadogeneralService objEstadoGeneralService;
+
+	public void init() {
+		log.info("init()");
+		// Colocar valores inicializados
+		objCargoEmpleadoSie = new CargoEmpleadoSie();
+		nuevo = new CargoEmpleadoSie();
+	}
+
+	public String agregar() {
+		log.info("agregar()");
+		editMode = true;
+		setNewRecord(true);
+		return getViewList();
+	}
+
+	public String update() throws Exception {
+		log.info("update()" + objCargoEmpleadoSie.getIdcargoempleado());
+		CargoEmpleadoSie c = objCargoEmpleadoService
+				.buscarCargoEmpleado(objCargoEmpleadoSie.getIdcargoempleado());
+		log.info(" id cargo " + c.getIdcargoempleado() + " des "
+				+ c.getDescripcion());
+		setIdcargoempleado(c.getIdcargoempleado().toString());
+		setDescripcion(c.getDescripcion());
+		setIdEstadoGeneral(c.getTbEstadoGeneral().getIdestadogeneral());
+		setNewRecord(false);
+		editMode = false;
+		return getViewList();
+
+	}
+
+	public String insertar() {
+
+		log.info("insertar() " + isNewRecord() + " desc "
+				+ objCargoEmpleadoSie.getDescripcion());
+		/* ---> */objCargoEmpleadoSie
+				.setTbEstadoGeneral(objEstadoGeneralService
+						.findEstadogeneral(1));
+		/* Esto se setea cuando pertenece a una segunda tabla (--->) */
+		try {
+
+			if (isNewRecord()) {
+				/**
+				 * Trim es para borrar los espacios en blanco despues de la
+				 * palabra (los ultimos)
+				 **/
+				/** toUpperCase convierte la primera letra en mayuscula **/
+				// mayuscula=descripcion.charAt(0)+"";
+				// mayuscula=mayuscula.toUpperCase();
+				// descripcion=descripcion.replaceFirst(descripcion.charAt(0)+"",
+				// mayuscula);
+				objCargoEmpleadoSie.getDescripcion();
+				/* cuando esta vacio () es true */
+				// List<CargoEmpleadoSie> list=
+				// objCargoEmpleadoService.filtrarxdescripcion(objCargoEmpleadoSie.getDescripcion());
+				int error = 0;
+				List<CargoEmpleadoSie> lista = mantenimientoCargoEmpleadoSearch.getCargoEmpleadomodel(); 
+				for (int i = 0; i < lista.size(); i++) {
+					CargoEmpleadoSie a = lista.get(i);
+					if (a.getDescripcion().equalsIgnoreCase(objCargoEmpleadoSie.getDescripcion())) {
+						log.info("Error ... Ya se encuentra un cargo igual");
+						error = 1;
+						break;
+					}
+				}
+
+				if (error == 0) {
+					objCargoEmpleadoService.insertarCargoEmpleado(objCargoEmpleadoSie);
+				} else {
+					// Mostrar Validacion
+					log.info("mensaje de error");
+				}
+				log.info("aqui validadndo si existe o no");
+
+			} else {
+
+				objCargoEmpleadoSie.setIdcargoempleado(Integer
+						.parseInt(getIdcargoempleado()));
+				
+				objCargoEmpleadoSie.setDescripcion(getDescripcion());
+				objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService
+						.findEstadogeneral(getIdEstadoGeneral()));
+
+				log.info("----->>>"
+						+ objCargoEmpleadoSie.getTbEstadoGeneral()
+								.getIdestadogeneral()
+						+ objCargoEmpleadoSie.getDescripcion());
+				log.info("actualizando..... ");
+
+				objCargoEmpleadoService
+						.actualizarCargoEmpleado(objCargoEmpleadoSie);
+				log.info("actualizando..... ");
+				log.info("objCargoEmpleadoSie.isNewRecord() : ");
+			}
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			descripcion = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, descripcion);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		objCargoEmpleadoSie = new CargoEmpleadoSie();
+		return getViewList();
+	}
+
+	/**
+	 * @return the mayuscula
+	 */
+
+
+	/**
+	 * @param ae
+	 * @return
+	 * @throws Exception
+	 */
+	public String updateDeshabilitar() throws Exception {
+
+		objCargoEmpleadoSie = new CargoEmpleadoSie();
+		int parametroObtenido;
+		CargoEmpleadoSie c = new CargoEmpleadoSie();
+
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'updateDESHABILITAR()'");
+			}
+
+			parametroObtenido = getIdc();
+			log.info(" ------>>>>>>aqui cactura el parametro ID "
+					+ parametroObtenido);
+
+			c = objCargoEmpleadoService.buscarCargoEmpleado(parametroObtenido);
+			log.info(" ------Android>" + c.getDescripcion() + " "
+					+ c.getIdcargoempleado());
+
+			objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService
+					.findEstadogeneral(2));
+			objCargoEmpleadoSie.setIdcargoempleado(c.getIdcargoempleado());
+			objCargoEmpleadoSie.setDescripcion(c.getDescripcion());
+
+			log.info("-----Android1>>>"
+					+ objCargoEmpleadoSie.getTbEstadoGeneral()
+							.getIdestadogeneral());
+			log.info("actualizando ESTADO..... ");
+
+			objCargoEmpleadoService
+					.actualizarCargoEmpleado(objCargoEmpleadoSie);
+			log.info("actualizando..... ");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			descripcion = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, descripcion);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		objCargoEmpleadoSie = new CargoEmpleadoSie();
+		return getViewList();
+	}
+
+	/*
+	 * @see
+	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
+	 * #getViewList()
+	 */
+	public String getViewList() {
+		// TODO Auto-generated method stub
+		return "mantenimientoCargoEmpleadoFormList";
+	}
+
+	public String getMensaje() {
+		return mensaje;
+	}
+
+	/**
+	 * @param mensaje
+	 *            the mensaje to set
+	 */
+	public void setMensaje(String mensaje) {
+		this.mensaje = mensaje;
+	}
+
+	/**
+	 * @return
+	 */
+	public int getIdc() {
+		log.info("IDC *** " + idc);
+		return idc;
+	}
+
+	/**
+	 * @param idc
+	 */
+	public void setIdc(int idc) {
+		this.idc = idc;
+	}
 
 	/**
 	 * @return the idcargoempleado
@@ -57,16 +269,6 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		this.idcargoempleado = idcargoempleado;
 	}
 
-	@EJB
-	private EstadogeneralService objEstadoGeneralService;
-
-	/**
-	 * @return the idEstadoGeneral
-	 */
-	public int getIdEstadoGeneral() {
-		return idEstadoGeneral;
-	}
-
 	/**
 	 * @param idEstadoGeneral
 	 *            the idEstadoGeneral to set
@@ -75,10 +277,16 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		this.idEstadoGeneral = idEstadoGeneral;
 	}
 
+	/**
+	 * @return
+	 */
 	public StreamedContent getImage() {
 		return image;
 	}
 
+	/**
+	 * @param image
+	 */
 	public void setImage(StreamedContent image) {
 		this.image = image;
 	}
@@ -87,20 +295,15 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		return objCargoEmpleadoSie;
 	}
 
+	/**
+	 * @return the idEstadoGeneral
+	 */
+	public int getIdEstadoGeneral() {
+		return idEstadoGeneral;
+	}
+
 	public void setObjCargoEmpleadoSie(CargoEmpleadoSie objCargoEmpleadoSie) {
 		this.objCargoEmpleadoSie = objCargoEmpleadoSie;
-	}
-
-	public DataModel<CargoEmpleadoSie> getCargoEmpleadomodel() throws Exception {
-
-		CargoEmpleadomodel = new ListDataModel<CargoEmpleadoSie>(
-				objCargoEmpleadoService.listarCargoEmpleado());
-		return CargoEmpleadomodel;
-	}
-
-	public void setCargoEmpleadomodel(
-			DataModel<CargoEmpleadoSie> cargoEmpleadomodel) {
-		CargoEmpleadomodel = cargoEmpleadomodel;
 	}
 
 	public CargoEmpleadoSie getSelectedCargoEmpleado() {
@@ -111,6 +314,9 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		this.selectedCargoEmpleado = selectedCargoEmpleado;
 	}
 
+	/**
+	 * @return
+	 */
 	public boolean isEditMode() {
 		return editMode;
 	}
@@ -119,30 +325,51 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		this.editMode = editMode;
 	}
 
+	/**
+	 * @param nuevo
+	 */
 	public void setNuevo(CargoEmpleadoSie nuevo) {
 		this.nuevo = nuevo;
 	}
 
+	/**
+	 * @return
+	 */
 	public CargoEmpleadoSie getNuevo() {
 		return nuevo;
 	}
 
+	/**
+	 * @return
+	 */
 	public static Log getLog() {
 		return log;
 	}
 
+	/**
+	 * @param log
+	 */
 	public static void setLog(Log log) {
 		MantenimientoCargoEmpleadoSearchAction.log = log;
 	}
 
+	/**
+	 * @return
+	 */
 	public String getDescripcion() {
 		return descripcion;
 	}
 
+	/**
+	 * @param descripcion
+	 */
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
 
+	/**
+	 * @return
+	 */
 	public CargoEmpleadoService getObjCargoEmpleadoService() {
 		return objCargoEmpleadoService;
 	}
@@ -157,47 +384,6 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		init();
 	}
 
-	public void init() {
-		log.info("init()");
-		// Colocar valores inicializados
-		// estadosItems = new ArrayList<SelectItem>();
-		objCargoEmpleadoSie = new CargoEmpleadoSie();
-		objCargoEmpleadoSie.setDescripcion("");
-		nuevo = new CargoEmpleadoSie();
-	}
-
-
-
-	/*
-	 * 
-	 * public String insertar() throws Exception {
-	 * 
-	 * try { if (log.isInfoEnabled()) {
-	 * log.info("Entering my method 'insertar()'"); } log.info(" ------ "+
-	 * idEstadoGeneral);
-	 * objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService
-	 * .findEstadogeneral(idEstadoGeneral));
-	 * 
-	 * if (objCargoEmpleadoSie.isNewRecord()) { log.info("insertando..... "); //
-	 * insertarValidation(objCargoEmpleadoSie);
-	 * objCargoEmpleadoService.insertarCargoEmpleado(objCargoEmpleadoSie);
-	 * log.info("insertando..... "); objCargoEmpleadoSie.setNewRecord(false);
-	 * 
-	 * } else { log.info("objCargoEmpleadoSie.isNewRecord() : " +
-	 * objCargoEmpleadoSie.isNewRecord()); }
-	 * objCargoEmpleadoSie.setDescripcion(""); //Agregen esto a tus
-	 * redirecciones parece que esta referenciando a otra cosa verifiquen a
-	 * donde estan //llenando los datos
-	 * 
-	 * } catch (Exception e) { e.printStackTrace(); descripcion =
-	 * e.getMessage(); msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-	 * Constants.MESSAGE_ERROR_FATAL_TITULO, descripcion);
-	 * log.error(e.getMessage());
-	 * FacesContext.getCurrentInstance().addMessage(null, msg); }
-	 * objCargoEmpleadoSie=new CargoEmpleadoSie(); return getViewList(); }
-	 */
-
-
 	public boolean isNewRecord() {
 		return newRecord;
 	}
@@ -209,196 +395,21 @@ public class MantenimientoCargoEmpleadoFormAction extends
 	public void setNewRecord(boolean newRecord) {
 		this.newRecord = newRecord;
 	}
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
-	 * #agregar()
+
+	/**
+	 * @return the mantenimientoCargoEmpleadoSearch
 	 */
-
-	public String agregar(){
-		log.info("agregar()");
-		setNewRecord(true);
-		return insertar();
-	}
-	
-	public String update() throws Exception {
-		log.info("update()");
-		setNewRecord(false);
-		return insertar();
-	}
-	
-	public String insertar(){
-		log.info("insertar() " + isNewRecord());
-
-/*  --->  */objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService
-				.findEstadogeneral(1));
-		/*Esto se setea cuando pertenece a una segunda tabla (--->)*/
-		log.info("seteo()");
-		try {
-
-			if (isNewRecord()) {/*cuando esta vacio () es true*/
-
-				objCargoEmpleadoService
-						.insertarCargoEmpleado(objCargoEmpleadoSie);
-			} else {
-
-				objCargoEmpleadoSie.setIdcargoempleado(Integer.parseInt(getIdcargoempleado()));
-				objCargoEmpleadoSie.setDescripcion(getDescripcion());
-				objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService
-						.findEstadogeneral(getIdEstadoGeneral()));
-				log.info("----->>>"
-						+ objCargoEmpleadoSie.getTbEstadoGeneral()
-								.getIdestadogeneral()
-						+ objCargoEmpleadoSie.getDescripcion());
-
-				log.info("actualizando..... ");
-				objCargoEmpleadoService.actualizarCargoEmpleado(objCargoEmpleadoSie);
-				log.info("actualizando..... ");
-
-				log.info("objCargoEmpleadoSie.isNewRecord() : ");
-
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			descripcion = e.getMessage();
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, descripcion);
-			log.error(e.getMessage());
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
-		objCargoEmpleadoSie = new CargoEmpleadoSie();
-		return getViewList();
-	}
-
-	public String getMensaje() {
-		return mensaje;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
-	 * #getViewList()
-	 */
-	
-	public String getViewList() {
-		// TODO Auto-generated method stub
-		return "mantenimientoCargoEmpleadoFormList";
+	public MantenimientoCargoEmpleadoSearchAction getMantenimientoCargoEmpleadoSearch() {
+		return mantenimientoCargoEmpleadoSearch;
 	}
 
 	/**
-	 * @param mensaje
-	 *            the mensaje to set
+	 * @param mantenimientoCargoEmpleadoSearch
+	 *            the mantenimientoCargoEmpleadoSearch to set
 	 */
-	public void setMensaje(String mensaje) {
-		this.mensaje = mensaje;
-	}
-
-	
-	
-	
-	
-	
-	public void buscarCargoEmpleado(ActionEvent ae) {
-		// /Busca el objeto por ese codigo ID
-		// objCargoEmpleadoSie=new CargoEmpleadoSie() ;
-		int parametroObtenido;
-		try {
-			log.info("llego");
-
-			parametroObtenido = Integer.parseInt(ae.getComponent().getAttributes().get("idcargoempleado").toString());
-			log.info("probarCamapana1 : " + parametroObtenido);
-			// se busca el objeto campaña
-			CargoEmpleadoSie c = objCargoEmpleadoService.buscarCargoEmpleado(parametroObtenido);
-			log.info(" id cargo " + c.getIdcargoempleado() + " des "
-					+ c.getDescripcion());
-			setIdcargoempleado(c.getIdcargoempleado().toString());
-			setDescripcion(c.getDescripcion());
-			setIdEstadoGeneral(c.getTbEstadoGeneral().getIdestadogeneral());
-			log.info("f****************   " + getDescripcion());
-
-		} catch (Exception e) {
-			System.out.println("error:" + e.getMessage());
-		}
-	}
-
-	/*
-	 * public void buscarCargoEmpleadoDESHABILITAR(ActionEvent ae){
-	 * 
-	 * ///Busca el objeto por ese codigo ID //objCargoEmpleadoSie=new
-	 * CargoEmpleadoSie() ; int parametroObtenido ; try { log.info("llego");
-	 * 
-	 * parametroObtenido =
-	 * Integer.parseInt(ae.getComponent().getAttributes().get
-	 * ("idcargoempleado").toString()); log.info("probarCamapana1 : " +
-	 * parametroObtenido); //se busca el objeto campaña CargoEmpleadoSie c=
-	 * objCargoEmpleadoService.buscarCargoEmpleado(parametroObtenido);
-	 * log.info(" id cargo " + c.getIdcargoempleado()+ " des " +
-	 * c.getDescripcion() );
-	 * setIdcargoempleado(c.getIdcargoempleado().toString());
-	 * setDescripcion(c.getDescripcion());
-	 * setIdEstadoGeneral(c.getTbEstadoGeneral().getIdestadogeneral());
-	 * log.info("f****************   " + getDescripcion());
-	 * 
-	 * } catch (Exception e) { System.out.println("error:" + e.getMessage()); }
-	 * }
-	 */
-
-	public String updateDeshabilitar(ActionEvent ae) throws Exception {
-
-		objCargoEmpleadoSie = new CargoEmpleadoSie();
-		int parametroObtenido;
-
-		CargoEmpleadoSie c = new CargoEmpleadoSie();
-
-		try {
-			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'updateDESHABILITAR()'");
-			}
-
-			parametroObtenido =  getIdc();
-			log.info(" ------>>>>>>aqui cactura el parametro ID " + parametroObtenido);
-			
-			
-			c = objCargoEmpleadoService.buscarCargoEmpleado(parametroObtenido);
-			log.info(" ------lechuga>" + c.getDescripcion() + " " + c.getIdcargoempleado());
-
-			objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(2));
-			objCargoEmpleadoSie.setIdcargoempleado(c.getIdcargoempleado());
-		objCargoEmpleadoSie.setDescripcion(c.getDescripcion());
-			log.info("-----AJI>>>"
-					+ objCargoEmpleadoSie.getTbEstadoGeneral()
-							.getIdestadogeneral());
-
-			log.info("actualizando ESTADO..... ");
-
-			objCargoEmpleadoService.actualizarCargoEmpleado(objCargoEmpleadoSie);
-			log.info("actualizando..... ");
-			
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			descripcion = e.getMessage();
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, descripcion);
-			log.error(e.getMessage());
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
-		objCargoEmpleadoSie = new CargoEmpleadoSie();
-		
-		return getViewList();
-	}
-
-	public int getIdc() {
-		log.info("IDC *** " +idc ) ;
-		return idc;
-	}
-
-	public void setIdc(int idc) {
-		this.idc = idc;
+	public void setMantenimientoCargoEmpleadoSearch(
+			MantenimientoCargoEmpleadoSearchAction mantenimientoCargoEmpleadoSearch) {
+		this.mantenimientoCargoEmpleadoSearch = mantenimientoCargoEmpleadoSearch;
 	}
 
 }
