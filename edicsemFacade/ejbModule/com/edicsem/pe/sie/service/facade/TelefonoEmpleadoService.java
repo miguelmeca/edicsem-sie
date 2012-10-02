@@ -14,5 +14,6 @@ public interface TelefonoEmpleadoService {
 	public abstract void eliminarTelefonoEmpleado (int id);
 	public abstract TelefonoPersonaSie buscarTelefonoEmpleado (int id);
 	public abstract List listarTelefonoEmpleados ();
+	public abstract TelefonoPersonaSie buscarTelefonoXIdempleado(int id);
 	
 }
