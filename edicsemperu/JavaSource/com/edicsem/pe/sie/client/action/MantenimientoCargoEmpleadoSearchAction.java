@@ -1,7 +1,11 @@
+/**
+ * @author FUCKING
+ *
+ */
 package com.edicsem.pe.sie.client.action;
+
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -11,198 +15,33 @@ import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.primefaces.model.StreamedContent;
 
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
-import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
+import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
-@ManagedBean(name="mantenimientoCargoEmpleadoSearchAction")
+@ManagedBean(name = "mantenimientoCargoEmpleadoSearchAction")
 @SessionScoped
-public class MantenimientoCargoEmpleadoSearchAction extends BaseMantenimientoAbstractAction {
-	
-	
-	/**private int idcargoempleado;
-	/**
-	 * @return the idcargoempleado	
-	*public int getIdcargoempleado() {
-		*return idcargoempleado;	*}	
-	 * @param idcargoempleado the idcargoempleado to set	 
-	*public void setIdcargoempleado(int idcargoempleado) {
-	*	this.idcargoempleado = idcargoempleado;
-	*}
-	 */
+public class MantenimientoCargoEmpleadoSearchAction extends	BaseMantenimientoAbstractAction {
 
-	private String mensaje;
-	public String descripcion;
 	public static Log log = LogFactory.getLog(MantenimientoCargoEmpleadoSearchAction.class);
+
 	private List<SelectItem> estadosItems;
-	private StreamedContent image; 
 	private CargoEmpleadoSie objCargoEmpleadoSie;
-	private DataModel<CargoEmpleadoSie> CargoEmpleadomodel;
+	private List<CargoEmpleadoSie> CargoEmpleadomodel;
 	private CargoEmpleadoSie selectedCargoEmpleado;
 	private boolean editMode;
-	private CargoEmpleadoSie nuevo ; 
-	private  int idEstadoGeneral;
-	private List<CargoEmpleadoService> cargoempresaList;
+	private CargoEmpleadoSie nuevo;
+	private int idEstadoGeneral;
 
-	@EJB 
+	@EJB
 	private CargoEmpleadoService objCargoEmpleadoService;
 
-	@EJB 
-	private EstadogeneralService objEstadoGeneralService;
- 
-	
-
-
-/*aqui hay otra manera de listar los cargos de los empleados......*/
-		
-	public DataModel<CargoEmpleadoSie> getCargoEmpleadomodel() throws Exception {
-		
-
-		CargoEmpleadomodel = new ListDataModel<CargoEmpleadoSie>(objCargoEmpleadoService.listarCargoEmpleado());
+	public List<CargoEmpleadoSie> getCargoEmpleadomodel() throws Exception {
 		return CargoEmpleadomodel;
-	}
 
-	/* 
-	  	
-		public String listar() {
-	   log.info("listarCargo EMpleado 'MantenimientoCargoEmpleadoSearchAction' ");
-	   cargoempresaList = objCargoEmpleadoService.listarCargoEmpleado(); 
-	   if (cargoempresaList == null) {
-		   cargoempresaList = new ArrayList<CargoEmpleadoService>();
-	   }
-		
-	  return getViewList();
-	   }
-*/
-
-		
-		
-		
-		
-		
-	public void setCargoEmpleadomodel(DataModel<CargoEmpleadoSie> cargoEmpleadomodel) {
-		CargoEmpleadomodel = cargoEmpleadomodel;
-	}
-
-	/**
-	 * @return the idEstadoGeneral
-	 */
-	public int getIdEstadoGeneral() {
-		return idEstadoGeneral;
-	}
-
-
-
-	/**
-	 * @param idEstadoGeneral the idEstadoGeneral to set
-	 */
-	public void setIdEstadoGeneral(int idEstadoGeneral) {
-		this.idEstadoGeneral = idEstadoGeneral;
-	}
-
-
-
-	public StreamedContent getImage() {
-		return image;
-	}
-
-
-
-	public void setImage(StreamedContent image) {
-		this.image = image;
-	}
-
-
-
-	public CargoEmpleadoSie getObjCargoEmpleadoSie() {
-		return objCargoEmpleadoSie;
-	}
-
-
-
-	public void setObjCargoEmpleadoSie(CargoEmpleadoSie objCargoEmpleadoSie) {
-		this.objCargoEmpleadoSie = objCargoEmpleadoSie;
-	}
-
-	public CargoEmpleadoSie getSelectedCargoEmpleado() {
-		return selectedCargoEmpleado;
-	}
-
-
-
-	public void setSelectedCargoEmpleado(CargoEmpleadoSie selectedCargoEmpleado) {
-		this.selectedCargoEmpleado = selectedCargoEmpleado;
-	}
-
-
-
-	public boolean isEditMode() {
-		return editMode;
-	}
-
-
-
-	public void setEditMode(boolean editMode) {
-		this.editMode = editMode;
-	}
-
-	
-	
-	public void setNuevo(CargoEmpleadoSie nuevo) {
-		this.nuevo = nuevo;
-	}
- 
-
-	public CargoEmpleadoSie getNuevo() {
-		return nuevo;
-	}
-
-
-
-	
-	
-	
-	public static Log getLog() {
-		return log;
-	}
-
-
-
-	public static void setLog(Log log) {
-		MantenimientoCargoEmpleadoSearchAction.log = log;
-	}
-
-
-
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
-
-
-	public CargoEmpleadoService getObjCargoEmpleadoService() {
-		return objCargoEmpleadoService;
-	}
-
-
-
-	public void setObjCargoEmpleadoService(
-			CargoEmpleadoService objCargoEmpleadoService) {
-		this.objCargoEmpleadoService = objCargoEmpleadoService;
-	}
-	public MantenimientoCargoEmpleadoSearchAction() {
-		log.info("inicializando constructor MantenimientoProducto");
-		init();
 	}
 
 	public void init() {
@@ -213,36 +52,142 @@ public class MantenimientoCargoEmpleadoSearchAction extends BaseMantenimientoAbs
 		objCargoEmpleadoSie.setDescripcion("");
 		nuevo = new CargoEmpleadoSie();
 	}
-	
-	
 
-	/**
-	 * @return the estadosItems
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#listar()
 	 */
-	
+	public String listar() {
+		log.info("listando Cargo Emplado ...");
+		CargoEmpleadomodel = objCargoEmpleadoService.listarCargoEmpleado();
+		return getViewList();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewList()
+	 */
+	public String getViewList() {
+		return Constants.MANT_CARGO_EMPLEADO_FORM_LIST_PAGE;
+	}
 
 	/**
-	 * @param estadosItems the estadosItems to set
+	 * @param objCargoEmpleadoService
+	 */
+	public void setObjCargoEmpleadoService(
+			CargoEmpleadoService objCargoEmpleadoService) {
+		this.objCargoEmpleadoService = objCargoEmpleadoService;
+	}
+
+	public MantenimientoCargoEmpleadoSearchAction() {
+		log.info("inicializando constructor MantenimientoProducto");
+		init();
+	}
+
+	/**
+	 * @param cargoEmpleadomodel
+	 */
+	public void setCargoEmpleadomodel(
+			List<CargoEmpleadoSie> cargoEmpleadomodel) {
+		CargoEmpleadomodel = cargoEmpleadomodel;
+	}
+
+	/**
+	 * @return the idEstadoGeneral
+	 */
+	public int getIdEstadoGeneral() {
+		return idEstadoGeneral;
+	}
+
+	/**
+	 * @param idEstadoGeneral
+	 *            the idEstadoGeneral to set
+	 */
+	public void setIdEstadoGeneral(int idEstadoGeneral) {
+		this.idEstadoGeneral = idEstadoGeneral;
+	}
+
+	/**
+	 * @return
+	 */
+	public CargoEmpleadoSie getObjCargoEmpleadoSie() {
+		return objCargoEmpleadoSie;
+	}
+
+	/**
+	 * @param objCargoEmpleadoSie
+	 */
+	public void setObjCargoEmpleadoSie(CargoEmpleadoSie objCargoEmpleadoSie) {
+		this.objCargoEmpleadoSie = objCargoEmpleadoSie;
+	}
+
+	/**
+	 * @return
+	 */
+	public CargoEmpleadoSie getSelectedCargoEmpleado() {
+		return selectedCargoEmpleado;
+	}
+
+	/**
+	 * @param selectedCargoEmpleado
+	 */
+	public void setSelectedCargoEmpleado(CargoEmpleadoSie selectedCargoEmpleado) {
+		this.selectedCargoEmpleado = selectedCargoEmpleado;
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isEditMode() {
+		return editMode;
+	}
+
+	/**
+	 * @param editMode
+	 */
+	public void setEditMode(boolean editMode) {
+		this.editMode = editMode;
+	}
+
+	/**
+	 * @param nuevo
+	 */
+	public void setNuevo(CargoEmpleadoSie nuevo) {
+		this.nuevo = nuevo;
+	}
+
+	/**
+	 * @return
+	 */
+	public CargoEmpleadoSie getNuevo() {
+		return nuevo;
+	}
+
+	/**
+	 * @return
+	 */
+	public static Log getLog() {
+		return log;
+	}
+
+	/**
+	 * @param log
+	 */
+	public static void setLog(Log log) {
+		MantenimientoCargoEmpleadoSearchAction.log = log;
+	}
+
+	/**
+	 * @return
+	 */
+	public CargoEmpleadoService getObjCargoEmpleadoService() {
+		return objCargoEmpleadoService;
+	}
+
+	/**
+	 * @param estadosItems
+	 *            the estadosItems to set
 	 */
 	public void setEstadosItems(List<SelectItem> estadosItems) {
 		this.estadosItems = estadosItems;
 	}
 
-
-
-	
-	public String getMensaje() {
-		return mensaje;
-	}
-
-
-
-	/**
-	 * @param mensaje the mensaje to set
-	 */
-	public void setMensaje(String mensaje) {
-		this.mensaje = mensaje;
-	}
- 	
-	
 }
