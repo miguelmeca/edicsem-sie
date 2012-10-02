@@ -56,9 +56,10 @@ public class CargoEmpleadoServiceImpl implements CargoEmpleadoService{
 	 */
 	public List listarCargoEmpleado() {
 		log.info("En el servicio ");
-		//te falta un parametro
+
 		return objCargoEmpleadoDao.listarCargoEmpleado();
 	}
+
 
 	
 		
