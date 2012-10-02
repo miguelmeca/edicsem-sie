@@ -15,5 +15,6 @@ public interface DomicilioEmpleadoService {
 	public abstract void eliminarDomicilioEmpleado (int id);
 	public abstract DomicilioPersonaSie buscarDomicilioEmpleado (int id);
 	public abstract List listarDomicilioEmpleados ();
+	public abstract DomicilioPersonaSie buscarDomicilioXIdempleado(int id);
 	
 }
