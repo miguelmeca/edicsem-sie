@@ -1,17 +1,12 @@
 package com.edicsem.pe.sie.model.dao.impl;
 
 import java.util.List;
-
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
-import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.entity.TipoDocumentoIdentidadSie;
@@ -19,8 +14,7 @@ import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
 
 @Stateless
 public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
-
-	@PersistenceContext(name="edicsemJPASie")
+    @PersistenceContext(name="edicsemJPASie")
 	private EntityManager em;
 	private static Log log = LogFactory.getLog(EmpleadoSieDAOImpl.class);
 	
@@ -62,6 +56,18 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#deleteDemo(java.lang.String)
 	 */
 	public void eliminarEmpleado(int id) {
+		try {
+            //falta buscar
+			em.remove(id);
+			//em.flush();
+			if (log.isInfoEnabled()) {
+				log.info("apunto de insertar Empleado");
+			}
+			//em.getTransaction().commit();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	
 	}
 
@@ -70,10 +76,17 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 	 */
 	public EmpleadoSie buscarEmpleado(int id) {
 		// TODO Auto-generated method stub
-		
-		
-		
-		return null;
+		EmpleadoSie empleado= new EmpleadoSie();
+		try {
+		if (log.isInfoEnabled()) {
+		log.info("buscar empleado");
+		} 
+		empleado=	em.find(EmpleadoSie.class, id);
+		log.info(" empleado " +empleado);
+		} catch (Exception e) {
+		e.printStackTrace();
+		}
+		return empleado;
 	}
 
 	/* (non-Javadoc)
