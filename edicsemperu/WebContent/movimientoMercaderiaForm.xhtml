@@ -28,7 +28,6 @@
 							<p:spinner id="spinnerE" size="2" min="1"  required="true" requiredMessage="#{message['movimiento.cantEntrada.validation']}" 
 							value="#{movimientoMercaderia.objKardexSie.cantentrada}" rendered="#{!movimientoMercaderia.editMode}"/>
 						 
-						 
 						<h:outputText id="ids"
 							value="#{message['mantenimiento.producto.cantidadSal']}" rendered="#{movimientoMercaderia.editMode}"/>
 							<p:spinner id="spinnerS" size="2" min="1"  required="true" requiredMessage="#{message['movimiento.cantSalida.validation']}" 
@@ -74,13 +73,22 @@
 					<p:inputTextarea
 						value="#{movimientoMercaderia.objKardexSie.detallekardex}" />
 				
+				<!-- tipo producto, producto,  empresa, valorTotal, cantidad producto   -->
+				
 					<h:outputText value="#{message['movimiento.empresa.descripcion']}" rendered="#{!movimientoMercaderia.editMode}"/>
-					<p:selectOneMenu size="1" rendered="#{!movimientoMercaderia.editMode}"
+					<p:selectOneMenu size="1" rendered="#{!movimientoMercaderia.editMode}" 
 						value="#{movimientoMercaderia.idempresa}">
 						<f:selectItem itemLabel="Seleccione Empresa" itemValue="0" />
 						<f:selectItems value="#{comboAction.empresaitems}" />
 					</p:selectOneMenu>
 					
+					<h:outputText value="#{message['movimiento.valortotal']}"   rendered="#{!movimientoMercaderia.editMode}" />
+							
+					<p:spinner  size="2" min="1"  required="true" requiredMessage="#{message['movimiento.cantEntrada.validation']}" 
+							value="#{movimientoMercaderia.objKardexSie.valortotal}"  stepFactor="1.0"  rendered="#{!movimientoMercaderia.editMode}"/>
+						   
+						   
+						   
 					<p:commandButton id="id"
 						actionListener="#{movimientoMercaderia.insertar}"
 						value="Grabar Mercadería" ajax="false"
@@ -88,7 +96,7 @@
 					</p:commandButton>
 				</p:panelGrid>
 
-				<p:dataTable id="listaMovim" value="#{movimientoMercaderia.data}"  selectionMode="single"
+				<p:dataTable id="listaMovim" value="#{movimientoMercaderia.data}" 
 					var="d">
 					<p:column>
 						<f:facet name="header">

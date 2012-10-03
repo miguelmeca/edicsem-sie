@@ -26,7 +26,7 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 
 @ManagedBean(name = "movimientoMercaderia")
 @SessionScoped
-public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
+public class MovimientoAction extends BaseMantenimientoAbstractAction {
 
 	private String mensaje;
 	private int idproducto, idtipokardexproducto,idempresa, idAlmacen, idAlmacen2 = 0;
@@ -34,7 +34,7 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 	private List<SelectItem> tipoKardexItems;
 	private List<KardexSie> data;
 	private boolean editMode;
-	private Log log = LogFactory.getLog(MovimientoSieAction.class);
+	private Log log = LogFactory.getLog(MovimientoAction.class);
 
 	@EJB
 	private TipoKardexService objTipoKardexService;
@@ -48,7 +48,7 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 	@EJB
 	private EmpresaService objEmpresaService;
 
-	public MovimientoSieAction() {
+	public MovimientoAction() {
 		log.info("inicializando constructor MovimientoSieAction");
 		init();
 	}
@@ -128,10 +128,11 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 			if(idAlmacen == idAlmacen2){
 					mensaje = "No se puede realizar un movimiento de entrada y salida del mismo almacen";
 			}
+			
 			else{
 				log.info("   antes de la consulta");
 				List<KardexSie> k = objKardexService.ConsultaStockActual(idproducto);
-
+				
 				if (k != null && k.size()!=0) {
 
 					int cantExistenteTotalAlmacenes = 0, stkmaximo = 0, stkminimo = 0;
@@ -146,8 +147,11 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 					 
 					if (objKardexSie.getCantsalida() > 0) {
 						log.info(" cantexist "+ cantExistenteTotalAlmacenes +" cant Sal "+objKardexSie.getCantsalida() +" stk min " +stkminimo+ " almacen 2 " + idAlmacen2);
-						if (cantExistenteTotalAlmacenes - objKardexSie.getCantsalida() < stkminimo && idAlmacen2==0 ){
-							mensaje = " No puede excederse del stock minimo, el cual es " + stkminimo;
+						if (cantExistenteTotalAlmacenes - objKardexSie.getCantsalida() < stkminimo && 
+							cantExistenteTotalAlmacenes - objKardexSie.getCantsalida() >= 0 && idAlmacen2==0 ){
+							int stockAc = cantExistenteTotalAlmacenes - objKardexSie.getCantsalida();
+							mensaje = "  Se registro correctamente, el stock actual de dicho producto es  " + stockAc+ " debe realizar una solicitud de dicho producto";
+							validado = true;
 							log.info(mensaje);
 						}else if (cantExistenteTotalAlmacenes - objKardexSie.getCantsalida() < 0) {
 							mensaje = " No puede exceder la cantidad de salida al stock actual del producto, el cual es " + cantExistenteTotalAlmacenes;
@@ -181,8 +185,31 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 					}
 						 
 					} else if (objKardexSie.getCantentrada() > 0) {
+						/**
+						 * Suponiendo que el usuario que ingreso al sistema sea Jhorghy*/
+						
+						if(objKardexSie.getValortotal() != null){
+						double valorunitario=	Double.parseDouble(objKardexSie.getValortotal())/ objKardexSie.getCantentrada();
+						
+						if(valorunitario>0){
+							log.info("   a");
+							objKardexSie.setValorunitarioentrada(valorunitario+"");
+							double valorexistencia=0;
+							for (int j = 0; j< k.size(); j++) {
+								 
+								log.info("en el for de entrada "+k.get(j).getTbPuntoVenta().getIdpuntoventa()+ " * "+  idAlmacen);
+								 if (k.get(j).getTbPuntoVenta().getIdpuntoventa() == idAlmacen) {
+									 valorexistencia =Double.parseDouble(k.get(j).getValorunitarioexistencia())+ valorunitario;
+										objKardexSie.setValorunitarioexistencia(valorexistencia+"");								 }
+							 
+						} 
+							}
+						}
 						if (cantExistenteTotalAlmacenes + objKardexSie.getCantentrada() > stkmaximo && idAlmacen2==0 ) {
-							mensaje = " No puede excederse del stock máximo, el cual es "+ stkmaximo;
+							
+							int stockAct= cantExistenteTotalAlmacenes + objKardexSie.getCantentrada();
+							mensaje = " Se registro correctamente,  el stock actual de dicho producto es  " + stockAct;
+							validado=true;
 						}
 						else{
 							for (int j = 0; j< k.size(); j++) {
@@ -261,13 +288,11 @@ public class MovimientoSieAction extends BaseMantenimientoAbstractAction {
 					log.info(mensaje);
 					log.info(" *************** INSERTAR *********");
 					objKardexService.insertMovimiento(
-							objKardexSie.getCantsalida(),
-							objKardexSie.getCantentrada(),
-							objKardexSie.getDetallekardex(), idproducto,
+							objKardexSie, idproducto,
 							idtipokardexproducto, idAlmacen, idAlmacen2);
-
-					mensaje = "Se registro";
-					
+					if(mensaje==null){
+					mensaje = "Se registro correctamente";
+					}
 				}
 				if(mensaje !=null){
 				log.info(" *valor *" + validado + " mensaje :" + mensaje);

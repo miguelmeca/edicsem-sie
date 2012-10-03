@@ -1,7 +1,5 @@
 package com.edicsem.pe.sie.client.action;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,23 +11,22 @@ import javax.faces.bean.SessionScoped;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.primefaces.model.DefaultStreamedContent;
 
 import com.edicsem.pe.sie.entity.KardexSie;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.KardexService;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
-@ManagedBean(name = "kardexSieAction")
+@ManagedBean(name = "kardexAction")
 @SessionScoped
-public class KardexSieAction extends BaseMantenimientoAbstractAction {
-	public static Log log = LogFactory.getLog(KardexSieAction.class);
+public class KardexAction extends BaseMantenimientoAbstractAction {
+	public static Log log = LogFactory.getLog(KardexAction.class);
 
 	private List<KardexSie> kardexList;
 	private KardexSie objKardexSie;
 	private String mensaje;
 	private int tipoProducto, stockActual;
-	private int idproducto, idalmacen, idempresa;
+	private int idproducto, idalmacen, idempresa=0;
 	private Date fechaDesde, fechaHasta;
 	private List<KardexSie> listadoKardex;
 	private boolean editMode, newRecord;
@@ -39,18 +36,31 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	@EJB
 	private EmpresaService objEmpresaService;
 
-	public KardexSieAction() {
+	public KardexAction() {
 		log.info("inicializando constructor MantenimientoKardex");
 		init();
 	}
 
 	public void init() {
 		log.info("init()");
-		mensaje="";
 		objKardexSie = new KardexSie();
 		stockActual = 0;
+		idempresa=0;
 	}
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
+	 * #agregar()
+	 */
+	public String agregar() {
+		log.info("agregar()");
+		limpiarCampos();
+		objKardexSie = new KardexSie();
+		setNewRecord(true);
+		return getViewList();
+	}
 	/**
 	 * @return the kardexList
 	 */
@@ -58,7 +68,7 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 		
 		return kardexList;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -97,7 +107,47 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 			}
 		return getViewList();
 	}
+	
 
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
+	 */
+	
+	public String update() throws Exception {
+		log.info("update a() b c "+ objKardexSie.getIdkardex() );  
+		//objKardexSie = objKardexService.findKardex(objKardexSie.getIdkardex());
+//		
+//		if(objKardexSie.getTbEmpresa().getIdempresa()==null){
+//			log.info(" es null");
+//			idempresa=0;
+//		}else{
+//			log.info(" NO es null");
+//			idempresa = objKardexSie.getTbEmpresa().getIdempresa();
+//		}
+		idempresa=0;
+		log.info(" empresa " + idempresa);
+		setNewRecord(false);
+		return getViewList();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
+	 */
+	
+	public String insertar() throws Exception {
+		log.info(" insertar() a  " +idempresa);
+		if(idempresa!=0){
+			objKardexSie.setTbEmpresa(objEmpresaService.findEmpresa(idempresa));
+		}
+		log.info(" insertar() "+  objKardexSie.getTbEmpresa().getIdempresa());
+		objKardexService.updateKardex(objKardexSie);
+		limpiarCampos();
+		return listar();
+	}
+	
+	public void limpiarCampos(){
+		idempresa=0;
+	}
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -284,17 +334,6 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 		this.idempresa = idempresa;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
-	 */
-	
-	public String update() throws Exception {
-		log.info("update() "+ idempresa  );  
-		objKardexSie.setTbEmpresa(objEmpresaService.findEmpresa(idempresa));
-		setNewRecord(false); 
-		return getViewList();
-	}
-
 	/**
 	 * @return the newRecord
 	 */
@@ -308,19 +347,5 @@ public class KardexSieAction extends BaseMantenimientoAbstractAction {
 	public void setNewRecord(boolean newRecord) {
 		this.newRecord = newRecord;
 	}
-
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
-	 */
-	
-	public String insertar() throws Exception {
-		log.info(" insertar() ");
-		objKardexSie.setTbEmpresa(objEmpresaService.findEmpresa(idempresa));
-		
-		objKardexService.updateKardex(objKardexSie);
-		 
-		return getViewList();
-	}
-	
 	
 }
