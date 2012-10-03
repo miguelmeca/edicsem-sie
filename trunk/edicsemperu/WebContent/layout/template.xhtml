@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html  xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -299,13 +299,16 @@
 						 <p:message for="descripcion1" />
 						 
 				</h:panelGroup>
-						<h:outputText value="Estado de Cargo" id="EstCar"/>
+						<h:outputText value="Estado de Cargo" id="EstCar"
+						rendered="#{comboAction.estadoitems}==null"
+						/>
 					
 				<h:panelGroup>
 					
 						<h:selectOneListbox size="1" id="est_general" disabled="true"
 						
-								value="#{mantenimientoCargoEmpleadoFormAction.idEstadoGeneral}">
+								value="#{mantenimientoCargoEmpleadoFormAction.idEstadoGeneral}" 
+								rendered="#{comboAction.estadoitems}==null">
 								<f:selectItems value="#{comboAction.estadoitems}" />
 								
 						</h:selectOneListbox>
