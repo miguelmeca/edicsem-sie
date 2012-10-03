@@ -18,23 +18,19 @@
 					>
 					<f:facet name="header">  </f:facet>
                 
-	<f:facet name="header">			
-			<p:outputPanel>	<h:outputText  value="Buscar Cargo de Empleado:" />		
-			
-						<p:inputText id="globalFilter" onkeyup="table.filter()"	style="width:150px; align:Left; "
-						
-						filteredValue="#{m.descripcion}"  />
-						
-	    	</p:outputPanel>
-	</f:facet>
+	
 					
 					
 			<p:column headerText="Descripcion"  id="descripcion" sortBy="#{m.descripcion}" filterBy="#{m.descripcion}"
+								
 												>
 				  
 						<h:outputText value="#{m.descripcion}" />
 											 
 			</p:column>
+						
+						
+						
 							
 						
 <!--********** BOTON EDITAR **********-->
@@ -63,7 +59,7 @@
 
 		<p:column headerText="Deshabilitar">
 	
-	 			<p:commandButton id="showConfirmDeshabilitar" value="Quitar"  icon="ui-icon ui-icon-close"
+	 			<p:commandButton id="showConfirmDeshabilitar" value="Eliminar"  icon="ui-icon ui-icon-close"
 	 			
 	 							onclick="confirmation.show()"> 
 								<f:setPropertyActionListener value="#{m.idcargoempleado}" target="#{mantenimientoCargoEmpleadoFormAction.idc}" />
@@ -103,3 +99,4 @@
 </h:form>
 </ui:define>
 </ui:composition>
+
