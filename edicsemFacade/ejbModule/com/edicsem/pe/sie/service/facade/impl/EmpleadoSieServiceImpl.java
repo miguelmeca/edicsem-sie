@@ -17,13 +17,9 @@ import com.edicsem.pe.sie.model.dao.TipoCasaDAO;
 import com.edicsem.pe.sie.model.dao.TipoDocumentoDAO;
 import com.edicsem.pe.sie.model.dao.UbigeoDAO;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
-import com.sun.org.apache.xalan.internal.xsltc.DOM;
 
 @Stateless
 public class EmpleadoSieServiceImpl implements EmpleadoSieService{
-	//private TelefonoPersonaSie objTelefono;
-	//private DomicilioPersonaSie objDomicilio;
-	
 	/*llamo a mi EJB y redirecciono todo al DAO*/
 	@EJB
 	private EmpleadoSieDAO objEmpleadoDao;  
@@ -56,7 +52,6 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 		//si tengo que insertar a mas de 1 tabla todo lo hago aqui, llamando a todas las entidades que
 		//mi interfaz DAO tiene y si algo falla, el EJB hace un rollback de todo  lo que se hizo, 
 		//para eso sirve el Service
-		
 		objTelefono = new TelefonoPersonaSie();
 		objDomicilio = new DomicilioPersonaSie();
 		
@@ -99,8 +94,6 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 			//FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 		objEmpleado = new EmpleadoSie();
-		
-		//objEmpleadoDao.insertarEmpleado(empleado);
 	}
 
 	/* (non-Javadoc)
@@ -109,11 +102,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	public void actualizarEmpleado(EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, TelefonoPersonaSie objTelefono, int codigoTipoDocumento, int codigoCargoEmpleado, String mensaje, 
 			String fijo, int estado, String direccion, int ubigeo, int estado2, int tipo, String nombre, int CargoEmpleado,
 			int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado, int estadoe
-			) {
-		
-		    //objTelefono = new TelefonoPersonaSie();
-			//objDomicilio = new DomicilioPersonaSie();
-			
+			) {			
 			try {
 				if (log.isInfoEnabled()) {
 					log.info("Entering my method 'actualizar()'"+ objDomicilio.getIddomiciliopersona());
@@ -161,8 +150,6 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 			objEmpleado = new EmpleadoSie();
 			objTelefono = new TelefonoPersonaSie();
 			objDomicilio = new DomicilioPersonaSie();
-		
-		//objEmpleadoDao.actualizarEmpleado(empleado);
 	}
 
 	/* (non-Javadoc)
@@ -186,32 +173,4 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 		return objEmpleadoDao.listarEmpleados();
 	}
 
-	/**
-	 * @return the objTelefono
-	 */
-	/*public TelefonoPersonaSie getObjTelefono() {
-		return objTelefono;
-	}
-
-	/**
-	 * @param objTelefono the objTelefono to set
-	 */
-	/*public void setObjTelefono(TelefonoPersonaSie objTelefono) {
-		this.objTelefono = objTelefono;
-	}
-
-	/**
-	 * @return the objDomicilio
-	 */
-	/*public DomicilioPersonaSie getObjDomicilio() {
-		return objDomicilio;
-	}
-
-	/**
-	 * @param objDomicilio the objDomicilio to set
-	 */
-	/*public void setObjDomicilio(DomicilioPersonaSie objDomicilio) {
-		this.objDomicilio = objDomicilio;
-	}	*/
-		
 }
