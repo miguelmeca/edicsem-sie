@@ -19,29 +19,11 @@
 		 <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px; align=Left; "/>
 		</p:outputPanel>
 	   </f:facet>
-	   <p:column>
-		<f:facet name="header">
-		 <h:outputText value="Codigo"/>
-		</f:facet>
-		<h:outputText value="#{p.idempleado}"/>
-	   </p:column>
-	   <p:column sortBy="#{p.nombreemp}" id="nombre" filterBy="#{p.nombreemp}" headerText="Nombre" footerText="startsWith">
-		<f:facet name="header">
-		 <h:outputText value="Nombre" />
-		</f:facet>
-		<h:outputText value="#{p.nombreemp}" />
-	   </p:column>
-	   <p:column>
-		<f:facet name="header">
-		 <h:outputText value="Ape. Paterno" />
-		</f:facet>
-		<h:outputText value="#{p.apepatemp}" />
-	   </p:column>
-	   <p:column>
+       <p:column sortBy="#{p.nombreemp}" id="nombre" filterBy="#{p.nombreemp}" headerText="Nombre" footerText="startsWith">
 	    <f:facet name="header">
-		 <h:outputText value="Ape. Materno" />
+		 <h:outputText value="Nombres" />
 		</f:facet>
-		<h:outputText value="#{p.apematemp}" />
+		<h:outputText value="#{p.nombresCompletos}" />
 	   </p:column>
 	   <p:column>
 		<f:facet name="header">
@@ -72,30 +54,6 @@
 		 <h:outputText value="Cargo" />
 		</f:facet>
 		<h:outputText value="#{p.tbCargoEmpleado.descripcion}" />
-	   </p:column>
-	   <p:column>
-	    <f:facet name="header">
-		 <h:outputText value="Fecha de Creación" />
-		</f:facet>
-		<h:outputText value="#{p.fechacreacion}" />
-	   </p:column>
-	   <p:column>
-		<f:facet name="header">
-		<h:outputText value="Fecha modifica" />
-		</f:facet>
-		<h:outputText value="#{p.fechamodifica}" />
-	   </p:column>
-	   <p:column>
-		<f:facet name="header">
-		 <h:outputText value="Usu. Creación" />
-		</f:facet>
-	    <h:outputText value="#{p.usuariocreacion}" />
-	   </p:column>
-	   <p:column>
-		<f:facet name="header">
-		 <h:outputText value="Usu. modifica" />
-		</f:facet>
-		<h:outputText value="#{p.usuariomodifica}" />
 	   </p:column>
 	   <p:column headerText="Editar">
 	    <p:commandButton value="Editar" ajax="false" 
