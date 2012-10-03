@@ -3,11 +3,18 @@ package com.edicsem.pe.sie.service.facade.impl;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+
+import com.edicsem.pe.sie.entity.ComprobanteSie;
+import com.edicsem.pe.sie.entity.DetalleComprobanteSie;
+import com.edicsem.pe.sie.entity.DetalleComprobanteSiePK;
 import com.edicsem.pe.sie.entity.KardexSie;
 import com.edicsem.pe.sie.model.dao.AlmacenDAO;
+import com.edicsem.pe.sie.model.dao.ComprobanteDAO;
+import com.edicsem.pe.sie.model.dao.DetalleComprobanteDAO;
 import com.edicsem.pe.sie.model.dao.KardexDAO;
 import com.edicsem.pe.sie.model.dao.ProductoDAO;
 import com.edicsem.pe.sie.model.dao.TipoKardexProductoDAO;
+import com.edicsem.pe.sie.service.facade.ComprobanteService;
 import com.edicsem.pe.sie.service.facade.KardexService;
 
 /**
@@ -25,6 +32,10 @@ public class KardexServiceImpl implements KardexService {
 	private  ProductoDAO objProductoDao;
 	@EJB
 	private  AlmacenDAO objAlmacenDao;
+	@EJB
+	private ComprobanteDAO objComprobanteDao;
+	@EJB
+	private DetalleComprobanteDAO objDetComprobanteDao;
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.KardexService#ConsultaProductos(int, int, java.lang.String, java.lang.String)
@@ -35,10 +46,11 @@ public class KardexServiceImpl implements KardexService {
 		return objKardexDao.ConsultaProductos(idproducto, idalmacen, fechaDesde, fechaHasta); 
 	} 
  
+
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.KardexService#insertMovimiento(int, int, java.lang.String, int, int, int, int)
+	 * @see com.edicsem.pe.sie.service.facade.KardexService#insertMovimiento(com.edicsem.pe.sie.entity.KardexSie, com.edicsem.pe.sie.entity.ComprobanteSie, com.edicsem.pe.sie.entity.DetalleComprobanteSie, int, int, int, int)
 	 */
-	public void insertMovimiento( KardexSie obj,
+	public void insertMovimiento( KardexSie obj, ComprobanteSie objcomprobante, DetalleComprobanteSie objDetComprobante,
 			int idproducto, int idtipokardexproducto, int idAlmacenSalida, int idAlmacenEntrada) {
 		
 		KardexSie objKardex =obj; 
@@ -68,33 +80,16 @@ public class KardexServiceImpl implements KardexService {
 			objKardex2.setTbTipoKardexProducto(objTipoKardexDao.findTipoKardex(idtipokardexproducto));
 			objKardexDao.insertMovimiento(idproducto,objKardex2);
 		}
-		
-		/*KardexSie objKardex = new KardexSie(); 
-		objKardex.setTbProducto(objProductoDao.findProducto(idproducto));
-		objKardex.setTbPuntoVenta(objAlmacenDao.findAlmacen(idAlmacenSalida));
-		objKardex.setTbTipoKardexProducto(objTipoKardexDao.findTipoKardex(idtipokardexproducto));
-		objKardex.setCantentrada(cantentrada);
-		objKardex.setCantsalida(cantsalida);
-		objKardex.setDetallekardex(detalle);
-		objKardexDao.insertMovimiento(idproducto,objKardex);
-		
-		 
-		
-		if(idAlmacenEntrada!=0){
-			KardexSie objKardex2 = new KardexSie();
-			objKardex2.setTbProducto(objProductoDao.findProducto(idproducto));
-			objKardex2.setDetallekardex(detalle);
-			objKardex2.setTbPuntoVenta(objAlmacenDao.findAlmacen(idAlmacenEntrada));
-			objKardex2.setCantentrada(cantsalida);
-			objKardex2.setCantsalida(cantentrada);
-			if(idtipokardexproducto==1){
-				idtipokardexproducto=2;
-			}else if(idtipokardexproducto==2){
-				idtipokardexproducto=1;
-			}
-			objKardex2.setTbTipoKardexProducto(objTipoKardexDao.findTipoKardex(idtipokardexproducto));
-			objKardexDao.insertMovimiento(idproducto,objKardex2);
-		}*/
+		if(objcomprobante!=null){
+			objComprobanteDao.insertComprobante(objcomprobante);
+		}
+		if(objDetComprobante!=null){
+			DetalleComprobanteSiePK oj = new DetalleComprobanteSiePK();
+			oj.setIdkardex(objKardexDao.findKardex(objKardex.getIdkardex()).getIdkardex());
+			oj.setIdcomprobante(objComprobanteDao.findComprobante(objcomprobante.getIdcomprobante()).getIdcomprobante());
+			objDetComprobante.setId(oj);
+			objDetComprobanteDao.insertComprobante(objDetComprobante);
+		}
 	}
 	
 	/* (non-Javadoc)
