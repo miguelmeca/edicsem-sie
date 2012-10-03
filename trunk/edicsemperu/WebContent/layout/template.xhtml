@@ -60,7 +60,7 @@
 						<p:menuitem value="Operadoras" ajax="false" />
 					</p:submenu>
 					<p:submenu label="Mantenimientos">
-					<p:menuitem value="Productos" update="messages" ajax="false" action="mantenimientoProductos.jsf" />
+					<p:menuitem value="Productos" update="messages" ajax="false" action="#{productoSearch.listar}" />
 						<p:menuitem value="Orden de Reposicion" update="messages" ajax="false" action="#" />
 						<p:menuitem value="Buscar Cliente" update="messages" ajax="false" action="#" />
 						<p:menuitem value="Registro de Contrato" ajax="false" action="#" />
@@ -81,80 +81,82 @@
 	</p:layout>
 <!--  Mantenimiento Kardex Detalle - Modificar-->
 <h:form id="formManteKardexList">
-	<p:dialog header="Detalle Kardex" widgetVar="kardexDialog" 
+	<p:dialog  widgetVar="kardexDialog" 
 		showEffect="fade" hideEffect="explode" modal="true" width="450"
 		position="center">
 		<h:panelGrid id="display" columns="2" cellpadding="2"
-			style="margin:0 auto;">
+			style="margin:0 auto;" title="Kardex " >
 			
 				<h:outputText value="#{message['kardex.idKardex']}" id="idKardex" />
 				<h:panelGroup>
-				<h:outputText value="#{kardexSieAction.objKardexSie.idkardex}"
+				<h:outputText value="#{kardexAction.objKardexSie.idkardex}"
 						style="font-weight:bold" />
 				</h:panelGroup>
 				 
 				<h:outputText value="#{message['mantenimiento.producto.codigo']}" id="codProd" />
 				<h:panelGroup>
-				<h:outputText value="#{kardexSieAction.objKardexSie.tbProducto.idproducto}"
+				<h:outputText value="#{kardexAction.objKardexSie.tbProducto.idproducto}"
 						style="font-weight:bold"  /> 
 				</h:panelGroup>
 				
 				<h:outputText value="#{message['mantenimiento.producto.descripcion']}"  />
 				<h:panelGroup>
 				<h:outputText
-						value="#{kardexSieAction.objKardexSie.tbTipoKardexProducto.descripcion}"
+						value="#{kardexAction.objKardexSie.tbProducto.descripcionproducto}"
 						style="font-weight:bold"  />
 				</h:panelGroup>
 				
 				<h:outputText value="Detalle" id="detProd" />
 				<h:panelGroup>
-				<h:inputTextarea value="#{kardexSieAction.objKardexSie.detallekardex}"
+				<h:inputTextarea value="#{kardexAction.objKardexSie.detallekardex}"
 						style="font-weight:bold" disabled="true"/>
 				</h:panelGroup>
 				
 				<h:outputText value="Fecha Creación" id="fecCreacProd" />
 				<h:panelGroup>
-				<h:outputText value="#{kardexSieAction.objKardexSie.fechacreacion}"
+				<h:outputText value="#{kardexAction.objKardexSie.fechacreacion}"
 						style="font-weight:bold"  />
 				</h:panelGroup>
 				
 				<h:outputText value="#{message['mantenimiento.producto.cantidadEnt']}" />
 				<h:panelGroup>
-				<h:outputText  value="#{kardexSieAction.objKardexSie.cantentrada}"
+				<h:outputText  value="#{kardexAction.objKardexSie.cantentrada}"
 						style="font-weight:bold" disabled="true"  />
 				</h:panelGroup>
 				
 				<h:outputText value="#{message['mantenimiento.producto.cantidadSal']}"/>
 				<h:panelGroup>
 				<h:outputText  
-						value="#{kardexSieAction.objKardexSie.cantsalida}"
-						style="font-weight:bold" disabled="true"
-						rendered="#{kardexSieAction.editMode}" />
+						value="#{kardexAction.objKardexSie.cantsalida}"
+						style="font-weight:bold" disabled="true" />
 				</h:panelGroup>
 				
 				<h:outputText value="#{message['kardex.cantExistente']}"  />
 				<h:panelGroup>
 				<h:outputText  
-						value="#{kardexSieAction.objKardexSie.cantexistencia}"
+						value="#{kardexAction.objKardexSie.cantexistencia}"
 						style="font-weight:bold" />
 				 </h:panelGroup>
 				 
 				 <h:outputText value="#{message['kardex.empresa']}"  />
 				<h:panelGroup>
-				<p:selectOneMenu  size="1" rendered="#{!kardexSieAction.editMode}"  
-						value="#{kardexSieAction.idempresa}">
-						<f:selectItem itemLabel="Seleccione Empresa" itemValue="#{null}"  />
+				<p:selectOneMenu  size="1" rendered="#{kardexAction.objKardexSie.tbEmpresa.idempresa >= 0}"  
+						value="#{kardexAction.objKardexSie.tbEmpresa.idempresa}"  >
+						<f:selectItem itemLabel="Seleccione Empresasi" itemValue="0"  />
 						<f:selectItems value="#{comboAction.empresaitems}" />
 				</p:selectOneMenu>
+				<p:selectOneMenu  size="1" rendered="#{kardexAction.objKardexSie.tbEmpresa.idempresa == null}"  
+						value="#{kardexAction.idempresa}"  >
+						<f:selectItem itemLabel="Seleccione Empresa" itemValue="0"  />
+						<f:selectItems value="#{comboAction.empresaitems}" />
+				</p:selectOneMenu>
+				 <h:outputText  rendered="#{kardexAction.editMode}"
+						value="#{kardexAction.idempresa}"   >
+				</h:outputText>
 				
-				<p:selectOneMenu  size="1" rendered="#{kardexSieAction.editMode}"
-						value="#{kardexSieAction.objKardexSie.tbEmpresa.idempresa}">
-						<f:selectItem itemLabel="Seleccione Empresa" itemValue="#{null}" />
-						<f:selectItems value="#{comboAction.empresaitems}" />
-				</p:selectOneMenu>
 				 </h:panelGroup>
 				<p:commandButton id="id"
-						actionListener="#{kardexSieAction.insertar}"
+						actionListener="#{kardexAction.insertar}"   rendered="#{!kardexAction.editMode}"  
 						value="Actualizar kardex " ajax="false" />
 				
 		</h:panelGrid>
@@ -273,8 +275,6 @@
 <!--EN UN SOLO PUPAP NUEVO Y EDITAR  -->
 
 
-
-
 <h:form id="NuevoModificaCargoEmpleado">
 	<p:dialog header="Ingrese Nuevo Cargo" widgetVar="carDialogNuevo" 
 			showEffect="fade" hideEffect="explode" modal="true" width="300"	position="center">
@@ -299,16 +299,13 @@
 						 <p:message for="descripcion1" />
 						 
 				</h:panelGroup>
-						<h:outputText value="Estado de Cargo" id="EstCar"
-						rendered="#{comboAction.estadoitems}==null"
-						/>
+						<h:outputText value="Estado de Cargo" id="EstCar"/>
 					
 				<h:panelGroup>
 					
 						<h:selectOneListbox size="1" id="est_general" disabled="true"
 						
-								value="#{mantenimientoCargoEmpleadoFormAction.idEstadoGeneral}" 
-								rendered="#{comboAction.estadoitems}==null">
+								value="#{mantenimientoCargoEmpleadoFormAction.idEstadoGeneral}">
 								<f:selectItems value="#{comboAction.estadoitems}" />
 								
 						</h:selectOneListbox>
@@ -329,8 +326,6 @@
 	</p:dialog>
 	
 </h:form>
-
-
 <!-- FIN PUPAP NUEVO Y EDITAR  -->
 
 
@@ -350,6 +345,7 @@
     </p:confirmDialog>
     
 </h:form>
+
 <!-- 	FIN DESACTICAR (ESTADOS)  -->
 
 
