@@ -273,6 +273,8 @@
 <!--EN UN SOLO PUPAP NUEVO Y EDITAR  -->
 
 
+
+
 <h:form id="NuevoModificaCargoEmpleado">
 	<p:dialog header="Ingrese Nuevo Cargo" widgetVar="carDialogNuevo" 
 			showEffect="fade" hideEffect="explode" modal="true" width="300"	position="center">
@@ -297,13 +299,16 @@
 						 <p:message for="descripcion1" />
 						 
 				</h:panelGroup>
-						<h:outputText value="Estado de Cargo" id="EstCar"/>
+						<h:outputText value="Estado de Cargo" id="EstCar"
+						rendered="#{comboAction.estadoitems}==null"
+						/>
 					
 				<h:panelGroup>
 					
 						<h:selectOneListbox size="1" id="est_general" disabled="true"
 						
-								value="#{mantenimientoCargoEmpleadoFormAction.idEstadoGeneral}">
+								value="#{mantenimientoCargoEmpleadoFormAction.idEstadoGeneral}" 
+								rendered="#{comboAction.estadoitems}==null">
 								<f:selectItems value="#{comboAction.estadoitems}" />
 								
 						</h:selectOneListbox>
@@ -324,6 +329,8 @@
 	</p:dialog>
 	
 </h:form>
+
+
 <!-- FIN PUPAP NUEVO Y EDITAR  -->
 
 
@@ -343,7 +350,6 @@
     </p:confirmDialog>
     
 </h:form>
-
 <!-- 	FIN DESACTICAR (ESTADOS)  -->
 
 
