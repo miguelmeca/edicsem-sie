@@ -25,6 +25,9 @@
 		    <p:outputLabel value="#{message['empleado.contrasena']}" for="contrasenya" />
 			<p:password id="contrasenya" value="#{mantenimientoEmpleadoFormAction.objEmpleado.contrasena}" required="true" label="Contrasenya"
 			requiredMessage="#{message['empleado.contrasenya.validation']}"/>
+			<p:outputLabel value="#{message['empleado.confcontra']}" for="confcontra" />
+			<p:password id="confcontra" value="#{mantenimientoEmpleadoFormAction.confcontra}" required="true" label="Confcontra"
+			requiredMessage="#{message['empleado.confcontra.validation']}"/>
 			<p:outputLabel for="tipo" value="Tipo de Doc. :" styleClass="textoAzulFuerteGrande" id="tipoL"/>
             <p:selectOneMenu id="tipo" value="#{mantenimientoEmpleadoFormAction.tipoDocumento}" styleClass="required" title="El tipo es obligatorio!" >
             <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
