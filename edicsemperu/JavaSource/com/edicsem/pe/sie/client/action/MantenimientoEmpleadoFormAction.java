@@ -15,6 +15,7 @@ import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
+import java.security.MessageDigest;
 
 @ManagedBean(name="mantenimientoEmpleadoFormAction")
 @SessionScoped
@@ -42,9 +43,11 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	private int codigoTipoDocumento;
 	private int codigoCargoEmpleado;
 	private int estadoe;
-	/*variable bolean necesaria*/
+    /*variable para confirmar contraseña*/
+	private String confcontra;
+    /*variable bolean necesaria*/
 	private boolean newRecord =false;
-	
+		
 	@EJB 
 	private EmpleadoSieService objEmpleadoService;
 	@EJB 
@@ -68,6 +71,32 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		objDomicilio = new DomicilioPersonaSie();
 	}
 	
+	/*método que sirve para encriptar en MD5*/
+	public String getMD5(String cadena) throws Exception {
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		byte[] b = md.digest(cadena.getBytes());
+		int size = b.length;
+		StringBuilder h = new StringBuilder(size);
+		for (int i = 0; i < size; i++) {
+		int u = b[i] & 255;          
+	    if (u < 16){
+		h.append("0").append(Integer.toHexString(u));
+		}
+		else{
+		h.append(Integer.toHexString(u));
+		}
+		}
+		return h.toString();
+	}
+	
+	/*método que compara las contraseñas.*/
+	public boolean CompararContraseña(String s1, String s2) throws Exception {
+	    if ( s1.equals( s2 ) )  
+	        return true;
+	    else
+	        return false; 
+	} 
+		 	
 	/*método que se ejecuta haciendo click en el link NUEVO de la lista*/
 	public String addNewRecord() throws Exception {
 		log.info("insertar");
@@ -79,7 +108,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	public String update() throws Exception {
 	    log.info("actualizar");
 		log.info("update()" + objEmpleado.getIdempleado());
-		/*busca el empleado por medio del id del datatable*/
+		/*busca el empleado por medio del id del ¿datatable?*/
 		EmpleadoSie c = objEmpleadoService.buscarEmpleado(objEmpleado.getIdempleado());
 		/*código aún por verse*/
 		DomicilioPersonaSie d = objDomicilioService.buscarDomicilioXIdempleado(objEmpleado.getIdempleado());
@@ -117,26 +146,30 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	
 	/*método del botón GUARDAR(inserta o actualiza el empleado, domicilio y telefono)*/
 	public String insertar() throws Exception {
+		if(CompararContraseña(objEmpleado.getContrasena(), confcontra)){ /*probar compararcontra*/
+			/*encripta la contraseña*/
+		    objEmpleado.setContrasena(getMD5(objEmpleado.getContrasena()));
+			log.info("probando MD5..."+objEmpleado.getContrasena());
 		try {
-			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'insertar(registrar, actualizar)'"+ objEmpleado.getNombreemp());
-			}
-			/*if: inserta al empleado, domicilio y telefono
-			  else: actualiza al empleado, domicilio y telefono*/
-			if (isNewRecord()) {
-				log.info("insertando..... ");
-				objEmpleadoService.insertarEmpleado(objEmpleado,objDomicilio,objTelefono, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
-						estado, direccion,  ubigeo,  estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
-						TipoDocumento, codigoEmpleado, estadoe);
-				log.info("insertando..... ");
-				setNewRecord(false);
-			} else {
-				log.info("actualizando..... ");
-				objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, objTelefono, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
-						estado, direccion,  ubigeo,  estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
-						TipoDocumento, codigoEmpleado, estadoe);
-				log.info("insertando..... ");
-			} 
+				if (log.isInfoEnabled()) {
+					log.info("Entering my method 'insertar(registrar, actualizar)'"+ objEmpleado.getNombreemp());
+				}
+				/*if: inserta al empleado, domicilio y telefono
+				  else: actualiza al empleado, domicilio y telefono*/
+				if (isNewRecord()) {
+					log.info("insertando..... ");
+					objEmpleadoService.insertarEmpleado(objEmpleado,objDomicilio,objTelefono, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
+							estado, direccion,  ubigeo,  estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
+							TipoDocumento, codigoEmpleado, estadoe);
+					log.info("insertando..... ");
+					setNewRecord(false);
+				} else {
+					log.info("actualizando..... ");
+					objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, objTelefono, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
+							estado, direccion,  ubigeo,  estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
+							TipoDocumento, codigoEmpleado, estadoe);
+					log.info("insertando..... ");
+				}
 		} catch (Exception e) {
 			e.printStackTrace();
 			nombre = e.getMessage();
@@ -147,6 +180,12 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		}
 		objEmpleado = new EmpleadoSie();
 		return getViewList();
+	   }
+		else{
+		msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_PASSWORDS_DESIGUALES, "algo");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		return getViewMant();
+		}
 	}
     
     /*métodos GET y SET*/
@@ -417,6 +456,20 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	 */
 	public void setNewRecord(boolean newRecord) {
 		this.newRecord = newRecord;
+	}
+
+	/**
+	 * @return the confcontra
+	 */
+	public String getConfcontra() {
+		return confcontra;
+	}
+
+	/**
+	 * @param confcontra the confcontra to set
+	 */
+	public void setConfcontra(String confcontra) {
+		this.confcontra = confcontra;
 	}
 		
 }
