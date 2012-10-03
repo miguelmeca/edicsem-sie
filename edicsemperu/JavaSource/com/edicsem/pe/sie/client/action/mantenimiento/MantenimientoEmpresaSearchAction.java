@@ -12,7 +12,6 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.edicsem.pe.sie.beans.EmpresaDTO;
 import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.util.constants.Constants;

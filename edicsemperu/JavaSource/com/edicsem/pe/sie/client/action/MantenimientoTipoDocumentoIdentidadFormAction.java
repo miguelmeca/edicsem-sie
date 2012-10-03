@@ -24,7 +24,7 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 public class MantenimientoTipoDocumentoIdentidadFormAction extends BaseMantenimientoAbstractAction {
 
 	private String mensaje;
-	public static Log log = LogFactory.getLog(MantenimientoTipoDocumentoIdentidadFormAction.class);
+	private Log log = LogFactory.getLog(MantenimientoTipoDocumentoIdentidadFormAction.class);
 	private List<SelectItem> selectItems;
 	private TipoDocumentoIdentidadSie objTipoDocIdentSie;
 	private TipoDocumentoIdentidadSie selectedTipoDocIdent;

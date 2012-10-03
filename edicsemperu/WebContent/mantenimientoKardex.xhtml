@@ -55,45 +55,48 @@
 					<f:facet name="header">  
          Listado Kardex
         </f:facet>
-					
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Codigo" />
-						</f:facet>
-						<h:outputText value="#{p.idkardex}" />
+			<p:columnGroup type="header">  
+          
+            <p:row>
+                <p:column rowspan="3" headerText="Fec Creación" />
+                 <p:column rowspan="3" headerText="Tipo" />
+                <p:column colspan="2" headerText="Entrada" />  
+                <p:column colspan="2" headerText="Salida" />
+                <p:column colspan="2" headerText="Existencia" />
+                <p:column rowspan="2" headerText="Empresa" />
+                <p:column rowspan="2" headerText="Editar" />
+            </p:row>  
+  
+            <p:row>  
+                <p:column headerText="Cant Entrada" />
+                <p:column headerText="Valor Entrada" />
+                <p:column headerText="Cant Salida" />
+                <p:column headerText="Valor Salida" />
+                <p:column headerText="Cant Existencia" />
+                <p:column headerText="Valor Existencia" />
+            </p:row>
+        </p:columnGroup>
+					 
+					<p:column>#{p.fechacreacion}
 					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Tipo " />
-						</f:facet>
-						<h:outputText value="#{p.tbTipoKardexProducto.descripcion}" />
+					<p:column>#{p.tbTipoKardexProducto.descripcion}
 					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Cant Entrada" />
-						</f:facet>
-						<h:outputText value="#{p.cantentrada}" />
+					<p:column>#{p.cantentrada}
+						</p:column>
+					<p:column>#{p.valorunitarioentrada}
 					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Cant Salida" />
-						</f:facet>
-						<h:outputText value="#{p.cantsalida}" />
+					<p:column>#{p.cantsalida}
 					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Precio" />
-						</f:facet>
-						<h:outputText value="#{p.tbProducto.precioventa}" />
+					<p:column>#{p.valorunitariosalida}
 					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="Empresa" />
-						</f:facet>
-						<h:outputText value="#{p.tbEmpresa.descripcion}" />
+					<p:column>#{p.cantexistencia}
 					</p:column>
-					
+					<p:column>#{p.valorunitarioexistencia}
+					</p:column>
+					 <p:column>#{p.tbEmpresa.razonsocial}
+					</p:column>
 					  <p:column>
+				 
 					    <h:panelGroup>
 						 <p:commandButton update=":formManteKardexList:display" value="editar" 
 							oncomplete="kardexDialog.show()"  actionListener="#{kardexAction.update}"> 
@@ -107,8 +110,8 @@
 				 
 				<p:spacer width="40"></p:spacer>
 
-				<h:outputText value="#{message['mantenimiento.producto.stock.actual']}" />
-				<p:inputText id="stock_actual" value="#{kardexAction.stockActual}" size="15" />
+				<h:outputText value="#{message['mantenimiento.producto.stock.actual']}"  />
+				<p:inputText id="stock_actual" value="#{kardexAction.stockActual}" size="15" readonly="true" />
  
 				<h:outputText value="#{message['kardex.Stock.valorizado']}" />
 				<p:inputText id="stock_valoriz" size="15" />
