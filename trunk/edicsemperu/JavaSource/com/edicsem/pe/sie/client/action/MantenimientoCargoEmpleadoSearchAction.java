@@ -6,11 +6,10 @@ package com.edicsem.pe.sie.client.action;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
@@ -18,7 +17,6 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
-import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
@@ -189,5 +187,8 @@ public class MantenimientoCargoEmpleadoSearchAction extends	BaseMantenimientoAbs
 	public void setEstadosItems(List<SelectItem> estadosItems) {
 		this.estadosItems = estadosItems;
 	}
-
+	
+	
+	
+	
 }
