@@ -11,7 +11,6 @@ import org.apache.commons.logging.LogFactory;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
-import com.edicsem.pe.sie.util.redirections.Redirections;
 
 @ManagedBean(name="mantenimientoEmpleadoSearchAction")
 @SessionScoped
@@ -49,14 +48,21 @@ public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstract
 		log.info("despues de inicializar  ");		
 	}
 	
-	/*método para listar a los empleados*/
-	public void listarEmpleados() {
+	
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#listar()
+	 */
+	
+	/*método que lista al hacer click en el menú del template*/
+	public String listar() {
+		// TODO Auto-generated method stub
 		log.info("listarEmpleados 'MantenimientoEmpleadoSearchAction' ");
 		empleadoList = objEmpleadoService.listarEmpleados();
 		if (empleadoList == null) {
 			empleadoList = new ArrayList<EmpleadoSie>();
 		}
-		Redirections.redirectionsPage("mantenimiento", "mantenimientoEmpleadoFormList");
+		return getViewList();
 	}
 		
 	public void Nuevo(ActionEvent e) throws Exception {
@@ -114,7 +120,7 @@ public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstract
 	 * #getViewList()
 	 */
 	public String getViewList() {
-		return "index";
+		return "mantenimientoEmpleadoList";
 	}
 
 	/**
@@ -156,7 +162,7 @@ public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstract
 	 */
 	/*GET para listar empleados*/
 	public List<EmpleadoSie> getEmpleadoList() {
-		return empleadoList=objEmpleadoService.listarEmpleados();
+		return empleadoList;
 	}
 
 	/**
