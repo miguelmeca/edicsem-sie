@@ -104,19 +104,17 @@
 							oncomplete="imageProducDialog.show()" title="Ingresar Empleado">
 						</p:commandButton>
 		<f:facet name="footer"> 
-                <p:outputPanel rendered="true" layout="block" style="text-align:center">
-                <h:panelGroup>
+                
 					<p:commandButton value="Registrar" 
 					  actionListener="#{productoForm.insertar}"  
 					  update="message" icon="ui-icon ui-icon-check"
                       oncomplete="onEditCompleteRegistrar(args)" ajax = "false" >
                        </p:commandButton>
-                       
-                      </h:panelGroup>
-                    <p:commandButton value="Cancelar" action="#{productoForm.consultar}"
+                     
+                    <p:commandButton value="Cancelar s" action="#{productoSearch.listar}"
                     icon="ui-icon ui-icon-close" ajax="false" />
   				
-              </p:outputPanel>  
+             
           </f:facet> 
 		</h:panelGrid>
 		 </h:form>

@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Kardex</h1>
+		<h:form  id="frmKardex" >
+			 <p:growl id="message" showDetail="true" />
+			<p:panel  header="#{message['panel.seleccion.producto']}">
+			<p:panelGrid columns="9" >
+				<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
+				<p:selectOneMenu id="tipoProd" value="#{comboAction.tipoProducto}" required="true"
+				requiredMessage="#{message['kardex.tipoProducto.validation']}">
+					<f:selectItem  itemValue="#{null}" itemLabel="Seleccionar tipo" />
+					<f:selectItems value="#{comboAction.tipoitems}"  />
+					<p:ajax update="product"  listener="#{comboAction.cambiar}"/>
+				</p:selectOneMenu>
+				 <p:message for="tipoProd" />
+				
+				<h:outputText value="#{message['mantenimiento.producto']}" />
+				<p:selectOneMenu id="product"  value="#{kardexAction.idproducto}" required="true"
+				requiredMessage="#{message['kardex.producto.validation']}"  >
+					<f:selectItem itemLabel="Seleccione Producto" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.productositems}" />
+				</p:selectOneMenu>
+				 <p:message for="product" />
+				 
+				<h:outputText value="#{message['mantenimiento.kardex.almacen']}" />
+				<p:selectOneMenu id="almacen"  value="#{kardexAction.idalmacen}"  required="true"
+				requiredMessage="#{message['kardex.almacen.validation']}" >
+					<f:selectItem itemLabel="Seleccione" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.almacenItems}" />
+				</p:selectOneMenu>
+				 <p:message for="almacen" />
+				 
+				<h:outputText value="#{message['kardex.desde']}" />
+				<p:calendar pattern="dd/MM/yyyy"  locale="br" effect="explode" 
+				value="#{kardexAction.fechaDesde}"  />
+
+				<h:outputText value="#{message['kardex.hasta']}" />
+				<p:calendar pattern="dd/MM/yyyy"  locale="br" effect="explode"
+				value="#{kardexAction.fechaHasta}"  />
+
+				<p:commandButton  value="Consultar" action="#{kardexAction.consultar}" 
+				update=":frmKardex:listakardex,stock_actual, message" />
+					 </p:panelGrid>  
+				<p:spacer width="40" />
+				<p:dataTable value="#{kardexAction.kardexList}" var="p"
+					id="listakardex" paginator="true" rows="5"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" widgetVar="table"
+					emptyMessage="No se encontro registros">
+					<f:facet name="header">  
+         Listado Kardex
+        </f:facet>
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Codigo" />
+						</f:facet>
+						<h:outputText value="#{p.idkardex}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Tipo " />
+						</f:facet>
+						<h:outputText value="#{p.tbTipoKardexProducto.descripcion}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Cant Entrada" />
+						</f:facet>
+						<h:outputText value="#{p.cantentrada}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Cant Salida" />
+						</f:facet>
+						<h:outputText value="#{p.cantsalida}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Precio" />
+						</f:facet>
+						<h:outputText value="#{p.tbProducto.precioventa}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Empresa" />
+						</f:facet>
+						<h:outputText value="#{p.tbEmpresa.descripcion}" />
+					</p:column>
+					
+					  <p:column>
+					    <h:panelGroup>
+						 <p:commandButton update=":formManteKardexList:display" value="editar" 
+							oncomplete="kardexDialog.show()"  actionListener="#{kardexAction.update}"> 
+							<f:setPropertyActionListener value="#{p}" target="#{kardexAction.objKardexSie}" />  
+							<f:setPropertyActionListener value="#{false}" target="#{kardexAction.editMode}" />  
+						</p:commandButton> 
+				 
+						</h:panelGroup>
+					</p:column>
+					</p:dataTable>
+				 
+				<p:spacer width="40"></p:spacer>
+
+				<h:outputText value="#{message['mantenimiento.producto.stock.actual']}" />
+				<p:inputText id="stock_actual" value="#{kardexAction.stockActual}" size="15" />
+ 
+				<h:outputText value="#{message['kardex.Stock.valorizado']}" />
+				<p:inputText id="stock_valoriz" size="15" />
+
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
