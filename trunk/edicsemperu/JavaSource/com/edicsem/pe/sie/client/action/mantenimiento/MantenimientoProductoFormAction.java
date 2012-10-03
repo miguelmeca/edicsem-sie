@@ -41,7 +41,10 @@ public class MantenimientoProductoFormAction extends
 	private boolean editMode;
 	private ProductoSie nuevo;
 	private boolean newRecord = false;
-
+	
+	@ManagedProperty(value = "#{productoSearch}")
+	private MantenimientoProductoSearchAction productoSearch;
+	
 	@EJB
 	private ProductoService objProductoService;
 
@@ -162,7 +165,7 @@ public class MantenimientoProductoFormAction extends
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 		
-		return getViewList();
+		return productoSearch.listar() ;
 	}
 	
 	public void limpiarCampos(){
@@ -328,6 +331,20 @@ public class MantenimientoProductoFormAction extends
 	public void setComboManager(ComboAction comboManager) {
 		comboManager.setCodigoEstado(Constants.COD_ESTADO_TB_PRODUCTO);
 		this.comboManager = comboManager;
+	}
+
+	/**
+	 * @return the productoSearch
+	 */
+	public MantenimientoProductoSearchAction getProductoSearch() {
+		return productoSearch;
+	}
+
+	/**
+	 * @param productoSearch the productoSearch to set
+	 */
+	public void setProductoSearch(MantenimientoProductoSearchAction productoSearch) {
+		this.productoSearch = productoSearch;
 	}
 
 }

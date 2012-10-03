@@ -20,8 +20,7 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 @ManagedBean(name = "kardexAction")
 @SessionScoped
 public class KardexAction extends BaseMantenimientoAbstractAction {
-	public static Log log = LogFactory.getLog(KardexAction.class);
-
+	private Log log = LogFactory.getLog(KardexAction.class);
 	private List<KardexSie> kardexList;
 	private KardexSie objKardexSie;
 	private String mensaje;
@@ -114,16 +113,7 @@ public class KardexAction extends BaseMantenimientoAbstractAction {
 	 */
 	
 	public String update() throws Exception {
-		log.info("update a() b c "+ objKardexSie.getIdkardex() );  
-		//objKardexSie = objKardexService.findKardex(objKardexSie.getIdkardex());
-//		
-//		if(objKardexSie.getTbEmpresa().getIdempresa()==null){
-//			log.info(" es null");
-//			idempresa=0;
-//		}else{
-//			log.info(" NO es null");
-//			idempresa = objKardexSie.getTbEmpresa().getIdempresa();
-//		}
+		log.info("update ()"+ objKardexSie.getIdkardex() );  
 		idempresa=0;
 		log.info(" empresa " + idempresa);
 		setNewRecord(false);
@@ -135,15 +125,16 @@ public class KardexAction extends BaseMantenimientoAbstractAction {
 	 */
 	
 	public String insertar() throws Exception {
-		log.info(" insertar() a  " +idempresa);
+		log.info(" insertar() " +idempresa);
 		if(idempresa!=0){
 			objKardexSie.setTbEmpresa(objEmpresaService.findEmpresa(idempresa));
 		}
-		log.info(" insertar() "+  objKardexSie.getTbEmpresa().getIdempresa());
+	
 		objKardexService.updateKardex(objKardexSie);
 		limpiarCampos();
-		return listar();
+		return consultar();
 	}
+	
 	
 	public void limpiarCampos(){
 		idempresa=0;

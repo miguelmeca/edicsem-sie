@@ -82,7 +82,7 @@ public class MantenimientoProductoSearchAction extends BaseMantenimientoAbstract
 	 * @return the productoList
 	 */
 	public List<ProductoSie> getProductoList() {
-		return productoList= objProductoService.listarProductos();
+		return productoList;
 	} 
 	/**
 	 * @param productoList the productoList to set

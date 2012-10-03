@@ -81,21 +81,29 @@
 						<f:selectItem itemLabel="Seleccione Empresa" itemValue="0" />
 						<f:selectItems value="#{comboAction.empresaitems}" />
 					</p:selectOneMenu>
+					<p:spacer/>
+					
+					<h:outputText value="#{message['movimiento.proveedor.nombreempresa']}"   rendered="#{!movimientoMercaderia.editMode}" />
+					<p:selectOneMenu size="1" rendered="#{!movimientoMercaderia.editMode}" 
+						value="#{movimientoMercaderia.idproveedor}">
+						<f:selectItem itemLabel="Seleccione Proveedor" itemValue="#{null}" />
+						<f:selectItems value="#{comboAction.proveedoritems}" />
+					</p:selectOneMenu>
 					
 					<h:outputText value="#{message['movimiento.valortotal']}"   rendered="#{!movimientoMercaderia.editMode}" />
 							
 					<p:spinner  size="2" min="1"  required="true" requiredMessage="#{message['movimiento.cantEntrada.validation']}" 
-							value="#{movimientoMercaderia.objKardexSie.valortotal}"  stepFactor="1.0"  rendered="#{!movimientoMercaderia.editMode}"/>
-						   
-						   
-						   
-					<p:commandButton id="id"
+							value="#{movimientoMercaderia.objKardexSie.valortotal}"  rendered="#{!movimientoMercaderia.editMode}"/>
+				
+					<h:outputText value="#{message['movimiento.comprobante.numero']}" />
+					<p:inputText value="#{movimientoMercaderia.objcomprobante.codcomprobante}" />
+				
+				</p:panelGrid>
+				<p:commandButton id="id"
 						actionListener="#{movimientoMercaderia.insertar}"
 						value="Grabar Mercadería" ajax="false"
 						update="formMovMerc:listaMovim, message">
 					</p:commandButton>
-				</p:panelGrid>
-
 				<p:dataTable id="listaMovim" value="#{movimientoMercaderia.data}" 
 					var="d">
 					<p:column>

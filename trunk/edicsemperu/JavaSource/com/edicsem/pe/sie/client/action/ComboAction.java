@@ -14,20 +14,20 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
-
 import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.EstadoGeneralSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
+import com.edicsem.pe.sie.entity.ProveedorSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.entity.TipoDocumentoIdentidadSie;
 import com.edicsem.pe.sie.entity.TipoProductoSie;
-import com.edicsem.pe.sie.service.facade.AlmacenService; 
+import com.edicsem.pe.sie.service.facade.AlmacenService;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
+import com.edicsem.pe.sie.service.facade.ProveedorService;
 import com.edicsem.pe.sie.service.facade.TipoDocumentoService;
 import com.edicsem.pe.sie.service.facade.TipoProductoService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -50,6 +50,7 @@ public class ComboAction {
     private Map<String,Map<String,Integer>> dataProducto = new HashMap<String, Map<String,Integer>>();  
     private Map<String , Integer> estadoitems =  new HashMap<String, Integer>();
     private Map<String , Integer> empresaitems =  new HashMap<String, Integer>();
+    private Map<String , Integer> proveedoritems =  new HashMap<String, Integer>();
     
 	@EJB
 	private AlmacenService objAlmacenService;
@@ -63,9 +64,10 @@ public class ComboAction {
 	private TipoDocumentoService objTipoDocumentoService;
 	@EJB 
 	private CargoEmpleadoService objCargoEmpleadoService;
-	
 	@EJB 
 	private EmpresaService objEmpresaService;
+	@EJB 
+	private ProveedorService objProveedorService;
 
 	public ComboAction() {
 		log.info("inicializando constructor");
@@ -210,7 +212,7 @@ public class ComboAction {
 	 * @return the estadoitems
 	 */
 	public Map<String, Integer> getEstadoitems() {
-		List lista = new ArrayList<TipoProductoSie>();
+		List lista = new ArrayList<EstadoGeneralSie>();
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'getEstadoitems()'");
@@ -255,7 +257,7 @@ public class ComboAction {
 			for (int i = 0; i < lista.size(); i++) {
 				EmpresaSie entidad = new EmpresaSie();
 				entidad = (EmpresaSie) lista.get(i);
-				empresaitems.put(entidad.getDescripcion(), entidad.getIdempresa());
+				empresaitems.put(entidad.getRazonsocial(), entidad.getIdempresa());
 			}
 		
 		} catch (Exception e) {
@@ -356,6 +358,42 @@ public class ComboAction {
 	 */
 	public void setCargoEmpleadoitems(Map<String, Integer> cargoempleado) {
 		this.cargoEmpleadoItems = cargoempleado;
+	}
+
+	/**
+	 * @return the proveedoritems
+	 */
+	public Map<String, Integer> getProveedoritems() {
+		proveedoritems =  new HashMap<String, Integer>();
+		List lista = new ArrayList<ProveedorSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getProveedoritems()'");
+			}
+			lista = objProveedorService.listarProveedores();
+
+			for (int i = 0; i < lista.size(); i++) {
+				ProveedorSie entidad = new ProveedorSie();
+				entidad = (ProveedorSie) lista.get(i);
+				proveedoritems.put(entidad.getNombreempresa(), entidad.getIdproveedor());
+			}
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return proveedoritems;
+	}
+
+	/**
+	 * @param proveedoritems the proveedoritems to set
+	 */
+	public void setProveedoritems(Map<String, Integer> proveedoritems) {
+		this.proveedoritems = proveedoritems;
 	} 
 	
 }
