@@ -121,6 +121,10 @@ public class EmpleadoSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
+    
+  //bi-directional many-to-one association to MetaEmpleadoSie
+  	@OneToMany(mappedBy="tbEmpleado")
+  	private Set<MetaEmpleadoSie> tbMetaEmpleados;
 
     public EmpleadoSie() {
     }
@@ -346,6 +350,14 @@ public class EmpleadoSie implements Serializable {
 
 	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
 		this.tbEstadoGeneral = tbEstadoGeneral;
+	}
+
+	public Set<MetaEmpleadoSie> getTbMetaEmpleados() {
+		return tbMetaEmpleados;
+	}
+
+	public void setTbMetaEmpleados(Set<MetaEmpleadoSie> tbMetaEmpleados) {
+		this.tbMetaEmpleados = tbMetaEmpleados;
 	}
 	
 }

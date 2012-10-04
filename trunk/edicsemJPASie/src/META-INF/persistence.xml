@@ -45,6 +45,8 @@
 		<class>com.edicsem.pe.sie.entity.TipoProductoSie</class>
 		<class>com.edicsem.pe.sie.entity.UbigeoSie</class>
 		<class>com.edicsem.pe.sie.entity.DetProductoContratoSie</class>
+		<class>com.edicsem.pe.sie.entity.MetaEmpleadoSie</class>
+		<class>com.edicsem.pe.sie.entity.MetaMesSie</class>
 	<properties>
 			<property name="eclipselink.jdbc.driver" value="org.postgresql.Driver" />
 			<property name="eclipselink.jdbc.url" value="jdbc:postgres://192.168.1.2:5432/bd_sie" />

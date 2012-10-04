@@ -3,7 +3,6 @@ package com.edicsem.pe.sie.entity;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,16 +24,18 @@ import com.edicsem.pe.sie.util.constants.Constants;
  * 
  */
 @Entity
-@Table(name="tb_meta_empresa", schema = Constants.ESQUEMA_SIE_POSTGRE)
-public class MetaEmpresaSie implements Serializable {
+@Table(name="tb_meta_mes", schema = Constants.ESQUEMA_SIE_POSTGRE)
+public class MetaMesSie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@SequenceGenerator(name="TB_META_EMPRESA_IDMETAMES_GENERATOR", sequenceName="SIE.TB_META_EMPRESA_IDMETAMES_SEQ", initialValue=1, allocationSize =1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_META_EMPRESA_IDMETAMES_GENERATOR")
-	private Integer idmetaempresa;
-
-	private String descripcion;
+	@Id  
+	@SequenceGenerator(name="TB_META_MES_IDMETAMES_GENERATOR", sequenceName="SIE.TB_META_MES_IDMETAMES_SEQ", initialValue=1, allocationSize =1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_META_MES_IDMETAMES_GENERATOR")
+	private Integer idmetames;
+	
+	private Integer codmes;
+	
+	private String mes;
 	
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
@@ -52,34 +52,25 @@ public class MetaEmpresaSie implements Serializable {
 
 	private String usuariomodifica;
 
-	private Integer valormeta;
-
-	//bi-directional many-to-one association to EmpresaSie
+	//bi-directional many-to-one association to MetaEmpresaSie
     @ManyToOne
-	@JoinColumn(name="idempresa")
-	private EmpresaSie tbEmpresa;
+	@JoinColumn(name="idmetaempresa")
+	private MetaEmpresaSie tbMetaEmpresa;
     
-    //bi-directional many-to-one association to MetaMesSie
-  	@OneToMany(mappedBy="tbMetaEmpresa")
-  	private Set<MetaMesSie> tbMetaEmpresa;
+    //bi-directional many-to-one association to MetaEmpleadoSie
+    @ManyToOne
+	@JoinColumn(name="idmetaempleado")
+	private MetaEmpleadoSie tbMetaEmpleado;
 
-    public MetaEmpresaSie() {
+    public MetaMesSie() {
     }
-
-	public Integer getIdmetaempresa() {
-		return idmetaempresa;
+    
+	public Integer getIdmetames() {
+		return idmetames;
 	}
 
-	public void setIdmetaempresa(Integer idmetaempresa) {
-		this.idmetaempresa = idmetaempresa;
-	}
-	
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setIdmetames(Integer idmetames) {
+		this.idmetames = idmetames;
 	}
 	
 	public Timestamp getFechacreacion() {
@@ -130,29 +121,36 @@ public class MetaEmpresaSie implements Serializable {
 		this.usuariomodifica = usuariomodifica;
 	}
 
-	public Integer getValormeta() {
-		return this.valormeta;
+	public String getMes() {
+		return mes;
 	}
 
-	public void setValormeta(Integer valormeta) {
-		this.valormeta = valormeta;
+	public void setMes(String mes) {
+		this.mes = mes;
 	}
 
-	public EmpresaSie getTbEmpresa() {
-		return this.tbEmpresa;
+	public Integer getCodmes() {
+		return codmes;
 	}
 
-	public void setTbEmpresa(EmpresaSie tbEmpresa) {
-		this.tbEmpresa = tbEmpresa;
+	public void setCodmes(Integer codmes) {
+		this.codmes = codmes;
 	}
 
-	public Set<MetaMesSie> getTbMetaEmpresa() {
+	public MetaEmpresaSie getTbMetaEmpresa() {
 		return tbMetaEmpresa;
 	}
 
-	public void setTbMetaEmpresa(Set<MetaMesSie> tbMetaEmpresa) {
+	public void setTbMetaEmpresa(MetaEmpresaSie tbMetaEmpresa) {
 		this.tbMetaEmpresa = tbMetaEmpresa;
 	}
 
+	public MetaEmpleadoSie getTbMetaEmpleado() {
+		return tbMetaEmpleado;
+	}
+
+	public void setTbMetaEmpleado(MetaEmpleadoSie tbMetaEmpleado) {
+		this.tbMetaEmpleado = tbMetaEmpleado;
+	}
 	
 }

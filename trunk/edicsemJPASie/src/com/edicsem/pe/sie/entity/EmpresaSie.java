@@ -141,5 +141,4 @@ public class EmpresaSie  implements Serializable {
 	public void setTbKardex(Set<KardexSie> tbKardex) {
 		this.tbKardex = tbKardex;
 	}
-	
 }
