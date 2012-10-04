@@ -67,7 +67,9 @@ public class MantenimientoEmpresaFormAction extends
 	public String agregar() {
 		log.info("agregar()");
 		editMode = true;
+		objEmpresaSie = new EmpresaSie();
 		setNewRecord(true);
+		
 		return getViewList();
 	}
 
