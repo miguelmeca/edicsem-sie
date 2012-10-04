@@ -46,9 +46,9 @@ public class UbigeoServiceImpl implements UbigeoService{
 		return objUbigeoDao.findUbigeo(id); 
 	}
 
-	public List listarUbigeo() {
+	public List listarUbigeoDepartamentos() {
 		log.info("En el servicio ");
-		return objUbigeoDao.listarUbigeo();
+		return objUbigeoDao.listarUbigeoDepartamentos();
 	}
 
 	
