@@ -1,6 +1,7 @@
 package com.edicsem.pe.sie.client.action;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,13 +18,10 @@ import com.edicsem.pe.sie.entity.ComprobanteSie;
 import com.edicsem.pe.sie.entity.DetalleComprobanteSie;
 import com.edicsem.pe.sie.entity.KardexSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
-import com.edicsem.pe.sie.entity.TipoKardexProductoSie;
-import com.edicsem.pe.sie.entity.TipoProductoSie;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.KardexService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.service.facade.ProveedorService;
-import com.edicsem.pe.sie.service.facade.TipoKardexService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
@@ -33,16 +30,13 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 public class MovimientoAction extends BaseMantenimientoAbstractAction {
 
 	private String mensaje;
-	private int idproducto, idtipokardexproducto,idempresa,idproveedor, idAlmacen, idAlmacen2 = 0;
+	private int idproducto, idtipokardexproducto,idempresa,idproveedor, idAlmacen, idAlmacen2;
 	private KardexSie objKardexSie = new KardexSie();
 	private ComprobanteSie objcomprobante;
-	private List<SelectItem> tipoKardexItems;
 	private List<KardexSie> data;
 	private boolean editMode;
 	private Log log = LogFactory.getLog(MovimientoAction.class);
 	private DetalleComprobanteSie objDetComprobante;
-	@EJB
-	private TipoKardexService objTipoKardexService;
 
 	@EJB
 	private KardexService objKardexService;
@@ -63,51 +57,19 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 
 	public void init() {
 		log.info("init()");
+		idAlmacen2 = 0;
 		data = new ArrayList<KardexSie>();
 		objKardexSie = new KardexSie();
 		objcomprobante = new ComprobanteSie();
-		tipoKardexItems = new ArrayList<SelectItem>();
-		 objDetComprobante = new DetalleComprobanteSie();
+		objDetComprobante = new DetalleComprobanteSie();
 	}
 
 	public void cambiar() {
- 
 		if (idtipokardexproducto == 1 || idtipokardexproducto == 3) {
 			editMode = false;
 		} else
 			editMode = true;
 		log.info("EDitmode  :D  --- " + idtipokardexproducto + "   " + editMode);
-	}
-
-	/**
-	 * @return the tipoKardexItems
-	 */
-	public List<SelectItem> getTipoKardexItems() {
-
-		tipoKardexItems = new ArrayList<SelectItem>();
-		List lista = new ArrayList<TipoProductoSie>();
-		try {
-			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'getTipoKardexItems()'");
-			}
-			lista = objTipoKardexService.listaTipoKardex();
-
-			for (int i = 0; i < lista.size(); i++) {
-				TipoKardexProductoSie tipo = new TipoKardexProductoSie();
-				tipo = (TipoKardexProductoSie) lista.get(i);
-				tipoKardexItems.add(new SelectItem(tipo
-						.getIdtipokardexproducto(), tipo.getDescripcion()));
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			mensaje = e.getMessage();
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-			log.error(e.getMessage());
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
-		return tipoKardexItems;
 	}
 
 	/*
@@ -163,6 +125,7 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 							mensaje = "  Se registro correctamente, el stock actual de dicho producto es  " + stockAc+ " debe realizar una solicitud de dicho producto";
 							validado = true;
 							log.info(mensaje);
+							//Mandar correo
 						}else if (cantExistenteTotalAlmacenes - objKardexSie.getCantsalida() < 0) {
 							mensaje = " No puede exceder la cantidad de salida al stock actual del producto, el cual es " + cantExistenteTotalAlmacenes;
 							log.info(mensaje);
@@ -194,30 +157,7 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 					}
 						 
 					} else if (objKardexSie.getCantentrada() > 0) {
-						/**
-						 * Suponiendo que el usuario que ingreso al sistema sea Jhorghy*/
 						
-						if(objKardexSie.getValortotal() != null){
-							BigDecimal d = new BigDecimal(Double.parseDouble(objKardexSie.getValortotal())/ objKardexSie.getCantentrada());
-					Double valorunitario=	Double.parseDouble(d+"");
-						if(valorunitario>0){
-							log.info("   a " + d);
-							objKardexSie.setValorunitarioentrada(valorunitario+"");
-							double valorexistencia=0;
-							for (int j = 0; j< k.size(); j++) {
-								 
-								log.info("en el for de entrada "+k.get(j).getTbPuntoVenta().getIdpuntoventa()+ " * "+  idAlmacen);
-								 if (k.get(j).getTbPuntoVenta().getIdpuntoventa() == idAlmacen) {
-									 valorexistencia =Double.parseDouble(k.get(j).getValorunitarioexistencia())+ valorunitario;
-										objKardexSie.setValorunitarioexistencia(valorexistencia+"");
-									}
-								 } 
-							}
-						if(idproveedor!=0){	log.info("  idproveed ");
-						objcomprobante.setTbProveedor(objProveedorService.findProducto(idproveedor));
-					}
-						
-						}
 							
 						if (cantExistenteTotalAlmacenes + objKardexSie.getCantentrada() > stkmaximo && idAlmacen2==0 ) {
 							
@@ -232,12 +172,53 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 									 log.info("almacen   " +k.get(j).getTbPuntoVenta().getIdpuntoventa() +"  "+ idAlmacen );
 									// es entrada pero no salida de otro almacen
 									if (objKardexSie.getCantentrada() > 0 && idAlmacen2==0  ) {
+										
 										log.info(" si solo hay entrada " +objKardexSie.getCantentrada() +" "+ idAlmacen2);
 										
 										if (k.get(j).getCantexistencia() + objKardexSie.getCantentrada() > stkmaximo) {
 											log.info("existe "+k.get(j).getCantexistencia()+" "+ objKardexSie.getCantsalida()+" max "+ stkmaximo ); 
-											mensaje = "No debe excederse el stock máximo permitido";
-										}else{
+											mensaje = "Se registro correctamente, pero se excedio el stock máximo permitido";
+											//Mandar correo
+											validado=true;
+										}
+										
+										/**
+										 * Suponiendo que el usuario que ingreso al sistema sea Jhorghy*/
+										
+										if(objKardexSie.getValortotal() != null){
+											BigDecimal d = new BigDecimal(Double.parseDouble(objKardexSie.getValortotal())/ objKardexSie.getCantentrada());
+											d=d.setScale(2, RoundingMode.HALF_UP);
+											log.info("  aki xd 1 "+ d); 
+											Double valorunitario=	Double.parseDouble(d+"");
+										if(valorunitario>0){
+											log.info("   a " + d);
+											objKardexSie.setValorunitarioentrada(valorunitario+"");
+											double valorexistencia=0;
+											double valoruniex= 0;
+											
+											for (int m = 0; m< k.size(); m++) {
+												 
+												log.info("en el for de entrada 2 "+k.get(m).getTbPuntoVenta().getIdpuntoventa()+ " * "+  idAlmacen);
+												 if (k.get(m).getTbPuntoVenta().getIdpuntoventa() == idAlmacen) {
+													
+													if( k.get(m).getValorunitarioexistencia()!=null)
+													valoruniex=  Double.parseDouble(k.get(m).getValorunitarioexistencia());
+													log.info(" v "+ valoruniex);
+													}
+														//si la cantidad existente es de otro almacen , se registraria por primera vez en el almacen seleccionado
+								
+														log.info(" v3 "+ valoruniex+  "  - " +objKardexSie.getValortotal());
+														valorexistencia =valoruniex  + Double.parseDouble(objKardexSie.getValortotal());
+														objKardexSie.setValorunitarioexistencia(valorexistencia+"");
+														log.info(" vex "+ valorexistencia);
+												 }
+											}
+										if(idproveedor!=0){	log.info("  idproveed ");
+										objcomprobante.setTbProveedor(objProveedorService.findProducto(idproveedor));
+									}validado=true;
+										
+										}
+										else{
 											validado=true;
 										}
 										
@@ -282,14 +263,38 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 					}else if(objKardexSie.getCantentrada() > 0){
 						ProductoSie prod= 	objproductoService.findProducto(idproducto);
 						if(objKardexSie.getCantentrada() >  prod.getStkmaximo() ){
-							mensaje="El stock máximo permitido es " + prod.getStkmaximo() ;
+							validado = true;
+							mensaje="Se registro correctamente, el stock máximo permitido es " + prod.getStkmaximo() ;
 						}
 						else{
+							
+							if(objKardexSie.getValortotal() != null){
+								BigDecimal d = new BigDecimal(Double.parseDouble(objKardexSie.getValortotal())/ objKardexSie.getCantentrada());
+								d=d.setScale(2, RoundingMode.HALF_UP);
+								log.info("  aki xd "+ d); 
+								Double valorunitario=	Double.parseDouble(d+"");
+							if(valorunitario>0){
+								log.info("   a " + d);
+								objKardexSie.setValorunitarioentrada(valorunitario+"");
+								double valorexistencia=0;
+								double valoruniex= 0;
+								
+									log.info(" v "+ valoruniex);
+									valorexistencia =valoruniex  + Double.parseDouble(objKardexSie.getValortotal());
+									objKardexSie.setValorunitarioexistencia(valorexistencia+"");
+									log.info(" vex "+ valorexistencia);
+									
+								}
+							if(idproveedor!=0){	log.info("  idproveed ");
+							objcomprobante.setTbProveedor(objProveedorService.findProducto(idproveedor));
+							}
+							}
+							
 							validado = true;
 						}
 					}
 				
-					log.info(mensaje);
+					log.info(mensaje+" a");
 				}
 				else {
 					log.info(" * null *");
@@ -352,14 +357,6 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 	 */
 	public void setIdtipokardexproducto(int idtipokardexproducto) {
 		this.idtipokardexproducto = idtipokardexproducto;
-	}
-
-	/**
-	 * @param tipoKardexItems
-	 *            the tipoKardexItems to set
-	 */
-	public void setTipoKardexItems(List<SelectItem> tipoKardexItems) {
-		this.tipoKardexItems = tipoKardexItems;
 	}
 
 	/**

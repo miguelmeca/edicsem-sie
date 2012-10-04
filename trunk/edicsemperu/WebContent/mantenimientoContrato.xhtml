@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
+			Contrato</h1>
+		<h:form id="formManteProducto" >
+			<p:growl id="message" showDetail="true" />
+			<p:panel header="#{message['panel.contrato.cliente']}">
+				<h:panelGrid columns="6" id="panel"   >
+				<h:outputText value="#{message['contrato.nombre']}" />
+				<p:inputText size="15" requiredMessage="#{message['contrato.nombre.validation']}" />
+				<h:outputText  value="#{message['contrato.apematerno']}" />
+				<p:inputText size="15" requiredMessage="#{message['contrato.apematerno.validation']}" />
+				<h:outputText  value="#{message['contrato.apepaterno']}" />
+				<p:inputText size="15" requiredMessage="#{message['contrato.apepaterno.validation']}" />
+				
+				<h:outputText value="#{message['contrato.tipo.documento']}"/>
+					<p:selectOneMenu size="1"   style="width:165px" requiredMessage="#{message['contrato.tipo.documento.validation']}"
+						value="#{contratoForm.idempresa}">
+						<f:selectItem itemLabel="Seleccione tipo documento" itemValue="#{null}" />
+						<f:selectItems value="#{comboAction.tipoDocumentoitems}" />
+				</p:selectOneMenu>
+				<h:outputText value="#{message['contrato.numero.documento']}"/>
+				
+				<p:inputText size="15" requiredMessage="#{message['contrato.numero.documento.validation']}" />
+				
+				<h:outputText value="#{message['contrato.empresa']}"/>
+				<p:selectOneMenu size="1"   style="width:165px" requiredMessage="#{message['contrato.empresa.validation']}"
+						value="#{movimientoMercaderia.idempresa}">
+						<f:selectItem itemLabel="Seleccione Empresa" itemValue="#{null}" />
+						<f:selectItems value="#{comboAction.empresaitems}" />
+						<p:ajax update="panel" listener="#{movimientoMercaderia.cambiar}" />
+				</p:selectOneMenu>
+				 
+				<h:outputText value="#{message['contrato.ubigeo.departamento']}"/>
+				<p:selectOneMenu size="1"   style="width:165px" requiredMessage="#{message['contrato.ubigeo.departamento.validation']}" >
+						<f:selectItem itemLabel="Seleccione Departamento" itemValue="#{null}" />
+						<f:selectItems value="#{comboAction.ubigeoItems}" />
+				</p:selectOneMenu>
+				
+				<h:outputText value="#{message['contrato.ubigeo.provincia']}"/>
+				<p:selectOneMenu size="1"   style="width:165px" requiredMessage="#{message['contrato.ubigeo.provincia.validation']}" >
+						<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
+						<f:selectItems value="#{comboAction.empresaitems}" />
+				</p:selectOneMenu>
+				
+				<h:outputText value="#{message['contrato.ubigeo.distrito']}"/>
+				<p:selectOneMenu size="1"   style="width:165px" requiredMessage="#{message['contrato.ubigeo.distrito.validation']}" >
+						<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+						<f:selectItems value="#{comboAction.empresaitems}" />
+				</p:selectOneMenu>
+				
+				<h:outputText value="#{msg.registro_referencia}" />
+				<p:inputText size="15" />
+				
+				<h:outputText value="#{message['contrato.tipocasa']}" />
+				<p:selectOneMenu id="tipocasa" value="#{comboAction.tipoProducto}" required="true"
+				requiredMessage="#{message['contrato.tipocasa.validation']}">
+					<f:selectItem  itemValue="#{null}" itemLabel="Seleccionar tipo casa" />
+					<f:selectItems value="#{comboAction.tipocasaItems}"  />
+				</p:selectOneMenu>
+				
+				<h:outputText value="#{message['contrato.telefono.casa']}" />
+				<p:inputMask mask="999-9999" requiredMessage="#{message['contrato.telefono.casa.validation']}"/>
+				<h:outputText value="#{message['contrato.celular']}" />
+				<p:inputMask mask="999-999999" requiredMessage="#{message['contrato.celular.validation']}"/>
+				
+				  
+				<h:outputText value="#{msg.registro_fecha_nacimiento}" />
+				<p:calendar showButtonPanel="true" required="true" label="Fecha de nacimiento" 
+				requiredMessage="#{message['contrato.fechanac.validation']}"/>
+				
+				
+				<h:outputText value="#{msg.registro_correo}" />
+				<p:inputText size="15" />
+			
+ </h:panelGrid>
+		</p:panel>
+		<p:spacer ></p:spacer>
+			<p:panel header="#{message['panel.contrato.cliente']}">
+			
+			</p:panel>
+		<f:facet name="footer"> 
+                
+					<p:commandButton value="Registrar" 
+					  actionListener="#{productoForm.insertar}"  
+					  update="message" icon="ui-icon ui-icon-check"
+                      oncomplete="onEditCompleteRegistrar(args)" ajax = "false" >
+                       </p:commandButton>
+                                  
+          </f:facet>
+          
+		
+		 </h:form>
+	</ui:define>
+</ui:composition>
