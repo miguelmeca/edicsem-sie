@@ -28,10 +28,10 @@ public class KardexDAOImpl implements KardexDAO {
 	@PersistenceContext(name = "edicsemJPASie")
 	private EntityManager em;
 	private static Log log = LogFactory.getLog(KardexDAOImpl.class);
-	
+
 	@EJB
 	private AlmacenDAO almacenDAOService;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -47,8 +47,9 @@ public class KardexDAOImpl implements KardexDAO {
 			consulta = "select p from KardexSie p where p.tbProducto.idproducto =:x1 and "
 					+ "p.tbPuntoVenta.idpuntoventa =:x2 ";
 			if (fechaDesde != "" && fechaHasta != "")
-				consulta += " and DATE(p.fechacreacion) between DATE('" + fechaDesde
-						+ "') and  DATE('" + fechaHasta + "')   order by p.idkardex ASC  ";
+				consulta += " and DATE(p.fechacreacion) between DATE('"
+						+ fechaDesde + "') and  DATE('" + fechaHasta
+						+ "')   order by p.idkardex ASC  ";
 
 			Query q = em.createQuery(consulta);
 			q.setParameter("x1", idproducto);
@@ -70,14 +71,19 @@ public class KardexDAOImpl implements KardexDAO {
 
 			if (log.isInfoEnabled()) {
 
-				log.info("insertar Movimiento- kardex "+ kardex.getIdkardex()+" " + kardex.getCantentrada() +" " + kardex.getCantsalida()+" "
+				log.info("insertar Movimiento- kardex " + kardex.getIdkardex()
+						+ " " + kardex.getCantentrada() + " "
+						+ kardex.getCantsalida() + " "
 						+ kardex.getTbTipoKardexProducto().getDescripcion()
-						+ " - " + kardex.getTbPuntoVenta().getDescripcion() 
-						+ " - "	+ kardex.getTbProducto().getDescripcionproducto());
+						+ " - " + kardex.getTbPuntoVenta().getDescripcion()
+						+ " - "
+						+ kardex.getTbProducto().getDescripcionproducto());
 			}
-			//Salida o entrada al almacen 
-			Query q = em.createQuery(" select p from KardexSie p where p.tbProducto.idproducto =:x1  " +
-					"and p.tbPuntoVenta.idpuntoventa  =:x2 " +  " order by idKardex desc limit 1  ");
+			// Salida o entrada al almacen
+			Query q = em
+					.createQuery(" select p from KardexSie p where p.tbProducto.idproducto =:x1  "
+							+ "and p.tbPuntoVenta.idpuntoventa  =:x2 "
+							+ " order by idKardex desc limit 1  ");
 			q.setParameter("x1", idProducto);
 			q.setParameter("x2", kardex.getTbPuntoVenta().getIdpuntoventa());
 			if (q.getResultList().size() > 0) {
@@ -100,10 +106,10 @@ public class KardexDAOImpl implements KardexDAO {
 			} else {
 				kardex.setCantexistencia(cantiExist + kardex.getCantentrada());
 			}
-			log.info("insertando.... 1 "+ kardex.getIdkardex()+" cant exis " + kardex.getCantexistencia());
+			log.info("insertando.... 1 " + kardex.getIdkardex() + " cant exis "
+					+ kardex.getCantexistencia());
 			em.persist(kardex);
-			
-		
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -129,43 +135,78 @@ public class KardexDAOImpl implements KardexDAO {
 		return lista;
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see com.edicsem.pe.sie.model.dao.KardexDAO#ConsultaStockActual(int)
 	 */
-	
+
 	public List<KardexSie> ConsultaStockActual(int idProducto) {
-	log.info(" ID: ** " + idProducto);
-	 List<KardexSie> listaTmp= null; 
-	 List<KardexSie> lista= new ArrayList();
-	 int cantExistTotalAlm=0;
-	 List<PuntoVentaSie>   listaAlmacenes = almacenDAOService.listarAlmacenes();
-	 
-		try { 
-			
-			for (int i = 0; i < listaAlmacenes.size() ; i++) {
-				
-			Query q = em.createQuery(" select  a  from  KardexSie a where " +
-					" a.tbProducto.idproducto = " + idProducto + " and a.tbPuntoVenta.idpuntoventa = " +
-					listaAlmacenes.get(i).getIdpuntoventa() + " order by a.idkardex ASC ");
-			listaTmp =  q.getResultList();
-			
-			if(listaTmp.size()-1!=-1){
-			 if(listaTmp.get(listaTmp.size()-1)!=null ){
-				 lista.add(listaTmp.get(listaTmp.size()-1));
-			 }
-			}log.info(" * tamano "+ lista.size()); 
+		log.info(" ID: ** " + idProducto);
+		List<KardexSie> listaTmp = null;
+		List<KardexSie> lista = new ArrayList();
+		List<KardexSie> lista2 = new ArrayList();
+		int cantExistTotalAlm = 0;
+		List<PuntoVentaSie> listaAlmacenes = almacenDAOService
+				.listarAlmacenes();
+		int idMayor = 0;
+		try {
+
+			for (int i = 0; i < listaAlmacenes.size(); i++) {
+
+				Query q = em.createQuery(" select  a  from  KardexSie a where "
+						+ " a.tbProducto.idproducto = " + idProducto
+						+ " and a.tbPuntoVenta.idpuntoventa = "
+						+ listaAlmacenes.get(i).getIdpuntoventa()
+						+ " order by a.idkardex ASC ");
+				listaTmp = q.getResultList();
+
+				if (listaTmp.size() - 1 != -1) {
+					if (listaTmp.get(listaTmp.size() - 1) != null) {
+						lista.add(listaTmp.get(listaTmp.size() - 1));
+					}
+				}
+				log.info(" * tamano " + lista.size());
 			}
+			// reordenar por idkardex 14,10,9,17,15
+
+			// for (int i = 0; i < lista.size() ; i++) {
+			// if(lista.get(i).getIdkardex() < lista.get(i+1).getIdkardex() ){
+			// // 10>11
+			// lista2.add( lista.get(i));
+			//
+			// }
+			// }
+
+			KardexSie temporal;
+
+			for (int j = 0; j < lista.size() - 1; j++) {
+
+				for (int i = 0; i < lista.size() - 1; i++) {
+
+					if (lista.get(i).getIdkardex() < lista.get(i + 1)
+							.getIdkardex()) {
+						temporal = lista.get(i + 1);
+						lista.set(i + 1,lista.get(i));
+						lista.set(i,temporal);
+					}
+				}
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return lista;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.KardexDAO#updateKardex(com.edicsem.pe.sie.entity.KardexSie)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.edicsem.pe.sie.model.dao.KardexDAO#updateKardex(com.edicsem.pe.sie
+	 * .entity.KardexSie)
 	 */
-	
+
 	public void updateKardex(KardexSie kardex) {
 		try {
 			if (log.isInfoEnabled()) {
@@ -177,10 +218,12 @@ public class KardexDAOImpl implements KardexDAO {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.edicsem.pe.sie.model.dao.KardexDAO#findKardex(int)
 	 */
-	
+
 	public KardexSie findKardex(int id) {
 		KardexSie obj = new KardexSie();
 		try {
@@ -193,5 +236,5 @@ public class KardexDAOImpl implements KardexDAO {
 		}
 		return obj;
 	}
-	
+
 }
