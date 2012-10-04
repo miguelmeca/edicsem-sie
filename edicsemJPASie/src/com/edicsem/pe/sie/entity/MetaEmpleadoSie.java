@@ -26,25 +26,19 @@ import com.edicsem.pe.sie.util.constants.Constants;
  * 
  */
 @Entity
-@Table(name="tb_meta_empresa", schema = Constants.ESQUEMA_SIE_POSTGRE)
-public class MetaEmpresaSie implements Serializable {
+@Table(name="tb_meta_empleado", schema = Constants.ESQUEMA_SIE_POSTGRE)
+public class MetaEmpleadoSie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_META_EMPRESA_IDMETAMES_GENERATOR", sequenceName="SIE.TB_META_EMPRESA_IDMETAMES_SEQ", initialValue=1, allocationSize =1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_META_EMPRESA_IDMETAMES_GENERATOR")
-	private Integer idmetaempresa;
+	@SequenceGenerator(name="TB_META_EMPLEADO_IDMETAEMPLEADO_GENERATOR", sequenceName="SIE.TB_META_EMPLEADO_IDMETAEMPLEADO_SEQ", initialValue=1, allocationSize =1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_META_EMPLEADO_IDMETAEMPLEADO_GENERATOR")
+	private Integer idmetaempleado;
 
 	private String descripcion;
 	
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
-
-    @Temporal( TemporalType.DATE)
-	private Date fechafin;
-
-    @Temporal( TemporalType.DATE)
-	private Date fechainicio;
 
 	private Timestamp fechamodifica;
 
@@ -53,26 +47,18 @@ public class MetaEmpresaSie implements Serializable {
 	private String usuariomodifica;
 
 	private Integer valormeta;
-
-	//bi-directional many-to-one association to EmpresaSie
+    
+    //bi-directional many-to-one association to EmpleadoSie
     @ManyToOne
-	@JoinColumn(name="idempresa")
-	private EmpresaSie tbEmpresa;
+	@JoinColumn(name="idempleado")
+	private EmpleadoSie tbEmpleado;
     
     //bi-directional many-to-one association to MetaMesSie
-  	@OneToMany(mappedBy="tbMetaEmpresa")
-  	private Set<MetaMesSie> tbMetaEmpresa;
+  	@OneToMany(mappedBy="tbMetaEmpleado")
+  	private Set<MetaMesSie> tbMetameses;
 
-    public MetaEmpresaSie() {
+    public MetaEmpleadoSie() {
     }
-
-	public Integer getIdmetaempresa() {
-		return idmetaempresa;
-	}
-
-	public void setIdmetaempresa(Integer idmetaempresa) {
-		this.idmetaempresa = idmetaempresa;
-	}
 	
 	public String getDescripcion() {
 		return descripcion;
@@ -88,22 +74,6 @@ public class MetaEmpresaSie implements Serializable {
 
 	public void setFechacreacion(Timestamp fechacreacion) {
 		this.fechacreacion = fechacreacion;
-	}
-
-	public Date getFechafin() {
-		return this.fechafin;
-	}
-
-	public void setFechafin(Date fechafin) {
-		this.fechafin = fechafin;
-	}
-
-	public Date getFechainicio() {
-		return this.fechainicio;
-	}
-
-	public void setFechainicio(Date fechainicio) {
-		this.fechainicio = fechainicio;
 	}
 
 	public Timestamp getFechamodifica() {
@@ -138,21 +108,29 @@ public class MetaEmpresaSie implements Serializable {
 		this.valormeta = valormeta;
 	}
 
-	public EmpresaSie getTbEmpresa() {
-		return this.tbEmpresa;
+	public Integer getIdmetaempleado() {
+		return idmetaempleado;
 	}
 
-	public void setTbEmpresa(EmpresaSie tbEmpresa) {
-		this.tbEmpresa = tbEmpresa;
+
+	public void setIdmetaempleado(Integer idmetaempleado) {
+		this.idmetaempleado = idmetaempleado;
 	}
 
-	public Set<MetaMesSie> getTbMetaEmpresa() {
-		return tbMetaEmpresa;
+	public EmpleadoSie getTbEmpleado() {
+		return tbEmpleado;
 	}
 
-	public void setTbMetaEmpresa(Set<MetaMesSie> tbMetaEmpresa) {
-		this.tbMetaEmpresa = tbMetaEmpresa;
+	public void setTbEmpleado(EmpleadoSie tbEmpleado) {
+		this.tbEmpleado = tbEmpleado;
 	}
 
+	public Set<MetaMesSie> getTbMetameses() {
+		return tbMetameses;
+	}
+
+	public void setTbMetameses(Set<MetaMesSie> tbMetameses) {
+		this.tbMetameses = tbMetameses;
+	}
 	
 }
