@@ -36,4 +36,8 @@ public class Constants {
 	public static final String COD_ESTADO_TB_EMPLEADO = "EM";
 	public static final String COD_ESTADO_TB_PRODUCTO = "PR";
 	
+	//aviso mensaje "las contraseñas no coinciden"
+	public static final String MESSAGE_PASSWORDS_DESIGUALES = "Contraseñas no coinciden";
+	
+	
 }
