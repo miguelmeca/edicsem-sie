@@ -27,11 +27,9 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 	private EntityManager em;
 	private static Log log = LogFactory.getLog(UbigeoDAOImpl.class);
 	
-	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.EmpresaDAO#insertEmpresa(com.edicsem.pe.sie.entity.EmpresaSie)
+	 * @see com.edicsem.pe.sie.model.dao.UbigeoDAO#insertUbigeo(com.edicsem.pe.sie.entity.UbigeoSie)
 	 */
-	 
 	public void insertUbigeo(UbigeoSie ubigeo) {
 		try {
 			if (log.isInfoEnabled()) {
@@ -44,6 +42,9 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 	}
 	
 	 
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.UbigeoDAO#updateUbigeo(com.edicsem.pe.sie.entity.UbigeoSie)
+	 */
 	public void updateUbigeo(UbigeoSie ubigeo) {
 		try {
 			if (log.isInfoEnabled()) {
@@ -54,20 +55,19 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 			e.printStackTrace();
 		}
 	}
+
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.EmpresaDAO#findProducto(java.lang.String)
+	 * @see com.edicsem.pe.sie.model.dao.UbigeoDAO#eliminarUbigeo(int)
 	 */
-	
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.EmpresaDAO#listarEmpresas()
-	 */
-   
 	public void eliminarUbigeo(int id) {
 		// TODO Auto-generated method stub
 		
 	}
 
  
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.UbigeoDAO#findUbigeo(int)
+	 */
 	public UbigeoSie findUbigeo(int id) {
 		UbigeoSie u= new UbigeoSie();
 		try {
@@ -81,11 +81,16 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 		return u;
 	}
 
- 
-	public List listarUbigeo() {
+
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.UbigeoDAO#listarUbigeoDepartamentos()
+	 */
+	public List listarUbigeoDepartamentos() {
+		
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from UbigeoSie p");
+			Query q = em.createQuery("select p from UbigeoSie p where p.codprovincia ='00' and p.coddistrito ='00' ");
 			lista =  q.getResultList(); 
 		   System.out.println("tamaño lista Ubigeo  --> " + lista.size()+"  ");
 		} catch (Exception e) {
@@ -93,6 +98,5 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 		}
 		return lista;
 	}
- 
 	
 }
