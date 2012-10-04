@@ -1,6 +1,5 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
@@ -10,32 +9,27 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.imageio.stream.FileImageOutputStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 
 import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.entity.ProductoSie;
-import com.edicsem.pe.sie.service.facade.ProductoService;
+import com.edicsem.pe.sie.service.facade.ContratoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
-@ManagedBean(name = "productoForm")
+@ManagedBean(name = "contratoForm")
 @SessionScoped
-public class MantenimientoProductoFormAction extends
+public class MantenimientoContratoFormAction extends
 		BaseMantenimientoAbstractAction {
 	
 	@ManagedProperty(value="#{comboAction}") 
 	private ComboAction comboManager;
 
 	private String mensaje;
-	private Log log = LogFactory.getLog(MantenimientoProductoFormAction.class);
-	private int TipoProducto, estadoProducto;
-	private StreamedContent image;
+	public static Log log = LogFactory.getLog(MantenimientoContratoFormAction.class);
+	private int Tipocasa,idempresa;
 	private ProductoSie objProductoSie;
 	private ProductoSie selectedProducto;
 	private boolean editMode;
@@ -45,9 +39,9 @@ public class MantenimientoProductoFormAction extends
 	private MantenimientoProductoSearchAction productoSearch;
 	
 	@EJB
-	private ProductoService objProductoService;
+	private ContratoService objContratoService;
 
-	public MantenimientoProductoFormAction() {
+	public MantenimientoContratoFormAction() {
 		log.info("inicializando constructor MantenimientoProducto");
 		init();
 	}
@@ -55,7 +49,6 @@ public class MantenimientoProductoFormAction extends
 	public void init() {
 		log.info("init()");
 		objProductoSie = new ProductoSie();
-		image = null;
 		editMode=true;
 	}
 
@@ -83,37 +76,10 @@ public class MantenimientoProductoFormAction extends
 	 */
 	public String update() throws Exception {
 		log.info("update()"+ objProductoSie.getRutaimagenproducto() );
-		TipoProducto = objProductoSie.getTbTipoProducto().getIdtipoproducto();
-		estadoProducto = objProductoSie.getTbEstadoGeneral().getIdestadogeneral();
-		log.info("update()"+ TipoProducto +"  "+estadoProducto );
+		  
 		InputStream stream = new FileInputStream(objProductoSie.getRutaimagenproducto());
-		setImage( new DefaultStreamedContent(stream));
 		setNewRecord(false);
 		return getViewList();
-	}
-
-	public void cargarImagenInsertar(FileUploadEvent event) {
-		log.info("cargarImagenInsertar " + event.getFile().getFileName() );
-		String photo = event.getFile().getFileName();
-		FileImageOutputStream imageOutput;
-		String newFileName = "C:\\proyecto-sie\\ws-sie\\edicsemperu\\WebContent"
-				+ File.separator + "images" + File.separator + photo;
-		try {
-			image = new DefaultStreamedContent(event.getFile().getInputstream());
-			setImage(image);
-			log.info("ruta " + newFileName + " - " + event.getFile().getFileName());
-			imageOutput = new FileImageOutputStream(new File(newFileName));
-			if(objProductoSie.getRutaimagenproducto()==null){
-			objProductoSie.setRutaimagenproducto(newFileName);
-			log.info(" Ruta " + objProductoSie.getRutaimagenproducto()   );
-			byte[] foto = event.getFile().getContents();
-			imageOutput.write(foto, 0, foto.length);
-			imageOutput.close();
-			 
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
 	}
 
 	/*
@@ -129,26 +95,20 @@ public class MantenimientoProductoFormAction extends
 				log.info("Entering my method 'insertar()' " + objProductoSie.getRutaimagenproducto());
 			}
 			
-			if (isNewRecord()) {
-				if (image == null) {
-					log.info("imagen nula");
-					String rutaDefecto ="C:\\proyecto-sie\\ws-sie\\edicsemperu\\WebContent\\images\\bibliaXDefecto.png";
-					InputStream stream =  new FileInputStream(rutaDefecto);
-					log.info("ruta" + rutaDefecto);
-					objProductoSie.setRutaimagenproducto(rutaDefecto);
-				}
+			/*if (isNewRecord()) {
+				
 				log.info("a insertar "+TipoProducto +" " +estadoProducto);
-				objProductoService.insertProducto(objProductoSie,TipoProducto, estadoProducto);
+				//objProductoService.insertProducto(objProductoSie,TipoProducto, estadoProducto);
 				objProductoSie = new ProductoSie();
 				limpiarCampos();
 			} else {
 				log.info("a actualizar "+ TipoProducto +" " +estadoProducto+ " ruta " + objProductoSie.getRutaimagenproducto());
 				if(TipoProducto>0||estadoProducto>0){
-				objProductoService.updateProducto(objProductoSie,TipoProducto, estadoProducto);
+				//objProductoService.updateProducto(objProductoSie,TipoProducto, estadoProducto);
 				objProductoSie = new ProductoSie();
 				limpiarCampos();
 				}
-			}
+			}*/
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -162,9 +122,8 @@ public class MantenimientoProductoFormAction extends
 	}
 	
 	public void limpiarCampos(){
-		setImage(null);
-		TipoProducto=0;
-		estadoProducto=0;
+		Tipocasa=0;
+		idempresa=0;
 	}
 	
 	/* (non-Javadoc)
@@ -199,36 +158,6 @@ public class MantenimientoProductoFormAction extends
 		this.selectedProducto = selectedProducto;
 	}
 
-
-	/**
-	 * @return the image
-	 */
-	public StreamedContent getImage() {
-		return image;
-	}
-
-	/**
-	 * @param image
-	 *            the image to set
-	 */
-	public void setImage(StreamedContent image) {
-		this.image = image;
-	}
-
-	/**
-	 * @return the tipoProducto
-	 */
-	public int getTipoProducto() {
-		return TipoProducto;
-	}
-
-	/**
-	 * @param tipoProducto
-	 *            the tipoProducto to set
-	 */
-	public void setTipoProducto(int tipoProducto) {
-		TipoProducto = tipoProducto;
-	}
 
 	/**
 	 * @return the objProductoSie
@@ -283,21 +212,6 @@ public class MantenimientoProductoFormAction extends
 	}
 
 	/**
-	 * @return the estadoProducto
-	 */
-	public int getEstadoProducto() {
-		return estadoProducto;
-	}
-
-	/**
-	 * @param estadoProducto
-	 *            the estadoProducto to set
-	 */
-	public void setEstadoProducto(int estadoProducto) {
-		this.estadoProducto = estadoProducto;
-	}
-
-	/**
 	 * @return the comboManager
 	 */
 	public ComboAction getComboManager() {
@@ -324,6 +238,22 @@ public class MantenimientoProductoFormAction extends
 	 */
 	public void setProductoSearch(MantenimientoProductoSearchAction productoSearch) {
 		this.productoSearch = productoSearch;
+	}
+
+	public int getTipocasa() {
+		return Tipocasa;
+	}
+
+	public void setTipocasa(int tipocasa) {
+		Tipocasa = tipocasa;
+	}
+
+	public int getIdempresa() {
+		return idempresa;
+	}
+
+	public void setIdempresa(int idempresa) {
+		this.idempresa = idempresa;
 	}
 
 }
