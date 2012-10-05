@@ -56,49 +56,24 @@
 		<h:outputText value="#{p.tbCargoEmpleado.descripcion}" />
 	   </p:column>
 	   <p:column headerText="Editar">
-	    <p:commandButton value="Editar" ajax="false" 
+	    <p:commandButton value="Editar" ajax="false" icon="ui-icon ui-icon-pencil" 
 		 action="#{mantenimientoEmpleadoFormAction.update}">
 		 <f:setPropertyActionListener value="#{p}"  
 		  target="#{mantenimientoEmpleadoFormAction.objEmpleado}" />
 		</p:commandButton>  
 	   </p:column>
-	   <p:column headerText="Deshabilitar">
-		<p:commandButton value="Deshabilitar" action="#{mantenimientoEmpleadoFormAction}" >
-		 <f:attribute  name="idempleado2" value="#{m.idempleado2}" />	
+	     <p:column headerText="Deshabilitar">
+		<p:commandButton id="showConfirmDeshabilitar" value="Deshabilitar" icon="ui-icon ui-icon-close" 
+		    onclick="confirmation.show()">
+		 <f:setPropertyActionListener value="#{p.idempleado}" target="#{mantenimientoEmpleadoFormAction.ide}" />	
 		</p:commandButton>
 	   </p:column>
 	   <f:facet name="footer">
 		<div align="left">
-	     <h:commandLink value="Nuevo" action="#{mantenimientoEmpleadoFormAction.addNewRecord}" />
+	     <h:commandLink value="Nuevo" action="#{mantenimientoEmpleadoFormAction.agregar}" />
 		</div>
 	   </f:facet>
-	  </p:dataTable>	
-	  <p:dialog header="Detalle Empleado" widgetVar="carDialog" id="carDlg"
-	   showEffect="fade" hideEffect="explode" modal="true" width="450"
-	   position="center">
-	   <h:panelGrid id="display" columns="2" cellpadding="2"
-		style="margin:0 auto;">
-	    <h:outputText value="Nombre Empleado" id="nomEmp" />
-		<h:panelGroup>
-		 <h:outputText
-		  value="#{mantenimientoEmpleadoSearchAction.selectedEmpleado.nombreemp}"
-		  style="font-weight:bold"
-		  rendered="#{!mantenimientoEmpleadoSearchAction.editMode}" />
-		</h:panelGroup>
-		<h:outputText value="Apellido Paterno" id="apepat" />
-		<h:panelGroup>
-		 <h:outputText
-		  value="#{mantenimientoEmpleadoSearchAction.selectedEmpleado.apepatemp}"
-		  style="font-weight:bold"
-		  rendered="#{!mantenimientoEmpleadoSearchAction.editMode}" />
-		</h:panelGroup>
-		<h:outputText value="Apellido Materno" id="apemat" />
-		<h:panelGroup>
-		 <h:outputText value="#{mantenimientoEmpleadoSearchAction.selectedEmpleado.apematemp}"
-		  style="font-weight:bold" rendered="#{!mantenimientoEmpleadoSearchAction.editMode}" />
-	 </h:panelGroup>
-	</h:panelGrid>
-   </p:dialog>		
+	  </p:dataTable>		
   </h:form>
  </ui:define>
 </ui:composition>
