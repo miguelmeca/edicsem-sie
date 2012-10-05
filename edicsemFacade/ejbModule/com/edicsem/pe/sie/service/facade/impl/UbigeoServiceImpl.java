@@ -19,13 +19,17 @@ public class UbigeoServiceImpl implements UbigeoService{
 	private UbigeoDAO objUbigeoDao;
 	
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.UbigeoService#insertUbigeo(com.edicsem.pe.sie.entity.UbigeoSie)
+	 */
 	public void insertUbigeo(UbigeoSie ubigeo) {
-	
-		
 		objUbigeoDao.insertUbigeo(ubigeo);
 	}
 
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.UbigeoService#updateUbigeo(com.edicsem.pe.sie.entity.UbigeoSie)
+	 */
 	public void updateUbigeo(UbigeoSie ubigeo) {
 		objUbigeoDao.updateUbigeo(ubigeo);
 	}
@@ -42,15 +46,33 @@ public class UbigeoServiceImpl implements UbigeoService{
 	 */
 
 	public UbigeoSie findUbigeo(int id) {
-		// TODO Auto-generated method stub
 		return objUbigeoDao.findUbigeo(id); 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.UbigeoService#listarUbigeoDepartamentos()
+	 */
 	public List listarUbigeoDepartamentos() {
-		log.info("En el servicio ");
+		log.info("En el servicio dep ");
 		return objUbigeoDao.listarUbigeoDepartamentos();
 	}
 
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.UbigeoService#listarUbigeoProvincias(java.lang.String)
+	 */
+	public List listarUbigeoProvincias(String idDepartamento) {
+		log.info("En el servicio prov ");
+		return objUbigeoDao.listarUbigeoProvincias(idDepartamento);
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.UbigeoService#listarUbigeoDistritos(java.lang.String, java.lang.String)
+	 */
+	public List listarUbigeoDistritos(String idDepartamento, String idProvincia) {
+		log.info("En el servicio dist ");
+		return objUbigeoDao.listarUbigeoDistritos(idDepartamento, idProvincia);
+	}
 	
-		
 }
