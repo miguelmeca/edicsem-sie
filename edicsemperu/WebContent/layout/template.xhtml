@@ -69,6 +69,7 @@
 						<p:menuitem value="Mantenimiento Valorizado" update="messages" ajax="false" action="mantenimientoKardex.jsf" />
 						<p:menuitem value="Movimiento Mercader&iacute;a" ajax="false" action="movimientoMercaderiaForm.listar" />
 						<p:menuitem value="Mantenimiento de Empleados" ajax="false" action="#{mantenimientoEmpleadoSearchAction.listar}" />
+						<p:menuitem value="Mantenimiento de Proveedores" ajax="false" action="#{mantenimientoProveedorSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento Cargo Empleado" ajax="false" action="#{mantenimientoCargoEmpleadoSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento Empresa" ajax="false" action="#{empresaSearch.listar}"/>
 					</p:submenu>
@@ -352,6 +353,25 @@
 </h:form>
 
 <!-- 	FIN DESACTICAR (ESTADOS)  -->
+
+<!--	  DESACTIVAR EMPLEADO	   -->
+
+<h:form>
+
+	<p:confirmDialog id="confirmDeshabilitar" message="Esta seguro de deshabilitar dicho empleado?" width="325" height="100" showEffect="explode" 
+				hideEffect="explode"  header="Confirm" severity="alert" widgetVar="confirmation" position="center">
+					   
+       			 <p:commandButton  type="submit" value="Si"  action="#{mantenimientoEmpleadoFormAction.deshabilitar}"  
+       			 update=":formManteEmpList:listaPersonas" oncomplete="confirmation.hide()" ajax="false">
+      			 </p:commandButton>  
+        
+        		<p:commandButton value="No" onclick="confirmation.hide()" type="button" />  
+        		
+    </p:confirmDialog>
+    
+</h:form>
+
+<!-- 	FIN DESACTIVAR EMPLEADO  -->
 
 
 
