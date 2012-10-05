@@ -51,6 +51,7 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 			}
 			//CargoEmpleadoSie bean= buscarCargoEmpleado(cargoempleado.getIdcargoempleado());
 			log.info("bean" + cargoempleado.getDescripcion() + " " + cargoempleado.getIdcargoempleado());
+			
 			em.merge(cargoempleado);
 			log.info("--- ");
 		} catch (Exception e) {
