@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+   <ui:define name="body">
+    <h1 class="title ui-widget-header ui-corner-all">MantenimientoProveedores</h1>
+     <h:form id="manteProList" prependId="false">
+	  <p:dataTable value="#{mantenimientoProveedorSearchAction.proveedorList}" var="p"
+	   id="listaPersonas" paginator="true" rows="5"
+       paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	   rowsPerPageTemplate="5,10,15" widgetVar="table"
+	   emptyMessage="No se encontro registros">
+	   <f:facet name="header">Mantenimiento Proveedor </f:facet>
+	   <f:facet name="header">
+	    <p:outputPanel>
+		 <h:outputText value="Buscar :"/>
+		 <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px; align=Left; "/>
+		</p:outputPanel>
+	   </f:facet>
+       <p:column sortBy="#{p.codproveedor}" id="codigo" filterBy="#{p.codproveedor}" headerText="Codigo" footerText="startsWith">
+	    <f:facet name="header">
+		 <h:outputText value="Codigo" />
+		</f:facet>
+		<h:outputText value="#{p.codproveedor}" />
+	   </p:column>
+	   <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Empresa" />
+		</f:facet>
+		<h:outputText value="#{p.nombreempresa}" />
+	   </p:column>
+	     <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Contacto" />
+		</f:facet>
+		<h:outputText value="#{p.personacontacto}" />
+	   </p:column>
+	   <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Tipo de Doc." />
+		</f:facet>
+		<h:outputText value="#{p.tbTipoDocumentoIdentidad.descripcion}" />
+	   </p:column>
+	   <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Nro. de Doc." />
+		</f:facet>
+	    <h:outputText value="#{p.numdocumentoproveedor}" />
+	   </p:column>
+	   <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Direccion" />
+		</f:facet>
+		<h:outputText value="#{p.direccion}" />
+	   </p:column>
+	   <p:column headerText="Editar">
+	    <p:commandButton value="Editar" ajax="false" 
+		 action="#{mantenimientoProveedorFormAction.update}">
+		 <f:setPropertyActionListener value="#{p}"  
+		  target="#{mantenimientoProveedorFormAction.objProveedor}" />
+		</p:commandButton>  
+	   </p:column>
+	   <f:facet name="footer">
+		<div align="left">
+	     <h:commandLink value="Nuevo" action="#{mantenimientoProveedorFormAction.agregar}" />
+		</div>
+	   </f:facet>
+	  </p:dataTable>		
+  </h:form>
+ </ui:define>
+</ui:composition>
