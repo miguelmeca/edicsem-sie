@@ -24,6 +24,9 @@ public abstract class BaseMantenimientoAbstractAction  {
 	
 	private final String DEFAULT_VIEW_LIST = "";
     private final String DEFAULT_VIEW_MANT = "";
+    
+    
+    
      
 	public String getViewList(){
         return DEFAULT_VIEW_LIST;
