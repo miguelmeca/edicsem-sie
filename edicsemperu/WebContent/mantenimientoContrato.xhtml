@@ -38,21 +38,23 @@
 				</p:selectOneMenu>
 				 
 				<h:outputText value="#{message['contrato.ubigeo.departamento']}"/>
-				<p:selectOneMenu size="1"   style="width:165px" requiredMessage="#{message['contrato.ubigeo.departamento.validation']}" >
+				<p:selectOneMenu size="1" value="#{contratoForm.idDepartamento}"  style="width:165px" requiredMessage="#{message['contrato.ubigeo.departamento.validation']}" >
 						<f:selectItem itemLabel="Seleccione Departamento" itemValue="#{null}" />
-						<f:selectItems value="#{comboAction.ubigeoItems}" />
+						<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
+						<p:ajax update="panel" listener="#{contratoForm.cambiar}" />
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['contrato.ubigeo.provincia']}"/>
-				<p:selectOneMenu size="1"   style="width:165px" requiredMessage="#{message['contrato.ubigeo.provincia.validation']}" >
+				<p:selectOneMenu size="1" value="#{contratoForm.idProvincia}"  style="width:165px" requiredMessage="#{message['contrato.ubigeo.provincia.validation']}" >
 						<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
-						<f:selectItems value="#{comboAction.empresaitems}" />
+						<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
+						<p:ajax update="panel" listener="#{contratoForm.cambiar2}" />
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['contrato.ubigeo.distrito']}"/>
-				<p:selectOneMenu size="1"   style="width:165px" requiredMessage="#{message['contrato.ubigeo.distrito.validation']}" >
+				<p:selectOneMenu size="1" value="#{contratoForm.idDistrito}"  style="width:165px" requiredMessage="#{message['contrato.ubigeo.distrito.validation']}" >
 						<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
-						<f:selectItems value="#{comboAction.empresaitems}" />
+						<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{msg.registro_referencia}" />

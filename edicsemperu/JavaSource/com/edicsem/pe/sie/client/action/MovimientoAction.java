@@ -214,7 +214,7 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 												 }
 											}
 										if(idproveedor!=0){	log.info("  idproveed ");
-										objcomprobante.setTbProveedor(objProveedorService.findProducto(idproveedor));
+										objcomprobante.setTbProveedor(objProveedorService.findProveedor(idproveedor));
 									}validado=true;
 										
 										}
@@ -286,7 +286,7 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 									
 								}
 							if(idproveedor!=0){	log.info("  idproveed ");
-							objcomprobante.setTbProveedor(objProveedorService.findProducto(idproveedor));
+							objcomprobante.setTbProveedor(objProveedorService.findProveedor(idproveedor));
 							}
 							}
 							

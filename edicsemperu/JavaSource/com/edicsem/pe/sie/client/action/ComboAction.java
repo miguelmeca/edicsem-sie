@@ -46,7 +46,7 @@ public class ComboAction {
 	private static FacesMessage msg = null;
 	private String mensaje;
 	private String codigoEstado;
-
+	private String idProvincia="",  idDepartamento="";
 	private Map<String, Integer> tipoitems = new HashMap<String, Integer>();
 	private Map<String, Integer> productositems = new HashMap<String, Integer>();
 	private Map<String, Integer> almacenItems = new HashMap<String, Integer>();
@@ -59,7 +59,9 @@ public class ComboAction {
 	private Map<String, Integer> proveedoritems = new HashMap<String, Integer>();
 	private Map<String, Integer> tipoKardexItems = new HashMap<String, Integer>();
 	private Map<String, Integer> tipocasaItems = new HashMap<String, Integer>();
-	private Map<String, Integer> ubigeoItems = new HashMap<String, Integer>();
+	private Map<String, String> ubigeoDeparItems = new HashMap<String, String>();
+	private Map<String, String> ubigeoProvinItems = new HashMap<String, String>();
+	private Map<String, Integer> ubigeoDistriItems = new HashMap<String, Integer>();
 	
 	@EJB
 	private AlmacenService objAlmacenService;
@@ -273,7 +275,7 @@ public class ComboAction {
 		List lista = new ArrayList<EmpresaSie>();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'getEstadoitems()'");
+				log.info("Entering my method 'getEmpresaitems()'");
 			}
 			lista = objEmpresaService.listarEmpresas();
 
@@ -301,21 +303,6 @@ public class ComboAction {
 	 */
 	public void setEmpresaitems(Map<String, Integer> empresaitems) {
 		this.empresaitems = empresaitems;
-	}
-
-	/**
-	 * @return the codigoEstado
-	 */
-	public String getCodigoEstado() {
-		return codigoEstado;
-	}
-
-	/**
-	 * @param codigoEstado
-	 *            the codigoEstado to set
-	 */
-	public void setCodigoEstado(String codigoEstado) {
-		this.codigoEstado = codigoEstado;
 	}
 
 	/* Combobox TipoDocumento */
@@ -504,20 +491,20 @@ public class ComboAction {
 		this.tipocasaItems = tipocasaItems;
 	}
 
-	public Map<String, Integer> getUbigeoItems() {
-		ubigeoItems = new HashMap<String, Integer>();
+	public Map<String, String> getUbigeoDeparItems() {
+		ubigeoDeparItems = new HashMap<String, String>();
 		List lista = new ArrayList<UbigeoSie>();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'getTipocasaItems()'");
+				log.info("Entering my method 'getUbigeoDeparItems()'");
 			}
 			lista = objUbigeoService.listarUbigeoDepartamentos();
 
 			for (int i = 0; i < lista.size(); i++) {
 				UbigeoSie entidad = new UbigeoSie();
 				entidad = (UbigeoSie) lista.get(i);
-				ubigeoItems.put(entidad.getNombre(),
-						entidad.getIdubigeo());
+				ubigeoDeparItems.put(entidad.getNombre(),
+						entidad.getCoddepartamento());
 			}
 
 		} catch (Exception e) {
@@ -528,11 +515,132 @@ public class ComboAction {
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		return ubigeoItems;
+		ubigeoProvinItems =  new HashMap<String, String>();
+		ubigeoDistriItems  =  new HashMap<String, Integer>();
+		return ubigeoDeparItems;
 	}
 
-	public void setUbigeoItems(Map<String, Integer> ubigeoItems) {
-		this.ubigeoItems = ubigeoItems;
+	public void setUbigeoDeparItems(Map<String, String> ubigeoDeparItems) {
+		this.ubigeoDeparItems = ubigeoDeparItems;
+	}
+
+	/**
+	 * @return the codigoEstado
+	 */
+	public String getCodigoEstado() {
+		return codigoEstado;
+	}
+
+	/**
+	 * @param codigoEstado
+	 *            the codigoEstado to set
+	 */
+	public void setCodigoEstado(String codigoEstado) {
+		this.codigoEstado = codigoEstado;
+	}
+
+	/**
+	 * @return the idProvincia
+	 */
+	public String getIdProvincia() {
+		return idProvincia;
+	}
+
+	/**
+	 * @param idProvincia the idProvincia to set
+	 */
+	public void setIdProvincia(String idProvincia) {
+		this.idProvincia = idProvincia;
+	}
+
+
+	/**
+	 * @return the ubigeoProvinItems
+	 */
+	public Map<String, String> getUbigeoProvinItems() {
+		ubigeoProvinItems = new HashMap<String, String>();
+		List lista = new ArrayList<UbigeoSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getUbigeoProvinItems()'");
+			}
+			lista = objUbigeoService.listarUbigeoProvincias( this.getIdDepartamento());
+
+			for (int i = 0; i < lista.size(); i++) {
+				UbigeoSie entidad = new UbigeoSie();
+				entidad = (UbigeoSie) lista.get(i);
+				ubigeoProvinItems.put(entidad.getNombre(),
+						entidad.getCodprovincia());
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		ubigeoDistriItems =  new HashMap<String, Integer>();
+		return ubigeoProvinItems;
+	}
+
+	/**
+	 * @param ubigeoProvinItems the ubigeoProvinItems to set
+	 */
+	public void setUbigeoProvinItems(Map<String, String> ubigeoProvinItems) {
+		this.ubigeoProvinItems = ubigeoProvinItems;
+	}
+
+	/**
+	 * @return the ubigeoDistriItems
+	 */
+	public Map<String, Integer> getUbigeoDistriItems() {
+		ubigeoDistriItems = new HashMap<String, Integer>();
+		List lista = new ArrayList<UbigeoSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getUbigeoDistriItems()'");
+			}
+			lista = objUbigeoService.listarUbigeoDistritos(this.getIdDepartamento(), this.getIdProvincia());
+
+			for (int i = 0; i < lista.size(); i++) {
+				UbigeoSie entidad = new UbigeoSie();
+				entidad = (UbigeoSie) lista.get(i);
+				ubigeoDistriItems.put(entidad.getNombre(),
+						entidad.getIdubigeo());
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		} 
+		return ubigeoDistriItems;
+	}
+
+	/**
+	 * @param ubigeoDistriItems the ubigeoDistriItems to set
+	 */
+	public void setUbigeoDistriItems(Map<String, Integer> ubigeoDistriItems) {
+		this.ubigeoDistriItems = ubigeoDistriItems;
+	}
+
+	/**
+	 * @return the idDepartamento
+	 */
+	public String getIdDepartamento() {
+		return idDepartamento;
+	}
+
+	/**
+	 * @param idDepartamento the idDepartamento to set
+	 */
+	public void setIdDepartamento(String idDepartamento) {
+		this.idDepartamento = idDepartamento;
 	}
 	
 }
