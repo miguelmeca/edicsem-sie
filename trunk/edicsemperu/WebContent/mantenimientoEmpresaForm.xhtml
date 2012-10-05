@@ -31,7 +31,7 @@
 				<td><p:selectOneMenu id="tipoestado"
 					value="#{empresaForm.estado}" required="true"
 					requiredMessage="#{message['mantenimiento.producto.tipo.validation']}">
-					<f:selectItem itemValue="-1" itemLabel="Seleccionar Estado" />
+					<f:selectItem itemValue="#{null}" itemLabel="Seleccionar Estado" />
 					<f:selectItems value="#{comboAction.estadoitems}" />
 				</p:selectOneMenu></td>
 			</tr>
