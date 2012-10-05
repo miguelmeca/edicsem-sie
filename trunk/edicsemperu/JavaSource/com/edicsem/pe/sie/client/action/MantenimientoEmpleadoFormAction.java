@@ -3,6 +3,7 @@ package com.edicsem.pe.sie.client.action;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
@@ -12,6 +13,7 @@ import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.service.facade.DomicilioEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
+import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
@@ -45,15 +47,22 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	private int estadoe;
     /*variable para confirmar contraseña*/
 	private String confcontra;
-    /*variable bolean necesaria*/
+	/*variable que capta el id del empleado*/
+	private int ide;
+	/*variable bolean necesaria*/
 	private boolean newRecord =false;
 		
+	@ManagedProperty(value = "#{mantenimientoEmpleadoSearchAction}")
+	private MantenimientoEmpleadoSearchAction mantenimientoEmpleadoSearch;
+	
 	@EJB 
 	private EmpleadoSieService objEmpleadoService;
 	@EJB 
 	private DomicilioEmpleadoService objDomicilioService;
 	@EJB 
 	private TelefonoEmpleadoService objTelefonoService;
+	@EJB 
+	private EstadogeneralService objEstadoService;
 	
 	public static Log log = LogFactory.getLog(MantenimientoEmpleadoFormAction.class);
 	
@@ -69,6 +78,66 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		objEmpleado = new EmpleadoSie();
 		objTelefono = new TelefonoPersonaSie();
 		objDomicilio = new DomicilioPersonaSie();
+	}
+	
+	/*método que sirve para deshabilitar al empleado*/
+	public String deshabilitar() throws Exception{
+		objEmpleado = new EmpleadoSie();
+		int parametroObtenido;
+		EmpleadoSie e = new EmpleadoSie();
+		DomicilioPersonaSie d= new DomicilioPersonaSie();
+		TelefonoPersonaSie t = new TelefonoPersonaSie();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'DESHABILITAR()'");
+			}
+			parametroObtenido = getIde();
+			log.info(" ------>>>>>>aqui captura el parametro ID "+ parametroObtenido);
+			e = objEmpleadoService.buscarEmpleado(parametroObtenido);
+			t = objTelefonoService.buscarTelefonoXIdempleado(parametroObtenido);
+			d = objDomicilioService.buscarDomicilioXIdempleado(parametroObtenido);
+		    log.info(" empleado------ID y nombre>" + e.getIdempleado() + " "+ e.getNombreemp());
+		    log.info(" telefono------ID y telefono>" + t.getIdtelefonopersona() + " "+ t.getTelefono());
+		    log.info(" domicilio------ID y direccion>" + d.getIddomiciliopersona() + " "+ d.getDomicilio());
+			/*seteo empleado*/
+		    objEmpleado.setIdempleado(e.getIdempleado());
+			objEmpleado.setNombreemp(e.getNombreemp());
+	        objEmpleado.setApepatemp(e.getApepatemp());
+	        objEmpleado.setApematemp(e.getApematemp());
+	        objEmpleado.setUsuario(e.getUsuario());
+	        objEmpleado.setContrasena(e.getContrasena());
+	        setTipoDocumento(e.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad());
+	        objEmpleado.setNumdocumento(e.getNumdocumento());
+	        setCargoEmpleado(e.getTbCargoEmpleado().getIdcargoempleado());
+	        objEmpleado.setFechanacimiento(e.getFechanacimiento());
+	        setEstadoe(4);
+	        /*seteo domicilio*/
+	        objDomicilio.setIddomiciliopersona(d.getIddomiciliopersona());
+	        setDireccion(d.getDomicilio());
+	        setTipo(d.getTbTipoCasa().getIdtipocasa());
+	        setUbigeo(d.getTbUbigeo().getIdubigeo());
+	        setEstado2(d.getTbEstadoGeneral().getIdestadogeneral());
+	        /*seteo telefono*/
+	        objTelefono.setIdtelefonopersona(t.getIdtelefonopersona());
+	        setFijo(t.getTelefono());
+	        setEstado(t.getTbEstadoGeneral().getIdestadogeneral());
+			log.info("-----Id estado del empleado>>>"	+ getEstadoe());
+			log.info("actualizando ESTADO..... ");
+			objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, objTelefono, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
+					estado, direccion,  ubigeo,  estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
+					TipoDocumento, codigoEmpleado, estadoe);
+			log.info("actualizando..... ");
+			log.info("deshabilitando..... ");
+		} catch (Exception e2) {
+			e2.printStackTrace();
+			nombre = e2.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, nombre);
+			log.error(e2.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		objEmpleado = new EmpleadoSie();
+		return mantenimientoEmpleadoSearch.listar();
 	}
 	
 	/*método que sirve para encriptar en MD5*/
@@ -98,12 +167,24 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	} 
 		 	
 	/*método que se ejecuta haciendo click en el link NUEVO de la lista*/
-	public String addNewRecord() throws Exception {
+	public String agregar() {
 		log.info("insertar");
+		setTipoDocumento(0);
+		setCargoEmpleado(0);
+		setEstadoe(0);
+		objEmpleado = new EmpleadoSie();
+		setFijo("");
+		setEstado(0);
+		objTelefono = new TelefonoPersonaSie();
+		setDireccion("");
+		setUbigeo(0);
+		setTipo(0);
+		setEstado2(0);
+		objDomicilio = new DomicilioPersonaSie();
 		setNewRecord(true);
 		return getViewMant();
 	}
-	
+
 	/*método que se ejecuta al hacer click en el botón EDITAR de la lista*/
 	public String update() throws Exception {
 	    log.info("actualizar");
@@ -179,7 +260,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 		objEmpleado = new EmpleadoSie();
-		return getViewList();
+		return mantenimientoEmpleadoSearch.listar();
 	   }
 		else{
 		msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_PASSWORDS_DESIGUALES, "algo");
@@ -471,5 +552,48 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	public void setConfcontra(String confcontra) {
 		this.confcontra = confcontra;
 	}
-		
+	
+	/**
+	 * @return the idp
+	 */
+	public int getIde() {
+		return ide;
+	}
+
+	/**
+	 * @param idp the idp to set
+	 */
+	public void setIde(int ide) {
+		this.ide = ide;
+	}
+
+	/**
+	 * @return the log
+	 */
+	public static Log getLog() {
+		return log;
+	}
+
+	/**
+	 * @param log the log to set
+	 */
+	public static void setLog(Log log) {
+		MantenimientoEmpleadoSearchAction.log = log;
+	}
+
+	/**
+	 * @return the mantenimientoEmpleadoSearch
+	 */
+	public MantenimientoEmpleadoSearchAction getMantenimientoEmpleadoSearch() {
+		return mantenimientoEmpleadoSearch;
+	}
+
+	/**
+	 * @param mantenimientoEmpleadoSearch the mantenimientoEmpleadoSearch to set
+	 */
+	public void setMantenimientoEmpleadoSearch(
+			MantenimientoEmpleadoSearchAction mantenimientoEmpleadoSearch) {
+		this.mantenimientoEmpleadoSearch = mantenimientoEmpleadoSearch;
+	}
+	
 }
