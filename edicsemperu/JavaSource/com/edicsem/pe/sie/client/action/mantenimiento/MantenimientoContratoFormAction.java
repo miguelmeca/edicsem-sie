@@ -14,6 +14,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.entity.ClienteSie;
+import com.edicsem.pe.sie.entity.CobranzaSie;
 import com.edicsem.pe.sie.entity.ContratoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
@@ -37,7 +38,8 @@ public class MantenimientoContratoFormAction extends
 	private DomicilioPersonaSie objDomicilioSie;
 	private ContratoSie objContratoSie;
 	private ProductoSie selectedProducto;
-	private boolean editMode;
+	private CobranzaSie objCobranzaSie;
+	private boolean defectoUbigeo;
 	private boolean newRecord = false;
 	
 	@ManagedProperty(value = "#{productoSearch}")
@@ -53,9 +55,17 @@ public class MantenimientoContratoFormAction extends
 		objProductoSie = new ProductoSie();
 		objDomicilioSie = new DomicilioPersonaSie();
 		objClienteSie = new ClienteSie();
-		editMode=true;
+		objCobranzaSie = new CobranzaSie();
+		defectoUbigeo=true;
 	}
-
+	
+	public void cambioUbigeoDefecto() {
+		 if(defectoUbigeo)
+		log.info(" defecto lima " );
+		 else
+			 log.info(" cambio ubigeo " );
+	}
+ 
 	public void cambiar() {
 		comboManager.setIdDepartamento(getIdDepartamento());
 		comboManager.setIdProvincia(null);
@@ -151,22 +161,7 @@ public class MantenimientoContratoFormAction extends
 		log.info("en el consultar ");
 		return getViewMant();
 	}
-
-	/**
-	 * @return the editMode
-	 */
-	public boolean isEditMode() {
-		return editMode;
-	}
-
-	/**
-	 * @param editMode
-	 *            the editMode to set
-	 */
-	public void setEditMode(boolean editMode) {
-		this.editMode = editMode;
-	}
-
+ 
 	public ProductoSie getSelectedProducto() {
 		return selectedProducto;
 	}
@@ -199,7 +194,7 @@ public class MantenimientoContratoFormAction extends
 	 * #getViewList()
 	 */
 	public String getViewList() {
-		return Constants.MANT_PRODUCTO_FORM_PAGE;
+		return "mantenimientoContrato";
 	}
 
 	/*
@@ -357,4 +352,31 @@ public class MantenimientoContratoFormAction extends
 		this.objDomicilioSie = objDomicilioSie;
 	}
 
+	/**
+	 * @return the objCobranzaSie
+	 */
+	public CobranzaSie getObjCobranzaSie() {
+		return objCobranzaSie;
+	}
+
+	/**
+	 * @param objCobranzaSie the objCobranzaSie to set
+	 */
+	public void setObjCobranzaSie(CobranzaSie objCobranzaSie) {
+		this.objCobranzaSie = objCobranzaSie;
+	}
+
+	/**
+	 * @return the defectoUbigeo
+	 */
+	public boolean isDefectoUbigeo() {
+		return defectoUbigeo;
+	}
+
+	/**
+	 * @param defectoUbigeo the defectoUbigeo to set
+	 */
+	public void setDefectoUbigeo(boolean defectoUbigeo) {
+		this.defectoUbigeo = defectoUbigeo;
+	}
 }
