@@ -50,9 +50,11 @@ public class EmpresaDAOImpl implements EmpresaDAO {
 			if (log.isInfoEnabled()) {
 				log.info("Actualizar Empresa");
 			}
-			EmpresaSie bean = findEmpresa(empresa.getIdempresa());
-			
-			em.merge(bean);
+
+			log.info("BeanEmpresaDaoImpl" + empresa.getDescripcion()+ " " + empresa.getEmail()
+					+ " " + empresa.getNumtelefono());
+			em.merge(empresa);
+			log.info("---despues del merge ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -68,6 +70,8 @@ public class EmpresaDAOImpl implements EmpresaDAO {
 				log.info("buscar Empresa");
 			}
 			empresa = em.find(EmpresaSie.class, id);
+			
+			log.info(" EMpresa DAOIMPL " + empresa.getDescripcion());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -80,9 +84,9 @@ public class EmpresaDAOImpl implements EmpresaDAO {
 	public List<EmpresaSie> listarEmpresas() {
 		List<EmpresaSie> lista = null;
 		try {
-			Query q = em.createQuery("select p from EmpresaSie p");
+			Query q = em.createQuery("select p from EmpresaSie p  where p.tbEstadoGeneral.idestadogeneral = "+ 7);
 			lista = q.getResultList();
-			System.out.println("tamaño lista Empresas --> " + lista.size());
+			log.info("DAOIMPL tamaño de lista de empresa--->" + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
