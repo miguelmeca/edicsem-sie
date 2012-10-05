@@ -7,33 +7,113 @@
 	<ui:define name="body">
 		<h1 class="title ui-widget-header ui-corner-all">Lista de
 			Empresas</h1>
-		<h:form id="frmEmpresaFormList">
+			
+		<h:form id="frmEmpresaFormList" prependId="false">
+		<p:growl id="message" showDetail="true" />	
 		
-			<p:commandButton value="Agregar" action="#{empresaForm.agregar}" ajax="false" />
-			<p:commandButton value="Listar" action="#{empresaSearch.listar}" ajax="false" />
+			
 			<p:dataTable value="#{empresaSearch.empresaList}" var="empresa"
-				paginator="true" rows="10" id="empresaTable">
+				id="empresaTable" paginator="true" rows="10" >
 
 				<f:facet name="header">  
+				
             		<h:outputLabel value="#{message['lista.mantenimiento.empresa.titulo']}" />  
         		</f:facet>
+				
+				<p:column headerText="razonsocial"  id="razonsocial" sortBy="#{empresa.razonsocial}" filterBy="#{empresa.razonsocial}">
+				  
+						<h:outputText value="#{empresa.razonsocial}" />
+											 
+				</p:column>				
+				
+				
+        		<p:column headerText="descripcion"  id="descripcion" sortBy="#{empresa.descripcion}" filterBy="#{empresa.descripcion}">
+				  
+						<h:outputText value="#{empresa.descripcion}" />
+											 
+				</p:column>		
+				
+			
+        		<p:column headerText="N° de RUC"  id="numruc" sortBy="#{empresa.numruc}" filterBy="#{empresa.numruc}">
+				  
+						<h:outputText value="#{empresa.numruc}" />
+											 
+				</p:column>	
+        	
+        		
+        		
+        		
+        		<p:column headerText="N° Telefonico"  id="numtelefono" sortBy="#{empresa.numtelefono}"  filterBy="#{empresa.numtelefono}">
+				  
+						<h:outputText value="#{empresa.numtelefono}" />
+											 
+				</p:column>	
+				
+				
+				
+				
+				<p:column headerText="Email"  id="email" sortBy="#{empresa.email}"  filterBy="#{empresa.email}">
+				  
+						<h:outputText value="#{empresa.email}" />
+											 
+				</p:column>	
+				
+        		
+        		<!--********** BOTON EDITAR **********-->
+		
+	<p:column headerText="Editar">
+	
+			<p:commandButton value="Editar"   oncomplete="carDialogNuevaempresa.show()"
+								action="#{empresaForm.update}"
+			                    update=":NuevoModificaempresa:display"
+			                    icon="ui-icon ui-icon-pencil"
+			                    
+			  >
+			                    
+			<f:setPropertyActionListener value="#{empresa}" 
+			 target="#{empresaForm.objEmpresaSie}" />
+			 
+			</p:commandButton>
+					
+	</p:column>
+ 
+ <!--**********FIN EDITAR**********-->
+ 
+        		<!--**********INICIO 	DESACTIVAR**********-->
 
-				<p:column headerText="#{message['mantenimiento.empresa.razonSocial']}" 
-					sortBy="#{empresa.razonsocial}"  id="razonSocial">  
-            			#{empresa.razonsocial}
-        		</p:column>
+		<p:column headerText="Deshabilitar">
+	
+	 			<p:commandButton id="showConfirmDeshabilitarEmpresa" value="Eliminar"  icon="ui-icon ui-icon-close"
+	 			
+	 							onclick="confirmationEmpresa.show()"> 
+	 							
+<f:setPropertyActionListener value="#{empresa.idempresa}" 	target="#{empresaForm.ide}" />
 
-				<p:column headerText="#{message['mantenimiento.empresa.numeroTelefono']}" 
-						sortBy="#{empresa.numtelefono}" id="numeroRuc">  
-            			#{empresa.numtelefono}  
-        		</p:column>
+				</p:commandButton>
+				
+		</p:column>
+		
+		<f:facet name="footer">
+<div align="left">
+		
+		<!--********** BOTON NUEVO **********-->
+		
+		
+		<p:commandLink value="Nueva Empresa"  update=":NuevoModificaempresa:display" 
+				
+				action="#{empresaForm.agregar}"
+				oncomplete="carDialogNuevaempresa.show()" 	title="Ingresar la Nueva Empresa"
+				
+>
+</p:commandLink>
+</div>
 
-				<p:column headerText="#{message['mantenimiento.empresa.email']}" 
-					sortBy="#{empresa.email}" id="email">  
-            			#{empresa.email}
-        		</p:column>
-						
+
+</f:facet>
+
+						<!--**********FIN 	DESACTIVAR**********-->	
 			</p:dataTable>
+			
 		</h:form>
 	</ui:define>
 </ui:composition>
