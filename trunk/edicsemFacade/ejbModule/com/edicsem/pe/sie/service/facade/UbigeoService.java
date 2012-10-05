@@ -15,5 +15,6 @@ public interface UbigeoService {
 	public abstract void eliminarUbigeo(int id);
 	public abstract UbigeoSie findUbigeo(int id);
 	public abstract List  listarUbigeoDepartamentos(); 
-	
+	public abstract List  listarUbigeoProvincias( String idDepartamento);
+	public abstract List  listarUbigeoDistritos( String idDepartamento, String idProvincia); 
 }

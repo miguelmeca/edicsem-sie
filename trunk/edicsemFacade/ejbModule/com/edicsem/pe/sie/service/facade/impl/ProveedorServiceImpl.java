@@ -28,9 +28,9 @@ public class ProveedorServiceImpl implements ProveedorService {
 	 * @see com.edicsem.pe.sie.service.facade.ProveedorService#findProducto(int)
 	 */
 	
-	public ProveedorSie findProducto(int id) {
+	public ProveedorSie findProveedor(int id) {
 		
-		return objProveedorDao.findProducto(id);
+		return objProveedorDao.findProveedor(id);
 	}
 	
 }

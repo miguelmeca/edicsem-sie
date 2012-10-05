@@ -42,11 +42,7 @@ public class ContratoServiceImpl implements ContratoService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ContratoService#listarContratos()
 	 */
-	
 	public List listarContratos() {
 		return objContratoDao.listarContratos();
 	}
-	
-	
-	
 }
