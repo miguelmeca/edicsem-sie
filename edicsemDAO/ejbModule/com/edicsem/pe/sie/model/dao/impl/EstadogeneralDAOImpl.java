@@ -9,6 +9,7 @@ import javax.persistence.Query;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import com.edicsem.pe.sie.entity.EstadoGeneralSie;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
 
@@ -70,17 +71,6 @@ public class EstadogeneralDAOImpl implements EstadoGeneralDAO {
 	
 
 
-	
-	public void eliminarEstadogeneral(EstadoGeneralSie estadogeneral) {
-		// TODO Auto-generated method stub
-		
-	}
-
-   
-	public void eliminarEstadogeneral(int id) {
-		// TODO Auto-generated method stub
-		
-	}
 
  
 	public EstadoGeneralSie findEstadoGeneral(int id) {
@@ -102,11 +92,22 @@ public class EstadogeneralDAOImpl implements EstadoGeneralDAO {
 		try {
 			Query q = em.createQuery("select p from EstadoGeneralSie p where p.codestadogeneral  like  '%"+ codigo + "%'");
 			lista =  q.getResultList(); 
-		   System.out.println("tamaño lista EstadoGeneral  --> " + lista.size()+"  ");
+		   System.out.println("tamaño lista EstadoGeneral  --> " + lista.size()+"  "+codigo);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return lista;
+	}
+	
+	public void eliminarEstadogeneral(EstadoGeneralSie estadogeneral) {
+		// TODO Auto-generated method stub
+		
+	}
+
+   
+	public void eliminarEstadogeneral(int id) {
+		// TODO Auto-generated method stub
+		
 	}
   
 }
