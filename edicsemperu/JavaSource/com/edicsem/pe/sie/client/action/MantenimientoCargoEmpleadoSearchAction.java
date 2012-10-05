@@ -39,8 +39,7 @@ public class MantenimientoCargoEmpleadoSearchAction extends	BaseMantenimientoAbs
 
 	public List<CargoEmpleadoSie> getCargoEmpleadomodel() throws Exception {
 		return CargoEmpleadomodel;
-
-	}
+    }
 
 	public void init() {
 		log.info("init()");
