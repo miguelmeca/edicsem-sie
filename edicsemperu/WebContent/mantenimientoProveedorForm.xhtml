@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h:form id="form">
+	<p:panel header="Registrar Proveedor"  id="panel">
+	        <p:growl/>	
+			<p:panelGrid columns="2" cellpadding="5">						
+			<p:outputLabel value="#{message['proveedor.codigo']}" for="codigo" />
+			<p:inputText id="codigo" value="#{mantenimientoProveedorFormAction.objProveedor.codproveedor}" required="true" label="Codigo" 
+			requiredMessage="#{message['proveedor.codigo.validation']}"/>
+			<p:outputLabel value="#{message['proveedor.empresa']}" for="empresa" />
+			<p:inputText id="empresa" value="#{mantenimientoProveedorFormAction.objProveedor.nombreempresa}" required="true" label="Empresa"
+			requiredMessage="#{message['proveedor.empresa.validation']}"/>
+			<p:outputLabel value="#{message['proveedor.contacto']}" for="contacto" />
+			<p:inputText id="contacto" value="#{mantenimientoProveedorFormAction.objProveedor.personacontacto}" required="true" label="Contacto"
+			requiredMessage="#{message['proveedor.contacto.validation']}"/>						
+			<p:outputLabel for="tipo" value="Tipo de Doc. :" styleClass="textoAzulFuerteGrande" id="tipoL"/>
+            <p:selectOneMenu id="tipo" value="#{mantenimientoProveedorFormAction.tipoDocumento}" styleClass="required" title="El tipo es obligatorio!" >
+            <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
+            <f:selectItems  value="#{comboAction.tipoDocumentoitems}" />
+            </p:selectOneMenu>
+            <p:outputLabel value="#{message['proveedor.nrodoc']}" for="nrodoc" />
+			<p:inputText id="nrodoc" value="#{mantenimientoProveedorFormAction.objProveedor.numdocumentoproveedor}" required="true" label="Nro del documento"
+			requiredMessage="#{message['proveedor.nrodoc.validation']}"/>                    
+			<p:outputLabel value="#{message['proveedor.direccion']}" for="direccion" />
+			<p:inputText id="direccion" value="#{mantenimientoProveedorFormAction.objProveedor.direccion}" required="true" label="Direccion"
+			requiredMessage="#{message['proveedor.direccion.validation']}"/>             
+            
+		    <f:facet name="footer">
+            <p:commandButton id="btn" value="Guardar" update="panel" action="#{mantenimientoProveedorFormAction.insertar}" ajax="false" icon="ui-icon-check"/>
+            </f:facet>				
+		</p:panelGrid>	
+	</p:panel>	            
+</h:form>
+	</ui:define>
+</ui:composition>
