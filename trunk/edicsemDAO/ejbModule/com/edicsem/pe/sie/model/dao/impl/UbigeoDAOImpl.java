@@ -19,16 +19,19 @@ import com.edicsem.pe.sie.model.dao.EmpresaDAO;
 import com.edicsem.pe.sie.model.dao.UbigeoDAO;
 import com.edicsem.pe.sie.model.dao.ProductoDAO;
 
-
 @Stateless
 public class UbigeoDAOImpl implements UbigeoDAO {
 
 	@PersistenceContext(name = "edicsemJPASie")
 	private EntityManager em;
 	private static Log log = LogFactory.getLog(UbigeoDAOImpl.class);
-	
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.UbigeoDAO#insertUbigeo(com.edicsem.pe.sie.entity.UbigeoSie)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.edicsem.pe.sie.model.dao.UbigeoDAO#insertUbigeo(com.edicsem.pe.sie
+	 * .entity.UbigeoSie)
 	 */
 	public void insertUbigeo(UbigeoSie ubigeo) {
 		try {
@@ -40,10 +43,13 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 			e.printStackTrace();
 		}
 	}
-	
-	 
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.UbigeoDAO#updateUbigeo(com.edicsem.pe.sie.entity.UbigeoSie)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.edicsem.pe.sie.model.dao.UbigeoDAO#updateUbigeo(com.edicsem.pe.sie
+	 * .entity.UbigeoSie)
 	 */
 	public void updateUbigeo(UbigeoSie ubigeo) {
 		try {
@@ -56,47 +62,95 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.edicsem.pe.sie.model.dao.UbigeoDAO#eliminarUbigeo(int)
 	 */
 	public void eliminarUbigeo(int id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
- 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.edicsem.pe.sie.model.dao.UbigeoDAO#findUbigeo(int)
 	 */
 	public UbigeoSie findUbigeo(int id) {
-		UbigeoSie u= new UbigeoSie();
+		UbigeoSie u = new UbigeoSie();
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("buscar Ubigeo");
-			} 
-		u=	em.find(UbigeoSie.class, id);
+			}
+			u = em.find(UbigeoSie.class, id);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		return u;
 	}
 
-
-	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.edicsem.pe.sie.model.dao.UbigeoDAO#listarUbigeoDepartamentos()
 	 */
 	public List listarUbigeoDepartamentos() {
-		
-		List  lista = null;
+
+		List lista = null;
 		try {
+
 			Query q = em.createQuery("select p from UbigeoSie p where p.codprovincia ='00' and p.coddistrito ='00' ");
-			lista =  q.getResultList(); 
-		   System.out.println("tamaño lista Ubigeo  --> " + lista.size()+"  ");
+			lista = q.getResultList();
+			System.out.println("tamaño lista Ubigeo  --> " + lista.size()+ "  ");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return lista;
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.edicsem.pe.sie.model.dao.UbigeoDAO#listarUbigeoProvincias(java.lang
+	 * .String)
+	 */
+
+	public List listarUbigeoProvincias(String idDepartamento) {
+		List lista = null;
+		try {
+			Query q = em
+					.createQuery("select p from UbigeoSie p where  p.coddepartamento = '" + idDepartamento + "' ");
+			lista = q.getResultList();
+			System.out.println("tamaño lista Ubigeo Provincias  --> " + lista.size() + "  "+idDepartamento);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.edicsem.pe.sie.model.dao.UbigeoDAO#listarUbigeoDistritos(java.lang
+	 * .String, java.lang.String)
+	 */
+
+	public List listarUbigeoDistritos(String idDepartamento, String idProvincia) {
+		List lista = null;
+		try {
+			Query q = em.createQuery("select p from UbigeoSie p where  p.coddepartamento = '"
+							+ idDepartamento + "'  " + " and p.codprovincia = '" + idProvincia + "' ");
+			lista = q.getResultList();
+			System.out.println("tamaño lista Ubigeo  Distritos --> "
+					+ lista.size() + "  "+idProvincia);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+
 }

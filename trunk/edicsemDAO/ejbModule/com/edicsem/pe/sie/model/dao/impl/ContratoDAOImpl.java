@@ -71,21 +71,20 @@ public class ContratoDAOImpl implements ContratoDAO{
 		return contrato;
 	}
 
+	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.ContratoDAO#listarContratos()
 	 */
-	
 	public List listarContratos() {
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from ContratoSie p");
+			Query q = em.createQuery("select p from ContratoSie p ");
 			lista =  q.getResultList(); 
 		   System.out.println("tamaño lista Contrato --> " + lista.size()+"  ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return lista;
-	}
-	
+	}	
 	
 }
