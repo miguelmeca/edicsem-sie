@@ -40,12 +40,6 @@ public class MetaEmpresaSie implements Serializable {
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
 
-    @Temporal( TemporalType.DATE)
-	private Date fechafin;
-
-    @Temporal( TemporalType.DATE)
-	private Date fechainicio;
-
 	private Timestamp fechamodifica;
 
 	private String usuariocreacion;
@@ -88,22 +82,6 @@ public class MetaEmpresaSie implements Serializable {
 
 	public void setFechacreacion(Timestamp fechacreacion) {
 		this.fechacreacion = fechacreacion;
-	}
-
-	public Date getFechafin() {
-		return this.fechafin;
-	}
-
-	public void setFechafin(Date fechafin) {
-		this.fechafin = fechafin;
-	}
-
-	public Date getFechainicio() {
-		return this.fechainicio;
-	}
-
-	public void setFechainicio(Date fechainicio) {
-		this.fechainicio = fechainicio;
 	}
 
 	public Timestamp getFechamodifica() {
