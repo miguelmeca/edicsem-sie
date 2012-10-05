@@ -72,7 +72,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 	public String update() throws Exception {
 		log.info("update()" + objCargoEmpleadoSie.getIdcargoempleado());
 		CargoEmpleadoSie c = objCargoEmpleadoService.buscarCargoEmpleado(objCargoEmpleadoSie.getIdcargoempleado());
-		log.info(" id cargo " + c.getIdcargoempleado() + " des "+ c.getDescripcion());
+		log.info(" id cargo " + c.getIdcargoempleado() + " des "+ c.getDescripcion());		
 		setIdcargoempleado(c.getIdcargoempleado().toString());
 		setDescripcion(c.getDescripcion());
 		setIdEstadoGeneral(c.getTbEstadoGeneral().getIdestadogeneral());
@@ -98,8 +98,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 				List<CargoEmpleadoSie> lista = mantenimientoCargoEmpleadoSearch.getCargoEmpleadomodel();
 				for (int i = 0; i < lista.size(); i++) {
 					CargoEmpleadoSie a = lista.get(i);
-					if (a.getDescripcion().equalsIgnoreCase(
-							objCargoEmpleadoSie.getDescripcion())) {
+					if (a.getDescripcion().equalsIgnoreCase(objCargoEmpleadoSie.getDescripcion())) {
 						log.info("Error ... Ya se encuentra un cargo igual");
 						error = 1;
 						break;
@@ -125,8 +124,8 @@ public class MantenimientoCargoEmpleadoFormAction extends
 						+ objCargoEmpleadoSie.getTbEstadoGeneral().getIdestadogeneral()+ objCargoEmpleadoSie.getDescripcion());
 				log.info("actualizando..... ");
 
-				objCargoEmpleadoService.actualizarCargoEmpleado(objCargoEmpleadoSie);
-				log.info("actualizando..... ");
+				objCargoEmpleadoService.actualizarCargoEmpleado(objCargoEmpleadoSie);				
+				log.info("actualizando..... ");				
 				log.info("objCargoEmpleadoSie.isNewRecord() : ");
 			}
 		} catch (Exception e) {
