@@ -13,6 +13,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.client.action.ComboAction;
+import com.edicsem.pe.sie.entity.ClienteSie;
+import com.edicsem.pe.sie.entity.ContratoSie;
+import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
@@ -30,6 +33,9 @@ public class MantenimientoContratoFormAction extends
 	private int Tipocasa,idempresa;
 	private String idProvincia,idDepartamento, idDistrito;
 	private ProductoSie objProductoSie;
+	private ClienteSie objClienteSie;
+	private DomicilioPersonaSie objDomicilioSie;
+	private ContratoSie objContratoSie;
 	private ProductoSie selectedProducto;
 	private boolean editMode;
 	private boolean newRecord = false;
@@ -45,11 +51,16 @@ public class MantenimientoContratoFormAction extends
 	public void init() {
 		log.info("init()");
 		objProductoSie = new ProductoSie();
+		objDomicilioSie = new DomicilioPersonaSie();
+		objClienteSie = new ClienteSie();
 		editMode=true;
 	}
 
 	public void cambiar() {
 		comboManager.setIdDepartamento(getIdDepartamento());
+		comboManager.setIdProvincia(null);
+		idProvincia=null;
+		idDistrito = null;
 		log.info("cambiar   :D  --- " );
 	}
 	
@@ -302,6 +313,48 @@ public class MantenimientoContratoFormAction extends
 	 */
 	public void setIdDistrito(String idDistrito) {
 		this.idDistrito = idDistrito;
+	}
+
+	/**
+	 * @return the objContratoSie
+	 */
+	public ContratoSie getObjContratoSie() {
+		return objContratoSie;
+	}
+
+	/**
+	 * @param objContratoSie the objContratoSie to set
+	 */
+	public void setObjContratoSie(ContratoSie objContratoSie) {
+		this.objContratoSie = objContratoSie;
+	}
+
+	/**
+	 * @return the objClienteSie
+	 */
+	public ClienteSie getObjClienteSie() {
+		return objClienteSie;
+	}
+
+	/**
+	 * @param objClienteSie the objClienteSie to set
+	 */
+	public void setObjClienteSie(ClienteSie objClienteSie) {
+		this.objClienteSie = objClienteSie;
+	}
+
+	/**
+	 * @return the objDomicilioSie
+	 */
+	public DomicilioPersonaSie getObjDomicilioSie() {
+		return objDomicilioSie;
+	}
+
+	/**
+	 * @param objDomicilioSie the objDomicilioSie to set
+	 */
+	public void setObjDomicilioSie(DomicilioPersonaSie objDomicilioSie) {
+		this.objDomicilioSie = objDomicilioSie;
 	}
 
 }
