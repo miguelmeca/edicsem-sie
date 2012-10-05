@@ -10,14 +10,8 @@ import javax.persistence.Query;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.edicsem.pe.sie.entity.EmpresaSie;
-import com.edicsem.pe.sie.entity.EstadoGeneralSie;
-import com.edicsem.pe.sie.entity.ProductoSie;
-import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
-import com.edicsem.pe.sie.model.dao.EmpresaDAO;
 import com.edicsem.pe.sie.model.dao.UbigeoDAO;
-import com.edicsem.pe.sie.model.dao.ProductoDAO;
 
 @Stateless
 public class UbigeoDAOImpl implements UbigeoDAO {
@@ -100,7 +94,7 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 		List lista = null;
 		try {
 
-			Query q = em.createQuery("select p from UbigeoSie p where p.codprovincia ='00' and p.coddistrito ='00' ");
+			Query q = em.createQuery("select p from UbigeoSie p where p.codprovincia ='00' and p.coddistrito ='00' order by p.nombre asc ");
 			lista = q.getResultList();
 			System.out.println("tamaño lista Ubigeo  --> " + lista.size()+ "  ");
 			
@@ -117,12 +111,11 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 	 * com.edicsem.pe.sie.model.dao.UbigeoDAO#listarUbigeoProvincias(java.lang
 	 * .String)
 	 */
-
 	public List listarUbigeoProvincias(String idDepartamento) {
 		List lista = null;
 		try {
 			Query q = em
-					.createQuery("select p from UbigeoSie p where  p.coddepartamento = '" + idDepartamento + "' ");
+					.createQuery("select p from UbigeoSie p where  p.coddepartamento = '" + idDepartamento + "'  order by p.nombre asc");
 			lista = q.getResultList();
 			System.out.println("tamaño lista Ubigeo Provincias  --> " + lista.size() + "  "+idDepartamento);
 		} catch (Exception e) {
@@ -143,10 +136,10 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 		List lista = null;
 		try {
 			Query q = em.createQuery("select p from UbigeoSie p where  p.coddepartamento = '"
-							+ idDepartamento + "'  " + " and p.codprovincia = '" + idProvincia + "' ");
+							+ idDepartamento + "'  " + " and p.codprovincia = '" + idProvincia + "'  order by p.nombre asc");
 			lista = q.getResultList();
 			System.out.println("tamaño lista Ubigeo  Distritos --> "
-					+ lista.size() + "  "+idProvincia);
+					+ lista.size() + "  "+idProvincia+"- "+ idDepartamento);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
