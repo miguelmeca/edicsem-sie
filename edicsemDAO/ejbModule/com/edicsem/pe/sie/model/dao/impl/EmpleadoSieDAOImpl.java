@@ -95,7 +95,7 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 	public List listarEmpleados() {
 		List lista = null;
 		try {
-			Query q = em.createQuery("select p from EmpleadoSie p");
+			Query q = em.createQuery("select p from EmpleadoSie p where p.tbEstadoGeneral.idestadogeneral = "+3);
 			lista = q.getResultList();
 			System.out.println("tamaño lista Empleados --> " + lista.size());
 		} catch (Exception e) {
