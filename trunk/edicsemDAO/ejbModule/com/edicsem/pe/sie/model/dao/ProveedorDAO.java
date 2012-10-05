@@ -11,5 +11,5 @@ import com.edicsem.pe.sie.entity.ProveedorSie;
 public interface ProveedorDAO {
 	
 	public abstract List  listarProveedores();
-	public abstract ProveedorSie findProducto (int id);
+	public abstract ProveedorSie findProveedor (int id);
 }
