@@ -3,7 +3,6 @@ package com.edicsem.pe.sie.client.action.mantenimiento;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -15,7 +14,6 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.entity.ProductoSie;
-import com.edicsem.pe.sie.service.facade.ContratoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
@@ -30,6 +28,7 @@ public class MantenimientoContratoFormAction extends
 	private String mensaje;
 	public static Log log = LogFactory.getLog(MantenimientoContratoFormAction.class);
 	private int Tipocasa,idempresa;
+	private String idProvincia,idDepartamento, idDistrito;
 	private ProductoSie objProductoSie;
 	private ProductoSie selectedProducto;
 	private boolean editMode;
@@ -38,9 +37,6 @@ public class MantenimientoContratoFormAction extends
 	@ManagedProperty(value = "#{productoSearch}")
 	private MantenimientoProductoSearchAction productoSearch;
 	
-	@EJB
-	private ContratoService objContratoService;
-
 	public MantenimientoContratoFormAction() {
 		log.info("inicializando constructor MantenimientoProducto");
 		init();
@@ -52,6 +48,16 @@ public class MantenimientoContratoFormAction extends
 		editMode=true;
 	}
 
+	public void cambiar() {
+		comboManager.setIdDepartamento(getIdDepartamento());
+		log.info("cambiar   :D  --- " );
+	}
+	
+	public void cambiar2() {
+		comboManager.setIdDepartamento(getIdDepartamento());
+		comboManager.setIdProvincia(getIdProvincia());
+		log.info("cambiar 2  :D  --- " );
+	}
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -254,6 +260,48 @@ public class MantenimientoContratoFormAction extends
 
 	public void setIdempresa(int idempresa) {
 		this.idempresa = idempresa;
+	}
+
+	/**
+	 * @return the idProvincia
+	 */
+	public String getIdProvincia() {
+		return idProvincia;
+	}
+
+	/**
+	 * @param idProvincia the idProvincia to set
+	 */
+	public void setIdProvincia(String idProvincia) {
+		this.idProvincia = idProvincia;
+	}
+
+	/**
+	 * @return the idDepartamento
+	 */
+	public String getIdDepartamento() {
+		return idDepartamento;
+	}
+
+	/**
+	 * @param idDepartamento the idDepartamento to set
+	 */
+	public void setIdDepartamento(String idDepartamento) {
+		this.idDepartamento = idDepartamento;
+	}
+
+	/**
+	 * @return the idDistrito
+	 */
+	public String getIdDistrito() {
+		return idDistrito;
+	}
+
+	/**
+	 * @param idDistrito the idDistrito to set
+	 */
+	public void setIdDistrito(String idDistrito) {
+		this.idDistrito = idDistrito;
 	}
 
 }
