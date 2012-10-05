@@ -44,11 +44,11 @@ public class ProveedorDAOImpl implements ProveedorDAO {
 	 * @see com.edicsem.pe.sie.model.dao.ProveedorDAO#findProducto(int)
 	 */
 	
-	public ProveedorSie findProducto(int id) {
+	public ProveedorSie findProveedor(int id) {
 		ProveedorSie proveedor = new ProveedorSie();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("buscar Producto");
+				log.info("buscar Proveedor");
 			}
 			proveedor = em.find(ProveedorSie.class, id);
 		} catch (Exception e) {
