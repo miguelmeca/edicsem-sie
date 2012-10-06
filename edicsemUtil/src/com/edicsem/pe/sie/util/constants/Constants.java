@@ -24,6 +24,7 @@ public class Constants {
 	
 	public static final String MANT_EMPRESA_FORM_PAGE = "mantenimientoEmpresaForm";
 	public static final String MANT_EMPRESA_FORM_LIST_PAGE = "mantenimientoEmpresaFormList";
+
 	
 	public static final String MANT_PRODUCTO_FORM_PAGE = "mantenimientoProductoForm";
 	public static final String MANT_PRODUCTO_FORM_LIST_PAGE = "mantenimientoProductoFormList";
@@ -36,9 +37,8 @@ public class Constants {
 	public static final String COD_ESTADO_TB_EMPLEADO = "EM";
 	public static final String COD_ESTADO_TB_PRODUCTO = "PR";
 	public static final String COD_ESTADO_TB_EMPRESA = "EMP";
+	public static final String COD_ESTADO_TB_META_MES =  "MET";
 	
 	//aviso mensaje "las contraseñas no coinciden"
 	public static final String MESSAGE_PASSWORDS_DESIGUALES = "Contraseñas no coinciden";
-	
-	
-}
+	}
