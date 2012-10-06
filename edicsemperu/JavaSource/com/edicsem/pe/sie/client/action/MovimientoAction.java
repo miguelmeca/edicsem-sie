@@ -160,7 +160,8 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 						
 							
 						if (cantExistenteTotalAlmacenes + objKardexSie.getCantentrada() > stkmaximo && idAlmacen2==0 ) {
-							
+							BigDecimal d = new BigDecimal(Double.parseDouble(objKardexSie.getValortotal())/ objKardexSie.getCantentrada());
+							objKardexSie.setValorunitarioentrada(""+ d);
 							int stockAct= cantExistenteTotalAlmacenes + objKardexSie.getCantentrada();
 							mensaje = " Se registro correctamente,  el stock actual de dicho producto es  " + stockAct;
 							validado=true;
@@ -305,7 +306,8 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 				}
 				if (validado == true) {
 					log.info(mensaje);
-					 
+					if(idproveedor!=0)
+					objcomprobante.setTbProveedor(objProveedorService.findProveedor(idproveedor));
 					 objDetComprobante.setDescripcion(objKardexSie.getDetallekardex());
 					 objDetComprobante.setCantproducto(objKardexSie.getCantentrada());
 					 BigDecimal p= new BigDecimal(objKardexSie.getValorunitarioentrada());

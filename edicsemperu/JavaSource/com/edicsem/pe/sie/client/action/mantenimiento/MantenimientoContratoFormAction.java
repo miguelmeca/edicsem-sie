@@ -1,8 +1,5 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -32,7 +29,7 @@ public class MantenimientoContratoFormAction extends
 	private String mensaje;
 	public static Log log = LogFactory.getLog(MantenimientoContratoFormAction.class);
 	private int Tipocasa,idempresa;
-	private String idProvincia,idDepartamento, idDistrito;
+	private String idProvincia,idDepartamento, idUbigeo, ubigeoDefecto;
 	private ProductoSie objProductoSie;
 	private ClienteSie objClienteSie;
 	private DomicilioPersonaSie objDomicilioSie;
@@ -41,9 +38,6 @@ public class MantenimientoContratoFormAction extends
 	private CobranzaSie objCobranzaSie;
 	private boolean defectoUbigeo;
 	private boolean newRecord = false;
-	
-	@ManagedProperty(value = "#{productoSearch}")
-	private MantenimientoProductoSearchAction productoSearch;
 	
 	public MantenimientoContratoFormAction() {
 		log.info("inicializando constructor MantenimientoProducto");
@@ -60,24 +54,18 @@ public class MantenimientoContratoFormAction extends
 	}
 	
 	public void cambioUbigeoDefecto() {
-		 if(defectoUbigeo)
+		 if(defectoUbigeo){
 		log.info(" defecto lima " );
-		 else
+		ubigeoDefecto ="Lima - Lima - Lima";
+		 }else
 			 log.info(" cambio ubigeo " );
 	}
  
 	public void cambiar() {
-		log.info("cambiar   :D  --- zzz "+ getIdDepartamento() );
-		idProvincia=null;
-		idDistrito = null;
-		if(getIdDepartamento()=="-1"){
-			comboManager.setIdDepartamento(getIdDepartamento());
-		}else{
 		comboManager.setIdDepartamento(getIdDepartamento());
-		}
 		comboManager.setIdProvincia(null);
-		comboManager.setUbigeoProvinItems(null);
-		comboManager.setUbigeoDistriItems(null);
+		idProvincia=null;
+		idUbigeo = null;
 		log.info("cambiar   :D  --- " );
 	}
 	
@@ -85,6 +73,11 @@ public class MantenimientoContratoFormAction extends
 		comboManager.setIdDepartamento(getIdDepartamento());
 		comboManager.setIdProvincia(getIdProvincia());
 		log.info("cambiar 2  :D  --- " );
+	}
+	public String  ingresarUbigeo(){
+		log.info("ingresarUbigeo :D  --- " + idUbigeo );
+		ubigeoDefecto = "otro ubigeo";
+		return getViewList();
 	}
 	/*
 	 * (non-Javadoc)
@@ -109,9 +102,7 @@ public class MantenimientoContratoFormAction extends
 	 * #update()
 	 */
 	public String update() throws Exception {
-		log.info("update()"+ objProductoSie.getRutaimagenproducto() );
-		  
-		InputStream stream = new FileInputStream(objProductoSie.getRutaimagenproducto());
+		log.info("update()" );
 		setNewRecord(false);
 		return getViewList();
 	}
@@ -126,7 +117,7 @@ public class MantenimientoContratoFormAction extends
 	public String insertar() {
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'insertar()' " + objProductoSie.getRutaimagenproducto());
+				log.info("Entering my method 'insertar()' ");
 			}
 			
 			/*if (isNewRecord()) {
@@ -152,23 +143,13 @@ public class MantenimientoContratoFormAction extends
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 		
-		return productoSearch.listar() ;
-	}
-	
-	public void limpiarCampos(){
-		Tipocasa=0;
-		idempresa=0;
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#consultar()
-	 */
-	
-	public String consultar() throws Exception {
-		log.info("en el consultar ");
-		return getViewMant();
+		return getViewList();
 	}
  
+	public void limpiarCampos(){
+		 
+	}
+	
 	public ProductoSie getSelectedProducto() {
 		return selectedProducto;
 	}
@@ -176,7 +157,6 @@ public class MantenimientoContratoFormAction extends
 	public void setSelectedProducto(ProductoSie selectedProducto) {
 		this.selectedProducto = selectedProducto;
 	}
-
 
 	/**
 	 * @return the objProductoSie
@@ -201,7 +181,7 @@ public class MantenimientoContratoFormAction extends
 	 * #getViewList()
 	 */
 	public String getViewList() {
-		return "mantenimientoContrato";
+		return Constants.MANT_CONTRATO_FORM_PAGE;
 	}
 
 	/*
@@ -243,20 +223,6 @@ public class MantenimientoContratoFormAction extends
 	public void setComboManager(ComboAction comboManager) {
 		comboManager.setCodigoEstado(Constants.COD_ESTADO_TB_PRODUCTO);
 		this.comboManager = comboManager;
-	}
-
-	/**
-	 * @return the productoSearch
-	 */
-	public MantenimientoProductoSearchAction getProductoSearch() {
-		return productoSearch;
-	}
-
-	/**
-	 * @param productoSearch the productoSearch to set
-	 */
-	public void setProductoSearch(MantenimientoProductoSearchAction productoSearch) {
-		this.productoSearch = productoSearch;
 	}
 
 	public int getTipocasa() {
@@ -301,20 +267,6 @@ public class MantenimientoContratoFormAction extends
 	 */
 	public void setIdDepartamento(String idDepartamento) {
 		this.idDepartamento = idDepartamento;
-	}
-
-	/**
-	 * @return the idDistrito
-	 */
-	public String getIdDistrito() {
-		return idDistrito;
-	}
-
-	/**
-	 * @param idDistrito the idDistrito to set
-	 */
-	public void setIdDistrito(String idDistrito) {
-		this.idDistrito = idDistrito;
 	}
 
 	/**
@@ -386,4 +338,33 @@ public class MantenimientoContratoFormAction extends
 	public void setDefectoUbigeo(boolean defectoUbigeo) {
 		this.defectoUbigeo = defectoUbigeo;
 	}
+
+	/**
+	 * @return the idUbigeo
+	 */
+	public String getIdUbigeo() {
+		return idUbigeo;
+	}
+
+	/**
+	 * @param idUbigeo the idUbigeo to set
+	 */
+	public void setIdUbigeo(String idUbigeo) {
+		this.idUbigeo = idUbigeo;
+	}
+
+	/**
+	 * @return the ubigeoDefecto
+	 */
+	public String getUbigeoDefecto() {
+		return ubigeoDefecto;
+	}
+
+	/**
+	 * @param ubigeoDefecto the ubigeoDefecto to set
+	 */
+	public void setUbigeoDefecto(String ubigeoDefecto) {
+		this.ubigeoDefecto = ubigeoDefecto;
+	}
+	
 }
