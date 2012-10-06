@@ -48,7 +48,7 @@ public class ComboAction {
 	private static FacesMessage msg = null;
 	private String mensaje;
 	private String codigoEstado;
-	private String idProvincia="",  idDepartamento="";
+	private String idProvincia,  idDepartamento;
 	private Map<String, Integer> tipoitems = new HashMap<String, Integer>();
 	private Map<String, Integer> productositems = new HashMap<String, Integer>();
 	private Map<String, Integer> almacenItems = new HashMap<String, Integer>();
@@ -569,10 +569,13 @@ public class ComboAction {
 		List lista = new ArrayList<UbigeoSie>();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'getUbigeoProvinItems()'");
+				log.info("Entering my method 'getUbigeoProvinItems()'" + this.getIdDepartamento());
 			}
+			if(this.getIdDepartamento()!=null){
 			lista = objUbigeoService.listarUbigeoProvincias( this.getIdDepartamento());
-
+			}
+			else
+				lista = new ArrayList<UbigeoSie>();
 			for (int i = 0; i < lista.size(); i++) {
 				UbigeoSie entidad = new UbigeoSie();
 				entidad = (UbigeoSie) lista.get(i);
@@ -607,10 +610,13 @@ public class ComboAction {
 		List lista = new ArrayList<UbigeoSie>();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'getUbigeoDistriItems()'");
+				log.info("Entering my method 'getUbigeoDistriItems()'"+this.getIdDepartamento()+"  "+ this.getIdProvincia());
 			}
+			if(this.getIdDepartamento()!=null &&  this.getIdProvincia()!=null){
 			lista = objUbigeoService.listarUbigeoDistritos(this.getIdDepartamento(), this.getIdProvincia());
-
+			}else
+				 lista = new ArrayList<UbigeoSie>();
+			
 			for (int i = 0; i < lista.size(); i++) {
 				UbigeoSie entidad = new UbigeoSie();
 				entidad = (UbigeoSie) lista.get(i);
