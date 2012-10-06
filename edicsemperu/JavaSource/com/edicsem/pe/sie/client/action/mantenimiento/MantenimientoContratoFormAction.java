@@ -67,10 +67,17 @@ public class MantenimientoContratoFormAction extends
 	}
  
 	public void cambiar() {
-		comboManager.setIdDepartamento(getIdDepartamento());
-		comboManager.setIdProvincia(null);
+		log.info("cambiar   :D  --- zzz "+ getIdDepartamento() );
 		idProvincia=null;
 		idDistrito = null;
+		if(getIdDepartamento()=="-1"){
+			comboManager.setIdDepartamento(getIdDepartamento());
+		}else{
+		comboManager.setIdDepartamento(getIdDepartamento());
+		}
+		comboManager.setIdProvincia(null);
+		comboManager.setUbigeoProvinItems(null);
+		comboManager.setUbigeoDistriItems(null);
 		log.info("cambiar   :D  --- " );
 	}
 	
