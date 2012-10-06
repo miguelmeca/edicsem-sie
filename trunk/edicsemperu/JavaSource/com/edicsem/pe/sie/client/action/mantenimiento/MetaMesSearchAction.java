@@ -1,7 +1,5 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
-import java.util.List;
-
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -11,104 +9,43 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.MetaMesSie;
 import com.edicsem.pe.sie.service.facade.MetaMesService;
-import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
-@ManagedBean(name="metaMesSearchAction")
+@ManagedBean(name = "metaMesSearchAction")
 @SessionScoped
-public class MetaMesSearchAction extends BaseMantenimientoAbstractAction{
+public class MetaMesSearchAction extends BaseMantenimientoAbstractAction {
 
-	public static Log log = LogFactory.getLog(MetaMesSearchAction.class);	
-	
-	
-	private List<MetaMesSie> MetaMesList;
+	public static Log log = LogFactory.getLog(MetaMesSearchAction.class);
+
+//	private List<MetaMesSie> MetaMesList;
 	private MetaMesSie objMetaMesSie;
 	private int codmes;
 	private MetaMesSie nuevo;
 	private String mes;
-	
-	
-	
+
 	@EJB
 	private MetaMesService metaMesService;
-	
-	
+
 	public void mostrarfecha() {
-		objMetaMesSie= metaMesService.findMetaMes(codmes);
+		objMetaMesSie = metaMesService.findMetaMes(codmes);
 		
-	}
-	
-	public List<MetaMesSie>  getMetaMesesList() throws Exception {
-	
-		return MetaMesList;
+
+
 	}
 
-	
-	/*
-*	public void setMetamesList(List<MetaMesSie> MetaMesList) {
-*		this.MetaMesList = MetaMesList;
-*	}
-*/	
-	public void init() {
-		log.info("init()");
-		
-	
-		
-		objMetaMesSie= new MetaMesSie();
-	
-		
-		objMetaMesSie.setMes("");
-		
-		
-		nuevo = new MetaMesSie();
-		
-		
-	}
-
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#listar()
-	 */
-	public String listar() {
-		log.info("listarEmpresas 'MetaMesSearchAction' ");
-		
-		MetaMesList = metaMesService.listarMetaMeses();
-		
-		return getViewList();
-	}
-
-	public String getViewList() {
-		return Constants.MANT_METAMES_FORM_LIST_PAGE;
-	}
-
-	
 
 
-	
-
-
-	
-
-	
-
-
-
-	
-
-	/**
-	 * @return the nuevo
-	 */
 	public MetaMesSie getNuevo() {
 		return nuevo;
 	}
 
-
 	/**
-	 * @param nuevo the nuevo to set
+	 * @param nuevo
+	 *            the nuevo to set
 	 */
 	public void setNuevo(MetaMesSie nuevo) {
 		this.nuevo = nuevo;
 	}
-
 
 	/**
 	 * @return the metaMesService
@@ -117,29 +54,14 @@ public class MetaMesSearchAction extends BaseMantenimientoAbstractAction{
 		return metaMesService;
 	}
 
-
 	/**
-	 * @param metaMesService the metaMesService to set
+	 * @param metaMesService
+	 *            the metaMesService to set
 	 */
 	public void setMetaMesService(MetaMesService metaMesService) {
 		this.metaMesService = metaMesService;
 	}
 
-
-	/**
-	 * @return the metaMesList
-	 */
-	public List<MetaMesSie> getMetaMesList() {
-		return MetaMesList;
-	}
-
-
-	/**
-	 * @param metaMesList the metaMesList to set
-	 */
-	public void setMetaMesList(List<MetaMesSie> metaMesList) {
-		MetaMesList = metaMesList;
-	}
 
 
 	/**
@@ -149,14 +71,13 @@ public class MetaMesSearchAction extends BaseMantenimientoAbstractAction{
 		return objMetaMesSie;
 	}
 
-
 	/**
-	 * @param objMetaMesSie the objMetaMesSie to set
+	 * @param objMetaMesSie
+	 *            the objMetaMesSie to set
 	 */
 	public void setObjMetaMesSie(MetaMesSie objMetaMesSie) {
 		this.objMetaMesSie = objMetaMesSie;
 	}
-
 
 	/**
 	 * @return the codmes
@@ -165,14 +86,13 @@ public class MetaMesSearchAction extends BaseMantenimientoAbstractAction{
 		return codmes;
 	}
 
-
 	/**
-	 * @param codmes the codmes to set
+	 * @param codmes
+	 *            the codmes to set
 	 */
 	public void setCodmes(int codmes) {
 		this.codmes = codmes;
 	}
-
 
 	/**
 	 * @return the mes
@@ -181,22 +101,18 @@ public class MetaMesSearchAction extends BaseMantenimientoAbstractAction{
 		return mes;
 	}
 
-
 	/**
-	 * @param mes the mes to set
+	 * @param mes
+	 *            the mes to set
 	 */
 	public void setMes(String mes) {
 		this.mes = mes;
 	}
 
-
 	/**
 	 * @return the mes
 	 */
 
-	
-	
 	/********************************************************/
-	
-	
+
 }
