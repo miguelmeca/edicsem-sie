@@ -115,7 +115,9 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 		List lista = null;
 		try {
 			Query q = em
-					.createQuery("select p from UbigeoSie p where  p.coddepartamento = '" + idDepartamento + "'  order by p.nombre asc");
+					.createQuery("select p from UbigeoSie p where  p.coddepartamento = '" + idDepartamento + "' " +
+							"and p.codprovincia!='00' and p.coddistrito='00'" +
+							" order by p.nombre asc");
 			lista = q.getResultList();
 			System.out.println("tamaño lista Ubigeo Provincias  --> " + lista.size() + "  "+idDepartamento);
 		} catch (Exception e) {
