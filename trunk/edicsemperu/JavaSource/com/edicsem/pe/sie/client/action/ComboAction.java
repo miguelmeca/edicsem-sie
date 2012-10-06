@@ -17,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.EstadoGeneralSie;
+import com.edicsem.pe.sie.entity.MetaMesSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.ProveedorSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
@@ -29,6 +30,7 @@ import com.edicsem.pe.sie.service.facade.AlmacenService;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
+import com.edicsem.pe.sie.service.facade.MetaMesService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.service.facade.ProveedorService;
 import com.edicsem.pe.sie.service.facade.TipoCasaService;
@@ -62,6 +64,8 @@ public class ComboAction {
 	private Map<String, String> ubigeoDeparItems = new HashMap<String, String>();
 	private Map<String, String> ubigeoProvinItems = new HashMap<String, String>();
 	private Map<String, Integer> ubigeoDistriItems = new HashMap<String, Integer>();
+	private Map<String, Integer> MetaMesItems = new HashMap<String, Integer>();
+	
 	
 	@EJB
 	private AlmacenService objAlmacenService;
@@ -85,6 +89,8 @@ public class ComboAction {
 	private TipoCasaService objTipoCasaService;
 	@EJB
 	private UbigeoService objUbigeoService;
+	@EJB
+	private MetaMesService objMetaMesService;
 
 	public ComboAction() {
 		log.info("inicializando constructor");
@@ -97,6 +103,7 @@ public class ComboAction {
 		almacenItems = new HashMap<String, Integer>();
 		tipoDocumentoItems = new HashMap<String, Integer>();
 		cargoEmpleadoItems = new HashMap<String, Integer>();
+		MetaMesItems = new HashMap<String, Integer>();
 	}
 
 	public void cambiar() {
@@ -642,5 +649,54 @@ public class ComboAction {
 	public void setIdDepartamento(String idDepartamento) {
 		this.idDepartamento = idDepartamento;
 	}
+
+	
+	
+	/* Combobox META MES */
+	public Map<String, Integer>  getMetaMesItems() {
+		MetaMesItems = new HashMap<String, Integer>();
+		List lista = new ArrayList<MetaMesSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getMetaMesItems()'");
+			}
+			lista = objMetaMesService.listarMetaMeses();
+
+			for (int i = 0; i < lista.size(); i++) {
+				MetaMesSie entidad = new MetaMesSie();
+				entidad = (MetaMesSie) lista.get(i);			
+				MetaMesItems.put(entidad.getMes(),
+						entidad.getIdmetames());
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return MetaMesItems;
+	}
+
+	/**
+	 * @return the metaMesItems
+	 */
+
+
+	/**
+	 * @param metaMesItems the metaMesItems to set
+	 */
+	public void setMetaMesItems(Map<String, Integer> metaMesItems) {
+		MetaMesItems = metaMesItems;
+	}
+
+	/**
+	 * @return the metaempresaItems
+	 */
+
+
+	
 	
 }
