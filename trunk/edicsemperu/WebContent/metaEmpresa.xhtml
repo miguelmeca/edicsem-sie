@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h:form id="metames">
+	<p:panel header="Meta de Empresa"  id="meta">
+
+
+<p:panelGrid columns="2" cellpadding="5">
+				<h:outputText value="Meta de Empresa: " />
+
+				<p:selectOneMenu id="metaempresa" value="#{metaMesSearchAction.codmes}"   >
+					<f:selectItem itemLabel="Seleccione una opción" />
+					<f:selectItems value="#{comboAction.metaMesItems}" />
+					<p:ajax update="meta"  listener="#{metaMesSearchAction.mostrarfecha}" 
+					 />
+				</p:selectOneMenu>
+			<h:outputLabel value="Fecha Inicial :" />	
+			<p:inputText value="#{metaMesSearchAction.objMetaMesSie.fechainicio}"></p:inputText>
+			<h:outputLabel value="Fecha Final :" />	
+				<p:inputText value="#{metaMesSearchAction.objMetaMesSie.fechafin}"></p:inputText>	
+
+</p:panelGrid>
+
+
+</p:panel>	            
+</h:form>
+	</ui:define>
+</ui:composition>
