@@ -1,14 +1,21 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
+import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
@@ -18,7 +25,6 @@ import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
-import java.security.MessageDigest;
 
 @ManagedBean(name="mantenimientoEmpleadoFormAction")
 @SessionScoped
@@ -33,7 +39,10 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	private int estado;
 	/*variables para domicilio*/
 	private String direccion;
-	private int ubigeo;
+	//private int ubigeo;
+	private String idDepartamento;
+	private String idProvincia;
+	private String idDistrito;
 	private int estado2;
 	private int tipo;
 	/*variables para empleado*/
@@ -52,7 +61,12 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	private int ide;
 	/*variable bolean necesaria*/
 	private boolean newRecord =false;
+	
+	private boolean defectoUbigeo;
 		
+	@ManagedProperty(value="#{comboAction}") 
+	private ComboAction comboManager;
+	
 	@ManagedProperty(value = "#{mantenimientoEmpleadoSearchAction}")
 	private MantenimientoEmpleadoSearchAction mantenimientoEmpleadoSearch;
 	
@@ -79,6 +93,35 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		objEmpleado = new EmpleadoSie();
 		objTelefono = new TelefonoPersonaSie();
 		objDomicilio = new DomicilioPersonaSie();
+		defectoUbigeo=true;
+	}
+	
+	public void cambioUbigeoDefecto() {
+		 if(defectoUbigeo)
+		log.info(" defecto lima " );
+		 else
+			 log.info(" cambio ubigeo " );
+	}
+	
+	public void cambiar() {
+		log.info("cambiar   :D  --- zzz "+ getIdDepartamento() );
+		idProvincia=null;
+		idDistrito = null;
+		if(getIdDepartamento()=="-1"){
+			comboManager.setIdDepartamento(getIdDepartamento());
+		}else{
+		comboManager.setIdDepartamento(getIdDepartamento());
+		}
+		comboManager.setIdProvincia(null);
+		comboManager.setUbigeoProvinItems(null);
+		comboManager.setUbigeoDistriItems(null);
+		log.info("cambiar   :D  --- " );
+	}
+	
+	public void cambiar2() {
+		comboManager.setIdDepartamento(getIdDepartamento());
+		comboManager.setIdProvincia(getIdProvincia());
+		log.info("cambiar 2  :D  --- " );
 	}
 	
 	/*método que sirve para deshabilitar al empleado*/
@@ -116,7 +159,8 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	        objDomicilio.setIddomiciliopersona(d.getIddomiciliopersona());
 	        setDireccion(d.getDomicilio());
 	        setTipo(d.getTbTipoCasa().getIdtipocasa());
-	        setUbigeo(d.getTbUbigeo().getIdubigeo());
+	        //setUbigeo(d.getTbUbigeo().getIdubigeo());
+	        setIdDistrito(getIdDistrito());	        
 	        setEstado2(d.getTbEstadoGeneral().getIdestadogeneral());
 	        /*seteo telefono*/
 	        objTelefono.setIdtelefonopersona(t.getIdtelefonopersona());
@@ -125,7 +169,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 			log.info("-----Id estado del empleado>>>"	+ getEstadoe());
 			log.info("actualizando ESTADO..... ");
 			objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, objTelefono, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
-					estado, direccion,  ubigeo,  estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
+					estado, direccion, idDistrito, estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
 					TipoDocumento, codigoEmpleado, estadoe);
 			log.info("actualizando..... ");
 			log.info("deshabilitando..... ");
@@ -158,15 +202,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		}
 		return h.toString();
 	}
-	
-	/*método que compara las contraseñas.*/
-	public boolean CompararContraseña(String s1, String s2) throws Exception {
-	    if ( s1.equals( s2 ) )  
-	        return true;
-	    else
-	        return false; 
-	} 
-		 	
+			 	
 	/*método que se ejecuta haciendo click en el link NUEVO de la lista*/
 	public String agregar() {
 		log.info("insertar");
@@ -178,7 +214,8 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		setEstado(0);
 		objTelefono = new TelefonoPersonaSie();
 		setDireccion("");
-		setUbigeo(0);
+		//setUbigeo(0);
+		//setIdDistrito(-1);
 		setTipo(0);
 		setEstado2(0);
 		objDomicilio = new DomicilioPersonaSie();
@@ -214,7 +251,8 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
         objDomicilio.setIddomiciliopersona(d.getIddomiciliopersona());
         setDireccion(d.getDomicilio());
         setTipo(d.getTbTipoCasa().getIdtipocasa());
-        setUbigeo(d.getTbUbigeo().getIdubigeo());
+        //setUbigeo(d.getTbUbigeo().getIdubigeo());
+        setIdDistrito(getIdDistrito());
         setEstado2(d.getTbEstadoGeneral().getIdestadogeneral());
         
         objTelefono.setIdtelefonopersona(t.getIdtelefonopersona());
@@ -228,7 +266,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	
 	/*método del botón GUARDAR(inserta o actualiza el empleado, domicilio y telefono)*/
 	public String insertar() throws Exception {
-		if(CompararContraseña(objEmpleado.getContrasena(), confcontra)){ /*probar compararcontra*/
+		if(StringUtils.equals(objEmpleado.getContrasena(), confcontra)){ /*probar compararcontra*/
 			/*encripta la contraseña*/
 		    objEmpleado.setContrasena(getMD5(objEmpleado.getContrasena()));
 			log.info("probando MD5..."+objEmpleado.getContrasena());
@@ -238,17 +276,20 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 				}
 				/*if: inserta al empleado, domicilio y telefono
 				  else: actualiza al empleado, domicilio y telefono*/
+				
+				List<TelefonoPersonaSie> lstEmpleadoTelefono = new ArrayList<TelefonoPersonaSie>();
+				
 				if (isNewRecord()) {
 					log.info("insertando..... ");
 					objEmpleadoService.insertarEmpleado(objEmpleado,objDomicilio,objTelefono, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
-							estado, direccion,  ubigeo,  estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
+							estado, direccion,  idDistrito,  estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
 							TipoDocumento, codigoEmpleado, estadoe);
 					log.info("insertando..... ");
 					setNewRecord(false);
 				} else {
 					log.info("actualizando..... ");
 					objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, objTelefono, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
-							estado, direccion,  ubigeo,  estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
+							estado, direccion,  idDistrito,  estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
 							TipoDocumento, codigoEmpleado, estadoe);
 					log.info("insertando..... ");
 				}
@@ -470,19 +511,20 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		this.direccion = direccion;
 	}
 
+	/*
 	/**
 	 * @return the ubigeo
-	 */
+	 
 	public int getUbigeo() {
 		return ubigeo;
 	}
 
 	/**
 	 * @param ubigeo the ubigeo to set
-	 */
+	 
 	public void setUbigeo(int ubigeo) {
 		this.ubigeo = ubigeo;
-	}
+	}*/
 
 	/**
 	 * @return the estado2
@@ -595,6 +637,77 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	public void setMantenimientoEmpleadoSearch(
 			MantenimientoEmpleadoSearchAction mantenimientoEmpleadoSearch) {
 		this.mantenimientoEmpleadoSearch = mantenimientoEmpleadoSearch;
+	}
+
+	/**
+	 * @return the idProvincia
+	 */
+	public String getIdProvincia() {
+		return idProvincia;
+	}
+
+	/**
+	 * @param idProvincia the idProvincia to set
+	 */
+	public void setIdProvincia(String idProvincia) {
+		this.idProvincia = idProvincia;
+	}
+
+	/**
+	 * @return the idDepartamento
+	 */
+	public String getIdDepartamento() {
+		return idDepartamento;
+	}
+
+	/**
+	 * @param idDepartamento the idDepartamento to set
+	 */
+	public void setIdDepartamento(String idDepartamento) {
+		this.idDepartamento = idDepartamento;
+	}
+
+	/**
+	 * @return the idDistrito
+	 */
+	public String getIdDistrito() {
+		return idDistrito;
+	}
+
+	/**
+	 * @param idDistrito the idDistrito to set
+	 */
+	public void setIdDistrito(String idDistrito) {
+		this.idDistrito = idDistrito;
+	}
+	
+	/**
+	 * @return the defectoUbigeo
+	 */
+	public boolean isDefectoUbigeo() {
+		return defectoUbigeo;
+	}
+
+	/**
+	 * @param defectoUbigeo the defectoUbigeo to set
+	 */
+	public void setDefectoUbigeo(boolean defectoUbigeo) {
+		this.defectoUbigeo = defectoUbigeo;
+	}
+	
+	/**
+	 * @return the comboManager
+	 */
+	public ComboAction getComboManager() {
+		return comboManager;
+	}
+
+	/**
+	 * @param comboManager the comboManager to set
+	 */
+	public void setComboManager(ComboAction comboManager) {
+		comboManager.setCodigoEstado(Constants.COD_ESTADO_TB_PRODUCTO);
+		this.comboManager = comboManager;
 	}
 	
 }
