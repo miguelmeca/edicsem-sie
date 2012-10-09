@@ -61,7 +61,7 @@ public class ProveedorDAOImpl implements ProveedorDAO{
 			em.remove(id);
 			//em.flush();
 			if (log.isInfoEnabled()) {
-				log.info("apunto de insertar Proveedor");
+				log.info("apunto de eliminar Proveedor");
 			}
 			//em.getTransaction().commit();
 			
