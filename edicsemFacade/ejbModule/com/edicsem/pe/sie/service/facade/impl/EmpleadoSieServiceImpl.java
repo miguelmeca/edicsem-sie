@@ -46,7 +46,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	 * @see com.edicsem.pe.sie.service.facade.DemoService#insertDemo(com.edicsem.pe.sie.entity.Usuario)
 	 */
 	public void insertarEmpleado(EmpleadoSie objEmpleado,DomicilioPersonaSie objDomicilio, TelefonoPersonaSie objTelefono, int codigoTipoDocumento, int codigoCargoEmpleado, String mensaje, 
-			String fijo, int estado, String direccion, int ubigeo, int estado2, int tipo, String nombre, int CargoEmpleado,
+			String fijo, int estado, String direccion, String idDistrito, int estado2, int tipo, String nombre, int CargoEmpleado,
 			int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado, int estadoe
 						){
 		//si tengo que insertar a mas de 1 tabla todo lo hago aqui, llamando a todas las entidades que
@@ -68,7 +68,8 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 			
 			/**Inserta el domicilio**/
 			objDomicilio.setIdempleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
-			objDomicilio.setTbUbigeo(objUbigeoDao.findUbigeo(ubigeo));
+			//objDomicilio.setTbUbigeo(objUbigeoDao.findUbigeo(ubigeo));
+			objDomicilio.setTbUbigeo(objUbigeoDao.findUbigeo(Integer.parseInt(idDistrito)));
 			objDomicilio.setTbTipoCasa(objTipoCasaDao.findTipoCasa(tipo));
 			objDomicilio.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(estado2));
 			objDomicilio.setDomicilio(direccion);
@@ -100,7 +101,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	 * @see com.edicsem.pe.sie.service.facade.DemoService#updateDemo(com.edicsem.pe.sie.entity.Usuario)
 	 */
 	public void actualizarEmpleado(EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, TelefonoPersonaSie objTelefono, int codigoTipoDocumento, int codigoCargoEmpleado, String mensaje, 
-			String fijo, int estado, String direccion, int ubigeo, int estado2, int tipo, String nombre, int CargoEmpleado,
+			String fijo, int estado, String direccion, String idDistrito, int estado2, int tipo, String nombre, int CargoEmpleado,
 			int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado, int estadoe
 			) {			
 			try {
@@ -121,7 +122,8 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 				/**Actualiza el domicilio**/
 				objDomicilio.setIddomiciliopersona(objDomicilio.getIddomiciliopersona());
 				objDomicilio.setIdempleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
-				objDomicilio.setTbUbigeo(objUbigeoDao.findUbigeo(ubigeo));
+				//objDomicilio.setTbUbigeo(objUbigeoDao.findUbigeo(ubigeo));
+				objDomicilio.setTbUbigeo(objUbigeoDao.findUbigeo(Integer.parseInt(idDistrito)));
 				objDomicilio.setTbTipoCasa(objTipoCasaDao.findTipoCasa(tipo));
 				objDomicilio.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(estado2));
 				objDomicilio.setDomicilio(direccion);
