@@ -2,7 +2,6 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,8 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import com.edicsem.pe.sie.util.constants.Constants;
 
@@ -40,11 +37,9 @@ public class MetaMesSie implements Serializable {
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
 
-    @Temporal( TemporalType.DATE)
-	private Date fechafin;
+	private String fechafin;
 
-    @Temporal( TemporalType.DATE)
-	private Date fechainicio;
+	private String fechainicio;
 
 	private Timestamp fechamodifica;
 
@@ -79,22 +74,6 @@ public class MetaMesSie implements Serializable {
 
 	public void setFechacreacion(Timestamp fechacreacion) {
 		this.fechacreacion = fechacreacion;
-	}
-
-	public Date getFechafin() {
-		return this.fechafin;
-	}
-
-	public void setFechafin(Date fechafin) {
-		this.fechafin = fechafin;
-	}
-
-	public Date getFechainicio() {
-		return this.fechainicio;
-	}
-
-	public void setFechainicio(Date fechainicio) {
-		this.fechainicio = fechainicio;
 	}
 
 	public Timestamp getFechamodifica() {
@@ -151,6 +130,22 @@ public class MetaMesSie implements Serializable {
 
 	public void setTbMetaEmpleado(MetaEmpleadoSie tbMetaEmpleado) {
 		this.tbMetaEmpleado = tbMetaEmpleado;
+	}
+
+	public String getFechafin() {
+		return fechafin;
+	}
+
+	public void setFechafin(String fechafin) {
+		this.fechafin = fechafin;
+	}
+
+	public String getFechainicio() {
+		return fechainicio;
+	}
+
+	public void setFechainicio(String fechainicio) {
+		this.fechainicio = fechainicio;
 	}
 	
 }

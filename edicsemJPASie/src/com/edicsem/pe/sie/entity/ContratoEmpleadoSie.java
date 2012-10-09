@@ -56,11 +56,6 @@ public class ContratoEmpleadoSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="patrocinador", insertable = false, updatable = false)
 	private EmpleadoSie tbEmpleado2;
-
-	//bi-directional many-to-one association to ProductoSie
-    @ManyToOne
-	@JoinColumn(name="idproducto")
-	private ProductoSie tbProducto;
     
     //bi-directional many-to-one association to EstadoGeneralSie
     @ManyToOne
@@ -124,14 +119,6 @@ public class ContratoEmpleadoSie implements Serializable {
 
 	public void setTbEmpleado2(EmpleadoSie tbEmpleado2) {
 		this.tbEmpleado2 = tbEmpleado2;
-	}
-	
-	public ProductoSie getTbProducto() {
-		return this.tbProducto;
-	}
-
-	public void setTbProducto(ProductoSie tbProducto) {
-		this.tbProducto = tbProducto;
 	}
 	
 	public Date getFechainiciopatrocinio() {

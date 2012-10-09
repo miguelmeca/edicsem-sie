@@ -28,7 +28,6 @@
 		<class>com.edicsem.pe.sie.entity.KardexSie</class>
 		<class>com.edicsem.pe.sie.entity.MetaEmpresaSie</class>
 		<class>com.edicsem.pe.sie.entity.ModuloOpcionSie</class>
-		<class>com.edicsem.pe.sie.entity.PagoVendedorSie</class>
 		<class>com.edicsem.pe.sie.entity.PaqueteSie</class>
 		<class>com.edicsem.pe.sie.entity.ParametroSistemaSie</class>
 		<class>com.edicsem.pe.sie.entity.PermisoSie</class>
@@ -47,6 +46,7 @@
 		<class>com.edicsem.pe.sie.entity.DetProductoContratoSie</class>
 		<class>com.edicsem.pe.sie.entity.MetaEmpleadoSie</class>
 		<class>com.edicsem.pe.sie.entity.MetaMesSie</class>
+		<class>com.edicsem.pe.sie.entity.DetCargoEmpleadoSie</class>
 	<properties>
 			<property name="eclipselink.jdbc.driver" value="org.postgresql.Driver" />
 			<property name="eclipselink.jdbc.url" value="jdbc:postgres://192.168.1.2:5432/bd_sie" />

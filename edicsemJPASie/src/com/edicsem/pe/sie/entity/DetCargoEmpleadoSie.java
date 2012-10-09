@@ -2,7 +2,6 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -19,20 +17,18 @@ import com.edicsem.pe.sie.util.constants.Constants;
 
 
 /**
- * The persistent class for the tb_cargo_empleado database table.
+ * The persistent class for the tb_Det_Cargo_Empleado database table.
  * 
  */
 @Entity
-@Table(name="tb_cargo_empleado", schema = Constants.ESQUEMA_SIE_POSTGRE)
-public class CargoEmpleadoSie  implements Serializable {
+@Table(name="tb_Det_Cargo_Empleado", schema = Constants.ESQUEMA_SIE_POSTGRE)
+public class DetCargoEmpleadoSie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_CARGO_EMPLEADO_IDCARGOEMPLEADO_GENERATOR", sequenceName="SIE.TB_CARGO_EMPLEADO_IDCARGOEMPLEADO_SEQ", initialValue=1, allocationSize =1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_CARGO_EMPLEADO_IDCARGOEMPLEADO_GENERATOR")
-	private Integer idcargoempleado;
-	
-	private String descripcion;
+	@SequenceGenerator(name="TB_DET_CARGO_EMPLEADO_IDDETCARGOEMPL_GENERATOR", sequenceName="SIE.TB_DET_CARGO_EMPLEADO_IDDETCARGOEMPL_SEQ", initialValue=1, allocationSize =1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_DET_CARGO_EMPLEADO_IDDETCARGOEMPL_GENERATOR")
+	private Integer iddetcargoempl;
 	
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
@@ -43,38 +39,25 @@ public class CargoEmpleadoSie  implements Serializable {
 
 	private String usuariomodifica;
 
+	//bi-directional many-to-one association to CargoEmpleadoSie
+    @ManyToOne
+	@JoinColumn(name="idcargoempleado")
+	private CargoEmpleadoSie tbCargoEmpleado;
+
+	//bi-directional many-to-one association to EmpleadoSie
+    @ManyToOne
+	@JoinColumn(name="idempleado")
+	private EmpleadoSie tbEmpleado;
+
 	//bi-directional many-to-one association to EstadoGeneralSie
     @ManyToOne
 	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
-    
-    //bi-directional many-to-one association to DetCargoEmpleadoSie
-  	@OneToMany(mappedBy="tbCargoEmpleado")
-  	private Set<DetCargoEmpleadoSie> tbDetCargoEmpleados;
-
-	//bi-directional many-to-one association to PermisoSie
-	@OneToMany(mappedBy="tbCargoEmpleado")
-	private Set<PermisoSie> tbPermisos;
-
-    public CargoEmpleadoSie() {
+	
+    public DetCargoEmpleadoSie() {
     }
 
-	public Integer getIdcargoempleado() {
-		return this.idcargoempleado;
-	}
-
-	public void setIdcargoempleado(Integer idcargoempleado) {
-		this.idcargoempleado = idcargoempleado;
-	}
-
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
+	
 	public Timestamp getFechacreacion() {
 		return this.fechacreacion;
 	}
@@ -106,29 +89,39 @@ public class CargoEmpleadoSie  implements Serializable {
 	public void setUsuariomodifica(String usuariomodifica) {
 		this.usuariomodifica = usuariomodifica;
 	}
+	
+	public CargoEmpleadoSie getTbCargoEmpleado() {
+		return this.tbCargoEmpleado;
+	}
+
+	public void setTbCargoEmpleado(CargoEmpleadoSie tbCargoEmpleado) {
+		this.tbCargoEmpleado = tbCargoEmpleado;
+	}
 
 	public EstadoGeneralSie getTbEstadoGeneral() {
-		return this.tbEstadoGeneral;
+		return tbEstadoGeneral;
 	}
 
 	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
 		this.tbEstadoGeneral = tbEstadoGeneral;
 	}
-	
-	public Set<PermisoSie> getTbPermisos() {
-		return this.tbPermisos;
+
+	public Integer getIddetcargoempl() {
+		return iddetcargoempl;
 	}
 
-	public void setTbPermisos(Set<PermisoSie> tbPermisos) {
-		this.tbPermisos = tbPermisos;
+	public void setIddetcargoempl(Integer iddetcargoempl) {
+		this.iddetcargoempl = iddetcargoempl;
 	}
 
-	public Set<DetCargoEmpleadoSie> getTbDetCargoEmpleados() {
-		return tbDetCargoEmpleados;
+
+	public EmpleadoSie getTbEmpleado() {
+		return tbEmpleado;
 	}
 
-	public void setTbDetCargoEmpleados(Set<DetCargoEmpleadoSie> tbDetCargoEmpleados) {
-		this.tbDetCargoEmpleados = tbDetCargoEmpleados;
+
+	public void setTbEmpleado(EmpleadoSie tbEmpleado) {
+		this.tbEmpleado = tbEmpleado;
 	}
-	
+
 }

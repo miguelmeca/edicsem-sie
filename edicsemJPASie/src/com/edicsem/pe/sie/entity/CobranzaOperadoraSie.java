@@ -2,7 +2,6 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,7 +27,6 @@ public class CobranzaOperadoraSie implements Serializable {
 	@Id
 	@SequenceGenerator(name="TB_COBRANZA_OPERADORA_IDCOBRANZAOPERADORA_GENERATOR" , sequenceName="SIE.TB_COBRANZA_OPERADORA_IDCOBRANZA_SEQ", initialValue=1, allocationSize =1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_COBRANZA_OPERADORA_IDCOBRANZAOPERADORA_GENERATOR")
-	@Column(name="\"idCobranzaOperadora\"")
 	private Integer idCobranzaOperadora;
 
 	private String observaciones;
