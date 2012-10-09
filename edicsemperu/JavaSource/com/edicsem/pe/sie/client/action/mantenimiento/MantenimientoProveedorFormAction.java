@@ -9,7 +9,10 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
+import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.ProveedorSie;
+import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.service.facade.ProveedorService;
 import com.edicsem.pe.sie.service.facade.TipoDocumentoService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -23,10 +26,13 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 	/*variables para empleado*/
 	private String nombre;
 	private int TipoDocumento;
+	private int estado;
 	//private int codigoEmpleado;
 	//private int codigoTipoDocumento;
 	/*variable bolean necesaria*/
 	private boolean newRecord =false;
+	/*variable que capta el id del proveedor*/
+	private int ide;
 		
 	@ManagedProperty(value = "#{mantenimientoProveedorSearchAction}")
 	private MantenimientoProveedorSearchAction mantenimientoProveedorSearch;
@@ -77,11 +83,57 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
         setTipoDocumento(p.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad()); 
         objProveedor.setNumdocumentoproveedor(p.getNumdocumentoproveedor());
         objProveedor.setDireccion(p.getDireccion());
+        setEstado(9);
         /*método bolean necesario para actualizar que retorna al form */  
 		setNewRecord(false);
 		return getViewMant();
 	}
 	
+	
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#delete()
+	 */
+	
+	/*método del botón DESHABILITAR(deshabilita al proveedor)*/
+	public String deshabilitar() throws Exception {
+		objProveedor = new ProveedorSie();
+		int parametroObtenido;
+		ProveedorSie p = new ProveedorSie();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'DESHABILITAR()'");
+			}
+			parametroObtenido = getIde();
+			log.info(" ------>>>>>>aqui captura el parametro ID "+ parametroObtenido);
+			p = objProveedorService.findProveedor(parametroObtenido);
+		    //log.info(" empleado------ID y nombre>" + e.getIdempleado() + " "+ e.getNombreemp());
+			/*seteo empleado*/
+		    objProveedor.setIdproveedor(p.getIdproveedor());
+		    objProveedor.setCodproveedor(p.getCodproveedor());
+		    objProveedor.setNombreempresa(p.getNombreempresa());
+		    objProveedor.setPersonacontacto(p.getPersonacontacto());
+		    setTipoDocumento(p.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad());
+		    objProveedor.setNumdocumentoproveedor(p.getNumdocumentoproveedor());
+		    objProveedor.setDireccion(p.getDireccion());
+		    setEstado(10);
+		    log.info("-----Id estado del empleado>>>"	+ getEstado());
+			log.info("actualizando ESTADO..... ");
+			objProveedorService.actualizarProveedor(objProveedor);
+			log.info("actualizando..... ");
+			log.info("deshabilitando..... ");
+		} catch (Exception e2) {
+			e2.printStackTrace();
+			nombre = e2.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, nombre);
+			log.error(e2.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		objProveedor = new ProveedorSie();
+		return mantenimientoProveedorSearch.listar();
+	}
+
 	/*método del botón GUARDAR(inserta o actualiza el empleado, domicilio y telefono)*/
 	public String insertar() throws Exception {
 		try {
@@ -89,6 +141,7 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 					log.info("Entering my method 'insertar(registrar, actualizar)'"+ objProveedor.getCodproveedor());
 				}
 				objProveedor.setTbTipoDocumentoIdentidad(objTipoDocService.buscarTipoDocumento(TipoDocumento));
+				setEstado(9);
 				/*if: inserta al empleado, domicilio y telefono
 				  else: actualiza al empleado, domicilio y telefono*/
 				if (isNewRecord()) {
@@ -206,6 +259,34 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 	 */
 	public static void setLog(Log log) {
 		MantenimientoProveedorSearchAction.log = log;
+	}
+
+	/**
+	 * @return the ide
+	 */
+	public int getIde() {
+		return ide;
+	}
+
+	/**
+	 * @param ide the ide to set
+	 */
+	public void setIde(int ide) {
+		this.ide = ide;
+	}
+
+	/**
+	 * @return the estado
+	 */
+	public int getEstado() {
+		return estado;
+	}
+
+	/**
+	 * @param estado the estado to set
+	 */
+	public void setEstado(int estado) {
+		this.estado = estado;
 	}
 	   	
 }
