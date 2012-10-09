@@ -409,6 +409,25 @@
 <!-- 	FIN DESACTIVAR EMPLEADO  -->
 
 
+<!--	  DESACTIVAR PROVEEDOR	   -->
+
+<h:form>
+
+	<p:confirmDialog id="confirmDeshabilitar" message="Esta seguro de deshabilitar dicho proveedor?" width="325" height="100" showEffect="explode" 
+				hideEffect="explode"  header="Confirm" severity="alert" widgetVar="confirmation" position="center">
+					   
+       			 <p:commandButton  type="submit" value="Si"  action="#{mantenimientoProveedorFormAction.deshabilitar}"  
+       			 update=":manteProList:listaPersonas" oncomplete="confirmation.hide()" ajax="false">
+      			 </p:commandButton>  
+        
+        		<p:commandButton value="No" onclick="confirmation.hide()" type="button" />  
+        		
+    </p:confirmDialog>
+    
+</h:form>
+
+<!-- 	FIN DESACTIVAR PROVEEDOR  -->
+
 
 <!--	  INICIO DESACTIVAR	 EMPRESA  -->
 
