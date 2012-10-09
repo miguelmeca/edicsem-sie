@@ -59,6 +59,11 @@ public class ProveedorSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idtipodocumentoidentidad")
 	private TipoDocumentoIdentidadSie tbTipoDocumentoIdentidad;
+    
+	//bi-directional many-to-one association to EstadoGeneralSie
+    @ManyToOne
+	@JoinColumn(name="idestadogeneral")
+	private EstadoGeneralSie tbEstadoGeneral;
 
     public ProveedorSie() {
     }
@@ -157,6 +162,14 @@ public class ProveedorSie implements Serializable {
 
 	public void setTbTipoDocumentoIdentidad(TipoDocumentoIdentidadSie tbTipoDocumentoIdentidad) {
 		this.tbTipoDocumentoIdentidad = tbTipoDocumentoIdentidad;
+	}
+
+	public EstadoGeneralSie getTbEstadoGeneral() {
+		return tbEstadoGeneral;
+	}
+
+	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
+		this.tbEstadoGeneral = tbEstadoGeneral;
 	}
 	
 }
