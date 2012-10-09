@@ -62,6 +62,12 @@
 		  target="#{mantenimientoProveedorFormAction.objProveedor}" />
 		</p:commandButton>  
 	   </p:column>
+	   <p:column headerText="Deshabilitar">
+		<p:commandButton id="showConfirmDeshabilitar" value="Deshabilitar" icon="ui-icon ui-icon-close" 
+		    onclick="confirmation.show()">
+		 <f:setPropertyActionListener value="#{p.idproveedor}" target="#{mantenimientoProveedorFormAction.ide}" />	
+		</p:commandButton>
+	   </p:column>
 	   <f:facet name="footer">
 		<div align="left">
 	     <h:commandLink value="Nuevo" action="#{mantenimientoProveedorFormAction.agregar}" />
