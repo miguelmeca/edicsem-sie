@@ -78,11 +78,6 @@ public class EmpleadoSie implements Serializable {
 	//bi-directional many-to-one association to ContratoEmpleadoSie
 	@OneToMany(mappedBy="tbEmpleado2")
 	private Set<ContratoEmpleadoSie> tbContratoEmpleados2;
-
-	//bi-directional many-to-one association to CargoEmpleadoSie
-    @ManyToOne
-	@JoinColumn(name="idcargoempleado")
-	private CargoEmpleadoSie tbCargoEmpleado;
     
     //bi-directional many-to-one association to TelefonoPersonaSie
   	@OneToMany(mappedBy="idempleado")
@@ -117,12 +112,16 @@ public class EmpleadoSie implements Serializable {
 	@OneToMany(mappedBy="tbEmpleado3")
 	private Set<HorariosPvSie> tbHorariosPvs3;
 	
+	//bi-directional many-to-one association to DetCargoEmpleadoSie
+	@OneToMany(mappedBy="tbEmpleado")
+	private Set<DetCargoEmpleadoSie> tbDetCargoEmpleados;
+	
 	//bi-directional many-to-one association to EstadoGeneralSie
     @ManyToOne
 	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
     
-  //bi-directional many-to-one association to MetaEmpleadoSie
+    //bi-directional many-to-one association to MetaEmpleadoSie
   	@OneToMany(mappedBy="tbEmpleado")
   	private Set<MetaEmpleadoSie> tbMetaEmpleados;
 
@@ -257,14 +256,6 @@ public class EmpleadoSie implements Serializable {
 		this.tbContratoEmpleados2 = tbContratoEmpleados2;
 	}
 	
-	public CargoEmpleadoSie getTbCargoEmpleado() {
-		return this.tbCargoEmpleado;
-	}
-
-	public void setTbCargoEmpleado(CargoEmpleadoSie tbCargoEmpleado) {
-		this.tbCargoEmpleado = tbCargoEmpleado;
-	}
-	
 	public Set<TelefonoPersonaSie> getTbTelefonoPersona() {
 		return tbTelefonoPersona;
 	}
@@ -359,5 +350,13 @@ public class EmpleadoSie implements Serializable {
 	public void setTbMetaEmpleados(Set<MetaEmpleadoSie> tbMetaEmpleados) {
 		this.tbMetaEmpleados = tbMetaEmpleados;
 	}
-	
+
+	public Set<DetCargoEmpleadoSie> getTbDetCargoEmpleados() {
+		return tbDetCargoEmpleados;
+	}
+
+	public void setTbDetCargoEmpleados(Set<DetCargoEmpleadoSie> tbDetCargoEmpleados) {
+		this.tbDetCargoEmpleados = tbDetCargoEmpleados;
+	}
+
 }

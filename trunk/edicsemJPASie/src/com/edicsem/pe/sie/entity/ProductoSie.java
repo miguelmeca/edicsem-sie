@@ -62,10 +62,6 @@ public class ProductoSie implements Serializable {
 
 	private BigDecimal valorporcentaje;
 
-	//bi-directional many-to-one association to ContratoEmpleadoSie
-	@OneToMany(mappedBy="tbProducto")
-	private Set<ContratoEmpleadoSie> tbContratoEmpleados;
-
 	//bi-directional many-to-one association to DetPaqueteSie
 	@OneToMany(mappedBy="tbProducto")
 	private Set<DetPaqueteSie> tbDetPaquetes;
@@ -209,14 +205,6 @@ public class ProductoSie implements Serializable {
 
 	public void setValorporcentaje(BigDecimal valorporcentaje) {
 		this.valorporcentaje = valorporcentaje;
-	}
-
-	public Set<ContratoEmpleadoSie> getTbContratoEmpleados() {
-		return this.tbContratoEmpleados;
-	}
-
-	public void setTbContratoEmpleados(Set<ContratoEmpleadoSie> tbContratoEmpleados) {
-		this.tbContratoEmpleados = tbContratoEmpleados;
 	}
 	
 	public Set<DetPaqueteSie> getTbDetPaquetes() {
