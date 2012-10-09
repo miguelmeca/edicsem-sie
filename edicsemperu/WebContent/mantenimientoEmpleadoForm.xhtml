@@ -38,7 +38,7 @@
 			requiredMessage="#{message['empleado.nrodoc.validation']}"/>                                
             
             <p:outputLabel value="#{message['empleado.fijo']}" for="fijo" />
-			<p:inputText id="fijo" value="#{mantenimientoEmpleadoFormAction.fijo}" required="true" label="Fijo"
+			<p:inputMask mask="999-9999" id="fijo" value="#{mantenimientoEmpleadoFormAction.fijo}" required="true" label="Fijo"
 			requiredMessage="#{message['empleado.fijo.validation']}"/>     
 			<p:outputLabel value="#{message['mantenimiento.estado']}" for="estado" />
 			<p:inputText id="estado" value="#{mantenimientoEmpleadoFormAction.estado}" required="true" label="Estado"
@@ -47,12 +47,31 @@
             <p:outputLabel value="#{message['domicilio.direccion']}" for="domicilio" />
 			<p:inputText id="domicilio" value="#{mantenimientoEmpleadoFormAction.direccion}" required="true" label="Domicilio"
 			requiredMessage="#{message['domicilio.direccion.validation']}"/>     
-			<p:outputLabel value="#{message['domicilio.ubigeo']}" for="ubigeo" />
-			<p:inputText id="ubigeo" value="#{mantenimientoEmpleadoFormAction.ubigeo}" required="true" label="Ubigeo"
-			requiredMessage="#{message['domicilio.ubigeo.validation']}"/> 
-			<p:outputLabel value="#{message['domicilio.tipo']}" for="tipo" />
-			<p:inputText id="tipo2" value="#{mantenimientoEmpleadoFormAction.tipo}" required="true" label="Tipo"
-			requiredMessage="#{message['domicilio.tipo.validation']}"/> 
+			
+			<h:outputText value="#{message['contrato.ubigeo.departamento']}"/>
+			<p:selectOneMenu size="1" value="#{mantenimientoEmpleadoFormAction.idDepartamento}"  required="true"  style="width:180px" requiredMessage="#{message['contrato.ubigeo.departamento.validation']}" >
+						<f:selectItem itemLabel="Seleccione Departamento" itemValue="#{-1}" />
+						<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
+						<p:ajax update="prov,dist" listener="#{mantenimientoEmpleadoFormAction.cambiar()}" />
+			</p:selectOneMenu>
+			<h:outputText value="#{message['contrato.ubigeo.provincia']}"/>
+			<p:selectOneMenu id="prov"  value="#{mantenimientoEmpleadoFormAction.idProvincia}"  required="true"  style="width:200px" requiredMessage="#{message['contrato.ubigeo.provincia.validation']}" >
+						<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{-1}" />
+						<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
+						<p:ajax update="dist" listener="#{mantenimientoEmpleadoFormAction.cambiar2()}" />
+			</p:selectOneMenu>				
+			<h:outputText value="#{message['contrato.ubigeo.distrito']}"/>
+			<p:selectOneMenu id="dist" value="#{mantenimientoEmpleadoFormAction.idDistrito}"   required="true" style="width:200px" requiredMessage="#{message['contrato.ubigeo.distrito.validation']}" >
+						<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{-1}" />
+						<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+			</p:selectOneMenu>
+			 
+			
+			<p:outputLabel for="tipocasa" value="Tipo de Casa :" styleClass="textoAzulFuerteGrande" id="tipocasaL"/>
+            <p:selectOneMenu id="tipocasa" value="#{mantenimientoEmpleadoFormAction.tipo}" styleClass="required" title="El tipo de casa es obligatorio!" >
+            <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
+            <f:selectItems value="#{comboAction.tipocasaItems}" />
+            </p:selectOneMenu>
 			<p:outputLabel value="#{message['domicilio.estado']}" for="estado" />
 			<p:inputText id="estado2" value="#{mantenimientoEmpleadoFormAction.estado2}" required="true" label="Estado"
 			requiredMessage="#{message['domicilio.estado.validation']}"/>
