@@ -1,4 +1,4 @@
-	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html  xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -507,15 +507,17 @@
 				
 				<h:panelGroup>		
 						
-						<p:inputText id="ruc1"
+						<p:inputMask id="ruc1"
 								value="#{empresaForm.objEmpresaSie.numruc}"
 								required="true"  label="ruc"
+								mask="99999999999"
 								requiredMessage="#{message['mantenimiento.numruc.validation']}"
 								style="font-weight:bold" rendered="#{empresaForm.editMode}"	
 					 />				
 				
-						<p:inputText id="ruc2"
+						<p:inputMask id="ruc2"
 								value="#{empresaForm.numruc}"  required="true"  label="descripcion"
+								mask="99999999999"
 								requiredMessage="#{message['mantenimiento.numruc.validation']}"
 								style="font-weight:bold" rendered="#{!empresaForm.editMode}"		
 					 />
@@ -529,15 +531,17 @@
 				
 				<h:panelGroup>		
 						
-						<p:inputText id="telefono1"
+						<p:inputMask id="telefono1"
 								value="#{empresaForm.objEmpresaSie.numtelefono}"
-								required="true"  label="ruc"
+								mask="999-9999"
+								required="true"  label="telefono"
 								requiredMessage="#{message['mantenimiento.numtel.validation']}"
 								style="font-weight:bold" rendered="#{empresaForm.editMode}"	
 					 />				
 				
-						<p:inputText id="telefono2"
+						<p:inputMask id="telefono2"
 								value="#{empresaForm.numtel}"  required="true"  label="telefono"
+								mask="999-9999"
 								requiredMessage="#{message['mantenimiento.numtel.validation']}"
 								style="font-weight:bold" rendered="#{!empresaForm.editMode}"		
 					 />
