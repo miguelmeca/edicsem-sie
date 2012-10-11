@@ -587,7 +587,25 @@
 
 	<!-- 	FIN DESACTIVAR EMPLEADO  -->
 
+				
+<!--	  DESACTIVAR PROVEEDOR	   -->
 
+<h:form>
+
+	<p:confirmDialog id="confirmDeshabilitar" message="Esta seguro de deshabilitar dicho proveedor?" width="325" height="100" showEffect="explode" 
+				hideEffect="explode"  header="Confirm" severity="alert" widgetVar="confirmation" position="center">
+					   
+       			 <p:commandButton  type="submit" value="Si"  action="#{mantenimientoProveedorFormAction.deshabilitar}"  
+       			 update=":manteProList:listaPersonas" oncomplete="confirmation.hide()" ajax="false">
+      			 </p:commandButton>  
+        
+        		<p:commandButton value="No" onclick="confirmation.hide()" type="button" />  
+        		
+    </p:confirmDialog>
+    
+</h:form>
+
+<!-- 	FIN DESACTIVAR PROVEEDOR  -->
 
 	<!--	  INICIO DESACTIVAR	 EMPRESA  -->
 
@@ -614,7 +632,7 @@
 	</h:form>
 
 	<!-- 	FIN DESACTICAR EMPRESA (ESTADOS)  -->
-
+	
 	<!--EN UN SOLO PUPAP NUEVO Y EDITAR EMPRESA -->
 
 
@@ -626,7 +644,7 @@
 			<h:panelGrid id="display" columns="3" cellpadding="0"
 				style="margin:0 auto;">
 
-				<!-- RAZON SOCIAL -->
+	            <!-- RAZON SOCIAL -->
 
 				<h:outputText value="#{message['mantenimiento.razonSocial']}"
 					for="razonSocial" />
@@ -646,7 +664,8 @@
 					<p:message for="razonSocial1" />
 
 				</h:panelGroup>
-				<!-- DESCRIPCION -->
+
+<!-- DESCRIPCION -->
 
 				<h:outputText value="#{message['mantenimiento.descripcion']}"
 					for="descripcion" />
@@ -664,101 +683,9 @@
 						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
 						style="font-weight:bold" rendered="#{!empresaForm.editMode}" />
 					<p:message for="descripcion1" />
-<!--	  DESACTIVAR PROVEEDOR	   -->
-
-<h:form>
-
-	<p:confirmDialog id="confirmDeshabilitar" message="Esta seguro de deshabilitar dicho proveedor?" width="325" height="100" showEffect="explode" 
-				hideEffect="explode"  header="Confirm" severity="alert" widgetVar="confirmation" position="center">
-					   
-       			 <p:commandButton  type="submit" value="Si"  action="#{mantenimientoProveedorFormAction.deshabilitar}"  
-       			 update=":manteProList:listaPersonas" oncomplete="confirmation.hide()" ajax="false">
-      			 </p:commandButton>  
-        
-        		<p:commandButton value="No" onclick="confirmation.hide()" type="button" />  
-        		
-    </p:confirmDialog>
-    
-</h:form>
-
-<!-- 	FIN DESACTIVAR PROVEEDOR  -->
-
-
 				</h:panelGroup>
 
-				<!--N° RUC -->
-
-				<h:outputText value="#{message['mantenimiento.numruc']}" for="ruc" />
-
-				<h:panelGroup>
-
-					<p:inputText id="ruc1" value="#{empresaForm.objEmpresaSie.numruc}"
-						required="true" label="ruc"
-						requiredMessage="#{message['mantenimiento.numruc.validation']}"
-						style="font-weight:bold" rendered="#{empresaForm.editMode}" />
-
-					<p:inputText id="ruc2" value="#{empresaForm.numruc}"
-						required="true" label="descripcion"
-						requiredMessage="#{message['mantenimiento.numruc.validation']}"
-						style="font-weight:bold" rendered="#{!empresaForm.editMode}" />
-					<p:message for="ruc1" />
-<!--	  DESACTIVAR PROVEEDOR	   -->
-
-<h:form>
-
-	<p:confirmDialog id="confirmDeshabilitar" message="Esta seguro de deshabilitar dicho proveedor?" width="325" height="100" showEffect="explode" 
-				hideEffect="explode"  header="Confirm" severity="alert" widgetVar="confirmation" position="center">
-					   
-       			 <p:commandButton  type="submit" value="Si"  action="#{mantenimientoProveedorFormAction.deshabilitar}"  
-       			 update=":manteProList:listaPersonas" oncomplete="confirmation.hide()" ajax="false">
-      			 </p:commandButton>  
-        
-        		<p:commandButton value="No" onclick="confirmation.hide()" type="button" />  
-        		
-    </p:confirmDialog>
-    
-</h:form>
-
-				</h:panelGroup>
-
-				<!--N° TELEFONICO -->
-
-				<h:outputText value="#{message['mantenimiento.numtel']}"
-					for="telefono" />
-
-				<h:panelGroup>
-
-					<p:inputText id="telefono1"
-						value="#{empresaForm.objEmpresaSie.numtelefono}" required="true"
-						label="ruc"
-						requiredMessage="#{message['mantenimiento.numtel.validation']}"
-						style="font-weight:bold" rendered="#{empresaForm.editMode}" />
-
-					<p:inputText id="telefono2" value="#{empresaForm.numtel}"
-						required="true" label="telefono"
-						requiredMessage="#{message['mantenimiento.numtel.validation']}"
-						style="font-weight:bold" rendered="#{!empresaForm.editMode}" />
-					<p:message for="telefono1" />
-
-				</h:panelGroup>
-
-				<!--N° EMail -->
-
-				<h:outputText value="#{message['mantenimiento.email']}" for="email" />
-
-				<h:panelGroup>
-
-					<p:inputText id="email1" value="#{empresaForm.objEmpresaSie.email}"
-						required="true" label="email"
-						requiredMessage="#{message['mantenimiento.email.validation']}"
-						style="font-weight:bold" rendered="#{empresaForm.editMode}" />
-
-					<p:inputText id="email2" value="#{empresaForm.email}"
-						required="true" label="email"
-						requiredMessage="#{message['mantenimiento.email.validation']}"
-						style="font-weight:bold" rendered="#{!empresaForm.editMode}" />
-					<p:message for="email1" />
-</h:panelGroup>
+				<!--N° RUC -->				
 				<h:outputText  value="#{message['mantenimiento.numruc']}" for="ruc"	/>
 				
 				<h:panelGroup>		
@@ -781,13 +708,11 @@
 						 
 				</h:panelGroup>
 
-				<!-- BOTON GUARDAR -->
-				<h:panelGroup>
+		
+			
+				
+				<!--N° TELEFONICO -->
 
-					<p:spacer height="80px" width="80"></p:spacer>
-					<p:commandButton id="btn" value="Guardar" update="panel"
-						action="#{empresaForm.insertar}" ajax="false"
-						icon="ui-icon ui-icon-disk" />
 				<h:outputText  value="#{message['mantenimiento.numtel']}" for="telefono"	/>
 				
 				<h:panelGroup>		
@@ -812,13 +737,37 @@
 				
 <!--N° EMail -->
 
+				<h:outputText value="#{message['mantenimiento.email']}" for="email" />
+
+				<h:panelGroup>
+
+					<p:inputText id="email1" value="#{empresaForm.objEmpresaSie.email}"
+						required="true" label="email"
+						requiredMessage="#{message['mantenimiento.email.validation']}"
+						style="font-weight:bold" rendered="#{empresaForm.editMode}" />
+
+					<p:inputText id="email2" value="#{empresaForm.email}"
+						required="true" label="email"
+						requiredMessage="#{message['mantenimiento.email.validation']}"
+						style="font-weight:bold" rendered="#{!empresaForm.editMode}" />
+					<p:message for="email1" />
+</h:panelGroup>
+	
+<!-- BOTON GUARDAR -->
+				<h:panelGroup>
+
+					<p:spacer height="80px" width="80"></p:spacer>
+					<p:commandButton id="btn" value="Guardar" update="panel"
+						action="#{empresaForm.insertar}" ajax="false"
+						icon="ui-icon ui-icon-disk" />
+				
 				</h:panelGroup>
-
-			</h:panelGrid>
-
-		</p:dialog>
-
-	</h:form>
+			
+		</h:panelGrid>
+		
+	</p:dialog>
+	
+</h:form>
 	<!-- FIN PUPAP NUEVO Y EDITAR EMPRESA -->
 
 	<ui:insert name="highlight">
