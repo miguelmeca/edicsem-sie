@@ -10,7 +10,7 @@
 			Contrato</h1>
 		<h:form id="formManteContrato" >
 			<p:growl id="message" showDetail="true" />
-			<p:panel id="panel2" header="#{message['panel.contrato.cliente']}">
+			<p:panel  header="#{message['panel.contrato.cliente']}">
 				<h:panelGrid columns="6">
 				
 				<h:outputText id="nombreCliente" value="#{message['contrato.nombre']}" />
@@ -37,18 +37,27 @@
 				<p:inputText id="numDoc"  required="true" requiredMessage="#{message['contrato.numero.documento.validation']}" />
 				<p:message for="numDoc" />
 				
-				<p:spacer></p:spacer>
+				</h:panelGrid>
+				<h:panelGrid columns="6" id="panel2" >
+				<h:outputText value="Lima (defecto)" />  
+				<p:selectBooleanCheckbox id="sel" value="#{contratoForm.defectoUbigeo}">
+				<p:ajax update="panel2,ubigeoDefecto" listener="#{contratoForm.cambioUbigeoDefecto}" 
+				oncomplete="if(#{contratoForm.defectoUbigeo}) UbigeoDialog.show()"></p:ajax>
+				</p:selectBooleanCheckbox>
 				
-				<h:outputText value="Lima (defecto) " />  
-        <p:selectBooleanCheckbox value="#{contratoForm.defectoUbigeo}">
-            <p:ajax update="panel2" listener="#{contratoForm.cambioUbigeoDefecto}"  
-							oncomplete="UbigeoDialog.show()"  />  
-        </p:selectBooleanCheckbox> 
-		 
+				<h:outputText value="#{message['contrato.ubigeo.distrito']}"  rendered="#{contratoForm.defectoUbigeo}" />
+				<p:selectOneMenu  value="#{contratoForm.idUbigeo}"  rendered="#{contratoForm.defectoUbigeo}"   required="true" style="width:200px" requiredMessage="#{message['contrato.ubigeo.distrito.validation']}" >
+						<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+						<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+						<p:ajax update="panel2" listener="#{contratoForm.cambioUbica}"></p:ajax>
+				</p:selectOneMenu>
 				
-				<h:outputText value="Ubigeo Defecto"/>
-				<h:outputText id="ubigeoDefecto" value="#{contratoForm.ubigeoDefecto}" />
 				
+				<h:outputText value="Ubigeo "/>
+				<h:outputText id="ubigeoDefecto" value="#{contratoForm.ubigeoDefecto}"  />
+				
+				</h:panelGrid>
+				<h:panelGrid columns="6">
 				<h:outputText value="#{message['contrato.ubigeo.domicilio']}"/>
 				<p:inputText id="domicilio" value="#{contratoForm.objDomicilioSie.domicilio}"   required="true" requiredMessage="#{message['contrato.ubigeo.domicilio.validation']}"/>
 				<p:message for="domicilio" />
@@ -86,8 +95,8 @@
 				<p:inputText size="15" />
 		 </h:panelGrid>
 		</p:panel>
-	 
-			<p:panel header="#{message['panel.contrato.producto']}">
+
+	 <p:panel header="#{message['panel.contrato.producto']}">
 			
 				<h:outputText value="#{message['contrato.empresa']}"/>
 				<p:selectOneMenu size="1" id="idempresa"  required="true"  style="width:165px" requiredMessage="#{message['contrato.empresa.validation']}"
@@ -108,14 +117,14 @@
 			<h:outputText value="#{message['contrato.cantCuotas']}" />
 			<p:spinner id="spinnerE" size="2" min="1"  required="true" requiredMessage="#{message['movimiento.cantEntrada.validation']}" 
 				value="#{contratoForm.objCobranzaSie.cantcuotas}"/>
-			 
 			</p:panel>
+			
 			<p:commandButton value="Registrar" 
 				actionListener="#{contratoForm.insertar}" 
 					  update="message" icon="ui-icon ui-icon-check"
                       oncomplete="onEditCompleteRegistrar(args)" ajax = "false" >
                        </p:commandButton>
-		
+			
 		 </h:form>
 	</ui:define>
 </ui:composition>
