@@ -60,222 +60,387 @@
 						<p:menuitem value="Operadoras" ajax="false" />
 					</p:submenu>
 					<p:submenu label="Mantenimientos">
-					<p:menuitem value="Productos" update="messages" ajax="false" action="#{productoSearch.listar}" />
-						<p:menuitem value="Orden de Reposicion" update="messages" ajax="false" action="#" />
-						<p:menuitem value="Buscar Cliente" update="messages" ajax="false" action="#" />
-						<p:menuitem value="Gestion de Clientes/Seguimiento Cobranzas" ajax="false" action="#" />
-						<p:menuitem value="Registro Contrato" update="messages" ajax="false" action="contratoForm.jsf" />
-						<p:menuitem value="Mantenimiento Valorizado" update="messages" ajax="false" action="mantenimientoKardex.jsf" />
-						<p:menuitem value="Movimiento Mercader&iacute;a" ajax="false" action="movimientoMercaderiaForm.listar" />
-						<p:menuitem value="Mantenimiento de Empleados" ajax="false" action="#{mantenimientoEmpleadoSearchAction.listar}" />
-						<p:menuitem value="Mantenimiento de Proveedores" ajax="false" action="#{mantenimientoProveedorSearchAction.listar}" />
-						<p:menuitem value="Mantenimiento Cargo Empleado" ajax="false" action="#{mantenimientoCargoEmpleadoSearchAction.listar}" />
-						<p:menuitem value="Mantenimiento Empresa" ajax="false" action="#{empresaSearch.listar}"/>
-						<p:menuitem value="Meta Empresa" update="messages" ajax="false" action="metaEmpresa.jsf" />
+						<p:menuitem value="Productos" update="messages" ajax="false"
+							action="#{productoSearch.listar}" />
+						<p:menuitem value="Orden de Reposicion" update="messages"
+							ajax="false" action="#" />
+						<p:menuitem value="Buscar Cliente" update="messages" ajax="false"
+							action="#" />
+						<p:menuitem value="Gestion de Clientes/Seguimiento Cobranzas"
+							ajax="false" action="#" />
+						<p:menuitem value="Registro Contrato" update="messages"
+							ajax="false" action="#{contratoForm.agregar}" />
+						<p:menuitem value="Mantenimiento de Punto de Venta/Almacen"
+							ajax="false" action="#{almacenSearch.listar}" />
+						<p:menuitem value="Mantenimiento Valorizado" update="messages"
+							ajax="false" action="mantenimientoKardex.jsf" />
+						<p:menuitem value="Movimiento Mercader&iacute;a" ajax="false"
+							action="movimientoMercaderiaForm.listar" />
+						<p:menuitem value="Mantenimiento de Empleados" ajax="false"
+							action="#{mantenimientoEmpleadoSearchAction.listar}" />
+						<p:menuitem value="Mantenimiento de Proveedores" ajax="false"
+							action="#{mantenimientoProveedorSearchAction.listar}" />
+						<p:menuitem value="Mantenimiento Cargo Empleado" ajax="false"
+							action="#{mantenimientoCargoEmpleadoSearchAction.listar}" />
+						<p:menuitem value="Mantenimiento Empresa" ajax="false"
+							action="#{empresaSearch.listar}" />
+						<p:menuitem value="Meta Empresa" update="messages" ajax="false"
+							action="metaEmpresa.jsf" />
 					</p:submenu>
 				</p:menu>
 			</h:form>
 		</p:layoutUnit>
-		
+
 		<p:layoutUnit id="center" position="center" scrollable="true">
 			<ui:insert name="body" />
-		</p:layoutUnit>		
+		</p:layoutUnit>
 	</p:layout>
-<!--  Mantenimiento Kardex Detalle - Modificar-->
-<h:form id="formManteKardexList">
-	<p:dialog  widgetVar="kardexDialog" 
-		showEffect="fade" hideEffect="explode" modal="true" width="450"
-		position="center">
-		<h:panelGrid id="display" columns="2" cellpadding="2"
-			style="margin:0 auto;" title="Kardex " >
-			
+	<!--  Mantenimiento Kardex Detalle - Modificar-->
+	<h:form id="formManteKardexList">
+		<p:dialog widgetVar="kardexDialog" showEffect="fade"
+			hideEffect="explode" modal="true" width="450" position="center">
+			<h:panelGrid id="display" columns="2" cellpadding="2"
+				style="margin:0 auto;" title="Kardex ">
+
 				<h:outputText value="#{message['kardex.idKardex']}" id="idKardex" />
 				<h:panelGroup>
-				<h:outputText value="#{kardexAction.objKardexSie.idkardex}"
+					<h:outputText value="#{kardexAction.objKardexSie.idkardex}"
 						style="font-weight:bold" />
 				</h:panelGroup>
-				 
-				<h:outputText value="#{message['mantenimiento.producto.codigo']}" id="codProd" />
+
+				<h:outputText value="#{message['mantenimiento.producto.codigo']}"
+					id="codProd" />
 				<h:panelGroup>
-				<h:outputText value="#{kardexAction.objKardexSie.tbProducto.idproducto}"
-						style="font-weight:bold"  /> 
+					<h:outputText
+						value="#{kardexAction.objKardexSie.tbProducto.idproducto}"
+						style="font-weight:bold" />
 				</h:panelGroup>
-				
-				<h:outputText value="#{message['mantenimiento.producto.descripcion']}"  />
-				<h:panelGroup>
+
 				<h:outputText
+					value="#{message['mantenimiento.producto.descripcion']}" />
+				<h:panelGroup>
+					<h:outputText
 						value="#{kardexAction.objKardexSie.tbProducto.descripcionproducto}"
-						style="font-weight:bold"  />
+						style="font-weight:bold" />
 				</h:panelGroup>
-				
+
 				<h:outputText value="Detalle" id="detProd" />
 				<h:panelGroup>
-				<h:inputTextarea value="#{kardexAction.objKardexSie.detallekardex}"
-						style="font-weight:bold" disabled="true"/>
-				</h:panelGroup>
-				
-				<h:outputText value="Fecha Creación" id="fecCreacProd" />
-				<h:panelGroup>
-				<h:outputText value="#{kardexAction.objKardexSie.fechacreacion}"
-						style="font-weight:bold"  />
-				</h:panelGroup>
-				
-				<h:outputText value="#{message['mantenimiento.producto.cantidadEnt']}" />
-				<h:panelGroup>
-				<h:outputText  value="#{kardexAction.objKardexSie.cantentrada}"
-						style="font-weight:bold" disabled="true"  />
-				</h:panelGroup>
-				
-				<h:outputText value="#{message['mantenimiento.producto.cantidadSal']}"/>
-				<h:panelGroup>
-				<h:outputText  
-						value="#{kardexAction.objKardexSie.cantsalida}"
+					<h:inputTextarea value="#{kardexAction.objKardexSie.detallekardex}"
 						style="font-weight:bold" disabled="true" />
 				</h:panelGroup>
-				
-				<h:outputText value="#{message['kardex.cantExistente']}"  />
+
+				<h:outputText value="Fecha Creación" id="fecCreacProd" />
 				<h:panelGroup>
-				<h:outputText  
-						value="#{kardexAction.objKardexSie.cantexistencia}"
+					<h:outputText value="#{kardexAction.objKardexSie.fechacreacion}"
 						style="font-weight:bold" />
-				 </h:panelGroup>
-				 
-				 <h:outputText value="#{message['kardex.empresa']}"  />
+				</h:panelGroup>
+
+				<h:outputText
+					value="#{message['mantenimiento.producto.cantidadEnt']}" />
 				<h:panelGroup>
-				<p:selectOneMenu  size="1" rendered="#{kardexAction.objKardexSie.tbEmpresa.idempresa >= 0}"  
-						value="#{kardexAction.objKardexSie.tbEmpresa.idempresa}"  >
-						<f:selectItem itemLabel="Seleccione Empresasi" itemValue="0"  />
+					<h:outputText value="#{kardexAction.objKardexSie.cantentrada}"
+						style="font-weight:bold" disabled="true" />
+				</h:panelGroup>
+
+				<h:outputText
+					value="#{message['mantenimiento.producto.cantidadSal']}" />
+				<h:panelGroup>
+					<h:outputText value="#{kardexAction.objKardexSie.cantsalida}"
+						style="font-weight:bold" disabled="true" />
+				</h:panelGroup>
+
+				<h:outputText value="#{message['kardex.cantExistente']}" />
+				<h:panelGroup>
+					<h:outputText value="#{kardexAction.objKardexSie.cantexistencia}"
+						style="font-weight:bold" />
+				</h:panelGroup>
+
+				<h:outputText value="#{message['kardex.empresa']}" />
+				<h:panelGroup>
+					<p:selectOneMenu size="1"
+						rendered="#{kardexAction.objKardexSie.tbEmpresa.idempresa >= 0}"
+						value="#{kardexAction.objKardexSie.tbEmpresa.idempresa}">
+						<f:selectItem itemLabel="Seleccione Empresasi" itemValue="0" />
 						<f:selectItems value="#{comboAction.empresaitems}" />
-				</p:selectOneMenu>
-				<p:selectOneMenu  size="1" rendered="#{kardexAction.objKardexSie.tbEmpresa.idempresa == null}"  
-						value="#{kardexAction.idempresa}"  >
-						<f:selectItem itemLabel="Seleccione Empresa" itemValue="0"  />
+					</p:selectOneMenu>
+					<p:selectOneMenu size="1"
+						rendered="#{kardexAction.objKardexSie.tbEmpresa.idempresa == null}"
+						value="#{kardexAction.idempresa}">
+						<f:selectItem itemLabel="Seleccione Empresa" itemValue="0" />
 						<f:selectItems value="#{comboAction.empresaitems}" />
-				</p:selectOneMenu>
-				 <h:outputText  rendered="#{kardexAction.editMode}"
-						value="#{kardexAction.idempresa}"   >
-				</h:outputText>
-				
-				 </h:panelGroup>
-				<p:commandButton id="id"
-						actionListener="#{kardexAction.insertar}"   rendered="#{!kardexAction.editMode}"  
-						value="Actualizar kardex " ajax="false" />
-				
-		</h:panelGrid>
-	</p:dialog>
-</h:form>
+					</p:selectOneMenu>
+					<h:outputText rendered="#{kardexAction.editMode}"
+						value="#{kardexAction.idempresa}">
+					</h:outputText>
 
-<!--  Mantenimiento Producto - Imagen-->
-<h:form id="formInsertImageProduc">
-	<p:dialog header="Imagen Producto" widgetVar="imageProducDialog" 
-		showEffect="fade" hideEffect="explode" modal="true" width="450"
-		position="center">
-		<h:panelGrid id="display" columns="2" cellpadding="2"
-			style="margin:0 auto;">
-			
-				<h:outputText value="#{message['mantenimiento.producto.imagen']}" id="idimagen" />
-			   
-  		  <p:fileUpload fileUploadListener="#{productoForm.cargarImagenInsertar}" 
-      label="Cargar Imagen" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" description="Images" 
-           multiple="false" customUI="true" required="true"  />
-       
-		</h:panelGrid>
-	</p:dialog>
-</h:form> 
+				</h:panelGroup>
+				<p:commandButton id="id" actionListener="#{kardexAction.insertar}"
+					rendered="#{!kardexAction.editMode}" value="Actualizar kardex "
+					ajax="false" />
 
-<!--  Mantenimiento CONTRATO -->
-<h:form id="formInsertUbigeoContrato">
-	<p:dialog header="Ubigeo" widgetVar="UbigeoDialog" 
-		showEffect="fade" hideEffect="explode" modal="true" width="450"
-		position="center">
-		<h:panelGrid id="display" columns="2" cellpadding="2"   >
-				<h:outputText value="#{message['contrato.ubigeo.departamento']}"/>
-				<p:selectOneMenu size="1" value="#{contratoForm.idDepartamento}"  required="true"  style="width:180px" requiredMessage="#{message['contrato.ubigeo.departamento.validation']}" >
-						<f:selectItem itemLabel="Seleccione Departamento" itemValue="#{null}" />
-						<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
-						<p:ajax update="prov,dist" listener="#{contratoForm.cambiar}" />
-				</p:selectOneMenu>
-				
-				<h:outputText value="#{message['contrato.ubigeo.provincia']}"/>
-				<p:selectOneMenu id="prov"  value="#{contratoForm.idProvincia}"  required="true"  style="width:200px" requiredMessage="#{message['contrato.ubigeo.provincia.validation']}" >
-						<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
-						<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
-						<p:ajax update="dist" listener="#{contratoForm.cambiar2}" />
-				</p:selectOneMenu>
-				
-				<h:outputText value="#{message['contrato.ubigeo.distrito']}"/>
-				<p:selectOneMenu id="dist" value="#{contratoForm.idUbigeo}"   required="true" style="width:200px" requiredMessage="#{message['contrato.ubigeo.distrito.validation']}" >
-						<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
-						<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
-						 
-				</p:selectOneMenu>
-				 <p:commandButton value="Insertar Ubigeo" action="#{contratoForm.ingresarUbigeo}"  update="@form"
-				oncomplete="UbigeoDialog.hide()" >
-						</p:commandButton>
-				
-				 </h:panelGrid>
-	</p:dialog>
-</h:form> 
-
-<!--  Mantenimiento Producto Detalle -->
-<h:form id="formManteProdDetalle">
-    <p:dialog header="Detalle Producto" widgetVar="prodDialog" id="carDlg"   showEffect="fade"
-					hideEffect="explode"  modal="true" width="450" position="center">
-			<h:panelGrid id="display" columns="2" cellpadding="2"
-						style="margin:0 auto;">
-						<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
-					<h:panelGroup>
-					<h:outputText value="#{productoForm.selectedProducto.tbTipoProducto.nombretipoproducto}"
-					rendered="#{!productoForm.editMode}" />
-					</h:panelGroup>
-						<h:outputText value="#{message['mantenimiento.producto.codigo']}" id="codProd" />
-						<h:panelGroup>
-							<h:outputText value="#{productoForm.selectedProducto.codproducto}"
-								style="font-weight:bold" rendered="#{!productoForm.editMode}" />
-						</h:panelGroup>
-
-						<h:outputText value="#{message['mantenimiento.producto.descripcion']}" id="descProd" />
-						<h:panelGroup>
-							<h:outputText value="#{productoForm.selectedProducto.descripcionproducto}"
-								style="font-weight:bold" rendered="#{!productoForm.editMode}" />
-						</h:panelGroup>
-
-						<h:outputText value="#{message['mantenimiento.producto.precio']}" id="precioProd" />
-						<h:panelGroup>
-							<h:outputText value="#{productoForm.selectedProducto.precioventa}"
-								style="font-weight:bold" rendered="#{!productoForm.editMode}" />
-						</h:panelGroup>
-						
-						<h:outputText value="#{message['mantenimiento.producto.stock.minimo']}" id="stckMinProd" />
-						<h:panelGroup>
-							<h:outputText value="#{productoForm.selectedProducto.stkminimoproducto}"
-								style="font-weight:bold" rendered="#{!productoForm.editMode}" />
-						</h:panelGroup>
-						
-						<h:outputText value="#{message['mantenimiento.producto.stock.maximo']}" id="stcKMaxProd" />
-						<h:panelGroup>
-							<h:outputText value="#{productoForm.selectedProducto.stkmaximo}"
-								style="font-weight:bold" rendered="#{!productoForm.editMode}" />
-						</h:panelGroup>
-						
-						<h:outputText value="#{message['mantenimiento.producto.detalle']}" />
-						<h:panelGroup><p:inputTextarea id="detalle"  
-						value="#{productoForm.selectedProducto.detalleproducto}" rows="4" cols="30" 
-						rendered="#{!productoForm.editMode}"/>
-					</h:panelGroup>
 			</h:panelGrid>
 		</p:dialog>
-</h:form>
+	</h:form>
+
+	<!--  Mantenimiento Producto - Imagen-->
+	<h:form id="formInsertImageProduc">
+		<p:dialog header="Imagen Producto" widgetVar="imageProducDialog"
+			showEffect="fade" hideEffect="explode" modal="true" width="450"
+			position="center">
+			<h:panelGrid id="display" columns="2" cellpadding="2"
+				style="margin:0 auto;">
+
+				<h:outputText value="#{message['mantenimiento.producto.imagen']}"
+					id="idimagen" />
+
+				<p:fileUpload
+					fileUploadListener="#{productoForm.cargarImagenInsertar}"
+					label="Cargar Imagen" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+					description="Images" multiple="false" customUI="true"
+					required="true" />
+
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+	
+<!--  Mantenimiento ALMACEN -->
+
+	<h:form id="formInsertUbigeoAlmacen">
+		<p:dialog header="Ubigeo" widgetVar="UbigeoAlmacenDialog" showEffect="fade"
+			hideEffect="explode" modal="true" width="450" position="center">
+			<h:panelGrid id="display" columns="2" cellpadding="2">
+				<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
+				<p:selectOneMenu size="1" value="#{almacenForm.idDepartamento}"
+					required="true" style="width:180px"
+					requiredMessage="#{message['contrato.ubigeo.departamento.validation']}">
+					<f:selectItem itemLabel="Seleccione Departamento"
+						itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
+					<p:ajax update="prov,dist" listener="#{almacenForm.cambiar}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="#{message['contrato.ubigeo.provincia']}" />
+				<p:selectOneMenu id="prov" value="#{almacenForm.idProvincia}"
+					required="true" style="width:200px"
+					requiredMessage="#{message['contrato.ubigeo.provincia.validation']}">
+					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
+					<p:ajax update="dist" listener="#{almacenForm.cambiar2}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="#{message['contrato.ubigeo.distrito']}" />
+				<p:selectOneMenu id="dist" value="#{almacenForm.idUbigeo}"
+					required="true" style="width:200px"
+					requiredMessage="#{message['contrato.ubigeo.distrito.validation']}">
+					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+				</p:selectOneMenu>
+				<p:commandButton value="Insertar Ubigeo"
+					action="#{almacenForm.ingresarUbigeo}"
+					oncomplete="UbigeoDialog.hide()" update="@all">
+				</p:commandButton>
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+
+	<!--  Mantenimiento CONTRATO -->
+	
+	<h:form id="formInsertUbigeoContrato">
+		<p:dialog header="Ubigeo" widgetVar="UbigeoDialog" showEffect="fade"
+			hideEffect="explode" modal="true" width="450" position="center">
+			<h:panelGrid id="display" columns="2" cellpadding="2">
+				<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
+				<p:selectOneMenu size="1" value="#{contratoForm.idDepartamento}"
+					required="true" style="width:180px"
+					requiredMessage="#{message['contrato.ubigeo.departamento.validation']}">
+					<f:selectItem itemLabel="Seleccione Departamento"
+						itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
+					<p:ajax update="prov,dist" listener="#{contratoForm.cambiar}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="#{message['contrato.ubigeo.provincia']}" />
+				<p:selectOneMenu id="prov" value="#{contratoForm.idProvincia}"
+					required="true" style="width:200px"
+					requiredMessage="#{message['contrato.ubigeo.provincia.validation']}">
+					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
+					<p:ajax update="dist" listener="#{contratoForm.cambiar2}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="#{message['contrato.ubigeo.distrito']}" />
+				<p:selectOneMenu id="dist" value="#{contratoForm.idUbigeo}"
+					required="true" style="width:200px"
+					requiredMessage="#{message['contrato.ubigeo.distrito.validation']}">
+					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+
+				</p:selectOneMenu>
+				<p:commandButton value="Insertar Ubigeo:"
+					action="#{contratoForm.ingresarUbigeo}"
+					oncomplete="UbigeoDialog.hide()" update="@all">
+				</p:commandButton>
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
 
 
-		
-<h:form id="formCarEmpList">
-	<p:dialog header="Detalle CargoEmpleado" widgetVar="carDialog" 
-		showEffect="fade" hideEffect="explode" modal="true" width="450"
-		position="center">
-		<h:panelGrid id="display" columns="2" cellpadding="2"
-			style="margin:0 auto;">
-			
+	<h:form id="NuevoModificaPunto">
+		<p:dialog header="Ingrese Nuevo Punto de Venta/Almacen"
+			widgetVar="carDialogNuevoPunto" showEffect="fade"
+			hideEffect="explode" modal="true" width="350" position="center">
+
+			<h:panelGrid id="display">
+
+				<h:outputText value="#{message['almacen.descripcion']}" />
+				<h:panelGroup>
+					<p:inputText id="descripcion1"
+						value="#{almacenForm.objAlmacenSie.descripcion}" required="true"
+						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
+						style="font-weight:bold" rendered="#{almacenForm.editMode}" />
+					<p:inputText id="descripcion2" value="#{almacenForm.descripcion}" required="true" 
+						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
+						style="font-weight:bold" rendered="#{!almacenForm.editMode}" />
+				</h:panelGroup>
+				<h:outputText value="#{message['almacen.ubigeo']}" />
+			</h:panelGrid>
+			<h:panelGrid columns="2" id="panel">
+				<h:outputText value="Lima (defecto)" />
+				<p:selectBooleanCheckbox id="sel"
+					value="#{almacenForm.defectoUbigeo}">
+					<p:ajax update="panel,ubigeoDefecto" 
+						oncomplete="if(#{almacenForm.defectoUbigeo}) UbigeoAlmacenDialog.show()"></p:ajax>
+				</p:selectBooleanCheckbox>
+
+				<h:outputText value="#{message['contrato.ubigeo.distrito']}" rendered="#{almacenForm.defectoUbigeo}" />
+				<p:selectOneMenu value="#{almacenForm.idUbigeo}" rendered="#{almacenForm.defectoUbigeo}" required="true"
+					style="width:200px" requiredMessage="#{message['contrato.ubigeo.distrito.validation']}">
+					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+					<p:ajax update="panel" listener="#{almacenForm.cambioUbica}"></p:ajax>
+				</p:selectOneMenu>
+				
+				<h:outputText value="Ubigeo " />
+				<h:outputText id="ubigeoDefecto" value="#{almacenForm.ubigeoDefecto}" />
+			</h:panelGrid>
+			<h:panelGrid columns="2" id="panel2" >
+				<h:outputText value="#{message['almacen.direccion']}" />
+				<h:panelGroup>
+					<p:inputText value="#{almacenForm.objAlmacenSie.direccion}" required="true" 
+						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
+						style="font-weight:bold" rendered="#{almacenForm.editMode}" />
+					<p:inputText value="#{almacenForm.direccion}" required="true"
+						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
+						style="font-weight:bold" rendered="#{!almacenForm.editMode}" />
+				</h:panelGroup>
+
+				<h:outputText value="#{message['almacen.PuntoVenta']}" />
+				<p:selectBooleanCheckbox value="#{almacenForm.puntoVenta}">
+				</p:selectBooleanCheckbox>
+
+				<h:panelGroup>
+					<p:commandButton id="btn" value="Guardar" update="panel"
+						action="#{almacenForm.insertar}" ajax="false"
+						icon="ui-icon ui-icon-disk" />
+				</h:panelGroup>
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+
+
+	<h:form>
+		<p:confirmDialog id="confirmDeshabilitarEmpresa"
+			message="Esta seguro de deshabilitar dicho Punto de venta/Almacen?"
+			width="325" height="100" showEffect="explode" hideEffect="explode"
+			header="Confirm" severity="alert" widgetVar="confirmationAlmacen"
+			position="center">
+
+			<p:commandButton type="submit" value="Si"
+				action="#{almacenForm.DeshabilitarPunto}"
+				update=":frmAlmacenFormList:almacenTable"
+				oncomplete="confirmation.hide()" ajax="false">
+			</p:commandButton>
+
+			<p:commandButton value="No" onclick="confirmation.hide()"
+				type="button" />
+
+		</p:confirmDialog>
+	</h:form>
+
+
+	<!--  Mantenimiento Producto Detalle -->
+	<h:form id="formManteProdDetalle">
+		<p:dialog header="Detalle Producto" widgetVar="prodDialog" id="carDlg"
+			showEffect="fade" hideEffect="explode" modal="true" width="450"
+			position="center">
+			<h:panelGrid id="display" columns="2" cellpadding="2"
+				style="margin:0 auto;">
+				<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
+				<h:panelGroup>
+					<h:outputText
+						value="#{productoForm.selectedProducto.tbTipoProducto.nombretipoproducto}"
+						rendered="#{!productoForm.editMode}" />
+				</h:panelGroup>
+				<h:outputText value="#{message['mantenimiento.producto.codigo']}"
+					id="codProd" />
+				<h:panelGroup>
+					<h:outputText value="#{productoForm.selectedProducto.codproducto}"
+						style="font-weight:bold" rendered="#{!productoForm.editMode}" />
+				</h:panelGroup>
+
+				<h:outputText
+					value="#{message['mantenimiento.producto.descripcion']}"
+					id="descProd" />
+				<h:panelGroup>
+					<h:outputText
+						value="#{productoForm.selectedProducto.descripcionproducto}"
+						style="font-weight:bold" rendered="#{!productoForm.editMode}" />
+				</h:panelGroup>
+
+				<h:outputText value="#{message['mantenimiento.producto.precio']}"
+					id="precioProd" />
+				<h:panelGroup>
+					<h:outputText value="#{productoForm.selectedProducto.precioventa}"
+						style="font-weight:bold" rendered="#{!productoForm.editMode}" />
+				</h:panelGroup>
+
+				<h:outputText
+					value="#{message['mantenimiento.producto.stock.minimo']}"
+					id="stckMinProd" />
+				<h:panelGroup>
+					<h:outputText
+						value="#{productoForm.selectedProducto.stkminimoproducto}"
+						style="font-weight:bold" rendered="#{!productoForm.editMode}" />
+				</h:panelGroup>
+
+				<h:outputText
+					value="#{message['mantenimiento.producto.stock.maximo']}"
+					id="stcKMaxProd" />
+				<h:panelGroup>
+					<h:outputText value="#{productoForm.selectedProducto.stkmaximo}"
+						style="font-weight:bold" rendered="#{!productoForm.editMode}" />
+				</h:panelGroup>
+
+				<h:outputText value="#{message['mantenimiento.producto.detalle']}" />
+				<h:panelGroup>
+					<p:inputTextarea id="detalle"
+						value="#{productoForm.selectedProducto.detalleproducto}" rows="4"
+						cols="30" rendered="#{!productoForm.editMode}" />
+				</h:panelGroup>
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+
+
+
+	<h:form id="formCarEmpList">
+		<p:dialog header="Detalle CargoEmpleado" widgetVar="carDialog"
+			showEffect="fade" hideEffect="explode" modal="true" width="450"
+			position="center">
+			<h:panelGrid id="display" columns="2" cellpadding="2"
+				style="margin:0 auto;">
+
 				<h:outputText value="Codigo de Cargo" />
 				<h:panelGroup>
 					<h:outputText
@@ -285,7 +450,7 @@
 
 				</h:panelGroup>
 
-				<h:outputText value="Descripcion"  />
+				<h:outputText value="Descripcion" />
 				<h:panelGroup>
 					<h:outputText
 						value="#{mantenimientoCargoEmpleadoFormAction.selectedCargoEmpleado.descripcion}"
@@ -300,115 +465,205 @@
 						style="font-weight:bold"
 						rendered="#{!mantenimientoCargoEmpleadoFormAction.editMode}" />
 				</h:panelGroup>
-			
-		</h:panelGrid>
-	</p:dialog>
-</h:form>
+
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
 
 
 
 
 
-<!--EN UN SOLO PUPAP NUEVO Y EDITAR  -->
+	<!--EN UN SOLO PUPAP NUEVO Y EDITAR  -->
 
 
-<h:form id="NuevoModificaCargoEmpleado">
-	<p:dialog header="Ingrese Nuevo Cargo" widgetVar="carDialogNuevo" 
-			showEffect="fade" hideEffect="explode" modal="true" width="300"	position="center">
-			
-		<h:panelGrid id="display" columns="2" cellpadding="2" style="margin:0 auto;">
-		
-				<h:outputText  value="#{message['Cargoempleado.descripcion']}" for="descripcion"	/>
-				
-				<h:panelGroup>		
-						
-						<h:inputText id="descripcion1"
-								value="#{mantenimientoCargoEmpleadoFormAction.objCargoEmpleadoSie.descripcion}"
-								required="true"  label="descripcion"
-								requiredMessage="#{message['Cargoempleado.descripcion.validation']}"
-								style="font-weight:bold" rendered="#{mantenimientoCargoEmpleadoFormAction.editMode}"	
-					 />				
-				
-						<p:inputText id="descripcion2"
-								value="#{mantenimientoCargoEmpleadoFormAction.descripcion}"  required="true"  label="descripcion"
-								requiredMessage="#{message['Cargoempleado.descripcion.validation']}"
-								style="font-weight:bold" rendered="#{!mantenimientoCargoEmpleadoFormAction.editMode}"	
-					 />
-						 <p:message for="descripcion1" />
-						 
-				</h:panelGroup>
-						<h:outputText value="Estado de Cargo" id="EstCar"
-						rendered="#{comboAction.estadoitems}==null"
-						/>
-					
+	<h:form id="NuevoModificaCargoEmpleado">
+		<p:dialog header="Ingrese Nuevo Cargo" widgetVar="carDialogNuevo"
+			showEffect="fade" hideEffect="explode" modal="true" width="300"
+			position="center">
+
+			<h:panelGrid id="display" columns="2" cellpadding="2"
+				style="margin:0 auto;">
+
+				<h:outputText value="#{message['Cargoempleado.descripcion']}"
+					for="descripcion" />
+
 				<h:panelGroup>
-					
-						<h:selectOneListbox size="1" id="est_general" disabled="true"
-						
-								value="#{mantenimientoCargoEmpleadoFormAction.idEstadoGeneral}" 
-								rendered="#{comboAction.estadoitems}==null">
-								<f:selectItems value="#{comboAction.estadoitems}" />
-								
-						</h:selectOneListbox>
-					
+
+					<h:inputText id="descripcion1"
+						value="#{mantenimientoCargoEmpleadoFormAction.objCargoEmpleadoSie.descripcion}"
+						required="true" label="descripcion"
+						requiredMessage="#{message['Cargoempleado.descripcion.validation']}"
+						style="font-weight:bold"
+						rendered="#{mantenimientoCargoEmpleadoFormAction.editMode}" />
+
+					<p:inputText id="descripcion2"
+						value="#{mantenimientoCargoEmpleadoFormAction.descripcion}"
+						required="true" label="descripcion"
+						requiredMessage="#{message['Cargoempleado.descripcion.validation']}"
+						style="font-weight:bold"
+						rendered="#{!mantenimientoCargoEmpleadoFormAction.editMode}" />
+					<p:message for="descripcion1" />
+
 				</h:panelGroup>
-				
-				<h:panelGroup>					
-							<p:message  for="est_general"></p:message>					
-							<p:spacer height="20px"></p:spacer>
-					<p:commandButton id="btn" value="Guardar" update="panel" action="#{mantenimientoCargoEmpleadoFormAction.insertar}" ajax="false"
-				
-					 icon="ui-icon ui-icon-disk"/>
-				
+				<h:outputText value="Estado de Cargo" id="EstCar"
+					rendered="#{comboAction.estadoitems}==null" />
+
+				<h:panelGroup>
+
+					<h:selectOneListbox size="1" id="est_general" disabled="true"
+						value="#{mantenimientoCargoEmpleadoFormAction.idEstadoGeneral}"
+						rendered="#{comboAction.estadoitems}==null">
+						<f:selectItems value="#{comboAction.estadoitems}" />
+
+					</h:selectOneListbox>
+
 				</h:panelGroup>
-			
-		</h:panelGrid>
-		
-	</p:dialog>
-	
-</h:form>
-<!-- FIN PUPAP NUEVO Y EDITAR  -->
+
+				<h:panelGroup>
+					<p:message for="est_general"></p:message>
+					<p:spacer height="20px"></p:spacer>
+					<p:commandButton id="btn" value="Guardar" update="panel"
+						action="#{mantenimientoCargoEmpleadoFormAction.insertar}"
+						ajax="false" icon="ui-icon ui-icon-disk" />
+
+				</h:panelGroup>
+
+			</h:panelGrid>
+
+		</p:dialog>
+
+	</h:form>
+	<!-- FIN PUPAP NUEVO Y EDITAR  -->
 
 
-<!--	  INICIO DESACTIVAR	   -->
+	<!--	  INICIO DESACTIVAR	   -->
 
-<h:form>
+	<h:form>
 
-	<p:confirmDialog id="confirmDeshabilitar" message="Esta seguro de deshabilitar dicho movimiento?" width="325" height="100" showEffect="explode" 
-				hideEffect="explode"  header="Confirm" severity="alert" widgetVar="confirmation" position="center">
-					   
-       			 <p:commandButton  type="submit" value="Si"  action="#{mantenimientoCargoEmpleadoFormAction.updateDeshabilitar}"  
-       			 update=":manteCargoEmpleado:listaPersonas" oncomplete="confirmation.hide()" ajax="false">
-      			 </p:commandButton>  
-        
-        		<p:commandButton value="No" onclick="confirmation.hide()" type="button" />  
-        		
-    </p:confirmDialog>
-    
-</h:form>
+		<p:confirmDialog id="confirmDeshabilitar"
+			message="Esta seguro de deshabilitar dicho movimiento?" width="325"
+			height="100" showEffect="explode" hideEffect="explode"
+			header="Confirm" severity="alert" widgetVar="confirmation"
+			position="center">
 
-<!-- 	FIN DESACTICAR (ESTADOS)  -->
+			<p:commandButton type="submit" value="Si"
+				action="#{mantenimientoCargoEmpleadoFormAction.updateDeshabilitar}"
+				update=":manteCargoEmpleado:listaPersonas"
+				oncomplete="confirmation.hide()" ajax="false">
+			</p:commandButton>
 
-<!--	  DESACTIVAR EMPLEADO	   -->
+			<p:commandButton value="No" onclick="confirmation.hide()"
+				type="button" />
 
-<h:form>
+		</p:confirmDialog>
 
-	<p:confirmDialog id="confirmDeshabilitar" message="Esta seguro de deshabilitar dicho empleado?" width="325" height="100" showEffect="explode" 
-				hideEffect="explode"  header="Confirm" severity="alert" widgetVar="confirmation" position="center">
-					   
-       			 <p:commandButton  type="submit" value="Si"  action="#{mantenimientoEmpleadoFormAction.deshabilitar}"  
-       			 update=":formManteEmpList:listaPersonas" oncomplete="confirmation.hide()" ajax="false">
-      			 </p:commandButton>  
-        
-        		<p:commandButton value="No" onclick="confirmation.hide()" type="button" />  
-        		
-    </p:confirmDialog>
-    
-</h:form>
+	</h:form>
 
-<!-- 	FIN DESACTIVAR EMPLEADO  -->
+	<!-- 	FIN DESACTICAR (ESTADOS)  -->
+
+	<!--	  DESACTIVAR EMPLEADO	   -->
+
+	<h:form>
+
+		<p:confirmDialog id="confirmDeshabilitar"
+			message="Esta seguro de deshabilitar dicho empleado?" width="325"
+			height="100" showEffect="explode" hideEffect="explode"
+			header="Confirm" severity="alert" widgetVar="confirmation"
+			position="center">
+
+			<p:commandButton type="submit" value="Si"
+				action="#{mantenimientoEmpleadoFormAction.deshabilitar}"
+				update=":formManteEmpList:listaPersonas"
+				oncomplete="confirmation.hide()" ajax="false">
+			</p:commandButton>
+
+			<p:commandButton value="No" onclick="confirmation.hide()"
+				type="button" />
+
+		</p:confirmDialog>
+
+	</h:form>
+
+	<!-- 	FIN DESACTIVAR EMPLEADO  -->
 
 
+
+	<!--	  INICIO DESACTIVAR	 EMPRESA  -->
+
+	<h:form>
+
+		<p:confirmDialog id="confirmDeshabilitarEmpresa"
+			message="Esta seguro de deshabilitar dicho movimiento?" width="325"
+			height="100" showEffect="explode" hideEffect="explode"
+			header="Confirm" severity="alert" widgetVar="confirmationEmpresa"
+			position="center">
+
+			<p:commandButton type="submit" value="Si"
+				action="#{empresaForm.Eliminarempresa}"
+				update=":frmEmpresaFormList:empresaTable
+       			 "
+				oncomplete="confirmation.hide()" ajax="false">
+			</p:commandButton>
+
+			<p:commandButton value="No" onclick="confirmation.hide()"
+				type="button" />
+
+		</p:confirmDialog>
+
+	</h:form>
+
+	<!-- 	FIN DESACTICAR EMPRESA (ESTADOS)  -->
+
+	<!--EN UN SOLO PUPAP NUEVO Y EDITAR EMPRESA -->
+
+
+	<h:form id="NuevoModificaempresa">
+		<p:dialog header="Ingrese Nueva Empresa"
+			widgetVar="carDialogNuevaempresa" showEffect="fade"
+			hideEffect="explode" modal="true" width="350" position="center">
+
+			<h:panelGrid id="display" columns="3" cellpadding="0"
+				style="margin:0 auto;">
+
+				<!-- RAZON SOCIAL -->
+
+				<h:outputText value="#{message['mantenimiento.razonSocial']}"
+					for="razonSocial" />
+
+				<h:panelGroup>
+
+					<p:inputText id="razonSocial1"
+						value="#{empresaForm.objEmpresaSie.razonsocial}" required="true"
+						label="razonsocial"
+						requiredMessage="#{message['mantenimiento.razonSocial.validation']}"
+						style="font-weight:bold" rendered="#{empresaForm.editMode}" />
+
+					<p:inputText id="razonSocial2" value="#{empresaForm.razonsocial}"
+						required="true" label="razonsocial"
+						requiredMessage="#{message['mantenimiento.razonSocial.validation']}"
+						style="font-weight:bold" rendered="#{!empresaForm.editMode}" />
+					<p:message for="razonSocial1" />
+
+				</h:panelGroup>
+				<!-- DESCRIPCION -->
+
+				<h:outputText value="#{message['mantenimiento.descripcion']}"
+					for="descripcion" />
+
+				<h:panelGroup>
+
+					<p:inputText id="descripcion1"
+						value="#{empresaForm.objEmpresaSie.descripcion}" required="true"
+						label="descripcion"
+						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
+						style="font-weight:bold" rendered="#{empresaForm.editMode}" />
+
+					<p:inputText id="descripcion2" value="#{empresaForm.descripcion}"
+						required="true" label="descripcion"
+						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
+						style="font-weight:bold" rendered="#{!empresaForm.editMode}" />
+					<p:message for="descripcion1" />
 <!--	  DESACTIVAR PROVEEDOR	   -->
 
 <h:form>
@@ -429,16 +684,33 @@
 <!-- 	FIN DESACTIVAR PROVEEDOR  -->
 
 
-<!--	  INICIO DESACTIVAR	 EMPRESA  -->
+				</h:panelGroup>
+
+				<!--N° RUC -->
+
+				<h:outputText value="#{message['mantenimiento.numruc']}" for="ruc" />
+
+				<h:panelGroup>
+
+					<p:inputText id="ruc1" value="#{empresaForm.objEmpresaSie.numruc}"
+						required="true" label="ruc"
+						requiredMessage="#{message['mantenimiento.numruc.validation']}"
+						style="font-weight:bold" rendered="#{empresaForm.editMode}" />
+
+					<p:inputText id="ruc2" value="#{empresaForm.numruc}"
+						required="true" label="descripcion"
+						requiredMessage="#{message['mantenimiento.numruc.validation']}"
+						style="font-weight:bold" rendered="#{!empresaForm.editMode}" />
+					<p:message for="ruc1" />
+<!--	  DESACTIVAR PROVEEDOR	   -->
 
 <h:form>
 
-	<p:confirmDialog id="confirmDeshabilitarEmpresa" message="Esta seguro de deshabilitar dicho movimiento?" width="325" height="100" showEffect="explode" 
-				hideEffect="explode"  header="Confirm" severity="alert" widgetVar="confirmationEmpresa" position="center">
+	<p:confirmDialog id="confirmDeshabilitar" message="Esta seguro de deshabilitar dicho proveedor?" width="325" height="100" showEffect="explode" 
+				hideEffect="explode"  header="Confirm" severity="alert" widgetVar="confirmation" position="center">
 					   
-       			 <p:commandButton  type="submit" value="Si"  action="#{empresaForm.Eliminarempresa}"  
-       			 update=":frmEmpresaFormList:empresaTable
-       			 " oncomplete="confirmation.hide()" ajax="false">
+       			 <p:commandButton  type="submit" value="Si"  action="#{mantenimientoProveedorFormAction.deshabilitar}"  
+       			 update=":manteProList:listaPersonas" oncomplete="confirmation.hide()" ajax="false">
       			 </p:commandButton>  
         
         		<p:commandButton value="No" onclick="confirmation.hide()" type="button" />  
@@ -447,62 +719,46 @@
     
 </h:form>
 
-<!-- 	FIN DESACTICAR EMPRESA (ESTADOS)  -->
-
-<!--EN UN SOLO PUPAP NUEVO Y EDITAR EMPRESA -->
-
-
-<h:form id="NuevoModificaempresa">
-	<p:dialog header="Ingrese Nueva Empresa" widgetVar="carDialogNuevaempresa" 
-			showEffect="fade" hideEffect="explode" modal="true" width="350"	position="center">
-			
-		<h:panelGrid id="display" columns="3" cellpadding="0" style="margin:0 auto;">
-				
-<!-- RAZON SOCIAL -->
-				
-				<h:outputText  value="#{message['mantenimiento.razonSocial']}" for="razonSocial"	/>
-				
-				<h:panelGroup>		
-						
-						<p:inputText id="razonSocial1"
-								value="#{empresaForm.objEmpresaSie.razonsocial}"
-								required="true"  label="razonsocial"
-								requiredMessage="#{message['mantenimiento.razonSocial.validation']}"
-								style="font-weight:bold" rendered="#{empresaForm.editMode}"	
-					 />				
-				
-						<p:inputText id="razonSocial2"
-								value="#{empresaForm.razonsocial}"  required="true"  label="razonsocial"
-								requiredMessage="#{message['mantenimiento.razonSocial.validation']}"
-								style="font-weight:bold" rendered="#{!empresaForm.editMode}"		
-					 />
-						 <p:message for="razonSocial1" />
-						 
 				</h:panelGroup>
-<!-- DESCRIPCION -->
 
-				<h:outputText  value="#{message['mantenimiento.descripcion']}" for="descripcion"	/>
-				
-				<h:panelGroup>		
-						
-						<p:inputText id="descripcion1"
-								value="#{empresaForm.objEmpresaSie.descripcion}"
-								required="true"  label="descripcion"
-								requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-								style="font-weight:bold" rendered="#{empresaForm.editMode}"	
-					 />				
-				
-						<p:inputText id="descripcion2"
-								value="#{empresaForm.descripcion}"  required="true"  label="descripcion"
-								requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-								style="font-weight:bold" rendered="#{!empresaForm.editMode}"		
-					 />
-						 <p:message for="descripcion1" />
-						 
+				<!--N° TELEFONICO -->
+
+				<h:outputText value="#{message['mantenimiento.numtel']}"
+					for="telefono" />
+
+				<h:panelGroup>
+
+					<p:inputText id="telefono1"
+						value="#{empresaForm.objEmpresaSie.numtelefono}" required="true"
+						label="ruc"
+						requiredMessage="#{message['mantenimiento.numtel.validation']}"
+						style="font-weight:bold" rendered="#{empresaForm.editMode}" />
+
+					<p:inputText id="telefono2" value="#{empresaForm.numtel}"
+						required="true" label="telefono"
+						requiredMessage="#{message['mantenimiento.numtel.validation']}"
+						style="font-weight:bold" rendered="#{!empresaForm.editMode}" />
+					<p:message for="telefono1" />
+
 				</h:panelGroup>
-			
-<!--N° RUC -->
 
+				<!--N° EMail -->
+
+				<h:outputText value="#{message['mantenimiento.email']}" for="email" />
+
+				<h:panelGroup>
+
+					<p:inputText id="email1" value="#{empresaForm.objEmpresaSie.email}"
+						required="true" label="email"
+						requiredMessage="#{message['mantenimiento.email.validation']}"
+						style="font-weight:bold" rendered="#{empresaForm.editMode}" />
+
+					<p:inputText id="email2" value="#{empresaForm.email}"
+						required="true" label="email"
+						requiredMessage="#{message['mantenimiento.email.validation']}"
+						style="font-weight:bold" rendered="#{!empresaForm.editMode}" />
+					<p:message for="email1" />
+</h:panelGroup>
 				<h:outputText  value="#{message['mantenimiento.numruc']}" for="ruc"	/>
 				
 				<h:panelGroup>		
@@ -524,9 +780,14 @@
 						 <p:message for="ruc1" />
 						 
 				</h:panelGroup>
-				
-<!--N° TELEFONICO -->
 
+				<!-- BOTON GUARDAR -->
+				<h:panelGroup>
+
+					<p:spacer height="80px" width="80"></p:spacer>
+					<p:commandButton id="btn" value="Guardar" update="panel"
+						action="#{empresaForm.insertar}" ajax="false"
+						icon="ui-icon ui-icon-disk" />
 				<h:outputText  value="#{message['mantenimiento.numtel']}" for="telefono"	/>
 				
 				<h:panelGroup>		
@@ -551,45 +812,18 @@
 				
 <!--N° EMail -->
 
-				<h:outputText  value="#{message['mantenimiento.email']}" for="email"	/>
-				
-				<h:panelGroup>		
-						
-						<p:inputText id="email1"
-								value="#{empresaForm.objEmpresaSie.email}"
-								required="true"  label="email"
-								requiredMessage="#{message['mantenimiento.email.validation']}"
-								style="font-weight:bold" rendered="#{empresaForm.editMode}"	
-					 />				
-				
-						<p:inputText id="email2"
-								value="#{empresaForm.email}"  required="true"  label="email"
-								requiredMessage="#{message['mantenimiento.email.validation']}"
-								style="font-weight:bold" rendered="#{!empresaForm.editMode}"		
-					 />
-						 <p:message for="email1" />
-						 
-				</h:panelGroup>									
-												
-<!-- BOTON GUARDAR -->			
-				<h:panelGroup>					
-											
-							<p:spacer height="80px" width="80"></p:spacer>
-					<p:commandButton id="btn" value="Guardar" update="panel" action="#{empresaForm.insertar}" ajax="false"
-				
-					 icon="ui-icon ui-icon-disk"/>
-				
 				</h:panelGroup>
-			
-		</h:panelGrid>
-		
-	</p:dialog>
-	
-</h:form>
-<!-- FIN PUPAP NUEVO Y EDITAR EMPRESA -->
 
-<ui:insert name="highlight">
-                <script language="javascript" src="#{request.contextPath}/syntaxhighlighter/scripts/sh.js"></script>
-   </ui:insert>
+			</h:panelGrid>
+
+		</p:dialog>
+
+	</h:form>
+	<!-- FIN PUPAP NUEVO Y EDITAR EMPRESA -->
+
+	<ui:insert name="highlight">
+		<script language="javascript"
+			src="#{request.contextPath}/syntaxhighlighter/scripts/sh.js"></script>
+	</ui:insert>
 </f:view>
-</html >
+</html>
