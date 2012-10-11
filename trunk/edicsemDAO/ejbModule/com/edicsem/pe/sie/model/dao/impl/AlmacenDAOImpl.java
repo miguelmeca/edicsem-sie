@@ -10,10 +10,8 @@ import javax.persistence.Query;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.model.dao.AlmacenDAO;
-import com.edicsem.pe.sie.model.dao.ProductoDAO;
 
 /**
  * @author karen
@@ -81,7 +79,7 @@ public class AlmacenDAOImpl implements AlmacenDAO{
 	public List listarAlmacenes() {
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from PuntoVentaSie p");
+			Query q = em.createQuery("select p from PuntoVentaSie p where p.tbEstadoGeneral.idestadogeneral = "+ 13);
 			lista =  q.getResultList(); 
 		   System.out.println("tamaño lista Almacen --> " + lista.size()+"  ");
 		} catch (Exception e) {
