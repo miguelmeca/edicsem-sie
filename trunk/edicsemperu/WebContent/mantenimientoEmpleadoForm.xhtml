@@ -79,11 +79,31 @@
             <p:outputLabel value="#{message['empleado.fechanac']}" for="fechanac" />
 			<p:calendar value="#{mantenimientoEmpleadoFormAction.objEmpleado.fechanacimiento}" id="fechanac" showButtonPanel="true" required="true" 
 			label="Fecha de nacimiento" requiredMessage="#{message['empleado.fechanac.validation']}"/>                  
-	        <p:outputLabel for="cargo" value="Cargo :" styleClass="textoAzulFuerteGrande" id="cargoL"/>
+	       
+	        <!-- <p:outputLabel for="cargo" value="Cargo :" styleClass="textoAzulFuerteGrande" id="cargoL"/>
             <p:selectOneMenu id="cargo" value="#{mantenimientoEmpleadoFormAction.cargoEmpleado}" styleClass="required" title="El cargo es obligatorio!" >
             <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
             <f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
-            </p:selectOneMenu>
+            </p:selectOneMenu> -->
+           
+            <!-- <p:pickList id="pojoPickList" value="#{pickListBean.players}" effect="bounce"
+                         itemLabel="#{player.name}" 
+                        showSourceControls="true" showTargetControls="true" 
+                        showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" >
+            <f:facet name="sourceCaption">Available</f:facet>
+            <f:facet name="targetCaption">Starting</f:facet>
+            <p:ajax event="transfer" listener="#{pickListBean.onTransfer}" update="msg" />
+            <p:column style="width:25%">
+            <p:graphicImage value="/images/barca/#{player.photo}" width="30" height="40" />
+            </p:column>
+            <p:column style="width:75%;">
+            #{player.name}
+            </p:column>
+            </p:pickList> -->
+            
+            <p:pickList id="pickList" value="#{pickListBean.cities}" var="city"   
+                        itemLabel="#{city}" itemValue="#{city}" />  
+            
             <p:outputLabel value="#{message['empleado.estado']}" for="estado" />
 			<p:inputText id="estadoe" value="#{mantenimientoEmpleadoFormAction.estadoe}" required="true" label="Estado"
 			requiredMessage="#{message['empleado.estado.validation']}"/>                         	
