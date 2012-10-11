@@ -30,7 +30,7 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 public class MovimientoAction extends BaseMantenimientoAbstractAction {
 
 	private String mensaje;
-	private int idproducto, idtipokardexproducto,idempresa,idproveedor, idAlmacen, idAlmacen2;
+	private int idproducto, idtipokardexproducto,idempresa,idproveedor, idAlmacen, idAlmacen2,stockTotalAlmacenado;
 	private KardexSie objKardexSie = new KardexSie();
 	private ComprobanteSie objcomprobante;
 	private List<KardexSie> data;
@@ -121,8 +121,8 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 						log.info(" cantexist "+ cantExistenteTotalAlmacenes +" cant Sal "+objKardexSie.getCantsalida() +" stk min " +stkminimo+ " almacen 2 " + idAlmacen2);
 						if (cantExistenteTotalAlmacenes - objKardexSie.getCantsalida() < stkminimo && 
 							cantExistenteTotalAlmacenes - objKardexSie.getCantsalida() >= 0 && idAlmacen2==0 ){
-							int stockAc = cantExistenteTotalAlmacenes - objKardexSie.getCantsalida();
-							mensaje = "  Se registro correctamente, el stock actual de dicho producto es  " + stockAc+ " debe realizar una solicitud de dicho producto";
+							stockTotalAlmacenado = cantExistenteTotalAlmacenes - objKardexSie.getCantsalida();
+							mensaje = "  Se registro correctamente, el stock actual de dicho producto es  " + stockTotalAlmacenado+ " debe realizar una solicitud de dicho producto";
 							validado = true;
 							log.info(mensaje);
 							//Mandar correo
@@ -162,8 +162,8 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 						if (cantExistenteTotalAlmacenes + objKardexSie.getCantentrada() > stkmaximo && idAlmacen2==0 ) {
 							BigDecimal d = new BigDecimal(Double.parseDouble(objKardexSie.getValortotal())/ objKardexSie.getCantentrada());
 							objKardexSie.setValorunitarioentrada(""+ d);
-							int stockAct= cantExistenteTotalAlmacenes + objKardexSie.getCantentrada();
-							mensaje = " Se registro correctamente,  el stock actual de dicho producto es  " + stockAct;
+							stockTotalAlmacenado= cantExistenteTotalAlmacenes + objKardexSie.getCantentrada();
+							mensaje = " Se registro correctamente,  el stock actual de dicho producto es  " + stockTotalAlmacenado;
 							validado=true;
 						}
 						else{
@@ -177,8 +177,9 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 										log.info(" si solo hay entrada " +objKardexSie.getCantentrada() +" "+ idAlmacen2);
 										
 										if (k.get(j).getCantexistencia() + objKardexSie.getCantentrada() > stkmaximo) {
+											stockTotalAlmacenado =k.get(j).getCantexistencia() + objKardexSie.getCantentrada();
 											log.info("existe "+k.get(j).getCantexistencia()+" "+ objKardexSie.getCantsalida()+" max "+ stkmaximo ); 
-											mensaje = "Se registro correctamente, pero se excedio el stock máximo permitido";
+											mensaje = "Se registro correctamente, pero se excedio el stock máximo, stock actual es "+ stockTotalAlmacenado;
 											//Mandar correo
 											validado=true;
 										}
@@ -265,7 +266,8 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 						ProductoSie prod= 	objproductoService.findProducto(idproducto);
 						if(objKardexSie.getCantentrada() >  prod.getStkmaximo() ){
 							validado = true;
-							mensaje="Se registro correctamente, el stock máximo permitido es " + prod.getStkmaximo() ;
+							stockTotalAlmacenado =objKardexSie.getCantentrada();
+							mensaje="Se registro correctamente, el stock actual es " + stockTotalAlmacenado +" se excedio el stock actual";
 						}
 						else{
 							
@@ -522,6 +524,20 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 	 */
 	public void setObjcomprobante(ComprobanteSie objcomprobante) {
 		this.objcomprobante = objcomprobante;
+	}
+
+	/**
+	 * @return the stockTotalAlmacenado
+	 */
+	public int getStockTotalAlmacenado() {
+		return stockTotalAlmacenado;
+	}
+
+	/**
+	 * @param stockTotalAlmacenado the stockTotalAlmacenado to set
+	 */
+	public void setStockTotalAlmacenado(int stockTotalAlmacenado) {
+		this.stockTotalAlmacenado = stockTotalAlmacenado;
 	}
 
 }

@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Lista de
+			Almacenes - Puntos de Venta</h1>
+
+		<h:form id="frmAlmacenFormList" prependId="false">
+			<p:growl id="message" showDetail="true" />
+			<p:dataTable value="#{almacenSearch.almacenList}" var="al"
+				id="almacenTable" paginator="true" rows="10">
+
+				<f:facet name="header">
+					<h:outputLabel
+						value="#{message['lista.mantenimiento.empresa.titulo']}" />
+				</f:facet>
+
+				<p:column headerText="descripcion" >
+					<h:outputText value="#{al.descripcion}" />
+				</p:column>
+
+				<p:column headerText="Tipo de Almacén" >
+					<h:outputText value="#{al.descTipoAlmacen}" />
+				</p:column>
+
+				<p:column headerText="Editar">
+					<p:commandButton value="Editar"
+						action="#{almacenForm.update}"	icon="ui-icon ui-icon-pencil">
+						<f:setPropertyActionListener value="#{al}"
+							target="#{almacenForm.objAlmacenSie}" />
+					</p:commandButton>
+				</p:column>
+				
+				<p:column headerText="Deshabilitar">
+					<p:commandButton id="showConfirmDeshabilitarAlmacen" value="Eliminar" icon="ui-icon ui-icon-close"
+						onclick="confirmationAlmacen.show()">
+						<f:setPropertyActionListener value="#{al.idpuntoventa}"
+							target="#{almacenForm.ide}" />
+					</p:commandButton>
+				</p:column>
+
+				<f:facet name="footer">
+					<div align="left">
+						<p:commandLink value="Nuevo Punto/Almacen"
+							action="#{almacenForm.agregar}"	title="Ingresar el Nuevo Punto de Venta/Almacen">
+							<f:setPropertyActionListener value="#{true}"
+							target="#{almacenForm.defectoUbigeo}" />
+						</p:commandLink>
+					</div>
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Punto Almacen</h1>
+		<h:form id="frmAlmacenForm">
+			<p:growl id="message" showDetail="true" />
+			
+			<h:panelGrid id="display" columns="2" >
+
+				<h:outputText value="#{message['almacen.descripcion']}" />
+				<h:panelGroup>
+					<p:inputText id="descripcion1"
+						value="#{almacenForm.objAlmacenSie.descripcion}" required="true"
+						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
+						style="font-weight:bold" rendered="#{almacenForm.editMode}" />
+					<p:inputText id="descripcion2" value="#{almacenForm.descripcion}" required="true" 
+						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
+						style="font-weight:bold" rendered="#{!almacenForm.editMode}" />
+				</h:panelGroup>
+				
+				<h:outputText value="#{message['almacen.ubigeo']}" />
+			</h:panelGrid>
+			<h:panelGrid columns="2" id="panel" rendered="#{almacenForm.newRecord}"  >
+				<h:outputText value="Lima (defecto)" />
+				<p:selectBooleanCheckbox value="#{almacenForm.defectoUbigeo}">
+					<p:ajax update="panel,ubigeoDefecto" listener="#{almacenForm.limpiardialog}"
+						oncomplete="if(#{almacenForm.defectoUbigeo}) UbigeoAlmacenDialog.show()"></p:ajax>
+				</p:selectBooleanCheckbox>
+
+				<h:outputText value="#{message['contrato.ubigeo.distrito']}" rendered="#{almacenForm.defectoUbigeo}" />
+				<p:selectOneMenu value="#{almacenForm.idUbigeo}" rendered="#{almacenForm.defectoUbigeo}" required="true"
+					style="width:200px" requiredMessage="#{message['contrato.ubigeo.distrito.validation']}">
+					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+					<p:ajax update="panel" listener="#{almacenForm.cambioUbica}"></p:ajax>
+				</p:selectOneMenu>
+				
+				<h:outputText value="Ubigeo " />
+				<h:outputText id="ubigeoDefecto" value="#{almacenForm.ubigeoDefecto}" />
+			</h:panelGrid>
+			
+			<h:panelGrid columns="2" id="panel3" rendered="#{!almacenForm.newRecord}"  >
+				
+				<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
+				<p:selectOneMenu size="1" value="#{almacenForm.idDepartamento}"
+					required="true" style="width:180px"
+					requiredMessage="#{message['contrato.ubigeo.departamento.validation']}" >
+					<f:selectItem itemLabel="Seleccione Departamento"
+						itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
+					<p:ajax update="prov,dist" listener="#{almacenForm.cambiar}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="#{message['contrato.ubigeo.provincia']}" />
+				<p:selectOneMenu id="prov" value="#{almacenForm.idProvincia}"
+					required="true" style="width:200px"
+					requiredMessage="#{message['contrato.ubigeo.provincia.validation']}" >
+					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
+					<p:ajax update="dist" listener="#{almacenForm.cambiar2}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="#{message['contrato.ubigeo.distrito']}" />
+				<p:selectOneMenu id="dist" value="#{almacenForm.idUbigeo}"
+					required="true" style="width:200px"
+					requiredMessage="#{message['contrato.ubigeo.distrito.validation']}" >
+					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+					<p:ajax update="ubigeoDefecto2" listener="#{almacenForm.busquedaUbigeo}" ></p:ajax>
+				</p:selectOneMenu>
+				
+				<h:outputText value="Ubigeo " />
+				<h:outputText id="ubigeoDefecto2" value="#{almacenForm.ubigeoDefecto}" />
+				
+			</h:panelGrid>
+			
+			<h:panelGrid columns="2" id="panel2" >
+				<h:outputText value="#{message['almacen.direccion']}" />
+				<h:panelGroup>
+					<p:inputText value="#{almacenForm.objAlmacenSie.direccion}" required="true" 
+						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
+						style="font-weight:bold" rendered="#{almacenForm.editMode}" />
+					<p:inputText value="#{almacenForm.direccion}" required="true"
+						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
+						style="font-weight:bold" rendered="#{!almacenForm.editMode}" />
+				</h:panelGroup>
+
+				<h:outputText value="#{message['almacen.PuntoVenta']}" />
+				<p:selectBooleanCheckbox value="#{almacenForm.puntoVenta}">
+				</p:selectBooleanCheckbox>
+
+				<h:panelGroup>
+					<p:commandButton value="Guardar" update="panel"
+						actionListener="#{almacenForm.insertar}" ajax="false"
+						icon="ui-icon ui-icon-disk" />
+				</h:panelGroup>
+				
+			</h:panelGrid>
+		 </h:form>
+	</ui:define>
+</ui:composition>
