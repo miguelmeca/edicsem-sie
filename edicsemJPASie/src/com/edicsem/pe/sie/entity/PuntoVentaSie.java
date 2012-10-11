@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.edicsem.pe.sie.util.constants.Constants;
 
@@ -46,6 +47,11 @@ public class PuntoVentaSie implements Serializable {
 	private String usuariocreacion;
 
 	private String usuariomodifica;
+	
+	//bi-directional many-to-one association to EstadoGeneralSie
+    @ManyToOne
+	@JoinColumn(name="idestadogeneral")
+	private EstadoGeneralSie tbEstadoGeneral;
 
 	//bi-directional many-to-one association to HorariosPvSie
 	@OneToMany(mappedBy="tbPuntoVenta")
@@ -59,6 +65,9 @@ public class PuntoVentaSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idubigeo")
 	private UbigeoSie tbUbigeo;
+    
+    @Transient
+	private String descTipoAlmacen;
 
     public PuntoVentaSie() {
     }
@@ -149,6 +158,26 @@ public class PuntoVentaSie implements Serializable {
 
 	public void setTbUbigeo(UbigeoSie tbUbigeo) {
 		this.tbUbigeo = tbUbigeo;
+	}
+
+	public EstadoGeneralSie getTbEstadoGeneral() {
+		return tbEstadoGeneral;
+	}
+
+	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
+		this.tbEstadoGeneral = tbEstadoGeneral;
+	}
+
+	public String getDescTipoAlmacen() {
+		if(almacen.equals("A"))
+			descTipoAlmacen="Almacén";
+		else
+			descTipoAlmacen="Punto de Venta";
+		return descTipoAlmacen;
+	}
+
+	public void setDescTipoAlmacen(String descTipoAlmacen) {
+		this.descTipoAlmacen = descTipoAlmacen;
 	}
 	
 }
