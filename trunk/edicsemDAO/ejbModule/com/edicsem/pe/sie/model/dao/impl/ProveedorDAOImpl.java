@@ -95,7 +95,7 @@ public class ProveedorDAOImpl implements ProveedorDAO{
 	public List listarProveedores() {
 		List lista = null;
 		try {
-			Query q = em.createQuery("select p from ProveedorSie p");
+			Query q = em.createQuery("select p from ProveedorSie p where p.tbEstadoGeneral.idestadogeneral = "+9);
 			lista = q.getResultList();
 			System.out.println("tamaño lista proveedor --> " + lista.size());
 		} catch (Exception e) {
