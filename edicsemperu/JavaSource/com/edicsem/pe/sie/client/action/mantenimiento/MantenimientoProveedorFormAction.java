@@ -13,6 +13,7 @@ import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.ProveedorSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
+import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.ProveedorService;
 import com.edicsem.pe.sie.service.facade.TipoDocumentoService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -41,6 +42,8 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 	private ProveedorService objProveedorService;
 	@EJB
 	private TipoDocumentoService objTipoDocService;
+	@EJB
+	private EstadogeneralService objEstadoService;
 		
 	public static Log log = LogFactory.getLog(MantenimientoProveedorFormAction.class);
 	
@@ -116,9 +119,10 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 		    setTipoDocumento(p.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad());
 		    objProveedor.setNumdocumentoproveedor(p.getNumdocumentoproveedor());
 		    objProveedor.setDireccion(p.getDireccion());
-		    setEstado(10);
 		    log.info("-----Id estado del empleado>>>"	+ getEstado());
 			log.info("actualizando ESTADO..... ");
+			objProveedor.setTbTipoDocumentoIdentidad(objTipoDocService.buscarTipoDocumento(TipoDocumento));
+			objProveedor.setTbEstadoGeneral(objEstadoService.findEstadogeneral(10));
 			objProveedorService.actualizarProveedor(objProveedor);
 			log.info("actualizando..... ");
 			log.info("deshabilitando..... ");
@@ -141,7 +145,7 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 					log.info("Entering my method 'insertar(registrar, actualizar)'"+ objProveedor.getCodproveedor());
 				}
 				objProveedor.setTbTipoDocumentoIdentidad(objTipoDocService.buscarTipoDocumento(TipoDocumento));
-				setEstado(9);
+				objProveedor.setTbEstadoGeneral(objEstadoService.findEstadogeneral(9));
 				/*if: inserta al empleado, domicilio y telefono
 				  else: actualiza al empleado, domicilio y telefono*/
 				if (isNewRecord()) {
