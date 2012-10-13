@@ -368,6 +368,24 @@
 		</p:confirmDialog>
 	</h:form>
 
+	<h:form>
+		<p:confirmDialog id="confirmationTelefonoelimina"
+			message="Esta seguro de eliminar dicho teléfono ?"
+			width="325" height="100" showEffect="explode" hideEffect="explode"
+			header="Confirm" severity="alert" widgetVar="confirmationAlmacen"
+			position="center">
+
+			<p:commandButton type="submit" value="Si"
+				action="#{contratoForm.telefonoElimina}"
+				update=":formManteContrato:panel4:t"
+				oncomplete="confirmation.hide()" ajax="false">
+			</p:commandButton>
+
+			<p:commandButton value="No" onclick="confirmation.hide()"
+				type="button" />
+
+		</p:confirmDialog>
+	</h:form>
 
 	<!--  Mantenimiento Producto Detalle -->
 	<h:form id="formManteProdDetalle">

@@ -1,6 +1,13 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.application.FacesMessage;
@@ -11,6 +18,7 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.primefaces.event.RowEditEvent;
 
 import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.entity.ClienteSie;
@@ -18,7 +26,9 @@ import com.edicsem.pe.sie.entity.CobranzaSie;
 import com.edicsem.pe.sie.entity.ContratoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
+import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name = "contratoForm")
@@ -32,7 +42,7 @@ public class MantenimientoContratoFormAction extends
 	private String mensaje;
 	public static Log log = LogFactory
 			.getLog(MantenimientoContratoFormAction.class);
-	private int Tipocasa, idempresa;
+	private int Tipocasa, idempresa,tipoVenta,tipopago;
 	private String idProvincia, idDepartamento, idUbigeo, ubigeoDefecto;
 	private ProductoSie objProductoSie;
 	private ClienteSie objClienteSie;
@@ -42,9 +52,15 @@ public class MantenimientoContratoFormAction extends
 	private CobranzaSie objCobranzaSie;
 	private boolean defectoUbigeo;
 	private boolean newRecord = false;
+	private List<TelefonoPersonaSie> telefonoList;
+	private String selectTelef;
+	private TelefonoPersonaSie nuevoTelef;
+	private int TipoTelef, operadorTelefonico;
+	private double precioProducto;
+	private List<CobranzaSie> cobranzaList;
 
 	public MantenimientoContratoFormAction() {
-		log.info("inicializando constructor MantenimientoProducto");
+		log.info("inicializando constructor MantenimientoContrato");
 		init();
 	}
 
@@ -53,9 +69,18 @@ public class MantenimientoContratoFormAction extends
 		objProductoSie = new ProductoSie();
 		objDomicilioSie = new DomicilioPersonaSie();
 		objClienteSie = new ClienteSie();
+		objContratoSie = new ContratoSie();
 		objCobranzaSie = new CobranzaSie();
 		defectoUbigeo = true;
 		ubigeoDefecto = "";
+		nuevoTelef = new TelefonoPersonaSie();
+		nuevoTelef.setTipoTelef("");
+		 selectTelef="";
+		telefonoList = new ArrayList<TelefonoPersonaSie>();
+		operadorTelefonico=1;
+		TipoTelef=1;
+		tipoVenta=1;
+		cobranzaList= new ArrayList<CobranzaSie>() ;
 	}
 
 	/*
@@ -66,6 +91,7 @@ public class MantenimientoContratoFormAction extends
 	 * #agregar()
 	 */
 	public String agregar() {
+		selectTelef= "";
 		log.info("agregar() 15");
 		limpiarCampos();
 		objProductoSie = new ProductoSie();
@@ -160,6 +186,107 @@ public class MantenimientoContratoFormAction extends
 		
 		return getViewMant();
 	}
+	/**
+	 * Agregar Teléfono a la lista*/
+	public void  telefonoAgregar(){
+		log.info("telefono agregar " + nuevoTelef.getTelefono());
+		boolean verifica= true;
+		if(TipoTelef==1)nuevoTelef.setTipotelefono("F");
+		else
+			nuevoTelef.setTipotelefono("C");
+		//claro
+		if(operadorTelefonico==1)
+			nuevoTelef.setOperadorTelefonico("Claro");
+		else if(operadorTelefonico==2)
+			nuevoTelef.setOperadorTelefonico("Movistar");
+		else if(operadorTelefonico==3)
+			nuevoTelef.setOperadorTelefonico("Nextel");
+		
+		for (int i = 0; i < telefonoList.size(); i++) {
+			if(telefonoList.get(i).getTelefono().equals(nuevoTelef.getTelefono())){
+				 verifica= true;
+			}
+		}
+		if( verifica){
+			telefonoList.add(nuevoTelef);
+			log.info("se agrego " + nuevoTelef.getTelefono());
+		}
+		nuevoTelef = new TelefonoPersonaSie();
+	}
+	/**
+	 * Eliminar Teléfono de la lista*/
+	public void  telefonoElimina(){
+		log.info("telefono telefonoElimina " + selectTelef);
+		for (int i = 0; i < telefonoList.size(); i++) {
+			log.info("t"+ telefonoList.get(i)+"-"+selectTelef);
+			log.info("t"+ telefonoList.get(i).getTelefono()+"-"+selectTelef);
+			if(telefonoList.get(i).getTelefono().equals(selectTelef)){
+				telefonoList.remove(i);
+				log.info("se elimino ");
+			}
+		}
+	}
+	
+	public void limpiarDatosTelefono(){
+		nuevoTelef = new TelefonoPersonaSie();
+	}
+	
+	public void insertarCobranza() throws Exception{
+		log.info(" insertarCobranza  :d "+objContratoSie.getNumcuotas()+" precio "+ getPrecioProducto()+"  fec ven  "+ objContratoSie.getFechacuotainicial());
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		 
+		cobranzaList= new ArrayList<CobranzaSie>() ;
+		BigDecimal d = new BigDecimal(getPrecioProducto() /objContratoSie.getNumcuotas().doubleValue());
+		d=d.setScale(2, RoundingMode.HALF_UP);
+		objContratoSie.setPagomensual(d);
+		log.info(" d "+ d+"  Pagomensual "+objContratoSie.getPagomensual());
+		
+		if(objContratoSie.getPagosubinicial()!=new BigDecimal(0.0)){
+			BigDecimal d2= new BigDecimal(d.doubleValue()-objContratoSie.getPagosubinicial().doubleValue());
+			d2=d2.setScale(2, RoundingMode.HALF_UP);
+			objContratoSie.setCuotainicial(d2);
+		}
+		Date fechaVencimiento = null ;
+		sdf.format(objContratoSie.getFechacuotainicial());
+		String fecha3 =sdf.format(objContratoSie.getFechacuotainicial());
+		 fechaVencimiento =sdf.parse(fecha3);
+		for (int i = 0; i < objContratoSie.getNumcuotas(); i++) {
+			objCobranzaSie.setNumletra(i+"");
+			if(i==0 && objContratoSie.getCuotainicial()!=new BigDecimal(0.0)){
+				objCobranzaSie.setImpinicial(objContratoSie.getCuotainicial());
+				fechaVencimiento=objContratoSie.getFechacuotainicial();
+			}else{
+				
+			objCobranzaSie.setImpinicial(objContratoSie.getPagomensual());
+			//una posible anternativa
+			if(i==1){
+				fechaVencimiento = DateUtil.addToDate(objContratoSie.getFechacuotainicial(), Calendar.MONTH, 1);
+			}else{
+				fechaVencimiento = DateUtil.addToDate(fechaVencimiento, Calendar.MONTH, 1);
+			}
+			}
+			
+			log.info("fec venc  "+i +" "+ fechaVencimiento+" fecha formt " +fechaVencimiento +" conv "+ DateUtil.formatoString(fechaVencimiento, "dd/MM/yyyy") +" Numcuotas "+objContratoSie.getNumcuotas()+" "+ objContratoSie.getPagomensual()
+					+"  pagar  "+objCobranzaSie.getImpinicial() );
+			objCobranzaSie.setFecvencimiento(fechaVencimiento);
+			
+			cobranzaList.add(objCobranzaSie);
+			objCobranzaSie= new CobranzaSie();
+		}
+ 
+		objContratoSie = new ContratoSie();
+	}
+	
+	public void onEdit(RowEditEvent event) {
+		log.info("en onedit()");
+		for (int i = 0; i < cobranzaList.size(); i++) {
+			log.info("en onedit() ------- "+ cobranzaList.get(i).getFecvencimiento());
+		}
+    }  
+      
+    public void onCancel(RowEditEvent event) {
+    	
+    }  
 
 	/*
 	 * (non-Javadoc)
@@ -212,7 +339,7 @@ public class MantenimientoContratoFormAction extends
 
 		return getViewList();
 	}
-
+ 
 	public void limpiarCampos() {
 
 	}
@@ -432,4 +559,131 @@ public class MantenimientoContratoFormAction extends
 		return Constants.MANT_CONTRATO_FORM_PAGE;
 	}
 
+	/**
+	 * @return the telefonoList
+	 */
+	public List<TelefonoPersonaSie> getTelefonoList() {
+		return telefonoList;
+	}
+
+	/**
+	 * @param telefonoList the telefonoList to set
+	 */
+	public void setTelefonoList(List<TelefonoPersonaSie> telefonoList) {
+		this.telefonoList = telefonoList;
+	}
+	
+	/**
+	 * @return the nuevoTelef
+	 */
+	public TelefonoPersonaSie getNuevoTelef() {
+		return nuevoTelef;
+	}
+
+	/**
+	 * @param nuevoTelef the nuevoTelef to set
+	 */
+	public void setNuevoTelef(TelefonoPersonaSie nuevoTelef) {
+		this.nuevoTelef = nuevoTelef;
+	}
+
+	/**
+	 * @return the tipoTelef
+	 */
+	public int getTipoTelef() {
+		return TipoTelef;
+	}
+
+	/**
+	 * @param tipoTelef the tipoTelef to set
+	 */
+	public void setTipoTelef(int tipoTelef) {
+		TipoTelef = tipoTelef;
+	}
+
+	/**
+	 * @return the operadorTelefonico
+	 */
+	public int getOperadorTelefonico() {
+		return operadorTelefonico;
+	}
+
+	/**
+	 * @param operadorTelefonico the operadorTelefonico to set
+	 */
+	public void setOperadorTelefonico(int operadorTelefonico) {
+		this.operadorTelefonico = operadorTelefonico;
+	}
+
+	/**
+	 * @return the selectTelef
+	 */
+	public String getSelectTelef() {
+		return selectTelef;
+	}
+
+	/**
+	 * @param selectTelef the selectTelef to set
+	 */
+	public void setSelectTelef(String selectTelef) {
+		this.selectTelef = selectTelef;
+	}
+
+	/**
+	 * @return the tipoVenta
+	 */
+	public int getTipoVenta() {
+		return tipoVenta;
+	}
+
+	/**
+	 * @param tipoVenta the tipoVenta to set
+	 */
+	public void setTipoVenta(int tipoVenta) {
+		this.tipoVenta = tipoVenta;
+	}
+
+	/**
+	 * @return the tipopago
+	 */
+	public int getTipopago() {
+		return tipopago;
+	}
+
+	/**
+	 * @param tipopago the tipopago to set
+	 */
+	public void setTipopago(int tipopago) {
+		this.tipopago = tipopago;
+	}
+
+	/**
+	 * @return the precioProducto
+	 */
+	public double getPrecioProducto() {
+		return precioProducto;
+	}
+
+	/**
+	 * @param precioProducto the precioProducto to set
+	 */
+	public void setPrecioProducto(double precioProducto) {
+		this.precioProducto = precioProducto;
+	}
+
+	/**
+	 * @return the cobranzaList
+	 */
+	public List<CobranzaSie> getCobranzaList() {
+		return cobranzaList;
+	}
+
+	/**
+	 * @param cobranzaList the cobranzaList to set
+	 */
+	public void setCobranzaList(List<CobranzaSie> cobranzaList) {
+		this.cobranzaList = cobranzaList;
+	}
+
+	
 }
