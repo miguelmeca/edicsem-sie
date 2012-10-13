@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.edicsem.pe.sie.util.constants.Constants;
 
@@ -31,6 +32,8 @@ public class TelefonoPersonaSie implements Serializable {
 	private String telefono;
 
 	private String tipotelefono;
+	
+	private String operadorTelefonico;
 
 	//bi-directional many-to-one association to ClienteSie
     @ManyToOne
@@ -46,6 +49,9 @@ public class TelefonoPersonaSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
+    
+    @Transient
+    private String tipoTelef;
 
     public TelefonoPersonaSie() {
     }
@@ -96,6 +102,38 @@ public class TelefonoPersonaSie implements Serializable {
 
 	public void setIdcliente(ClienteSie idcliente) {
 		this.idcliente = idcliente;
+	}
+
+	/**
+	 * @return the tipoTelef
+	 */
+	public String getTipoTelef() {
+		if(getTipotelefono().equalsIgnoreCase("F"))
+			tipoTelef="Fijo";
+		else
+			tipoTelef="Celular";
+		return tipoTelef;
+	}
+
+	/**
+	 * @param tipoTelef the tipoTelef to set
+	 */
+	public void setTipoTelef(String tipoTelef) {
+		this.tipoTelef = tipoTelef;
+	}
+
+	/**
+	 * @return the operadorTelefonico
+	 */
+	public String getOperadorTelefonico() {
+		return operadorTelefonico;
+	}
+
+	/**
+	 * @param operadorTelefonico the operadorTelefonico to set
+	 */
+	public void setOperadorTelefonico(String operadorTelefonico) {
+		this.operadorTelefonico = operadorTelefonico;
 	}
 	
 }
