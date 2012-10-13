@@ -82,11 +82,6 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		comboManagerPunto.setIdDepartamento("15");
 		comboManagerPunto.setIdProvincia("01");
 		}
-//		else
-//		{
-//			comboManagerPunto.setIdDepartamento(null);
-//			comboManagerPunto.setIdProvincia(null);
-//		}
 		
 		ubigeoDefecto="";
 		comboManagerPunto.setUbigeoDistriItems(null);
@@ -98,17 +93,21 @@ public class MantenimientoPuntoAlmacenFormAction extends
 	}
 	
 	public void limpiardialog(){
-		comboManagerPunto.setIdDepartamento(null);
-		comboManagerPunto.setIdProvincia(null);
-		comboManagerPunto.setUbigeoDeparItems(null);
-		comboManagerPunto.setUbigeoProvinItems(null);
-		comboManagerPunto.setUbigeoDistriItems(null);
+		
 		if (defectoUbigeo) {
+			comboManagerPunto.setIdDepartamento("15");
+			comboManagerPunto.setIdProvincia("01");
 			log.info(" defecto lima true 1");
 			ubigeoDefecto = "";
 		} else {
+
+			comboManagerPunto.setIdDepartamento(null);
+			comboManagerPunto.setIdProvincia(null);
 			log.info(" cambio ubigeo   false  otro");
 		}
+		comboManagerPunto.setUbigeoDeparItems(null);
+		comboManagerPunto.setUbigeoProvinItems(null);
+		comboManagerPunto.setUbigeoDistriItems(null);
 	}
 
 	/* (non-Javadoc)
