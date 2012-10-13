@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.edicsem.pe.sie.util.constants.Constants;
 
@@ -79,6 +80,9 @@ public class CobranzaSie   implements Serializable {
 	//bi-directional many-to-one association to CobranzaOperadoraSie
 	@OneToMany(mappedBy="tbCobranza")
 	private Set<CobranzaOperadoraSie> tbCobranzaOperadoras;
+	
+	@Transient
+	private String fechaVencimientoString;
 
     public CobranzaSie() {
     }
@@ -233,6 +237,20 @@ public class CobranzaSie   implements Serializable {
 
 	public void setTbCobranzaOperadoras(Set<CobranzaOperadoraSie> tbCobranzaOperadoras) {
 		this.tbCobranzaOperadoras = tbCobranzaOperadoras;
+	}
+
+	/**
+	 * @return the fechaVencimientoString
+	 */
+	public String getFechaVencimientoString() {
+		return fechaVencimientoString;
+	}
+
+	/**
+	 * @param fechaVencimientoString the fechaVencimientoString to set
+	 */
+	public void setFechaVencimientoString(String fechaVencimientoString) {
+		this.fechaVencimientoString = fechaVencimientoString;
 	}
 	
 }
