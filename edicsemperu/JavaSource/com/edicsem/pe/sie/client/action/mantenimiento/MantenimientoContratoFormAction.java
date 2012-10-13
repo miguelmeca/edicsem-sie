@@ -40,25 +40,23 @@ public class MantenimientoContratoFormAction extends
 	private ComboAction comboManager;
 
 	private String mensaje;
-	public static Log log = LogFactory
-			.getLog(MantenimientoContratoFormAction.class);
+	public static Log log = LogFactory.getLog(MantenimientoContratoFormAction.class);
 	private int Tipocasa, idempresa,tipoVenta,tipopago;
-	private String idProvincia, idDepartamento, idUbigeo, ubigeoDefecto;
+	private String idProvincia, idDepartamento, idUbigeo, ubigeoDefecto,selectTelef;
 	private ProductoSie objProductoSie;
 	private ClienteSie objClienteSie;
 	private DomicilioPersonaSie objDomicilioSie;
 	private ContratoSie objContratoSie;
 	private ProductoSie selectedProducto;
 	private CobranzaSie objCobranzaSie;
-	private boolean defectoUbigeo;
-	private boolean newRecord = false;
 	private List<TelefonoPersonaSie> telefonoList;
-	private String selectTelef;
+	private List<CobranzaSie> cobranzaList;
 	private TelefonoPersonaSie nuevoTelef;
 	private int TipoTelef, operadorTelefonico;
 	private double precioProducto;
-	private List<CobranzaSie> cobranzaList;
-
+	private boolean defectoUbigeo;
+	private boolean newRecord = false;
+	
 	public MantenimientoContratoFormAction() {
 		log.info("inicializando constructor MantenimientoContrato");
 		init();
@@ -265,7 +263,7 @@ public class MantenimientoContratoFormAction extends
 				fechaVencimiento = DateUtil.addToDate(fechaVencimiento, Calendar.MONTH, 1);
 			}
 			}
-			
+			objCobranzaSie.setFechaVencimientoString(DateUtil.formatoString(fechaVencimiento, "dd/MM/yyyy"));
 			log.info("fec venc  "+i +" "+ fechaVencimiento+" fecha formt " +fechaVencimiento +" conv "+ DateUtil.formatoString(fechaVencimiento, "dd/MM/yyyy") +" Numcuotas "+objContratoSie.getNumcuotas()+" "+ objContratoSie.getPagomensual()
 					+"  pagar  "+objCobranzaSie.getImpinicial() );
 			objCobranzaSie.setFecvencimiento(fechaVencimiento);
@@ -280,6 +278,7 @@ public class MantenimientoContratoFormAction extends
 	public void onEdit(RowEditEvent event) {
 		log.info("en onedit()");
 		for (int i = 0; i < cobranzaList.size(); i++) {
+			objCobranzaSie.setFechaVencimientoString(DateUtil.formatoString(cobranzaList.get(i).getFecvencimiento(), "dd/MM/yyyy"));
 			log.info("en onedit() ------- "+ cobranzaList.get(i).getFecvencimiento());
 		}
     }  
@@ -314,20 +313,7 @@ public class MantenimientoContratoFormAction extends
 				log.info("Entering my method 'insertar()' ");
 			}
 
-			/*
-			 * if (isNewRecord()) {
-			 * 
-			 * log.info("a insertar "+TipoProducto +" " +estadoProducto);
-			 * //objProductoService.insertProducto(objProductoSie,TipoProducto,
-			 * estadoProducto); objProductoSie = new ProductoSie();
-			 * limpiarCampos(); } else { log.info("a actualizar "+ TipoProducto
-			 * +" " +estadoProducto+ " ruta " +
-			 * objProductoSie.getRutaimagenproducto());
-			 * if(TipoProducto>0||estadoProducto>0){
-			 * //objProductoService.updateProducto(objProductoSie,TipoProducto,
-			 * estadoProducto); objProductoSie = new ProductoSie();
-			 * limpiarCampos(); } }
-			 */
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -397,18 +383,30 @@ public class MantenimientoContratoFormAction extends
 		this.comboManager = comboManager;
 	}
 
+	/**
+	 * @return the Tipocasa
+	 */
 	public int getTipocasa() {
 		return Tipocasa;
 	}
 
+	/**
+	 * @param tipocasa
+	 */
 	public void setTipocasa(int tipocasa) {
 		Tipocasa = tipocasa;
 	}
 
+	/**
+	 * @return the idempresa
+	 */
 	public int getIdempresa() {
 		return idempresa;
 	}
 
+	/**
+	 * @param idempresa
+	 */
 	public void setIdempresa(int idempresa) {
 		this.idempresa = idempresa;
 	}

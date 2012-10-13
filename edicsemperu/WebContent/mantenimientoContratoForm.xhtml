@@ -260,7 +260,7 @@
                     <h:outputText value="#{c.numletra}" />
                 </f:facet>
                 <f:facet name="input">
-                    <p:inputText value="#{c.numletra}" style="width:100%"/>
+                    <h:outputText value="#{c.numletra}" style="width:100%"/>
                 </f:facet>
             </p:cellEditor>
         </p:column>
@@ -271,7 +271,7 @@
                     <h:outputText value="#{c.impinicial}" />
                 </f:facet>
                 <f:facet name="input">
-                    <p:inputText value="#{c.impinicial}" style="width:100%" label="Year"/>
+                    <p:inputText value="#{c.impinicial}" style="width:100%"  />
                 </f:facet>
             </p:cellEditor>
         </p:column>
@@ -279,7 +279,7 @@
         <p:column headerText="Fecha Vencimiento" style="width:125px">
             <p:cellEditor>
                 <f:facet name="output">
-                    <h:outputText value="#{c.fecvencimiento}"  />
+                    <h:outputText value="#{c.fechaVencimientoString}"  />
                 </f:facet>
                 <f:facet name="input">
                   <p:calendar   value="#{c.fecvencimiento}" />
