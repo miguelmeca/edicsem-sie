@@ -48,7 +48,7 @@ public class KardexDAOImpl implements KardexDAO {
 			if (fechaDesde != "" && fechaHasta != "")
 				consulta += " and DATE(p.fechacreacion) between DATE('"
 						+ fechaDesde + "') and  DATE('" + fechaHasta
-						+ "')   order by p.idkardex ASC  ";
+						+ "')   ORDER BY p.idkardex ASC  ";
 
 			Query q = em.createQuery(consulta);
 			q.setParameter("x1", idproducto);
@@ -124,7 +124,7 @@ public class KardexDAOImpl implements KardexDAO {
 		List lista = new ArrayList();
 		try {
 			Query q = em
-					.createQuery("select p from KardexSie p where DATE(p.fechacreacion) = CURRENT_DATE order by p.idkardex asc");
+					.createQuery("select p from KardexSie p where DATE(p.fechacreacion) = CURRENT_DATE ORDER BY p.idkardex ASC ");
 			lista = q.getResultList();
 
 			log.info("tamaño lista Productos kardex --> " + lista.size());
@@ -157,7 +157,7 @@ public class KardexDAOImpl implements KardexDAO {
 						+ " a.tbProducto.idproducto = " + idProducto
 						+ " and a.tbPuntoVenta.idpuntoventa = "
 						+ listaAlmacenes.get(i).getIdpuntoventa()
-						+ " order by a.idkardex ASC ");
+						+ " ORDER BY a.idkardex ASC ");
 				listaTmp = q.getResultList();
 
 				if (listaTmp.size() - 1 != -1) {
