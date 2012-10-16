@@ -19,11 +19,21 @@
 					<p:ajax update="meta"  listener="#{metaMesSearchAction.mostrarfecha}" 
 					 />
 				</p:selectOneMenu>
+				
 			<h:outputLabel value="Fecha Inicial :" />	
 			<p:inputText value="#{metaMesSearchAction.objMetaMesSie.fechainicio}" disabled="true"></p:inputText>
 			<h:outputLabel value="Fecha Final :" />	
 				<p:inputText value="#{metaMesSearchAction.objMetaMesSie.fechafin}" disabled="true"></p:inputText>	
+								
+				 	<p:commandButton value="Editar" oncomplete="carDialog2.show()"
+						action="#{MetaMesFormAction.update}" 	update=":editarMeta:display"
+						icon="ui-icon ui-icon-pencil">
+						
+						<f:setPropertyActionListener value="#{metaMesSearchAction.objMetaMesSie.idmetames}"
+							target="#{MetaMesFormAction.ide}" />
 
+					</p:commandButton>
+					
 </p:panelGrid>
 
 
