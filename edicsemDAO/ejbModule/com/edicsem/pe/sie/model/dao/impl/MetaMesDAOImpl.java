@@ -68,11 +68,11 @@ public  class MetaMesDAOImpl implements MetaMesDAO {
 		MetaMesSie metames = new MetaMesSie();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("buscar MetaMes");
+				log.info("buscar MetaMes + id");
 			}
 			metames = em.find(MetaMesSie.class, id);
 			
-			log.info(" Meta Mes DAOIMPL " );
+			log.info(" Meta Mes DAOIMPL +  id" );
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -82,10 +82,10 @@ public  class MetaMesDAOImpl implements MetaMesDAO {
 	 * @see com.edicsem.pe.sie.model.dao.EmpresaDAO#listarEmpresas()
 	 */
 	 
-	public List<MetaMesSie> listarMetaMeses() {
-		List<MetaMesSie> lista = null;
-		try {
-			Query q = em.createQuery("select m from MetaMesSie m  ");
+		public List<MetaMesSie> listarMetaMeses() {
+			List<MetaMesSie> lista = null;
+			try {
+			Query q = em.createQuery("select m from MetaMesSie m ");
 			lista = q.getResultList();
 			log.info("DAOIMPL tamaño de lista de Metames--->" + lista.size());
 		} catch (Exception e) {
