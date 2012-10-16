@@ -42,8 +42,9 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	
 	public static Log log = LogFactory.getLog(EmpleadoSieServiceImpl.class);
 	
+
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.DemoService#insertDemo(com.edicsem.pe.sie.entity.Usuario)
+	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#insertarEmpleado(com.edicsem.pe.sie.entity.EmpleadoSie, com.edicsem.pe.sie.entity.DomicilioPersonaSie, com.edicsem.pe.sie.entity.TelefonoPersonaSie, int, int, java.lang.String, java.lang.String, int, java.lang.String, java.lang.String, int, int, java.lang.String, int, int, int, int, int, int)
 	 */
 	public void insertarEmpleado(EmpleadoSie objEmpleado,DomicilioPersonaSie objDomicilio, TelefonoPersonaSie objTelefono, int codigoTipoDocumento, int codigoCargoEmpleado, String mensaje, 
 			String fijo, int estado, String direccion, String idDistrito, int estado2, int tipo, String nombre, int CargoEmpleado,
@@ -96,9 +97,10 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 		}
 		objEmpleado = new EmpleadoSie();
 	}
+	
 
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.DemoService#updateDemo(com.edicsem.pe.sie.entity.Usuario)
+	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#actualizarEmpleado(com.edicsem.pe.sie.entity.EmpleadoSie, com.edicsem.pe.sie.entity.DomicilioPersonaSie, com.edicsem.pe.sie.entity.TelefonoPersonaSie, int, int, java.lang.String, java.lang.String, int, java.lang.String, java.lang.String, int, int, java.lang.String, int, int, int, int, int, int)
 	 */
 	public void actualizarEmpleado(EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, TelefonoPersonaSie objTelefono, int codigoTipoDocumento, int codigoCargoEmpleado, String mensaje, 
 			String fijo, int estado, String direccion, String idDistrito, int estado2, int tipo, String nombre, int CargoEmpleado,
@@ -153,26 +155,33 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 			objTelefono = new TelefonoPersonaSie();
 			objDomicilio = new DomicilioPersonaSie();
 	}
-
+	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.DemoService#deleteDemo(java.lang.String)
+	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#eliminarEmpleado(int)
 	 */
 	public void eliminarEmpleado(int id) {
 		objEmpleadoDao.eliminarEmpleado(id);
 	}
 
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.DemoService#findDemo(java.lang.String)
+	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#buscarEmpleado(int)
 	 */
 	public EmpleadoSie buscarEmpleado(int id) {
 		return objEmpleadoDao.buscarEmpleado(id);
 	}
 
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.DemoService#listarUsuarios(com.edicsem.pe.sie.entity.Usuario)
+	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#listarEmpleados()
 	 */
 	public List listarEmpleados() {
 		return objEmpleadoDao.listarEmpleados();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#listarEmpleadosXCargo(int)
+	 */
+	public List listarEmpleadosXCargo(int idCargo) {
+		return objEmpleadoDao.listarEmpleadosXCargo(idCargo);
 	}
 
 }
