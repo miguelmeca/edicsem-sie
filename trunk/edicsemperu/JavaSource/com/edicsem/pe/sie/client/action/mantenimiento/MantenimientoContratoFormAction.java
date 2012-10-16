@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -24,9 +25,13 @@ import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.CobranzaSie;
 import com.edicsem.pe.sie.entity.ContratoSie;
+import com.edicsem.pe.sie.entity.DetPaqueteSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
+import com.edicsem.pe.sie.entity.PaqueteSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
+import com.edicsem.pe.sie.service.facade.DetallePaqueteService;
+import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
@@ -41,7 +46,7 @@ public class MantenimientoContratoFormAction extends
 
 	private String mensaje;
 	public static Log log = LogFactory.getLog(MantenimientoContratoFormAction.class);
-	private int Tipocasa, idempresa,tipoVenta,tipopago;
+	private int Tipocasa, idempresa,tipoVenta,tipopago, idpaquete, idProducto;
 	private String idProvincia, idDepartamento, idUbigeo, ubigeoDefecto,selectTelef;
 	private ProductoSie objProductoSie;
 	private ClienteSie objClienteSie;
@@ -51,11 +56,19 @@ public class MantenimientoContratoFormAction extends
 	private CobranzaSie objCobranzaSie;
 	private List<TelefonoPersonaSie> telefonoList;
 	private List<CobranzaSie> cobranzaList;
+	private List<DetPaqueteSie> detPaqueteList;
 	private TelefonoPersonaSie nuevoTelef;
-	private int TipoTelef, operadorTelefonico;
+	private int TipoTelef, operadorTelefonico, idCobranza;
 	private double precioProducto;
-	private boolean defectoUbigeo;
+	private boolean defectoUbigeo,defectopaquete;
 	private boolean newRecord = false;
+	private PaqueteSie objPaquete;
+	private DetPaqueteSie objDetPaquete;
+	
+	@EJB
+	private DetallePaqueteService objDetPaqueteService;
+	@EJB
+	private ProductoService objProductoService;
 	
 	public MantenimientoContratoFormAction() {
 		log.info("inicializando constructor MantenimientoContrato");
@@ -69,16 +82,21 @@ public class MantenimientoContratoFormAction extends
 		objClienteSie = new ClienteSie();
 		objContratoSie = new ContratoSie();
 		objCobranzaSie = new CobranzaSie();
+		objPaquete = new PaqueteSie();
+		objDetPaquete = new DetPaqueteSie();
 		defectoUbigeo = true;
+		defectopaquete= true;
 		ubigeoDefecto = "";
 		nuevoTelef = new TelefonoPersonaSie();
 		nuevoTelef.setTipoTelef("");
 		 selectTelef="";
 		telefonoList = new ArrayList<TelefonoPersonaSie>();
 		operadorTelefonico=1;
+		idCobranza=0;
 		TipoTelef=1;
 		tipoVenta=1;
 		cobranzaList= new ArrayList<CobranzaSie>() ;
+		detPaqueteList = new ArrayList<DetPaqueteSie>() ;
 	}
 
 	/*
@@ -96,6 +114,7 @@ public class MantenimientoContratoFormAction extends
 		setNewRecord(true);
 		comboManager.setIdDepartamento("15");
 		comboManager.setIdProvincia("01");
+		comboManager.setIdCargo(2);
 		log.info("agregar    :D  --- ");
 		return getViewMant();
 	}
@@ -187,8 +206,9 @@ public class MantenimientoContratoFormAction extends
 	/**
 	 * Agregar Teléfono a la lista*/
 	public void  telefonoAgregar(){
+		mensaje=null;
 		log.info("telefono agregar " + nuevoTelef.getTelefono());
-		boolean verifica= true;
+		boolean verifica= false;
 		if(TipoTelef==1)nuevoTelef.setTipotelefono("F");
 		else
 			nuevoTelef.setTipotelefono("C");
@@ -201,13 +221,26 @@ public class MantenimientoContratoFormAction extends
 			nuevoTelef.setOperadorTelefonico("Nextel");
 		
 		for (int i = 0; i < telefonoList.size(); i++) {
+			log.info("  "+telefonoList.get(i).getTelefono() +" "+ nuevoTelef.getTelefono());
 			if(telefonoList.get(i).getTelefono().equals(nuevoTelef.getTelefono())){
+				 verifica= false;
+				 mensaje = "el telefono ya se encuentra registrado en la lista de referencias";
+				 break;
+			}else{
 				 verifica= true;
+				
 			}
+		}if( telefonoList.size()==0){
+			 verifica= true;
 		}
 		if( verifica){
 			telefonoList.add(nuevoTelef);
 			log.info("se agrego " + nuevoTelef.getTelefono());
+		}
+		if( mensaje!=null){
+		msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+				Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 		nuevoTelef = new TelefonoPersonaSie();
 	}
@@ -225,6 +258,70 @@ public class MantenimientoContratoFormAction extends
 		}
 	}
 	
+	public void cambiopaqueteDefecto(){
+		log.info("en el metodod cambiopaqueteDefecto() " + defectopaquete );
+	}
+	
+	public void cambioPaquete(){
+		log.info("en el metodod cambioPaquete() ");
+		detPaqueteList=new ArrayList<DetPaqueteSie>();
+		List<DetPaqueteSie> detalle = objDetPaqueteService.listarDetPaquetes(getIdpaquete());
+		for (int i = 0; i < detalle.size(); i++) {
+			log.info("tamaño li 22 ...."+ detalle.get(i).getCantidad());
+			DetPaqueteSie detq =detalle.get(i);
+			log.info("tamaño li 33 "+ detalle.get(i).getTbProducto().getDescripcionproducto());
+			detq.setItem(i+1);
+			detPaqueteList.add(detq);
+			log.info("tamaño lista de paq "+ detPaqueteList.size());
+		}
+	}
+
+	public void agregarProducto(){
+		mensaje=null;
+		log.info("agregarProducto ");
+		int cantidad= detPaqueteList.size();
+		DetPaqueteSie det = new DetPaqueteSie();
+		det.setTbProducto(objProductoService.findProducto(objProductoSie.getIdproducto()));
+		det.setCantidad(objProductoSie.getCantidadContrato());
+		det.setObservacion(objProductoSie.getObservacionContrato());
+		if(cantidad==0){
+			det.setItem(1);
+			detPaqueteList.add(det);
+			log.info("tamaño lista de paq "+ detPaqueteList.size());
+		}else{
+			for (int i = 0; i < detPaqueteList.size(); i++) {
+				if(detPaqueteList.get(i).getTbProducto().getIdproducto()==det.getTbProducto().getIdproducto()){
+					mensaje="Dicho producto ya se encuentra registrado en la lista ";
+				}
+			det.setItem(cantidad+1);
+			}
+			if(mensaje==null){
+				detPaqueteList.add(det);
+			}else{
+				msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+						Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+			}
+			log.info("tamaño lista de paq "+ detPaqueteList.size());
+		}
+	}
+	  
+    public void eliminarProducto(){
+    	log.info("en eliminarProducto()");
+		for (int i = 0; i < detPaqueteList.size(); i++) {
+			if(detPaqueteList.get(i).getItem()==(idCobranza)){
+				detPaqueteList.remove(i);
+				for (int j = i; j < detPaqueteList.size(); j++) {
+					log.info(" i " +i+"  j "+ j);
+					i=i+1;
+					detPaqueteList.get(j).setItem(i);
+					detPaqueteList.set(j, detPaqueteList.get(j));
+				}
+			}
+		}
+		idCobranza=0;
+    }
+    
 	public void limpiarDatosTelefono(){
 		nuevoTelef = new TelefonoPersonaSie();
 	}
@@ -263,7 +360,7 @@ public class MantenimientoContratoFormAction extends
 				fechaVencimiento = DateUtil.addToDate(fechaVencimiento, Calendar.MONTH, 1);
 			}
 			}
-			objCobranzaSie.setFechaVencimientoString(DateUtil.formatoString(fechaVencimiento, "dd/MM/yyyy"));
+			//objCobranzaSie.setFechaVencimientoString(DateUtil.formatoString(fechaVencimiento, "dd/MM/yyyy"));
 			log.info("fec venc  "+i +" "+ fechaVencimiento+" fecha formt " +fechaVencimiento +" conv "+ DateUtil.formatoString(fechaVencimiento, "dd/MM/yyyy") +" Numcuotas "+objContratoSie.getNumcuotas()+" "+ objContratoSie.getPagomensual()
 					+"  pagar  "+objCobranzaSie.getImpinicial() );
 			objCobranzaSie.setFecvencimiento(fechaVencimiento);
@@ -271,22 +368,35 @@ public class MantenimientoContratoFormAction extends
 			cobranzaList.add(objCobranzaSie);
 			objCobranzaSie= new CobranzaSie();
 		}
- 
 		objContratoSie = new ContratoSie();
 	}
+	
 	
 	public void onEdit(RowEditEvent event) {
 		log.info("en onedit()");
 		for (int i = 0; i < cobranzaList.size(); i++) {
-			objCobranzaSie.setFechaVencimientoString(DateUtil.formatoString(cobranzaList.get(i).getFecvencimiento(), "dd/MM/yyyy"));
 			log.info("en onedit() ------- "+ cobranzaList.get(i).getFecvencimiento());
 		}
-    }  
+    }
       
     public void onCancel(RowEditEvent event) {
     	
-    }  
+    }
+    
+    public void onEditDetPaquete(RowEditEvent event) {
+		log.info("en onEditDetPaquete() ");
 
+		log.info("en onEditDetPaquete()sss " + idProducto );
+		log.info("en onEditDetPaquete()sss2 "  );
+		for (int i = 0; i < detPaqueteList.size(); i++) {
+			log.info("en onEditDetPaquete() 1 ------- "+i+"   "+ detPaqueteList.get(i).getCantidad()+" descr "+ detPaqueteList.get(i).getTbProducto().getDescripcionproducto());
+		}
+    }
+    
+    public void onCancelDetPaquete(RowEditEvent event) {
+    	
+    }
+    
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -681,6 +791,104 @@ public class MantenimientoContratoFormAction extends
 	 */
 	public void setCobranzaList(List<CobranzaSie> cobranzaList) {
 		this.cobranzaList = cobranzaList;
+	}
+
+	/**
+	 * @return the objPaquete
+	 */
+	public PaqueteSie getObjPaquete() {
+		return objPaquete;
+	}
+
+	/**
+	 * @param objPaquete the objPaquete to set
+	 */
+	public void setObjPaquete(PaqueteSie objPaquete) {
+		this.objPaquete = objPaquete;
+	}
+
+	/**
+	 * @return the objDetPaquete
+	 */
+	public DetPaqueteSie getObjDetPaquete() {
+		return objDetPaquete;
+	}
+
+	/**
+	 * @param objDetPaquete the objDetPaquete to set
+	 */
+	public void setObjDetPaquete(DetPaqueteSie objDetPaquete) {
+		this.objDetPaquete = objDetPaquete;
+	}
+
+	/**
+	 * @return the defectopaquete
+	 */
+	public boolean isDefectopaquete() {
+		return defectopaquete;
+	}
+
+	/**
+	 * @param defectopaquete the defectopaquete to set
+	 */
+	public void setDefectopaquete(boolean defectopaquete) {
+		this.defectopaquete = defectopaquete;
+	}
+
+	/**
+	 * @return the detPaqueteList
+	 */
+	public List<DetPaqueteSie> getDetPaqueteList() {
+		return detPaqueteList;
+	}
+
+	/**
+	 * @param detPaqueteList the detPaqueteList to set
+	 */
+	public void setDetPaqueteList(List<DetPaqueteSie> detPaqueteList) {
+		this.detPaqueteList = detPaqueteList;
+	}
+
+	/**
+	 * @return the idpaquete
+	 */
+	public int getIdpaquete() {
+		return idpaquete;
+	}
+
+	/**
+	 * @param idpaquete the idpaquete to set
+	 */
+	public void setIdpaquete(int idpaquete) {
+		this.idpaquete = idpaquete;
+	}
+
+	/**
+	 * @return the idProducto
+	 */
+	public int getIdProducto() {
+		return idProducto;
+	}
+
+	/**
+	 * @param idProducto the idProducto to set
+	 */
+	public void setIdProducto(int idProducto) {
+		this.idProducto = idProducto;
+	}
+
+	/**
+	 * @return the idCobranza
+	 */
+	public int getIdCobranza() {
+		return idCobranza;
+	}
+
+	/**
+	 * @param idCobranza the idCobranza to set
+	 */
+	public void setIdCobranza(int idCobranza) {
+		this.idCobranza = idCobranza;
 	}
 
 	

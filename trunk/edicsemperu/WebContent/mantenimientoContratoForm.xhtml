@@ -49,8 +49,130 @@
 					<p:inputText id="numDoc" required="true"
 						requiredMessage="#{message['contrato.numero.documento.validation']}" />
 					<p:message for="numDoc" />
-
 				</h:panelGrid>
+				
+				<!-- productos -->
+				<h:panelGrid columns="7" id="panelProd">
+				
+					<h:outputText value="Paquete Definido" />
+					<p:selectBooleanCheckbox 
+						value="#{contratoForm.defectopaquete}">
+						<p:ajax update="panelProd"
+							listener="#{contratoForm.cambiopaqueteDefecto}" />
+					</p:selectBooleanCheckbox>
+					
+					<h:outputText value="#{message['contrato.paquete.buscar']}" rendered="#{contratoForm.defectopaquete}" />
+					<p:selectOneMenu id="paq" filter="true" filterMatchMode="startsWith" rendered="#{contratoForm.defectopaquete}" 
+						value="#{contratoForm.idpaquete}">
+						<f:selectItem itemLabel="Seleccione Paquete" itemValue="#{null}" />
+						<f:selectItems value="#{comboAction.paqueteItems}" />
+						<p:ajax update="panelProd" listener="#{contratoForm.cambioPaquete}" />
+					</p:selectOneMenu>
+					
+					 <h:outputText value="Tipo de Producto" />
+					<p:selectOneMenu id="tipoProd2" value="#{comboAction.tipoProducto}" 
+						style="width:165px" >
+						<f:selectItem itemLabel="Seleccionar tipo" itemValue="#{null}" />
+						<f:selectItems value="#{comboAction.tipoitems}" />
+						<p:ajax update="produc2" listener="#{comboAction.cambiar}" />
+					</p:selectOneMenu>
+					<p:message for="tipoProd2" />
+					
+					<h:outputText value="Producto" />
+					<p:selectOneMenu id="produc2" 
+						value="#{contratoForm.objProductoSie.idproducto}" style="width:165px" filter="true" filterMatchMode="startsWith"  >
+						<f:selectItem itemLabel="Seleccione Producto" itemValue="#{null}"  />
+						<f:selectItems value="#{comboAction.productositems}" />
+					</p:selectOneMenu>
+					
+					<h:outputText value="Observación" />
+					<h:inputText  value="#{contratoForm.objProductoSie.observacionContrato}" style="width:100%" />
+					
+					<h:outputText value="Cantidad" />
+					<p:spinner required="true" value="#{contratoForm.objProductoSie.cantidadContrato}" min="1" />
+					 
+					<p:commandButton value="Agregar" action="#{contratoForm.agregarProducto}" 
+					update="detPaqueteList" icon="ui-icon ui-icon-check" ajax="false" />
+					
+		<p:dataTable id="detPaqueteList" var="c" value="#{contratoForm.detPaqueteList}" editable="true"  >
+
+        <f:facet name="header">
+            Editar Paquete
+        </f:facet>
+       
+        <p:ajax event="rowEdit" listener="#{contratoForm.onEditDetPaquete}"  update="@this" />
+        <p:ajax event="rowEditCancel" listener="#{contratoForm.onCancelDetPaquete}" update="detPaqueteList" />
+						
+        <p:column headerText="Item" style="width:125px">
+            <p:cellEditor>
+                <f:facet name="output">
+                    <h:outputText value="#{c.item}" />
+                </f:facet>
+                <f:facet name="input">
+                    <h:outputText value="#{c.item}" style="width:100%"  />
+                </f:facet>
+            </p:cellEditor>
+        </p:column>
+        <p:column headerText="Producto" style="width:125px">
+            <p:cellEditor>
+                <f:facet name="output">
+                    <h:outputText value="#{c.tbProducto.descripcionproducto}" />
+                </f:facet>
+                <f:facet name="input">
+                   
+                    <h:outputText value="Tipo de Producto" />
+					<p:selectOneMenu id="tipoProd2" value="#{comboAction.tipoProducto}" 
+						style="width:165px" >
+						<f:selectItem itemLabel="Seleccionar tipo" itemValue="#{null}" />
+						<f:selectItems value="#{comboAction.tipoitems}" />
+						<p:ajax update="produc2" listener="#{comboAction.cambiar}" />
+					</p:selectOneMenu>
+					<p:message for="tipoProd2" />
+					
+					<h:outputText value="Producto" />
+					<p:selectOneMenu id="produc2" 
+						value="#{contratoForm.idProducto}" style="width:165px" filter="true" filterMatchMode="startsWith"  >
+						<f:selectItem itemLabel="Seleccione Producto" itemValue="#{null}"  />
+						<f:selectItems value="#{comboAction.productositems}" />
+					</p:selectOneMenu>
+                </f:facet>
+            </p:cellEditor>
+        </p:column>
+
+        <p:column headerText="Observación" style="width:125px">
+            <p:cellEditor>
+                <f:facet name="output">
+                    <h:outputText value="#{c.observacion}" />
+                </f:facet>
+                <f:facet name="input">
+                    <h:inputText  value="#{c.observacion}" style="width:100%"  />
+                </f:facet>
+            </p:cellEditor>
+        </p:column>
+
+        <p:column headerText="Cantidad" style="width:125px">
+            <p:cellEditor>
+                <f:facet name="output">
+                    <h:outputText value="#{c.cantidad}"  />
+                </f:facet>
+                <f:facet name="input">
+                  <h:inputText value="#{c.cantidad}" />
+                </f:facet>
+            </p:cellEditor>
+        </p:column>
+
+        <p:column headerText="Editar" style="width:50px">
+            <p:rowEditor />
+        </p:column>
+
+        <p:column headerText="Eliminar" >
+           <p:commandButton icon="ui-icon-close"
+							oncomplete="confirmationProductoContrato.show()" title="eliminar">
+					<f:setPropertyActionListener value="#{c.item}" target="#{contratoForm.idCobranza}" />
+			</p:commandButton>
+		</p:column>
+    </p:dataTable>
+    </h:panelGrid>
 				
 				<h:panelGrid columns="6" id="panel2">
 					<h:outputText value="Lima (defecto)" />
@@ -63,16 +185,15 @@
 
 					<h:outputText value="#{message['contrato.ubigeo.distrito']}"
 						rendered="#{contratoForm.defectoUbigeo}" />
-					<p:selectOneMenu value="#{contratoForm.idUbigeo}"
-						rendered="#{contratoForm.defectoUbigeo}" required="true"
+					<p:selectOneMenu value="#{contratoForm.idUbigeo}" filter="true" filterMatchMode="startsWith"
+						rendered="#{contratoForm.defectoUbigeo}" required="true"   effect="fade"
 						style="width:200px"
 						requiredMessage="#{message['contrato.ubigeo.distrito.validation']}">
 						<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
 						<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
 						<p:ajax update="panel2" listener="#{contratoForm.cambioUbica}"></p:ajax>
 					</p:selectOneMenu>
-
-
+					
 					<h:outputText value="Ubigeo " />
 					<h:outputText id="ubigeoDefecto"
 						value="#{contratoForm.ubigeoDefecto}" />
@@ -87,60 +208,56 @@
 
 					<h:outputText value="#{message['contrato.ubigeo.referencia']}" />
 					<p:inputText value="#{contratoForm.objDomicilioSie.referencia}" />
-
+					<p:spacer />
 					<h:outputText value="#{message['contrato.empresa.labora.nombre']}" />
 					<p:inputText value="#{contratoForm.objClienteSie.empresatrabajo}" />
-
+					<p:spacer />
 					<h:outputText
 						value="#{message['contrato.empresa.labora.direccion']}" />
 					<p:inputText value="#{contratoForm.objClienteSie.directrabajo}" />
-
+					<p:spacer />
+						
 					<h:outputText
 						value="#{message['contrato.empresa.labora.telefono']}" />
 					<p:inputText value="#{contratoForm.objClienteSie.telftrabajo}" />
-
-					<h:outputText value="#{message['contrato.titular.telefono']}"
-						required="true" />
-					<p:inputText value="#{contratoForm.objClienteSie.titulartelefono}" />
-
+					<p:spacer />
+					
 					<h:outputText value="#{message['contrato.cliente.email']}" />
 					<p:inputText value="#{contratoForm.objClienteSie.correo}" />
-
-
 					<p:spacer />
-					<h:outputText value="#{message['contrato.telefono.casa']}" />
-					<p:inputMask mask="999-9999"
-						requiredMessage="#{message['contrato.telefono.casa.validation']}" />
-					<h:outputText value="#{message['contrato.celular']}" />
-					<p:inputMask mask="999-999999"
-						requiredMessage="#{message['contrato.celular.validation']}" />
-
+					
 					<h:outputText value="#{message['contrato.fechanac']}" />
-					 
-					<h:outputText value="#{message['contrato.cliente.email']}" />
-					<p:inputText size="15" />
+					 <p:inputText value="#{contratoForm.objClienteSie.fecnacimiento}" />
+
 				</h:panelGrid>
 			</p:panel>
 			</h:form>
 				
 				<h:form id="formManteContrato">
-				 
 				<h:panelGrid columns="6" id="panel4">
+				 <h:outputText value="#{message['contrato.tipo.telefono']}" />
 					<p:selectOneMenu   size="1"  value="#{contratoForm.tipoTelef}"
 						style="width:165px"  >
 						<f:selectItem itemLabel="Fijo" itemValue="1" />
 						<f:selectItem itemLabel="Celular" itemValue="2" />
 						<p:ajax update="panel4" listener="#{contratoForm.limpiarDatosTelefono}" ></p:ajax>
 					</p:selectOneMenu>
-					
-					<p:selectOneMenu   size="1" required="true" value="#{contratoForm.operadorTelefonico}"
+					 <h:outputText value="#{message['contrato.operadorTelefonico']}" />
+					<p:selectOneMenu   size="1" required="true" value="#{contratoForm.operadorTelefonico}" rendered="#{contratoForm.tipoTelef==1}"
 						style="width:165px" requiredMessage="#{message['contrato.operadorTelefonico.validation']}" >
 						<f:selectItem itemLabel="Seleccione Operador" itemValue="#{null}" />
 						<f:selectItem itemLabel="Claro" itemValue="1" />
 						<f:selectItem itemLabel="Telefónica" itemValue="2" />
+					</p:selectOneMenu>
+					
+					<p:selectOneMenu   size="1" required="true" value="#{contratoForm.operadorTelefonico}" rendered="#{contratoForm.tipoTelef==2}"
+						style="width:165px" requiredMessage="#{message['contrato.operadorTelefonico.validation']}" >
+						<f:selectItem itemLabel="Seleccione Operador" itemValue="#{null}" />
+						<f:selectItem itemLabel="Claro" itemValue="1" />
+						<f:selectItem itemLabel="Movistar" itemValue="2" />
 						<f:selectItem itemLabel="Nextel" itemValue="3" />
 					</p:selectOneMenu>
-
+					
 					<h:outputText value="#{message['contrato.telefono.casa']}" rendered="#{contratoForm.tipoTelef==1}" />
 					<p:inputMask mask="999-9999" value="#{contratoForm.nuevoTelef.telefono}"
 						requiredMessage="#{message['contrato.telefono.casa.validation']}"  rendered="#{contratoForm.tipoTelef==1}"/>
@@ -148,26 +265,30 @@
 					<h:outputText value="#{message['contrato.celular']}"  rendered="#{contratoForm.tipoTelef==2}"/>
 					<p:inputMask mask="999-999999" value="#{contratoForm.nuevoTelef.telefono}"
 						requiredMessage="#{message['contrato.celular.validation']}"  rendered="#{contratoForm.tipoTelef==2}"/>
-						
+					
+					<h:outputText value="#{message['contrato.telefono.descripcion']}" />
+					<p:inputText value="#{contratoForm.nuevoTelef.descTelefono}"/>
+					
 					<p:commandButton value="Agregar Telefono Referencias" icon="ui-icon ui-icon-check" 
 					action="#{contratoForm.telefonoAgregar}" ajax="false" update=":panel4:t" >
 				 
 				</p:commandButton>
 						
-					<p:dataList value="#{contratoForm.telefonoList}" var="t" id="t"
-						paginator="true" rows="5" effectSpeed="fast" type="none">
+					<p:dataList value="#{contratoForm.telefonoList}" var="t" id="t" 
+						 effectSpeed="fast" type="none">
 
 						<f:facet name="header">
-                Telefonos de Referencia  
+                <h:outputLabel
+						value="Telefonos de Referencia" />
             </f:facet>
 						
 						<p:commandButton icon="ui-icon-close"
-							oncomplete="confirmationAlmacen.show()" title="eliminar">
+							oncomplete="confirmationTelefono.show()" title="eliminar">
 							<f:setPropertyActionListener value="#{t.telefono}"
 								target="#{contratoForm.selectTelef}" />
 						</p:commandButton>
 
-						<h:outputText value="#{t.tipotelefono}, #{t.operadorTelefonico}, #{t.telefono}"
+						<h:outputText value="#{t.tipoTelef}, #{t.operadorTelefonico}, #{t.telefono}"
 							style="margin-left:10px" />
 						<br />
 					</p:dataList>
@@ -206,6 +327,25 @@
 					<p:inputText value="#{contratoForm.objClienteSie.apematcliente}"
 						required="true" rendered="#{contratoForm.tipoVenta==2}" 
 						requiredMessage="#{message['contrato.apematerno.validation']}" />
+						
+				<h:outputText value="#{message['contrato.expositor']}" />
+				<p:selectOneMenu  size="1" required="true" filter="true" filterMatchMode="startsWith"  style="width:165px"  effect="fade" >
+					<f:selectItem itemLabel="Seleccione empleado" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.empleadoItems}" />
+				</p:selectOneMenu>
+						
+				<h:outputText value="#{message['contrato.vendedor']}" />
+				<p:selectOneMenu  size="1" required="true" style="width:165px" filter="true" filterMatchMode="startsWith"  effect="fade"  >
+					<f:selectItem itemLabel="Seleccione empleado" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.empleadoItems}" />
+				</p:selectOneMenu>
+				
+				<h:outputText value="#{message['contrato.colaborador']}" />
+				<p:selectOneMenu  size="1" required="true" style="width:165px"   filter="true" filterMatchMode="startsWith"  effect="fade" >
+					<f:selectItem itemLabel="Seleccione empleado" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.empleadoItems}" />
+				</p:selectOneMenu>
+				
 				</h:panelGrid>
 			</p:panel>
 			<p:panel header="#{message['panel.contrato.plan.pagos']}"  id="panelPlanPagos" >
@@ -245,14 +385,14 @@
 		
     </h:panelGrid>
 			</p:panel>
-			<p:dataTable id="dd" var="c" value="#{contratoForm.cobranzaList}" editable="true">
+			<p:dataTable id="listaCobranzas" var="c" value="#{contratoForm.cobranzaList}" editable="true">
 
         <f:facet name="header">
             Editar Cobranzas
         </f:facet>
 
         <p:ajax event="rowEdit" listener="#{contratoForm.onEdit}"  update="@this" />
-        <p:ajax event="rowEditCancel" listener="#{contratoForm.onCancel}" update="dd" />
+        <p:ajax event="rowEditCancel" listener="#{contratoForm.onCancel}" update="listaCobranzas" />
 
         <p:column headerText="Número de Letra" style="width:125px">
             <p:cellEditor>
@@ -271,7 +411,7 @@
                     <h:outputText value="#{c.impinicial}" />
                 </f:facet>
                 <f:facet name="input">
-                    <p:inputText value="#{c.impinicial}" style="width:100%"  />
+                    <h:outputText value="#{c.impinicial}" style="width:100%"  />
                 </f:facet>
             </p:cellEditor>
         </p:column>

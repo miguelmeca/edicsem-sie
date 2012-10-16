@@ -15,9 +15,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
+import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.EstadoGeneralSie;
 import com.edicsem.pe.sie.entity.MetaMesSie;
+import com.edicsem.pe.sie.entity.PaqueteSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.ProveedorSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
@@ -28,9 +30,11 @@ import com.edicsem.pe.sie.entity.TipoProductoSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.service.facade.AlmacenService;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
+import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.MetaMesService;
+import com.edicsem.pe.sie.service.facade.PaqueteService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.service.facade.ProveedorService;
 import com.edicsem.pe.sie.service.facade.TipoCasaService;
@@ -49,6 +53,7 @@ public class ComboAction {
 	private String mensaje;
 	private String codigoEstado;
 	private String idProvincia,  idDepartamento;
+	private int idCargo;
 	private Map<String, Integer> tipoitems = new HashMap<String, Integer>();
 	private Map<String, Integer> productositems = new HashMap<String, Integer>();
 	private Map<String, Integer> almacenItems = new HashMap<String, Integer>();
@@ -65,7 +70,8 @@ public class ComboAction {
 	private Map<String, String> ubigeoProvinItems = new HashMap<String, String>();
 	private Map<String, Integer> ubigeoDistriItems = new HashMap<String, Integer>();
 	private Map<String, Integer> MetaMesItems = new HashMap<String, Integer>();
-	
+	private Map<String, Integer> PaqueteItems = new HashMap<String, Integer>();
+	private Map<String, Integer> empleadoItems = new HashMap<String, Integer>();
 	
 	@EJB
 	private AlmacenService objAlmacenService;
@@ -91,6 +97,10 @@ public class ComboAction {
 	private UbigeoService objUbigeoService;
 	@EJB
 	private MetaMesService objMetaMesService;
+	@EJB
+	private PaqueteService objPaqueteService;
+	@EJB
+	private EmpleadoSieService objEmpleadoService;
 
 	public ComboAction() {
 		log.info("inicializando constructor");
@@ -656,9 +666,9 @@ public class ComboAction {
 		this.idDepartamento = idDepartamento;
 	}
 
-	
-	
-	/* Combobox META MES */
+	/**
+	 * @return the metaMesItems
+	 */
 	public Map<String, Integer>  getMetaMesItems() {
 		MetaMesItems = new HashMap<String, Integer>();
 		List lista = new ArrayList<MetaMesSie>();
@@ -687,11 +697,6 @@ public class ComboAction {
 	}
 
 	/**
-	 * @return the metaMesItems
-	 */
-
-
-	/**
 	 * @param metaMesItems the metaMesItems to set
 	 */
 	public void setMetaMesItems(Map<String, Integer> metaMesItems) {
@@ -699,10 +704,87 @@ public class ComboAction {
 	}
 
 	/**
-	 * @return the metaempresaItems
+	 * @return the paqueteItems
 	 */
+	public Map<String, Integer> getPaqueteItems() {
+		List lista = new ArrayList<PaqueteSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getPaqueteitems()'");
+			}
+			lista = objPaqueteService.listarPaquetes();
 
+			for (int i = 0; i < lista.size(); i++) {
+				PaqueteSie entidad = new PaqueteSie();
+				entidad = (PaqueteSie) lista.get(i);
+				PaqueteItems.put(entidad.getDescripcionpaquete(),
+						entidad.getIdpaquete());
+			}
 
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return PaqueteItems;
+	}
+
+	/**
+	 * @param paqueteItems the paqueteItems to set
+	 */
+	public void setPaqueteItems(Map<String, Integer> paqueteItems) {
+		PaqueteItems = paqueteItems;
+	}
 	
-	
+	/**
+	 * @return the idCargo
+	 */
+	public int getIdCargo() {
+		return idCargo;
+	}
+
+	/**
+	 * @param idCargo the idCargo to set
+	 */
+	public void setIdCargo(int idCargo) {
+		this.idCargo = idCargo;
+	}
+
+	/**
+	 * @return the empleadoItems
+	 */
+	public Map<String, Integer> getEmpleadoItems() {
+		List lista = new ArrayList<EmpleadoSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getPaqueteitems()'");
+			}
+			lista = objEmpleadoService.listarEmpleadosXCargo(getIdCargo());
+
+			for (int i = 0; i < lista.size(); i++) {
+				EmpleadoSie entidad = new EmpleadoSie();
+				entidad = (EmpleadoSie) lista.get(i);
+				empleadoItems.put(entidad.getNombresCompletos(),
+						entidad.getIdempleado());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return empleadoItems;
+	}
+
+	/**
+	 * @param empleadoItems the empleadoItems to set
+	 */
+	public void setEmpleadoItems(Map<String, Integer> empleadoItems) {
+		this.empleadoItems = empleadoItems;
+	}
 }

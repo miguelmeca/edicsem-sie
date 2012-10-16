@@ -33,7 +33,7 @@
 				</p:selectBooleanCheckbox>
 
 				<h:outputText value="#{message['contrato.ubigeo.distrito']}" rendered="#{almacenForm.defectoUbigeo}" />
-				<p:selectOneMenu value="#{almacenForm.idUbigeo}" rendered="#{almacenForm.defectoUbigeo}" required="true"
+				<p:selectOneMenu value="#{almacenForm.idUbigeo}" rendered="#{almacenForm.defectoUbigeo}" required="true" filter="true" filterMatchMode="startsWith"
 					style="width:200px" requiredMessage="#{message['contrato.ubigeo.distrito.validation']}">
 					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
@@ -47,7 +47,7 @@
 			<h:panelGrid columns="2" id="panel3" rendered="#{!almacenForm.newRecord}"  >
 				
 				<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
-				<p:selectOneMenu size="1" value="#{almacenForm.idDepartamento}"
+				<p:selectOneMenu size="1" value="#{almacenForm.idDepartamento}" filter="true" filterMatchMode="startsWith"
 					required="true" style="width:180px"
 					requiredMessage="#{message['contrato.ubigeo.departamento.validation']}" >
 					<f:selectItem itemLabel="Seleccione Departamento"
@@ -57,7 +57,7 @@
 				</p:selectOneMenu>
 
 				<h:outputText value="#{message['contrato.ubigeo.provincia']}" />
-				<p:selectOneMenu id="prov" value="#{almacenForm.idProvincia}"
+				<p:selectOneMenu id="prov" value="#{almacenForm.idProvincia}" filter="true" filterMatchMode="startsWith"
 					required="true" style="width:200px"
 					requiredMessage="#{message['contrato.ubigeo.provincia.validation']}" >
 					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
@@ -66,7 +66,7 @@
 				</p:selectOneMenu>
 
 				<h:outputText value="#{message['contrato.ubigeo.distrito']}" />
-				<p:selectOneMenu id="dist" value="#{almacenForm.idUbigeo}"
+				<p:selectOneMenu id="dist" value="#{almacenForm.idUbigeo}" filter="true" filterMatchMode="startsWith"
 					required="true" style="width:200px"
 					requiredMessage="#{message['contrato.ubigeo.distrito.validation']}" >
 					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
