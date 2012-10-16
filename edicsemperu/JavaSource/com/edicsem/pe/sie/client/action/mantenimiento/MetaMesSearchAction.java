@@ -20,8 +20,8 @@ public class MetaMesSearchAction extends BaseMantenimientoAbstractAction {
 //	private List<MetaMesSie> MetaMesList;
 	private MetaMesSie objMetaMesSie;
 	private int codmes;
-	private MetaMesSie nuevo;
-	private String mes;
+	private MetaMesSie nuevo;	
+	private String mes;	
 
 	@EJB
 	private MetaMesService metaMesService;
