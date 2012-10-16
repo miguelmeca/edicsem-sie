@@ -34,6 +34,8 @@ public class TelefonoPersonaSie implements Serializable {
 	private String tipotelefono;
 	
 	private String operadorTelefonico;
+	
+	private String descTelefono;
 
 	//bi-directional many-to-one association to ClienteSie
     @ManyToOne
@@ -134,6 +136,20 @@ public class TelefonoPersonaSie implements Serializable {
 	 */
 	public void setOperadorTelefonico(String operadorTelefonico) {
 		this.operadorTelefonico = operadorTelefonico;
+	}
+
+	/**
+	 * @return the descTelefono
+	 */
+	public String getDescTelefono() {
+		return descTelefono;
+	}
+
+	/**
+	 * @param descTelefono the descTelefono to set
+	 */
+	public void setDescTelefono(String descTelefono) {
+		this.descTelefono = descTelefono;
 	}
 	
 }

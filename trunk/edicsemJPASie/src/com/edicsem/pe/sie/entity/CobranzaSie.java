@@ -17,6 +17,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 
 
 /**
@@ -243,6 +244,7 @@ public class CobranzaSie   implements Serializable {
 	 * @return the fechaVencimientoString
 	 */
 	public String getFechaVencimientoString() {
+		fechaVencimientoString = DateUtil.formatoString(getFecvencimiento(), "dd/MM/yyyy");
 		return fechaVencimientoString;
 	}
 
