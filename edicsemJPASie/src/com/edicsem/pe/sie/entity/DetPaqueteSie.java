@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.edicsem.pe.sie.util.constants.Constants;
 
@@ -50,6 +51,15 @@ public class DetPaqueteSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idproducto")
 	private ProductoSie tbProducto;
+    
+    @Transient
+    private int item;
+    
+    @Transient
+    private String observacion;
+    
+    private int cantidad;
+    
 
     public DetPaqueteSie() {
     }
@@ -117,5 +127,47 @@ public class DetPaqueteSie implements Serializable {
 	public void setTbProducto(ProductoSie tbProducto) {
 		this.tbProducto = tbProducto;
 	}
-	
+
+	/**
+	 * @return the observacion
+	 */
+	public String getObservacion() {
+		return observacion;
+	}
+
+	/**
+	 * @param observacion the observacion to set
+	 */
+	public void setObservacion(String observacion) {
+		this.observacion = observacion;
+	}
+
+	/**
+	 * @return the cantidad
+	 */
+	public int getCantidad() {
+		return cantidad;
+	}
+
+	/**
+	 * @param cantidad the cantidad to set
+	 */
+	public void setCantidad(int cantidad) {
+		this.cantidad = cantidad;
+	}
+
+	/**
+	 * @return the item
+	 */
+	public int getItem() {
+		return item;
+	}
+
+	/**
+	 * @param item the item to set
+	 */
+	public void setItem(int item) {
+		this.item = item;
+	}
+
 }

@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.edicsem.pe.sie.util.constants.Constants;
 
@@ -83,6 +84,12 @@ public class ProductoSie implements Serializable {
     //bi-directional many-to-one association to DetProductoContratoSie
   	@OneToMany(mappedBy="tbProducto")
   	private Set<DetProductoContratoSie> tbDetProductoContrato;
+  	
+  	@Transient 
+  	private String observacionContrato;
+  	
+  	@Transient 
+  	private int cantidadContrato;
 
     public ProductoSie() {
     }
@@ -246,6 +253,34 @@ public class ProductoSie implements Serializable {
 	public void setTbDetProductoContrato(
 			Set<DetProductoContratoSie> tbDetProductoContrato) {
 		this.tbDetProductoContrato = tbDetProductoContrato;
+	}
+
+	/**
+	 * @return the observacionContrato
+	 */
+	public String getObservacionContrato() {
+		return observacionContrato;
+	}
+
+	/**
+	 * @param observacionContrato the observacionContrato to set
+	 */
+	public void setObservacionContrato(String observacionContrato) {
+		this.observacionContrato = observacionContrato;
+	}
+
+	/**
+	 * @return the cantidadContrato
+	 */
+	public int getCantidadContrato() {
+		return cantidadContrato;
+	}
+
+	/**
+	 * @param cantidadContrato the cantidadContrato to set
+	 */
+	public void setCantidadContrato(int cantidadContrato) {
+		this.cantidadContrato = cantidadContrato;
 	}
 	
 }
