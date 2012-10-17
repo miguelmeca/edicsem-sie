@@ -10,9 +10,7 @@ import javax.persistence.Query;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.MetaMesSie;
-import com.edicsem.pe.sie.model.dao.EmpresaDAO;
 import com.edicsem.pe.sie.model.dao.MetaMesDAO;
 
 /**
@@ -85,7 +83,7 @@ public  class MetaMesDAOImpl implements MetaMesDAO {
 		public List<MetaMesSie> listarMetaMeses() {
 			List<MetaMesSie> lista = null;
 			try {
-			Query q = em.createQuery("select m from MetaMesSie m ");
+			Query q = em.createQuery("select m from MetaMesSie m");
 			lista = q.getResultList();
 			log.info("DAOIMPL tamaño de lista de Metames--->" + lista.size());
 		} catch (Exception e) {
