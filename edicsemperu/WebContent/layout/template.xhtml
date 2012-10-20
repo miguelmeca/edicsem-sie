@@ -246,7 +246,7 @@ body {
 				</p:selectOneMenu>
 				<p:commandButton value="Insertar Ubigeo"
 					action="#{almacenForm.ingresarUbigeo}"
-					oncomplete="UbigeoDialog.hide()" update="@all">
+					oncomplete="UbigeoAlmacenDialog.hide()" update="@all">
 				</p:commandButton>
 			</h:panelGrid>
 		</p:dialog>
@@ -806,6 +806,36 @@ body {
 					<p:commandButton id="btn" value="Guardar" update="panel"
 						action="#{empresaForm.insertar}" ajax="false"
 						icon="ui-icon ui-icon-disk" />
+
+				</h:panelGroup>
+
+			</h:panelGrid>
+
+		</p:dialog>
+
+	</h:form>
+	<!-- FIN PUPAP NUEVO Y EDITAR EMPRESA -->
+	<!--EN UN SOLO PUPAP NUEVO Y EDITAR META -->
+
+
+	<h:form id="editarMeta">
+		<p:dialog header="Ingrese meta" widgetVar="carDialog2"
+			showEffect="fade" hideEffect="explode" modal="true" width="300"
+			position="center">
+
+			<h:panelGrid id="display" columns="2" cellpadding="2"
+				style="margin:0 auto;">
+
+				<h:outputText value="fecha Inicial"/>
+				<p:calendar value="#{MetaMesFormAction.date1}" id="popupCal"  />  
+				
+				
+					 
+				<h:outputText value="fecha Final"    />				
+			
+				<p:calendar value="#{MetaMesFormAction.date2}" id="popupCal2" />
+				
+				
 
 				</h:panelGroup>
 
