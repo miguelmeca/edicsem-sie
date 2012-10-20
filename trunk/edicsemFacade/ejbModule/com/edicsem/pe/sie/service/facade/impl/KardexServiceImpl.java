@@ -1,6 +1,7 @@
 package com.edicsem.pe.sie.service.facade.impl;
 
 import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -14,7 +15,6 @@ import com.edicsem.pe.sie.model.dao.DetalleComprobanteDAO;
 import com.edicsem.pe.sie.model.dao.KardexDAO;
 import com.edicsem.pe.sie.model.dao.ProductoDAO;
 import com.edicsem.pe.sie.model.dao.TipoKardexProductoDAO;
-import com.edicsem.pe.sie.service.facade.ComprobanteService;
 import com.edicsem.pe.sie.service.facade.KardexService;
 
 /**
