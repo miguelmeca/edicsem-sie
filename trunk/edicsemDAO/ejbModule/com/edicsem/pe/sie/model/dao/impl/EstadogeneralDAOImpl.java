@@ -48,36 +48,15 @@ public class EstadogeneralDAOImpl implements EstadoGeneralDAO {
 			e.printStackTrace();
 		}
 	}
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.EmpresaDAO#findProducto(java.lang.String)
-	 */
-	 
-	public EstadoGeneralSie findEstadoGeneral(String id) {
-		EstadoGeneralSie estadogeneral = new EstadoGeneralSie();
-		try {
-			if (log.isInfoEnabled()) {
-				log.info("buscar cargo de empleado");
-			}
-			estadogeneral = em.find(EstadoGeneralSie.class, id);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return estadogeneral;
-	}
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.EmpresaDAO#listarEmpresas()
-	 */
-	 
 	
-
-
-
- 
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.EstadoGeneralDAO#findEstadoGeneral(int)
+	 */
 	public EstadoGeneralSie findEstadoGeneral(int id) {
 		EstadoGeneralSie e= new EstadoGeneralSie();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("buscar Estado General");
+				log.info("buscar Estado General "+ id);
 			} 
 		e=	em.find(EstadoGeneralSie.class, id);
 		} catch (Exception ex) {
