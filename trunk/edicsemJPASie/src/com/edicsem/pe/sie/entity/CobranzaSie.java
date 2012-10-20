@@ -6,11 +6,16 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,9 +33,15 @@ import com.edicsem.pe.sie.util.constants.DateUtil;
 @Table(name="tb_cobranza", schema = Constants.ESQUEMA_SIE_POSTGRE)
 public class CobranzaSie   implements Serializable {
 	private static final long serialVersionUID = 1L;
-
-	@EmbeddedId
-	private CobranzaSiePK id;
+	
+	@Id
+	@SequenceGenerator(name="TB_COBRANZA_IDCOBRANZA_GENERATOR", sequenceName="SIE.TB_COBRANZA_IDCOBRANZA_SEQ", initialValue=1, allocationSize =1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_COBRANZA_IDCOBRANZA_GENERATOR")
+	private Integer idcobranza;
+	
+	private Integer idcliente;
+	
+	private Integer idcontrato;
 
 	private String cantcuotas;
 
@@ -87,14 +98,6 @@ public class CobranzaSie   implements Serializable {
 
     public CobranzaSie() {
     }
-
-	public CobranzaSiePK getId() {
-		return this.id;
-	}
-
-	public void setId(CobranzaSiePK id) {
-		this.id = id;
-	}
 	
 	public String getCantcuotas() {
 		return this.cantcuotas;
@@ -112,6 +115,24 @@ public class CobranzaSie   implements Serializable {
 		this.diasretraso = diasretraso;
 	}
 
+	public Integer getIdcobranza() {
+		return this.idcobranza;
+	}
+	public void setIdcobranza(Integer idcobranza) {
+		this.idcobranza = idcobranza;
+	}
+	public Integer getIdcliente() {
+		return this.idcliente;
+	}
+	public void setIdcliente(Integer idcliente) {
+		this.idcliente = idcliente;
+	}
+	public Integer getIdcontrato() {
+		return this.idcontrato;
+	}
+	public void setIdcontrato(Integer idcontrato) {
+		this.idcontrato = idcontrato;
+	}
 	public Timestamp getFechacreacion() {
 		return this.fechacreacion;
 	}
