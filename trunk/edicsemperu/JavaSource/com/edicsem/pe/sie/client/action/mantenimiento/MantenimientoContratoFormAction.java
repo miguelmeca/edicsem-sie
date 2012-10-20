@@ -26,12 +26,19 @@ import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.CobranzaSie;
 import com.edicsem.pe.sie.entity.ContratoSie;
 import com.edicsem.pe.sie.entity.DetPaqueteSie;
+import com.edicsem.pe.sie.entity.DetProductoContratoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.PaqueteSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
+import com.edicsem.pe.sie.service.facade.ContratoService;
 import com.edicsem.pe.sie.service.facade.DetallePaqueteService;
+import com.edicsem.pe.sie.service.facade.EmpresaService;
+import com.edicsem.pe.sie.service.facade.PaqueteService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
+import com.edicsem.pe.sie.service.facade.TipoCasaService;
+import com.edicsem.pe.sie.service.facade.TipoDocumentoService;
+import com.edicsem.pe.sie.service.facade.UbigeoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
@@ -46,8 +53,8 @@ public class MantenimientoContratoFormAction extends
 
 	private String mensaje;
 	public static Log log = LogFactory.getLog(MantenimientoContratoFormAction.class);
-	private int Tipocasa, idempresa,tipoVenta,tipopago, idpaquete, idProducto;
-	private String idProvincia, idDepartamento, idUbigeo, ubigeoDefecto,selectTelef;
+	private int Tipocasa,idtipodoc,idUbigeo, idempresa,tipoVenta,tipopago, idpaquete, idProducto, idempleadoExpositor, idempleadoVendedor, idempleadoColaborador;
+	private String idProvincia, idDepartamento,  ubigeoDefecto,selectTelef;
 	private ProductoSie objProductoSie;
 	private ClienteSie objClienteSie;
 	private DomicilioPersonaSie objDomicilioSie;
@@ -69,12 +76,24 @@ public class MantenimientoContratoFormAction extends
 	private DetallePaqueteService objDetPaqueteService;
 	@EJB
 	private ProductoService objProductoService;
+	@EJB
+	private ContratoService objContratoService;
+	@EJB
+	private TipoDocumentoService objtipoService;
+	@EJB
+	private UbigeoService objUbigeoService;
+	@EJB
+	private TipoCasaService objTipoCasaService;
+	@EJB
+	private EmpresaService objEmpresaService;
+	@EJB
+	private PaqueteService objPaqueteService;
 	
 	public MantenimientoContratoFormAction() {
 		log.info("inicializando constructor MantenimientoContrato");
 		init();
 	}
-
+	
 	public void init() {
 		log.info("init()");
 		objProductoSie = new ProductoSie();
@@ -125,9 +144,13 @@ public class MantenimientoContratoFormAction extends
 		comboManager.setUbigeoProvinItems(null);
 		comboManager.setUbigeoDistriItems(null);
 		if (defectoUbigeo) {
+			comboManager.setIdDepartamento("15");
+			comboManager.setIdProvincia("01");
 			log.info(" defecto lima true 1");
 			ubigeoDefecto = "";
 		} else {
+			comboManager.setIdDepartamento(null);
+			comboManager.setIdProvincia(null);
 			log.info(" cambio ubigeo   false  otro");
 		}
 	}
@@ -136,7 +159,7 @@ public class MantenimientoContratoFormAction extends
 		comboManager.setIdDepartamento(getIdDepartamento());
 		comboManager.setIdProvincia(null);
 		idProvincia = null;
-		idUbigeo = null;
+		idUbigeo = 0;
 		log.info("cambiar   :D  --- ");
 	}
 
@@ -152,8 +175,9 @@ public class MantenimientoContratoFormAction extends
 		Iterator it = comboManager.getUbigeoDistriItems().entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry e = (Map.Entry) it.next();
-			System.out.println("key " + e.getKey() + " value " + e.getValue());
-			if (e.getValue().toString().equals(idUbigeo)) {
+			log.info("key " + e.getKey() + " value " + e.getValue());
+			if (e.getValue().toString().equals(idUbigeo+"")) {
+				log.info("xxx -" + e.getKey() + "- value -" + idUbigeo+"-");
 				dist = (String) e.getKey();
 				log.info("dist " + dist);
 				break;
@@ -166,7 +190,6 @@ public class MantenimientoContratoFormAction extends
 		// enviamos el nombre completo del depa- provincia-distrito
 
 		log.info("ingresarUbigeo :D a --- " + idUbigeo);
-		ubigeoDefecto = "otro ubigeo";
 
 		Iterator it = comboManager.getUbigeoDeparItems().entrySet().iterator();
 		Iterator it2 = comboManager.getUbigeoProvinItems().entrySet().iterator();
@@ -193,7 +216,7 @@ public class MantenimientoContratoFormAction extends
 		while (it3.hasNext()) {
 			Map.Entry e = (Map.Entry) it3.next();
 			System.out.println("key " + e.getKey() + " value " + e.getValue());
-			if (e.getValue().toString().equals(idUbigeo)) {
+			if (e.getValue().toString().equals(idUbigeo+"")) {
 				ubigeoDefecto += "-" + (String) e.getKey();
 				log.info("ubigeo distrito " + ubigeoDefecto);
 				break;
@@ -203,6 +226,7 @@ public class MantenimientoContratoFormAction extends
 		
 		return getViewMant();
 	}
+	
 	/**
 	 * Agregar Teléfono a la lista*/
 	public void  telefonoAgregar(){
@@ -265,14 +289,20 @@ public class MantenimientoContratoFormAction extends
 	public void cambioPaquete(){
 		log.info("en el metodod cambioPaquete() ");
 		detPaqueteList=new ArrayList<DetPaqueteSie>();
+		
 		List<DetPaqueteSie> detalle = objDetPaqueteService.listarDetPaquetes(getIdpaquete());
-		for (int i = 0; i < detalle.size(); i++) {
+		if(detalle.size()>0){
+			for (int i = 0; i < detalle.size(); i++) {
 			log.info("tamaño li 22 ...."+ detalle.get(i).getCantidad());
 			DetPaqueteSie detq =detalle.get(i);
 			log.info("tamaño li 33 "+ detalle.get(i).getTbProducto().getDescripcionproducto());
 			detq.setItem(i+1);
 			detPaqueteList.add(detq);
 			log.info("tamaño lista de paq "+ detPaqueteList.size());
+		}
+		log.info(" karenx d");
+		setPrecioProducto(objPaqueteService.findPaquete(getIdpaquete()).getPrecioventa().doubleValue());
+		log.info(" karenx precio "+objProductoSie.getPrecioventa());
 		}
 	}
 
@@ -345,9 +375,9 @@ public class MantenimientoContratoFormAction extends
 		sdf.format(objContratoSie.getFechacuotainicial());
 		String fecha3 =sdf.format(objContratoSie.getFechacuotainicial());
 		 fechaVencimiento =sdf.parse(fecha3);
-		for (int i = 0; i < objContratoSie.getNumcuotas(); i++) {
+		for (int i = 1; i <= objContratoSie.getNumcuotas(); i++) {
 			objCobranzaSie.setNumletra(i+"");
-			if(i==0 && objContratoSie.getCuotainicial()!=new BigDecimal(0.0)){
+			if(i==1 && objContratoSie.getCuotainicial()!=new BigDecimal(0.0)){
 				objCobranzaSie.setImpinicial(objContratoSie.getCuotainicial());
 				fechaVencimiento=objContratoSie.getFechacuotainicial();
 			}else{
@@ -360,17 +390,14 @@ public class MantenimientoContratoFormAction extends
 				fechaVencimiento = DateUtil.addToDate(fechaVencimiento, Calendar.MONTH, 1);
 			}
 			}
-			//objCobranzaSie.setFechaVencimientoString(DateUtil.formatoString(fechaVencimiento, "dd/MM/yyyy"));
-			log.info("fec venc  "+i +" "+ fechaVencimiento+" fecha formt " +fechaVencimiento +" conv "+ DateUtil.formatoString(fechaVencimiento, "dd/MM/yyyy") +" Numcuotas "+objContratoSie.getNumcuotas()+" "+ objContratoSie.getPagomensual()
+			log.info("fec venc  "+i +" "+ fechaVencimiento +" conv "+ DateUtil.formatoString(fechaVencimiento, "dd/MM/yyyy") +" Numcuotas "+objContratoSie.getNumcuotas()+" mensualito "+ objContratoSie.getPagomensual()
 					+"  pagar  "+objCobranzaSie.getImpinicial() );
 			objCobranzaSie.setFecvencimiento(fechaVencimiento);
 			
 			cobranzaList.add(objCobranzaSie);
 			objCobranzaSie= new CobranzaSie();
 		}
-		objContratoSie = new ContratoSie();
 	}
-	
 	
 	public void onEdit(RowEditEvent event) {
 		log.info("en onedit()");
@@ -418,11 +445,34 @@ public class MantenimientoContratoFormAction extends
 	 * #insertar()
 	 */
 	public String insertar() {
+		List<DetProductoContratoSie> detProductoContratoList = new ArrayList<DetProductoContratoSie>();
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()' ");
 			}
-
+			if (isNewRecord()) {
+				log.info("a insertar ");
+				
+				for (int i = 0; i < detPaqueteList.size(); i++) {
+					DetProductoContratoSie det=new DetProductoContratoSie();
+					log.info(" q "+detPaqueteList.get(i).getTbProducto().getIdproducto());
+					det.setTbProducto(detPaqueteList.get(i).getTbProducto());
+					det.setCantidad(detPaqueteList.get(i).getCantidad());
+					det.setObservacion(detPaqueteList.get(i).getObservacion());
+					detProductoContratoList.add(det);
+				}
+				objClienteSie.setTbTipoDocumentoIdentidad(objtipoService.buscarTipoDocumento(getIdtipodoc()));
+				objDomicilioSie.setTbTipoCasa(objTipoCasaService.findTipoCasa(Tipocasa));
+				objDomicilioSie.setTbUbigeo(objUbigeoService.findUbigeo(idUbigeo));
+				objContratoSie.setTbEmpresa(objEmpresaService.findEmpresa(idempresa));
+				log.info("a insertar contratito");
+				objContratoService.insertContrato(objClienteSie, telefonoList, objDomicilioSie,  objContratoSie,detProductoContratoList, cobranzaList);
+				log.info(" despues de  insertar ");
+				objProductoSie = new ProductoSie();
+			} else {
+				log.info("a actualizar  ");
+				limpiarCampos();
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -624,21 +674,6 @@ public class MantenimientoContratoFormAction extends
 	 */
 	public void setDefectoUbigeo(boolean defectoUbigeo) {
 		this.defectoUbigeo = defectoUbigeo;
-	}
-
-	/**
-	 * @return the idUbigeo
-	 */
-	public String getIdUbigeo() {
-		return idUbigeo;
-	}
-
-	/**
-	 * @param idUbigeo
-	 *            the idUbigeo to set
-	 */
-	public void setIdUbigeo(String idUbigeo) {
-		this.idUbigeo = idUbigeo;
 	}
 
 	/**
@@ -889,6 +924,76 @@ public class MantenimientoContratoFormAction extends
 	 */
 	public void setIdCobranza(int idCobranza) {
 		this.idCobranza = idCobranza;
+	}
+
+	/**
+	 * @return the idempleadoExpositor
+	 */
+	public int getIdempleadoExpositor() {
+		return idempleadoExpositor;
+	}
+
+	/**
+	 * @param idempleadoExpositor the idempleadoExpositor to set
+	 */
+	public void setIdempleadoExpositor(int idempleadoExpositor) {
+		this.idempleadoExpositor = idempleadoExpositor;
+	}
+
+	/**
+	 * @return the idempleadoVendedor
+	 */
+	public int getIdempleadoVendedor() {
+		return idempleadoVendedor;
+	}
+
+	/**
+	 * @param idempleadoVendedor the idempleadoVendedor to set
+	 */
+	public void setIdempleadoVendedor(int idempleadoVendedor) {
+		this.idempleadoVendedor = idempleadoVendedor;
+	}
+
+	/**
+	 * @return the idempleadoColaborador
+	 */
+	public int getIdempleadoColaborador() {
+		return idempleadoColaborador;
+	}
+
+	/**
+	 * @param idempleadoColaborador the idempleadoColaborador to set
+	 */
+	public void setIdempleadoColaborador(int idempleadoColaborador) {
+		this.idempleadoColaborador = idempleadoColaborador;
+	}
+
+	/**
+	 * @return the idtipodoc
+	 */
+	public int getIdtipodoc() {
+		return idtipodoc;
+	}
+
+	/**
+	 * @param idtipodoc the idtipodoc to set
+	 */
+	public void setIdtipodoc(int idtipodoc) {
+		this.idtipodoc = idtipodoc;
+	}
+
+	/**
+	 * @return the idUbigeo
+	 */
+	public int getIdUbigeo() {
+		return idUbigeo;
+	}
+
+	/**
+	 * @param idUbigeo the idUbigeo to set
+	 */
+	public void setIdUbigeo(int idUbigeo) {
+		this.idUbigeo = idUbigeo;
 	}
 
 	
