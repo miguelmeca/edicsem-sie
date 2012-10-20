@@ -80,9 +80,9 @@ public class ContratoServiceImpl implements ContratoService {
 			CobranzaSiePK cob = new CobranzaSiePK();
 			log.info(" terminado cliente " +cliente.getIdcliente());
 			log.info(" terminado contrato " +contrato.getIdcontrato());
-			cob.setIdcliente(cliente.getIdcliente());
-			cob.setIdcontrato(contrato.getIdcontrato());
-			objcobranza.setId(cob);
+			
+			objcobranza.setIdcliente(cliente.getIdcliente());
+			objcobranza.setIdcontrato(contrato.getIdcontrato());
 			log.info(" terminado estado " );
 			objcobranza.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23));
 			log.info(" terminado estado 2" );
