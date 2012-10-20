@@ -40,6 +40,8 @@ public class DetProductoContratoSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idproducto")
 	private ProductoSie tbProducto;
+    
+    private String observacion;
 
     public DetProductoContratoSie() {
     }
@@ -76,6 +78,20 @@ public class DetProductoContratoSie implements Serializable {
 
 	public void setTbContrato(ContratoSie tbContrato) {
 		this.tbContrato = tbContrato;
+	}
+
+	/**
+	 * @return the observacion
+	 */
+	public String getObservacion() {
+		return observacion;
+	}
+
+	/**
+	 * @param observacion the observacion to set
+	 */
+	public void setObservacion(String observacion) {
+		this.observacion = observacion;
 	}
 	
 }

@@ -2,6 +2,7 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -14,6 +15,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.edicsem.pe.sie.util.constants.Constants;
 
@@ -48,8 +52,9 @@ public class ClienteSie implements Serializable {
 	
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
-
-	private String fecnacimiento;
+	
+	@Temporal( TemporalType.DATE)
+	private Date fecnacimiento;
 
 	private String nombrecliente;
 
@@ -84,6 +89,9 @@ public class ClienteSie implements Serializable {
 	//bi-directional many-to-one association to ContratoSie
 	@OneToMany(mappedBy="tbCliente")
 	private Set<ContratoSie> tbContratos;
+	
+	@Transient
+	private String nombresCompletos;
 
     public ClienteSie() {
     }
@@ -160,13 +168,6 @@ public class ClienteSie implements Serializable {
 		this.fechacreacion = fechacreacion;
 	}
 
-	public String getFecnacimiento() {
-		return this.fecnacimiento;
-	}
-
-	public void setFecnacimiento(String fecnacimiento) {
-		this.fecnacimiento = fecnacimiento;
-	}
 
 	public String getNombrecliente() {
 		return this.nombrecliente;
@@ -248,5 +249,33 @@ public class ClienteSie implements Serializable {
 	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
 		this.tbEstadoGeneral = tbEstadoGeneral;
 	}
+
+	/**
+	 * @return the fecnacimiento
+	 */
+	public Date getFecnacimiento() {
+		return fecnacimiento;
+	}
+
+	/**
+	 * @param fecnacimiento the fecnacimiento to set
+	 */
+	public void setFecnacimiento(Date fecnacimiento) {
+		this.fecnacimiento = fecnacimiento;
+	}
 	
+	/**
+	 * @return the nombresCompletos
+	 */
+	public String getNombresCompletos() {
+		nombresCompletos =nombrecliente + " " + apepatcliente + " " +apematcliente; 
+		return nombresCompletos;
+	}
+
+	/**
+	 * @param nombresCompletos the nombresCompletos to set
+	 */
+	public void setNombresCompletos(String nombresCompletos) {
+		this.nombresCompletos = nombresCompletos;
+	}
 }
