@@ -699,7 +699,7 @@ public class MantenimientoContratoFormAction extends
 	 * #getViewMant()
 	 */
 	public String getViewMant() {
-		return Constants.MANT_CONTRATO_FORM_PAGE;
+		return Constants.CONTRATO_FORM_PAGE;
 	}
 
 	/**
