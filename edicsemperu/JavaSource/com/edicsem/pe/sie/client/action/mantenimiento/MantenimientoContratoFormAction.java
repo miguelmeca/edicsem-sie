@@ -33,12 +33,8 @@ import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.service.facade.ContratoService;
 import com.edicsem.pe.sie.service.facade.DetallePaqueteService;
-import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.PaqueteService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
-import com.edicsem.pe.sie.service.facade.TipoCasaService;
-import com.edicsem.pe.sie.service.facade.TipoDocumentoService;
-import com.edicsem.pe.sie.service.facade.UbigeoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
@@ -73,21 +69,14 @@ public class MantenimientoContratoFormAction extends
 	private DetPaqueteSie objDetPaquete;
 	
 	@EJB
-	private DetallePaqueteService objDetPaqueteService;
-	@EJB
 	private ProductoService objProductoService;
 	@EJB
-	private ContratoService objContratoService;
-	@EJB
-	private TipoDocumentoService objtipoService;
-	@EJB
-	private UbigeoService objUbigeoService;
-	@EJB
-	private TipoCasaService objTipoCasaService;
-	@EJB
-	private EmpresaService objEmpresaService;
+	private DetallePaqueteService objDetPaqueteService;
 	@EJB
 	private PaqueteService objPaqueteService;
+
+	@EJB
+	private ContratoService objContratoService;
 	
 	public MantenimientoContratoFormAction() {
 		log.info("inicializando constructor MantenimientoContrato");
@@ -230,9 +219,9 @@ public class MantenimientoContratoFormAction extends
 	/**
 	 * Agregar Teléfono a la lista*/
 	public void  telefonoAgregar(){
-		mensaje=null;
 		log.info("telefono agregar " + nuevoTelef.getTelefono());
 		boolean verifica= false;
+		mensaje=null;
 		if(TipoTelef==1)nuevoTelef.setTipotelefono("F");
 		else
 			nuevoTelef.setTipotelefono("C");
@@ -461,19 +450,19 @@ public class MantenimientoContratoFormAction extends
 					det.setObservacion(detPaqueteList.get(i).getObservacion());
 					detProductoContratoList.add(det);
 				}
-				objClienteSie.setTbTipoDocumentoIdentidad(objtipoService.buscarTipoDocumento(getIdtipodoc()));
-				objDomicilioSie.setTbTipoCasa(objTipoCasaService.findTipoCasa(Tipocasa));
-				objDomicilioSie.setTbUbigeo(objUbigeoService.findUbigeo(idUbigeo));
-				objContratoSie.setTbEmpresa(objEmpresaService.findEmpresa(idempresa));
+				if(tipoVenta==1)
+				objContratoSie.setTipoventa("MAS");
+				else if(tipoVenta==2)
+					objContratoSie.setTipoventa("PNT");
+				
 				log.info("a insertar contratito");
-				objContratoService.insertContrato(objClienteSie, telefonoList, objDomicilioSie,  objContratoSie,detProductoContratoList, cobranzaList);
+				objContratoService.insertContrato(idtipodoc,Tipocasa,idUbigeo, idempresa, objClienteSie, telefonoList, objDomicilioSie,  objContratoSie,detProductoContratoList, cobranzaList);
 				log.info(" despues de  insertar ");
 				objProductoSie = new ProductoSie();
 			} else {
 				log.info("a actualizar  ");
 				limpiarCampos();
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -482,7 +471,6 @@ public class MantenimientoContratoFormAction extends
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-
 		return getViewList();
 	}
  

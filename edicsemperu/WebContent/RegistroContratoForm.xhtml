@@ -39,7 +39,7 @@
 					<p:message for="tipoDoc" />
 					
 					<h:outputText value="#{message['contrato.numero.documento']}" />
-					<p:inputMask mask="99999999"  id="numDoc" required="true"
+					<p:inputMask mask="99999999"  value="#{contratoForm.objClienteSie.numdocumento}"  id="numDoc" required="true"
 						requiredMessage="#{message['contrato.numero.documento.validation']}" />
 					<p:message for="numDoc" />
 					<h:outputText value="#{message['contrato.cliente.email']}" />
@@ -96,6 +96,10 @@
 				
 				<h:outputText value="#{message['contrato.empresa.labora.nombre']}" />
 				<p:inputText value="#{contratoForm.objClienteSie.empresatrabajo}" />
+				<p:spacer />
+				
+				<h:outputText value="#{message['contrato.empresa.cargo']}" />
+				<p:inputText value="#{contratoForm.objClienteSie.cargotrabajo}" />
 				<p:spacer />
 				
 				<h:outputText value="#{message['contrato.empresa.labora.direccion']}" />
@@ -413,6 +417,10 @@
 					<f:selectItems value="#{comboAction.empleadoItems}" />
 				</p:selectOneMenu>
 				</h:panelGrid>
+				
+				<h:outputText value="#{message['contrato.fechEntrega']}" />
+				<p:calendar id="fechaentrega" value="#{contratoForm.objContratoSie.fechaentrega}" />
+				<p:message for="fechaentrega"  />
 			</p:panel>
     	
 			<p:commandButton value="Registrar2"
