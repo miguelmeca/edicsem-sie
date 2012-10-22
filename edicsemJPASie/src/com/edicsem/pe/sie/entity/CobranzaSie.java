@@ -47,6 +47,7 @@ public class CobranzaSie   implements Serializable {
 
 	private Integer diasretraso;
 
+	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
 
 	private Timestamp fechamodifica;
