@@ -23,6 +23,10 @@ import com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
 import com.edicsem.pe.sie.model.dao.TelefonoEmpleadoDAO;
 import com.edicsem.pe.sie.service.facade.ContratoService;
+import com.edicsem.pe.sie.service.facade.EmpresaService;
+import com.edicsem.pe.sie.service.facade.TipoCasaService;
+import com.edicsem.pe.sie.service.facade.TipoDocumentoService;
+import com.edicsem.pe.sie.service.facade.UbigeoService;
 
 @Stateless
 public class ContratoServiceImpl implements ContratoService {
@@ -41,15 +45,23 @@ public class ContratoServiceImpl implements ContratoService {
 	private DetProductoContratoDAO objDetProductoContratoDao;
 	@EJB
 	private EstadoGeneralDAO objEstadoGeneralDao;
+	@EJB
+	private TipoDocumentoService objtipoService;
+	@EJB
+	private UbigeoService objUbigeoService;
+	@EJB
+	private TipoCasaService objTipoCasaService;
+	@EJB
+	private EmpresaService objEmpresaService;
 	
 	public static Log log = LogFactory.getLog(ContratoServiceImpl.class);
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ContratoService#insertContrato(com.edicsem.pe.sie.entity.ClienteSie, java.util.List, com.edicsem.pe.sie.entity.DomicilioPersonaSie, com.edicsem.pe.sie.entity.ContratoSie, java.util.List, java.util.List)
 	 */
-	public void insertContrato(ClienteSie  cliente, List<TelefonoPersonaSie> telefonoList, DomicilioPersonaSie domicilio,  ContratoSie contrato,List<DetProductoContratoSie> detprodcont, List<CobranzaSie> cobranza) {
+	public void insertContrato(int idtipodoc,int Tipocasa,int idUbigeo,int  idempresa, ClienteSie  cliente, List<TelefonoPersonaSie> telefonoList, DomicilioPersonaSie domicilio,  ContratoSie contrato,List<DetProductoContratoSie> detprodcont, List<CobranzaSie> cobranza) {
 		log.info(" * en insertar el contrato  ");
-		
+		cliente.setTbTipoDocumentoIdentidad(objtipoService.buscarTipoDocumento(idtipodoc));
 		cliente.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23));
 		log.info(" cliente estado " + cliente.getTbEstadoGeneral().getCodestadogeneral() );
 		objClienteDao.insertCliente(cliente);	
@@ -60,13 +72,18 @@ public class ContratoServiceImpl implements ContratoService {
 			objTelefonoDao.insertarTelefonoEmpleado(telefonoPersonaSie);
 		}	
 		log.info(" domicilio  ");
+
+		
+		domicilio.setTbTipoCasa(objTipoCasaService.findTipoCasa(Tipocasa));
+		domicilio.setTbUbigeo(objUbigeoService.findUbigeo(idUbigeo));
 		domicilio.setIdcliente(cliente);
-		domicilio.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23));
+		domicilio.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(15));
 		log.info(" seteo domi"  );
 		objDomicilioDao.insertarDomicilioEmpleado(domicilio);
 		log.info(" inser domicilio "  );
 		contrato.setTbCliente(cliente);
-		contrato.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23));
+		contrato.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(25));
+		contrato.setTbEmpresa(objEmpresaService.findEmpresa(idempresa));
 		log.info(" INSER CLIENTE" );
 		objContratoDao.insertContrato(contrato);
 		for (DetProductoContratoSie detprodcontrato : detprodcont) {
@@ -74,17 +91,16 @@ public class ContratoServiceImpl implements ContratoService {
 			objDetProductoContratoDao.insertDetProductoContrato(detprodcontrato);
 			log.info(" 1 contrato " );
 		}
-		log.info(" terminado" );
-		log.info(" terminado" + cobranza.size());
+		log.info(" terminado tamaño cobranza " + cobranza.size());
 		for (CobranzaSie objcobranza : cobranza) {
 			CobranzaSiePK cob = new CobranzaSiePK();
 			log.info(" terminado cliente " +cliente.getIdcliente());
 			log.info(" terminado contrato " +contrato.getIdcontrato());
-			
+			objcobranza.setCantcuotas(""+ contrato.getNumcuotas());
 			objcobranza.setIdcliente(cliente.getIdcliente());
 			objcobranza.setIdcontrato(contrato.getIdcontrato());
 			log.info(" terminado estado " );
-			objcobranza.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23));
+			objcobranza.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(27));
 			log.info(" terminado estado 2" );
 			objcobranza.setTbContrato(contrato);
 			log.info(" terminado con " );
