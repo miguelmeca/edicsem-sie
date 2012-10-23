@@ -10,21 +10,33 @@
 
 		<h:form id="frmClienteFormList" prependId="false">
 			<p:growl id="message" showDetail="true" />
-			<p:dataTable value="#{clienteSearchAction.clienteList}" var="c" paginator="true" rows="10">
+			<p:dataTable value="#{MantenimientoClienteSearchAction.clienteList}"
+				var="c" paginator="true" rows="10">
 
 				<f:facet name="header">
 					<h:outputLabel
 						value="#{message['lista.mantenimiento.empresa.titulo']}" />
 				</f:facet>
 
-				<p:column headerText="Nombres Completos" >
+				<p:column headerText="Nombres Completos">
 					<h:outputText value="#{c.nombresCompletos}" />
 				</p:column>
 
-				<p:column headerText="Número de Documento" >
+				<p:column headerText="Nº de Documento">
 					<h:outputText value="#{c.numdocumento}" />
 				</p:column>
-				
+
+
+
+				<p:column headerText="Editar">
+					<p:commandButton value="Editar" action="#{MantenimientoClienteFormAction.update}"
+						icon="ui-icon ui-icon-pencil">
+						<f:setPropertyActionListener value="#{c}"
+							target="#{MantenimientoClienteFormAction.objClienteSie}" />
+					</p:commandButton>
+				</p:column>
+
+
 			</p:dataTable>
 		</h:form>
 	</ui:define>
