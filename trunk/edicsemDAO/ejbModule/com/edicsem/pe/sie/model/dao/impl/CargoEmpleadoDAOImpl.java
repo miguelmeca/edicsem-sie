@@ -74,13 +74,12 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 		}
 	}
 
-	/**
-	 * (non-Javadoc)
-	 * 
-	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#findDemo(java.lang.String)
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO#buscarCargoEmpleado(int)
 	 */
 	public CargoEmpleadoSie buscarCargoEmpleado(int id) {
-		
+		log.info("buscar CargoEmpleado " +id);
 		CargoEmpleadoSie cargoempleado = new CargoEmpleadoSie();
 		try {
 			if (log.isInfoEnabled()) {
