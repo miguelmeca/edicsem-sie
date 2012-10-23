@@ -2,7 +2,8 @@ package com.edicsem.pe.sie.client.action.mantenimiento;
 
 import java.security.MessageDigest;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -16,9 +17,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.client.action.ComboAction;
+import com.edicsem.pe.sie.entity.DetCargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
+import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.DomicilioEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
@@ -33,6 +36,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	private EmpleadoSie objEmpleado;
 	private TelefonoPersonaSie objTelefono;
 	private DomicilioPersonaSie objDomicilio;
+	private DetCargoEmpleadoSie objDetCargo;
 	/*variables para telefono*/
 	private String mensaje;
 	private String fijo;
@@ -40,10 +44,10 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	/*variables para domicilio*/
 	private String direccion;
 	//private int ubigeo;
-	private String idDepartamento;
-	private String idProvincia;
+	private String idProvincia, idDepartamento, ubigeoDefecto;
 	private String idDistrito;
 	private int estado2;
+	private int idUbigeo; 
 	private int tipo;
 	/*variables para empleado*/
 	private String nombre;
@@ -62,8 +66,23 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	/*variable bolean necesaria*/
 	private boolean newRecord =false;
 	
-	private boolean defectoUbigeo;
-		
+	private boolean defectoUbigeo;	
+	
+	private ArrayList<String> listacargo;
+	
+	/**
+	 * @return the citiesSource
+	 */
+	//public List<CargoEmpleadoSie> getCitiesSource() {
+		//return citiesSource;
+	//}
+
+	/**
+	 * @param citiesSource the citiesSource to set
+	 */
+	//public void setCitiesSource(List<CargoEmpleadoSie> citiesSource) {
+		//this.citiesSource = citiesSource;
+	//}
 	@ManagedProperty(value="#{comboAction}") 
 	private ComboAction comboManager;
 	
@@ -78,6 +97,8 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	private TelefonoEmpleadoService objTelefonoService;
 	@EJB 
 	private EstadogeneralService objEstadoService;
+	@EJB 
+	private CargoEmpleadoService objCargoService;
 	
 	public static Log log = LogFactory.getLog(MantenimientoEmpleadoFormAction.class);
 	
@@ -93,35 +114,109 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		objEmpleado = new EmpleadoSie();
 		objTelefono = new TelefonoPersonaSie();
 		objDomicilio = new DomicilioPersonaSie();
+		objDetCargo = new DetCargoEmpleadoSie();
 		defectoUbigeo=true;
+		
+		//prueba list
+		listacargo = new ArrayList<String>();
+		//List<CargoEmpleadoSie> lstEmpleadoTelefono = new ArrayList<CargoEmpleadoSie>();
+		//citiesSource = objEmpleadoService.listarEmpleados();
+		//List<CargoEmpleadoSie> citiesSource = new ArrayList<CargoEmpleadoSie>();
+		//citiesSource = objCargoService.listarCargoEmpleado();
+		//if (citiesSource == null) {
+		//citiesSource = new ArrayList<CargoEmpleadoSie>();
+		//}
+		
+		
 	}
 	
 	public void cambioUbigeoDefecto() {
-		 if(defectoUbigeo)
-		log.info(" defecto lima " );
-		 else
-			 log.info(" cambio ubigeo " );
+		log.info(" defecto  " + defectoUbigeo);
+		comboManager.setUbigeoDeparItems(null);
+		comboManager.setUbigeoProvinItems(null);
+		comboManager.setUbigeoDistriItems(null);
+		if (defectoUbigeo) {
+			comboManager.setIdDepartamento("15");
+			comboManager.setIdProvincia("01");
+			log.info(" defecto lima true 1");
+			ubigeoDefecto = "";
+		} else {
+			comboManager.setIdDepartamento(null);
+			comboManager.setIdProvincia(null);
+			log.info(" cambio ubigeo   false  otro");
+		}
 	}
 	
 	public void cambiar() {
-		log.info("cambiar   :D  --- zzz "+ getIdDepartamento() );
-		idProvincia=null;
-		idDistrito = null;
-		if(getIdDepartamento()=="-1"){
-			comboManager.setIdDepartamento(getIdDepartamento());
-		}else{
 		comboManager.setIdDepartamento(getIdDepartamento());
-		}
 		comboManager.setIdProvincia(null);
-		comboManager.setUbigeoProvinItems(null);
-		comboManager.setUbigeoDistriItems(null);
-		log.info("cambiar   :D  --- " );
+		idProvincia = null;
+		idUbigeo = 0;
+		log.info("cambiar   :D  --- ");
 	}
 	
 	public void cambiar2() {
 		comboManager.setIdDepartamento(getIdDepartamento());
 		comboManager.setIdProvincia(getIdProvincia());
-		log.info("cambiar 2  :D  --- " );
+		log.info("cambiar 2  :D  --- ");
+	}
+	
+	public void cambioUbica() {
+		log.info("Ubigeo -------->" + idUbigeo + " " + ubigeoDefecto);
+		String dist = "";
+		Iterator it = comboManager.getUbigeoDistriItems().entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry e = (Map.Entry) it.next();
+			log.info("key " + e.getKey() + " value " + e.getValue());
+			if (e.getValue().toString().equals(idUbigeo+"")) {
+				log.info("xxx -" + e.getKey() + "- value -" + idUbigeo+"-");
+				dist = (String) e.getKey();
+				log.info("dist " + dist);
+				break;
+			}
+		}
+		ubigeoDefecto = "LIMA-LIMA-" + dist;
+	}
+	
+	public String ingresarUbigeo() {
+		// enviamos el nombre completo del depa- provincia-distrito
+
+		log.info("ingresarUbigeo :D a --- " + idUbigeo);
+
+		Iterator it = comboManager.getUbigeoDeparItems().entrySet().iterator();
+		Iterator it2 = comboManager.getUbigeoProvinItems().entrySet().iterator();
+		Iterator it3 = comboManager.getUbigeoDistriItems().entrySet().iterator();
+		
+		while (it.hasNext()) {
+			Map.Entry e = (Map.Entry) it.next();
+			System.out.println("key " + e.getKey() + " value " + e.getValue());
+			if (e.getValue().toString().equals(idDepartamento)) {
+				ubigeoDefecto = (String) e.getKey();
+				log.info("ubigeo depa " + ubigeoDefecto);
+				break;
+			}
+		}
+		while (it2.hasNext()) {
+			Map.Entry e = (Map.Entry) it2.next();
+			System.out.println("key " + e.getKey() + " value " + e.getValue());
+			if (e.getValue().toString().equals(idProvincia)) {
+				ubigeoDefecto += "-" + (String) e.getKey();
+				log.info("ubigeo prov " + ubigeoDefecto);
+				break;
+			}
+		}
+		while (it3.hasNext()) {
+			Map.Entry e = (Map.Entry) it3.next();
+			System.out.println("key " + e.getKey() + " value " + e.getValue());
+			if (e.getValue().toString().equals(idUbigeo+"")) {
+				ubigeoDefecto += "-" + (String) e.getKey();
+				log.info("ubigeo distrito " + ubigeoDefecto);
+				break;
+			}
+		}
+		log.info("ubigeo ------> :D   " + ubigeoDefecto);
+		
+		return getViewMant();
 	}
 	
 	/*método que sirve para deshabilitar al empleado*/
@@ -152,25 +247,28 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	        objEmpleado.setContrasena(e.getContrasena());
 	        setTipoDocumento(e.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad());
 	        objEmpleado.setNumdocumento(e.getNumdocumento());
-	        setCargoEmpleado(e.getTbCargoEmpleado().getIdcargoempleado());
+	        //setCargoEmpleado(e.getTbCargoEmpleado().getIdcargoempleado());
 	        objEmpleado.setFechanacimiento(e.getFechanacimiento());
-	        setEstadoe(4);
+	        objEmpleado.setTbEstadoGeneral(objEstadoService.findEstadogeneral(4));
+	        //setEstadoe(4);
 	        /*seteo domicilio*/
 	        objDomicilio.setIddomiciliopersona(d.getIddomiciliopersona());
 	        setDireccion(d.getDomicilio());
 	        setTipo(d.getTbTipoCasa().getIdtipocasa());
 	        //setUbigeo(d.getTbUbigeo().getIdubigeo());
 	        setIdDistrito(getIdDistrito());	        
-	        setEstado2(d.getTbEstadoGeneral().getIdestadogeneral());
+	        objDomicilio.setTbEstadoGeneral(objEstadoService.findEstadogeneral(16));
+	        //setEstado2(d.getTbEstadoGeneral().getIdestadogeneral());
 	        /*seteo telefono*/
 	        objTelefono.setIdtelefonopersona(t.getIdtelefonopersona());
 	        setFijo(t.getTelefono());
-	        setEstado(t.getTbEstadoGeneral().getIdestadogeneral());
+	        objTelefono.setTbEstadoGeneral(objEstadoService.findEstadogeneral(18));
+	        //setEstado(t.getTbEstadoGeneral().getIdestadogeneral());
 			log.info("-----Id estado del empleado>>>"	+ getEstadoe());
 			log.info("actualizando ESTADO..... ");
-			objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, objTelefono, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
-					estado, direccion, idDistrito, estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
-					TipoDocumento, codigoEmpleado, estadoe);
+			objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, objTelefono, objDetCargo, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
+					estado, direccion, idUbigeo, estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
+					TipoDocumento, codigoEmpleado, estadoe, listacargo);
 			log.info("actualizando..... ");
 			log.info("deshabilitando..... ");
 		} catch (Exception e2) {
@@ -205,20 +303,24 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 			 	
 	/*método que se ejecuta haciendo click en el link NUEVO de la lista*/
 	public String agregar() {
-		log.info("insertar");
+		log.info("agregar");
 		setTipoDocumento(0);
 		setCargoEmpleado(0);
-		setEstadoe(0);
+		//setEstadoe(0);
 		objEmpleado = new EmpleadoSie();
 		setFijo("");
-		setEstado(0);
+		//setEstado(0);
 		objTelefono = new TelefonoPersonaSie();
 		setDireccion("");
 		//setUbigeo(0);
 		//setIdDistrito(-1);
 		setTipo(0);
-		setEstado2(0);
+		//setEstado2(0);
 		objDomicilio = new DomicilioPersonaSie();
+		comboManager.setIdDepartamento("15");
+		comboManager.setIdProvincia("01");
+		listacargo = new ArrayList<String>();
+		
 		setNewRecord(true);
 		return getViewMant();
 	}
@@ -244,20 +346,23 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
         objEmpleado.setContrasena(c.getContrasena());
         setTipoDocumento(c.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad());
         objEmpleado.setNumdocumento(c.getNumdocumento());
-        setCargoEmpleado(c.getTbCargoEmpleado().getIdcargoempleado());
+        //setCargoEmpleado(c.getTbCargoEmpleado().getIdcargoempleado());
         objEmpleado.setFechanacimiento(c.getFechanacimiento());
-        setEstadoe(c.getTbEstadoGeneral().getIdestadogeneral());
+        objEmpleado.setTbEstadoGeneral(c.getTbEstadoGeneral());
+        //setEstadoe(c.getTbEstadoGeneral().getIdestadogeneral());
         
         objDomicilio.setIddomiciliopersona(d.getIddomiciliopersona());
         setDireccion(d.getDomicilio());
         setTipo(d.getTbTipoCasa().getIdtipocasa());
         //setUbigeo(d.getTbUbigeo().getIdubigeo());
         setIdDistrito(getIdDistrito());
-        setEstado2(d.getTbEstadoGeneral().getIdestadogeneral());
+        objDomicilio.setTbEstadoGeneral(d.getTbEstadoGeneral());
+        //setEstado2(d.getTbEstadoGeneral().getIdestadogeneral());
         
         objTelefono.setIdtelefonopersona(t.getIdtelefonopersona());
         setFijo(t.getTelefono());
-        setEstado(t.getTbEstadoGeneral().getIdestadogeneral());
+        objTelefono.setTbEstadoGeneral(t.getTbEstadoGeneral());
+        //setEstado(t.getTbEstadoGeneral().getIdestadogeneral());
         
         /*método bolean necesario para actualizar que retorna al form */  
 		setNewRecord(false);
@@ -277,20 +382,29 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 				/*if: inserta al empleado, domicilio y telefono
 				  else: actualiza al empleado, domicilio y telefono*/
 				
-				List<TelefonoPersonaSie> lstEmpleadoTelefono = new ArrayList<TelefonoPersonaSie>();
+				//List<TelefonoPersonaSie> lstEmpleadoTelefono = new ArrayList<TelefonoPersonaSie>();
 				
 				if (isNewRecord()) {
 					log.info("insertando..... ");
-					objEmpleadoService.insertarEmpleado(objEmpleado,objDomicilio,objTelefono, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
-							estado, direccion,  idDistrito,  estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
-							TipoDocumento, codigoEmpleado, estadoe);
+					log.info("insertando..... "+listacargo.size());
+				
+					log.info("insertar empleado  ");
+					 
+					for (int i = 0; i < listacargo.size(); i++) {
+						log.info(" --  XD ");
+						log.info("  p "+listacargo.get(i));
+					}
+					log.info("insertar empleado  xd ");
+					objEmpleadoService.insertarEmpleado(objEmpleado,objDomicilio,objTelefono, objDetCargo, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
+							estado, direccion,  idUbigeo,  estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
+							TipoDocumento, codigoEmpleado, estadoe, listacargo);
 					log.info("insertando..... ");
 					setNewRecord(false);
 				} else {
 					log.info("actualizando..... ");
-					objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, objTelefono, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
-							estado, direccion,  idDistrito,  estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
-							TipoDocumento, codigoEmpleado, estadoe);
+					objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, objTelefono, objDetCargo, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
+							estado, direccion,  idUbigeo,  estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
+							TipoDocumento, codigoEmpleado, estadoe, listacargo);
 					log.info("insertando..... ");
 				}
 		} catch (Exception e) {
@@ -709,5 +823,64 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		comboManager.setCodigoEstado(Constants.COD_ESTADO_TB_PRODUCTO);
 		this.comboManager = comboManager;
 	}
-	
+
+	/**
+	 * @return the idUbigeo
+	 */
+	public int getIdUbigeo() {
+		return idUbigeo;
+	}
+
+	/**
+	 * @param idUbigeo the idUbigeo to set
+	 */
+	public void setIdUbigeo(int idUbigeo) {
+		this.idUbigeo = idUbigeo;
+	}
+
+	/**
+	 * @return the ubigeoDefecto
+	 */
+	public String getUbigeoDefecto() {
+		return ubigeoDefecto;
+	}
+
+	/**
+	 * @param ubigeoDefecto the ubigeoDefecto to set
+	 */
+	public void setUbigeoDefecto(String ubigeoDefecto) {
+		this.ubigeoDefecto = ubigeoDefecto;
+	}
+
+	/**
+	 * @return the objDetCargo
+	 */
+	public DetCargoEmpleadoSie getObjDetCargo() {
+		return objDetCargo;
+	}
+
+	/**
+	 * @param objDetCargo the objDetCargo to set
+	 */
+	public void setObjDetCargo(DetCargoEmpleadoSie objDetCargo) {
+		this.objDetCargo = objDetCargo;
+	}
+
+	/**
+	 * @return the listacargo
+	 */
+	public ArrayList<String> getListacargo() {
+		return listacargo;
+	}
+
+	/**
+	 * @param listacargo the listacargo to set
+	 */
+	public void setListacargo(ArrayList<String> listacargo) {
+		this.listacargo = listacargo;
+	}
+
+
+
+		
 }
