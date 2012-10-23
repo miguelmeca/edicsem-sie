@@ -10,14 +10,18 @@ import javax.faces.bean.SessionScoped;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.service.facade.ClienteService;
+import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
-@ManagedBean(name="clienteSearchAction")
+@ManagedBean(name="MantenimientoClienteSearchAction")
 @SessionScoped
 public class MantenimientoClienteSearchAction extends BaseMantenimientoAbstractAction {
+	
+	
     
 	private ClienteSie objCliente;
 	private List<ClienteSie> clienteList;
@@ -27,7 +31,13 @@ public class MantenimientoClienteSearchAction extends BaseMantenimientoAbstractA
 	@EJB 
 	private ClienteService objclienteService;
 	
-	private Log log = LogFactory.getLog(MantenimientoClienteSearchAction.class);
+	public Log log = LogFactory.getLog(MantenimientoClienteSearchAction.class);
+	
+	public List<ClienteSie> getClienteList() throws Exception {
+		return clienteList;
+	}
+	
+
 	
 	public MantenimientoClienteSearchAction() {
 		log.info("inicializando mi constructor");
@@ -37,20 +47,22 @@ public class MantenimientoClienteSearchAction extends BaseMantenimientoAbstractA
 	/*inicializamos los  objetos utilizados*/
 	public void init() {
 		log.info("init()");
+		log.info("dentro del init");
 		objCliente = new ClienteSie();
-		log.info("despues de inicializar  ");		
+		log.info("despues de inicializar  ");
+		log.info("init()");
+	
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#listar()
-	 */
+	
+
 	public String listar() {
 		log.info("listarEmpleados 'MantenimientoClienteSearchAction' ");
-		clienteList = objclienteService.listarClientes();
+		clienteList =  objclienteService.listarClientes();
 				
 		if (clienteList == null) {
 			clienteList = new ArrayList<ClienteSie>();
-		}
+	}
 		return getViewList();
 	}
 	
@@ -62,7 +74,7 @@ public class MantenimientoClienteSearchAction extends BaseMantenimientoAbstractA
 	 * #getViewList()
 	 */
 	public String getViewList() {
-		return "mantenimientoEmpleadoList";
+		return Constants.MANT_CLIENTE_FORM_LIST_PAGE;
 	}
 	
 	public boolean isEditMode() {
@@ -101,10 +113,7 @@ public class MantenimientoClienteSearchAction extends BaseMantenimientoAbstractA
 	/**
 	 * @return the clienteList
 	 */
-	public List<ClienteSie> getClienteList() {
-		return clienteList;
-	}
-
+	
 	/**
 	 * @param clienteList the clienteList to set
 	 */
@@ -124,6 +133,14 @@ public class MantenimientoClienteSearchAction extends BaseMantenimientoAbstractA
 	 */
 	public void setObjCliente(ClienteSie objCliente) {
 		this.objCliente = objCliente;
+	}
+
+
+	/**
+	 * @param selectedEmpleado the selectedEmpleado to set
+	 */
+	public void setSelectedEmpleado(EmpleadoSie selectedEmpleado) {
+		this.selectedEmpleado = selectedEmpleado;
 	}
 
 	
