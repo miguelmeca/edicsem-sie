@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+   <ui:define name="body">
+    <h1 class="title ui-widget-header ui-corner-all">Parámetros del Sistema</h1>
+     <h:form id="parametrosList" prependId="false">
+	  <p:dataTable value="#{mantenimientoParametroSearchAction.parametroList}" var="p"
+	   id="listaPersonas" paginator="true" rows="5"
+       paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	   rowsPerPageTemplate="5,10,15" widgetVar="table"
+	   emptyMessage="No se encontro registros">
+	   <f:facet name="header">Parámetros del Sistema</f:facet>
+	   <f:facet name="header">
+	    <p:outputPanel>
+		 <h:outputText value="Buscar :"/>
+		 <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px; align=Left; "/>
+		</p:outputPanel>
+	   </f:facet>
+       <p:column sortBy="#{p.descripcion}" id="codigo" filterBy="#{p.codproveedor}" headerText="Codigo" footerText="startsWith">
+	    <f:facet name="header">
+		 <h:outputText value="Descripción" />
+		</f:facet>
+		<h:outputText value="#{p.descripcion}" />
+	   </p:column>
+	   <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Valor" />
+		</f:facet>
+		<h:outputText value="#{p.valor}" />
+	   </p:column>
+	   <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Area" />
+		</f:facet>
+		<h:outputText value="#{p.areasistema}" />
+	   </p:column>
+	   <p:column headerText="Editar">
+	    <p:commandButton value="Editar" ajax="false" 
+		 action="#{mantenimientoParametroFormAction.update}">
+		 <f:setPropertyActionListener value="#{p}"  
+		  target="#{mantenimientoParametroFormAction.objParametro}" />
+		</p:commandButton>  
+	   </p:column>
+	  </p:dataTable>		
+  </h:form>
+ </ui:define>
+</ui:composition>
