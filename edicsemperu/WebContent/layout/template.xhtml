@@ -87,6 +87,8 @@ body {
 							action="#{mantenimientoEmpleadoSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento de Proveedores" ajax="false"
 							action="#{mantenimientoProveedorSearchAction.listar}" />
+						<p:menuitem value="Parámetros del sistema" ajax="false"
+							action="#{mantenimientoParametroSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento Cargo Empleado" ajax="false"
 							action="#{mantenimientoCargoEmpleadoSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento Empresa" ajax="false"
@@ -292,7 +294,6 @@ body {
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
-
 
 	<h:form id="NuevoModificaPunto">
 		<p:dialog header="Ingrese Nuevo Punto de Venta/Almacen"
@@ -617,7 +618,7 @@ body {
 
 	<h:form>
 
-		<p:confirmDialog id="confirmDeshabilitar"
+		<p:confirmDialog id="confirmDeshabilitarEmp"
 			message="Esta seguro de deshabilitar dicho empleado?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
 			header="Confirm" severity="alert" widgetVar="confirmation"
@@ -636,29 +637,66 @@ body {
 
 	</h:form>
 
+	<!-- 	FIN DESACTIVAR EMPLEADO  -->
+	
+<!-- UBIGEOEMPLEADO -->
+	
+	<h:form id="formInsertUbigeoEmpleado">
+		<p:dialog header="Ubigeo" widgetVar="UbigeoEmpDialog" showEffect="fade"
+			hideEffect="explode" modal="true" width="450" position="center">
+			<h:panelGrid id="display" columns="2" cellpadding="2">
+				<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
+				<p:selectOneMenu size="1" value="#{mantenimientoEmpleadoFormAction.idDepartamento}"
+					required="true" style="width:180px"
+					requiredMessage="#{message['contrato.ubigeo.departamento.validation']}">
+					<f:selectItem itemLabel="Seleccione Departamento"
+						itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
+					<p:ajax update="prov,dist" listener="#{mantenimientoEmpleadoFormAction.cambiar}" />
+				</p:selectOneMenu>
 
-	<!--	  DESACTIVAR PROVEEDOR	   -->
+				<h:outputText value="#{message['contrato.ubigeo.provincia']}" />
+				<p:selectOneMenu id="prov" value="#{mantenimientoEmpleadoFormAction.idProvincia}"
+					required="true" style="width:200px"
+					requiredMessage="#{message['contrato.ubigeo.provincia.validation']}">
+					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
+					<p:ajax update="dist" listener="#{mantenimientoEmpleadoFormAction.cambiar2}" />
+				</p:selectOneMenu>
 
-	<h:form>
+				<h:outputText value="#{message['contrato.ubigeo.distrito']}" />
+				<p:selectOneMenu id="dist" value="#{mantenimientoEmpleadoFormAction.idUbigeo}"
+					required="true" style="width:200px"
+					requiredMessage="#{message['contrato.ubigeo.distrito.validation']}">
+					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
 
-		<p:confirmDialog id="confirmDeshabilitar"
-			message="Esta seguro de deshabilitar dicho proveedor?" width="325"
-			height="100" showEffect="explode" hideEffect="explode"
-			header="Confirm" severity="alert" widgetVar="confirmation"
-			position="center">
-
-			<p:commandButton type="submit" value="Si"
-				action="#{mantenimientoProveedorFormAction.deshabilitar}"
-				update=":manteProList:listaPersonas"
-				oncomplete="confirmation.hide()" ajax="false">
-			</p:commandButton>
-
-			<p:commandButton value="No" onclick="confirmation.hide()"
-				type="button" />
-
-		</p:confirmDialog>
-
+				</p:selectOneMenu>
+				<p:commandButton value="Insertar Ubigeo:"
+					action="#{mantenimientoEmpleadoFormAction.ingresarUbigeo}"
+					oncomplete="UbigeoDialogEmp.hide()" update="@all">
+				</p:commandButton>
+			</h:panelGrid>
+		</p:dialog>
 	</h:form>
+<!--	  FIN  UBIGEOEMPLEADO	   -->
+				
+<!--	  DESACTIVAR PROVEEDOR	   -->
+
+<h:form>
+
+	<p:confirmDialog id="confirmDeshabilitarPro" message="Esta seguro de deshabilitar dicho proveedor?" width="325" height="100" showEffect="explode" 
+				hideEffect="explode"  header="Confirm" severity="alert" widgetVar="confirmation" position="center">
+					   
+       			 <p:commandButton  type="submit" value="Si"  action="#{mantenimientoProveedorFormAction.deshabilitar}"  
+       			 update=":manteProList:listaPersonas" oncomplete="confirmation.hide()" ajax="false">
+      			 </p:commandButton>  
+        
+        		<p:commandButton value="No" onclick="confirmation.hide()" type="button" />  
+        		
+    </p:confirmDialog>
+    
+</h:form>
 
 	<!-- 	FIN DESACTIVAR PROVEEDOR  -->
 
