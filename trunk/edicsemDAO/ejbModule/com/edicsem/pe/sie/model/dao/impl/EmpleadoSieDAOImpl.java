@@ -70,6 +70,7 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 	 * @see com.edicsem.pe.sie.model.dao.EmpleadoSieDAO#buscarEmpleado(int)
 	 */
 	public EmpleadoSie buscarEmpleado(int id) {
+		
 		EmpleadoSie empleado= new EmpleadoSie();
 		try {
 		if (log.isInfoEnabled()) {
