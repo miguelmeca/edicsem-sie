@@ -5,10 +5,14 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
+import com.edicsem.pe.sie.entity.DetCargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie; 
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO;
+import com.edicsem.pe.sie.model.dao.DetalleCarEmpDAO;
 import com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
@@ -31,6 +35,8 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	private DomicilioEmpleadoDAO objDomicilioDao;
 	@EJB 
 	private TelefonoEmpleadoDAO objTelefonoDao;
+	@EJB 
+	private DetalleCarEmpDAO objDetCargoDao;
 	
 	@EJB
 	private EstadoGeneralDAO objEstadoDao;
@@ -39,22 +45,16 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	private UbigeoDAO objUbigeoDao;
 	@EJB
 	private TipoCasaDAO objTipoCasaDao;
-	
+    
 	public static Log log = LogFactory.getLog(EmpleadoSieServiceImpl.class);
 	
-
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#insertarEmpleado(com.edicsem.pe.sie.entity.EmpleadoSie, com.edicsem.pe.sie.entity.DomicilioPersonaSie, com.edicsem.pe.sie.entity.TelefonoPersonaSie, int, int, java.lang.String, java.lang.String, int, java.lang.String, java.lang.String, int, int, java.lang.String, int, int, int, int, int, int)
-	 */
-	public void insertarEmpleado(EmpleadoSie objEmpleado,DomicilioPersonaSie objDomicilio, TelefonoPersonaSie objTelefono, int codigoTipoDocumento, int codigoCargoEmpleado, String mensaje, 
-			String fijo, int estado, String direccion, String idDistrito, int estado2, int tipo, String nombre, int CargoEmpleado,
-			int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado, int estadoe
-						){
+	
+	public void insertarEmpleado(EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, TelefonoPersonaSie objTelefono, DetCargoEmpleadoSie objDetCargo, int codigoTipoDocumento, int codigoCargoEmpleado, String mensaje, 
+			String fijo, int estado, String direccion, int idUbigeo, int estado2, int tipo, String nombre, int CargoEmpleado, 
+			int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado, int estadoe, List<String> listacargo){
 		//si tengo que insertar a mas de 1 tabla todo lo hago aqui, llamando a todas las entidades que
 		//mi interfaz DAO tiene y si algo falla, el EJB hace un rollback de todo  lo que se hizo, 
 		//para eso sirve el Service
-		objTelefono = new TelefonoPersonaSie();
-		objDomicilio = new DomicilioPersonaSie();
 		
 		try {
 			if (log.isInfoEnabled()) {
@@ -62,25 +62,52 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 			}
 			
 			/**Inserta el empleado**/
-			objEmpleado.setTbCargoEmpleado(objCargoEmpDao.buscarCargoEmpleado(CargoEmpleado));
+			//objEmpleado.setTbCargoEmpleado(objCargoEmpDao.buscarCargoEmpleado(CargoEmpleado));
 			objEmpleado.setTbTipoDocumentoIdentidad(objTipoDocDao.buscarTipoDocumento(TipoDocumento));
-			objEmpleado.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(estadoe));
+			objEmpleado.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(3));
 			objEmpleadoDao.insertarEmpleado(objEmpleado);
 			
 			/**Inserta el domicilio**/
 			objDomicilio.setIdempleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
 			//objDomicilio.setTbUbigeo(objUbigeoDao.findUbigeo(ubigeo));
-			objDomicilio.setTbUbigeo(objUbigeoDao.findUbigeo(Integer.parseInt(idDistrito)));
+			objDomicilio.setTbUbigeo(objUbigeoDao.findUbigeo(idUbigeo));
 			objDomicilio.setTbTipoCasa(objTipoCasaDao.findTipoCasa(tipo));
-			objDomicilio.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(estado2));
+			objDomicilio.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(15));
 			objDomicilio.setDomicilio(direccion);
 			objDomicilioDao.insertarDomicilioEmpleado(objDomicilio);
 			
 			/**Inserta el telefono**/
 			objTelefono.setIdempleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
-			objTelefono.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(estado));
+			objTelefono.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
 			objTelefono.setTelefono(fijo);
 			objTelefonoDao.insertarTelefonoEmpleado(objTelefono);
+			
+            
+            /**Inserta el detallecargo**/
+			log.info("sxsx   --->  "+listacargo.size());
+			for(int i = 0; i < listacargo.size(); i++){
+			objDetCargo= new DetCargoEmpleadoSie();
+			objDetCargo.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(19));
+			objDetCargo.setTbEmpleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
+			log.info("YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+			//listacargo.get(i).getIdcargoempleado();
+			//listacargo.get();
+			//int cargo;
+			//listacargo.get(j);
+			//int cargo= (int)listacargo.get(i);
+			log.info("probemossssss :)  "+listacargo.get(i));
+			int d = Integer.parseInt(listacargo.get(i)+"");
+			objDetCargo.setTbCargoEmpleado(objCargoEmpDao.buscarCargoEmpleado(d));
+			//int a = Integer.parseInt(listacargo.get(i).toString());
+			//CargoEmpleadoSie ca =objCargoEmpDao.buscarCargoEmpleado(a);
+			//log.info(" "+ ca.getDescripcion());
+			//objDetCargo.setTbCargoEmpleado(ca);
+			//objDetCargo.setTbCargoEmpleado(cargo);
+			//log.info(" " + listacargo.get(i).getDescripcion()+"  "+ listacargo.get(i).getIdcargoempleado() );
+			//objDetCargo.setTbCargoEmpleado(listacargo.get(i));
+			//objDetCargo.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(19));
+			objDetCargoDao.insertarDetalleCarEmp(objDetCargo);
+			}
 			
 			log.info("insertando..... ");
 
@@ -96,16 +123,18 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 			//FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 		objEmpleado = new EmpleadoSie();
+		objTelefono = new TelefonoPersonaSie();
+		objDomicilio = new DomicilioPersonaSie();
+		objDetCargo = new DetCargoEmpleadoSie();
 	}
 	
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#actualizarEmpleado(com.edicsem.pe.sie.entity.EmpleadoSie, com.edicsem.pe.sie.entity.DomicilioPersonaSie, com.edicsem.pe.sie.entity.TelefonoPersonaSie, int, int, java.lang.String, java.lang.String, int, java.lang.String, java.lang.String, int, int, java.lang.String, int, int, int, int, int, int)
 	 */
-	public void actualizarEmpleado(EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, TelefonoPersonaSie objTelefono, int codigoTipoDocumento, int codigoCargoEmpleado, String mensaje, 
-			String fijo, int estado, String direccion, String idDistrito, int estado2, int tipo, String nombre, int CargoEmpleado,
-			int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado, int estadoe
-			) {			
+	public void actualizarEmpleado(EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, TelefonoPersonaSie objTelefono, DetCargoEmpleadoSie objDetCargo, int codigoTipoDocumento, int codigoCargoEmpleado, String mensaje, 
+			String fijo, int estado, String direccion, int idUbigeo, int estado2, int tipo, String nombre, int CargoEmpleado, 
+			int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado, int estadoe, List<String> listacargo) {			
 			try {
 				if (log.isInfoEnabled()) {
 					log.info("Entering my method 'actualizar()'"+ objDomicilio.getIddomiciliopersona());
@@ -116,28 +145,46 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 					
 				/**Actualiza el empleado**/
 				objEmpleado.setIdempleado(objEmpleado.getIdempleado());
-				objEmpleado.setTbCargoEmpleado(objCargoEmpDao.buscarCargoEmpleado(CargoEmpleado));
+				//objEmpleado.setTbCargoEmpleado(objCargoEmpDao.buscarCargoEmpleado(CargoEmpleado));
 				objEmpleado.setTbTipoDocumentoIdentidad(objTipoDocDao.buscarTipoDocumento(TipoDocumento));
-				objEmpleado.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(estadoe));
+				objEmpleado.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(3));
 				objEmpleadoDao.actualizarEmpleado(objEmpleado);
 				
 				/**Actualiza el domicilio**/
 				objDomicilio.setIddomiciliopersona(objDomicilio.getIddomiciliopersona());
 				objDomicilio.setIdempleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
 				//objDomicilio.setTbUbigeo(objUbigeoDao.findUbigeo(ubigeo));
-				objDomicilio.setTbUbigeo(objUbigeoDao.findUbigeo(Integer.parseInt(idDistrito)));
+				objDomicilio.setTbUbigeo(objUbigeoDao.findUbigeo(idUbigeo));
 				objDomicilio.setTbTipoCasa(objTipoCasaDao.findTipoCasa(tipo));
-				objDomicilio.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(estado2));
+				objDomicilio.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(15));
 				objDomicilio.setDomicilio(direccion);
 				objDomicilioDao.actualizarDomicilioEmpleado(objDomicilio);
 				
 				/**Actualiza el telefono**/
 				objTelefono.setIdtelefonopersona(objTelefono.getIdtelefonopersona());
 				objTelefono.setIdempleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
-				objTelefono.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(estado));
+				objTelefono.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
 				objTelefono.setTelefono(fijo);
 				objTelefonoDao.actualizarTelefonoEmpleado(objTelefono);
 				
+				/**Actualiza el detallecargo**/
+				for(int i = 0; i < listacargo.size(); i++){
+				objDetCargo= new DetCargoEmpleadoSie();
+				objDetCargo.setIddetcargoempl(objDetCargo.getIddetcargoempl());
+				objDetCargo.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(19));
+				objDetCargo.setTbEmpleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
+				log.info("YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+				//listacargo.get(i).getIdcargoempleado();
+				//listacargo.get();
+				//CargoEmpleadoSie cargo = new CargoEmpleadoSie();
+				//listacargo.get(j);
+				objDetCargo.setTbCargoEmpleado(objCargoEmpDao.buscarCargoEmpleado(Integer.parseInt(listacargo.get(i))));
+				//objDetCargo.setTbCargoEmpleado(cargo);
+				//log.info(" " + listacargo.get(i).getDescripcion()+"  "+ listacargo.get(i).getIdcargoempleado() );
+				//objDetCargo.setTbCargoEmpleado(listacargo.get(i));
+				//objDetCargo.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(19));
+				objDetCargoDao.insertarDetalleCarEmp(objDetCargo);
+				}
 				log.info("actualizando..... ");
 
 				//Agregen esto a tus redirecciones parece que esta referenciando a otra cosa verifiquen a donde estan 
@@ -154,6 +201,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 			objEmpleado = new EmpleadoSie();
 			objTelefono = new TelefonoPersonaSie();
 			objDomicilio = new DomicilioPersonaSie();
+			objDetCargo = new DetCargoEmpleadoSie();
 	}
 	
 	/* (non-Javadoc)
