@@ -29,38 +29,23 @@ public class CargoEmpleadoServiceImpl implements CargoEmpleadoService{
 		objCargoEmpleadoDao.insertarCargoEmpleado(cargoempleado);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.DemoService#updateDemo(com.edicsem.pe.sie.entity.Usuario)
-	 */
-	
 	public void actualizarCargoEmpleado(CargoEmpleadoSie cargoempleado) {
 		objCargoEmpleadoDao.actualizarCargoEmpleado(cargoempleado);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.DemoService#deleteDemo(java.lang.String)
-	 */
 	public void eliminarCargoEmpleado(int id) {
 		objCargoEmpleadoDao.eliminarCargoEmpleado(id);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.DemoService#findDemo(java.lang.String)
-	 */
 	public CargoEmpleadoSie buscarCargoEmpleado(int id) {
+		log.info("buscar CargoEmpleado service" +id);
 		return objCargoEmpleadoDao.buscarCargoEmpleado(id);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.DemoService#listarUsuarios(com.edicsem.pe.sie.entity.Usuario)
-	 */
 	public List listarCargoEmpleado() {
 		log.info("En el servicio ");
 
 		return objCargoEmpleadoDao.listarCargoEmpleado();
 	}
 
-
-	
-		
 }
