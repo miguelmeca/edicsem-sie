@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h:form id="form">
+	<p:panel header="Datos Parámetros"  id="panel">
+	        <p:growl/>	
+			<p:panelGrid columns="2" cellpadding="5">						
+			<p:outputLabel value="#{message['parametro.descripcion']}" for="codigo" />
+			<p:inputText id="codigo" value="#{mantenimientoParametroFormAction.objParametro.descripcion}" required="true" label="Codigo" 
+			requiredMessage="#{message['parametro.descripcion.validation']}"/>
+			<p:outputLabel value="#{message['parametro.valor']}" for="nrodoc" />
+			<p:inputText id="nrodoc" value="#{mantenimientoParametroFormAction.objParametro.valor}" required="true" label="Nro del documento"
+			requiredMessage="#{message['parametro.valor.validation']}"/>  
+			<p:outputLabel value="#{message['parametro.area']}" for="empresa" />
+			<p:inputText id="empresa" value="#{mantenimientoParametroFormAction.objParametro.areasistema}" required="true" label="Empresa"
+			requiredMessage="#{message['parametro.area.validation']}"/>             
+            
+		    <f:facet name="footer">
+            <p:commandButton id="btn" value="Guardar" update="panel" action="#{mantenimientoParametroFormAction.insertar}" ajax="false" icon="ui-icon-check"/>
+            </f:facet>				
+		</p:panelGrid>	
+	</p:panel>	            
+</h:form>
+	</ui:define>
+</ui:composition>
