@@ -9,7 +9,7 @@
 		<h:form id="form">
 	<p:panel header="Registrar Empleado"  id="panel">
 	        <p:growl/>	
-			<p:panelGrid columns="2" cellpadding="5">						
+			<h:panelGrid columns="2" cellpadding="5">						
 			<p:outputLabel value="#{message['empleado.nombre']}" for="nombre" />
 			<p:inputText id="nombre" value="#{mantenimientoEmpleadoFormAction.objEmpleado.nombreemp}" required="true" label="Nombre" 
 			requiredMessage="#{message['empleado.nombre.validation']}"/>
@@ -39,79 +39,56 @@
             
             <p:outputLabel value="#{message['empleado.fijo']}" for="fijo" />
 			<p:inputMask mask="999-9999" id="fijo" value="#{mantenimientoEmpleadoFormAction.fijo}" required="true" label="Fijo"
-			requiredMessage="#{message['empleado.fijo.validation']}"/>     
-			<p:outputLabel value="#{message['mantenimiento.estado']}" for="estado" />
-			<p:inputText id="estado" value="#{mantenimientoEmpleadoFormAction.estado}" required="true" label="Estado"
-			requiredMessage="#{message['mantenimiento.estado.validation']}"/>                     
+			requiredMessage="#{message['empleado.fijo.validation']}"/>                        
             
             <p:outputLabel value="#{message['domicilio.direccion']}" for="domicilio" />
 			<p:inputText id="domicilio" value="#{mantenimientoEmpleadoFormAction.direccion}" required="true" label="Domicilio"
 			requiredMessage="#{message['domicilio.direccion.validation']}"/>     
+			</h:panelGrid>
+	
+	
+		    <h:panelGrid columns="3" cellpadding="5">				    
+		    <h:outputText value="Ubigeo :" />    
+		    
+			<h:outputText value="Lima (defecto)" />  
+			<p:selectBooleanCheckbox id="sel" value="#{mantenimientoEmpleadoFormAction.defectoUbigeo}">
+			<p:ajax update="ubigeoDefecto" listener="#{mantenimientoEmpleadoFormAction.cambioUbigeoDefecto}" 
+			oncomplete="if(#{mantenimientoEmpleadoFormAction.defectoUbigeo}) UbigeoEmpDialog.show()"></p:ajax>
+			</p:selectBooleanCheckbox>
 			
-			<h:outputText value="#{message['contrato.ubigeo.departamento']}"/>
-			<p:selectOneMenu size="1" value="#{mantenimientoEmpleadoFormAction.idDepartamento}"  required="true"  style="width:180px" requiredMessage="#{message['contrato.ubigeo.departamento.validation']}" >
-						<f:selectItem itemLabel="Seleccione Departamento" itemValue="#{-1}" />
-						<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
-						<p:ajax update="prov,dist" listener="#{mantenimientoEmpleadoFormAction.cambiar()}" />
+			<h:outputText value="#{message['contrato.ubigeo.distrito']}"
+						rendered="#{contratoForm.defectoUbigeo}" />
+			<p:selectOneMenu  value="#{mantenimientoEmpleadoFormAction.idUbigeo}" filter="true" filterMatchMode="startsWith" rendered="#{mantenimientoEmpleadoFormAction.defectoUbigeo}"
+			required="true"   effect="fade"	style="width:200px" id="idubigeoDistrito" requiredMessage="#{message['contrato.ubigeo.distrito.validation']}">
+			<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+			<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+			<p:ajax update="ubigeoDefecto" listener="#{mantenimientoEmpleadoFormAction.cambioUbica}"></p:ajax>
 			</p:selectOneMenu>
-			<h:outputText value="#{message['contrato.ubigeo.provincia']}"/>
-			<p:selectOneMenu id="prov"  value="#{mantenimientoEmpleadoFormAction.idProvincia}"  required="true"  style="width:200px" requiredMessage="#{message['contrato.ubigeo.provincia.validation']}" >
-						<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{-1}" />
-						<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
-						<p:ajax update="dist" listener="#{mantenimientoEmpleadoFormAction.cambiar2()}" />
-			</p:selectOneMenu>				
-			<h:outputText value="#{message['contrato.ubigeo.distrito']}"/>
-			<p:selectOneMenu id="dist" value="#{mantenimientoEmpleadoFormAction.idDistrito}"   required="true" style="width:200px" requiredMessage="#{message['contrato.ubigeo.distrito.validation']}" >
-						<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{-1}" />
-						<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
-			</p:selectOneMenu>
-			 
+            <p:message for="idubigeoDistrito" rendered="#{mantenimientoEmpleadoFormAction.defectoUbigeo}"/>
+			<h:outputText id="ubigeoDefecto" value="#{mantenimientoEmpleadoFormAction.ubigeoDefecto}" /> 
+			</h:panelGrid>
 			
+		    <h:panelGrid columns="2" cellpadding="5">				    
 			<p:outputLabel for="tipocasa" value="Tipo de Casa :" styleClass="textoAzulFuerteGrande" id="tipocasaL"/>
             <p:selectOneMenu id="tipocasa" value="#{mantenimientoEmpleadoFormAction.tipo}" styleClass="required" title="El tipo de casa es obligatorio!" >
             <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
             <f:selectItems value="#{comboAction.tipocasaItems}" />
+			<p:ajax update="ubigeoDefecto" listener="#{contratoForm.cambioUbica}"></p:ajax>
             </p:selectOneMenu>
-			<p:outputLabel value="#{message['domicilio.estado']}" for="estado" />
-			<p:inputText id="estado2" value="#{mantenimientoEmpleadoFormAction.estado2}" required="true" label="Estado"
-			requiredMessage="#{message['domicilio.estado.validation']}"/>
-                  
+                           
             <p:outputLabel value="#{message['empleado.fechanac']}" for="fechanac" />
 			<p:calendar value="#{mantenimientoEmpleadoFormAction.objEmpleado.fechanacimiento}" id="fechanac" showButtonPanel="true" required="true" 
 			label="Fecha de nacimiento" requiredMessage="#{message['empleado.fechanac.validation']}"/>                  
-	       
-	        <!-- <p:outputLabel for="cargo" value="Cargo :" styleClass="textoAzulFuerteGrande" id="cargoL"/>
-            <p:selectOneMenu id="cargo" value="#{mantenimientoEmpleadoFormAction.cargoEmpleado}" styleClass="required" title="El cargo es obligatorio!" >
-            <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
-            <f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
-            </p:selectOneMenu> -->
-           
-            <!-- <p:pickList id="pojoPickList" value="#{pickListBean.players}" effect="bounce"
-                         itemLabel="#{player.name}" 
-                        showSourceControls="true" showTargetControls="true" 
-                        showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" >
-            <f:facet name="sourceCaption">Available</f:facet>
-            <f:facet name="targetCaption">Starting</f:facet>
-            <p:ajax event="transfer" listener="#{pickListBean.onTransfer}" update="msg" />
-            <p:column style="width:25%">
-            <p:graphicImage value="/images/barca/#{player.photo}" width="30" height="40" />
-            </p:column>
-            <p:column style="width:75%;">
-            #{player.name}
-            </p:column>
-            </p:pickList> -->
             
-            <p:pickList id="pickList" value="#{pickListBean.cities}" var="city"   
-                        itemLabel="#{city}" itemValue="#{city}" />  
-            
-            <p:outputLabel value="#{message['empleado.estado']}" for="estado" />
-			<p:inputText id="estadoe" value="#{mantenimientoEmpleadoFormAction.estadoe}" required="true" label="Estado"
-			requiredMessage="#{message['empleado.estado.validation']}"/>                         	
-		    
+            <h:outputText value="Cargo(s) :" />    
+            <p:selectCheckboxMenu value="#{mantenimientoEmpleadoFormAction.listacargo}" label="Seleccione" filter="true" filterText="Filter" filterMatchMode="startsWith" panelStyle="width:220px">  
+            <f:selectItems value="#{comboAction.cargoEmpleadoItems}" />  
+            </p:selectCheckboxMenu>  
+                         	
 		    <f:facet name="footer">
             <p:commandButton id="btn" value="Guardar" update="panel" action="#{mantenimientoEmpleadoFormAction.insertar}" ajax="false" icon="ui-icon-check"/>
             </f:facet>				
-		</p:panelGrid>	
+		</h:panelGrid>
 	</p:panel>	            
 </h:form>
 	</ui:define>
