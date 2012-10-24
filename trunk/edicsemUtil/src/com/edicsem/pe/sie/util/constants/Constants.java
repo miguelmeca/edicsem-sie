@@ -43,6 +43,9 @@ public class Constants {
 	public static final String MANT_ALMACEN_FORM_PAGE = "mantenimientoPuntoAlmacenForm";
 	public static final String MANT_ALMACEN_FORM_LIST_PAGE = "mantenimientoPuntoAlmacenFormList";
 	
+	public static final String MANT_COMPROBANTE_FORM_PAGE = "mantenimientoComprobanteForm";
+	public static final String MANT_COMPROBANTE_FORM_LIST_PAGE = "mantenimientoComprobanteFormList";
+	
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
 	public static final String COD_ESTADO_TB_CARGO_EMPLEADO = "CE";
