@@ -5,6 +5,9 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.edicsem.pe.sie.entity.ComprobanteSie;
 import com.edicsem.pe.sie.entity.DetalleComprobanteSie;
 import com.edicsem.pe.sie.entity.DetalleComprobanteSiePK;
@@ -36,6 +39,8 @@ public class KardexServiceImpl implements KardexService {
 	private ComprobanteDAO objComprobanteDao;
 	@EJB
 	private DetalleComprobanteDAO objDetComprobanteDao;
+	
+	private Log log = LogFactory.getLog(KardexServiceImpl.class);
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.KardexService#ConsultaProductos(int, int, java.lang.String, java.lang.String)
@@ -82,24 +87,37 @@ public class KardexServiceImpl implements KardexService {
 		}
 		ComprobanteSie comp = new ComprobanteSie();
 		DetalleComprobanteSiePK oj = new DetalleComprobanteSiePK();
-		if(objcomprobante!=null){
-			
+		int idcompro = 0;
+		
+		if(objcomprobante.getCodcomprobante()!=null){
+			log.info(" " + objcomprobante.getCodcomprobante() );
 			comp= objComprobanteDao.findComprobantePorNumero(objcomprobante.getCodcomprobante());
-			if(comp== null)
+			log.info(" comp :)b" );
+			log.info(" comp "+comp.getCodcomprobante() );
+			if(comp.getCodcomprobante()== null){
+				log.info(" null " );
 				objComprobanteDao.insertComprobante(objcomprobante);
-			else
+				idcompro = objcomprobante.getIdcomprobante();
+			}
+			else{log.info(" no null " );
 				oj.setIdcomprobante(comp.getIdcomprobante());
+				idcompro = oj.getIdcomprobante();
+			}
+			log.info(" objDetComprobante ");
+			if(objDetComprobante!=null){
+				log.info(" objDetComprobante id kardex "+ objKardex.getIdkardex());
+				oj.setIdkardex(objKardexDao.findKardex(objKardex.getIdkardex()).getIdkardex());
+				
+				if(oj.getIdcomprobante()==null){
+					
+				oj.setIdcomprobante(objComprobanteDao.findComprobante(idcompro).getIdcomprobante());
+				}
+				
+				objDetComprobante.setId(oj);
+				objDetComprobanteDao.insertComprobante(objDetComprobante);
+			}
 		}
-		if(objDetComprobante!=null){
-			
-			oj.setIdkardex(objKardexDao.findKardex(objKardex.getIdkardex()).getIdkardex());
-			
-			if(oj.getIdcomprobante()==null)
-			oj.setIdcomprobante(objComprobanteDao.findComprobante(objcomprobante.getIdcomprobante()).getIdcomprobante());
-			
-			objDetComprobante.setId(oj);
-			objDetComprobanteDao.insertComprobante(objDetComprobante);
-		}
+		
 	}
 	
 	/* (non-Javadoc)
