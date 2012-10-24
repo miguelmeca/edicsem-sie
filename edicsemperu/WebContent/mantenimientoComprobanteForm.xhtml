@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Punto Almacen</h1>
+		<h:form id="frmAlmacenForm">
+			<p:growl id="message" showDetail="true" />
+			
+			<h:panelGrid id="display" columns="2" >
+
+				<h:outputText value="#{message['almacen.descripcion']}" />
+				<h:panelGroup>
+					<p:inputText id="descripcion1"
+						value="#{comprobanteForm.objComprobanteSie.codcomprobante}" required="true"
+						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
+						style="font-weight:bold" rendered="#{comprobanteForm.editMode}" />
+				</h:panelGroup>
+			</h:panelGrid>
+			
+			<h:panelGrid columns="2" id="panel2" >
+				<h:panelGroup>
+					<p:commandButton value="Guardar" update="panel"
+						actionListener="#{comprobanteForm.insertar}" ajax="false"
+						icon="ui-icon ui-icon-disk" />
+				</h:panelGroup>
+				
+			</h:panelGrid>
+		 </h:form>
+	</ui:define>
+</ui:composition>
