@@ -80,13 +80,23 @@ public class KardexServiceImpl implements KardexService {
 			objKardex2.setTbTipoKardexProducto(objTipoKardexDao.findTipoKardex(idtipokardexproducto));
 			objKardexDao.insertMovimiento(idproducto,objKardex2);
 		}
+		ComprobanteSie comp = new ComprobanteSie();
+		DetalleComprobanteSiePK oj = new DetalleComprobanteSiePK();
 		if(objcomprobante!=null){
-			objComprobanteDao.insertComprobante(objcomprobante);
+			
+			comp= objComprobanteDao.findComprobantePorNumero(objcomprobante.getCodcomprobante());
+			if(comp== null)
+				objComprobanteDao.insertComprobante(objcomprobante);
+			else
+				oj.setIdcomprobante(comp.getIdcomprobante());
 		}
 		if(objDetComprobante!=null){
-			DetalleComprobanteSiePK oj = new DetalleComprobanteSiePK();
+			
 			oj.setIdkardex(objKardexDao.findKardex(objKardex.getIdkardex()).getIdkardex());
+			
+			if(oj.getIdcomprobante()==null)
 			oj.setIdcomprobante(objComprobanteDao.findComprobante(objcomprobante.getIdcomprobante()).getIdcomprobante());
+			
 			objDetComprobante.setId(oj);
 			objDetComprobanteDao.insertComprobante(objDetComprobante);
 		}
