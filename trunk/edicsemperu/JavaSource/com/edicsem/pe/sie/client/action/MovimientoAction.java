@@ -18,6 +18,7 @@ import com.edicsem.pe.sie.entity.ComprobanteSie;
 import com.edicsem.pe.sie.entity.DetalleComprobanteSie;
 import com.edicsem.pe.sie.entity.KardexSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
+import com.edicsem.pe.sie.service.facade.ComprobanteService;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.KardexService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
@@ -50,7 +51,10 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 	
 	@EJB
 	private ProveedorService objProveedorService;
-
+	
+	@EJB
+	private ComprobanteService objComprobanteService;
+	
 	public MovimientoAction() {
 		log.info("inicializando constructor MovimientoSieAction");
 		init();
@@ -85,8 +89,7 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 		mensaje=null;
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'insertar()' :D  "
-						+ objKardexSie.getCantentrada()
+				log.info("Entering my method 'insertar()' :D  " + objKardexSie.getCantentrada()
 						+ objKardexSie.getCantsalida()+"  "+ idAlmacen+" - " + idAlmacen2);
 			}
 			if (objKardexSie.getCantentrada() == null) {
@@ -112,20 +115,25 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 					double valorExistenteTotalAlmacenes=0.0;
 					log.info("   despues de la consulta  :)");
 					for (int i = 0; i < k.size(); i++) {
+						
+						if(k.get(i).getCantexistencia()==null)
+							cantExistenteTotalAlmacenes+=0.0;
+						else
 						cantExistenteTotalAlmacenes += k.get(i).getCantexistencia();
 						
 						if(k.get(i).getValorunitarioexistencia()==null)
-						valorExistenteTotalAlmacenes+=0.0;
+							valorExistenteTotalAlmacenes+=0.0;
 						else
 						valorExistenteTotalAlmacenes +=  Double.parseDouble(k.get(i).getValorunitarioexistencia());
 						
 						stkmaximo = k.get(i).getTbProducto().getStkmaximo();
 						stkminimo = k.get(i).getTbProducto().getStkminimoproducto();
 					}
-					log.info(" **  " + cantExistenteTotalAlmacenes + " " + stkminimo + " " + stkmaximo + " " + validado);
+					
+					log.info(" **  " + cantExistenteTotalAlmacenes + " "  + valorExistenteTotalAlmacenes + stkminimo + " " + stkmaximo + " " + validado);
 					 
 					if (objKardexSie.getCantsalida() > 0) {
-						log.info(" cantexist "+ cantExistenteTotalAlmacenes +" cant Sal "+objKardexSie.getCantsalida() +" stk min " +stkminimo+ " almacen 2 " + idAlmacen2);
+						log.info(" cantexist "+ cantExistenteTotalAlmacenes + " cant Sal "+objKardexSie.getCantsalida() +" stk min " +stkminimo+ " almacen 2 " + idAlmacen2);
 						if (cantExistenteTotalAlmacenes - objKardexSie.getCantsalida() < stkminimo && 
 							cantExistenteTotalAlmacenes - objKardexSie.getCantsalida() >= 0 && idAlmacen2==0 ){
 							stockTotalAlmacenado = cantExistenteTotalAlmacenes - objKardexSie.getCantsalida();
@@ -148,7 +156,11 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 									for (int i = 0; i < k.size(); i++) {
 										//la cantidad existente en un almacen no puede resultar menor que 0
 										if( k.get(i).getTbPuntoVenta().getIdpuntoventa() == idAlmacen ){
-											
+											log.info(" aki karencita!  *** ");
+											objKardexSie.setValorunitariosalida(k.get(i).getValorunitarioentrada());
+											objKardexSie.setValortotal(Double.parseDouble(k.get(i).getValorunitarioentrada())* objKardexSie.getCantsalida()+"");
+											objKardexSie.setValorunitarioexistencia(objKardexSie.getValorunitarioexistencia());
+											valorTotalAlmacenes= valorExistenteTotalAlmacenes - Double.parseDouble(objKardexSie.getValortotal());
 											if( k.get(i).getCantexistencia()- objKardexSie.getCantsalida()<0){
 												mensaje = "La cantidad de salida de dicho producto no puede ser mayor al actual: " + k.get(i).getCantexistencia();
 											}else{
@@ -164,97 +176,87 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 					}
 						 
 					} else if (objKardexSie.getCantentrada() > 0) {
-						
+						// solo entrada principal de depovent a un almacen jhorgy
+						if (idAlmacen2==0 ) {
 							
-						if (cantExistenteTotalAlmacenes + objKardexSie.getCantentrada() > stkmaximo && idAlmacen2==0 ) {
-							BigDecimal d = new BigDecimal(Double.parseDouble(objKardexSie.getValortotal())/ objKardexSie.getCantentrada());
-							objKardexSie.setValorunitarioentrada(""+ d);
-							stockTotalAlmacenado= cantExistenteTotalAlmacenes + objKardexSie.getCantentrada();
-							valorTotalAlmacenes= valorExistenteTotalAlmacenes+ Double.parseDouble(objKardexSie.getValortotal());
+							if(objKardexSie.getValortotal() != null){
+								BigDecimal d = new BigDecimal(Double.parseDouble(objKardexSie.getValortotal())/ objKardexSie.getCantentrada());
+								d=d.setScale(2, RoundingMode.HALF_UP);
+								log.info("  aki xd 1 "+ d); 
+								Double valorunitario=	Double.parseDouble(d+"");
+								
+								objKardexSie.setValorunitarioentrada(valorunitario+"");
+								BigDecimal p= new BigDecimal(objKardexSie.getValorunitarioentrada());
+								objDetComprobante.setPreciounitario(p);
+								
+								
+								objDetComprobante.setDescripcion(objKardexSie.getDetallekardex());
+								objDetComprobante.setCantproducto(objKardexSie.getCantentrada());
+								
+								double valorexistencia=0;
+								double valoruniex= 0;
+								
+								for (int m = 0; m< k.size(); m++) {
+									 
+									log.info("en el for de entrada 2 "+ k.get(m).getTbPuntoVenta().getIdpuntoventa()+ " * "+  idAlmacen);
+									if (k.get(m).getTbPuntoVenta().getIdpuntoventa() == idAlmacen) {
+										
+										if( k.get(m).getValorunitarioexistencia()!=null)
+										valoruniex=  Double.parseDouble(k.get(m).getValorunitarioexistencia());
+										log.info(" v "+ valoruniex);
+									}
+									
+									//si la cantidad existente es de otro almacen , se registraria por primera vez en el almacen seleccionado
+									log.info(" v3 "+ valoruniex+  "  - " +objKardexSie.getValortotal());
+									valorexistencia =valoruniex  + Double.parseDouble(objKardexSie.getValortotal());
+									objKardexSie.setValorunitarioexistencia(valorexistencia+"");
+									
+									valorTotalAlmacenes= valorExistenteTotalAlmacenes+ Double.parseDouble(objKardexSie.getValortotal());
+									stockTotalAlmacenado= cantExistenteTotalAlmacenes + objKardexSie.getCantentrada();
+									
+									log.info(" vex "+ valorexistencia+ "");
+								}
+								
+							if(idproveedor!=0){
+								log.info("  idproveed ");
+								objcomprobante.setTbProveedor(objProveedorService.findProveedor(idproveedor));
+							}validado=true;
+							
+							}
+							else{
+								validado=true;
+							}
+						 
+						if (cantExistenteTotalAlmacenes + objKardexSie.getCantentrada() < stkmaximo && idAlmacen2==0 ) {
 							mensaje = " Se registro correctamente,  el stock actual de dicho producto es  " + stockTotalAlmacenado;
 							validado=true;
 						}
+						if (cantExistenteTotalAlmacenes + objKardexSie.getCantentrada() > stkmaximo && idAlmacen2==0 ) {
+							mensaje = " Se registro correctamente,  el stock actual de dicho producto es  " + stockTotalAlmacenado+" se excedio del stock permitido";
+							validado=true;
+						}
+						
+						}
 						else{
-							for (int j = 0; j< k.size(); j++) {
-								log.info("en el for de entrada "+k.get(j).getTbPuntoVenta().getIdpuntoventa()+ " * "+  idAlmacen);
-								 if (k.get(j).getTbPuntoVenta().getIdpuntoventa() == idAlmacen) {
-									 log.info("almacen   " +k.get(j).getTbPuntoVenta().getIdpuntoventa() +"  "+ idAlmacen );
-									// es entrada pero no salida de otro almacen
-									if (objKardexSie.getCantentrada() > 0 && idAlmacen2==0  ) {
+							//si es entrada y salida
+							
+									// es entrada y salida de otro almacen 
+									// se analiza la cantidad existente en dicho almacen
+								if(objKardexSie.getCantentrada() > 0 && idAlmacen2!=0  ){
+									log.info(" entrada y salida " +objKardexSie.getCantentrada() +" "+ idAlmacen2);
 										
-										log.info(" si solo hay entrada " +objKardexSie.getCantentrada() +" "+ idAlmacen2);
-										
-										if (k.get(j).getCantexistencia() + objKardexSie.getCantentrada() > stkmaximo) {
-											stockTotalAlmacenado =k.get(j).getCantexistencia() + objKardexSie.getCantentrada();
-											log.info("existe "+k.get(j).getCantexistencia()+" "+ objKardexSie.getCantsalida()+" max "+ stkmaximo ); 
-											mensaje = "Se registro correctamente, pero se excedio el stock máximo, stock actual es "+ stockTotalAlmacenado;
-											//Mandar correo
-											validado=true;
-										}
-										
-										/**
-										 * Suponiendo que el usuario que ingreso al sistema sea Jhorghy*/
-										
-										if(objKardexSie.getValortotal() != null){
-											BigDecimal d = new BigDecimal(Double.parseDouble(objKardexSie.getValortotal())/ objKardexSie.getCantentrada());
-											d=d.setScale(2, RoundingMode.HALF_UP);
-											log.info("  aki xd 1 "+ d); 
-											Double valorunitario=	Double.parseDouble(d+"");
-										if(valorunitario>0){
-											log.info("   a " + d);
-											objKardexSie.setValorunitarioentrada(valorunitario+"");
-											double valorexistencia=0;
-											double valoruniex= 0;
-											
-											for (int m = 0; m< k.size(); m++) {
-												 
-												log.info("en el for de entrada 2 "+k.get(m).getTbPuntoVenta().getIdpuntoventa()+ " * "+  idAlmacen);
-												 if (k.get(m).getTbPuntoVenta().getIdpuntoventa() == idAlmacen) {
-													
-													if( k.get(m).getValorunitarioexistencia()!=null)
-													valoruniex=  Double.parseDouble(k.get(m).getValorunitarioexistencia());
-													log.info(" v "+ valoruniex);
-													}
-														//si la cantidad existente es de otro almacen , se registraria por primera vez en el almacen seleccionado
-								
-														log.info(" v3 "+ valoruniex+  "  - " +objKardexSie.getValortotal());
-														valorexistencia =valoruniex  + Double.parseDouble(objKardexSie.getValortotal());
-														objKardexSie.setValorunitarioexistencia(valorexistencia+"");
-														valorTotalAlmacenes= valorExistenteTotalAlmacenes+ Double.parseDouble(objKardexSie.getValortotal());
-														log.info(" vex "+ valorexistencia);
-												 }
-											}
-										if(idproveedor!=0){	log.info("  idproveed ");
-										objcomprobante.setTbProveedor(objProveedorService.findProveedor(idproveedor));
-									}validado=true;
-										
-										}
-										else{
-											validado=true;
-										}
-										
-										// es entrada y salida de otro almacen 
-										// se analiza la cantidad existente en dicho almacen
-									}else if(objKardexSie.getCantentrada() > 0 && idAlmacen2!=0  ){
-										log.info(" entrada y salida " +objKardexSie.getCantentrada() +" "+ idAlmacen2);
-										
-										for (int i = 0; i < k.size(); i++) {
-											//la cantidad existente en un almacen no puede resultar menor que 0
-											if( k.get(i).getTbPuntoVenta().getIdpuntoventa() == idAlmacen2 ){
-												//getCantidadEntrada() vendria a ser la salida del almacen2
-												if( k.get(i).getCantexistencia()- objKardexSie.getCantentrada()<0){
-													mensaje = "La cantidad de salida de dicho producto no puede ser mayor al actual: " + k.get(i).getCantexistencia() ;
-												}else{
-													validado=true;
-												}
+									for (int i = 0; i < k.size(); i++) {
+										//la cantidad existente en un almacen no puede resultar menor que 0
+										if( k.get(i).getTbPuntoVenta().getIdpuntoventa() == idAlmacen2 ){
+											//getCantidadEntrada() vendria a ser la salida del almacen2
+											if( k.get(i).getCantexistencia()- objKardexSie.getCantentrada()<0){
+												mensaje = "La cantidad de salida de dicho producto no puede ser mayor al actual: " + k.get(i).getCantexistencia() ;
+											}else{
+												validado=true;
 											}
 										}
-										
-									}else{
-										validado=true;
-									}
+									}	
 								}
-							}
 						}
 						
 					} else {
@@ -265,8 +267,9 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 							+ stkminimo + " " + stkmaximo + " " + validado);
 					log.info(mensaje);
 				}
-				//Falta verificar la cantidad que va ingresar con el stock maximo permitido para dicho producto
+				//Se debe verificar la cantidad que va ingresar con el stock maximo permitido para dicho producto
 				//ya que es la primera vez que se ingresa algun movimiento para dicho producto
+				
 				else if(k.size()==0){
 					
 					if (objKardexSie.getCantsalida() > 0) {
@@ -283,23 +286,20 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 							if(objKardexSie.getValortotal() != null){
 								BigDecimal d = new BigDecimal(Double.parseDouble(objKardexSie.getValortotal())/ objKardexSie.getCantentrada());
 								d=d.setScale(2, RoundingMode.HALF_UP);
+								
 								log.info("  aki xd "+ d); 
 								Double valorunitario=	Double.parseDouble(d+"");
 							if(valorunitario>0){
 								log.info("   a " + d);
 								objKardexSie.setValorunitarioentrada(valorunitario+"");
-								double valorexistencia=0;
-								double valoruniex= 0;
-								
-									log.info(" v "+ valoruniex);
-									valorexistencia =valoruniex  + Double.parseDouble(objKardexSie.getValortotal());
-									objKardexSie.setValorunitarioexistencia(valorexistencia+"");
-									log.info(" vex "+ valorexistencia);
-									
+								BigDecimal p= new BigDecimal(objKardexSie.getValorunitarioentrada());
+								objDetComprobante.setPreciounitario(p);
+								double valorexistencia=0, valoruniex= 0;
+								log.info(" v "+ valoruniex);
+								valorexistencia =valoruniex  + Double.parseDouble(objKardexSie.getValortotal());
+								objKardexSie.setValorunitarioexistencia(valorexistencia+"");
+								log.info(" vex "+ valorexistencia);
 								}
-							if(idproveedor!=0){	log.info("  idproveed ");
-							objcomprobante.setTbProveedor(objProveedorService.findProveedor(idproveedor));
-							}
 							}
 							
 							validado = true;
@@ -310,21 +310,19 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 				}
 				else {
 					log.info(" * null *");
-					k = new ArrayList<KardexSie>();
-					validado = true;
 					log.info(mensaje);
 				}
 				}
+			
 				if (validado == true) {
 					log.info(mensaje);
+					
 					if(idproveedor!=0)
 					objcomprobante.setTbProveedor(objProveedorService.findProveedor(idproveedor));
-					 objDetComprobante.setDescripcion(objKardexSie.getDetallekardex());
-					 objDetComprobante.setCantproducto(objKardexSie.getCantentrada());
-					 objKardexSie.setValorunitarioexistencia(""+ valorTotalAlmacenes );
-					 BigDecimal p= new BigDecimal(objKardexSie.getValorunitarioentrada());
-					 objDetComprobante.setPreciounitario(p);
-						log.info(" *************** INSERTAR *********" + p);
+					 
+					objKardexSie.setValorunitarioexistencia(""+ valorTotalAlmacenes );
+					
+						log.info(" *************** INSERTAR *********"  );
 						objKardexService.insertMovimiento(
 								objKardexSie, objcomprobante,objDetComprobante,idproducto,
 								idtipokardexproducto, idAlmacen, idAlmacen2);

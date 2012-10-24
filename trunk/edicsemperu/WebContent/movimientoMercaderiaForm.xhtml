@@ -61,6 +61,7 @@
 						<f:selectItems value="#{comboAction.almacenItems}" />
 					</p:selectOneMenu>
 					<p:message for="idAlmacen" />
+					
 					<h:outputText value="almacen 2" />
 					<p:selectOneMenu id="idAlmacen2" size="1"  style="width:165px" 
 						value="#{movimientoMercaderia.idAlmacen2}"   >
@@ -83,23 +84,23 @@
 					</p:selectOneMenu>
 					<p:spacer/>
 					
-					<h:outputText value="#{message['movimiento.proveedor.nombreempresa']}"   rendered="#{!movimientoMercaderia.editMode}" />
-					<p:selectOneMenu size="1" rendered="#{!movimientoMercaderia.editMode}"  style="width:165px" 
+					<h:outputText value="#{message['movimiento.proveedor.nombreempresa']}"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
+					<p:selectOneMenu size="1" rendered="#{movimientoMercaderia.idtipokardexproducto==1}" style="width:165px" 
 						value="#{movimientoMercaderia.idproveedor}">
 						<f:selectItem itemLabel="Seleccione Proveedor" itemValue="#{null}" />
 						<f:selectItems value="#{comboAction.proveedoritems}" />
 					</p:selectOneMenu>
 					<p:spacer />
-					<h:outputText value="#{message['movimiento.valortotal']}"   rendered="#{!movimientoMercaderia.editMode}" />
+					<h:outputText value="#{message['movimiento.valortotal']}"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
 							
 					<p:spinner id="valortotal" size="2" min="1"  required="true" requiredMessage="#{message['movimiento.valortotal.validation']}" 
-							value="#{movimientoMercaderia.objKardexSie.valortotal}"  rendered="#{!movimientoMercaderia.editMode}"/>
-				<p:message for="valortotal" />
+							value="#{movimientoMercaderia.objKardexSie.valortotal}"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
+				<p:message for="valortotal" rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
 				
-					<h:outputText value="#{message['movimiento.comprobante.numero']}" />
+					<h:outputText value="#{message['movimiento.comprobante.numero']}" rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
 					<p:inputMask id="num_comp" mask="9999999999" value="#{movimientoMercaderia.objcomprobante.codcomprobante}" required="true" 
-					requiredMessage="#{message['movimiento.comprobante.numero.validation']}"  rendered="#{!movimientoMercaderia.editMode}"/>
-				<p:message for="num_comp" />
+					requiredMessage="#{message['movimiento.comprobante.numero.validation']}"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
+				<p:message for="num_comp" rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
 				</h:panelGrid>
 				
 				<p:commandButton id="id"
@@ -181,9 +182,10 @@
 			<h:panelGrid columns="4"    >
 					
 					<h:outputText value="#{message['movimiento.stockTotal.almacenes']}" />
-					<p:inputText  value ="#{movimientoMercaderia.stockTotalAlmacenado}" />
+					<p:inputText  value ="#{movimientoMercaderia.stockTotalAlmacenado}" readonly="true" />
+					<p:spacer/>
 					<h:outputText value="#{message['movimiento.valorTotal.almacenes']}" />
-					<p:inputText  value ="#{movimientoMercaderia.valorTotalAlmacenes}" />
+					<p:inputText  value ="#{movimientoMercaderia.valorTotalAlmacenes}" readonly="true" />
 			</h:panelGrid>
 		</h:form>
 	</ui:define>
