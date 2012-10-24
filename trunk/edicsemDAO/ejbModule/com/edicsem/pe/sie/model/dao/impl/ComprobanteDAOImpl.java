@@ -93,9 +93,10 @@ public class ComprobanteDAOImpl implements ComprobanteDAO{
 		ComprobanteSie com = new ComprobanteSie();
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from ComprobanteSie p where codcomprobante = "+num );
+			Query q = em.createQuery("select p from ComprobanteSie p where codcomprobante like '"+num+"'" );
 			lista =  q.getResultList(); 
 		   System.out.println("tamaño lista Comprobante --> " + lista.size()+"  ");
+		   if(lista.size()>0)
 		   com = (ComprobanteSie) lista.get(0);
 		} catch (Exception e) {
 			e.printStackTrace();
