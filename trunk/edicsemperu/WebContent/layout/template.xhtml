@@ -32,6 +32,9 @@ body {
 .ui-widget {
 	font-size: 75%;
 }
+.color{
+        background: #925265;
+}
 </style>
 	</h:head>
 	<f:loadBundle var="message"
@@ -82,7 +85,7 @@ body {
 						<p:menuitem value="Mantenimiento Valorizado" update="messages"
 							ajax="false" action="mantenimientoKardex.jsf" />
 						<p:menuitem value="Movimiento Mercader&iacute;a" ajax="false"
-							action="movimientoMercaderiaForm.listar" />
+							action="#{movimientoMercaderia.listar}" />
 						<p:menuitem value="Registro Comprobante" ajax="false"
 							action="#{comprobanteSearch.listar}" />
 						<p:menuitem value="Mantenimiento de Empleados" ajax="false"
@@ -394,7 +397,7 @@ body {
 
 			<p:commandButton type="submit" value="Si"
 				action="#{contratoForm.telefonoElimina}"
-				update=":formManteContrato:panel4:t"
+				update=":formManteContrato:panelCliente:t"
 				oncomplete="confirmation.hide()" ajax="false">
 			</p:commandButton>
 

@@ -5,6 +5,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	
 	<ui:define name="body">
 		<h1 class="title ui-widget-header ui-corner-all">Movimiento
 			Mercadería</h1>
@@ -108,8 +109,7 @@
 						value="Grabar Mercadería" ajax="false"
 						update="formMovMerc:listaMovim, message">
 					</p:commandButton>
-				<p:dataTable id="listaMovim" value="#{movimientoMercaderia.data}" 
-					var="d">
+				<p:dataTable id="listaMovim" var="d" value="#{movimientoMercaderia.data}"   rowStyleClass="#{d.idkardex == movimientoMercaderia.idMAxKardex ? 'color' : null}">
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Id Kardex" />
