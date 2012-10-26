@@ -1,23 +1,22 @@
 package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
-
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 
 /**
- * The primary key class for the tb_contrato_empleado database table.
+ * The primary key class for the tb_det_contrato_empleado database table.
  * 
  */
 @Embeddable
-public class ContratoEmpleadoSiePK implements Serializable {
+public class DetContratoEmpleadoSiePK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer idcontrato;
 
 	private Integer idempleado;
 
-    public ContratoEmpleadoSiePK() {
+    public DetContratoEmpleadoSiePK() {
     }
 	public Integer getIdcontrato() {
 		return this.idcontrato;
@@ -36,10 +35,10 @@ public class ContratoEmpleadoSiePK implements Serializable {
 		if (this == other) {
 			return true;
 		}
-		if (!(other instanceof ContratoEmpleadoSiePK)) {
+		if (!(other instanceof DetContratoEmpleadoSiePK)) {
 			return false;
 		}
-		ContratoEmpleadoSiePK castOther = (ContratoEmpleadoSiePK)other;
+		DetContratoEmpleadoSiePK castOther = (DetContratoEmpleadoSiePK)other;
 		return 
 			this.idcontrato.equals(castOther.idcontrato)
 			&& this.idempleado.equals(castOther.idempleado);

@@ -13,7 +13,6 @@
 		<class>com.edicsem.pe.sie.entity.ConceptoSie</class>
 		<class>com.edicsem.pe.sie.entity.ContratoSie</class>
 		<class>com.edicsem.pe.sie.entity.ContratoEmpleadoSie</class>
-		<class>com.edicsem.pe.sie.entity.ContratoEmpleadoSiePK</class>
 		<class>com.edicsem.pe.sie.entity.DetPaqueteSie</class>
 		<class>com.edicsem.pe.sie.entity.DetalleComprobanteSie</class>
 		<class>com.edicsem.pe.sie.entity.DetalleComprobanteSiePK</class>
@@ -47,6 +46,8 @@
 		<class>com.edicsem.pe.sie.entity.MetaEmpleadoSie</class>
 		<class>com.edicsem.pe.sie.entity.MetaMesSie</class>
 		<class>com.edicsem.pe.sie.entity.DetCargoEmpleadoSie</class>
+		<class>com.edicsem.pe.sie.entity.DetContratoEmpleadoSie</class>
+		<class>com.edicsem.pe.sie.entity.DetContratoEmpleadoSiePK</class>
 	<properties>
 			<property name="eclipselink.jdbc.driver" value="org.postgresql.Driver" />
 			<property name="eclipselink.jdbc.url" value="jdbc:postgres://192.168.1.2:5432/bd_sie" />

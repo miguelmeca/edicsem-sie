@@ -18,9 +18,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
 import com.edicsem.pe.sie.util.constants.Constants;
-
 
 /**
  * The persistent class for the tb_contrato database table.
@@ -86,10 +84,6 @@ public class ContratoSie implements Serializable {
 	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
 
-	//bi-directional many-to-one association to ContratoEmpleadoSie
-	@OneToMany(mappedBy="tbContrato")
-	private Set<ContratoEmpleadoSie> tbContratoEmpleados;
-
 	//bi-directional many-to-one association to RutaArchivoEscaneadoSie
 	@OneToMany(mappedBy="tbContrato")
 	private Set<RutaArchivoEscaneadoSie> tbRutaArchivoEscaneados;
@@ -97,6 +91,10 @@ public class ContratoSie implements Serializable {
 	//bi-directional many-to-one association to DetProductoContratoSie
   	@OneToMany(mappedBy="tbContrato")
   	private Set<DetProductoContratoSie> tbDetProductoContrato;
+  	
+	//bi-directional many-to-one association to DetContratoEmpleadoSie
+	@OneToMany(mappedBy="tbContrato")
+	private Set<DetContratoEmpleadoSie> DetContratoEmpleados;
 	
     public ContratoSie() {
     }
@@ -253,14 +251,6 @@ public class ContratoSie implements Serializable {
 		this.tbEstadoGeneral = tbEstadoGeneral;
 	}
 	
-	public Set<ContratoEmpleadoSie> getTbContratoEmpleados() {
-		return this.tbContratoEmpleados;
-	}
-
-	public void setTbContratoEmpleados(Set<ContratoEmpleadoSie> tbContratoEmpleados) {
-		this.tbContratoEmpleados = tbContratoEmpleados;
-	}
-	
 	public Set<RutaArchivoEscaneadoSie> getTbRutaArchivoEscaneados() {
 		return this.tbRutaArchivoEscaneados;
 	}
@@ -276,6 +266,21 @@ public class ContratoSie implements Serializable {
 	public void setTbDetProductoContrato(
 			Set<DetProductoContratoSie> tbDetProductoContrato) {
 		this.tbDetProductoContrato = tbDetProductoContrato;
+	}
+
+	/**
+	 * @return the detContratoEmpleados
+	 */
+	public Set<DetContratoEmpleadoSie> getDetContratoEmpleados() {
+		return DetContratoEmpleados;
+	}
+
+	/**
+	 * @param detContratoEmpleados the detContratoEmpleados to set
+	 */
+	public void setDetContratoEmpleados(
+			Set<DetContratoEmpleadoSie> detContratoEmpleados) {
+		DetContratoEmpleados = detContratoEmpleados;
 	}
 	
 }
