@@ -1,8 +1,7 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -16,12 +15,10 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.entity.ComprobanteSie;
-import com.edicsem.pe.sie.entity.PuntoVentaSie;
-import com.edicsem.pe.sie.entity.UbigeoSie;
-import com.edicsem.pe.sie.service.facade.AlmacenService;
+import com.edicsem.pe.sie.entity.DetalleComprobanteSie;
 import com.edicsem.pe.sie.service.facade.ComprobanteService;
+import com.edicsem.pe.sie.service.facade.DetalleComprobanteService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
-import com.edicsem.pe.sie.service.facade.UbigeoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
@@ -40,6 +37,8 @@ public class MantenimientoComprobanteFormAction extends
 	private boolean newRecord = false;
 	private int estado;
 	private ComprobanteSie objComprobanteSie;
+	private List<DetalleComprobanteSie> detComplist;
+	private double montoTotal;
 
 	@ManagedProperty(value = "#{comboAction}")
 	private ComboAction comboManagerPunto;
@@ -49,6 +48,9 @@ public class MantenimientoComprobanteFormAction extends
 
 	@EJB
 	private ComprobanteService objComprobanteService;
+	
+	@EJB
+	private DetalleComprobanteService objDetComprobanteService;
 	
 	@EJB
 	private EstadogeneralService objEstadoGeneralService;
@@ -69,6 +71,8 @@ public class MantenimientoComprobanteFormAction extends
 		objComprobanteSie = new ComprobanteSie();
 		puntoVenta = false;
 		defectoUbigeo=true;
+		montoTotal=0.0;
+		detComplist = new ArrayList<DetalleComprobanteSie>();
 	}
 
 	/* (non-Javadoc)
@@ -87,15 +91,18 @@ public class MantenimientoComprobanteFormAction extends
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
 	 */
-	
 	public String update() throws Exception {
-		log.info("update() :D" );
-		log.info("update() :D" );
-		log.info("update() xd  "+ objComprobanteSie.getIdcomprobante() );
-		objComprobanteSie = objComprobanteService.findComprobante(objComprobanteSie.getIdcomprobante());
+		montoTotal=0.0;
+		log.info("update() "+ objComprobanteSie.getIdcomprobante() );
+		setObjComprobanteSie(objComprobanteService.findComprobante(objComprobanteSie.getIdcomprobante()));
+		log.info("  " +objComprobanteSie.getCodcomprobante());
+		detComplist = objDetComprobanteService.listarDetComprobantes(objComprobanteSie.getIdcomprobante()) ;
+		for (int i = 0; i < detComplist.size(); i++) {
+			log.info("  "+detComplist.get(i).getTbKardex().getValortotal());
+			montoTotal+= Double.parseDouble(detComplist.get(i).getTbKardex().getValortotal());
+		}
 		
 		setNewRecord(false);
-		editMode = false;
 		return getViewMant();
 	}
 	
@@ -386,6 +393,34 @@ public class MantenimientoComprobanteFormAction extends
 	 */
 	public void setObjComprobanteSie(ComprobanteSie objComprobanteSie) {
 		this.objComprobanteSie = objComprobanteSie;
+	}
+
+	/**
+	 * @return the detComplist
+	 */
+	public List<DetalleComprobanteSie> getDetComplist() {
+		return detComplist;
+	}
+
+	/**
+	 * @param detComplist the detComplist to set
+	 */
+	public void setDetComplist(List<DetalleComprobanteSie> detComplist) {
+		this.detComplist = detComplist;
+	}
+
+	/**
+	 * @return the montoTotal
+	 */
+	public double getMontoTotal() {
+		return montoTotal;
+	}
+
+	/**
+	 * @param montoTotal the montoTotal to set
+	 */
+	public void setMontoTotal(double montoTotal) {
+		this.montoTotal = montoTotal;
 	}
 
 }

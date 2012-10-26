@@ -31,7 +31,7 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 public class MovimientoAction extends BaseMantenimientoAbstractAction {
 
 	private String mensaje;
-	private int idproducto, idtipokardexproducto,idempresa,idproveedor, idAlmacen, idAlmacen2,stockTotalAlmacenado;
+	private int idproducto,idMAxKardex, idtipokardexproducto,idempresa,idproveedor, idAlmacen, idAlmacen2,stockTotalAlmacenado;
 	private double valorTotalAlmacenes;
 	private KardexSie objKardexSie = new KardexSie();
 	private ComprobanteSie objcomprobante;
@@ -52,9 +52,6 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 	@EJB
 	private ProveedorService objProveedorService;
 	
-	@EJB
-	private ComprobanteService objComprobanteService;
-	
 	public MovimientoAction() {
 		log.info("inicializando constructor MovimientoSieAction");
 		init();
@@ -67,6 +64,7 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 		objKardexSie = new KardexSie();
 		objcomprobante = new ComprobanteSie();
 		objDetComprobante = new DetalleComprobanteSie();
+		idMAxKardex=0;
 	}
 
 	public void cambiar() {
@@ -87,6 +85,7 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 	public String insertar() throws Exception {
 		boolean validado = false;
 		mensaje=null;
+		valorTotalAlmacenes=0.0;
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()' :D  " + objKardexSie.getCantentrada()
@@ -161,6 +160,7 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 											objKardexSie.setValortotal(Double.parseDouble(k.get(i).getValorunitarioentrada())* objKardexSie.getCantsalida()+"");
 											objKardexSie.setValorunitarioexistencia(objKardexSie.getValorunitarioexistencia());
 											valorTotalAlmacenes= valorExistenteTotalAlmacenes - Double.parseDouble(objKardexSie.getValortotal());
+											log.info(" valor total almacenadoS "+ valorTotalAlmacenes +"  "+ objKardexSie.getValorunitarioexistencia());
 											if( k.get(i).getCantexistencia()- objKardexSie.getCantsalida()<0){
 												mensaje = "La cantidad de salida de dicho producto no puede ser mayor al actual: " + k.get(i).getCantexistencia();
 											}else{
@@ -264,7 +264,7 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 						validado = true;
 					}
 					log.info(" *2*  " + cantExistenteTotalAlmacenes + " "
-							+ stkminimo + " " + stkmaximo + " " + validado);
+							+ stkminimo + " " + stkmaximo + " " + validado+" "+ valorTotalAlmacenes );
 					log.info(mensaje);
 				}
 				//Se debe verificar la cantidad que va ingresar con el stock maximo permitido para dicho producto
@@ -375,6 +375,12 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 	 * @return the data
 	 */
 	public List<KardexSie> getData() {
+		log.info("entrando a getata(9");
+		for (int i = 0; i < data.size(); i++) {
+			if(idMAxKardex<data.get(i).getIdkardex())
+			idMAxKardex=data.get(i).getIdkardex();
+		}
+		log.info("entrando a getata(9"+ idMAxKardex);
 		return data;
 	}
 
@@ -476,6 +482,8 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 		}
 		return getViewList();
 	}
+	
+	
 
 	/**
 	 * @return the idAlmacen2
@@ -560,6 +568,28 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 	 */
 	public void setValorTotalAlmacenes(double valorTotalAlmacenes) {
 		this.valorTotalAlmacenes = valorTotalAlmacenes;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewList()
+	 */
+	public String getViewList() {
+		return Constants.MOVIMIENTO_FORM_LIST_PAGE;
+	}
+
+	/**
+	 * @return the idMAxKardex
+	 */
+	public int getIdMAxKardex() {
+		
+		return idMAxKardex;
+	}
+
+	/**
+	 * @param idMAxKardex the idMAxKardex to set
+	 */
+	public void setIdMAxKardex(int idMAxKardex) {
+		this.idMAxKardex = idMAxKardex;
 	}
 
 }

@@ -6,28 +6,74 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
-		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Punto Almacen</h1>
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Comprobante</h1>
 		<h:form id="frmAlmacenForm">
 			<p:growl id="message" showDetail="true" />
 			
 			<h:panelGrid id="display" columns="2" >
 
-				<h:outputText value="#{message['almacen.descripcion']}" />
+				<h:outputText value="Código de Comprobante" />
 				<h:panelGroup>
-					<p:inputText id="descripcion1"
-						value="#{comprobanteForm.objComprobanteSie.codcomprobante}" required="true"
-						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" rendered="#{comprobanteForm.editMode}" />
+					<p:inputText value="#{comprobanteForm.objComprobanteSie.codcomprobante}" readonly="true" />
 				</h:panelGroup>
 			</h:panelGrid>
-			
-			<h:panelGrid columns="2" id="panel2" >
-				<h:panelGroup>
-					<p:commandButton value="Guardar" update="panel"
-						actionListener="#{comprobanteForm.insertar}" ajax="false"
-						icon="ui-icon ui-icon-disk" />
-				</h:panelGroup>
+			<p:dataTable value="#{comprobanteForm.detComplist}" var="c"
+				id="detcomproTable" >
+
+				<f:facet name="header">
+					<h:outputLabel
+						value="#{message['lista.detcomprobante.titulo']}" />
+				</f:facet>
+
+				<p:column style="width:4%">
+				<p:rowToggler />
+				</p:column>
 				
+				<p:column headerText="Comprobante" >
+					<h:outputText value="#{c.tbComprobante.codcomprobante}" />
+				</p:column>
+
+				<p:column headerText="Producto" >
+					<h:outputText value="#{c.tbKardex.tbProducto.descripcionproducto}" />
+				</p:column>
+				
+				<p:column headerText="Cantidad" >
+					<h:outputText value="#{c.tbKardex.cantentrada}" />
+				</p:column>
+				
+				<p:column headerText="Precio" >
+					<h:outputText value="#{c.tbKardex.valortotal}" />
+				</p:column>
+				
+				<p:column headerText="Observación" >
+					<h:outputText value="#{c.descripcion}" />
+				</p:column>
+				
+				<p:column headerText="Observación" >
+					<h:outputText value="#{c.tbKardex.fechacreacion}" />
+				</p:column>
+				
+				<p:rowExpansion>
+				<h:panelGrid id="display" columns="2" cellpadding="4" style="width:300px;">  
+  
+                <f:facet name="header">
+                 <h:outputLabel
+						value="Ingresos kardex" />
+                </f:facet>
+                
+                <h:outputText value="Id Kardex" />  
+                <h:outputText value="#{c.idcomprobante}" />
+                
+                </h:panelGrid>
+                </p:rowExpansion>  
+			</p:dataTable>
+			
+			<h:panelGrid  columns="2" >
+
+				<h:outputText value="Monto Total" />
+				<h:panelGroup>
+					<p:inputText value="#{comprobanteForm.montoTotal}" readonly="true" />
+				</h:panelGroup>
 			</h:panelGrid>
 		 </h:form>
 	</ui:define>

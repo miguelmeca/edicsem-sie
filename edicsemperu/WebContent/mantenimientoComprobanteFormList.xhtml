@@ -17,7 +17,7 @@
 					<h:outputLabel
 						value="#{message['lista.mantenimiento.empresa.titulo']}" />
 				</f:facet>
-
+				
 				<p:column headerText="Código de Comprobante" >
 					<h:outputText value="#{c.codcomprobante}" />
 				</p:column>
@@ -26,8 +26,8 @@
 					<h:outputText value="#{c.tipocomprobante}" />
 				</p:column>
 
-				<p:column headerText="Editar D">
-					<p:commandButton value="Editar"
+				<p:column headerText="Ver Detalle">
+					<p:commandButton value="Detalle"
 						action="#{comprobanteForm.update}"	icon="ui-icon ui-icon-pencil">
 						<f:setPropertyActionListener value="#{c}"
 							target="#{comprobanteForm.objComprobanteSie}" />
