@@ -6,10 +6,13 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,9 +28,13 @@ import com.edicsem.pe.sie.util.constants.Constants;
 @Table(name="tb_contrato_empleado", schema = Constants.ESQUEMA_SIE_POSTGRE)
 public class ContratoEmpleadoSie implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@SequenceGenerator(name="TB_CONTRATO_EMPLEADO_IDCONTRATOEMPL_GENERATOR", sequenceName="SIE.TB_CONTRATO_EMPLEADO_IDCONTRATOEMPL_SEQ", initialValue=1, allocationSize =1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_CONTRATO_EMPLEADO_IDCONTRATOEMPL_GENERATOR")
+	private Integer idContratoEmpl;
 
-	@EmbeddedId
-	private ContratoEmpleadoSiePK id;
+	private Integer idempleado;
 
 	private BigDecimal comision;
 	
@@ -41,11 +48,6 @@ public class ContratoEmpleadoSie implements Serializable {
 	
 	@Temporal( TemporalType.DATE)
 	private Date fechafinpatrocinio;
-
-	//bi-directional many-to-one association to ContratoSie
-    @ManyToOne
-	@JoinColumn(name="idcontrato", insertable = false, updatable = false)
-	private ContratoSie tbContrato;
 
 	//bi-directional many-to-one association to EmpleadoSie
     @ManyToOne
@@ -64,14 +66,6 @@ public class ContratoEmpleadoSie implements Serializable {
     
     public ContratoEmpleadoSie() {
     }
-
-	public ContratoEmpleadoSiePK getId() {
-		return this.id;
-	}
-
-	public void setId(ContratoEmpleadoSiePK id) {
-		this.id = id;
-	}
 	
 	public BigDecimal getComision() {
 		return this.comision;
@@ -95,14 +89,6 @@ public class ContratoEmpleadoSie implements Serializable {
 
 	public void setPago(String pago) {
 		this.pago = pago;
-	}
-
-	public ContratoSie getTbContrato() {
-		return this.tbContrato;
-	}
-
-	public void setTbContrato(ContratoSie tbContrato) {
-		this.tbContrato = tbContrato;
 	}
 	
 	public EmpleadoSie getTbEmpleado1() {
@@ -143,6 +129,34 @@ public class ContratoEmpleadoSie implements Serializable {
 
 	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
 		this.tbEstadoGeneral = tbEstadoGeneral;
+	}
+
+	/**
+	 * @return the idempleado
+	 */
+	public Integer getIdempleado() {
+		return idempleado;
+	}
+
+	/**
+	 * @param idempleado the idempleado to set
+	 */
+	public void setIdempleado(Integer idempleado) {
+		this.idempleado = idempleado;
+	}
+	
+	/**
+	 * @return the idContratoEmpl
+	 */
+	public Integer getIdContratoEmpl() {
+		return idContratoEmpl;
+	}
+
+	/**
+	 * @param idContratoEmpl the idContratoEmpl to set
+	 */
+	public void setIdContratoEmpl(Integer idContratoEmpl) {
+		this.idContratoEmpl = idContratoEmpl;
 	}
 	
 }

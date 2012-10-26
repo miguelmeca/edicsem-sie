@@ -18,7 +18,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-
 import com.edicsem.pe.sie.util.constants.Constants;
 
 
@@ -124,6 +123,10 @@ public class EmpleadoSie implements Serializable {
     //bi-directional many-to-one association to MetaEmpleadoSie
   	@OneToMany(mappedBy="tbEmpleado")
   	private Set<MetaEmpleadoSie> tbMetaEmpleados;
+  	
+	//bi-directional many-to-one association to DetContratoEmpleadoSie
+	@OneToMany(mappedBy="tbEmpleado")
+	private Set<DetContratoEmpleadoSie> tbDetContratoEmpleados;
 
     public EmpleadoSie() {
     }
@@ -357,6 +360,21 @@ public class EmpleadoSie implements Serializable {
 
 	public void setTbDetCargoEmpleados(Set<DetCargoEmpleadoSie> tbDetCargoEmpleados) {
 		this.tbDetCargoEmpleados = tbDetCargoEmpleados;
+	}
+
+	/**
+	 * @return the tbDetContratoEmpleados
+	 */
+	public Set<DetContratoEmpleadoSie> getTbDetContratoEmpleados() {
+		return tbDetContratoEmpleados;
+	}
+
+	/**
+	 * @param tbDetContratoEmpleados the tbDetContratoEmpleados to set
+	 */
+	public void setTbDetContratoEmpleados(
+			Set<DetContratoEmpleadoSie> tbDetContratoEmpleados) {
+		this.tbDetContratoEmpleados = tbDetContratoEmpleados;
 	}
 
 }
