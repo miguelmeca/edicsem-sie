@@ -10,23 +10,25 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.CobranzaSie;
-import com.edicsem.pe.sie.entity.CobranzaSiePK;
 import com.edicsem.pe.sie.entity.ContratoSie;
+import com.edicsem.pe.sie.entity.DetContratoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DetProductoContratoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.model.dao.ClienteDAO;
 import com.edicsem.pe.sie.model.dao.CobranzaDAO;
 import com.edicsem.pe.sie.model.dao.ContratoDAO;
+import com.edicsem.pe.sie.model.dao.DetContratoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.DetProductoContratoDAO;
 import com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO;
+import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
+import com.edicsem.pe.sie.model.dao.EmpresaDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
 import com.edicsem.pe.sie.model.dao.TelefonoEmpleadoDAO;
+import com.edicsem.pe.sie.model.dao.TipoDocumentoDAO;
+import com.edicsem.pe.sie.model.dao.UbigeoDAO;
 import com.edicsem.pe.sie.service.facade.ContratoService;
-import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.TipoCasaService;
-import com.edicsem.pe.sie.service.facade.TipoDocumentoService;
-import com.edicsem.pe.sie.service.facade.UbigeoService;
 
 @Stateless
 public class ContratoServiceImpl implements ContratoService {
@@ -46,22 +48,27 @@ public class ContratoServiceImpl implements ContratoService {
 	@EJB
 	private EstadoGeneralDAO objEstadoGeneralDao;
 	@EJB
-	private TipoDocumentoService objtipoService;
+	private TipoDocumentoDAO objtipoDao;
 	@EJB
-	private UbigeoService objUbigeoService;
+	private UbigeoDAO objUbigeoDao;
 	@EJB
 	private TipoCasaService objTipoCasaService;
 	@EJB
-	private EmpresaService objEmpresaService;
+	private EmpresaDAO objEmpresaDao;
+	@EJB
+	private DetContratoEmpleadoDAO objDetContratoEmpleadoDao;
+	@EJB
+	private EmpleadoSieDAO objEmpleadoDao;
 	
 	public static Log log = LogFactory.getLog(ContratoServiceImpl.class);
 
+
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.ContratoService#insertContrato(com.edicsem.pe.sie.entity.ClienteSie, java.util.List, com.edicsem.pe.sie.entity.DomicilioPersonaSie, com.edicsem.pe.sie.entity.ContratoSie, java.util.List, java.util.List)
+	 * @see com.edicsem.pe.sie.service.facade.ContratoService#insertContrato(int, int, int, int, com.edicsem.pe.sie.entity.ClienteSie, java.util.List, com.edicsem.pe.sie.entity.DomicilioPersonaSie, com.edicsem.pe.sie.entity.ContratoSie, java.util.List, java.util.List, java.util.List)
 	 */
-	public void insertContrato(int idtipodoc,int Tipocasa,int idUbigeo,int  idempresa, ClienteSie  cliente, List<TelefonoPersonaSie> telefonoList, DomicilioPersonaSie domicilio,  ContratoSie contrato,List<DetProductoContratoSie> detprodcont, List<CobranzaSie> cobranza) {
+	public void insertContrato(int idtipodoc,int Tipocasa,int idUbigeo,int  idempresa, ClienteSie  cliente, List<TelefonoPersonaSie> telefonoList, DomicilioPersonaSie domicilio,  ContratoSie contrato,List<DetProductoContratoSie> detprodcont, List<CobranzaSie> cobranza, List<Integer> detidEmpleadosList) {
 		log.info(" * en insertar el contrato  ");
-		cliente.setTbTipoDocumentoIdentidad(objtipoService.buscarTipoDocumento(idtipodoc));
+		cliente.setTbTipoDocumentoIdentidad(objtipoDao.buscarTipoDocumento(idtipodoc));
 		cliente.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23));
 		log.info(" cliente estado " + cliente.getTbEstadoGeneral().getCodestadogeneral() );
 		objClienteDao.insertCliente(cliente);	
@@ -72,10 +79,9 @@ public class ContratoServiceImpl implements ContratoService {
 			objTelefonoDao.insertarTelefonoEmpleado(telefonoPersonaSie);
 		}	
 		log.info(" domicilio  ");
-
 		
 		domicilio.setTbTipoCasa(objTipoCasaService.findTipoCasa(Tipocasa));
-		domicilio.setTbUbigeo(objUbigeoService.findUbigeo(idUbigeo));
+		domicilio.setTbUbigeo(objUbigeoDao.findUbigeo(idUbigeo));
 		domicilio.setIdcliente(cliente);
 		domicilio.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(15));
 		log.info(" seteo domi"  );
@@ -83,7 +89,7 @@ public class ContratoServiceImpl implements ContratoService {
 		log.info(" inser domicilio "  );
 		contrato.setTbCliente(cliente);
 		contrato.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(25));
-		contrato.setTbEmpresa(objEmpresaService.findEmpresa(idempresa));
+		contrato.setTbEmpresa(objEmpresaDao.findEmpresa(idempresa));
 		log.info(" INSER CLIENTE" );
 		objContratoDao.insertContrato(contrato);
 		for (DetProductoContratoSie detprodcontrato : detprodcont) {
@@ -93,7 +99,6 @@ public class ContratoServiceImpl implements ContratoService {
 		}
 		log.info(" terminado tamaño cobranza " + cobranza.size());
 		for (CobranzaSie objcobranza : cobranza) {
-			CobranzaSiePK cob = new CobranzaSiePK();
 			log.info(" terminado cliente " +cliente.getIdcliente());
 			log.info(" terminado contrato " +contrato.getIdcontrato());
 			objcobranza.setCantcuotas(""+ contrato.getNumcuotas());
@@ -109,6 +114,20 @@ public class ContratoServiceImpl implements ContratoService {
 			objCobranzaDao.insertCobranza(objcobranza);
 			log.info(" terminado cobranza " );
 		}
+		log.info(" terminado DET " +detidEmpleadosList.size());
+		/*for (int i = 0; i < detidEmpleadosList.size() ; i++) {
+			log.info(" IDEMPL "+detidEmpleadosList.get(i));
+			DetContratoEmpleadoSie dce = new DetContratoEmpleadoSie();
+			dce.setIdempleado(detidEmpleadosList.get(i));
+			dce.setIdcontrato(contrato.getIdcontrato());
+			dce.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(31));
+			dce.setTbContrato(contrato);
+			dce.setTbEmpleado(objEmpleadoDao.buscarEmpleado(detidEmpleadosList.get(i)));
+			objDetContratoEmpleadoDao.insertDetContratoEmpleado(dce);
+			log.info(" terminado EMPL " );
+		}*/
+		
+		log.info("fin  " );
 	}
 
 	/* (non-Javadoc)
