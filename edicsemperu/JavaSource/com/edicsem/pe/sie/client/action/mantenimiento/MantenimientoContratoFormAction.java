@@ -28,6 +28,7 @@ import com.edicsem.pe.sie.entity.ContratoSie;
 import com.edicsem.pe.sie.entity.DetPaqueteSie;
 import com.edicsem.pe.sie.entity.DetProductoContratoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
+import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.PaqueteSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
@@ -103,6 +104,9 @@ public class MantenimientoContratoFormAction extends
 		idCobranza=0;
 		TipoTelef=1;
 		tipoVenta=1;
+		idempleadoColaborador=0;
+		idempleadoExpositor=0;
+		idempleadoVendedor=0;
 		cobranzaList= new ArrayList<CobranzaSie>() ;
 		detPaqueteList = new ArrayList<DetPaqueteSie>() ;
 	}
@@ -376,7 +380,7 @@ public class MantenimientoContratoFormAction extends
 			if(i==1){
 				fechaVencimiento = DateUtil.addToDate(objContratoSie.getFechacuotainicial(), Calendar.MONTH, 1);
 			}else{
-				fechaVencimiento = DateUtil.addToDate(fechaVencimiento, Calendar.MONTH, 1);
+				fechaVencimiento = DateUtil.addToDate(objContratoSie.getFechacuotainicial(), Calendar.MONTH, Integer.parseInt(objCobranzaSie.getNumletra()));
 			}
 			}
 			log.info("fec venc  "+i +" "+ fechaVencimiento +" conv "+ DateUtil.formatoString(fechaVencimiento, "dd/MM/yyyy") +" Numcuotas "+objContratoSie.getNumcuotas()+" mensualito "+ objContratoSie.getPagomensual()
@@ -435,6 +439,7 @@ public class MantenimientoContratoFormAction extends
 	 */
 	public String insertar() {
 		List<DetProductoContratoSie> detProductoContratoList = new ArrayList<DetProductoContratoSie>();
+		List<Integer> detidEmpleadosList = new ArrayList<Integer>();
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()' ");
@@ -455,8 +460,15 @@ public class MantenimientoContratoFormAction extends
 				else if(tipoVenta==2)
 					objContratoSie.setTipoventa("PNT");
 				
+				if(getIdempleadoExpositor()!=0)
+					detidEmpleadosList.add(getIdempleadoExpositor());
+				if(getIdempleadoVendedor()!=0)
+					detidEmpleadosList.add(getIdempleadoVendedor());
+				if(getIdempleadoColaborador()!=0)
+					detidEmpleadosList.add(getIdempleadoColaborador());
+				
 				log.info("a insertar contratito");
-				objContratoService.insertContrato(idtipodoc,Tipocasa,idUbigeo, idempresa, objClienteSie, telefonoList, objDomicilioSie,  objContratoSie,detProductoContratoList, cobranzaList);
+				objContratoService.insertContrato(idtipodoc,Tipocasa,idUbigeo, idempresa, objClienteSie, telefonoList, objDomicilioSie,  objContratoSie,detProductoContratoList, cobranzaList, detidEmpleadosList);
 				log.info(" despues de  insertar ");
 				objProductoSie = new ProductoSie();
 			} else {
