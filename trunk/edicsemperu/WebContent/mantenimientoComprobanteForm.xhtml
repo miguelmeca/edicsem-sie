@@ -7,11 +7,10 @@
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
 		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Comprobante</h1>
-		<h:form id="frmAlmacenForm">
+		<h:form id="frmComprobanteForm">
 			<p:growl id="message" showDetail="true" />
 			
 			<h:panelGrid id="display" columns="2" >
-
 				<h:outputText value="Código de Comprobante" />
 				<h:panelGroup>
 					<p:inputText value="#{comprobanteForm.objComprobanteSie.codcomprobante}" readonly="true" />
@@ -19,20 +18,16 @@
 			</h:panelGrid>
 			<p:dataTable value="#{comprobanteForm.detComplist}" var="c"
 				id="detcomproTable" >
-
+				
 				<f:facet name="header">
 					<h:outputLabel
 						value="#{message['lista.detcomprobante.titulo']}" />
 				</f:facet>
-
-				<p:column style="width:4%">
-				<p:rowToggler />
-				</p:column>
 				
 				<p:column headerText="Comprobante" >
 					<h:outputText value="#{c.tbComprobante.codcomprobante}" />
 				</p:column>
-
+				
 				<p:column headerText="Producto" >
 					<h:outputText value="#{c.tbKardex.tbProducto.descripcionproducto}" />
 				</p:column>
@@ -49,27 +44,13 @@
 					<h:outputText value="#{c.descripcion}" />
 				</p:column>
 				
-				<p:column headerText="Observación" >
+				<p:column headerText="Fecha Creación" >
 					<h:outputText value="#{c.tbKardex.fechacreacion}" />
 				</p:column>
 				
-				<p:rowExpansion>
-				<h:panelGrid id="display" columns="2" cellpadding="4" style="width:300px;">  
-  
-                <f:facet name="header">
-                 <h:outputLabel
-						value="Ingresos kardex" />
-                </f:facet>
-                
-                <h:outputText value="Id Kardex" />  
-                <h:outputText value="#{c.idcomprobante}" />
-                
-                </h:panelGrid>
-                </p:rowExpansion>  
 			</p:dataTable>
 			
 			<h:panelGrid  columns="2" >
-
 				<h:outputText value="Monto Total" />
 				<h:panelGroup>
 					<p:inputText value="#{comprobanteForm.montoTotal}" readonly="true" />
