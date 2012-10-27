@@ -14,7 +14,7 @@ import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 @Local
 public interface ContratoService {
 	
-	public abstract void insertContrato(int idtipodoc,int Tipocasa,int idUbigeo,int  idempresa, ClienteSie  cliente, List<TelefonoPersonaSie> telefonoList, DomicilioPersonaSie domicilio,  ContratoSie contrato,List<DetProductoContratoSie> detprodcont, List<CobranzaSie> cobranza);
+	public abstract void insertContrato(int idtipodoc,int Tipocasa,int idUbigeo,int  idempresa, ClienteSie  cliente, List<TelefonoPersonaSie> telefonoList, DomicilioPersonaSie domicilio,  ContratoSie contrato,List<DetProductoContratoSie> detprodcont, List<CobranzaSie> cobranza, List<Integer> detidEmpleadosList);
 	public abstract void updateContrato(ContratoSie contrato);
 	public abstract ContratoSie findContrato (int id);
 	public abstract List  listarContratos();
