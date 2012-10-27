@@ -7,7 +7,6 @@
 		<class>com.edicsem.pe.sie.entity.CargoEmpleadoSie</class>
 		<class>com.edicsem.pe.sie.entity.ClienteSie</class>
 		<class>com.edicsem.pe.sie.entity.CobranzaSie</class>
-		<class>com.edicsem.pe.sie.entity.CobranzaSiePK</class>
 		<class>com.edicsem.pe.sie.entity.CobranzaOperadoraSie</class>
 		<class>com.edicsem.pe.sie.entity.ComprobanteSie</class>
 		<class>com.edicsem.pe.sie.entity.ConceptoSie</class>
