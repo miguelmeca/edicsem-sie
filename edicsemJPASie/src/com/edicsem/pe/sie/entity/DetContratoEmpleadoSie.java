@@ -2,6 +2,7 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.sql.Timestamp;
 
 
@@ -16,19 +17,20 @@ public class DetContratoEmpleadoSie implements Serializable {
 
 	@EmbeddedId
 	private DetContratoEmpleadoSiePK id;
-
+	
+	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
 
 	private Integer idestadogeneral;
-
+	
 	//bi-directional many-to-one association to ContratoSie
     @ManyToOne
-	@JoinColumn(name="idcontrato")
+	@JoinColumn(name="idcontrato", insertable = false, updatable = false)
 	private ContratoSie tbContrato;
 
 	//bi-directional many-to-one association to EmpleadoSie
     @ManyToOne
-	@JoinColumn(name="idempleado")
+	@JoinColumn(name="idempleado", insertable = false, updatable = false)
 	private EmpleadoSie tbEmpleado;
 
     public DetContratoEmpleadoSie() {
