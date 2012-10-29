@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.model.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -12,6 +13,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
+import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 
 import com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO;
 
@@ -87,10 +89,7 @@ public class DomicilioEmpleadoDAOImpl implements DomicilioEmpleadoDAO{
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#listarUsuarios(com.edicsem.pe.sie.entity.Usuario)
 	 */
-	public List listarDomicilioEmpleados() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	
 	/*buscar domicilio por idempleado*/
 	public DomicilioPersonaSie buscarDomicilioXIdempleado(int id) {
@@ -105,5 +104,32 @@ public class DomicilioEmpleadoDAOImpl implements DomicilioEmpleadoDAO{
 		}
 		return domicilio;
 	}
+	
+	
 		
+	public List listarDomicilioCliente(int id) {
+		log.info(" idcliente "+ id);	
+	List<DomicilioPersonaSie> domiciliocliente =new ArrayList<DomicilioPersonaSie>();
+		try {
+			Query q = em.createQuery("select d from DomicilioPersonaSie d where d.idcliente = "+ id);
+			domiciliocliente = q.getResultList();
+			log.info("Domicilio x idcliente  --> " + domiciliocliente.size());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return domiciliocliente;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO#listarDomicilioEmpleados()
+	 */
+	
+	public List listarDomicilioEmpleados() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	
 }
