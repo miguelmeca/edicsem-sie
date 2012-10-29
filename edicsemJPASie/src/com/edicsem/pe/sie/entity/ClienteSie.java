@@ -63,6 +63,8 @@ public class ClienteSie implements Serializable {
 	private String telftrabajo;
 
 	private String titulartelefono;
+	
+	private Integer tipocliente;
 
 	//bi-directional many-to-one association to TelefonoPersonaSie
   	@OneToMany(mappedBy="idcliente")
@@ -277,5 +279,19 @@ public class ClienteSie implements Serializable {
 	 */
 	public void setNombresCompletos(String nombresCompletos) {
 		this.nombresCompletos = nombresCompletos;
+	}
+
+	/**
+	 * @return the tipocliente
+	 */
+	public Integer getTipocliente() {
+		return tipocliente;
+	}
+
+	/**
+	 * @param tipocliente the tipocliente to set
+	 */
+	public void setTipocliente(Integer tipocliente) {
+		this.tipocliente = tipocliente;
 	}
 }
