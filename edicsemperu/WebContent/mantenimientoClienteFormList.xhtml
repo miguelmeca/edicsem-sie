@@ -5,12 +5,11 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
-		<h1 class="title ui-widget-header ui-corner-all">Lista de
-			Clientes</h1>
+		<h1 class="title ui-widget-header ui-corner-all">Lista de Clientes</h1>
 
 		<h:form id="frmClienteFormList" prependId="false">
 			<p:growl id="message" showDetail="true" />
-			<p:dataTable value="#{MantenimientoClienteSearchAction.clienteList}"
+			<p:dataTable value="#{MantenimientoClienteSearchAction.clienteList}"  
 				var="c" paginator="true" rows="10">
 
 				<f:facet name="header">
@@ -18,18 +17,19 @@
 						value="#{message['lista.mantenimiento.empresa.titulo']}" />
 				</f:facet>
 
-				<p:column headerText="Nombres Completos">
+				<p:column headerText="Nombres Completos" id="nombre" filterBy="#{c.nombresCompletos}">
 					<h:outputText value="#{c.nombresCompletos}" />
 				</p:column>
 
-				<p:column headerText="Nº de Documento">
+				<p:column headerText="Nº de Documento" id="ndedocumento" filterBy="#{c.numdocumento}">
 					<h:outputText value="#{c.numdocumento}" />
 				</p:column>
 
 
 
 				<p:column headerText="Editar">
-					<p:commandButton value="Editar" action="#{MantenimientoClienteFormAction.update}"
+					<p:commandButton value="Editar" ajax="false"
+					 action="#{MantenimientoClienteFormAction.update}"
 						icon="ui-icon ui-icon-pencil">
 						<f:setPropertyActionListener value="#{c}"
 							target="#{MantenimientoClienteFormAction.objClienteSie}" />
