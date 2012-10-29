@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.model.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -10,10 +11,7 @@ import javax.persistence.Query;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-
-import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
-
 import com.edicsem.pe.sie.model.dao.TelefonoEmpleadoDAO;
 
 @Stateless
@@ -88,6 +86,8 @@ public class TelefonoEmpleadoDAOImpl implements TelefonoEmpleadoDAO{
 		return null;
 	}
 	
+
+	
 	/*buscar telefono por idempleado*/
 	public TelefonoPersonaSie buscarTelefonoXIdempleado(int id) {
 		log.info(" idempleado "+ id);
@@ -101,5 +101,51 @@ public class TelefonoEmpleadoDAOImpl implements TelefonoEmpleadoDAO{
 		}
 		return telefono;
 	}
+
+	
+	public List listarTelefonoCliente(int id) {
+		log.info(" idcliente "+ id);	
+	List<TelefonoPersonaSie> telefono =new ArrayList<TelefonoPersonaSie>();
+		try {
+			Query q = em.createQuery("select p from TelefonoPersonaSie p where p.idcliente = "+ id);
+			telefono = q.getResultList();
+			log.info("Telefono x idcliente  --> " + telefono.size());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return telefono;
+	}
+	
+	
+	public void actualizarTelefonoCliente(TelefonoPersonaSie telefonopersona) {
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("apunto de actualizar Cliente en el DAOImpl creca al merge");
+			}
+			em.merge(telefonopersona);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	public TelefonoPersonaSie buscarTelefonoCliente(int id) {
+		// TODO Auto-generated method stub
+				TelefonoPersonaSie telefonopersona= new TelefonoPersonaSie();
+				try {
+				if (log.isInfoEnabled()) {
+				log.info("buscar TelefonoCliente");
+				} 
+				telefonopersona=em.find(TelefonoPersonaSie.class, id);
+				log.info(" TelefonoPersona " +telefonopersona);
+				} catch (Exception e) {
+				e.printStackTrace();
+				}
+				return telefonopersona;
+	}
+
+	
 	
 }
