@@ -54,8 +54,25 @@ public class TelefonoPersonaSie implements Serializable {
     
     @Transient
     private String tipoTelef;
+    
+    @Transient
+    private int NuevoT;
 
-    public TelefonoPersonaSie() {
+    /**
+	 * @return the nuevoT
+	 */
+	public int getNuevoT() {
+		return NuevoT;
+	}
+
+	/**
+	 * @param nuevoT the nuevoT to set
+	 */
+	public void setNuevoT(int nuevoT) {
+		NuevoT = nuevoT;
+	}
+
+	public TelefonoPersonaSie() {
     }
 
 	public Integer getIdtelefonopersona() {
