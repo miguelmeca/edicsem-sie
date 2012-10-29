@@ -10,10 +10,11 @@ import javax.faces.bean.SessionScoped;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
+import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.service.facade.ClienteService;
+import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
@@ -25,17 +26,31 @@ public class MantenimientoClienteSearchAction extends BaseMantenimientoAbstractA
     
 	private ClienteSie objCliente;
 	private List<ClienteSie> clienteList;
+	int idEstadoGeneral;
+	
+	
+	private TelefonoPersonaSie objTelefonoPersonaSie;
+	private List<TelefonoPersonaSie> TelefonoPersonaList;
+	
 	private EmpleadoSie selectedEmpleado;
 	private boolean editMode;
 	
 	@EJB 
 	private ClienteService objclienteService;
 	
+	
+	
 	public Log log = LogFactory.getLog(MantenimientoClienteSearchAction.class);
 	
 	public List<ClienteSie> getClienteList() throws Exception {
 		return clienteList;
 	}
+	
+	
+
+	
+	
+	
 	
 
 	
@@ -49,6 +64,7 @@ public class MantenimientoClienteSearchAction extends BaseMantenimientoAbstractA
 		log.info("init()");
 		log.info("dentro del init");
 		objCliente = new ClienteSie();
+	
 		log.info("despues de inicializar  ");
 		log.info("init()");
 	
@@ -66,6 +82,13 @@ public class MantenimientoClienteSearchAction extends BaseMantenimientoAbstractA
 		return getViewList();
 	}
 	
+	
+/*LISTA DE TELEFONO*/
+	
+	
+	
+
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -76,6 +99,10 @@ public class MantenimientoClienteSearchAction extends BaseMantenimientoAbstractA
 	public String getViewList() {
 		return Constants.MANT_CLIENTE_FORM_LIST_PAGE;
 	}
+	
+	
+	
+	
 	
 	public boolean isEditMode() {
 		return editMode;
@@ -142,6 +169,57 @@ public class MantenimientoClienteSearchAction extends BaseMantenimientoAbstractA
 	public void setSelectedEmpleado(EmpleadoSie selectedEmpleado) {
 		this.selectedEmpleado = selectedEmpleado;
 	}
+
+
+	/**
+	 * @return the objTelefonoPersonaSie
+	 */
+	public TelefonoPersonaSie getObjTelefonoPersonaSie() {
+		return objTelefonoPersonaSie;
+	}
+
+
+	/**
+	 * @param objTelefonoPersonaSie the objTelefonoPersonaSie to set
+	 */
+	public void setObjTelefonoPersonaSie(TelefonoPersonaSie objTelefonoPersonaSie) {
+		this.objTelefonoPersonaSie = objTelefonoPersonaSie;
+	}
+
+
+	/**
+	 * @return the telefonoPersonaList
+	 */
+	public List<TelefonoPersonaSie> getTelefonoPersonaList1() {
+		return TelefonoPersonaList;
+	}
+
+
+	/**
+	 * @param telefonoPersonaList the telefonoPersonaList to set
+	 */
+	public void setTelefonoPersonaList(List<TelefonoPersonaSie> telefonoPersonaList) {
+		TelefonoPersonaList = telefonoPersonaList;
+	}
+
+
+	/**
+	 * @return the idEstadoGeneral
+	 */
+	public int getIdEstadoGeneral() {
+		return idEstadoGeneral;
+	}
+
+
+	/**
+	 * @param idEstadoGeneral the idEstadoGeneral to set
+	 */
+	public void setIdEstadoGeneral(int idEstadoGeneral) {
+		this.idEstadoGeneral = idEstadoGeneral;
+	}
+
+
+
 
 	
 	
