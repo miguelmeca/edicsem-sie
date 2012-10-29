@@ -92,9 +92,9 @@ public class ContratoSie implements Serializable {
   	@OneToMany(mappedBy="tbContrato")
   	private Set<DetProductoContratoSie> tbDetProductoContrato;
   	
-	//bi-directional many-to-one association to DetContratoEmpleadoSie
-	@OneToMany(mappedBy="tbContrato")
-	private Set<DetContratoEmpleadoSie> DetContratoEmpleados;
+  	//bi-directional many-to-one association to DetContratoEmpleadoSie
+  	@OneToMany(mappedBy="tbContrato")
+  	private Set<DetContratoEmpleadoSie> tbDetContratoEmpleados;
 	
     public ContratoSie() {
     }
@@ -269,18 +269,18 @@ public class ContratoSie implements Serializable {
 	}
 
 	/**
-	 * @return the detContratoEmpleados
+	 * @return the tbDetContratoEmpleados
 	 */
-	public Set<DetContratoEmpleadoSie> getDetContratoEmpleados() {
-		return DetContratoEmpleados;
+	public Set<DetContratoEmpleadoSie> getTbDetContratoEmpleados() {
+		return tbDetContratoEmpleados;
 	}
 
 	/**
-	 * @param detContratoEmpleados the detContratoEmpleados to set
+	 * @param tbDetContratoEmpleados the tbDetContratoEmpleados to set
 	 */
-	public void setDetContratoEmpleados(
-			Set<DetContratoEmpleadoSie> detContratoEmpleados) {
-		DetContratoEmpleados = detContratoEmpleados;
+	public void setTbDetContratoEmpleados(
+			Set<DetContratoEmpleadoSie> tbDetContratoEmpleados) {
+		this.tbDetContratoEmpleados = tbDetContratoEmpleados;
 	}
 	
 }

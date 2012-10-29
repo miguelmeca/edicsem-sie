@@ -1,9 +1,19 @@
 package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
-
 import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import com.edicsem.pe.sie.util.constants.Constants;
 
 
 /**
@@ -11,38 +21,39 @@ import java.sql.Timestamp;
  * 
  */
 @Entity
-@Table(name="tb_det_contrato_empleado")
+@Table(name="tb_det_contrato_empleado" , schema = Constants.ESQUEMA_SIE_POSTGRE)
 public class DetContratoEmpleadoSie implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@SequenceGenerator(name="TB_DET_CONTRATO_EMPLEADO_IDDETCONTRATOEMPL_GENERATOR", sequenceName="SIE.TB_DET_CONTRATO_EMPLEADO_IDDETCONTRATOEMPL_SEQ", initialValue=1, allocationSize =1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_DET_CONTRATO_EMPLEADO_IDDETCONTRATOEMPL_GENERATOR")
+	private Integer idDetContratoEmpl;
+	
+	private Integer idcontrato;
 
-	@EmbeddedId
-	private DetContratoEmpleadoSiePK id;
+	private Integer idempleado;
 	
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
-
-	private Integer idestadogeneral;
+	
+	//bi-directional many-to-one association to EstadoGeneralSie
+    @ManyToOne
+	@JoinColumn(name="idestadogeneral")
+	private EstadoGeneralSie tbEstadoGeneral;
 	
 	//bi-directional many-to-one association to ContratoSie
     @ManyToOne
-	@JoinColumn(name="idcontrato", insertable = false, updatable = false)
+	@JoinColumn(name="idcontrato",insertable = false, updatable = false)
 	private ContratoSie tbContrato;
 
 	//bi-directional many-to-one association to EmpleadoSie
     @ManyToOne
-	@JoinColumn(name="idempleado", insertable = false, updatable = false)
+	@JoinColumn(name="idempleado",insertable = false, updatable = false)
 	private EmpleadoSie tbEmpleado;
 
     public DetContratoEmpleadoSie() {
     }
-
-	public DetContratoEmpleadoSiePK getId() {
-		return this.id;
-	}
-
-	public void setId(DetContratoEmpleadoSiePK id) {
-		this.id = id;
-	}
 	
 	public Timestamp getFechacreacion() {
 		return this.fechacreacion;
@@ -50,14 +61,6 @@ public class DetContratoEmpleadoSie implements Serializable {
 
 	public void setFechacreacion(Timestamp fechacreacion) {
 		this.fechacreacion = fechacreacion;
-	}
-
-	public Integer getIdestadogeneral() {
-		return this.idestadogeneral;
-	}
-
-	public void setIdestadogeneral(Integer idestadogeneral) {
-		this.idestadogeneral = idestadogeneral;
 	}
 
 	public ContratoSie getContrato() {
@@ -80,4 +83,44 @@ public class DetContratoEmpleadoSie implements Serializable {
 		return tbContrato;
 	}
 	
+	/**
+	 * @return the tbEstadoGeneral
+	 */
+	public EstadoGeneralSie getTbEstadoGeneral() {
+		return tbEstadoGeneral;
+	}
+
+	/**
+	 * @param tbEstadoGeneral the tbEstadoGeneral to set
+	 */
+	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
+		this.tbEstadoGeneral = tbEstadoGeneral;
+	}
+
+	public Integer getIdcontrato() {
+		return this.idcontrato;
+	}
+	public void setIdcontrato(Integer idcontrato) {
+		this.idcontrato = idcontrato;
+	}
+	public Integer getIdempleado() {
+		return this.idempleado;
+	}
+	public void setIdempleado(Integer idempleado) {
+		this.idempleado = idempleado;
+	}
+
+	/**
+	 * @return the idDetContratoEmpl
+	 */
+	public Integer getIdDetContratoEmpl() {
+		return idDetContratoEmpl;
+	}
+
+	/**
+	 * @param idDetContratoEmpl the idDetContratoEmpl to set
+	 */
+	public void setIdDetContratoEmpl(Integer idDetContratoEmpl) {
+		this.idDetContratoEmpl = idDetContratoEmpl;
+	}
 }
