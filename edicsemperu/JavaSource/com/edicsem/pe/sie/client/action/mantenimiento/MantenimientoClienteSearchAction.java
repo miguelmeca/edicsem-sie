@@ -18,107 +18,74 @@ import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
-@ManagedBean(name="MantenimientoClienteSearchAction")
+@ManagedBean(name = "MantenimientoClienteSearchAction")
 @SessionScoped
-public class MantenimientoClienteSearchAction extends BaseMantenimientoAbstractAction {
-	
-	
-    
+public class MantenimientoClienteSearchAction extends
+		BaseMantenimientoAbstractAction {
+
 	private ClienteSie objCliente;
 	private List<ClienteSie> clienteList;
 	int idEstadoGeneral;
-	
-	
 	private TelefonoPersonaSie objTelefonoPersonaSie;
 	private List<TelefonoPersonaSie> TelefonoPersonaList;
-	
 	private EmpleadoSie selectedEmpleado;
 	private boolean editMode;
-	
-	@EJB 
+
+	@EJB
 	private ClienteService objclienteService;
-	
-	
-	
+
 	public Log log = LogFactory.getLog(MantenimientoClienteSearchAction.class);
-	
+
 	public List<ClienteSie> getClienteList() throws Exception {
 		return clienteList;
 	}
-	
-	
 
-	
-	
-	
-	
-
-	
 	public MantenimientoClienteSearchAction() {
 		log.info("inicializando mi constructor");
 		init();
 	}
 
-	/*inicializamos los  objetos utilizados*/
+	/* inicializamos los objetos utilizados */
 	public void init() {
 		log.info("init()");
 		log.info("dentro del init");
 		objCliente = new ClienteSie();
-	
+
 		log.info("despues de inicializar  ");
 		log.info("init()");
-	
+
 	}
-	
-	
 
 	public String listar() {
 		log.info("listarEmpleados 'MantenimientoClienteSearchAction' ");
-		clienteList =  objclienteService.listarClientes();
-				
+		clienteList = objclienteService.listarClientes();
+
 		if (clienteList == null) {
 			clienteList = new ArrayList<ClienteSie>();
-	}
+		}
 		return getViewList();
 	}
-	
-	
-/*LISTA DE TELEFONO*/
-	
-	
-	
 
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
-	 * #getViewList()
-	 */
 	public String getViewList() {
 		return Constants.MANT_CLIENTE_FORM_LIST_PAGE;
 	}
-	
-	
-	
-	
-	
+
 	public boolean isEditMode() {
 		return editMode;
 	}
-	
+
 	/**
-	 * @param editMode the editMode to set
+	 * @param editMode
+	 *            the editMode to set
 	 */
 	public void setEditMode(boolean editMode) {
 		this.editMode = editMode;
 	}
-	
+
 	public EmpleadoSie getSelectedEmpleado() {
 		return selectedEmpleado;
 	}
-	
+
 	public void setSelecteEmpleado(EmpleadoSie selectedEmpleado) {
 		this.selectedEmpleado = selectedEmpleado;
 	}
@@ -131,7 +98,8 @@ public class MantenimientoClienteSearchAction extends BaseMantenimientoAbstractA
 	}
 
 	/**
-	 * @param objclienteService the objclienteService to set
+	 * @param objclienteService
+	 *            the objclienteService to set
 	 */
 	public void setObjclienteService(ClienteService objclienteService) {
 		this.objclienteService = objclienteService;
@@ -140,9 +108,10 @@ public class MantenimientoClienteSearchAction extends BaseMantenimientoAbstractA
 	/**
 	 * @return the clienteList
 	 */
-	
+
 	/**
-	 * @param clienteList the clienteList to set
+	 * @param clienteList
+	 *            the clienteList to set
 	 */
 	public void setClienteList(List<ClienteSie> clienteList) {
 		this.clienteList = clienteList;
@@ -156,20 +125,20 @@ public class MantenimientoClienteSearchAction extends BaseMantenimientoAbstractA
 	}
 
 	/**
-	 * @param objCliente the objCliente to set
+	 * @param objCliente
+	 *            the objCliente to set
 	 */
 	public void setObjCliente(ClienteSie objCliente) {
 		this.objCliente = objCliente;
 	}
 
-
 	/**
-	 * @param selectedEmpleado the selectedEmpleado to set
+	 * @param selectedEmpleado
+	 *            the selectedEmpleado to set
 	 */
 	public void setSelectedEmpleado(EmpleadoSie selectedEmpleado) {
 		this.selectedEmpleado = selectedEmpleado;
 	}
-
 
 	/**
 	 * @return the objTelefonoPersonaSie
@@ -178,14 +147,14 @@ public class MantenimientoClienteSearchAction extends BaseMantenimientoAbstractA
 		return objTelefonoPersonaSie;
 	}
 
-
 	/**
-	 * @param objTelefonoPersonaSie the objTelefonoPersonaSie to set
+	 * @param objTelefonoPersonaSie
+	 *            the objTelefonoPersonaSie to set
 	 */
-	public void setObjTelefonoPersonaSie(TelefonoPersonaSie objTelefonoPersonaSie) {
+	public void setObjTelefonoPersonaSie(
+			TelefonoPersonaSie objTelefonoPersonaSie) {
 		this.objTelefonoPersonaSie = objTelefonoPersonaSie;
 	}
-
 
 	/**
 	 * @return the telefonoPersonaList
@@ -194,14 +163,14 @@ public class MantenimientoClienteSearchAction extends BaseMantenimientoAbstractA
 		return TelefonoPersonaList;
 	}
 
-
 	/**
-	 * @param telefonoPersonaList the telefonoPersonaList to set
+	 * @param telefonoPersonaList
+	 *            the telefonoPersonaList to set
 	 */
-	public void setTelefonoPersonaList(List<TelefonoPersonaSie> telefonoPersonaList) {
+	public void setTelefonoPersonaList(
+			List<TelefonoPersonaSie> telefonoPersonaList) {
 		TelefonoPersonaList = telefonoPersonaList;
 	}
-
 
 	/**
 	 * @return the idEstadoGeneral
@@ -210,17 +179,12 @@ public class MantenimientoClienteSearchAction extends BaseMantenimientoAbstractA
 		return idEstadoGeneral;
 	}
 
-
 	/**
-	 * @param idEstadoGeneral the idEstadoGeneral to set
+	 * @param idEstadoGeneral
+	 *            the idEstadoGeneral to set
 	 */
 	public void setIdEstadoGeneral(int idEstadoGeneral) {
 		this.idEstadoGeneral = idEstadoGeneral;
 	}
 
-
-
-
-	
-	
 }
