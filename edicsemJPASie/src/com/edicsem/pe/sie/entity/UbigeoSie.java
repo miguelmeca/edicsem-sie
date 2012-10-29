@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.edicsem.pe.sie.util.constants.Constants;
 
@@ -43,8 +44,9 @@ public class UbigeoSie implements Serializable {
 	//bi-directional many-to-one association to PuntoVentaSie
 	@OneToMany(mappedBy="tbUbigeo")
 	private Set<PuntoVentaSie> tbPuntoVentas;
+	
 
-    public UbigeoSie() {
+	public UbigeoSie() {
     }
 
 	public Integer getIdubigeo() {
