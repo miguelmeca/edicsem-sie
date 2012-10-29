@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.edicsem.pe.sie.util.constants.Constants;
 
@@ -61,9 +62,26 @@ public class DomicilioPersonaSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idubigeo")
 	private UbigeoSie tbUbigeo;
+    
+    @Transient
+	private String desUbigeo;
 
     public DomicilioPersonaSie() {
     }
+
+    /**
+	 * @return the desUbigeo
+	 */
+	public String getDesUbigeo() {
+		return desUbigeo;
+	}
+
+	/**
+	 * @param desUbigeo the desUbigeo to set
+	 */
+	public void setDesUbigeo(String desUbigeo) {
+		this.desUbigeo = desUbigeo;
+	}
 
 	public Integer getIddomiciliopersona() {
 		return this.iddomiciliopersona;
