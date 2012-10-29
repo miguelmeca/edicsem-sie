@@ -28,7 +28,6 @@ import com.edicsem.pe.sie.entity.ContratoSie;
 import com.edicsem.pe.sie.entity.DetPaqueteSie;
 import com.edicsem.pe.sie.entity.DetProductoContratoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
-import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.PaqueteSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
@@ -367,7 +366,7 @@ public class MantenimientoContratoFormAction extends
 		Date fechaVencimiento = null ;
 		sdf.format(objContratoSie.getFechacuotainicial());
 		String fecha3 =sdf.format(objContratoSie.getFechacuotainicial());
-		 fechaVencimiento =sdf.parse(fecha3);
+		fechaVencimiento =sdf.parse(fecha3);
 		for (int i = 1; i <= objContratoSie.getNumcuotas(); i++) {
 			objCobranzaSie.setNumletra(i+"");
 			if(i==1 && objContratoSie.getCuotainicial()!=new BigDecimal(0.0)){
@@ -376,11 +375,11 @@ public class MantenimientoContratoFormAction extends
 			}else{
 				
 			objCobranzaSie.setImpinicial(objContratoSie.getPagomensual());
-			//una posible anternativa
+			
 			if(i==1){
 				fechaVencimiento = DateUtil.addToDate(objContratoSie.getFechacuotainicial(), Calendar.MONTH, 1);
 			}else{
-				fechaVencimiento = DateUtil.addToDate(objContratoSie.getFechacuotainicial(), Calendar.MONTH, Integer.parseInt(objCobranzaSie.getNumletra()));
+				fechaVencimiento = DateUtil.addToDate(objContratoSie.getFechacuotainicial(), Calendar.MONTH, Integer.parseInt(objCobranzaSie.getNumletra())-1);
 			}
 			}
 			log.info("fec venc  "+i +" "+ fechaVencimiento +" conv "+ DateUtil.formatoString(fechaVencimiento, "dd/MM/yyyy") +" Numcuotas "+objContratoSie.getNumcuotas()+" mensualito "+ objContratoSie.getPagomensual()
@@ -470,6 +469,10 @@ public class MantenimientoContratoFormAction extends
 				log.info("a insertar contratito");
 				objContratoService.insertContrato(idtipodoc,Tipocasa,idUbigeo, idempresa, objClienteSie, telefonoList, objDomicilioSie,  objContratoSie,detProductoContratoList, cobranzaList, detidEmpleadosList);
 				log.info(" despues de  insertar ");
+				mensaje = Constants.MESSAGE_INFO_TITULO;
+				msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+						Constants.MESSAGE_INFO_TITULO, mensaje);
+				FacesContext.getCurrentInstance().addMessage(null, msg);
 				objProductoSie = new ProductoSie();
 			} else {
 				log.info("a actualizar  ");
