@@ -19,7 +19,7 @@ import com.edicsem.pe.sie.util.constants.Constants;
 @Entity
 @Table(name="tb_detalle_comprobante", schema = Constants.ESQUEMA_SIE_POSTGRE)
 public class DetalleComprobanteSie implements Serializable {
-	private static final long serialVersiOonUID = 1L;
+	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
 	private DetalleComprobanteSiePK id;
