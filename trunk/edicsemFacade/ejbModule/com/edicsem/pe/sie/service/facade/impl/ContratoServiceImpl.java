@@ -21,7 +21,6 @@ import com.edicsem.pe.sie.model.dao.ContratoDAO;
 import com.edicsem.pe.sie.model.dao.DetContratoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.DetProductoContratoDAO;
 import com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO;
-import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
 import com.edicsem.pe.sie.model.dao.EmpresaDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
 import com.edicsem.pe.sie.model.dao.TelefonoEmpleadoDAO;
@@ -57,8 +56,6 @@ public class ContratoServiceImpl implements ContratoService {
 	private EmpresaDAO objEmpresaDao;
 	@EJB
 	private DetContratoEmpleadoDAO objDetContratoEmpleadoDao;
-	@EJB
-	private EmpleadoSieDAO objEmpleadoDao;
 	
 	public static Log log = LogFactory.getLog(ContratoServiceImpl.class);
 
@@ -114,19 +111,20 @@ public class ContratoServiceImpl implements ContratoService {
 			objCobranzaDao.insertCobranza(objcobranza);
 			log.info(" terminado cobranza " );
 		}
-		log.info(" terminado DET " +detidEmpleadosList.size());
-		/*for (int i = 0; i < detidEmpleadosList.size() ; i++) {
-			log.info(" IDEMPL "+detidEmpleadosList.get(i));
-			DetContratoEmpleadoSie dce = new DetContratoEmpleadoSie();
-			dce.setIdempleado(detidEmpleadosList.get(i));
-			dce.setIdcontrato(contrato.getIdcontrato());
-			dce.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(31));
-			dce.setTbContrato(contrato);
-			dce.setTbEmpleado(objEmpleadoDao.buscarEmpleado(detidEmpleadosList.get(i)));
-			objDetContratoEmpleadoDao.insertDetContratoEmpleado(dce);
-			log.info(" terminado EMPL " );
-		}*/
+		log.info(" terminado DET  :D " +detidEmpleadosList.size());
 		
+		DetContratoEmpleadoSie d;
+		for (int i = 0; i < detidEmpleadosList.size() ; i++) {
+			log.info(" IDEMPL "+detidEmpleadosList.get(i));
+			
+			d = new DetContratoEmpleadoSie();
+			d.setIdempleado(detidEmpleadosList.get(i));
+			d.setIdcontrato(contrato.getIdcontrato());
+			d.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(31));
+			log.info(" vamos a insertar  " );
+			objDetContratoEmpleadoDao.insertDetContratoEmpleado(d);
+			log.info(" terminado EMPL " );
+		}
 		log.info("fin  " );
 	}
 
