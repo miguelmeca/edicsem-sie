@@ -6,14 +6,26 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import com.edicsem.pe.sie.entity.ClienteSie;
+import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.model.dao.ClienteDAO;
+import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
+import com.edicsem.pe.sie.model.dao.TelefonoEmpleadoDAO;
 import com.edicsem.pe.sie.service.facade.ClienteService;
+import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
 
 @Stateless
 public class ClienteServiceImpl implements ClienteService {
 
 	@EJB
 	private  ClienteDAO objClienteDao;
+	
+	
+	@EJB
+	private EstadoGeneralDAO objEstadoGeneralDao;
+	
+	@EJB
+	private TelefonoEmpleadoDAO objTelefonoDao;
+
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ClienteService#insertCliente(com.edicsem.pe.sie.entity.ClienteSie)
@@ -22,11 +34,28 @@ public class ClienteServiceImpl implements ClienteService {
 		objClienteDao.insertCliente(Cliente);
 	}
 
+
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.ClienteService#updateCliente(com.edicsem.pe.sie.entity.ClienteSie)
+	 * @see com.edicsem.pe.sie.service.facade.ClienteService#updateCliente(com.edicsem.pe.sie.entity.ClienteSie, java.util.List)
 	 */
-	public void updateCliente(ClienteSie Cliente) {
+	public void updateCliente(ClienteSie Cliente, List<TelefonoPersonaSie> TelefonoPersonaList ) {
+		
 		objClienteDao.updateCliente(Cliente);
+		
+		for (int i = 0; i < TelefonoPersonaList.size(); i++) {
+			if (TelefonoPersonaList.get(i).getNuevoT()==1) {
+				//insertar
+				TelefonoPersonaSie telefono=new TelefonoPersonaSie();
+			telefono =	TelefonoPersonaList.get(i);
+			telefono.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(17));
+			telefono.setIdcliente(Cliente);
+			objTelefonoDao.insertarTelefonoEmpleado(telefono);	
+			
+			}else{
+				//actualizar	
+				objTelefonoDao.actualizarTelefonoEmpleado(TelefonoPersonaList.get(i));
+			}
+		}
 	}
 
 	/* (non-Javadoc)
