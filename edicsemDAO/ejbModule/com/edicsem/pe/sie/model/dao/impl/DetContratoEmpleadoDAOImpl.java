@@ -34,6 +34,7 @@ public class DetContratoEmpleadoDAOImpl implements DetContratoEmpleadoDAO{
 			} 
 			em.persist(d);
 		} catch (Exception e) {
+			log.info(" msg  -->  " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
