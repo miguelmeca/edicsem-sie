@@ -52,10 +52,30 @@ public class TelefonoEmpleadoServiceImpl implements TelefonoEmpleadoService{
 	public List listarTelefonoEmpleados() {
 		return objTelefonoEmpleadoDao.listarTelefonoEmpleados();
 	}
+	
+	
+	public List listarTelefonoCliente(int id) {
+		return objTelefonoEmpleadoDao.listarTelefonoCliente(id);
+	}
+	/*Listar todos los telefonos por codigo de cliente*/
 
+	
+	public void actualizarTelefonoCliente(TelefonoPersonaSie telefonocliente) {
+		
+		objTelefonoEmpleadoDao.actualizarTelefonoCliente(telefonocliente);
+		
+	}
+	
+	
+	
     public TelefonoPersonaSie buscarTelefonoXIdempleado(int id) { 
 		
 		return objTelefonoEmpleadoDao.buscarTelefonoXIdempleado(id); 
 	}
-		
+	
+    
+    public TelefonoPersonaSie buscarTelefonoCliente(int id) {
+		return objTelefonoEmpleadoDao.buscarTelefonoCliente(id);
+	}
+
 }
