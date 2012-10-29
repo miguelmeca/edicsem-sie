@@ -144,17 +144,20 @@ public class MantenimientoClienteFormAction extends
 		// enviamos el nombre completo del depa- provincia-distrito
 		log.info("ingresarUbigeo :D a");
 		UbigeoSie objUbigeoDomicilio = new UbigeoSie();
-
-		objUbigeoDomicilio = objUbigeoService.findUbigeo(objClienteSie.getIdcliente());
+		
+		objDomicilioPersonaSie = objDomicilioPersonaService.buscarDomicilioEmpleado(DomicilioPersonaList.get(0).getIddomiciliopersona());
+		log.info("ingresarUbigeo :D a --- " + objDomicilioPersonaSie.getTbUbigeo().getIdubigeo());
+		
+		objUbigeoDomicilio = objUbigeoService.findUbigeo(objDomicilioPersonaSie.getTbUbigeo().getIdubigeo());
 
 		log.info("ingresarUbigeo :D a --- " + objUbigeoDomicilio.getIdubigeo());
+		comboManagerDomicilio.setIdDepartamento(objUbigeoDomicilio.getCoddepartamento());
+		comboManagerDomicilio.setIdProvincia(objUbigeoDomicilio.getCodprovincia());
 
-		Iterator it = comboManagerDomicilio.getUbigeoDeparItems().entrySet()
-				.iterator();
-		Iterator it2 = comboManagerDomicilio.getUbigeoProvinItems().entrySet()
-				.iterator();
-		Iterator it3 = comboManagerDomicilio.getUbigeoDistriItems().entrySet()
-				.iterator();
+		Iterator it = comboManagerDomicilio.getUbigeoDeparItems().entrySet().iterator();
+		
+		Iterator it2 = comboManagerDomicilio.getUbigeoProvinItems().entrySet().iterator();
+		Iterator it3 = comboManagerDomicilio.getUbigeoDistriItems().entrySet().iterator();
 
 		while (it.hasNext()) {
 			Map.Entry e = (Map.Entry) it.next();

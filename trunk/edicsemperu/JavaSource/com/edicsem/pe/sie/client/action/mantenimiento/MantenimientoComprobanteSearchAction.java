@@ -19,7 +19,6 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 @SessionScoped
 public class MantenimientoComprobanteSearchAction extends BaseMantenimientoAbstractAction{
 
-	private ComprobanteSie comprobante;
 	private Log log = LogFactory.getLog(MantenimientoComprobanteSearchAction.class);
 	private List<ComprobanteSie> comprobanteList;
 	 
@@ -37,7 +36,6 @@ public class MantenimientoComprobanteSearchAction extends BaseMantenimientoAbstr
 		if (log.isInfoEnabled()) {
 			log.info("Inicializando 'MantenimientoComprobanteSearchAction'");
 		}
-		comprobante = new ComprobanteSie();
 	}
 	
 	/* (non-Javadoc)
