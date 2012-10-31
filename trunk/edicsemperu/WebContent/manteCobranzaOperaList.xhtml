@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+   <ui:define name="body">
+    <h1 class="title ui-widget-header ui-corner-all">Seguimiento de Cobranzas</h1>
+     <h:form id="parametrosList" prependId="false">
+	  <p:fieldset legend="Lista de Cobranzas">  
+	  <p:dataTable value="#{mantenimientoCobranzaOperaSearchAction.cobranzaOperaList}" var="p"
+	   id="listaPersonas" paginator="true" rows="5"
+       paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	   rowsPerPageTemplate="5,10,15" widgetVar="table"
+	   emptyMessage="No se encontro registros">
+	   <f:facet name="header"></f:facet>
+	   <f:facet name="header">
+	    <p:outputPanel>
+		 <h:outputText value="Buscar :"/>
+		 <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px; align=Left; "/>
+		</p:outputPanel>
+	   </f:facet>
+       <p:column>
+	    <f:facet name="header">
+		 <h:outputText value="Contrato" />
+		</f:facet>
+		<h:outputText value="#{p.tbCobranza.tbContrato.codcontrato}" />
+	   </p:column>
+	   <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Cliente" />
+		</f:facet>
+		<h:outputText value="#{p.tbCobranza.tbCliente.nombrecliente}" />
+	   </p:column>
+	   <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Nro de Cuotas" />
+		</f:facet>
+		<h:outputText value="#{p.tbCobranza.cantcuotas}" />
+	   </p:column>
+	      <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Tipo de Cliente" />
+		</f:facet>
+	   </p:column>
+	        <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Estado" />
+		</f:facet>
+	   </p:column>
+	   <p:column headerText="Seleccionar">
+	    <p:commandButton value="Mostrar" ajax="false" 
+		 action="#{mantenimientoCobranzaOperaSearchAction.mostrar}">
+		 <f:setPropertyActionListener value="#{p}"  
+		  target="#{mantenimientoCobranzaOperaSearchAction.objCobranzaOpera}" />
+		</p:commandButton>  
+	   </p:column>
+	  </p:dataTable>		
+</p:fieldset> 
+<p:fieldset legend="Detalle de Pagos" style="margin-top:20px">  
+	  <p:dataTable value="#{mantenimientoCobranzaOperaSearchAction.detallePagos}" var="p" rowStyleClass="#{p.fecpago == mantenimientoCobranzaOperaSearchAction.fecPagoNull ? 'colorRojo' : 'colorVerde'}"
+	   id="DetallePagos" paginator="false" rows="10"
+       paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	   rowsPerPageTemplate="5,10,15" widgetVar="table"
+	   emptyMessage="No se encontro registros">
+	   <f:facet name="header"></f:facet>
+       <p:column>
+	    <f:facet name="header">
+		 <h:outputText value="Nro de Cuotas" />
+		</f:facet>
+		<h:outputText value="#{p.numletra}" />
+	   </p:column>
+	   <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Monto" />
+		</f:facet>
+		<h:outputText value="#{p.impinicial}" />
+	   </p:column>
+	   <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Fec. de Vencimiento" />
+		</f:facet>
+		<h:outputText value="#{p.fechaVencimientoString}" />
+	   </p:column>
+	   <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Fec. de Pago" />
+		</f:facet>
+		<h:outputText value="#{p.fecpago}" />
+	   </p:column>
+	  </p:dataTable>
+</p:fieldset>
+<p:fieldset legend="Datos del Cliente" style="margin-top:20px">  
+<h:panelGrid columns="2" >
+<h:outputText value="Nombres Completos :" />
+			<h:outputText  value="#{mantenimientoCobranzaOperaSearchAction.objcliente.nombrecliente}"  />
+<h:outputText value="Correo :"  />
+			<h:outputText  value="#{mantenimientoCobranzaOperaSearchAction.objcliente.correo}"  />
+<h:outputText value="Dirección :"  />
+			<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.directrabajo}" />
+<h:outputText value="Distrito :"  />
+			<h:outputText  value="#{mantenimientoCobranzaOperaSearchAction.objcliente.telftrabajo}" />
+<h:outputText value="Empresa donde trabaja :"  />
+			<h:outputText  value="#{mantenimientoCobranzaOperaSearchAction.objcliente.empresatrabajo}"  />
+<h:outputText value="Cargo :" />
+			<h:outputText  value="#{mantenimientoCobranzaOperaSearchAction.objcliente.cargotrabajo}"  />
+</h:panelGrid>
+<h:panelGrid columns="3">
+<h:outputText value="Teléfono :" />
+<p:dataTable value="#{mantenimientoCobranzaOperaSearchAction.listatelefono}" var="t" rowStyleClass="#{t.operadorTelefonico eq 'Claro' ? 'colorRojo': (t.operadorTelefonico eq 'Movistar' ? 'colorCeleste': 'color3') }"
+	   id="DetalleTelefono" paginator="false" rows="5"
+       paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	   rowsPerPageTemplate="5,10,15" widgetVar="table"
+	   emptyMessage="No se encontro registros">
+	   <f:facet name="header"></f:facet>
+       <p:column>
+	    <f:facet name="header">
+		 <h:outputText value="Teléfono" />
+		</f:facet>
+	    <h:outputText value="#{t.telefono}" />
+	   </p:column>
+	   <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Tipo de Tel." />
+		</f:facet>
+         <h:outputText value="#{t.tipoTelef}" />
+	   </p:column>
+       <p:column>
+		<f:facet name="header">
+		 <h:outputText value="Operadora" />
+		</f:facet>
+		<h:outputText value="#{t.operadorTelefonico}" />
+	   </p:column>
+	  </p:dataTable>
+</h:panelGrid>
+</p:fieldset>
+<p:fieldset legend="Registro del Seguimiento" style="margin-top:20px">   
+<h:panelGrid columns="2" >
+<p:outputLabel value="Tipo de LLamada :" for="tipo" />
+ <p:selectOneMenu id="tipo" value="#{mantenimientoCobranzaOperaSearchAction.tipollamada}" styleClass="required" title="El tipo es obligatorio!" >
+ <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
+ <f:selectItems  value="#{comboAction.tipollamada}" />
+ </p:selectOneMenu>
+<p:outputLabel value="Observación :" for="observacion" />
+<p:inputTextarea id="observacion" value="#{mantenimientoCobranzaOperaSearchAction.objCobranzaOpera.observaciones}" 
+rows="3" cols="60" maxlength="100" required="false"  label="Correo" autoResize="false"/>
+<h:outputText value="Enviar al sistema :" />
+<p:selectBooleanCheckbox></p:selectBooleanCheckbox>
+<p:commandButton id="btn" value="Guardar" update="panel" action="#{mantenimientoCobranzaOperaSearchAction.insertar}" ajax="false" icon="ui-icon-check"/>
+</h:panelGrid>
+</p:fieldset>
+  </h:form>
+ </ui:define>
+</ui:composition>
