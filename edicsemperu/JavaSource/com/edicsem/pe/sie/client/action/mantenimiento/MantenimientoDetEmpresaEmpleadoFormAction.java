@@ -14,6 +14,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.DetEmpresaEmpleadoSie;
 import com.edicsem.pe.sie.service.facade.DetEmpresaEmpleadoService;
+import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
@@ -34,6 +35,8 @@ public class MantenimientoDetEmpresaEmpleadoFormAction extends
 	private DetEmpresaEmpleadoService objDetEmpresaEmpleadoService;
 	@EJB
 	private EstadogeneralService objEstadoGeneralService;
+	@EJB
+	private EmpresaService objEmpresaService;
 	
 	public MantenimientoDetEmpresaEmpleadoFormAction() {
 		init();
@@ -99,6 +102,7 @@ public class MantenimientoDetEmpresaEmpleadoFormAction extends
 								log.info(" existe uno = ");
 								mensaje ="El empleado : "+ listadet.get(i).getTbEmpleado().getNombresCompletos() +" es lider actualmente ";
 								log.info(mensaje);
+								break;
 							}
 							
 							//actualizar el anterior lider diferente al actual
@@ -111,24 +115,20 @@ public class MantenimientoDetEmpresaEmpleadoFormAction extends
 									objDetEmpresaEmpleadoSie.setLider("");
 									objDetEmpresaEmpleadoService.updateDetEmpresaEmpleadoSie(objDetEmpresaEmpleadoSie);
 									for (int j = 0; j < listadet.size(); j++) {
-									if(listadet.get(j).getTbEmpleado().getIdempleado()== Integer.parseInt(empleadosList.get(0))){
-										
+										//si el empleado se encuentra en otra empresa
+									if(listadet.get(j).getTbEmpleado().getIdempleado()== Integer.parseInt(empleadosList.get(0))&& 
+											listadet.get(j).getTbEmpresa().getIdempresa()!=idEmpresa ){
+										objDetEmpresaEmpleadoSie.setLider("S");
+										objDetEmpresaEmpleadoSie = objDetEmpresaEmpleadoService.findDetEmpresaEmpleadoSie(listadet.get(j).getIdDetEmpresaEmpl());
+										objDetEmpresaEmpleadoSie.setTbEmpresa(objEmpresaService.findEmpresa(idEmpresa));
+										objDetEmpresaEmpleadoService.updateDetEmpresaEmpleadoSie(objDetEmpresaEmpleadoSie);
 									}
 									}
 									mensaje ="El empleado : "+ listadet.get(i).getTbEmpleado().getNombresCompletos() +" es lider actualmente ";
 									log.info(mensaje);
 									objDetEmpresaEmpleadoService.insertDetEmpresaEmpleadoSie(empleadosList, idEmpresa, lider);
 							}
-							else if(listadet.get(i).getTbEmpresa().getIdempresa()==idEmpresa &&
-									listadet.get(i).getTbEmpleado().getIdempleado()!= Integer.parseInt(empleadosList.get(0)) &&
-									!(listadet.get(i).getLider().equals("S")) ){
-									log.info(" para actualizar su estado 3 "+listadet.get(i).getIdDetEmpresaEmpl());
-									objDetEmpresaEmpleadoSie = objDetEmpresaEmpleadoService.findDetEmpresaEmpleadoSie(listadet.get(i).getIdDetEmpresaEmpl());
-									objDetEmpresaEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(34));
-									objDetEmpresaEmpleadoService.updateDetEmpresaEmpleadoSie(objDetEmpresaEmpleadoSie);
-									mensaje ="El empleado : "+ listadet.get(i).getTbEmpleado().getNombresCompletos() +" es lider actualmente ";
-									log.info(mensaje);
-							}
+							
 						}
 					}else{
 						log.info("no ");

@@ -94,37 +94,23 @@ body {
 					<p:submenu label="Mantenimientos">
 												<p:menuitem value="Productos" update="messages" ajax="false"
 							action="#{productoSearch.listar}" />
-						<p:menuitem value="Orden de Reposicion" update="messages"
-							ajax="false" action="#" />
-						<p:menuitem value="Buscar Cliente" update="messages" ajax="false"
-							action="#" />
-						<p:menuitem value="Gestion de Clientes/Seguimiento Cobranzas"
-							ajax="false" action="#" />
-						<p:menuitem value="Registro Contrato" update="messages"
-							ajax="false" action="#{contratoForm.agregar}" />
-						<p:menuitem value="Mantenimiento de Punto de Venta/Almacen"
-							ajax="false" action="#{almacenSearch.listar}" />
-						<p:menuitem value="Mantenimiento Valorizado" update="messages"
-							ajax="false" action="mantenimientoKardex.jsf" />
-						<p:menuitem value="Movimiento Mercader&iacute;a" ajax="false"
-							action="#{movimientoMercaderia.listar}" />
-						<p:menuitem value="Registro Comprobante" ajax="false"
-							action="#{comprobanteSearch.listar}" />
-						<p:menuitem value="Mantenimiento de Empleados" ajax="false"
-							action="#{mantenimientoEmpleadoSearchAction.listar}" />
-						<p:menuitem value="Mantenimiento de Proveedores" ajax="false"
-							action="#{mantenimientoProveedorSearchAction.listar}" />
-						<p:menuitem value="Parámetros del sistema" ajax="false"
-							action="#{mantenimientoParametroSearchAction.listar}" />
-						<p:menuitem value="Seguimiento de Cobranzas" ajax="false"
-							action="#{mantenimientoCobranzaOperaSearchAction.listar}" />
-						<p:menuitem value="Mantenimiento Cargo Empleado" ajax="false"
-							action="#{mantenimientoCargoEmpleadoSearchAction.listar}" />
-						<p:menuitem value="Mantenimiento Empresa" ajax="false"
-							action="#{empresaSearch.listar}" />
-						<p:menuitem value="Meta Empresa" update="messages" ajax="false"
-							action="metaEmpresa.jsf" />
-							<p:menuitem value="Cliente" update="messages" ajax="false"
+						<p:menuitem value="Orden de Reposicion" update="messages" ajax="false" action="#" />
+						<p:menuitem value="Buscar Cliente" update="messages" ajax="false" action="#" />
+						<p:menuitem value="Gestion de Clientes/Seguimiento Cobranzas" ajax="false" action="#" />
+						<p:menuitem value="Registro Contrato" update="messages" ajax="false" action="#{contratoForm.agregar}" />
+						<p:menuitem value="Mantenimiento de Punto de Venta/Almacen" ajax="false" action="#{almacenSearch.listar}" />
+						<p:menuitem value="Mantenimiento Valorizado" update="messages" ajax="false" action="mantenimientoKardex.jsf" />
+						<p:menuitem value="Movimiento Mercader&iacute;a" ajax="false" action="#{movimientoMercaderia.listar}" />
+						<p:menuitem value="Registro Comprobante" ajax="false" action="#{comprobanteSearch.listar}" />
+						<p:menuitem value="Mantenimiento de Empleados por Empresa" ajax="false" action="#{detEmpresaEmpleadoSearch.listar}" />
+						<p:menuitem value="Mantenimiento de Empleados" ajax="false" action="#{mantenimientoEmpleadoSearchAction.listar}" />
+						<p:menuitem value="Mantenimiento de Proveedores" ajax="false" action="#{mantenimientoProveedorSearchAction.listar}" />
+						<p:menuitem value="Parámetros del sistema" ajax="false" action="#{mantenimientoParametroSearchAction.listar}" />
+						<p:menuitem value="Seguimiento de Cobranzas" ajax="false" action="#{mantenimientoCobranzaOperaSearchAction.listar}" />
+						<p:menuitem value="Mantenimiento Cargo Empleado" ajax="false" action="#{mantenimientoCargoEmpleadoSearchAction.listar}" />
+						<p:menuitem value="Mantenimiento Empresa" ajax="false" action="#{empresaSearch.listar}" />
+						<p:menuitem value="Meta Empresa" update="messages" ajax="false" action="metaEmpresa.jsf" />
+						<p:menuitem value="Cliente" update="messages" ajax="false"
 							action="#{MantenimientoClienteSearchAction.listar}" />
 					</p:submenu>
 				</p:menu>
