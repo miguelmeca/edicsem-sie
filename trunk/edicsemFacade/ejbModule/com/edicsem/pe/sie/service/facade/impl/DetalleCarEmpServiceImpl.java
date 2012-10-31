@@ -63,7 +63,10 @@ public class DetalleCarEmpServiceImpl implements DetalleCarEmpService{
 		return objDetCargoDao.listarDetalleCarEmp();
 	}
 
+	public List listarxCargo(int cargo) {
+		log.info("En el servicio ");
 
-	
+		return objDetCargoDao.listarxCargo(cargo);
+	}
 		
 }
