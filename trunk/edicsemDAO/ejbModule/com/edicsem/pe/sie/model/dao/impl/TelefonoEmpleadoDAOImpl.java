@@ -148,4 +148,29 @@ public class TelefonoEmpleadoDAOImpl implements TelefonoEmpleadoDAO{
 
 	
 	
+	public List listarTelefonoEmpleadosXidcliente (int idcliente) {
+		List lista = null;
+		try {
+			Query q = em.createQuery("select p from TelefonoPersonaSie p where p.idcliente = "+idcliente);
+			lista = q.getResultList();
+			System.out.println("tamaño lista telefonos x cliente --> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+	public TelefonoPersonaSie buscarTelefonoXIdcliente(int id) {
+		log.info(" idcliente "+ id);
+		TelefonoPersonaSie telefono =new TelefonoPersonaSie();
+		try {
+			Query q = em.createQuery("select p from TelefonoPersonaSie p where p.idcliente = "+ id);
+			telefono = (TelefonoPersonaSie) q.getResultList().get(0);
+			//System.out.println("Telefono x idcliente  --> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return telefono;
+	}
+	
 }
