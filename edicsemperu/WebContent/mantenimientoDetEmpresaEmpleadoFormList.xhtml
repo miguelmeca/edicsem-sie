@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Lista de
+		Empleados por Empresa</h1>
+
+		<h:form id="frmDetEmpresaEmpleadoFormList" >
+			<p:growl id="message" showDetail="true" />
+			
+			<p:panel header="#{message['panel.detEmpresaEmpleado']}">
+			<h:panelGrid columns="4" >
+				<h:outputText value="#{message['detempresaEmpl.empresa']}" />
+				<p:selectOneMenu size="1" id="idempresa" 
+					style="width:165px"
+					value="#{detEmpresaEmpleadoSearch.idempresa}">
+					<f:selectItem itemLabel="Seleccione Empresa" itemValue="0" />
+					<f:selectItems value="#{comboAction.empresaitems}" />
+					<p:ajax update="grupoVentaTable" listener="#{detEmpresaEmpleadoSearch.listarXEmpresa}" ></p:ajax>
+				</p:selectOneMenu>
+			
+			<p:dataTable value="#{detEmpresaEmpleadoSearch.detEmpresaEmplList}" var="c"
+				id="grupoVentaTable" paginator="true" rows="10"
+				 rowStyleClass="#{c.lider eq 'S' ? 'amarillo':null }"  >
+
+				<f:facet name="header">
+					<h:outputLabel
+						value="Listado de Empleados por Empresa" />
+				</f:facet>
+				
+				<p:column headerText="Grupo Venta" >
+					<h:outputText value="#{c.tbEmpleado.nombresCompletos}" />
+				</p:column>
+				<p:column headerText="Lider" >
+					<h:outputText value="#{c.lider}" />
+				</p:column>
+				 
+				<f:facet name="footer">
+		<div align="left">
+	     <h:commandLink  value="Agregar empleado a la empresa" 
+	     action="#{detEmpresaEmpleadoForm.agregar}"	title="Ingresar el Nuevo Punto de Venta/Almacen"/>
+					</div>
+				</f:facet>
+			</p:dataTable>
+			</h:panelGrid>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

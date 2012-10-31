@@ -81,7 +81,6 @@ public class ComboAction {
 	private Map<String, Integer> tipollamada = new HashMap<String, Integer>();
 	private Map<String, Integer> empleadoxcargo = new HashMap<String, Integer>();
 	
-
 	
 	@EJB
 	private AlmacenService objAlmacenService;
@@ -829,9 +828,11 @@ public class ComboAction {
 		List lista = new ArrayList<EmpleadoSie>();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'getPaqueteitems()'");
+				log.info("Entering my method 'getEmpleadoItems()'");
 			}
 			lista = objEmpleadoService.listarEmpleadosXCargo(getIdCargo());
+			if(lista.size()==0)
+			lista = objEmpleadoService.listarEmpleados();
 
 			for (int i = 0; i < lista.size(); i++) {
 				EmpleadoSie entidad = new EmpleadoSie();
@@ -857,6 +858,7 @@ public class ComboAction {
 	public void setEmpleadoItems(Map<String, Integer> empleadoItems) {
 		this.empleadoItems = empleadoItems;
 	}
+
 
 	/**
 	 * @return the empleadoxcargo
