@@ -57,7 +57,7 @@
 			</p:selectBooleanCheckbox>
 			
 			<h:outputText value="#{message['contrato.ubigeo.distrito']}"
-						rendered="#{contratoForm.defectoUbigeo}" />
+						rendered="#{mantenimientoEmpleadoFormAction.defectoUbigeo}" />
 			<p:selectOneMenu  value="#{mantenimientoEmpleadoFormAction.idUbigeo}" filter="true" filterMatchMode="startsWith" rendered="#{mantenimientoEmpleadoFormAction.defectoUbigeo}"
 			required="true"   effect="fade"	style="width:200px" id="idubigeoDistrito" requiredMessage="#{message['contrato.ubigeo.distrito.validation']}">
 			<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
@@ -73,7 +73,7 @@
             <p:selectOneMenu id="tipocasa" value="#{mantenimientoEmpleadoFormAction.tipo}" styleClass="required" title="El tipo de casa es obligatorio!" >
             <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
             <f:selectItems value="#{comboAction.tipocasaItems}" />
-			<p:ajax update="ubigeoDefecto" listener="#{contratoForm.cambioUbica}"></p:ajax>
+			<p:ajax update="ubigeoDefecto" listener="#{mantenimientoEmpleadoFormAction.cambioUbica}"></p:ajax>
             </p:selectOneMenu>
                            
             <p:outputLabel value="#{message['empleado.fechanac']}" for="fechanac" />
