@@ -21,4 +21,6 @@ public interface TelefonoEmpleadoDAO {
 	public abstract TelefonoPersonaSie buscarTelefonoCliente (int id);
 	
 	public abstract TelefonoPersonaSie buscarTelefonoXIdempleado(int id);
+	public abstract List listarTelefonoEmpleadosXidcliente (int idcliente);
+	public abstract TelefonoPersonaSie buscarTelefonoXIdcliente(int id);
 }
