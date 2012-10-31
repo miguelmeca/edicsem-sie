@@ -15,6 +15,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
+import com.edicsem.pe.sie.entity.DetCargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.EstadoGeneralSie;
@@ -26,10 +27,12 @@ import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.entity.TipoCasaSie;
 import com.edicsem.pe.sie.entity.TipoDocumentoIdentidadSie;
 import com.edicsem.pe.sie.entity.TipoKardexProductoSie;
+import com.edicsem.pe.sie.entity.TipoLlamadaSie;
 import com.edicsem.pe.sie.entity.TipoProductoSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.service.facade.AlmacenService;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
+import com.edicsem.pe.sie.service.facade.DetalleCarEmpService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
@@ -40,6 +43,7 @@ import com.edicsem.pe.sie.service.facade.ProveedorService;
 import com.edicsem.pe.sie.service.facade.TipoCasaService;
 import com.edicsem.pe.sie.service.facade.TipoDocumentoService;
 import com.edicsem.pe.sie.service.facade.TipoKardexService;
+import com.edicsem.pe.sie.service.facade.TipoLLamadaService;
 import com.edicsem.pe.sie.service.facade.TipoProductoService;
 import com.edicsem.pe.sie.service.facade.UbigeoService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -60,7 +64,9 @@ public class ComboAction {
 	private Map<String, Integer> tipoDocumentoItems = new HashMap<String, Integer>();
 	private Map<String, Integer> cargoEmpleadoItems = new HashMap<String, Integer>();
 	private int tipoProducto;
+	private int cargoEmpleado;
 	private Map<String, Map<String, Integer>> dataProducto = new HashMap<String, Map<String, Integer>>();
+	private Map<String, Map<String, Integer>> dataEmpleado = new HashMap<String, Map<String, Integer>>();
 	private Map<String, Integer> estadoitems = new HashMap<String, Integer>();
 	private Map<String, Integer> empresaitems = new HashMap<String, Integer>();
 	private Map<String, Integer> proveedoritems = new HashMap<String, Integer>();
@@ -72,6 +78,9 @@ public class ComboAction {
 	private Map<String, Integer> MetaMesItems = new HashMap<String, Integer>();
 	private Map<String, Integer> PaqueteItems = new HashMap<String, Integer>();
 	private Map<String, Integer> empleadoItems = new HashMap<String, Integer>();
+	private Map<String, Integer> tipollamada = new HashMap<String, Integer>();
+	private Map<String, Integer> empleadoxcargo = new HashMap<String, Integer>();
+	
 
 	
 	@EJB
@@ -102,6 +111,11 @@ public class ComboAction {
 	private PaqueteService objPaqueteService;
 	@EJB
 	private EmpleadoSieService objEmpleadoService;
+	@EJB
+	private TipoLLamadaService objTipoLLamadaService;
+	@EJB
+	private DetalleCarEmpService objDetCarEmpService;
+	
 
 	public ComboAction() {
 		log.info("inicializando constructor");
@@ -115,6 +129,8 @@ public class ComboAction {
 		tipoDocumentoItems = new HashMap<String, Integer>();
 		cargoEmpleadoItems = new HashMap<String, Integer>();
 		MetaMesItems = new HashMap<String, Integer>();
+		tipollamada = new HashMap<String, Integer>();
+		empleadoxcargo = new HashMap<String, Integer>();
 	}
 
 	public void cambiar() {
@@ -122,6 +138,13 @@ public class ComboAction {
 			productositems = dataProducto.get(tipoProducto);
 		else
 			productositems = new HashMap<String, Integer>();
+	}
+	
+	public void cambiar2() {
+		if (cargoEmpleado != -1)
+			empleadoxcargo = dataEmpleado.get(cargoEmpleado);
+		else
+			empleadoxcargo = new HashMap<String, Integer>();
 	}
 
 	/**
@@ -359,6 +382,42 @@ public class ComboAction {
 		this.tipoDocumentoItems = tipodocumento;
 	}
 
+	/* Combobox TipoLLamada */
+	public Map<String, Integer> gettipollamada() {
+		tipollamada = new HashMap<String, Integer>();
+		List lista = new ArrayList<TipoLlamadaSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'gettipollamada()'");
+			}
+			lista = objTipoLLamadaService.listarTipoLLamada();
+
+			for (int i = 0; i < lista.size(); i++) {
+				TipoLlamadaSie entidad = new TipoLlamadaSie();
+				entidad = (TipoLlamadaSie) lista.get(i);
+				tipollamada.put(entidad.getDescripcionabreviado(),
+						entidad.getIdtipoLlamada());
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return tipollamada;
+	}
+
+	/**
+	 * @param estadoitems
+	 *            the estadoitems to set
+	 */
+	public void settipollamada(Map<String, Integer> tipollamada) {
+		this.tipollamada = tipollamada;
+	}
+	
 	/* Combobox Cargo Empleado */
 	public Map<String, Integer> getCargoEmpleadoItems() {
 		cargoEmpleadoItems = new HashMap<String, Integer>();
@@ -798,4 +857,47 @@ public class ComboAction {
 	public void setEmpleadoItems(Map<String, Integer> empleadoItems) {
 		this.empleadoItems = empleadoItems;
 	}
+
+	/**
+	 * @return the empleadoxcargo
+	 */
+	public Map<String, Integer> getEmpleadoxcargo() {
+		
+		log.info("cargo --> " + getCargoEmpleado());
+		empleadoxcargo = new HashMap<String, Integer>();
+
+		List listaP = new ArrayList<DetCargoEmpleadoSie>();
+		listaP = (List<DetCargoEmpleadoSie>) objDetCarEmpService.listarxCargo(cargoEmpleado);
+		log.info("tamaño empleado X cargo --> " + listaP.size());
+		for (int i = 0; i < listaP.size(); i++) {
+			DetCargoEmpleadoSie empleado = new DetCargoEmpleadoSie();
+			empleado = (DetCargoEmpleadoSie) listaP.get(i);
+			empleadoxcargo.put(empleado.getTbEmpleado().getNombresCompletos(),
+					empleado.getTbEmpleado().getIdempleado());
+		}	
+		
+		return empleadoxcargo;
+	}
+
+	/**
+	 * @param empleadoxcargo the empleadoxcargo to set
+	 */
+	public void setEmpleadoxcargo(Map<String, Integer> empleadoxcargo) {
+		this.empleadoxcargo = empleadoxcargo;
+	}
+
+	/**
+	 * @return the cargoEmpleado
+	 */
+	public int getCargoEmpleado() {
+		return cargoEmpleado;
+	}
+
+	/**
+	 * @param cargoEmpleado the cargoEmpleado to set
+	 */
+	public void setCargoEmpleado(int cargoEmpleado) {
+		this.cargoEmpleado = cargoEmpleado;
+	}
+	
 }
