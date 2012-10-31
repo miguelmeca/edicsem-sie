@@ -14,4 +14,5 @@ public interface CobranzaDAO {
 	public abstract void updateCobranza(CobranzaSie Cobranza);
 	public abstract CobranzaSie findCobranza (int id);
 	public abstract List  listarCobranzas();
+	public abstract List  listarCobranzasXidcontrato(int idcontrato);
 }
