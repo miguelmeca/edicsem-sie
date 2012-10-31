@@ -44,6 +44,15 @@ body {
 .color3{
         background: #E6E6E6;
 }
+.colorRojo{
+        background: #FE2E2E;
+}
+.colorVerde{
+        background: #2EFE64;
+}
+.colorCeleste{
+        background: #2ECCFA;
+}
 </style>
 	</h:head>
 	<f:loadBundle var="message"
@@ -103,6 +112,8 @@ body {
 							action="#{mantenimientoProveedorSearchAction.listar}" />
 						<p:menuitem value="Parámetros del sistema" ajax="false"
 							action="#{mantenimientoParametroSearchAction.listar}" />
+						<p:menuitem value="Seguimiento de Cobranzas" ajax="false"
+							action="#{mantenimientoCobranzaOperaSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento Cargo Empleado" ajax="false"
 							action="#{mantenimientoCargoEmpleadoSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento Empresa" ajax="false"
@@ -715,7 +726,7 @@ body {
 				</p:selectOneMenu>
 				<p:commandButton value="Insertar Ubigeo:"
 					action="#{mantenimientoEmpleadoFormAction.ingresarUbigeo}"
-					oncomplete="UbigeoDialogEmp.hide()" update="@all">
+					oncomplete="UbigeoEmpDialog.hide()" update="@all">
 				</p:commandButton>
 			</h:panelGrid>
 		</p:dialog>
