@@ -82,4 +82,16 @@ public class CobranzaDAOImpl implements CobranzaDAO{
 		}
 		return lista;
 	}	
+	
+	public List listarCobranzasXidcontrato(int idcontrato) {
+		List  lista = null;
+		try {
+			Query q = em.createQuery("select p from CobranzaSie p where p.tbContrato.idcontrato = "+ idcontrato);
+			lista =  q.getResultList(); 
+		   System.out.println("tamaño lista Cobranza --> " + lista.size()+"  ");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 }
