@@ -42,4 +42,8 @@ public class CobranzaServiceImpl implements CobranzaService {
 	public List listarCobranzas() {
 		return objCobranzaDao.listarCobranzas();
 	}
+	
+	public List listarCobranzasXidcontrato(int idcontrato) {
+		return objCobranzaDao.listarCobranzasXidcontrato(idcontrato);
+	}
 }
