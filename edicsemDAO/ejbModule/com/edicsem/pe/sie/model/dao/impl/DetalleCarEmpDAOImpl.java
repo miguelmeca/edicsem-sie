@@ -106,5 +106,16 @@ public class DetalleCarEmpDAOImpl implements DetalleCarEmpDAO{
 		return lista;
 	}
 	
+	public List listarxCargo(int cargo) {
+		List lista = null;
+		try {
+			Query q = em.createQuery("select p from DetCargoEmpleadoSie p where p.tbCargoEmpleado.idcargoempleado = "+cargo);
+			lista = q.getResultList();
+			System.out.println("tamaño lista detalleCargo --> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 	
 }
