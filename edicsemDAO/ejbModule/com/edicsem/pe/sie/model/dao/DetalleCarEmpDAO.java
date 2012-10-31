@@ -15,4 +15,6 @@ public interface DetalleCarEmpDAO {
 	public abstract void eliminarDetalleCarEmp (int id);
 	public abstract DetCargoEmpleadoSie findDetalleCarEmp (int id);
 	public abstract List listarDetalleCarEmp ();
+	public abstract List listarxCargo (int cargo);
+	
 }
