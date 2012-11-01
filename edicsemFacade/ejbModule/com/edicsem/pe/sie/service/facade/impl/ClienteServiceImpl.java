@@ -11,7 +11,6 @@ import com.edicsem.pe.sie.model.dao.ClienteDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
 import com.edicsem.pe.sie.model.dao.TelefonoEmpleadoDAO;
 import com.edicsem.pe.sie.service.facade.ClienteService;
-import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
 
 @Stateless
 public class ClienteServiceImpl implements ClienteService {
@@ -27,12 +26,7 @@ public class ClienteServiceImpl implements ClienteService {
 	private TelefonoEmpleadoDAO objTelefonoDao;
 
 	
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.ClienteService#insertCliente(com.edicsem.pe.sie.entity.ClienteSie)
-	 */
-	public void insertCliente(ClienteSie Cliente) {
-		objClienteDao.insertCliente(Cliente);
-	}
+	
 
 
 	/* (non-Javadoc)
@@ -73,4 +67,10 @@ public class ClienteServiceImpl implements ClienteService {
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ClienteService#insertCliente(com.edicsem.pe.sie.entity.ClienteSie)
+	 */
+	public void insertCliente(ClienteSie Cliente) {
+		objClienteDao.insertCliente(Cliente);
+	}
 }
