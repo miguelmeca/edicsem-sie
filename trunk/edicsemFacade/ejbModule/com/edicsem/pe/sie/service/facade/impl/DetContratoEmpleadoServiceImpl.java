@@ -6,10 +6,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import com.edicsem.pe.sie.entity.DetContratoEmpleadoSie;
-import com.edicsem.pe.sie.entity.PuntoVentaSie;
-import com.edicsem.pe.sie.model.dao.AlmacenDAO;
 import com.edicsem.pe.sie.model.dao.DetContratoEmpleadoDAO;
-import com.edicsem.pe.sie.service.facade.AlmacenService;
 import com.edicsem.pe.sie.service.facade.DetContratoEmpleadoService;
 
 @Stateless
