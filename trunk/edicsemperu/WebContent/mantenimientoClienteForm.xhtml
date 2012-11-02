@@ -25,10 +25,6 @@
 					requiredMessage="#{message['cliente.nombre.validation']}" />
 
 
-
-
-
-
 				<h:outputText value="#{message['cliente.apellidopaterno']}"	for="apellidopaterno" />
 
 				<p:inputText id="apellidopaterno"
@@ -123,203 +119,122 @@
 					requiredMessage="#{message['cliente.telftrabajo.validation']}" />
 					
 					
-				<h:outputText value="Domicilio" />
-				<p:inputText id="Domicilio"
-					value="#{MantenimientoClienteFormAction.domicilio}"
-						required="true" label="Domicilio"
-					 />
-
-
-
-					
-					
-						
-					
-					
-					
-					
-					
-					
-
-		
 				
+
 			</h:panelGrid>
 			</p:panel>
 <!-- FIN DE  MANTENIMIENTO CLIENTE -->
+<p:panel header="Lista de Domicilio de Clientes">
 
 
-
-
-
-
-
-<p:panel header="Lista de Telefonos de Clientes" >
-
+<h:panelGrid columns="2">
 
 <h:panelGrid id="display4" columns="3">
 	
-			
-				
 				<p:dataTable value="#{MantenimientoClienteFormAction.domicilioPersonaList}" 	var="d"
 				id="listarDomocilio" 
-				effectSpeed="fast" type="none"					   >
+				effectSpeed="fast" type="none"				   >
 
 				
 
-				<p:column headerText="Domicilio" id="nombre" >
-					<h:outputText  value="#{d.domicilio}" />
-				</p:column>
 				
-				<p:column headerText="Domicilio" id="Domicilio22" >
+				<p:column headerText="Departamento-Provincia-Distrito" id="DPD" >
 					<h:outputText  value="#{d.desUbigeo}" />
 				</p:column>
 				
 				
-				<p:column headerText="Departamento" id="Domicilio24" >
-					<h:outputText  value="#{d.tbUbigeo.coddepartamento }" />
+				<p:column headerText="Domicilio" id="Domicilio" >
+					<h:outputText  value="#{d.domicilio}" />
 				</p:column>
 				
-				<p:column headerText="Provincia" id="Domicilio26" >
-					<h:outputText  value="#{d.tbUbigeo.codprovincia }" />
+				<p:column headerText="Estado" id="estados" >
+<h:outputText  value="#{d.tbEstadoGeneral.descripcion}" />
+				</p:column>
 					
-				</p:column>
-				
-				
-				<p:column headerText="Distrito" id="Domicilio28" >
-					<h:outputText  value="#{d.tbUbigeo.coddistrito }" />
-					
-				</p:column>
-				
-				
 			</p:dataTable>
 	
 </h:panelGrid>
+
+
+
+<p:panel header="Nuevo Domicilio de Cliente">
+
+<h:form id="formManteContrato44">
+<h:panelGrid columns="6" id="panelClienteJ"  >
+
+
+
+<h:outputText value="Lima (defecto)" />
+					<p:selectBooleanCheckbox id="sel" value="#{MantenimientoClienteFormAction.defectoUbigeo}">
+					<p:ajax update="panelClienteJ" listener="#{MantenimientoClienteFormAction.cambioUbigeoDefecto}"
+							oncomplete="if(#{MantenimientoClienteFormAction.defectoUbigeo}) UbigeoJDialog.show()"></p:ajax>
+					</p:selectBooleanCheckbox>
+					<p:spacer/>
+					
+					<h:outputText value="#{message['contrato.ubigeo.distrito']}"
+						rendered="#{MantenimientoClienteFormAction.defectoUbigeo}" />
+					<p:selectOneMenu value="#{MantenimientoClienteFormAction.idUbigeo}" filter="true" filterMatchMode="startsWith"
+						rendered="#{MantenimientoClienteFormAction.defectoUbigeo}" required="true"   effect="fade"
+						style="width:200px" id="idubigeoDistrito"
+						requiredMessage="#{message['contrato.ubigeo.distrito.validation']}">
+						<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+						<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+						<p:ajax update="ubigeoDefecto" listener="#{MantenimientoClienteFormAction.cambioUbica}"></p:ajax>
+					</p:selectOneMenu>
+					<p:message for="idubigeoDistrito" rendered="#{MantenimientoClienteFormAction.defectoUbigeo}"/>
+					
+					<h:outputText value="Ubigeo " />
+					<h:outputText id="ubigeoDefecto" value="#{MantenimientoClienteFormAction.ubigeoDefecto}" />
+					<p:spacer/>
+
+						
+				<h:outputText value="Tipo Casa" />
+				<p:selectOneMenu style="width:165px"
+						required="true" id="tipocasa"
+						requiredMessage="#{message['contrato.tipo.casa.validation']}"
+						value="#{MantenimientoClienteFormAction.tipocasa}">
+						<f:selectItem itemLabel="Seleccione tipo casa"
+							itemValue="#{null}" />
+						<f:selectItems value="#{comboAction.tipocasaItems}" />
+				</p:selectOneMenu>
+				<p:message for="tipocasa" />
+					
+				<h:outputText value="#{message['contrato.ubigeo.domicilio']}" />
+				<p:inputText id="domicilio"
+					value="#{MantenimientoClienteFormAction.domicilio}" required="true"
+					requiredMessage="#{message['contrato.ubigeo.domicilio.validation']}" />
+				<p:message for="domicilio" />
+
+				
+				<h:panelGroup>
+
+					<p:spacer height="80px" width="80"></p:spacer>
+				
+				
+				
+					
+					 
+
+						<p:commandButton id="btn" value="Agregar Ubigeo" 
+						update="listarDomocilio"
+						action="#{MantenimientoClienteFormAction.domicilioAgregar}"
+						ajax="false"
+						icon="ui-icon ui-icon-disk" />	
+
+				</h:panelGroup>
+					
+</h:panelGrid>
+	</h:form>
+
+
+
+		</p:panel>
+
+</h:panelGrid>
+
 </p:panel>
 
 
-
-
-
-<!-- INICIO DE UBIGEO CLIENTE -->
-
-
-
-
-
-
-
-
-
-
-<h2 class="title ui-widget-header ui-corner-all">Ubigeo</h2>
-		<h:form id="frmAlmacenForm">
-			<p:growl id="message" showDetail="true" />
-			
-			<h:panelGrid id="display" columns="2" >
-
-				
-				<h:outputText value="#{message['almacen.ubigeo']}" />
-			</h:panelGrid>
-			<h:panelGrid columns="2" id="panel"   >
-					<h:outputText value="Lima (defecto)" />
-				<p:selectBooleanCheckbox value="#{almacenForm.defectoUbigeo}">
-					<p:ajax update="panel,ubigeoDefecto" listener="#{almacenForm.limpiardialog}"
-						oncomplete="if(#{almacenForm.defectoUbigeo}) UbigeoAlmacenDialog.show()"></p:ajax>
-				</p:selectBooleanCheckbox>
-
-				<h:outputText value="#{message['contrato.ubigeo.distrito']}" rendered="#{almacenForm.defectoUbigeo}" />
-				<p:selectOneMenu value="#{almacenForm.idUbigeo}" rendered="#{almacenForm.defectoUbigeo}" required="true" filter="true" filterMatchMode="startsWith"
-					style="width:200px" requiredMessage="#{message['contrato.ubigeo.distrito.validation']}">
-					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
-					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
-					<p:ajax update="panel" listener="#{almacenForm.cambioUbica}"></p:ajax>
-				</p:selectOneMenu>
-				
-				<h:outputText value="Ubigeo " />
-				<h:outputText id="ubigeoDefecto" value="#{almacenForm.ubigeoDefecto}" />
-			</h:panelGrid>
-			
-			<h:panelGrid columns="2" id="panel3" rendered="#{!almacenForm.newRecord}"  >
-				
-				<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
-				<p:selectOneMenu size="1" value="#{almacenForm.idDepartamento}" filter="true" filterMatchMode="startsWith"
-					required="true" style="width:180px"
-					requiredMessage="#{message['contrato.ubigeo.departamento.validation']}" >
-					<f:selectItem itemLabel="Seleccione Departamento"
-						itemValue="#{null}" />
-					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
-					<p:ajax update="prov,dist" listener="#{almacenForm.cambiar}" />
-				</p:selectOneMenu>
-
-				<h:outputText value="#{message['contrato.ubigeo.provincia']}" />
-				<p:selectOneMenu id="prov" value="#{almacenForm.idProvincia}" filter="true" filterMatchMode="startsWith"
-					required="true" style="width:200px"
-					requiredMessage="#{message['contrato.ubigeo.provincia.validation']}" >
-					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
-					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
-					<p:ajax update="dist" listener="#{almacenForm.cambiar2}" />
-				</p:selectOneMenu>
-
-				<h:outputText value="#{message['contrato.ubigeo.distrito']}" />
-				<p:selectOneMenu id="dist" value="#{almacenForm.idUbigeo}" filter="true" filterMatchMode="startsWith"
-					required="true" style="width:200px"
-					requiredMessage="#{message['contrato.ubigeo.distrito.validation']}" >
-					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
-					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
-					<p:ajax update="ubigeoDefecto2" listener="#{almacenForm.busquedaUbigeo}" ></p:ajax>
-				</p:selectOneMenu>
-				
-				<h:outputText value="Ubigeo " />
-				<h:outputText id="ubigeoDefecto2" value="#{almacenForm.ubigeoDefecto}" />
-				
-			</h:panelGrid>
-			
-			<h:panelGrid columns="2" id="panel2" >
-				<h:outputText value="#{message['almacen.direccion']}" />
-				<h:panelGroup>
-					<p:inputText value="#{almacenForm.objAlmacenSie.direccion}" required="true" 
-						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" rendered="#{almacenForm.editMode}" />
-					
-				</h:panelGroup>
-
-			
-
-				<h:panelGroup>
-					<p:commandButton value="Guardar" update="panel"
-						actionListener="#{almacenForm.insertar}" ajax="false"
-						icon="ui-icon ui-icon-disk" />
-				</h:panelGroup>
-				
-			</h:panelGrid>
-		 </h:form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- FIN UBIGEO CLIENTE -->
 
 
 
@@ -328,9 +243,7 @@
 <p:panel header="Lista de Telefonos de Clientes" >
 
 
-<h:panelGrid id="display2" columns="3">
-	
-			
+<h:panelGrid id="display2" columns="3">			
 				
 				<p:dataTable value="#{MantenimientoClienteFormAction.telefonoPersonaList}" 	var="o"
 				id="listarTelefonos" 
@@ -375,7 +288,7 @@
 		
 			<p:commandButton value="Agregar Telefono " 
 			update=":NuevoTelefono:display22"			
-			action="#{contratoForm.telefonoAgregar}"
+			action="#{MantenimientoClienteFormAction.telefonoAgregar}"
 			oncomplete="carDialogNuevoTelefono.show()"
 			title="Ingresar Nuevo Telefono"
 			 
