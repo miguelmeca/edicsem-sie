@@ -92,7 +92,7 @@ body {
 						<p:menuitem value="Operadoras" ajax="false" />
 					</p:submenu>
 					<p:submenu label="Mantenimientos">
-												<p:menuitem value="Productos" update="messages" ajax="false"
+						<p:menuitem value="Productos" update="messages" ajax="false"
 							action="#{productoSearch.listar}" />
 						<p:menuitem value="Orden de Reposicion" update="messages" ajax="false" action="#" />
 						<p:menuitem value="Buscar Cliente" update="messages" ajax="false" action="#" />
@@ -311,6 +311,47 @@ body {
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
+<!--  Mantenimiento JOSELO -->
+
+	<h:form id="formInsertUbigeoJoselo">
+		<p:dialog header="Ubigeo" widgetVar="UbigeoJDialog" showEffect="fade"
+			hideEffect="explode" modal="true" width="450" position="center">
+			<h:panelGrid id="display" columns="2" cellpadding="2">
+				<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
+				<p:selectOneMenu size="1" value="#{MantenimientoClienteFormAction.idDepartamento}"
+					required="true" style="width:180px"
+					requiredMessage="#{message['contrato.ubigeo.departamento.validation']}">
+					<f:selectItem itemLabel="Seleccione Departamento"
+						itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
+					<p:ajax update="prov,dist" listener="#{MantenimientoClienteFormAction.cambiar}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="#{message['contrato.ubigeo.provincia']}" />
+				<p:selectOneMenu id="prov" value="#{MantenimientoClienteFormAction.idProvincia}"
+					required="true" style="width:200px"
+					requiredMessage="#{message['contrato.ubigeo.provincia.validation']}">
+					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
+					<p:ajax update="dist" listener="#{MantenimientoClienteFormAction.cambiar2}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="#{message['contrato.ubigeo.distrito']}" />
+				<p:selectOneMenu id="dist" value="#{MantenimientoClienteFormAction.idUbigeo}"
+					required="true" style="width:200px"
+					requiredMessage="#{message['contrato.ubigeo.distrito.validation']}">
+					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+
+				</p:selectOneMenu>
+				<p:commandButton value="Insertar Ubigeo:"
+					action="#{MantenimientoClienteFormAction.ingresarUbigeoOficial}"
+					oncomplete="UbigeoJDialog.hide()" update="@all">
+				</p:commandButton>
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+	<!-- FIN JOSELO -->
 
 	<h:form id="NuevoModificaPunto">
 		<p:dialog header="Ingrese Nuevo Punto de Venta/Almacen"
@@ -716,12 +757,54 @@ body {
 				</p:selectOneMenu>
 				<p:commandButton value="Insertar Ubigeo:"
 					action="#{mantenimientoEmpleadoFormAction.ingresarUbigeo}"
-					oncomplete="UbigeoEmpDialog.hide()" update="@all">
+					oncomplete="UbigeoDialogEmp.hide()" update="@all">
 				</p:commandButton>
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
 <!--	  FIN  UBIGEOEMPLEADO	   -->
+
+<!-- UBIGEOCLIENTE -->
+	
+	<h:form id="formInsertUbigeoCliente">
+		<p:dialog header="Ubigeo" widgetVar="UbigeoCliDialog" showEffect="fade"
+			hideEffect="explode" modal="true" width="450" position="center">
+			<h:panelGrid id="display" columns="2" cellpadding="2">
+				<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
+				<p:selectOneMenu size="1" value="#{MantenimientoClienteFormAction.idDepartamento}"
+					required="true" style="width:180px"
+					requiredMessage="#{message['contrato.ubigeo.departamento.validation']}">
+					<f:selectItem itemLabel="Seleccione Departamento"
+						itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
+					<p:ajax update="prov,dist" listener="#{MantenimientoClienteFormAction.cambiar}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="#{message['contrato.ubigeo.provincia']}" />
+				<p:selectOneMenu id="prov" value="#{MantenimientoClienteFormAction.idProvincia}"
+					required="true" style="width:200px"
+					requiredMessage="#{message['contrato.ubigeo.provincia.validation']}">
+					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
+					<p:ajax update="dist" listener="#{MantenimientoClienteFormAction.cambiar2}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="#{message['contrato.ubigeo.distrito']}" />
+				<p:selectOneMenu id="dist" value="#{MantenimientoClienteFormAction.idUbigeo}"
+					required="true" style="width:200px"
+					requiredMessage="#{message['contrato.ubigeo.distrito.validation']}">
+					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+
+				</p:selectOneMenu>
+				<p:commandButton value="Insertar Ubigeo:"
+					action="#{MantenimientoClienteFormAction.ingresarUbigeoOficial}"
+					oncomplete="UbigeoCliDialog.hide()" update="@all">
+				</p:commandButton>
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+<!--	  FIN  UBIGEOCLIENTE	   -->
 				
 <!--	  DESACTIVAR PROVEEDOR	   -->
 
@@ -842,6 +925,9 @@ body {
 	
 	<!-- FIN TLEFONO DE CLIENTE -->
 	
+	<!-- NUEVO PUPAD DE NUEVO DOMICILIO -->
+	
+	<!-- FIN PUPAD DOMICILIO -->
 	
 	<!--EN UN SOLO PUPAP NUEVO Y EDITAR EMPRESA -->
 
