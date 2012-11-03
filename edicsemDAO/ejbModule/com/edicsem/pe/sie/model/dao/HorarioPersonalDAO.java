@@ -5,7 +5,6 @@ import java.util.List;
 import javax.ejb.Local;
 
 import com.edicsem.pe.sie.entity.HorarioPersonalSie;
-import com.edicsem.pe.sie.entity.TipoCasaSie;
 
 @Local
 public interface HorarioPersonalDAO {
