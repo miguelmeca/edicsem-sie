@@ -1,12 +1,17 @@
 package com.edicsem.pe.sie.client.action;
 
-import java.sql.Date;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,6 +20,8 @@ import org.primefaces.event.RowEditEvent;
 import com.edicsem.pe.sie.entity.HorarioPersonalSie;
 import com.edicsem.pe.sie.service.facade.CobranzaService;
 import com.edicsem.pe.sie.service.facade.HorarioPersonalService;
+import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name="horarioPersonal")
@@ -23,10 +30,11 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	/*variables*/
 	private HorarioPersonalSie objHorarioPersonal;
 	private List<HorarioPersonalSie> listaHorario;
-	private Date fecPagoNull;
+	private List<String> diaList;
+	private Date fecPagoNull, horaIngreso,horaSalida;
 	private int tipollamada; 
 	private boolean editMode;
-	private String nombre;
+	private String mensaje;
 	private int idempleado;
 	private boolean newRecord =false;
 	/*variable que capta el id del proveedor*/
@@ -34,8 +42,7 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	
 	@EJB 
 	private HorarioPersonalService objHorarioPersonalService;
-	@EJB 
-	private CobranzaService objCobranzaService;
+	
 	
 	public static Log log = LogFactory.getLog(HorarioPersonalSearchAction.class);
 	
@@ -44,8 +51,7 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 		log.info("inicializando mi constructor");
 		init();
 	}
-
-	/*inicializamos los  objetos utilizados*/
+	
 	public void init() {
 		log.info("init()");
 		// Colocar valores inicializados
@@ -57,10 +63,7 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#listar()
 	 */
-	
-	/*método que lista al hacer click en el menú del template*/
 	public String listar() {
-		// TODO Auto-generated method stub
 		return getViewList();
 	}
 	
@@ -78,37 +81,39 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	}
 	
 	public void agregarhorario(){
-		
+		newRecord=true;
 	}
 	
 	public String insertar() throws Exception {
-		/*try {
+		try {
 				if (log.isInfoEnabled()) {
-					//log.info("Entering my method 'insertar(registrar, actualizar)'"+ objProveedor.getCodproveedor());
+					log.info("Entering my method 'insertar'");
+				}
+				if(newRecord){
+					SimpleDateFormat sdf = new java.text.SimpleDateFormat("hh:mm");
+					Time g = new java.sql.Time(sdf.parse(getHoraIngreso()+"").getTime());
+					log.info(" g   "+ g);
+					objHorarioPersonal.setHoraIngreso(g);
+					objHorarioPersonalService.insertHorarioPersonal(diaList,objHorarioPersonal,idempleado);
+					log.info("insertando..... ");
 				}
 				
-				objCobranzaOpera.setObservaciones(objCobranzaOpera.getObservaciones());
-				objCobranzaOpera.setTbTipoLlamada(objTipoLLamadaService.findTipoLLamada(tipollamada));
-				
-					log.info("actualizando..... ");
-					objCobranzaOperaService.updateCobranzaOpera(objCobranzaOpera);
-					log.info("insertando..... ");
 				
 		} catch (Exception e) {
 			e.printStackTrace();
-			nombre = e.getMessage();
+			mensaje = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, nombre);
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}*/
+		}
 		return getViewList();
 	}
 	
 	/*GETs Y SETs*/
 	
 	public String getViewList() {
-		return "horarioPersonal";
+		return Constants.MANT_HORARIO_PERSONAL;
 	}
 
 	/**
@@ -124,21 +129,6 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	public void setEditMode(boolean editMode) {
 		this.editMode = editMode;
 	}
-
-	/**
-	 * @return the nombre
-	 */
-	public String getNombre() {
-		return nombre;
-	}
-
-	/**
-	 * @param nombre the nombre to set
-	 */
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
 	/**
 	 * @return the newRecord
 	 */
@@ -247,6 +237,62 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	        /*FacesMessage msg = new FacesMessage("Car Cancelled", ((Car) event.getObject()).getModel());
 
 	        FacesContext.getCurrentInstance().addMessage(null, msg);*/
+	}
+
+	/**
+	 * @return the diaList
+	 */
+	public List<String> getDiaList() {
+		return diaList;
+	}
+
+	/**
+	 * @param diaList the diaList to set
+	 */
+	public void setDiaList(List<String> diaList) {
+		this.diaList = diaList;
+	}
+
+	/**
+	 * @return the mensaje
+	 */
+	public String getMensaje() {
+		return mensaje;
+	}
+
+	/**
+	 * @param mensaje the mensaje to set
+	 */
+	public void setMensaje(String mensaje) {
+		this.mensaje = mensaje;
+	}
+
+	/**
+	 * @return the horaIngreso
+	 */
+	public Date getHoraIngreso() {
+		return horaIngreso;
+	}
+
+	/**
+	 * @param horaIngreso the horaIngreso to set
+	 */
+	public void setHoraIngreso(Date horaIngreso) {
+		this.horaIngreso = horaIngreso;
+	}
+
+	/**
+	 * @return the horaSalida
+	 */
+	public Date getHoraSalida() {
+		return horaSalida;
+	}
+
+	/**
+	 * @param horaSalida the horaSalida to set
+	 */
+	public void setHoraSalida(Date horaSalida) {
+		this.horaSalida = horaSalida;
 	}
 	
 }
