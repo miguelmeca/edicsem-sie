@@ -10,8 +10,7 @@ import javax.persistence.Query;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.edicsem.pe.sie.entity.PuntoVentaSie;
-import com.edicsem.pe.sie.model.dao.AlmacenDAO;
+import com.edicsem.pe.sie.entity.FechaSie;
 import com.edicsem.pe.sie.model.dao.FechaDAO;
 
 /**
@@ -39,4 +38,21 @@ public class FechaDAOImpl implements FechaDAO{
 		}
 		return lista;
 	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.FechaDAO#findFecha(int)
+	 */
+	public FechaSie findFecha(int id) {
+		FechaSie f= new FechaSie();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("buscar FechaSie");
+			} 
+		f=	em.find(FechaSie.class, id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return f;
+	}
+	
 }
