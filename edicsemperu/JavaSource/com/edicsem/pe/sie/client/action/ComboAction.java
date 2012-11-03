@@ -19,6 +19,7 @@ import com.edicsem.pe.sie.entity.DetCargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.EstadoGeneralSie;
+import com.edicsem.pe.sie.entity.FechaSie;
 import com.edicsem.pe.sie.entity.MetaMesSie;
 import com.edicsem.pe.sie.entity.PaqueteSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
@@ -36,6 +37,7 @@ import com.edicsem.pe.sie.service.facade.DetalleCarEmpService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
+import com.edicsem.pe.sie.service.facade.FechaService;
 import com.edicsem.pe.sie.service.facade.MetaMesService;
 import com.edicsem.pe.sie.service.facade.PaqueteService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
@@ -80,7 +82,7 @@ public class ComboAction {
 	private Map<String, Integer> empleadoItems = new HashMap<String, Integer>();
 	private Map<String, Integer> tipollamada = new HashMap<String, Integer>();
 	private Map<String, Integer> empleadoxcargo = new HashMap<String, Integer>();
-	
+	private Map<String, Integer> diasItems = new HashMap<String, Integer>();
 	
 	@EJB
 	private AlmacenService objAlmacenService;
@@ -114,7 +116,8 @@ public class ComboAction {
 	private TipoLLamadaService objTipoLLamadaService;
 	@EJB
 	private DetalleCarEmpService objDetCarEmpService;
-	
+	@EJB
+	private FechaService objFechaService;
 
 	public ComboAction() {
 		log.info("inicializando constructor");
@@ -900,6 +903,41 @@ public class ComboAction {
 	 */
 	public void setCargoEmpleado(int cargoEmpleado) {
 		this.cargoEmpleado = cargoEmpleado;
+	}
+
+	/**
+	 * @return the diasItems
+	 */
+	public Map<String, Integer> getDiasItems() {
+		List lista = new ArrayList<FechaSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getDiasItems()'");
+			}
+			lista = objFechaService.listarFechas();
+			
+			for (int i = 0; i < lista.size(); i++) {
+				FechaSie entidad = new FechaSie();
+				entidad = (FechaSie) lista.get(i);
+				diasItems.put(entidad.getDia(),
+						entidad.getIdFecha());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return diasItems;
+	}
+
+	/**
+	 * @param diasItems the diasItems to set
+	 */
+	public void setDiasItems(Map<String, Integer> diasItems) {
+		this.diasItems = diasItems;
 	}
 	
 }
