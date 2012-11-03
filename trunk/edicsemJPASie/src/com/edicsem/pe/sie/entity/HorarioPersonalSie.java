@@ -47,6 +47,13 @@ public class HorarioPersonalSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idempleado")
 	private EmpleadoSie tbEmpleado;
+    
+    private String descripcion;
+    
+    //bi-directional many-to-one association to EstadoGeneralSie
+    @ManyToOne
+	@JoinColumn(name="idestadogeneral")
+	private EstadoGeneralSie tbEstadoGeneral;
 
     public HorarioPersonalSie() {
     }
@@ -89,6 +96,22 @@ public class HorarioPersonalSie implements Serializable {
 
 	public void setTbEmpleado(EmpleadoSie tbEmpleado) {
 		this.tbEmpleado = tbEmpleado;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public EstadoGeneralSie getTbEstadoGeneral() {
+		return tbEstadoGeneral;
+	}
+
+	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
+		this.tbEstadoGeneral = tbEstadoGeneral;
 	}
 	
 }
