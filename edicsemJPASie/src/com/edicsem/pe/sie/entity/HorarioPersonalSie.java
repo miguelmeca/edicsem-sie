@@ -29,19 +29,22 @@ public class HorarioPersonalSie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_HORARIO_PERSONAL_IDHORARIOPERSONAL_GENERATOR" )
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_HORARIO_PERSONAL_IDHORARIOPERSONAL_GENERATOR")
+	@SequenceGenerator(name="TB_HORARIO_PERSONAL_ID_HORARIO_PERSONAL_GENERATOR", sequenceName="SIE.TB_HORARIO_PERSONAL_ID_HORARIO_PERSONAL_SEQ", initialValue=1, allocationSize =1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_HORARIO_PERSONAL_ID_HORARIO_PERSONAL_GENERATOR")
 	@Column(name="id_horario_personal")
 	private Integer idHorarioPersonal;
-
-    @Temporal( TemporalType.DATE)
-	private Date dia;
 
 	@Column(name="hora_ingreso")
 	private Time horaIngreso;
 
 	@Column(name="hora_salida")
 	private Time horaSalida;
+	
+	@Temporal( TemporalType.DATE)
+	private Date diafin;
+
+    @Temporal( TemporalType.DATE)
+	private Date diainicio;
 
 	//bi-directional many-to-one association to EmpleadoSie
     @ManyToOne
@@ -54,6 +57,11 @@ public class HorarioPersonalSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
+    
+    //bi-directional many-to-one association to FechaSie
+    @ManyToOne
+	@JoinColumn(name="id_fecha")
+	private FechaSie tbFecha;
 
     public HorarioPersonalSie() {
     }
@@ -64,14 +72,6 @@ public class HorarioPersonalSie implements Serializable {
 
 	public void setIdHorarioPersonal(Integer idHorarioPersonal) {
 		this.idHorarioPersonal = idHorarioPersonal;
-	}
-
-	public Date getDia() {
-		return this.dia;
-	}
-
-	public void setDia(Date dia) {
-		this.dia = dia;
 	}
 
 	public Time getHoraIngreso() {
@@ -112,6 +112,30 @@ public class HorarioPersonalSie implements Serializable {
 
 	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
 		this.tbEstadoGeneral = tbEstadoGeneral;
+	}
+
+	public Date getDiafin() {
+		return diafin;
+	}
+
+	public void setDiafin(Date diafin) {
+		this.diafin = diafin;
+	}
+
+	public Date getDiainicio() {
+		return diainicio;
+	}
+
+	public void setDiainicio(Date diainicio) {
+		this.diainicio = diainicio;
+	}
+
+	public FechaSie getTbFecha() {
+		return tbFecha;
+	}
+
+	public void setTbFecha(FechaSie tbFecha) {
+		this.tbFecha = tbFecha;
 	}
 	
 }
