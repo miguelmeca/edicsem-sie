@@ -136,8 +136,10 @@ public class MantenimientoDetEmpresaEmpleadoFormAction extends
 							// ACTUALIZAR LA EMPRESA DE UN VENDEDOR QUE ESTA EN UNA EMPRESA
 							else if(listadet.get(i).getTbEmpresa().getIdempresa()!=idEmpresa &&
 									listadet.get(i).getTbEmpleado().getIdempleado()== Integer.parseInt(empleadosList.get(0)) ){
-								objDetEmpresaEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(34));
+								objDetEmpresaEmpleadoSie = objDetEmpresaEmpleadoService.findDetEmpresaEmpleadoSie(listadet.get(i).getIdDetEmpresaEmpl());
+								objDetEmpresaEmpleadoSie.setTbEmpresa(objEmpresaService.findEmpresa(idEmpresa));
 								objDetEmpresaEmpleadoService.updateDetEmpresaEmpleadoSie(objDetEmpresaEmpleadoSie);
+								objDetEmpresaEmpleadoSie.setLider("S");
 								registrar=false;
 								break;
 							}
@@ -148,6 +150,10 @@ public class MantenimientoDetEmpresaEmpleadoFormAction extends
 						}
 					}else{
 						log.info("no ");
+						if(registrar){
+							log.info("a registarr ");
+							objDetEmpresaEmpleadoService.insertDetEmpresaEmpleadoSie(empleadosList, idEmpresa, lider);
+						}
 					}
 					
 				}
