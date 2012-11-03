@@ -21,7 +21,8 @@
 <f:selectItem  itemValue="#{null}" itemLabel="Seleccione"/>
 <f:selectItems  value="#{comboAction.empleadoxcargo}" />
 </p:selectOneMenu>
-<p:commandButton id="btn" value="Buscar" ajax="false" action="#{horarioPersonal.mostrar}" />
+<p:commandButton value="Buscar" ajax="false" action="#{horarioPersonal.mostrar}" />
+<p:commandButton  value="Agregar" ajax="false" action="#{horarioPersonal.agregarhorario}" />
 </h:panelGrid>
 </p:fieldset>
 
@@ -36,10 +37,10 @@
         <p:column headerText="Dia" style="width:125px">
             <p:cellEditor>
                 <f:facet name="output">
-                    <h:outputText value="#{h.dia}" />
+                    <h:outputText value="#{h.tbFecha.dia}" />
                 </f:facet>
                 <f:facet name="input">
-                    <p:inputText value="#{h.dia}" style="width:100%"/>
+                    <p:inputText value="#{h.tbFecha.dia}" style="width:100%"/>
                 </f:facet>
             </p:cellEditor>
         </p:column>
@@ -63,26 +64,8 @@
                 </f:facet>
             </p:cellEditor>
         </p:column>
-       <p:column headerText="Acción" style="width:125px">
-            <p:cellEditor>
-             <f:facet name="output">
-                    <h:outputText value="#{h.dia}" />
-                </f:facet>
-                <f:facet name="input">
-                    <p:inputText value="#{h.dia}" style="width:100%"/>
-                </f:facet>
-            </p:cellEditor>
-        </p:column>
-          <p:column headerText="Lugar" style="width:125px">
-            <p:cellEditor>
-            <f:facet name="output">
-                    <h:outputText value="#{h.dia}" />
-                </f:facet>
-                <f:facet name="input">
-                    <p:inputText value="#{h.dia}" style="width:100%"/>
-                </f:facet>
-            </p:cellEditor>
-        </p:column>
+       
+         
         <p:column headerText="Options" style="width:50px">
             <p:rowEditor />
         </p:column>
@@ -92,14 +75,14 @@
 <p:fieldset legend="Visualizar Horario" style="margin-top:20px">
     <p:growl id="messages" showDetail="true" />
 
-    <p:schedule value="#{shedulecontroller.eventModel}" widgetVar="myschedule">
+   <!--  <p:schedule value="#{shedulecontroller.eventModel}" widgetVar="myschedule">
 
         <p:ajax event="dateSelect" listener="#{shedulecontroller.onDateSelect}"   />
         <p:ajax event="eventSelect" listener="#{shedulecontroller.onEventSelect}"   />
         <p:ajax event="eventMove" listener="#{shedulecontroller.onEventMove}"  />
         <p:ajax event="eventResize" listener="#{shedulecontroller.onEventResize}"  />
 
-    </p:schedule>
+    </p:schedule> -->
 </p:fieldset>
 </h:form>
 

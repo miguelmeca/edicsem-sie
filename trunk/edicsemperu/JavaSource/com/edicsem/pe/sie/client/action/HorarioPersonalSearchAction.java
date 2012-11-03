@@ -3,31 +3,18 @@ package com.edicsem.pe.sie.client.action;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
-import javax.persistence.IdClass;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.primefaces.event.RowEditEvent;
 
-import com.edicsem.pe.sie.entity.ClienteSie;
-import com.edicsem.pe.sie.entity.CobranzaOperadoraSie;
-import com.edicsem.pe.sie.entity.CobranzaSie;
 import com.edicsem.pe.sie.entity.HorarioPersonalSie;
-import com.edicsem.pe.sie.entity.ProveedorSie;
-import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
-import com.edicsem.pe.sie.service.facade.ClienteService;
-import com.edicsem.pe.sie.service.facade.CobranzaOperaService;
 import com.edicsem.pe.sie.service.facade.CobranzaService;
 import com.edicsem.pe.sie.service.facade.HorarioPersonalService;
-import com.edicsem.pe.sie.service.facade.ProveedorService;
-import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
-import com.edicsem.pe.sie.service.facade.TipoLLamadaService;
-import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name="horarioPersonal")
@@ -88,6 +75,10 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 		//ClienteSie c = objClienteService.findCliente(objCobranzaOpera.getTbCobranza().getIdcliente()); 		
 		//objcliente.setIdcliente(c.getIdcliente());
 		return getViewList();
+	}
+	
+	public void agregarhorario(){
+		
 	}
 	
 	public String insertar() throws Exception {
@@ -247,15 +238,15 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	}
 		
 	public void onEdit(RowEditEvent event) {
-	        FacesMessage msg = new FacesMessage("Car Edited", ((Car) event.getObject()).getModel());
+	        /*FacesMessage msg = new FacesMessage("Car Edited", ((Car) event.getObject()).getModel());
 
-	        FacesContext.getCurrentInstance().addMessage(null, msg);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);*/
 	}
 	    
 	public void onCancel(RowEditEvent event) {
-	        FacesMessage msg = new FacesMessage("Car Cancelled", ((Car) event.getObject()).getModel());
+	        /*FacesMessage msg = new FacesMessage("Car Cancelled", ((Car) event.getObject()).getModel());
 
-	        FacesContext.getCurrentInstance().addMessage(null, msg);
+	        FacesContext.getCurrentInstance().addMessage(null, msg);*/
 	}
 	
 }
