@@ -39,11 +39,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 	private CargoEmpleadoSie selectedCargoEmpleado;
 	private boolean newRecord = false;
 	private boolean editMode;
-	/*
-	 * private boolean editMode: haceq los dos popup (New-Edith) sean utilizados
-	 * con un solo popup
-	 */
-
+	
 	@ManagedProperty(value = "#{mantenimientoCargoEmpleadoSearchAction}")
 	private MantenimientoCargoEmpleadoSearchAction mantenimientoCargoEmpleadoSearch;
 
@@ -126,7 +122,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 
 				objCargoEmpleadoService.actualizarCargoEmpleado(objCargoEmpleadoSie);				
 				log.info("actualizando..... ");				
-				log.info("objCargoEmpleadoSie.isNewRecord() : ");
+				log.info("objCargoEmpleadoSie.isNewRecord() : ");	
 			}
 		} catch (Exception e) {
 
