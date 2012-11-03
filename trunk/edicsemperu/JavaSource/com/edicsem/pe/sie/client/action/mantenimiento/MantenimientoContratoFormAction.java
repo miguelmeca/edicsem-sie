@@ -16,6 +16,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -221,7 +222,16 @@ public class MantenimientoContratoFormAction extends
 	
 	/**
 	 * Agregar Teléfono a la lista*/
-	public void  telefonoAgregar(){
+	public void  telefonoAgregar(ActionEvent f){
+		log.info("telefono agregar " );
+		
+		if( nuevoTelef.getTelefono()==null){
+			mensaje= "Debe ingresar un número telefónico";
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		else{
 		log.info("telefono agregar " + nuevoTelef.getTelefono());
 		boolean verifica= false;
 		mensaje=null;
@@ -259,6 +269,7 @@ public class MantenimientoContratoFormAction extends
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 		nuevoTelef = new TelefonoPersonaSie();
+		}
 	}
 	/**
 	 * Eliminar Teléfono de la lista*/
@@ -298,7 +309,7 @@ public class MantenimientoContratoFormAction extends
 		}
 	}
 
-	public void agregarProducto(){
+	public void agregarProducto(ActionEvent f){
 		mensaje=null;
 		log.info("agregarProducto ");
 		int cantidad= detPaqueteList.size();
@@ -348,7 +359,7 @@ public class MantenimientoContratoFormAction extends
 		nuevoTelef = new TelefonoPersonaSie();
 	}
 	
-	public void insertarCobranza() throws Exception{
+	public void insertarCobranza(ActionEvent f) throws Exception{
 		log.info(" insertarCobranza  :d "+objContratoSie.getNumcuotas()+" precio "+ getPrecioProducto()+"  fec ven  "+ objContratoSie.getFechacuotainicial());
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		 

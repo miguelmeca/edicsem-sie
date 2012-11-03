@@ -22,12 +22,15 @@
 <f:selectItems  value="#{comboAction.empleadoxcargo}" />
 </p:selectOneMenu>
 <p:commandButton value="Buscar" ajax="false" action="#{horarioPersonal.mostrar}" />
-<p:commandButton  value="Agregar" ajax="false" action="#{horarioPersonal.agregarhorario}" />
 </h:panelGrid>
 </p:fieldset>
 
 
 <p:fieldset legend="Registrar nuevo Horario" style="margin-top:20px">
+
+<p:commandButton  value="Agregar" action="#{horarioPersonal.agregarhorario}" 
+oncomplete="horarioDialog.show()"  update=":formManteHorario:display"  />
+<p:spacer></p:spacer>
 <p:dataTable var="h" value="#{horarioPersonal.listaHorario}" id="carList" editable="true">
         <f:facet name="header">
             Prueba

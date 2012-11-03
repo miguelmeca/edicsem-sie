@@ -153,10 +153,10 @@
 					<p:spacer />
 					
 					<p:commandButton value="Agregar Telefono Referencia" icon="ui-icon ui-icon-check" 
-					action="#{contratoForm.telefonoAgregar}" ajax="false" update="t" />
+					update="mytable" actionListener="#{contratoForm.telefonoAgregar}" immediate="true" />
 					
-					<p:dataTable value="#{contratoForm.telefonoList}" var="t" id="t" 
-						 effectSpeed="fast" type="none"  
+					<p:dataTable value="#{contratoForm.telefonoList}" id="mytable" var="t"  
+						 effectSpeed="fast"   
 						 rowStyleClass="#{t.operadorTelefonico eq 'Claro' ? 'color1': (t.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }"   >
 
 						<f:facet name="header">
@@ -217,7 +217,7 @@
 					<p:spinner required="true" value="#{contratoForm.objProductoSie.cantidadContrato}" min="1" requiredMessage="#{message['contrato.cantidad.producto']}"  />
 					 
 					<p:commandButton value="Agregars" icon="ui-icon ui-icon-check" update="detPaqueteList" 
-					action="#{contratoForm.agregarProducto}" ajax="false" />
+					actionListener="#{contratoForm.agregarProducto}" immediate="true" />
     </h:panelGrid>
    
     <p:dataTable id="detPaqueteList" var="c" value="#{contratoForm.detPaqueteList}" editable="true" style=" width:50% " >
@@ -319,8 +319,8 @@
 			</h:panelGrid>
 						</p:panel>
 				<p:commandButton value="Registrar"
-				action="#{contratoForm.insertarCobranza}" update="listaCobranzas"
-				icon="ui-icon ui-icon-check" ajax="false" >
+				actionListener="#{contratoForm.insertarCobranza}" update="listaCobranzas"
+				icon="ui-icon ui-icon-check" immediate="true" >
 				</p:commandButton>
 			
 			<p:dataTable id="listaCobranzas" var="c" value="#{contratoForm.cobranzaList}" editable="true" style=" width:50% ">
