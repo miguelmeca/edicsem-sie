@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import com.edicsem.pe.sie.entity.FechaSie;
 import com.edicsem.pe.sie.model.dao.FechaDAO;
 import com.edicsem.pe.sie.service.facade.FechaService;
 
@@ -19,5 +20,12 @@ public class FechaServiceImpl implements FechaService {
 	 */
 	public List listarFechas() {
 		return objFechaDao.listarFechas();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.FechaService#findFecha(int)
+	 */
+	public FechaSie findFecha(int id) {
+		return objFechaDao.findFecha(id);
 	}
 }
