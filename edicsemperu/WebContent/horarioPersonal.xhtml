@@ -17,56 +17,76 @@
  <p:ajax update="empleado"  listener="#{comboAction.cambiar2}" />  
 </p:selectOneMenu>
 <h:outputText value="Empleado :" />
-<p:selectOneMenu id="empleado" value="prueba" styleClass="required" title="El tipo es obligatorio!" >
+<p:selectOneMenu id="empleado" value="#{horarioPersonal.idempleado}" styleClass="required" title="El tipo es obligatorio!" >
 <f:selectItem  itemValue="#{null}" itemLabel="Seleccione"/>
 <f:selectItems  value="#{comboAction.empleadoxcargo}" />
 </p:selectOneMenu>
-<p:commandButton id="btn" value="Buscar" ajax="false" />
+<p:commandButton id="btn" value="Buscar" ajax="false" action="#{horarioPersonal.mostrar}" />
 </h:panelGrid>
 </p:fieldset>
 
 
 <p:fieldset legend="Registrar nuevo Horario" style="margin-top:20px">
-<h:panelGrid columns="2">
-<h:outputText value="Día :" />    
-<p:selectCheckboxMenu value="#{mantenimientoEmpleadoFormAction.listacargo}" label="Seleccione" filter="true" filterText="Filter" filterMatchMode="startsWith" panelStyle="width:220px">  
-<f:selectItems value="#{shedulecontroller.dias}" />  
-</p:selectCheckboxMenu> 
-<h:outputText value="Hora de Ingreso :" />
-    <p:calendar value="#{shedulecontroller.horaingreso}" pattern="HH:mm a" timeOnly="true" />
-<h:outputText value="Hora de Salida :" />
-<p:calendar value="#{shedulecontroller.horasalida}" pattern="HH:mm a" timeOnly="true" />
-<p:commandButton id="btn1" value="Guardar" icon="ui-icon-check" ajax="false" />
-</h:panelGrid>			
-<p:dataTable value="#{mantenimientoCobranzaOperaSearchAction.listatelefono}" var="t" rowStyleClass="#{t.operadorTelefonico eq 'Claro' ? 'colorRojo': (t.operadorTelefonico eq 'Movistar' ? 'colorCeleste': 'color3') }"
-	   id="DetalleTelefono" paginator="false" rows="5"
-       paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-	   rowsPerPageTemplate="5,10,15" widgetVar="table"
-	   emptyMessage="No se encontro registros">
-	   <f:facet name="header"></f:facet>
-       <p:column>
-	    <f:facet name="header">
-		 <h:outputText value="Día" />
-		</f:facet>
-	    <h:outputText value="#{t.telefono}" />
-	   </p:column>
-	   <p:column>
-		<f:facet name="header">
-		 <h:outputText value="Hora de Ingreso" />
-		</f:facet>
-         <h:outputText value="#{t.tipoTelef}" />
-	   </p:column>
-       <p:column>
-		<f:facet name="header">
-		 <h:outputText value="Hora de Salida" />
-		</f:facet>
-		<h:outputText value="#{t.operadorTelefonico}" />
-	   </p:column>
-	    <p:column headerText="Options" style="width:50px">  
-            <p:rowEditor />  
-        </p:column>  
-  
-	  </p:dataTable>
+<p:dataTable var="h" value="#{horarioPersonal.listaHorario}" id="carList" editable="true">
+        <f:facet name="header">
+            Prueba
+        </f:facet>
+        <p:ajax event="rowEdit" listener="#{horarioPersonal.onEdit}"  />
+        <p:ajax event="rowEditCancel" listener="#{horarioPersonal.onCancel}"  />
+        <p:column headerText="Dia" style="width:125px">
+            <p:cellEditor>
+                <f:facet name="output">
+                    <h:outputText value="#{h.dia}" />
+                </f:facet>
+                <f:facet name="input">
+                    <p:inputText value="#{h.dia}" style="width:100%"/>
+                </f:facet>
+            </p:cellEditor>
+        </p:column>
+        <p:column headerText="Entrada" style="width:125px">
+            <p:cellEditor>
+                <f:facet name="output">
+                    <h:outputText value="#{h.horaIngreso}" />
+                </f:facet>
+                <f:facet name="input">
+                    <p:inputText value="#{h.horaIngreso}" style="width:100%" label="Year"/>
+                </f:facet>
+            </p:cellEditor>
+        </p:column>
+        <p:column headerText="Salida" style="width:125px">
+            <p:cellEditor>
+                <f:facet name="output">
+                    <h:outputText value="#{h.horaSalida}" />
+                </f:facet>
+                <f:facet name="input">
+                     <p:inputText value="#{h.horaSalida}" style="width:100%" label="Year"/>
+                </f:facet>
+            </p:cellEditor>
+        </p:column>
+       <p:column headerText="Acción" style="width:125px">
+            <p:cellEditor>
+             <f:facet name="output">
+                    <h:outputText value="#{h.dia}" />
+                </f:facet>
+                <f:facet name="input">
+                    <p:inputText value="#{h.dia}" style="width:100%"/>
+                </f:facet>
+            </p:cellEditor>
+        </p:column>
+          <p:column headerText="Lugar" style="width:125px">
+            <p:cellEditor>
+            <f:facet name="output">
+                    <h:outputText value="#{h.dia}" />
+                </f:facet>
+                <f:facet name="input">
+                    <p:inputText value="#{h.dia}" style="width:100%"/>
+                </f:facet>
+            </p:cellEditor>
+        </p:column>
+        <p:column headerText="Options" style="width:50px">
+            <p:rowEditor />
+        </p:column>
+    </p:dataTable>
 </p:fieldset>
 
 <p:fieldset legend="Visualizar Horario" style="margin-top:20px">
