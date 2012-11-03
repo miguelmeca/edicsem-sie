@@ -17,9 +17,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.entity.ClienteSie;
-import com.edicsem.pe.sie.entity.DetProductoContratoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
-import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.service.facade.ClienteService;
@@ -58,8 +56,6 @@ public class MantenimientoClienteFormAction extends
 	/* DOMICILIO CLIENTE */
 	private DomicilioPersonaSie nuevoDomicilio;
 	
-	
-	private DomicilioPersonaSie objDomicilioPersonaSie2;
 	private String domicilio,referencia;
 	private DomicilioPersonaSie objDomicilioPersonaSie;
 	private List<DomicilioPersonaSie> DomicilioPersonaList;
@@ -104,13 +100,11 @@ public class MantenimientoClienteFormAction extends
 		DomicilioPersonaList = new ArrayList<DomicilioPersonaSie>();
 		defectoUbigeo=true;
 		objDomicilioPersonaSie = new DomicilioPersonaSie();
-		objDomicilioPersonaSie2 = new DomicilioPersonaSie();
 		nuevoDomicilio = new DomicilioPersonaSie();
 		nuevoDomicilio.setDomicilio("");
 		nuevoDomicilio.setReferencia("");
-		
-		
 		nuevo = new ClienteSie();
+		idc=0;
 	}
 	
 	/*METODO AGREGAR DOMICILIO A LA LISTA DOMOCILIO CLIENTES*/
@@ -120,51 +114,17 @@ public class MantenimientoClienteFormAction extends
 		
 		mensaje=null;
 		log.info("agregarProducto ");
-		int cantidad = DomicilioPersonaList.size();
-//		int cantidad= detPaqueteList.size();
 		
-		DomicilioPersonaSie det = new DomicilioPersonaSie(); 
-//		DetPaqueteSie det = new DetPaqueteSie();
-		
-//		det.setDomicilio(objDomicilioPersonaSie.getDomicilio());
-//		det.setReferencia(objDomicilioPersonaSie.getReferencia());
-		det.setTbEstadoGeneral(objEstadoGeneralService
-				.findEstadogeneral(24));
+		objDomicilioPersonaSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(24));
 		log.info(""+ idUbigeo);
-		det.setTbUbigeo(objUbigeoService.findUbigeo(idUbigeo));
-//		
-		log.info(""+ idUbigeo);
-		if(cantidad==0){
-			
-			det.setItem(1);
-			objDomicilioPersonaSie=det;
-			DomicilioPersonaList.add(objDomicilioPersonaSie);
-			ingresarUbigeo();
-			log.info("tamaño lista de dominos "+ DomicilioPersonaList.size());
-		}else{
-			for (int i = 0; i < DomicilioPersonaList.size(); i++) {
-				if(DomicilioPersonaList.get(i).getIddomiciliopersona()==det.getIddomiciliopersona()){
-					mensaje="Dicho producto ya se encuentra registrado en la lista ";
-				}
-			det.setItem(cantidad+1);
-			}
-			if(mensaje==null){
-				objDomicilioPersonaSie=det;
-				DomicilioPersonaList.add(objDomicilioPersonaSie);
-				ingresarUbigeo();
-			}else{
-				msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-						Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-				FacesContext.getCurrentInstance().addMessage(null, msg);
-			}
-			log.info("tamaño lista de domicilio "+ DomicilioPersonaList.size());
-		}
-	
-	
-	
-	}
-	
+		objDomicilioPersonaSie.setTbUbigeo(objUbigeoService.findUbigeo(idUbigeo));	
+		log.info(""+ idUbigeo);	
+		DomicilioPersonaList.add(objDomicilioPersonaSie);
 
+		ingresarUbigeo();
+		objDomicilioPersonaSie= new DomicilioPersonaSie();
+		
+	}
 	
 	/*METODO CREAR NUEVO UBIGEO*/
 	
@@ -219,18 +179,14 @@ public class MantenimientoClienteFormAction extends
 	
 	public void ingresarUbigeo() {
 		// enviamos el nombre completo del depa- provincia-distrito
-		log.info("ingresarUbigeo :D a");
+		log.info("ingresarUbigeo :D a :D ");
+		
 		UbigeoSie objUbigeoDomicilio = new UbigeoSie();
-		
+	
 		for (int i = 0; i < DomicilioPersonaList.size() ; i++) {
-			if(objDomicilioPersonaService.buscarDomicilioEmpleado(DomicilioPersonaList.get(i).getIddomiciliopersona())==null){
-				objDomicilioPersonaSie = objDomicilioPersonaService.buscarDomicilioEmpleado(DomicilioPersonaList.get(i).getIddomiciliopersona());
-				idUbigeo= objDomicilioPersonaSie.getTbUbigeo().getIdubigeo();
-			}
-			else{				
-				idUbigeo=DomicilioPersonaList.get(i).getTbUbigeo().getIdubigeo();
-			}
-		
+			objDomicilioPersonaSie = DomicilioPersonaList.get(i);
+			idUbigeo=DomicilioPersonaList.get(i).getTbUbigeo().getIdubigeo();
+				
 		log.info("ingresarUbigeo :D a --- " + idUbigeo);
 		
 		objUbigeoDomicilio = objUbigeoService.findUbigeo(idUbigeo);
@@ -279,67 +235,19 @@ public class MantenimientoClienteFormAction extends
 		DomicilioPersonaList.get(i).setDesUbigeo(ubigeoDefecto);
 
 		log.info("ubigeo ------> :D   " + ubigeoDefecto);
-		
 		}
 	}
 	
 	public String agregar() {
 		log.info("agregar");
 		
-		
 		objClienteSie = new ClienteSie();
 		
-		
-		//setUbigeo(0);
-		//setIdDistrito(-1);
-	
 		objDomicilioPersonaSie = new DomicilioPersonaSie();
 		comboManager.setIdDepartamento("15");
 		comboManager.setIdProvincia("01");
 		
-		
 		setNewRecord(true);
-		return getViewMant();
-	}
-	/*INGRESAR UBIGEO AL FORMACTION*/
-	public String ingresarUbigeoOficial() {
-		// enviamos el nombre completo del depa- provincia-distrito
-
-		log.info("ingresarUbigeo :D a --- " + idUbigeo);
-
-		Iterator it = comboManager.getUbigeoDeparItems().entrySet().iterator();
-		Iterator it2 = comboManager.getUbigeoProvinItems().entrySet().iterator();
-		Iterator it3 = comboManager.getUbigeoDistriItems().entrySet().iterator();
-		
-		while (it.hasNext()) {
-			Map.Entry e = (Map.Entry) it.next();
-			System.out.println("key " + e.getKey() + " value " + e.getValue());
-			if (e.getValue().toString().equals(idDepartamento)) {
-				ubigeoDefecto = (String) e.getKey();
-				log.info("ubigeo depa " + ubigeoDefecto);
-				break;
-			}
-		}
-		while (it2.hasNext()) {
-			Map.Entry e = (Map.Entry) it2.next();
-			System.out.println("key " + e.getKey() + " value " + e.getValue());
-			if (e.getValue().toString().equals(idProvincia)) {
-				ubigeoDefecto += "-" + (String) e.getKey();
-				log.info("ubigeo prov " + ubigeoDefecto);
-				break;
-			}
-		}
-		while (it3.hasNext()) {
-			Map.Entry e = (Map.Entry) it3.next();
-			System.out.println("key " + e.getKey() + " value " + e.getValue());
-			if (e.getValue().toString().equals(idUbigeo+"")) {
-				ubigeoDefecto += "-" + (String) e.getKey();
-				log.info("ubigeo distrito " + ubigeoDefecto);
-				break;
-			}
-		}
-		log.info("ubigeo ------> :D   " + ubigeoDefecto);
-		
 		return getViewMant();
 	}
 
@@ -391,13 +299,10 @@ public class MantenimientoClienteFormAction extends
 		nuevoTelef = new TelefonoPersonaSie();
 	}
 	
-	
-
-	
 	/* TMETODO EDITAR CLIENTE */
 
 	public String update() throws Exception {
-		log.info("update()");
+		log.info("update() --> objDomicilioPersonaSie");
 
 		ClienteSie c = objClienteService.findCliente(objClienteSie
 				.getIdcliente());
@@ -405,18 +310,12 @@ public class MantenimientoClienteFormAction extends
 		log.info(" id cliente " + objClienteSie.getIdcliente() + " nombre "
 				+ objClienteSie.getNombrecliente());
 
-		TelefonoPersonaList = objTelefonoService
-				.listarTelefonoCliente(objClienteSie.getIdcliente());
-
-		log.info("update()  2");
-
-		DomicilioPersonaList = objDomicilioPersonaService
-				.listarDomicilioCliente(objClienteSie.getIdcliente());
-		log.info("update()  3");
+		TelefonoPersonaList = objTelefonoService.listarTelefonoCliente(objClienteSie.getIdcliente());
+		
+		DomicilioPersonaList = objDomicilioPersonaService.listarDomicilioCliente(objClienteSie.getIdcliente());
 
 		ingresarUbigeo();
 
-		log.info("update()  4");
 		log.info("antes de telefono 2");
 		if (TelefonoPersonaList == null)
 			TelefonoPersonaList = new ArrayList<TelefonoPersonaSie>();
@@ -440,7 +339,7 @@ public class MantenimientoClienteFormAction extends
 		objClienteSie.setTelftrabajo(c.getTelftrabajo());
 
 		setNewRecord(true);
-
+		objDomicilioPersonaSie = new DomicilioPersonaSie();
 		return getViewMant();
 
 	}
@@ -1002,31 +901,7 @@ public class MantenimientoClienteFormAction extends
 	public void setReferencia(String referencia) {
 		this.referencia = referencia;
 	}
-
-
-
-
-	/**
-	 * @return the objDomicilioPersonaSie2
-	 */
-	public DomicilioPersonaSie getObjDomicilioPersonaSie2() {
-		return objDomicilioPersonaSie2;
-	}
-
-
-
-
-	/**
-	 * @param objDomicilioPersonaSie2 the objDomicilioPersonaSie2 to set
-	 */
-	public void setObjDomicilioPersonaSie2(
-			DomicilioPersonaSie objDomicilioPersonaSie2) {
-		this.objDomicilioPersonaSie2 = objDomicilioPersonaSie2;
-	}
-
-
-
-
+	
 	/**
 	 * @return the nuevoDomicilio
 	 */
