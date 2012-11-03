@@ -60,7 +60,7 @@ public class HorarioPersonalSie implements Serializable {
     
     //bi-directional many-to-one association to FechaSie
     @ManyToOne
-	@JoinColumn(name="id_fecha")
+	@JoinColumn(name="idfecha")
 	private FechaSie tbFecha;
 
     public HorarioPersonalSie() {
