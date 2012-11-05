@@ -1,7 +1,6 @@
 package com.edicsem.pe.sie.client.action;
 
 import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,25 +10,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.persistence.IdClass;
-import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.primefaces.event.DateSelectEvent;
-import org.jboss.mx.util.TimeFormat;
 import org.primefaces.event.RowEditEvent;
-import org.primefaces.event.ScheduleEntryMoveEvent;
-import org.primefaces.event.ScheduleEntryResizeEvent;
-import org.primefaces.event.ScheduleEntrySelectEvent;
-import org.primefaces.model.DefaultScheduleEvent;
-import org.primefaces.model.DefaultScheduleModel;
-import org.primefaces.model.LazyScheduleModel;
-import org.primefaces.model.ScheduleEvent;
-import org.primefaces.model.ScheduleModel;
 
-import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.HorarioPersonalSie;
 import com.edicsem.pe.sie.service.facade.ClienteService;
 import com.edicsem.pe.sie.service.facade.HorarioPersonalService;
@@ -42,7 +27,6 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	/*variables*/
 	private HorarioPersonalSie objHorarioPersonal;
 	private List<HorarioPersonalSie> listaHorario;
-    private ScheduleModel<ScheduleEvent> lazyEventModel;
 	private List<String> diaList;
 	private Date fecPagoNull, horaIngreso,horaSalida;
 	private int tipollamada; 
@@ -70,24 +54,6 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 		// Colocar valores inicializados
 		objHorarioPersonal = new HorarioPersonalSie();
 		//objtelefono = new TelefonoPersonaSie();
-		lazyEventModel = new ScheduleModel<ScheduleEvent>() {
-
-			@Override
-			public boolean isLazy() {
-				return true;
-			}
-
-			@Override
-			public void fetchEvents(Date start, Date end) {
-				setEvents(new ArrayList<ScheduleEvent>());	//clean other periods
-
-				Date random = getRandomDate(start);
-				addEvent(new ScheduleEventImpl("Lazy Event 1", random, random));
-
-				random = getRandomDate(start);
-				addEvent(new ScheduleEventImpl("Lazy Event 2", random, random));
-			}
-		};
 		log.info("despues de inicializar  ");
 	}
 	
@@ -116,21 +82,62 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	}
 	
 	public String insertar() throws Exception {
+		boolean insert=true;
+		mensaje="";
 		try {
 				if (log.isInfoEnabled()) {
 					log.info("Entering my method 'insertar'");
 				}
 				if(newRecord){
-					SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-					log.info("fecha p  " + getHoraIngreso() );
-					Time g = new Time( getHoraIngreso().getTime());
-					 
-					log.info(" g   "+ g);
-					objHorarioPersonal.setHoraIngreso(g);
-					objHorarioPersonalService.insertHorarioPersonal(diaList,objHorarioPersonal,idempleado);
-					log.info("insertando..... ");
-				} 
-				
+					log.info("fecha pp  " + getHoraIngreso() );
+					Time hora1 = new Time( getHoraIngreso().getTime());
+					Time hora2= new Time( getHoraSalida().getTime());
+					log.info(" g   "+ hora1);
+					objHorarioPersonal.setHoraIngreso(hora1);
+					objHorarioPersonal.setHoraSalida(hora2);
+					
+					/** Validation **/
+		
+					//para que no hayan cruces de horario 
+					for (int j = 0; j < diaList.size();j++) {
+						for (int i = 0; i < listaHorario.size(); i++) {
+							log.info("  verificando ");
+							if( listaHorario.get(i).getTbFecha().getIdFecha()== Integer.parseInt(diaList.get(j))
+								 && (objHorarioPersonal.getDiainicio().after(listaHorario.get(i).getDiainicio()) && 
+										objHorarioPersonal.getDiainicio().before(listaHorario.get(i).getDiafin() ) ||
+										objHorarioPersonal.getDiafin().after(listaHorario.get(i).getDiainicio()) && 
+										objHorarioPersonal.getDiafin().before(listaHorario.get(i).getDiafin() ) ||
+										objHorarioPersonal.getDiafin().equals(listaHorario.get(i).getDiafin()) ||
+										objHorarioPersonal.getDiafin().equals(listaHorario.get(i).getDiainicio())||
+										objHorarioPersonal.getDiainicio().equals(listaHorario.get(i).getDiafin())||
+										objHorarioPersonal.getDiainicio().equals(listaHorario.get(i).getDiainicio()))){
+								log.info("fechas incorrectas   ");
+								if(objHorarioPersonal.getHoraIngreso().after(listaHorario.get(i).getHoraIngreso())
+										&& objHorarioPersonal.getHoraIngreso().before(listaHorario.get(i).getHoraSalida())){
+									log.info(objHorarioPersonal.getHoraIngreso() +" --->  getHoraIngreso "+ listaHorario.get(i).getHoraIngreso());
+									insert=false;
+									mensaje = "La hora de Ingreso es errónea";
+									break;
+								}else if(objHorarioPersonal.getHoraSalida().after(listaHorario.get(i).getHoraIngreso())
+										&& objHorarioPersonal.getHoraSalida().before(listaHorario.get(i).getHoraSalida())){
+									log.info(objHorarioPersonal.getHoraSalida()+" --->  getHoraSalida "+listaHorario.get(i).getHoraSalida());
+									insert=false;
+									mensaje = "La hora de Salida es errónea";
+									break;
+									}
+								}
+							}
+						}
+					 if(mensaje.equals("")){ 
+						 objHorarioPersonalService.insertHorarioPersonal(diaList,objHorarioPersonal,idempleado);
+						 log.info("insertando..... ");
+						 msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
+						 FacesContext.getCurrentInstance().addMessage(null, msg);
+					 }else{
+						msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+						FacesContext.getCurrentInstance().addMessage(null, msg);
+					 }
+				}
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -326,10 +333,5 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	public void setHoraSalida(Date horaSalida) {
 		this.horaSalida = horaSalida;
 	}
-	
-	private void addMessage(FacesMessage message) {
-		FacesContext.getCurrentInstance().addMessage(null, message);
-	}
-
 	
 }
