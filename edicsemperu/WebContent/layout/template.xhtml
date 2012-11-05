@@ -550,42 +550,44 @@ body {
 			<h:panelGrid id="display" columns="2" cellpadding="2"
 				style="margin:0 auto;" title="Horario ">
 
-				<h:outputText value="Día"  />
+				<h:outputText value="#{message['horario.personal.dia']}"  />
 				<h:panelGroup>
-				<p:selectCheckboxMenu id="emple" value="#{horarioPersonal.diaList}" filter="true" filterMatchMode="startsWith"
-					required="true" style="width:200px" >
-					<f:selectItem itemLabel="Seleccione día" itemValue="#{null}" />
+				<p:selectCheckboxMenu id="emplechk" required="true" value="#{horarioPersonal.diaList}" filter="true" filterMatchMode="startsWith" requiredMessage="#{message['horario.personal.dia.validation']}"
+					 style="width:200px" >
 					<f:selectItems value="#{comboAction.diasItems}" />
 				</p:selectCheckboxMenu>
+				<p:message for="emplechk" />
 				</h:panelGroup>
 
-				<h:outputText value="Vigente desde"/>
+				<h:outputText value="#{message['horario.personal.fechaDesde']}"/>
 				<h:panelGroup>
-					<p:calendar value="#{horarioPersonal.objHorarioPersonal.diainicio}" />
+					<p:calendar id="desdecl" required="true" requiredMessage="#{message['horario.personal.fechaDesde.validation']}" value="#{horarioPersonal.objHorarioPersonal.diainicio}" mindate="today" />
+					<p:message for="desdecl" />
 				</h:panelGroup>
 				
-				<h:outputText value="Vigente hasta"/>
+				<h:outputText value="#{message['horario.personal.fechaHasta']}"/>
 				<h:panelGroup>
-					<p:calendar value="#{horarioPersonal.objHorarioPersonal.diafin}" />
+					<p:calendar value="#{horarioPersonal.objHorarioPersonal.diafin}" requiredMessage="#{message['horario.personal.fechaHasta.validation']}" mindate="today" />
 				</h:panelGroup>
 				
-				<h:outputText value="Hora Ingreso"/>
+				<h:outputText value="#{message['horario.personal.horaEntrada']}"/>
 				<h:panelGroup>
-					<p:calendar value="#{horarioPersonal.horaIngreso}" pattern="HH:mm" timeOnly="true"/>
+					<p:calendar  id="horaIng" required="true" requiredMessage="#{message['horario.personal.horaEntrada.validation']}" value="#{horarioPersonal.horaIngreso}" pattern="HH:mm" timeOnly="true"/>
+					<p:message for="horaIng" />
 				</h:panelGroup>
 				 
-				<h:outputText value="Hora Salida"/>
+				<h:outputText value="#{message['horario.personal.horaSalida']}"/>
 				<h:panelGroup>
-					<p:calendar value="#{horarioPersonal.horaSalida}" pattern="HH:mm" timeOnly="true"/>
+					<p:calendar id="horaSal" required="true" requiredMessage="#{message['horario.personal.horaSalida.validation']}" value="#{horarioPersonal.horaSalida}" pattern="HH:mm" timeOnly="true"/>
+					<p:message for="horaSal" />
 				</h:panelGroup>
 				
-				<p:commandButton  value="Guardar" update="panel"
-						action="#{horarioPersonal.insertar}"
+				<p:commandButton  value="Guardar" update="@all"
+						action="#{horarioPersonal.insertar}" 
 						ajax="false" icon="ui-icon ui-icon-disk" />
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
-
 
 	<h:form id="formCarEmpList">
 		<p:dialog header="Detalle CargoEmpleado" widgetVar="carDialog"
