@@ -346,7 +346,7 @@ body {
 
 				</p:selectOneMenu>
 				<p:commandButton value="Insertar Ubigeo:"
-					action="#{MantenimientoClienteFormAction.ingresarUbigeoOficial}"
+					action="#{MantenimientoClienteFormAction.ingresarUbigeo}"
 					oncomplete="UbigeoJDialog.hide()" update="@all">
 				</p:commandButton>
 			</h:panelGrid>
@@ -543,7 +543,7 @@ body {
 		</p:dialog>
 	</h:form>
 	
-<!--  Mantenimiento Horaio Empleado -->
+<!--  Mantenimiento Horario Empleado -->
 	<h:form id="formManteHorario">
 		<p:dialog widgetVar="horarioDialog" showEffect="fade"
 			hideEffect="explode" modal="true" width="450" position="center">
@@ -561,27 +561,22 @@ body {
 
 				<h:outputText value="Vigente desde"/>
 				<h:panelGroup>
-					<p:calendar
-						value="#{horarioPersonal.objHorarioPersonal.diainicio}" />
+					<p:calendar value="#{horarioPersonal.objHorarioPersonal.diainicio}" />
 				</h:panelGroup>
 				
 				<h:outputText value="Vigente hasta"/>
 				<h:panelGroup>
-					<p:calendar
-						value="#{horarioPersonal.objHorarioPersonal.diafin}" />
+					<p:calendar value="#{horarioPersonal.objHorarioPersonal.diafin}" />
 				</h:panelGroup>
 				
 				<h:outputText value="Hora Ingreso"/>
 				<h:panelGroup>
-					<p:calendar
-						value="#{horarioPersonal.horaIngreso}" pattern="HH:mm" timeOnly="true">
-						</p:calendar>
+					<p:calendar value="#{horarioPersonal.horaIngreso}" pattern="HH:mm" timeOnly="true"/>
 				</h:panelGroup>
 				 
 				<h:outputText value="Hora Salida"/>
 				<h:panelGroup>
-					<p:calendar
-						value="#{horarioPersonal.horaSalida}" pattern="HH:mm" timeOnly="true"/>
+					<p:calendar value="#{horarioPersonal.horaSalida}" pattern="HH:mm" timeOnly="true"/>
 				</h:panelGroup>
 				
 				<p:commandButton  value="Guardar" update="panel"

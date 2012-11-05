@@ -45,9 +45,6 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 public class MantenimientoContratoFormAction extends
 		BaseMantenimientoAbstractAction {
 
-	@ManagedProperty(value = "#{comboAction}")
-	private ComboAction comboManager;
-
 	private String mensaje;
 	public static Log log = LogFactory.getLog(MantenimientoContratoFormAction.class);
 	private int Tipocasa,idtipodoc,idUbigeo, idempresa,tipoVenta,tipopago, idpaquete, idProducto, idempleadoExpositor, idempleadoVendedor, idempleadoColaborador;
@@ -79,6 +76,9 @@ public class MantenimientoContratoFormAction extends
 	@EJB
 	private ContratoService objContratoService;
 	
+	@ManagedProperty(value = "#{comboAction}")
+	private ComboAction comboManager;
+
 	public MantenimientoContratoFormAction() {
 		log.info("inicializando constructor MantenimientoContrato");
 		init();
@@ -120,14 +120,13 @@ public class MantenimientoContratoFormAction extends
 	 */
 	public String agregar() {
 		selectTelef= "";
-		log.info("agregar() 15");
+		log.info("agregar()");
 		limpiarCampos();
 		objProductoSie = new ProductoSie();
 		setNewRecord(true);
 		comboManager.setIdDepartamento("15");
 		comboManager.setIdProvincia("01");
 		comboManager.setIdCargo(2);
-		log.info("agregar    :D  --- ");
 		return getViewMant();
 	}
 
@@ -456,7 +455,12 @@ public class MantenimientoContratoFormAction extends
 			}
 			if (isNewRecord()) {
 				log.info("a insertar ");
-				
+				if( detPaqueteList.size()==0){
+					mensaje= "Debe ingresar un producto como mínimo ";
+					msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+							Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+					FacesContext.getCurrentInstance().addMessage(null, msg);
+				} else{
 				for (int i = 0; i < detPaqueteList.size(); i++) {
 					DetProductoContratoSie det=new DetProductoContratoSie();
 					log.info(" q "+detPaqueteList.get(i).getTbProducto().getIdproducto());
@@ -485,6 +489,7 @@ public class MantenimientoContratoFormAction extends
 						Constants.MESSAGE_INFO_TITULO, mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 				objProductoSie = new ProductoSie();
+				}
 			} else {
 				log.info("a actualizar  ");
 				limpiarCampos();
