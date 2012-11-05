@@ -21,8 +21,9 @@ public class HorarioPersonalDAOImpl implements HorarioPersonalDAO {
 	private EntityManager em;
 	private static Log log = LogFactory.getLog(HorarioPersonalDAOImpl.class);
 	
+
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.TipoCasaDAO#insertTipoCasa(com.edicsem.pe.sie.entity.TipoCasaSie)
+	 * @see com.edicsem.pe.sie.model.dao.HorarioPersonalDAO#insertHorarioPersonal(com.edicsem.pe.sie.entity.HorarioPersonalSie)
 	 */
 	public void insertHorarioPersonal(HorarioPersonalSie horariopersonal) {
 		try {
@@ -35,9 +36,8 @@ public class HorarioPersonalDAOImpl implements HorarioPersonalDAO {
 		}
 	}
 	
-	 
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.TipoCasaDAO#updateTipoCasa(com.edicsem.pe.sie.entity.TipoCasaSie)
+	 * @see com.edicsem.pe.sie.model.dao.HorarioPersonalDAO#updateHorarioPersonal(com.edicsem.pe.sie.entity.HorarioPersonalSie)
 	 */
 	public void updateHorarioPersonal(HorarioPersonalSie horariopersonal) {
 		try {
@@ -49,18 +49,17 @@ public class HorarioPersonalDAOImpl implements HorarioPersonalDAO {
 			e.printStackTrace();
 		}
 	}
-   
+	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.TipoCasaDAO#eliminarTipoCasa(int)
+	 * @see com.edicsem.pe.sie.model.dao.HorarioPersonalDAO#eliminarHorarioPersonal(int)
 	 */
 	public void eliminarHorarioPersonal(int id) {
 		// TODO Auto-generated method stub
 		
 	}
 
- 
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.TipoCasaDAO#findTipoCasa(int)
+	 * @see com.edicsem.pe.sie.model.dao.HorarioPersonalDAO#findHorarioPersonal(int)
 	 */
 	public HorarioPersonalSie findHorarioPersonal(int id) {
 		HorarioPersonalSie e= new HorarioPersonalSie();
@@ -76,7 +75,7 @@ public class HorarioPersonalDAOImpl implements HorarioPersonalDAO {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.TipoCasaDAO#listarTipoCasa()
+	 * @see com.edicsem.pe.sie.model.dao.HorarioPersonalDAO#listarHorarioPersonal()
 	 */
 	public List listarHorarioPersonal() {
 		List  lista = null;
@@ -90,6 +89,9 @@ public class HorarioPersonalDAOImpl implements HorarioPersonalDAO {
 		return lista;
 	}
  
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.HorarioPersonalDAO#listarHorarioPersonalXempleado(int)
+	 */
 	public List listarHorarioPersonalXempleado(int id) {
 		List  lista = null;
 		try {
