@@ -11,8 +11,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.CobranzaOperadoraSie;
-import com.edicsem.pe.sie.entity.CobranzaSie;
-import com.edicsem.pe.sie.model.dao.CobranzaDAO;
 import com.edicsem.pe.sie.model.dao.CobranzaOperaDAO;
 
 /**
