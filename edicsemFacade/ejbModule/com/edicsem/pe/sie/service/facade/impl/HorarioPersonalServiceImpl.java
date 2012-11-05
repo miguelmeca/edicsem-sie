@@ -35,10 +35,12 @@ public class HorarioPersonalServiceImpl implements HorarioPersonalService{
 	 */
 	public void insertHorarioPersonal(List<String> diaList,HorarioPersonalSie horariopersonal, int idEmpleado) {
 		for (int i = 0; i < diaList.size(); i++) {
-			horariopersonal.setTbFecha(objFechaDao.findFecha(Integer.parseInt(diaList.get(i))));
-			horariopersonal.setTbEmpleado(objEmpleadoDao.buscarEmpleado(idEmpleado));
-			horariopersonal.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(36));
-			objHorarioPersonalDao.insertHorarioPersonal(horariopersonal);
+			HorarioPersonalSie auxi = new HorarioPersonalSie();
+			auxi=horariopersonal;
+			auxi.setTbFecha(objFechaDao.findFecha(Integer.parseInt(diaList.get(i))));
+			auxi.setTbEmpleado(objEmpleadoDao.buscarEmpleado(idEmpleado));
+			auxi.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(36));
+			objHorarioPersonalDao.insertHorarioPersonal(auxi);
 		}
 	}
 	
