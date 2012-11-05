@@ -29,11 +29,10 @@ public class HorarioPersonalSie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_HORARIO_PERSONAL_ID_HORARIO_PERSONAL_GENERATOR", sequenceName="SIE.TB_HORARIO_PERSONAL_ID_HORARIO_PERSONAL_SEQ", initialValue=1, allocationSize =1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_HORARIO_PERSONAL_ID_HORARIO_PERSONAL_GENERATOR")
-	@Column(name="id_horario_personal")
-	private Integer idHorarioPersonal;
-
+	@SequenceGenerator(name="TB_HORARIO_PERSONAL_IDHORARIOPERSONAL_GENERATOR", sequenceName="SIE.TB_HORARIO_PERSONAL_IDHORARIOPERSONAL_SEQ", initialValue=1, allocationSize =1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_HORARIO_PERSONAL_IDHORARIOPERSONAL_GENERATOR")
+	private Integer idhorariopersonal;
+	
 	@Column(name="hora_ingreso")
 	private Time horaIngreso;
 
@@ -65,14 +64,7 @@ public class HorarioPersonalSie implements Serializable {
 
     public HorarioPersonalSie() {
     }
-
-	public Integer getIdHorarioPersonal() {
-		return this.idHorarioPersonal;
-	}
-
-	public void setIdHorarioPersonal(Integer idHorarioPersonal) {
-		this.idHorarioPersonal = idHorarioPersonal;
-	}
+    
 
 	public Time getHoraIngreso() {
 		return this.horaIngreso;
@@ -136,6 +128,16 @@ public class HorarioPersonalSie implements Serializable {
 
 	public void setTbFecha(FechaSie tbFecha) {
 		this.tbFecha = tbFecha;
+	}
+
+
+	public Integer getIdhorariopersonal() {
+		return idhorariopersonal;
+	}
+
+
+	public void setIdhorariopersonal(Integer idhorariopersonal) {
+		this.idhorariopersonal = idhorariopersonal;
 	}
 	
 }
