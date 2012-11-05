@@ -153,10 +153,10 @@
 					<p:spacer />
 					
 					<p:commandButton value="Agregar Telefono Referencia" icon="ui-icon ui-icon-check" 
-					update="mytable" actionListener="#{contratoForm.telefonoAgregar}" immediate="true" />
+					update="mytable, message" actionListener="#{contratoForm.telefonoAgregar}" process="@this" >
+					</p:commandButton>
 					
-					<p:dataTable value="#{contratoForm.telefonoList}" id="mytable" var="t"  
-						 effectSpeed="fast"   
+					<p:dataTable value="#{contratoForm.telefonoList}" id="mytable" var="t"   
 						 rowStyleClass="#{t.operadorTelefonico eq 'Claro' ? 'color1': (t.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }"   >
 
 						<f:facet name="header">

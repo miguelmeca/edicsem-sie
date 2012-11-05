@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -15,13 +14,14 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jboss.mx.util.TimeFormat;
 import org.primefaces.event.RowEditEvent;
 
+import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.HorarioPersonalSie;
-import com.edicsem.pe.sie.service.facade.CobranzaService;
+import com.edicsem.pe.sie.service.facade.ClienteService;
 import com.edicsem.pe.sie.service.facade.HorarioPersonalService;
 import com.edicsem.pe.sie.util.constants.Constants;
-import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name="horarioPersonal")
@@ -42,12 +42,12 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	
 	@EJB 
 	private HorarioPersonalService objHorarioPersonalService;
-	
+	@EJB 
+	private ClienteService objClienteService;
 	
 	public static Log log = LogFactory.getLog(HorarioPersonalSearchAction.class);
 	
 	public HorarioPersonalSearchAction() {
-		System.out.println("ESTOY EN MI CONSTRUCTOR");
 		log.info("inicializando mi constructor");
 		init();
 	}
@@ -75,8 +75,8 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 					listaHorario = new ArrayList<HorarioPersonalSie>();
 				}
 	    // mostramos los datos del cliente
-		//ClienteSie c = objClienteService.findCliente(objCobranzaOpera.getTbCobranza().getIdcliente()); 		
-		//objcliente.setIdcliente(c.getIdcliente());
+//		ClienteSie c = objClienteService.findCliente(objCobranzaOpera.getTbCobranza().getIdcliente()); 		
+//		objcliente.setIdcliente(c.getIdcliente());
 		return getViewList();
 	}
 	
@@ -90,14 +90,15 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 					log.info("Entering my method 'insertar'");
 				}
 				if(newRecord){
-					SimpleDateFormat sdf = new java.text.SimpleDateFormat("hh:mm");
-					Time g = new java.sql.Time(sdf.parse(getHoraIngreso()+"").getTime());
+					SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+					log.info("fecha p  " + getHoraIngreso() );
+					Time g = new Time( getHoraIngreso().getTime());
+					 
 					log.info(" g   "+ g);
 					objHorarioPersonal.setHoraIngreso(g);
 					objHorarioPersonalService.insertHorarioPersonal(diaList,objHorarioPersonal,idempleado);
 					log.info("insertando..... ");
-				}
-				
+				} 
 				
 		} catch (Exception e) {
 			e.printStackTrace();
