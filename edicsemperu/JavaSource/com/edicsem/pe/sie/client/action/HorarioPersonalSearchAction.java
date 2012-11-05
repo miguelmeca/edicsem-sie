@@ -11,11 +11,23 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.persistence.IdClass;
+import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.primefaces.event.DateSelectEvent;
 import org.jboss.mx.util.TimeFormat;
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.ScheduleEntryMoveEvent;
+import org.primefaces.event.ScheduleEntryResizeEvent;
+import org.primefaces.event.ScheduleEntrySelectEvent;
+import org.primefaces.model.DefaultScheduleEvent;
+import org.primefaces.model.DefaultScheduleModel;
+import org.primefaces.model.LazyScheduleModel;
+import org.primefaces.model.ScheduleEvent;
+import org.primefaces.model.ScheduleModel;
 
 import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.HorarioPersonalSie;
@@ -30,6 +42,7 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	/*variables*/
 	private HorarioPersonalSie objHorarioPersonal;
 	private List<HorarioPersonalSie> listaHorario;
+    private ScheduleModel<ScheduleEvent> lazyEventModel;
 	private List<String> diaList;
 	private Date fecPagoNull, horaIngreso,horaSalida;
 	private int tipollamada; 
@@ -57,6 +70,24 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 		// Colocar valores inicializados
 		objHorarioPersonal = new HorarioPersonalSie();
 		//objtelefono = new TelefonoPersonaSie();
+		lazyEventModel = new ScheduleModel<ScheduleEvent>() {
+
+			@Override
+			public boolean isLazy() {
+				return true;
+			}
+
+			@Override
+			public void fetchEvents(Date start, Date end) {
+				setEvents(new ArrayList<ScheduleEvent>());	//clean other periods
+
+				Date random = getRandomDate(start);
+				addEvent(new ScheduleEventImpl("Lazy Event 1", random, random));
+
+				random = getRandomDate(start);
+				addEvent(new ScheduleEventImpl("Lazy Event 2", random, random));
+			}
+		};
 		log.info("despues de inicializar  ");
 	}
 	
@@ -295,5 +326,10 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	public void setHoraSalida(Date horaSalida) {
 		this.horaSalida = horaSalida;
 	}
+	
+	private void addMessage(FacesMessage message) {
+		FacesContext.getCurrentInstance().addMessage(null, message);
+	}
+
 	
 }
