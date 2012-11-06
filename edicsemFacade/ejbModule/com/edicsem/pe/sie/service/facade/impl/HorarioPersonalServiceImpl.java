@@ -6,15 +6,13 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.HorarioPersonalSie;
-import com.edicsem.pe.sie.entity.TipoCasaSie;
 import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
 import com.edicsem.pe.sie.model.dao.FechaDAO;
 import com.edicsem.pe.sie.model.dao.HorarioPersonalDAO;
-import com.edicsem.pe.sie.model.dao.TipoCasaDAO; 
 import com.edicsem.pe.sie.service.facade.HorarioPersonalService;
 @Stateless
 public class HorarioPersonalServiceImpl implements HorarioPersonalService{
@@ -40,7 +38,9 @@ public class HorarioPersonalServiceImpl implements HorarioPersonalService{
 			auxi.setTbFecha(objFechaDao.findFecha(Integer.parseInt(diaList.get(i))));
 			auxi.setTbEmpleado(objEmpleadoDao.buscarEmpleado(idEmpleado));
 			auxi.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(36));
+			log.info("insertando 1 ");
 			objHorarioPersonalDao.insertHorarioPersonal(auxi);
+			log.info("insertando 2  ");
 		}
 	}
 	
