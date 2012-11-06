@@ -11,13 +11,19 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jboss.aspects.dbc.condition.parser.ForAllExpression;
 import org.primefaces.event.DateSelectEvent;
 import org.primefaces.event.RowEditEvent;
-
+import org.primefaces.event.ScheduleEntryMoveEvent;
+import org.primefaces.event.ScheduleEntryResizeEvent;
+import org.primefaces.event.ScheduleEntrySelectEvent;
+import org.primefaces.model.DefaultScheduleEvent;
+import org.primefaces.model.DefaultScheduleModel;
+import org.primefaces.model.LazyScheduleModel;
+import org.primefaces.model.ScheduleEvent;
+import org.primefaces.model.ScheduleModel;
 import com.edicsem.pe.sie.entity.HorarioPersonalSie;
 import com.edicsem.pe.sie.service.facade.HorarioPersonalService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -186,10 +192,9 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 		t.set(Calendar.AM_PM, Calendar.PM);
 		t.set(Calendar.DATE, t.get(Calendar.DATE) + 4);
 		t.set(Calendar.HOUR, 3);
-		
-		return t.getTime();
 		//objtelefono = new TelefonoPersonaSie();
 		log.info("despues de inicializar  ");
+		return t.getTime();
 	}
 	
 	/* (non-Javadoc)
