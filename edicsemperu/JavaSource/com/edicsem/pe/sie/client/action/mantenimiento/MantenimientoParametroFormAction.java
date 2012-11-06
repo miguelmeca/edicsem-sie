@@ -8,35 +8,26 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
-import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.EstadoGeneralSie;
 import com.edicsem.pe.sie.entity.ParametroSistemaSie;
-import com.edicsem.pe.sie.entity.ProveedorSie;
-import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.ParametroService;
-import com.edicsem.pe.sie.service.facade.ProveedorService;
-import com.edicsem.pe.sie.service.facade.TipoDocumentoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name="mantenimientoParametroFormAction")
 @SessionScoped
 public class MantenimientoParametroFormAction extends BaseMantenimientoAbstractAction {
-  
 	private ParametroSistemaSie objParametro;
 	private EstadoGeneralSie objEstado;
 	private String nombre;
 	private int estado;
-	
 	private boolean newRecord =false;
-	/*variable que capta el id del proveedor*/
+	/*variable que capta el id*/
 	private int ide;
 		
-	@ManagedProperty(value = "#{mantenimientoProveedorSearchAction}")
-	private MantenimientoProveedorSearchAction mantenimientoProveedorSearch;
+	@ManagedProperty(value = "#{mantenimientoParametroSearchAction}")
+	private MantenimientoProveedorSearchAction mantenimientoParametroSearch;
 	
 	@EJB
 	private ParametroService objParametroService;
@@ -54,42 +45,33 @@ public class MantenimientoParametroFormAction extends BaseMantenimientoAbstractA
 	/*inicializamos los  objetos utilizados*/
 	public void init() {
 		log.info("init()");
-		
 	} 
 
-	
 	/*método que se ejecuta al hacer click en el botón EDITAR de la lista*/
 	public String update() throws Exception {
 	    log.info("actualizar");
 		log.info("update()" + objParametro.getDescripcion());
-		/*busca el empleado por medio del id del ¿datatable?*/
+		/*busca el parámetro*/
 		ParametroSistemaSie p = objParametroService.findParametro(objParametro.getIdparametrosistema());
-		//log.info(" id " + p.getIdproveedor()+ " nombre " + p.getCodproveedor()); 
 		/*Seteo para mostrar los datos en el form*/
 		objParametro.setIdparametrosistema(p.getIdparametrosistema());
 		objParametro.setDescripcion(p.getDescripcion());
 		objParametro.setValor(p.getValor());
 		setEstado(p.getTbEstadoGeneral().getIdestadogeneral());
-		objParametro.setAreasistema(p.getAreasistema());
-		
-        /*método bolean necesario para actualizar que retorna al form */  
+		objParametro.setAreasistema(p.getAreasistema()); 
 		setNewRecord(false);
 		return getViewMant();
 	}
 	
-	/*método del botón GUARDAR(inserta o actualiza el empleado, domicilio y telefono)*/
+	/*método del botón GUARDAR(actualiza el parámetro)*/
 	public String insertar() throws Exception {
 		try {
 				if (log.isInfoEnabled()) {
-					//log.info("Entering my method 'insertar(registrar, actualizar)'"+ objProveedor.getCodproveedor());
 				}
-				
 				objParametro.setTbEstadoGeneral(objEstadoService.findEstadogeneral(estado));
-				
 					log.info("actualizando..... ");
 					objParametroService.actualizarParametro(objParametro);
 					log.info("insertando..... ");
-				
 		} catch (Exception e) {
 			e.printStackTrace();
 			nombre = e.getMessage();
@@ -102,7 +84,6 @@ public class MantenimientoParametroFormAction extends BaseMantenimientoAbstractA
 	}
 
 	/*métodos GET y SET*/
-	
 	public String getViewList() {
 		return "mantenimientoParametrosList";
 	}
@@ -137,21 +118,6 @@ public class MantenimientoParametroFormAction extends BaseMantenimientoAbstractA
 	 */
 	public void setNewRecord(boolean newRecord) {
 		this.newRecord = newRecord;
-	}
-
-	/**
-	 * @return the mantenimientoProveedorSearch
-	 */
-	public MantenimientoProveedorSearchAction getMantenimientoProveedorSearch() {
-		return mantenimientoProveedorSearch;
-	}
-
-	/**
-	 * @param mantenimientoProveedorSearch the mantenimientoProveedorSearch to set
-	 */
-	public void setMantenimientoProveedorSearch(
-			MantenimientoProveedorSearchAction mantenimientoProveedorSearch) {
-		this.mantenimientoProveedorSearch = mantenimientoProveedorSearch;
 	}
 	
 	/**
@@ -223,7 +189,20 @@ public class MantenimientoParametroFormAction extends BaseMantenimientoAbstractA
 	public void setEstado(int estado) {
 		this.estado = estado;
 	}
-	   	
-	
+
+	/**
+	 * @return the mantenimientoParametroSearch
+	 */
+	public MantenimientoProveedorSearchAction getMantenimientoParametroSearch() {
+		return mantenimientoParametroSearch;
+	}
+
+	/**
+	 * @param mantenimientoParametroSearch the mantenimientoParametroSearch to set
+	 */
+	public void setMantenimientoParametroSearch(
+			MantenimientoProveedorSearchAction mantenimientoParametroSearch) {
+		this.mantenimientoParametroSearch = mantenimientoParametroSearch;
+	}
 	
 }
