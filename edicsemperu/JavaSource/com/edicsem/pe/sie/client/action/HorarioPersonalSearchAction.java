@@ -1,19 +1,21 @@
 package com.edicsem.pe.sie.client.action;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.sql.Time;
+import java.util.GregorianCalendar;
 import java.util.List;
+
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jboss.aspects.dbc.condition.parser.ForAllExpression;
 import org.primefaces.event.DateSelectEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.ScheduleEntryMoveEvent;
@@ -21,9 +23,9 @@ import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.ScheduleEntrySelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
-import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
+
 import com.edicsem.pe.sie.entity.HorarioPersonalSie;
 import com.edicsem.pe.sie.service.facade.HorarioPersonalService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -50,6 +52,7 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	private int idempleado;
 	private boolean newRecord =false;
 	private int ide;
+	private Date dDate, dDate2;
 	
 	@EJB 
 	private HorarioPersonalService objHorarioPersonalService;
@@ -70,7 +73,8 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 		log.info("despues de inicializar  ");
 	}
 	
-	public void addEvent(ActionEvent actionEvent) {  
+	public void addEvent(ActionEvent actionEvent) { 
+		log.info("addEvent");
         if(event.getId() == null)  
             eventModel.addEvent(event);  
         else  
@@ -80,20 +84,24 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
     }  
       
     public void onEventSelect(ScheduleEntrySelectEvent selectEvent) {  
-        event = selectEvent.getScheduleEvent();  
+    	log.info("onEventSelect");
+    	event = selectEvent.getScheduleEvent();  
     }  
       
     public void onDateSelect(DateSelectEvent selectEvent) {  
+    	log.info("onDateSelect");
         event = new DefaultScheduleEvent(Math.random() + "", selectEvent.getDate(), selectEvent.getDate());  
     }  
       
     public void onEventMove(ScheduleEntryMoveEvent event) {  
+    	log.info("onEventMove");
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event moved", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());  
           
         addMessage(message);  
     }  
       
     public void onEventResize(ScheduleEntryResizeEvent event) {  
+    	log.info("onEventResize");
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event resized", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());  
           
         addMessage(message);  
@@ -177,13 +185,6 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 		return t.getTime();
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#listar()
-	 */
-	public String listar() {
-		return getViewList();
-	}
-	
 	public String mostrar() throws Exception {
 		eventModel = new DefaultScheduleModel(); 
 		log.info("mostrar horario de empleados");
@@ -192,36 +193,38 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 				if (listaHorario == null) {
 					listaHorario = new ArrayList<HorarioPersonalSie>();
 				}
-				log.info(" ------------ ");
+				log.info(" ------------ xxxxxx :D ");
 				for(int i=0;i < listaHorario.size(); i++){
-					objHorarioPersonal.setDescripcion(listaHorario.get(i).getDescripcion());
-					objHorarioPersonal.setDiainicio(listaHorario.get(i).getDiainicio());
-					objHorarioPersonal.setDiafin(listaHorario.get(i).getDiafin());
-					eventModel.addEvent(new DefaultScheduleEvent(objHorarioPersonal.getDescripcion(), objHorarioPersonal.getDiainicio(), objHorarioPersonal.getDiafin()));  
+					objHorarioPersonal= listaHorario.get(i);
+	                dDate = objHorarioPersonal.getDiainicio();
+	                Calendar cal = new GregorianCalendar();
+	            	String[] a= (objHorarioPersonal.getHoraIngreso()+"").split(":");
+	            	log.info(" xd "+dDate);
+	            	log.info(" "+a[0]);
+	            	log.info(" "+a[1]);
+	            	cal.setTime(dDate);
+	            	log.info(" fecha xxx "+cal.getTime());
+	            	cal.add(Calendar.HOUR_OF_DAY, Integer.parseInt(a[0]));
+	            	cal.add(Calendar.MINUTE, Integer.parseInt(a[1]));
+	            	dDate = cal.getTime();
+	            	log.info(" fecha 1 "+dDate);
+	                dDate2 = objHorarioPersonal.getDiafin();
+	                Calendar cal3 = new GregorianCalendar();
+	            	String[] a2= (objHorarioPersonal.getHoraSalida()+"").split(":");
+	            	log.info(" xd "+dDate2);
+	            	log.info(" "+a2[0]);
+	            	log.info(" "+a2[1]);
+	            	cal3.setTime(dDate2);
+	            	cal3.add(Calendar.HOUR_OF_DAY, Integer.parseInt(a2[0]));
+	            	cal3.add(Calendar.MINUTE, Integer.parseInt(a2[1]));
+	            	dDate2 = cal3.getTime();
+	            	log.info(" fecha 2 "+dDate2);
+	                log.info(" dia 1 " +dDate+ " dia 2 " +dDate2);
+					eventModel.addEvent(new DefaultScheduleEvent(objHorarioPersonal.getDescripcion()+" de "+ objHorarioPersonal.getHoraIngreso()+" hasta "+ objHorarioPersonal.getHoraSalida(), dDate, dDate2));  
 				}
-				/*h=objHorarioPersonalService.findHorarioPersonal(idempleado);
-				objHorarioPersonal.setDescripcion(h.getDescripcion());
-				  eventModel = new DefaultScheduleModel();  
-			        eventModel.addEvent(new DefaultScheduleEvent(objHorarioPersonal.getDescripcion(), previousDay8Pm(), previousDay11Pm()));  
-			        eventModel.addEvent(new DefaultScheduleEvent("Birthday Party", today1Pm(), today6Pm()));  
-			        eventModel.addEvent(new DefaultScheduleEvent("Breakfast at Tiffanys", nextDay9Am(), nextDay11Am()));  
-			        eventModel.addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm())); */ 
-			          
-			        lazyEventModel = new LazyScheduleModel() {  
-			              
-			            public void fetchEvents(Date start, Date end) {  
-			                clear();  
-			                  
-			                Date random = getRandomDate(start);  
-			                addEvent(new DefaultScheduleEvent("Lazy Event 1", random, random));  
-			                  
-			                random = getRandomDate(start);  
-			                addEvent(new DefaultScheduleEvent("Lazy Event 2", random, random));  
-			            }     
-			        };  
 		return getViewList();
 	}
-	
+    
 	public void agregarhorario(){
 		newRecord=true;
 	}
@@ -487,6 +490,8 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 
 	public Date getRandomDate(Date base) {
 		Calendar date = Calendar.getInstance();
+		
+		
 		date.setTime(base);
 		date.add(Calendar.DATE, ((int) (Math.random()*30)) + 1);	//set random day of month
 
@@ -561,6 +566,34 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	 */
 	public void setH(HorarioPersonalSie h) {
 		this.h = h;
+	}
+
+	/**
+	 * @return the dDate
+	 */
+	public Date getdDate() {
+		return dDate;
+	}
+
+	/**
+	 * @param dDate the dDate to set
+	 */
+	public void setdDate(Date dDate) {
+		this.dDate = dDate;
+	}
+
+	/**
+	 * @return the dDate2
+	 */
+	public Date getdDate2() {
+		return dDate2;
+	}
+
+	/**
+	 * @param dDate2 the dDate2 to set
+	 */
+	public void setdDate2(Date dDate2) {
+		this.dDate2 = dDate2;
 	}
 
 }

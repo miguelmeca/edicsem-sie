@@ -73,7 +73,7 @@ oncomplete="horarioDialog.show()"  update=":formManteHorario:display"  />
 </p:fieldset>
 <p:fieldset legend="Visualizar Horario" style="margin-top:20px">
 <p:growl id="messages" showDetail="true" />
-    <p:schedule value="#{horarioPersonal.eventModel}" />  
+    <p:schedule value="#{horarioPersonal.eventModel}" draggable="false" />  
 </p:fieldset>
 </h:form>
 </ui:define>
