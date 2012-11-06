@@ -141,7 +141,7 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 		objHorarioPersonal= new HorarioPersonalSie();
-		return getViewList();
+		return mostrar();
 	}
 	
 	/*GETs Y SETs*/
