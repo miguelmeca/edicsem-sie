@@ -8,11 +8,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
-import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.ProveedorSie;
-import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.ProveedorService;
 import com.edicsem.pe.sie.service.facade.TipoDocumentoService;
@@ -22,14 +18,12 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 @ManagedBean(name="mantenimientoProveedorFormAction")
 @SessionScoped
 public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractAction {
-    /*Se crean los objetos de las entidades empleado, domicilio y telefono*/	
+    /*Se crean los objetos de las entidades proveedor*/	
 	private ProveedorSie objProveedor;
-	/*variables para empleado*/
+	/*variables*/
 	private String nombre;
 	private int TipoDocumento;
 	private int estado;
-	//private int codigoEmpleado;
-	//private int codigoTipoDocumento;
 	/*variable bolean necesaria*/
 	private boolean newRecord =false;
 	/*variable que capta el id del proveedor*/
@@ -75,7 +69,7 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 	public String update() throws Exception {
 	    log.info("actualizar");
 		log.info("update()" + objProveedor.getIdproveedor());
-		/*busca el empleado por medio del id del ¿datatable?*/
+		/*busca el proveedor*/
 		ProveedorSie p = objProveedorService.findProveedor(objProveedor.getIdproveedor());
 		log.info(" id " + p.getIdproveedor()+ " nombre " + p.getCodproveedor()); 
 		/*Seteo para mostrar los datos en el form*/
@@ -91,8 +85,6 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 		setNewRecord(false);
 		return getViewMant();
 	}
-	
-	
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#delete()
@@ -110,8 +102,7 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 			parametroObtenido = getIde();
 			log.info(" ------>>>>>>aqui captura el parametro ID "+ parametroObtenido);
 			p = objProveedorService.findProveedor(parametroObtenido);
-		    //log.info(" empleado------ID y nombre>" + e.getIdempleado() + " "+ e.getNombreemp());
-			/*seteo empleado*/
+			/*seteo proveedor*/
 		    objProveedor.setIdproveedor(p.getIdproveedor());
 		    objProveedor.setCodproveedor(p.getCodproveedor());
 		    objProveedor.setNombreempresa(p.getNombreempresa());
@@ -119,7 +110,7 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 		    setTipoDocumento(p.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad());
 		    objProveedor.setNumdocumentoproveedor(p.getNumdocumentoproveedor());
 		    objProveedor.setDireccion(p.getDireccion());
-		    log.info("-----Id estado del empleado>>>"	+ getEstado());
+		    log.info("-----Id estado del proveedor>>>"	+ getEstado());
 			log.info("actualizando ESTADO..... ");
 			objProveedor.setTbTipoDocumentoIdentidad(objTipoDocService.buscarTipoDocumento(TipoDocumento));
 			objProveedor.setTbEstadoGeneral(objEstadoService.findEstadogeneral(10));
@@ -138,7 +129,7 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 		return mantenimientoProveedorSearch.listar();
 	}
 
-	/*método del botón GUARDAR(inserta o actualiza el empleado, domicilio y telefono)*/
+	/*método del botón GUARDAR(inserta o actualiza el proveedor)*/
 	public String insertar() throws Exception {
 		try {
 				if (log.isInfoEnabled()) {
@@ -146,8 +137,6 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 				}
 				objProveedor.setTbTipoDocumentoIdentidad(objTipoDocService.buscarTipoDocumento(TipoDocumento));
 				objProveedor.setTbEstadoGeneral(objEstadoService.findEstadogeneral(9));
-				/*if: inserta al empleado, domicilio y telefono
-				  else: actualiza al empleado, domicilio y telefono*/
 				if (isNewRecord()) {
 					log.info("insertando..... ");
 					objProveedorService.insertarProveedor(objProveedor);
