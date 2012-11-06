@@ -48,12 +48,9 @@ public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstract
 		log.info("despues de inicializar  ");		
 	}
 	
-	
-	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#listar()
 	 */
-	
 	/*método que lista al hacer click en el menú del template*/
 	public String listar() {
 		// TODO Auto-generated method stub
@@ -69,6 +66,7 @@ public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstract
 		setObjEmpleado(null);
 	}
 
+    /*Gets y Sets*/	
 	public EmpleadoSie getNuevo() {
 		return nuevo;
 	}
@@ -160,7 +158,6 @@ public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstract
 	/**
 	 * @return the empleadoList
 	 */
-	/*GET para listar empleados*/
 	public List<EmpleadoSie> getEmpleadoList() {
 		return empleadoList;
 	}
