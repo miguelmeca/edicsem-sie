@@ -25,7 +25,7 @@ public class FechaSie implements Serializable {
 
 	private String dia;
 
-	//bi-directional many-to-one association to TbHorarioPersonal
+	//bi-directional many-to-one association to HorarioPersonalSie
 	@OneToMany(mappedBy="tbFecha")
 	private Set<HorarioPersonalSie> tbHorarioPersonals;
 

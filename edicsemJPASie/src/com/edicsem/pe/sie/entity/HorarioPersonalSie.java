@@ -32,7 +32,9 @@ public class HorarioPersonalSie implements Serializable {
 	@SequenceGenerator(name="TB_HORARIO_PERSONAL_IDHORARIOPERSONAL_GENERATOR", sequenceName="SIE.TB_HORARIO_PERSONAL_IDHORARIOPERSONAL_SEQ", initialValue=1, allocationSize =1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_HORARIO_PERSONAL_IDHORARIOPERSONAL_GENERATOR")
 	private Integer idhorariopersonal;
-	
+
+    private String descripcion;
+    
 	@Column(name="hora_ingreso")
 	private Time horaIngreso;
 
@@ -49,8 +51,6 @@ public class HorarioPersonalSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idempleado")
 	private EmpleadoSie tbEmpleado;
-    
-    private String descripcion;
     
     //bi-directional many-to-one association to EstadoGeneralSie
     @ManyToOne
