@@ -7,23 +7,17 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import com.edicsem.pe.sie.entity.ParametroSistemaSie;
-import com.edicsem.pe.sie.entity.ProveedorSie;
 import com.edicsem.pe.sie.service.facade.ParametroService;
-import com.edicsem.pe.sie.service.facade.ProveedorService;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name="mantenimientoParametroSearchAction")
 @SessionScoped
 public class MantenimientoParametroSearchAction extends BaseMantenimientoAbstractAction {
-    
 	/*variables*/
 	private ParametroSistemaSie objParametro;
 	private List<ParametroSistemaSie> parametroList;
-	//private EmpleadoSie selectedEmpleado;
 	private boolean editMode;
-	//private EmpleadoSie nuevo ;
 	
 	@EJB 
 	private ParametroService objParametroService;
@@ -39,17 +33,13 @@ public class MantenimientoParametroSearchAction extends BaseMantenimientoAbstrac
 	/*inicializamos los  objetos utilizados*/
 	public void init() {
 		log.info("init()");
-		// Colocar valores inicializados
 		objParametro = new ParametroSistemaSie();
-		//objEmpleado.setNombreemp("");
-		//nuevo = new EmpleadoSie();
 		log.info("despues de inicializar  ");		
 	}
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#listar()
 	 */
-	
 	/*método que lista al hacer click en el menú del template*/
 	public String listar() {
 		// TODO Auto-generated method stub
@@ -62,7 +52,6 @@ public class MantenimientoParametroSearchAction extends BaseMantenimientoAbstrac
 	}
 	
 	/*GETs Y SETs*/
-	
 	public String getViewList() {
 		return "mantenimientoParametrosList";
 	}
