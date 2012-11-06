@@ -66,7 +66,7 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 		// Colocar valores inicializados
 		objHorarioPersonal = new HorarioPersonalSie();
 		h= new HorarioPersonalSie();
-		
+		eventModel = new DefaultScheduleModel(); 
 		log.info("despues de inicializar  ");
 	}
 	
@@ -185,6 +185,7 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	}
 	
 	public String mostrar() throws Exception {
+		eventModel = new DefaultScheduleModel(); 
 		log.info("mostrar horario de empleados");
 				log.info("listarHorario del personal");
 				listaHorario = objHorarioPersonalService.listarHorarioPersonalXempleado(idempleado);
@@ -192,13 +193,19 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 					listaHorario = new ArrayList<HorarioPersonalSie>();
 				}
 				log.info(" ------------ ");
-				h=objHorarioPersonalService.findHorarioPersonal(7);
+				for(int i=0;i < listaHorario.size(); i++){
+					objHorarioPersonal.setDescripcion(listaHorario.get(i).getDescripcion());
+					objHorarioPersonal.setDiainicio(listaHorario.get(i).getDiainicio());
+					objHorarioPersonal.setDiafin(listaHorario.get(i).getDiafin());
+					eventModel.addEvent(new DefaultScheduleEvent(objHorarioPersonal.getDescripcion(), objHorarioPersonal.getDiainicio(), objHorarioPersonal.getDiafin()));  
+				}
+				/*h=objHorarioPersonalService.findHorarioPersonal(idempleado);
 				objHorarioPersonal.setDescripcion(h.getDescripcion());
 				  eventModel = new DefaultScheduleModel();  
 			        eventModel.addEvent(new DefaultScheduleEvent(objHorarioPersonal.getDescripcion(), previousDay8Pm(), previousDay11Pm()));  
 			        eventModel.addEvent(new DefaultScheduleEvent("Birthday Party", today1Pm(), today6Pm()));  
 			        eventModel.addEvent(new DefaultScheduleEvent("Breakfast at Tiffanys", nextDay9Am(), nextDay11Am()));  
-			        eventModel.addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm()));  
+			        eventModel.addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm())); */ 
 			          
 			        lazyEventModel = new LazyScheduleModel() {  
 			              
