@@ -19,9 +19,7 @@ public class MantenimientoProveedorSearchAction extends BaseMantenimientoAbstrac
 	private int tipoDocumento;
 	private ProveedorSie objProveedor;
 	private List<ProveedorSie> proveedorList;
-	//private EmpleadoSie selectedEmpleado;
 	private boolean editMode;
-	//private EmpleadoSie nuevo ;
 	
 	@EJB 
 	private ProveedorService objProveedorService;
@@ -39,8 +37,6 @@ public class MantenimientoProveedorSearchAction extends BaseMantenimientoAbstrac
 		log.info("init()");
 		// Colocar valores inicializados
 		objProveedor = new ProveedorSie();
-		//objEmpleado.setNombreemp("");
-		//nuevo = new EmpleadoSie();
 		log.info("despues de inicializar  ");		
 	}
 	
@@ -50,7 +46,6 @@ public class MantenimientoProveedorSearchAction extends BaseMantenimientoAbstrac
 	
 	/*método que lista al hacer click en el menú del template*/
 	public String listar() {
-		// TODO Auto-generated method stub
 		log.info("listarProveedor 'MantenimientoProveedorSearchAction' ");
 		proveedorList = objProveedorService.listarProveedores();
 		if (proveedorList == null) {
