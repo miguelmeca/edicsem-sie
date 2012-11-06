@@ -62,33 +62,13 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	}
 	
 	public void init() {
-		log.info("init()");
+		log.info("init() xxxxxxxx :D ");
 		// Colocar valores inicializados
 		objHorarioPersonal = new HorarioPersonalSie();
-		h=objHorarioPersonalService.findHorarioPersonal(7);
-		objHorarioPersonal.setDescripcion(h.getDescripcion());
-		  eventModel = new DefaultScheduleModel();  
-	        eventModel.addEvent(new DefaultScheduleEvent(objHorarioPersonal.getDescripcion(), previousDay8Pm(), previousDay11Pm()));  
-	        eventModel.addEvent(new DefaultScheduleEvent("Birthday Party", today1Pm(), today6Pm()));  
-	        eventModel.addEvent(new DefaultScheduleEvent("Breakfast at Tiffanys", nextDay9Am(), nextDay11Am()));  
-	        eventModel.addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm()));  
-	          
-	        lazyEventModel = new LazyScheduleModel() {  
-	              
-	            public void fetchEvents(Date start, Date end) {  
-	                clear();  
-	                  
-	                Date random = getRandomDate(start);  
-	                addEvent(new DefaultScheduleEvent("Lazy Event 1", random, random));  
-	                  
-	                random = getRandomDate(start);  
-	                addEvent(new DefaultScheduleEvent("Lazy Event 2", random, random));  
-	            }     
-	        };  
+		h= new HorarioPersonalSie();
 		
 		log.info("despues de inicializar  ");
 	}
-	
 	
 	public void addEvent(ActionEvent actionEvent) {  
         if(event.getId() == null)  
@@ -211,6 +191,27 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 				if (listaHorario == null) {
 					listaHorario = new ArrayList<HorarioPersonalSie>();
 				}
+				log.info(" ------------ ");
+				h=objHorarioPersonalService.findHorarioPersonal(7);
+				objHorarioPersonal.setDescripcion(h.getDescripcion());
+				  eventModel = new DefaultScheduleModel();  
+			        eventModel.addEvent(new DefaultScheduleEvent(objHorarioPersonal.getDescripcion(), previousDay8Pm(), previousDay11Pm()));  
+			        eventModel.addEvent(new DefaultScheduleEvent("Birthday Party", today1Pm(), today6Pm()));  
+			        eventModel.addEvent(new DefaultScheduleEvent("Breakfast at Tiffanys", nextDay9Am(), nextDay11Am()));  
+			        eventModel.addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm()));  
+			          
+			        lazyEventModel = new LazyScheduleModel() {  
+			              
+			            public void fetchEvents(Date start, Date end) {  
+			                clear();  
+			                  
+			                Date random = getRandomDate(start);  
+			                addEvent(new DefaultScheduleEvent("Lazy Event 1", random, random));  
+			                  
+			                random = getRandomDate(start);  
+			                addEvent(new DefaultScheduleEvent("Lazy Event 2", random, random));  
+			            }     
+			        };  
 		return getViewList();
 	}
 	
@@ -554,5 +555,5 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	public void setH(HorarioPersonalSie h) {
 		this.h = h;
 	}
-	
+
 }
