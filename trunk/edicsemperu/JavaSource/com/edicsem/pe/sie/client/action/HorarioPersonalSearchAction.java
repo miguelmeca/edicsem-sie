@@ -555,6 +555,4 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 		this.h = h;
 	}
 	
-	
-	
 }
