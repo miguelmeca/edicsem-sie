@@ -1,18 +1,21 @@
 package com.edicsem.pe.sie.client.action;
 
-import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.sql.Time;
 import java.util.List;
-
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jboss.aspects.dbc.condition.parser.ForAllExpression;
+import org.primefaces.event.DateSelectEvent;
 import org.primefaces.event.RowEditEvent;
 
 import com.edicsem.pe.sie.entity.HorarioPersonalSie;
@@ -26,6 +29,13 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	/*variables*/
 	private HorarioPersonalSie objHorarioPersonal;
 	private List<HorarioPersonalSie> listaHorario;
+    /*schedule*/
+	private ScheduleModel eventModel;  
+    private ScheduleModel lazyEventModel;  
+    private ScheduleEvent event = new DefaultScheduleEvent(); 
+    private String theme;  
+    private HorarioPersonalSie h; 
+	/*fin schedule*/
 	private List<String> diaList;
 	private Date fecPagoNull, horaIngreso,horaSalida;
 	private int tipollamada; 
@@ -49,6 +59,135 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 		log.info("init()");
 		// Colocar valores inicializados
 		objHorarioPersonal = new HorarioPersonalSie();
+		h=objHorarioPersonalService.findHorarioPersonal(7);
+		objHorarioPersonal.setDescripcion(h.getDescripcion());
+		  eventModel = new DefaultScheduleModel();  
+	        eventModel.addEvent(new DefaultScheduleEvent(objHorarioPersonal.getDescripcion(), previousDay8Pm(), previousDay11Pm()));  
+	        eventModel.addEvent(new DefaultScheduleEvent("Birthday Party", today1Pm(), today6Pm()));  
+	        eventModel.addEvent(new DefaultScheduleEvent("Breakfast at Tiffanys", nextDay9Am(), nextDay11Am()));  
+	        eventModel.addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm()));  
+	          
+	        lazyEventModel = new LazyScheduleModel() {  
+	              
+	            public void fetchEvents(Date start, Date end) {  
+	                clear();  
+	                  
+	                Date random = getRandomDate(start);  
+	                addEvent(new DefaultScheduleEvent("Lazy Event 1", random, random));  
+	                  
+	                random = getRandomDate(start);  
+	                addEvent(new DefaultScheduleEvent("Lazy Event 2", random, random));  
+	            }     
+	        };  
+		
+		log.info("despues de inicializar  ");
+	}
+	
+	
+	public void addEvent(ActionEvent actionEvent) {  
+        if(event.getId() == null)  
+            eventModel.addEvent(event);  
+        else  
+            eventModel.updateEvent(event);  
+          
+        event = new DefaultScheduleEvent();  
+    }  
+      
+    public void onEventSelect(ScheduleEntrySelectEvent selectEvent) {  
+        event = selectEvent.getScheduleEvent();  
+    }  
+      
+    public void onDateSelect(DateSelectEvent selectEvent) {  
+        event = new DefaultScheduleEvent(Math.random() + "", selectEvent.getDate(), selectEvent.getDate());  
+    }  
+      
+    public void onEventMove(ScheduleEntryMoveEvent event) {  
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event moved", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());  
+          
+        addMessage(message);  
+    }  
+      
+    public void onEventResize(ScheduleEntryResizeEvent event) {  
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event resized", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());  
+          
+        addMessage(message);  
+    }
+	
+    private Calendar today() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 0, 0, 0);
+
+		return calendar;
+	}
+	
+	private Date previousDay8Pm() {
+		Calendar t = (Calendar) today().clone();
+		t.set(Calendar.AM_PM, Calendar.PM);
+		t.set(Calendar.DATE, t.get(Calendar.DATE) - 1);
+		t.set(Calendar.HOUR, 8);
+		
+		return t.getTime();
+	}
+	
+	private Date previousDay11Pm() {
+		Calendar t = (Calendar) today().clone();
+		t.set(Calendar.AM_PM, Calendar.PM);
+		t.set(Calendar.DATE, t.get(Calendar.DATE) - 1);
+		t.set(Calendar.HOUR, 11);
+		
+		return t.getTime();
+	}
+	
+	private Date today1Pm() {
+		Calendar t = (Calendar) today().clone();
+		t.set(Calendar.AM_PM, Calendar.PM);
+		t.set(Calendar.HOUR, 1);
+		
+		return t.getTime();
+	}
+	
+	private Date theDayAfter3Pm() {
+		Calendar t = (Calendar) today().clone();
+		t.set(Calendar.DATE, t.get(Calendar.DATE) + 2);		
+		t.set(Calendar.AM_PM, Calendar.PM);
+		t.set(Calendar.HOUR, 3);
+		
+		return t.getTime();
+	}
+
+	private Date today6Pm() {
+		Calendar t = (Calendar) today().clone(); 
+		t.set(Calendar.AM_PM, Calendar.PM);
+		t.set(Calendar.HOUR, 6);
+		
+		return t.getTime();
+	}
+	
+	private Date nextDay9Am() {
+		Calendar t = (Calendar) today().clone();
+		t.set(Calendar.AM_PM, Calendar.AM);
+		t.set(Calendar.DATE, t.get(Calendar.DATE) + 1);
+		t.set(Calendar.HOUR, 9);
+		
+		return t.getTime();
+	}
+	
+	private Date nextDay11Am() {
+		Calendar t = (Calendar) today().clone();
+		t.set(Calendar.AM_PM, Calendar.AM);
+		t.set(Calendar.DATE, t.get(Calendar.DATE) + 1);
+		t.set(Calendar.HOUR, 11);
+		
+		return t.getTime();
+	}
+	
+	private Date fourDaysLater3pm() {
+		Calendar t = (Calendar) today().clone(); 
+		t.set(Calendar.AM_PM, Calendar.PM);
+		t.set(Calendar.DATE, t.get(Calendar.DATE) + 4);
+		t.set(Calendar.HOUR, 3);
+		
+		return t.getTime();
 		//objtelefono = new TelefonoPersonaSie();
 		log.info("despues de inicializar  ");
 	}
@@ -328,5 +467,89 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	public void setHoraSalida(Date horaSalida) {
 		this.horaSalida = horaSalida;
 	}
+	
+	private void addMessage(FacesMessage message) {
+		FacesContext.getCurrentInstance().addMessage(null, message);
+	}
+
+	public Date getRandomDate(Date base) {
+		Calendar date = Calendar.getInstance();
+		date.setTime(base);
+		date.add(Calendar.DATE, ((int) (Math.random()*30)) + 1);	//set random day of month
+
+		return date.getTime();
+	}
+
+	/**
+	 * @return the eventModel
+	 */
+	public ScheduleModel getEventModel() {
+		return eventModel;
+	}
+
+	/**
+	 * @param eventModel the eventModel to set
+	 */
+	public void setEventModel(ScheduleModel eventModel) {
+		this.eventModel = eventModel;
+	}
+
+	/**
+	 * @return the lazyEventModel
+	 */
+	public ScheduleModel getLazyEventModel() {
+		return lazyEventModel;
+	}
+
+	/**
+	 * @param lazyEventModel the lazyEventModel to set
+	 */
+	public void setLazyEventModel(ScheduleModel lazyEventModel) {
+		this.lazyEventModel = lazyEventModel;
+	}
+
+	/**
+	 * @return the event
+	 */
+	public ScheduleEvent getEvent() {
+		return event;
+	}
+
+	/**
+	 * @param event the event to set
+	 */
+	public void setEvent(ScheduleEvent event) {
+		this.event = event;
+	}
+
+	/**
+	 * @return the theme
+	 */
+	public String getTheme() {
+		return theme;
+	}
+
+	/**
+	 * @param theme the theme to set
+	 */
+	public void setTheme(String theme) {
+		this.theme = theme;
+	}
+
+	/**
+	 * @return the h
+	 */
+	public HorarioPersonalSie getH() {
+		return h;
+	}
+
+	/**
+	 * @param h the h to set
+	 */
+	public void setH(HorarioPersonalSie h) {
+		this.h = h;
+	}
+	
+	
 	
 }
