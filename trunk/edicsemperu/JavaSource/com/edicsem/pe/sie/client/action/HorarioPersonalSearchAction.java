@@ -16,7 +16,6 @@ import org.apache.commons.logging.LogFactory;
 import org.primefaces.event.RowEditEvent;
 
 import com.edicsem.pe.sie.entity.HorarioPersonalSie;
-import com.edicsem.pe.sie.service.facade.ClienteService;
 import com.edicsem.pe.sie.service.facade.HorarioPersonalService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
@@ -34,13 +33,10 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	private String mensaje;
 	private int idempleado;
 	private boolean newRecord =false;
-	/*variable que capta el id del proveedor*/
 	private int ide;
 	
 	@EJB 
 	private HorarioPersonalService objHorarioPersonalService;
-	@EJB 
-	private ClienteService objClienteService;
 	
 	public static Log log = LogFactory.getLog(HorarioPersonalSearchAction.class);
 	
@@ -71,9 +67,6 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 				if (listaHorario == null) {
 					listaHorario = new ArrayList<HorarioPersonalSie>();
 				}
-	    // mostramos los datos del cliente
-//		ClienteSie c = objClienteService.findCliente(objCobranzaOpera.getTbCobranza().getIdcliente()); 		
-//		objcliente.setIdcliente(c.getIdcliente());
 		return getViewList();
 	}
 	
@@ -82,11 +75,10 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	}
 	
 	public String insertar() throws Exception {
-		boolean insert=true;
 		mensaje="";
 		try {
 				if (log.isInfoEnabled()) {
-					log.info("Entering my method 'insertar'");
+					log.info("Entering my method 'insertar'  xd ");
 				}
 				if(newRecord){
 					log.info("fecha pp  " + getHoraIngreso() );
@@ -111,24 +103,24 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 										objHorarioPersonal.getDiafin().equals(listaHorario.get(i).getDiainicio())||
 										objHorarioPersonal.getDiainicio().equals(listaHorario.get(i).getDiafin())||
 										objHorarioPersonal.getDiainicio().equals(listaHorario.get(i).getDiainicio()))){
-								log.info("fechas incorrectas   ");
-								if(objHorarioPersonal.getHoraIngreso().after(listaHorario.get(i).getHoraIngreso())
+								log.info("fechas con horario registrado   ");
+								if(	objHorarioPersonal.getHoraIngreso().equals(listaHorario.get(i).getHoraIngreso()) ||
+										objHorarioPersonal.getHoraIngreso().after(listaHorario.get(i).getHoraIngreso())
 										&& objHorarioPersonal.getHoraIngreso().before(listaHorario.get(i).getHoraSalida())){
 									log.info(objHorarioPersonal.getHoraIngreso() +" --->  getHoraIngreso "+ listaHorario.get(i).getHoraIngreso());
-									insert=false;
 									mensaje = "La hora de Ingreso es errónea";
 									break;
-								}else if(objHorarioPersonal.getHoraSalida().after(listaHorario.get(i).getHoraIngreso())
+								}else if(objHorarioPersonal.getHoraSalida().equals(listaHorario.get(i).getHoraSalida()) ||
+										objHorarioPersonal.getHoraSalida().after(listaHorario.get(i).getHoraIngreso())
 										&& objHorarioPersonal.getHoraSalida().before(listaHorario.get(i).getHoraSalida())){
 									log.info(objHorarioPersonal.getHoraSalida()+" --->  getHoraSalida "+listaHorario.get(i).getHoraSalida());
-									insert=false;
 									mensaje = "La hora de Salida es errónea";
 									break;
 									}
 								}
 							}
 						}
-					 if(mensaje.equals("")){ 
+					 if(mensaje.equals("")){
 						 objHorarioPersonalService.insertHorarioPersonal(diaList,objHorarioPersonal,idempleado);
 						 log.info("insertando..... ");
 						 msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
@@ -137,6 +129,8 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 						msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 						FacesContext.getCurrentInstance().addMessage(null, msg);
 					 }
+				}else{
+					
 				}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -146,6 +140,7 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
+		objHorarioPersonal= new HorarioPersonalSie();
 		return getViewList();
 	}
 	
