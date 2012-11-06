@@ -200,26 +200,23 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	                Calendar cal = new GregorianCalendar();
 	            	String[] a= (objHorarioPersonal.getHoraIngreso()+"").split(":");
 	            	log.info(" xd "+dDate);
-	            	log.info(" "+a[0]);
-	            	log.info(" "+a[1]);
 	            	cal.setTime(dDate);
 	            	log.info(" fecha xxx "+cal.getTime());
 	            	cal.add(Calendar.HOUR_OF_DAY, Integer.parseInt(a[0]));
 	            	cal.add(Calendar.MINUTE, Integer.parseInt(a[1]));
 	            	dDate = cal.getTime();
 	            	log.info(" fecha 1 "+dDate);
-	                dDate2 = objHorarioPersonal.getDiafin();
+	                dDate2 = objHorarioPersonal.getDiainicio();
 	                Calendar cal3 = new GregorianCalendar();
 	            	String[] a2= (objHorarioPersonal.getHoraSalida()+"").split(":");
 	            	log.info(" xd "+dDate2);
-	            	log.info(" "+a2[0]);
-	            	log.info(" "+a2[1]);
 	            	cal3.setTime(dDate2);
 	            	cal3.add(Calendar.HOUR_OF_DAY, Integer.parseInt(a2[0]));
 	            	cal3.add(Calendar.MINUTE, Integer.parseInt(a2[1]));
 	            	dDate2 = cal3.getTime();
 	            	log.info(" fecha 2 "+dDate2);
 	                log.info(" dia 1 " +dDate+ " dia 2 " +dDate2);
+	                log.info("  cccccc  " + dDate.getDate()+" "   +  dDate.getDay());
 					eventModel.addEvent(new DefaultScheduleEvent(objHorarioPersonal.getDescripcion()+" de "+ objHorarioPersonal.getHoraIngreso()+" hasta "+ objHorarioPersonal.getHoraSalida(), dDate, dDate2));  
 				}
 		return getViewList();
