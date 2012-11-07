@@ -57,7 +57,7 @@ oncomplete="if(#{horarioPersonal.newRecord}) horarioDialog.show()"  update="hora
 	   </p:column>
 	     <p:column headerText="Deshabilitar">
 	    <p:commandButton value="Deshabilitar" 
-		 action="#{horarioPersonal.updateDeshabilitar}" oncomplete="horarioDialog.show()"  update=":formManteHorario:display"  >
+		 action="#{horarioPersonal.updateDeshabilitar}" oncomplete="confirmDeshabilitarHorario.show()"  update=":formManteHorario:display"  >
 		 <f:setPropertyActionListener value="#{h.idhorariopersonal}"  
 		  target="#{horarioPersonal.idhorario}" />
 		</p:commandButton>
