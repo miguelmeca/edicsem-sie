@@ -31,7 +31,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 	private Log log = LogFactory.getLog(MantenimientoPuntoAlmacenFormAction.class);
 	
 	public int idalmacen;
-	public String descripcion, direccion,ubigeoDefecto,idUbigeo;
+	public String mensaje, descripcion, direccion,ubigeoDefecto,idUbigeo;
 	private String idProvincia, idDepartamento, idDistrito;
 	private int ide, idEstadoGeneral;
 	private boolean editMode, puntoVenta,defectoUbigeo;
@@ -145,17 +145,15 @@ public class MantenimientoPuntoAlmacenFormAction extends
 
 	public String DeshabilitarPunto() throws Exception {
 
-		objAlmacenSie = new PuntoVentaSie();
-		int parametroObtenido;
 		PuntoVentaSie punto = new PuntoVentaSie();
 
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'DeshabilitarPunto()'" + getIde());
 			}
-			parametroObtenido = getIde();
-			log.info(" parametro ID "+ parametroObtenido);
-			punto = objAlmacenService.findAlmacen(parametroObtenido);
+			
+			log.info(" parametro ID "+ getIde());
+			punto = objAlmacenService.findAlmacen(getIde());
 			punto.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(14));
 
 			objAlmacenService.updateAlmacen(punto);
@@ -164,14 +162,13 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		} catch (Exception e) {
 			e.printStackTrace();
 
-			descripcion = e.getMessage();
+			mensaje = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, descripcion);
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		objAlmacenSie = new PuntoVentaSie();
-
+		
 		return mantenimientoPuntoAlmacenSearch.listar();
 	}
 
@@ -221,9 +218,9 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		} catch (Exception e) {
 
 			e.printStackTrace();
-			descripcion = e.getMessage();
+			mensaje = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, descripcion);
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
@@ -428,21 +425,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 	public void setIde(int ide) {
 		this.ide = ide;
 	}
-
-	/**
-	 * @return the descripcion
-	 */
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	/**
-	 * @param descripcion
-	 *            the descripcion to set
-	 */
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
+ 
 
 	/*
 	 * (non-Javadoc)
@@ -604,6 +587,34 @@ public class MantenimientoPuntoAlmacenFormAction extends
 	 */
 	public void setIdDistrito(String idDistrito) {
 		this.idDistrito = idDistrito;
+	}
+
+	/**
+	 * @return the mensaje
+	 */
+	public String getMensaje() {
+		return mensaje;
+	}
+
+	/**
+	 * @param mensaje the mensaje to set
+	 */
+	public void setMensaje(String mensaje) {
+		this.mensaje = mensaje;
+	}
+
+	/**
+	 * @return the descripcion
+	 */
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	/**
+	 * @param descripcion the descripcion to set
+	 */
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 }

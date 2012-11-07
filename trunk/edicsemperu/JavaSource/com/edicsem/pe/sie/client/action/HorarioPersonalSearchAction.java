@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.GregorianCalendar;
-import java.sql.Timestamp;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -15,22 +13,16 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.DateTimeConverter;
-import javax.faces.event.ActionEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.primefaces.event.DateSelectEvent;
-import org.primefaces.event.RowEditEvent;
-import org.primefaces.event.ScheduleEntryMoveEvent;
-import org.primefaces.event.ScheduleEntryResizeEvent;
-import org.primefaces.event.ScheduleEntrySelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
 import com.edicsem.pe.sie.entity.HorarioPersonalSie;
+import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.HorarioPersonalService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
@@ -47,11 +39,10 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
   
     private ScheduleEvent event = new DefaultScheduleEvent(); 
     private String theme;  
-    private HorarioPersonalSie h; 
 	/*fin schedule*/
 	private List<String> diaList;
-	private Date fecPagoNull, horaIngreso,horaSalida;
-	private int tipollamada; 
+	private Date  horaIngreso,horaSalida;
+	private int idhorario; 
 	private boolean editMode;
 	private String mensaje;
 	private int idempleado;
@@ -61,7 +52,9 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	
 	@EJB 
 	private HorarioPersonalService objHorarioPersonalService;
-	
+	@EJB
+	private EstadogeneralService objEstadoGeneralService;
+
 	public static Log log = LogFactory.getLog(HorarioPersonalSearchAction.class);
 	
 	public HorarioPersonalSearchAction() {
@@ -70,47 +63,12 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	}
 	
 	public void init() {
-		log.info("init() xxxxxxxx :D ");
-		// Colocar valores inicializados
+		log.info("init()");
+		idempleado=0;
 		objHorarioPersonal = new HorarioPersonalSie();
-		h= new HorarioPersonalSie();
 		eventModel = new DefaultScheduleModel(); 
 		log.info("despues de inicializar  ");
 	}
-	
-	public void addEvent(ActionEvent actionEvent) { 
-		log.info("addEvent");
-        if(event.getId() == null)  
-            eventModel.addEvent(event);  
-        else  
-            eventModel.updateEvent(event);  
-          
-        event = new DefaultScheduleEvent();  
-    }  
-      
-    public void onEventSelect(ScheduleEntrySelectEvent selectEvent) {  
-    	log.info("onEventSelect");
-    	event = selectEvent.getScheduleEvent();  
-    }  
-      
-    public void onDateSelect(DateSelectEvent selectEvent) {  
-    	log.info("onDateSelect");
-        event = new DefaultScheduleEvent(Math.random() + "", selectEvent.getDate(), selectEvent.getDate());  
-    }  
-      
-    public void onEventMove(ScheduleEntryMoveEvent event) {  
-    	log.info("onEventMove");
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event moved", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());  
-          
-        addMessage(message);  
-    }  
-      
-    public void onEventResize(ScheduleEntryResizeEvent event) {  
-    	log.info("onEventResize");
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event resized", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());  
-          
-        addMessage(message);  
-    }
 	
 	public String mostrar() throws Exception {
 		eventModel = new DefaultScheduleModel(); 
@@ -120,14 +78,12 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 				if (listaHorario == null) {
 					listaHorario = new ArrayList<HorarioPersonalSie>();
 				}
-				log.info(" ------------ xxxxxx :D ");
 				for(int i=0;i < listaHorario.size(); i++){
 					objHorarioPersonal= listaHorario.get(i);
 	               
 	                Calendar cal = new GregorianCalendar();
 	            	log.info(" xd "+ objHorarioPersonal.getDiainicio());
 	            	cal.setTime( objHorarioPersonal.getDiainicio());
-	            	log.info(" fecha xxx "+cal.getTime());
 	                
 	                Calendar cal3 = new GregorianCalendar();
 	            	cal3.setTime(objHorarioPersonal.getDiainicio());
@@ -169,7 +125,40 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	}
     
 	public void agregarhorario(){
+		
+		if(idempleado==0){
+			mensaje="Debe seleccionar un empleado";
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
 		newRecord=true;
+	}
+	public String updateDeshabilitar() throws Exception{
+		 
+		if (log.isInfoEnabled()) {
+			log.info("Entering my method 'DeshabilitarHorarioPersonal()'" + getIde());
+		}
+			
+			log.info(" parametro ID "+ getIde());
+			objHorarioPersonal = objHorarioPersonalService.findHorarioPersonal(getIde());
+			objHorarioPersonal.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(37));
+
+			objHorarioPersonalService.updateHorarioPersonal(objHorarioPersonal);
+			log.info("actualizando..... ");
+ 
+		return mostrar();
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
+	 */
+	
+	public String update() throws Exception {
+		newRecord=false;
+		
+		setHoraIngreso(objHorarioPersonal.getHoraIngreso());
+		setHoraSalida(objHorarioPersonal.getHoraSalida());
+		return getViewList();
 	}
 	
 	public String insertar() throws Exception {
@@ -228,7 +217,14 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 						FacesContext.getCurrentInstance().addMessage(null, msg);
 					 }
 				}else{
+					log.info("actualizando " + getHoraIngreso()+"  hora salida  "+getHoraSalida() );
+					Time hora1 = new Time( getHoraIngreso().getTime());
+					Time hora2= new Time( getHoraSalida().getTime());
+					log.info(" g   "+ hora1);
+					objHorarioPersonal.setHoraIngreso(hora1);
+					objHorarioPersonal.setHoraSalida(hora2);
 					
+					objHorarioPersonalService.updateHorarioPersonal(objHorarioPersonal);
 				}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -288,35 +284,7 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	public void setIde(int ide) {
 		this.ide = ide;
 	}
-
-	/**
-	 * @return the fecPagoNull
-	 */
-	public Date getFecPagoNull() {
-		return fecPagoNull;
-	}
-
-	/**
-	 * @param fecPagoNull the fecPagoNull to set
-	 */
-	public void setFecPagoNull(Date fecPagoNull) {
-		this.fecPagoNull = fecPagoNull;
-	}
-
-	/**
-	 * @return the tipollamada
-	 */
-	public int getTipollamada() {
-		return tipollamada;
-	}
-
-	/**
-	 * @param tipollamada the tipollamada to set
-	 */
-	public void setTipollamada(int tipollamada) {
-		this.tipollamada = tipollamada;
-	}
-
+	
 	/**
 	 * @return the idempleado
 	 */
@@ -358,19 +326,7 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	public void setListaHorario(List<HorarioPersonalSie> listaHorario) {
 		this.listaHorario = listaHorario;
 	}
-		
-	public void onEdit(RowEditEvent event) {
-	        /*FacesMessage msg = new FacesMessage("Car Edited", ((Car) event.getObject()).getModel());
-
-	        FacesContext.getCurrentInstance().addMessage(null, msg);*/
-	}
-	    
-	public void onCancel(RowEditEvent event) {
-	        /*FacesMessage msg = new FacesMessage("Car Cancelled", ((Car) event.getObject()).getModel());
-
-	        FacesContext.getCurrentInstance().addMessage(null, msg);*/
-	}
-
+	
 	/**
 	 * @return the diaList
 	 */
@@ -426,20 +382,6 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	public void setHoraSalida(Date horaSalida) {
 		this.horaSalida = horaSalida;
 	}
-	
-	private void addMessage(FacesMessage message) {
-		FacesContext.getCurrentInstance().addMessage(null, message);
-	}
-
-	public Date getRandomDate(Date base) {
-		Calendar date = Calendar.getInstance();
-		
-		
-		date.setTime(base);
-		date.add(Calendar.DATE, ((int) (Math.random()*30)) + 1);	//set random day of month
-
-		return date.getTime();
-	}
 
 	/**
 	 * @return the eventModel
@@ -481,20 +423,6 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	 */
 	public void setTheme(String theme) {
 		this.theme = theme;
-	}
-
-	/**
-	 * @return the h
-	 */
-	public HorarioPersonalSie getH() {
-		return h;
-	}
-
-	/**
-	 * @param h the h to set
-	 */
-	public void setH(HorarioPersonalSie h) {
-		this.h = h;
 	}
 
 	/**
@@ -543,6 +471,20 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	 */
 	public void setDhoy(Date dhoy) {
 		this.dhoy = dhoy;
+	}
+
+	/**
+	 * @return the idhorario
+	 */
+	public int getIdhorario() {
+		return idhorario;
+	}
+
+	/**
+	 * @param idhorario the idhorario to set
+	 */
+	public void setIdhorario(int idhorario) {
+		this.idhorario = idhorario;
 	}
 
 }
