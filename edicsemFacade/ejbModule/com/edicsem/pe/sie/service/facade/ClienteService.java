@@ -6,12 +6,13 @@ import javax.ejb.Local;
 
 import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
+import com.edicsem.pe.sie.entity.UbigeoSie;
 
 @Local
 public interface ClienteService {
 	
 	public abstract void insertCliente(ClienteSie Cliente);
-	public abstract void updateCliente(ClienteSie Cliente, List<TelefonoPersonaSie> TelefonoPersonaList );
+	public abstract void updateCliente(ClienteSie Cliente, List<TelefonoPersonaSie> TelefonoPersonaList, List<UbigeoSie> DomicilioPersonaList );
 	public abstract ClienteSie findCliente (int id);
 	public abstract List  listarClientes();
 }
