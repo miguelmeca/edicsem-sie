@@ -5,10 +5,13 @@ import java.sql.Time;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,9 +27,11 @@ import com.edicsem.pe.sie.util.constants.Constants;
 @Table(name="tb_horario_asistencia", schema = Constants.ESQUEMA_SIE_POSTGRE)
 public class HorarioAsistenciaSie implements Serializable {
 	private static final long serialVersionUID = 1L;
-
-	@EmbeddedId
-	private HorarioAsistenciaSiePK id;
+	
+	@Id
+	@SequenceGenerator(name="TB_HORARIO_ASISTENCIA_IDHORARIOASISTENCIA_GENERATOR", sequenceName="SIE.TB_HORARIO_ASISTENCIA_IDHORARIOASISTENCIA_SEQ", initialValue=1, allocationSize =1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_HORARIO_ASISTENCIA_IDHORARIOASISTENCIA_GENERATOR")
+	private Integer idHorarioAsistencia;
 	
 	@Temporal( TemporalType.DATE)
 	private Date fecha;
@@ -44,22 +49,14 @@ public class HorarioAsistenciaSie implements Serializable {
 	private Time horaSalida2;
 
 	private String observaciones;
-
+    
 	//bi-directional many-to-one association to EmpleadoSie
     @ManyToOne
-	@JoinColumn(name="idempleado" , insertable = false, updatable = false)
+	@JoinColumn(name="idempleado")
 	private EmpleadoSie tbEmpleado;
 
     public HorarioAsistenciaSie() {
     }
-
-	public HorarioAsistenciaSiePK getId() {
-		return this.id;
-	}
-
-	public void setId(HorarioAsistenciaSiePK id) {
-		this.id = id;
-	}
 
 	public Time getHoraIngreso1() {
 		return this.horaIngreso1;
@@ -109,18 +106,20 @@ public class HorarioAsistenciaSie implements Serializable {
 		this.tbEmpleado = tbEmpleado;
 	}
 
-	/**
-	 * @return the fecha
-	 */
 	public Date getFecha() {
 		return fecha;
 	}
 
-	/**
-	 * @param fecha the fecha to set
-	 */
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
+	}
+
+	public Integer getIdHorarioAsistencia() {
+		return idHorarioAsistencia;
+	}
+	
+	public void setIdHorarioAsistencia(Integer idHorarioAsistencia) {
+		this.idHorarioAsistencia = idHorarioAsistencia;
 	}
 	
 }
