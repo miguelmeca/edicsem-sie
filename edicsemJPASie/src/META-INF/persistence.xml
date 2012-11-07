@@ -20,7 +20,6 @@
 		<class>com.edicsem.pe.sie.entity.EmpresaSie</class>
 		<class>com.edicsem.pe.sie.entity.EstadoGeneralSie</class>
 		<class>com.edicsem.pe.sie.entity.HorarioAsistenciaSie</class>
-		<class>com.edicsem.pe.sie.entity.HorarioAsistenciaSiePK</class>
 		<class>com.edicsem.pe.sie.entity.HorarioPersonalSie</class>
 		<class>com.edicsem.pe.sie.entity.HorariosPvSie</class>
 		<class>com.edicsem.pe.sie.entity.KardexSie</class>
