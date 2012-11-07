@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 
 import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
+import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.model.dao.ClienteDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
 import com.edicsem.pe.sie.model.dao.TelefonoEmpleadoDAO;
@@ -72,5 +73,13 @@ public class ClienteServiceImpl implements ClienteService {
 	 */
 	public void insertCliente(ClienteSie Cliente) {
 		objClienteDao.insertCliente(Cliente);
+	}
+
+	@Override
+	public void updateCliente(ClienteSie Cliente,
+			List<TelefonoPersonaSie> TelefonoPersonaList,
+			List<UbigeoSie> DomicilioPersonaList) {
+		// TODO Auto-generated method stub
+		
 	}
 }
