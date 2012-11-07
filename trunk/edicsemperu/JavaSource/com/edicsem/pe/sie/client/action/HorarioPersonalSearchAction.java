@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.GregorianCalendar;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -12,6 +14,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.DateTimeConverter;
 import javax.faces.event.ActionEvent;
 
 import org.apache.commons.logging.Log;
@@ -195,6 +198,23 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 				}
 				log.info(" ------------ xxxxxx :D ");
 				for(int i=0;i < listaHorario.size(); i++){
+					objHorarioPersonal.setDescripcion(listaHorario.get(i).getDescripcion());
+					objHorarioPersonal.setDiainicio(listaHorario.get(i).getDiainicio());
+					objHorarioPersonal.setDiafin(listaHorario.get(i).getDiafin());
+					objHorarioPersonal.setHoraIngreso(listaHorario.get(i).getHoraIngreso());
+					objHorarioPersonal.setHoraSalida(listaHorario.get(i).getHoraSalida());
+			
+					Date d =new Date();
+					d.setTime(listaHorario.get(i).getDiainicio().getTime());
+					d.setTime(listaHorario.get(i).getHoraIngreso().getTime());		
+					Calendar c = new GregorianCalendar();
+					c.setTime(listaHorario.get(i).getDiainicio());
+					
+					Calendar c2 = new GregorianCalendar();
+					c2.setTime(listaHorario.get(i).getDiafin());
+					c2.setTime(listaHorario.get(i).getHoraIngreso());
+					
+					eventModel.addEvent(new DefaultScheduleEvent(objHorarioPersonal.getDescripcion(), c.getTime(), c2.getTime()));  
 					objHorarioPersonal= listaHorario.get(i);
 	                dDate = objHorarioPersonal.getDiainicio();
 	                Calendar cal = new GregorianCalendar();
