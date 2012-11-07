@@ -65,7 +65,7 @@ public class HorarioPersonalDAOImpl implements HorarioPersonalDAO {
 		HorarioPersonalSie e= new HorarioPersonalSie();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("buscar horariopersonal");
+				log.info("buscar horariopersonal " +id);
 			} 
 		e=	em.find(HorarioPersonalSie.class, id);
 		} catch (Exception ex) {
