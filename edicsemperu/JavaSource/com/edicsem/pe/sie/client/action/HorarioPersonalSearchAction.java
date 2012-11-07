@@ -124,14 +124,9 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 		return getViewList();
 	}
     
-	public void agregarhorario(){
-		
-		if(idempleado==0){
-			mensaje="Debe seleccionar un empleado";
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
+	public String agregarhorario(){
 		newRecord=true;
+		return getViewList();
 	}
 	public String updateDeshabilitar() throws Exception{
 		 
@@ -167,7 +162,13 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 				if (log.isInfoEnabled()) {
 					log.info("Entering my method 'insertar'  xd ");
 				}
-				if(newRecord){
+				if(idempleado==0){
+					mensaje="Debe seleccionar un empleado";
+					msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+					FacesContext.getCurrentInstance().addMessage(null, msg);
+				}
+				else{
+					if(newRecord){
 					log.info("fecha pp  " + getHoraIngreso() );
 					Time hora1 = new Time( getHoraIngreso().getTime());
 					Time hora2= new Time( getHoraSalida().getTime());
@@ -225,6 +226,7 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 					objHorarioPersonal.setHoraSalida(hora2);
 					
 					objHorarioPersonalService.updateHorarioPersonal(objHorarioPersonal);
+				}
 				}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -459,7 +461,6 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	public Date getDhoy() {
 		try {
 			dhoy = DateUtil.getToday().getTime();
-			log.info("hoy "+ dhoy);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

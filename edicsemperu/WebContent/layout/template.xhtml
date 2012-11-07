@@ -628,7 +628,7 @@ body {
 			position="center">
 			<p:commandButton type="submit" value="Si"
 				action="#{horarioPersonal.updateDeshabilitar}"
-				update=":horarioPersonal:horarioPersonalList"
+				update="@all"
 				oncomplete="confirmation.hide()" >
 			</p:commandButton>
 			<p:commandButton value="No" onclick="confirmation.hide()"

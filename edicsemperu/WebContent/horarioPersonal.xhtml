@@ -9,16 +9,14 @@
 <h:form id="horarioPersonal">
 <p:growl id="messages" showDetail="true" />
 <p:fieldset legend="Buscar Personal" style="margin-top:20px">
-<h:panelGrid columns="2">
+<h:panelGrid columns="2"  >
 <h:outputText value="Cargo :" />
 <p:selectOneMenu id="cargo" value="#{comboAction.cargoEmpleado}" styleClass="required" title="El tipo es obligatorio!" >
-<f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
 <f:selectItems  value="#{comboAction.cargoEmpleadoItems}" />
  <p:ajax update="empleado"  listener="#{comboAction.cambiar2}" />  
 </p:selectOneMenu>
 <h:outputText value="Empleado :" />
 <p:selectOneMenu id="empleado" value="#{horarioPersonal.idempleado}" styleClass="required" title="El tipo es obligatorio!" >
-<f:selectItem  itemValue="#{null}" itemLabel="Seleccione"/>
 <f:selectItems  value="#{comboAction.empleadoxcargo}" />
 </p:selectOneMenu>
 <p:commandButton value="Buscar" ajax="false" action="#{horarioPersonal.mostrar}" />
@@ -28,7 +26,7 @@
 <p:fieldset legend="Registrar nuevo Horario" style="margin-top:20px" >
 
 <p:commandButton  value="Agregar" action="#{horarioPersonal.agregarhorario}" 
-oncomplete="horarioDialog.show()"  update=":formManteHorario:display"  />
+oncomplete="if(#{horarioPersonal.newRecord}) horarioDialog.show()"  update="horarioPersonal,messages"  />
 <p:spacer></p:spacer>
 <p:dataTable var="h" value="#{horarioPersonal.listaHorario}" id="horarioPersonalList" editable="true"  
  rowStyleClass="#{h.diainicio le horarioPersonal.dhoy ? null: 'colorPlomo' }"  >
