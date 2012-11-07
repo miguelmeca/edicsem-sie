@@ -1,6 +1,7 @@
 package com.edicsem.pe.sie.client.action;
 
 import java.sql.Time;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,6 +33,7 @@ import org.primefaces.model.ScheduleModel;
 import com.edicsem.pe.sie.entity.HorarioPersonalSie;
 import com.edicsem.pe.sie.service.facade.HorarioPersonalService;
 import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name="horarioPersonal")
@@ -42,7 +44,7 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	private List<HorarioPersonalSie> listaHorario;
     /*schedule*/
 	private ScheduleModel eventModel;  
-    private ScheduleModel lazyEventModel;  
+  
     private ScheduleEvent event = new DefaultScheduleEvent(); 
     private String theme;  
     private HorarioPersonalSie h; 
@@ -55,7 +57,7 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	private int idempleado;
 	private boolean newRecord =false;
 	private int ide;
-	private Date dDate, dDate2;
+	private Date dDate, dDate2, dhoy;
 	
 	@EJB 
 	private HorarioPersonalService objHorarioPersonalService;
@@ -110,84 +112,6 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
         addMessage(message);  
     }
 	
-    private Calendar today() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 0, 0, 0);
-
-		return calendar;
-	}
-	
-	private Date previousDay8Pm() {
-		Calendar t = (Calendar) today().clone();
-		t.set(Calendar.AM_PM, Calendar.PM);
-		t.set(Calendar.DATE, t.get(Calendar.DATE) - 1);
-		t.set(Calendar.HOUR, 8);
-		
-		return t.getTime();
-	}
-	
-	private Date previousDay11Pm() {
-		Calendar t = (Calendar) today().clone();
-		t.set(Calendar.AM_PM, Calendar.PM);
-		t.set(Calendar.DATE, t.get(Calendar.DATE) - 1);
-		t.set(Calendar.HOUR, 11);
-		
-		return t.getTime();
-	}
-	
-	private Date today1Pm() {
-		Calendar t = (Calendar) today().clone();
-		t.set(Calendar.AM_PM, Calendar.PM);
-		t.set(Calendar.HOUR, 1);
-		
-		return t.getTime();
-	}
-	
-	private Date theDayAfter3Pm() {
-		Calendar t = (Calendar) today().clone();
-		t.set(Calendar.DATE, t.get(Calendar.DATE) + 2);		
-		t.set(Calendar.AM_PM, Calendar.PM);
-		t.set(Calendar.HOUR, 3);
-		
-		return t.getTime();
-	}
-
-	private Date today6Pm() {
-		Calendar t = (Calendar) today().clone(); 
-		t.set(Calendar.AM_PM, Calendar.PM);
-		t.set(Calendar.HOUR, 6);
-		
-		return t.getTime();
-	}
-	
-	private Date nextDay9Am() {
-		Calendar t = (Calendar) today().clone();
-		t.set(Calendar.AM_PM, Calendar.AM);
-		t.set(Calendar.DATE, t.get(Calendar.DATE) + 1);
-		t.set(Calendar.HOUR, 9);
-		
-		return t.getTime();
-	}
-	
-	private Date nextDay11Am() {
-		Calendar t = (Calendar) today().clone();
-		t.set(Calendar.AM_PM, Calendar.AM);
-		t.set(Calendar.DATE, t.get(Calendar.DATE) + 1);
-		t.set(Calendar.HOUR, 11);
-		
-		return t.getTime();
-	}
-	
-	private Date fourDaysLater3pm() {
-		Calendar t = (Calendar) today().clone(); 
-		t.set(Calendar.AM_PM, Calendar.PM);
-		t.set(Calendar.DATE, t.get(Calendar.DATE) + 4);
-		t.set(Calendar.HOUR, 3);
-		//objtelefono = new TelefonoPersonaSie();
-		log.info("despues de inicializar  ");
-		return t.getTime();
-	}
-	
 	public String mostrar() throws Exception {
 		eventModel = new DefaultScheduleModel(); 
 		log.info("mostrar horario de empleados");
@@ -198,35 +122,48 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 				}
 				log.info(" ------------ xxxxxx :D ");
 				for(int i=0;i < listaHorario.size(); i++){
-					objHorarioPersonal.setDescripcion(listaHorario.get(i).getDescripcion());
-					objHorarioPersonal.setDiainicio(listaHorario.get(i).getDiainicio());
-					objHorarioPersonal.setDiafin(listaHorario.get(i).getDiafin());
-					objHorarioPersonal.setHoraIngreso(listaHorario.get(i).getHoraIngreso());
-					objHorarioPersonal.setHoraSalida(listaHorario.get(i).getHoraSalida());
-			 
 					objHorarioPersonal= listaHorario.get(i);
-	                dDate = objHorarioPersonal.getDiainicio();
+	               
 	                Calendar cal = new GregorianCalendar();
-	            	String[] a= (objHorarioPersonal.getHoraIngreso()+"").split(":");
-	            	log.info(" xd "+dDate);
-	            	cal.setTime(dDate);
+	            	log.info(" xd "+ objHorarioPersonal.getDiainicio());
+	            	cal.setTime( objHorarioPersonal.getDiainicio());
 	            	log.info(" fecha xxx "+cal.getTime());
-	            	cal.add(Calendar.HOUR_OF_DAY, Integer.parseInt(a[0]));
-	            	cal.add(Calendar.MINUTE, Integer.parseInt(a[1]));
-	            	dDate = cal.getTime();
-	            	log.info(" fecha 1 "+dDate);
-	                dDate2 = objHorarioPersonal.getDiainicio();
+	                
 	                Calendar cal3 = new GregorianCalendar();
-	            	String[] a2= (objHorarioPersonal.getHoraSalida()+"").split(":");
-	            	log.info(" xd "+dDate2);
-	            	cal3.setTime(dDate2);
-	            	cal3.add(Calendar.HOUR_OF_DAY, Integer.parseInt(a2[0]));
-	            	cal3.add(Calendar.MINUTE, Integer.parseInt(a2[1]));
-	            	dDate2 = cal3.getTime();
-	            	log.info(" fecha 2 "+dDate2);
-	                log.info(" dia 1 " +dDate+ " dia 2 " +dDate2);
-	                log.info("  cccccc  " + dDate.getDate()+" "   +  dDate.getDay());
-					eventModel.addEvent(new DefaultScheduleEvent(objHorarioPersonal.getDescripcion()+" de "+ objHorarioPersonal.getHoraIngreso()+" hasta "+ objHorarioPersonal.getHoraSalida(), dDate, dDate2));  
+	            	cal3.setTime(objHorarioPersonal.getDiainicio());
+	            	
+	            	Calendar cal4 = new GregorianCalendar();
+	            	cal4.setTime(objHorarioPersonal.getDiafin());
+	                log.info(" fecha  " + cal.getTime() +"  time fin "+cal4.getTime());
+	                
+	                while (cal.before(cal4)||cal.equals(cal4)){
+	                	log.info("en el primer while  fecha inicio ");
+	                	log.info(" ***   getime  " + cal.getTime());
+		              if(cal.get(Calendar.DAY_OF_WEEK) == objHorarioPersonal.getTbFecha().getIdFecha()) {
+		                	log.info("en el seggundo  while");
+		                	dDate = cal.getTime();
+		                	Calendar cal0 = new GregorianCalendar();
+		                	Calendar cal33 = new GregorianCalendar();
+		 	            	String[] a= (objHorarioPersonal.getHoraIngreso()+"").split(":");
+		 	            	cal0.setTime(dDate);
+		 	            	cal0.add(Calendar.HOUR_OF_DAY, Integer.parseInt(a[0]));
+		 	            	cal0.add(Calendar.MINUTE, Integer.parseInt(a[1]));
+		 	            	dDate = cal0.getTime();
+		 	            	dDate2 = cal3.getTime();
+		 	            	String[] a2= (objHorarioPersonal.getHoraSalida()+"").split(":");
+		 	            	cal33.setTime(dDate2);
+		 	            	cal33.add(Calendar.HOUR_OF_DAY, Integer.parseInt(a2[0]));
+		 	            	cal33.add(Calendar.MINUTE, Integer.parseInt(a2[1]));
+		 	            	dDate2 = cal33.getTime();
+		 	                log.info(" dia 1 " +dDate);
+		 	                log.info(" dia 2 " +dDate2);
+		 	                
+		                eventModel.addEvent(new DefaultScheduleEvent(objHorarioPersonal.getDescripcion()+" de "+ objHorarioPersonal.getHoraIngreso()+" hasta "+ 
+		                objHorarioPersonal.getHoraSalida(), dDate, dDate2));  
+		                }
+		              cal.add(Calendar.DAY_OF_WEEK,1);
+	                	cal3.add(Calendar.DAY_OF_WEEK,1);
+	                }
 				}
 		return getViewList();
 	}
@@ -519,20 +456,6 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	}
 
 	/**
-	 * @return the lazyEventModel
-	 */
-	public ScheduleModel getLazyEventModel() {
-		return lazyEventModel;
-	}
-
-	/**
-	 * @param lazyEventModel the lazyEventModel to set
-	 */
-	public void setLazyEventModel(ScheduleModel lazyEventModel) {
-		this.lazyEventModel = lazyEventModel;
-	}
-
-	/**
 	 * @return the event
 	 */
 	public ScheduleEvent getEvent() {
@@ -600,6 +523,26 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	 */
 	public void setdDate2(Date dDate2) {
 		this.dDate2 = dDate2;
+	}
+
+	/**
+	 * @return the dhoy
+	 */
+	public Date getDhoy() {
+		try {
+			dhoy = DateUtil.getToday().getTime();
+			log.info("hoy "+ dhoy);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return dhoy;
+	}
+
+	/**
+	 * @param dhoy the dhoy to set
+	 */
+	public void setDhoy(Date dhoy) {
+		this.dhoy = dhoy;
 	}
 
 }
