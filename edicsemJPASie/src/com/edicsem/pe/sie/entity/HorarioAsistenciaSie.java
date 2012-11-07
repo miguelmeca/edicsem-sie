@@ -2,7 +2,7 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 import java.sql.Time;
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.edicsem.pe.sie.util.constants.Constants;
 
@@ -25,8 +27,9 @@ public class HorarioAsistenciaSie implements Serializable {
 
 	@EmbeddedId
 	private HorarioAsistenciaSiePK id;
-
-	private Timestamp fecha;
+	
+	@Temporal( TemporalType.DATE)
+	private Date fecha;
 
 	@Column(name="hora_ingreso1")
 	private Time horaIngreso1;
@@ -56,14 +59,6 @@ public class HorarioAsistenciaSie implements Serializable {
 
 	public void setId(HorarioAsistenciaSiePK id) {
 		this.id = id;
-	}
-	
-	public Timestamp getFecha() {
-		return this.fecha;
-	}
-
-	public void setFecha(Timestamp fecha) {
-		this.fecha = fecha;
 	}
 
 	public Time getHoraIngreso1() {
@@ -112,6 +107,20 @@ public class HorarioAsistenciaSie implements Serializable {
 
 	public void setTbEmpleado(EmpleadoSie tbEmpleado) {
 		this.tbEmpleado = tbEmpleado;
+	}
+
+	/**
+	 * @return the fecha
+	 */
+	public Date getFecha() {
+		return fecha;
+	}
+
+	/**
+	 * @param fecha the fecha to set
+	 */
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
 	}
 	
 }
