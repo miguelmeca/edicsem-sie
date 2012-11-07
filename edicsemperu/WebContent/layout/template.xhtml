@@ -57,6 +57,11 @@ body {
 .colorCeleste{
         background: #2ECCFA;
 }
+.colorPlomo{
+        background: #D8D8D8;
+}
+
+
 </style>
 	</h:head>
 	<f:loadBundle var="message"
@@ -580,6 +585,12 @@ body {
 				<h:panelGroup>
 					<p:calendar id="horaSal" required="true" requiredMessage="#{message['horario.personal.horaSalida.validation']}" value="#{horarioPersonal.horaSalida}" pattern="HH:mm" timeOnly="true"/>
 					<p:message for="horaSal" />
+				</h:panelGroup>
+				 
+				<h:outputText value="#{message['horario.personal.descripcion']}"/>
+				<h:panelGroup>
+					<h:inputText value="#{horarioPersonal.objHorarioPersonal.descripcion}"  />
+					<p:spacer/>
 				</h:panelGroup>
 				
 				<p:commandButton  value="Guardar" update="@all"
