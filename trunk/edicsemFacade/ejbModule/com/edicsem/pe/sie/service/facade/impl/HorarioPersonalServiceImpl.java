@@ -62,7 +62,7 @@ public class HorarioPersonalServiceImpl implements HorarioPersonalService{
 	 * @see com.edicsem.pe.sie.service.facade.EstadogeneralService#findEstadogeneral(int)
 	 */
 	public HorarioPersonalSie findHorarioPersonal(int id) {
-		// TODO Auto-generated method stub
+		log.info("id " +id);
 		return objHorarioPersonalDao.findHorarioPersonal(id); 
 	}
 
