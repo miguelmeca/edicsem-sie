@@ -434,7 +434,17 @@ public class MantenimientoClienteFormAction extends
 	
 	
 	
-	
+	public void limpiarDatosTelefono() {
+		nuevoTelef = new TelefonoPersonaSie();
+	}
+
+	public List<TelefonoPersonaSie> getTelefonoPersonaList() {
+		return TelefonoPersonaList;
+	}
+
+	public List<DomicilioPersonaSie> getDomicilioPersonaList() {
+		return DomicilioPersonaList;
+	}
 /*METODOS GET Y SET*/
 	
 
