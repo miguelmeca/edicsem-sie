@@ -88,6 +88,20 @@ public class MantenimientoClienteFormAction extends
 	private TipoDocumentoService objTipoDocService;
 	@EJB
 	private DomicilioEmpleadoService objDomicilioPersonaService;
+	
+	
+	
+	public void limpiarDatosTelefono() {
+		nuevoTelef = new TelefonoPersonaSie();
+	}
+
+	public List<TelefonoPersonaSie> getTelefonoPersonaList() {
+		return TelefonoPersonaList;
+	}
+
+	public List<DomicilioPersonaSie> getDomicilioPersonaList() {
+		return DomicilioPersonaList;
+	}
 
 	public void init() {
 		log.info("Inicializando el Constructor de 'MantenimientoClienteFormAction'");
@@ -379,7 +393,7 @@ public class MantenimientoClienteFormAction extends
 		}
 		objTelefonoPersonaSie = new TelefonoPersonaSie();
 
-		return getViewMant();
+		return getViewList();
 	}
 
 /*REGISTRAR LO EDITADO*/
@@ -394,13 +408,12 @@ public class MantenimientoClienteFormAction extends
 			if (log.isInfoEnabled()) {
 
 			}
-			objClienteSie.setTbTipoDocumentoIdentidad(objTipoDocService
-					.buscarTipoDocumento(TipoDocumento));
-			objClienteSie.setTbEstadoGeneral(objEstadoGeneralService
-					.findEstadogeneral(23));
+			objClienteSie.setTbTipoDocumentoIdentidad(objTipoDocService.buscarTipoDocumento(TipoDocumento));
+			objClienteSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(23));
+			
 			log.info("actualizando..... ");
 
-			objClienteService.updateCliente(objClienteSie, TelefonoPersonaList);
+			objClienteService.updateCliente(objClienteSie, TelefonoPersonaList, DomicilioPersonaList);//aqui eh puesto Ubigeo
 
 			log.info("insertando..... ");
 		} catch (Exception e) {
@@ -421,17 +434,7 @@ public class MantenimientoClienteFormAction extends
 	
 	
 	
-	public void limpiarDatosTelefono() {
-		nuevoTelef = new TelefonoPersonaSie();
-	}
-
-	public List<TelefonoPersonaSie> getTelefonoPersonaList() {
-		return TelefonoPersonaList;
-	}
-
-	public List<DomicilioPersonaSie> getDomicilioPersonaList() {
-		return DomicilioPersonaList;
-	}
+	
 /*METODOS GET Y SET*/
 	
 
