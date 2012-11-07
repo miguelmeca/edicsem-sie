@@ -7,6 +7,7 @@
   <ui:define name="body">
   <h1 class="title ui-widget-header ui-corner-all">Horario del Personal</h1>
 <h:form id="horarioPersonal">
+<p:growl id="messages" showDetail="true" />
 <p:fieldset legend="Buscar Personal" style="margin-top:20px">
 <h:panelGrid columns="2">
 <h:outputText value="Cargo :" />
@@ -28,13 +29,14 @@
 <p:commandButton  value="Agregar" action="#{horarioPersonal.agregarhorario}" 
 oncomplete="horarioDialog.show()"  update=":formManteHorario:display"  />
 <p:spacer></p:spacer>
-<p:dataTable var="h" value="#{horarioPersonal.listaHorario}" id="carList" editable="true">
+<p:dataTable var="h" value="#{horarioPersonal.listaHorario}" id="carList" editable="true"  
+ rowStyleClass="#{h.diainicio le horarioPersonal.dhoy ? null: 'colorPlomo' }"  >
         <f:facet name="header">
             Prueba
         </f:facet>
         <p:ajax event="rowEdit" listener="#{horarioPersonal.onEdit}"  />
         <p:ajax event="rowEditCancel" listener="#{horarioPersonal.onCancel}"  />
-        <p:column headerText="Dia" style="width:125px">
+        <p:column headerText="Dia">
             <p:cellEditor>
                 <f:facet name="output">
                     <h:outputText value="#{h.tbFecha.dia}" />
@@ -44,36 +46,53 @@ oncomplete="horarioDialog.show()"  update=":formManteHorario:display"  />
                 </f:facet>
             </p:cellEditor>
         </p:column>
-        <p:column headerText="Entrada" style="width:125px">
+        <p:column headerText="Entrada">
             <p:cellEditor>
                 <f:facet name="output">
                     <h:outputText value="#{h.horaIngreso}" />
                 </f:facet>
                 <f:facet name="input">
-                    <p:inputText value="#{h.horaIngreso}" style="width:100%" label="Year"/>
+                    <p:inputText value="#{h.horaIngreso}" style="width:100%" />
                 </f:facet>
             </p:cellEditor>
         </p:column>
-        <p:column headerText="Salida" style="width:125px">
+        <p:column headerText="Salida">
             <p:cellEditor>
                 <f:facet name="output">
                     <h:outputText value="#{h.horaSalida}" />
                 </f:facet>
                 <f:facet name="input">
-                     <p:inputText value="#{h.horaSalida}" style="width:100%" label="Year"/>
+                     <p:inputText value="#{h.horaSalida}" style="width:100%" />
                 </f:facet>
             </p:cellEditor>
         </p:column>
-       
-         
+        <p:column headerText="Dia inicio" >
+            <p:cellEditor>
+                <f:facet name="output">
+                    <h:outputText value="#{h.diainicio}" />
+                </f:facet>
+                <f:facet name="input">
+                    <p:inputText value="#{h.diainicio}" style="width:100%"/>
+                </f:facet>
+            </p:cellEditor>
+        </p:column>
+         <p:column headerText="Dia Fin">
+            <p:cellEditor>
+                <f:facet name="output">
+                    <h:outputText value="#{h.diafin}" />
+                </f:facet>
+                <f:facet name="input">
+                    <p:inputText value="#{h.diafin}" style="width:100%" />
+                </f:facet>
+            </p:cellEditor>
+        </p:column>
         <p:column headerText="Options" style="width:50px">
             <p:rowEditor />
         </p:column>
     </p:dataTable>
 </p:fieldset>
 <p:fieldset legend="Visualizar Horario" style="margin-top:20px">
-<p:growl id="messages" showDetail="true" />
-    <p:schedule value="#{horarioPersonal.eventModel}" draggable="false" resizable="false" />  
+    <p:schedule value="#{horarioPersonal.eventModel}" draggable="false" resizable="false" locale="tr"  />  
 </p:fieldset>
 </h:form>
 </ui:define>
