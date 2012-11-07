@@ -90,18 +90,6 @@ public class MantenimientoClienteFormAction extends
 	private DomicilioEmpleadoService objDomicilioPersonaService;
 	
 	
-	
-	public void limpiarDatosTelefono() {
-		nuevoTelef = new TelefonoPersonaSie();
-	}
-
-	public List<TelefonoPersonaSie> getTelefonoPersonaList() {
-		return TelefonoPersonaList;
-	}
-
-	public List<DomicilioPersonaSie> getDomicilioPersonaList() {
-		return DomicilioPersonaList;
-	}
 
 	public void init() {
 		log.info("Inicializando el Constructor de 'MantenimientoClienteFormAction'");
@@ -413,7 +401,7 @@ public class MantenimientoClienteFormAction extends
 			
 			log.info("actualizando..... ");
 
-			objClienteService.updateCliente(objClienteSie, TelefonoPersonaList, DomicilioPersonaList);//aqui eh puesto Ubigeo
+			//objClienteService.updateCliente(objClienteSie, TelefonoPersonaList, DomicilioPersonaList);//aqui eh puesto Ubigeo
 
 			log.info("insertando..... ");
 		} catch (Exception e) {
