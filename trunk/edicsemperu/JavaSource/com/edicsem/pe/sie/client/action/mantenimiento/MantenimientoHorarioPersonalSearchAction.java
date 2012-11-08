@@ -1,4 +1,4 @@
-package com.edicsem.pe.sie.client.action;
+package com.edicsem.pe.sie.client.action.mantenimiento;
 
 import java.sql.Time;
 import java.text.ParseException;
@@ -30,7 +30,7 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 
 @ManagedBean(name="horarioPersonal")
 @SessionScoped
-public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction {
+public class MantenimientoHorarioPersonalSearchAction extends BaseMantenimientoAbstractAction {
 	/*variables*/
 	private HorarioPersonalSie objHorarioPersonal;
 	private List<HorarioPersonalSie> listaHorario;
@@ -55,9 +55,9 @@ public class HorarioPersonalSearchAction extends BaseMantenimientoAbstractAction
 	@EJB
 	private EstadogeneralService objEstadoGeneralService;
 
-	public static Log log = LogFactory.getLog(HorarioPersonalSearchAction.class);
+	public static Log log = LogFactory.getLog(MantenimientoHorarioPersonalSearchAction.class);
 	
-	public HorarioPersonalSearchAction() {
+	public MantenimientoHorarioPersonalSearchAction() {
 		log.info("inicializando mi constructor");
 		init();
 	}

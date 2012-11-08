@@ -44,7 +44,7 @@
 					<p:message for="numDoc" />
 					
 					<h:outputText value="#{message['contrato.cliente.email']}" />
-				<p:inputText value="#{contratoForm.objClienteSie.correo}" />
+				<p:inputText value="#{contratoForm.objClienteSie.correo}" label="Email"  required="true" validator="#{validators.validateEmail}" />
 				<p:spacer />
 					
 				<h:outputText value="#{message['contrato.fechanac']}" />
