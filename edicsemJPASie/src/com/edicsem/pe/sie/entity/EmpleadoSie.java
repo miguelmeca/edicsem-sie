@@ -133,6 +133,10 @@ public class EmpleadoSie implements Serializable {
 	@OneToMany(mappedBy="tbEmpleado")
 	private Set<DetEmpresaEmpleadoSie> tbDetEmpresaEmpleados;
 	
+	//bi-directional many-to-one association to FiltroHorarioVentaSie
+	@OneToMany(mappedBy="tbEmpleado")
+	private Set<FiltroHorarioVentaSie> tbFiltroHorarioVentas;
+	
     public EmpleadoSie() {
     }
 
@@ -389,6 +393,15 @@ public class EmpleadoSie implements Serializable {
 	public void setTbDetEmpresaEmpleados(
 			Set<DetEmpresaEmpleadoSie> tbDetEmpresaEmpleados) {
 		this.tbDetEmpresaEmpleados = tbDetEmpresaEmpleados;
+	}
+
+	public Set<FiltroHorarioVentaSie> getTbFiltroHorarioVentas() {
+		return tbFiltroHorarioVentas;
+	}
+
+	public void setTbFiltroHorarioVentas(
+			Set<FiltroHorarioVentaSie> tbFiltroHorarioVentas) {
+		this.tbFiltroHorarioVentas = tbFiltroHorarioVentas;
 	}
 
 }

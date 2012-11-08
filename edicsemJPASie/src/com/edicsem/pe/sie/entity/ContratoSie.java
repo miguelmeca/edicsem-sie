@@ -95,6 +95,10 @@ public class ContratoSie implements Serializable {
   	//bi-directional many-to-one association to DetContratoEmpleadoSie
   	@OneToMany(mappedBy="tbContrato")
   	private Set<DetContratoEmpleadoSie> tbDetContratoEmpleados;
+  	
+  	//bi-directional many-to-one association to IncidenciaSie
+  	@OneToMany(mappedBy="tbContrato")
+  	private Set<IncidenciaSie> tbIncidencias;
 	
     public ContratoSie() {
     }
@@ -281,6 +285,14 @@ public class ContratoSie implements Serializable {
 	public void setTbDetContratoEmpleados(
 			Set<DetContratoEmpleadoSie> tbDetContratoEmpleados) {
 		this.tbDetContratoEmpleados = tbDetContratoEmpleados;
+	}
+
+	public Set<IncidenciaSie> getTbIncidencias() {
+		return tbIncidencias;
+	}
+
+	public void setTbIncidencias(Set<IncidenciaSie> tbIncidencias) {
+		this.tbIncidencias = tbIncidencias;
 	}
 	
 }

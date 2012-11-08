@@ -31,7 +31,7 @@ public class DetProductoContratoSie implements Serializable {
 
 	private Integer cantidad;
 
-	//bi-directional many-to-one association to PaqueteSie
+	//bi-directional many-to-one association to ContratoSie
     @ManyToOne
 	@JoinColumn(name="idcontrato")
 	private ContratoSie tbContrato;

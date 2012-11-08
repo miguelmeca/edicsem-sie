@@ -66,6 +66,10 @@ public class PuntoVentaSie implements Serializable {
 	@JoinColumn(name="idubigeo")
 	private UbigeoSie tbUbigeo;
     
+    //bi-directional many-to-one association to FiltroHorarioVentaSie
+  	@OneToMany(mappedBy="tbPuntoventa")
+  	private Set<FiltroHorarioVentaSie> tbFiltroHorarioVentas;
+  	
     @Transient
 	private String descTipoAlmacen;
 
@@ -178,6 +182,15 @@ public class PuntoVentaSie implements Serializable {
 
 	public void setDescTipoAlmacen(String descTipoAlmacen) {
 		this.descTipoAlmacen = descTipoAlmacen;
+	}
+
+	public Set<FiltroHorarioVentaSie> getTbFiltroHorarioVentas() {
+		return tbFiltroHorarioVentas;
+	}
+
+	public void setTbFiltroHorarioVentas(
+			Set<FiltroHorarioVentaSie> tbFiltroHorarioVentas) {
+		this.tbFiltroHorarioVentas = tbFiltroHorarioVentas;
 	}
 	
 }

@@ -123,6 +123,18 @@ public class EstadoGeneralSie implements Serializable {
 	@OneToMany(mappedBy="tbEstadoGeneral")
 	private Set<HorarioPersonalSie> tbHorarioPersonals;
 	
+	//bi-directional many-to-one association to IncidenciaSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<IncidenciaSie> tbIncidencias;
+	
+	//bi-directional many-to-one association to ObservacionIncidenciaSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<ObservacionIncidenciaSie> tbObservacionIncidencias;
+	
+	//bi-directional many-to-one association to FiltroHorarioVentaSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<FiltroHorarioVentaSie> tbFiltroHorarioVentas;
+	
     public EstadoGeneralSie() {
     }
 
@@ -340,6 +352,32 @@ public class EstadoGeneralSie implements Serializable {
 
 	public void setTbHorarioPersonals(Set<HorarioPersonalSie> tbHorarioPersonals) {
 		this.tbHorarioPersonals = tbHorarioPersonals;
+	}
+
+	public Set<IncidenciaSie> getTbIncidencias() {
+		return tbIncidencias;
+	}
+
+	public void setTbIncidencias(Set<IncidenciaSie> tbIncidencias) {
+		this.tbIncidencias = tbIncidencias;
+	}
+
+	public Set<ObservacionIncidenciaSie> getTbObservacionIncidencias() {
+		return tbObservacionIncidencias;
+	}
+
+	public void setTbObservacionIncidencias(
+			Set<ObservacionIncidenciaSie> tbObservacionIncidencias) {
+		this.tbObservacionIncidencias = tbObservacionIncidencias;
+	}
+
+	public Set<FiltroHorarioVentaSie> getTbFiltroHorarioVentas() {
+		return tbFiltroHorarioVentas;
+	}
+
+	public void setTbFiltroHorarioVentas(
+			Set<FiltroHorarioVentaSie> tbFiltroHorarioVentas) {
+		this.tbFiltroHorarioVentas = tbFiltroHorarioVentas;
 	}
 
 	
