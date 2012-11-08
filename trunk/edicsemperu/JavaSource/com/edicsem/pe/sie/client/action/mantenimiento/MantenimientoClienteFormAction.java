@@ -24,6 +24,7 @@ import com.edicsem.pe.sie.service.facade.ClienteService;
 import com.edicsem.pe.sie.service.facade.DomicilioEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
+import com.edicsem.pe.sie.service.facade.TipoCasaService;
 import com.edicsem.pe.sie.service.facade.TipoDocumentoService;
 import com.edicsem.pe.sie.service.facade.UbigeoService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -38,7 +39,7 @@ public class MantenimientoClienteFormAction extends
 	private String operadortelefonico;
 	private int TipoDocumento, telefonopersona;
 	private int ide, idEstadoGeneral;
-	private int idc;
+	private int idc,iddom;
 	private int estado;
 	/* DATOS DE TELEFONO CLIENTE */
 	private TelefonoPersonaSie nuevoTelef;
@@ -60,6 +61,7 @@ public class MantenimientoClienteFormAction extends
 	private DomicilioPersonaSie objDomicilioPersonaSie;
 	private List<DomicilioPersonaSie> DomicilioPersonaList;
 	private Log log = LogFactory.getLog(MantenimientoClienteFormAction.class);
+	
 	/*NUEVO UBIGEO*/
 	private boolean defectoUbigeo;
 	private String idProvincia, idDepartamento, ubigeoDefecto;
@@ -88,8 +90,22 @@ public class MantenimientoClienteFormAction extends
 	private TipoDocumentoService objTipoDocService;
 	@EJB
 	private DomicilioEmpleadoService objDomicilioPersonaService;
+	@EJB
+	private TipoCasaService objTipoCasaService;
 	
 	
+	
+	public void limpiarDatosTelefono() {
+		nuevoTelef = new TelefonoPersonaSie();
+	}
+
+	public List<TelefonoPersonaSie> getTelefonoPersonaList() {
+		return TelefonoPersonaList;
+	}
+
+	public List<DomicilioPersonaSie> getDomicilioPersonaList() {
+		return DomicilioPersonaList;
+	}
 
 	public void init() {
 		log.info("Inicializando el Constructor de 'MantenimientoClienteFormAction'");
@@ -116,11 +132,15 @@ public class MantenimientoClienteFormAction extends
 		
 		mensaje=null;
 		log.info("agregarProducto ");
-		
-		objDomicilioPersonaSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(24));
+	
+		objDomicilioPersonaSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(23));
 		log.info(""+ idUbigeo);
 		objDomicilioPersonaSie.setTbUbigeo(objUbigeoService.findUbigeo(idUbigeo));	
-		log.info(""+ idUbigeo);	
+		log.info(""+ idUbigeo);
+		
+		objDomicilioPersonaSie.setTbTipoCasa(objTipoCasaService.findTipoCasa(Tipocasa));
+		
+		objDomicilioPersonaSie.setNuevoD(1);
 		DomicilioPersonaList.add(objDomicilioPersonaSie);
 
 		ingresarUbigeo();
@@ -322,11 +342,11 @@ public class MantenimientoClienteFormAction extends
 		if (TelefonoPersonaList == null)
 			TelefonoPersonaList = new ArrayList<TelefonoPersonaSie>();
 
-		TipoDocumento = objClienteSie.getTbTipoDocumentoIdentidad()
-				.getIdtipodocumentoidentidad();
+		TipoDocumento = objClienteSie.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad();
 
 		if (DomicilioPersonaList == null)
 			DomicilioPersonaList = new ArrayList<DomicilioPersonaSie>();
+		
 
 		objClienteSie.setIdcliente(c.getIdcliente());
 		objClienteSie.setNombrecliente(c.getNombrecliente());
@@ -344,6 +364,52 @@ public class MantenimientoClienteFormAction extends
 		objDomicilioPersonaSie = new DomicilioPersonaSie();
 		return getViewMant();
 
+	}
+	
+/*DESHABILITAR DOMICLIO*/
+	public String updateDeshabilitarDomicilio() throws Exception {
+
+	
+		objDomicilioPersonaSie = new DomicilioPersonaSie();
+		int parametroObtenido2;
+	try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'updateDESHABILITARDOMICILIO()'");
+			}
+			parametroObtenido2 = getIddom();
+			log.info(" ------>>>>>>aqui cactura el parametro ID "+ parametroObtenido2);
+
+
+			
+			objDomicilioPersonaSie = objDomicilioPersonaService.buscarDomicilioEmpleado(parametroObtenido2);
+
+			log.info(" ------desps de la variable l"+ objDomicilioPersonaSie.getIddomiciliopersona());
+
+
+	
+			objDomicilioPersonaSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(16));
+			
+
+
+			log.info("-----desps de setearlo con 16>>>"	+ objDomicilioPersonaSie.getTbEstadoGeneral().getIdestadogeneral());
+			log.info("actualizando ESTADO..... ");
+
+			
+			objDomicilioPersonaService.actualizarDomicilioEmpleado(objDomicilioPersonaSie);
+			log.info("actualizando.Domicilio.... ");
+
+		} catch (Exception e) {
+			e.printStackTrace();	
+			nombrecliente = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, nombrecliente);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+
+		objDomicilioPersonaSie = new DomicilioPersonaSie();
+
+		return getViewList();
 	}
 
 	
@@ -399,9 +465,11 @@ public class MantenimientoClienteFormAction extends
 			objClienteSie.setTbTipoDocumentoIdentidad(objTipoDocService.buscarTipoDocumento(TipoDocumento));
 			objClienteSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(23));
 			
-			log.info("actualizando..... ");
+		
+			
+			log.info("actualizando..... "+objClienteSie.getIdcliente() );
 
-			//objClienteService.updateCliente(objClienteSie, TelefonoPersonaList, DomicilioPersonaList);//aqui eh puesto Ubigeo
+			objClienteService.updateCliente(objClienteSie, TelefonoPersonaList, DomicilioPersonaList);//aqui eh puesto Ubigeo
 
 			log.info("insertando..... ");
 		} catch (Exception e) {
@@ -422,17 +490,7 @@ public class MantenimientoClienteFormAction extends
 	
 	
 	
-	public void limpiarDatosTelefono() {
-		nuevoTelef = new TelefonoPersonaSie();
-	}
-
-	public List<TelefonoPersonaSie> getTelefonoPersonaList() {
-		return TelefonoPersonaList;
-	}
-
-	public List<DomicilioPersonaSie> getDomicilioPersonaList() {
-		return DomicilioPersonaList;
-	}
+	
 /*METODOS GET Y SET*/
 	
 
@@ -920,6 +978,20 @@ public class MantenimientoClienteFormAction extends
 		this.nuevoDomicilio = nuevoDomicilio;
 	}
 
-	
+	/**
+	 * @return the iddom
+	 */
+	public int getIddom() {
+		return iddom;
+	}
+
+	/**
+	 * @param iddom the iddom to set
+	 */
+	public void setIddom(int iddom) {
+		this.iddom = iddom;
+	}
+
+
 	
 }
