@@ -28,6 +28,10 @@ public class FechaSie implements Serializable {
 	//bi-directional many-to-one association to HorarioPersonalSie
 	@OneToMany(mappedBy="tbFecha")
 	private Set<HorarioPersonalSie> tbHorarioPersonals;
+	
+	//bi-directional many-to-one association to FiltroHorarioVentaSie
+	@OneToMany(mappedBy="tbFecha")
+	private Set<FiltroHorarioVentaSie> tbFiltroHorarioVentas;
 
     public FechaSie() {
     }
@@ -54,5 +58,14 @@ public class FechaSie implements Serializable {
 
 	public void setTbHorarioPersonals(Set<HorarioPersonalSie> tbHorarioPersonals) {
 		this.tbHorarioPersonals = tbHorarioPersonals;
+	}
+
+	public Set<FiltroHorarioVentaSie> getTbFiltroHorarioVentas() {
+		return tbFiltroHorarioVentas;
+	}
+
+	public void setTbFiltroHorarioVentas(
+			Set<FiltroHorarioVentaSie> tbFiltroHorarioVentas) {
+		this.tbFiltroHorarioVentas = tbFiltroHorarioVentas;
 	}
 }
