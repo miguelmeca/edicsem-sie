@@ -27,6 +27,7 @@ import com.edicsem.pe.sie.entity.ProveedorSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.entity.TipoCasaSie;
 import com.edicsem.pe.sie.entity.TipoDocumentoIdentidadSie;
+import com.edicsem.pe.sie.entity.TipoFiltroSie;
 import com.edicsem.pe.sie.entity.TipoKardexProductoSie;
 import com.edicsem.pe.sie.entity.TipoLlamadaSie;
 import com.edicsem.pe.sie.entity.TipoProductoSie;
@@ -44,6 +45,7 @@ import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.service.facade.ProveedorService;
 import com.edicsem.pe.sie.service.facade.TipoCasaService;
 import com.edicsem.pe.sie.service.facade.TipoDocumentoService;
+import com.edicsem.pe.sie.service.facade.TipoFiltroService;
 import com.edicsem.pe.sie.service.facade.TipoKardexService;
 import com.edicsem.pe.sie.service.facade.TipoLLamadaService;
 import com.edicsem.pe.sie.service.facade.TipoProductoService;
@@ -83,7 +85,7 @@ public class ComboAction {
 	private Map<String, Integer> tipollamada = new HashMap<String, Integer>();
 	private Map<String, Integer> empleadoxcargo = new HashMap<String, Integer>();
 	private Map<String, Integer> diasItems = new HashMap<String, Integer>();
-	
+	private Map<String, Integer> tipoFiltroItems = new HashMap<String, Integer>();
 	@EJB
 	private AlmacenService objAlmacenService;
 	@EJB
@@ -118,6 +120,8 @@ public class ComboAction {
 	private DetalleCarEmpService objDetCarEmpService;
 	@EJB
 	private FechaService objFechaService;
+	@EJB
+	private TipoFiltroService objTipoFiltroService;
 
 	public ComboAction() {
 		log.info("inicializando constructor");
@@ -938,6 +942,41 @@ public class ComboAction {
 	 */
 	public void setDiasItems(Map<String, Integer> diasItems) {
 		this.diasItems = diasItems;
+	}
+
+	/**
+	 * @return the tipoFiltroItems
+	 */
+	public Map<String, Integer> getTipoFiltroItems() {
+		List lista = new ArrayList<TipoFiltroSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getTipoFiltroItems()'");
+			}
+			lista = objTipoFiltroService.listarTipoFiltro();
+			
+			for (int i = 0; i < lista.size(); i++) {
+				TipoFiltroSie entidad = new TipoFiltroSie();
+				entidad = (TipoFiltroSie) lista.get(i);
+				tipoFiltroItems.put(entidad.getDescripcion(),
+						entidad.getIdtipofiltro());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		} 
+		return tipoFiltroItems;
+	}
+
+	/**
+	 * @param tipoFiltroItems the tipoFiltroItems to set
+	 */
+	public void setTipoFiltroItems(Map<String, Integer> tipoFiltroItems) {
+		this.tipoFiltroItems = tipoFiltroItems;
 	}
 	
 }

@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+  <ui:define name="body">
+  <h1 class="title ui-widget-header ui-corner-all"> Generar Horario de Personal de Ventas</h1>
+<h:form id="horarioVendedor">
+<p:growl id="messages" showDetail="true" />
+		<p:fieldset legend="Buscar Personal" style="margin-top:20px">
+				<h:panelGrid columns="2">
+					<h:outputText value="Tipo de Ingreso/Permiso/Feriado :" />
+					<p:selectOneMenu  value="#{horarioVendedorForm.idtipoFiltro}">
+						<f:selectItems value="#{comboAction.tipoFiltroItems}" />
+					</p:selectOneMenu>
+					<h:outputText value="Vendedor :" />
+					<h:panelGroup>
+					<p:selectOneMenu id="idvend" value="#{horarioVendedorForm.idvendedor}" required="true" requiredMessage="#{message['horario.vendedor.validation']}">
+						<f:selectItems value="#{comboAction.empleadoxcargo}" />
+					</p:selectOneMenu>
+					<p:message for="idvend" />
+					</h:panelGroup>
+					<h:outputText value="Punto de Venta :" />
+					<p:selectOneMenu  value="#{horarioVendedorForm.idPuntoVenta}">
+					<f:selectItem itemLabel="Seleccione punto " itemValue="#{null}" />
+						<f:selectItems value="#{comboAction.almacenItems}" />
+					</p:selectOneMenu>
+					
+				<h:outputText value="#{message['horario.personal.dia']}" />
+				<h:panelGroup   >
+				<p:selectCheckboxMenu id="emplechk" required="true" value="#{horarioVendedorForm.diaList}" filter="true" filterMatchMode="startsWith" requiredMessage="#{message['horario.personal.dia.validation']}"
+					 style="width:200px" >
+					<f:selectItems value="#{comboAction.diasItems}" />
+				</p:selectCheckboxMenu>
+				<p:message for="emplechk" />
+				</h:panelGroup>
+				
+				<h:outputText value="#{message['horario.personal.fechaDesde']}" />
+				<h:panelGroup>
+					<p:calendar value="#{horarioVendedorForm.objFiltroHorario.diainicio}" id="desdecl" required="true" requiredMessage="#{message['horario.personal.fechaDesde.validation']}" mindate="today" />
+					<p:message for="desdecl" />
+				</h:panelGroup>
+				
+				<h:outputText value="#{message['horario.personal.fechaHasta']}" />
+				<h:panelGroup >
+					<p:calendar value="#{horarioVendedorForm.objFiltroHorario.diafin}" requiredMessage="#{message['horario.personal.fechaHasta.validation']}" mindate="today" />
+				</h:panelGroup>
+				
+				<h:outputText value="#{message['horario.personal.horaEntrada']}"  />
+				<h:panelGroup >
+					<p:calendar  id="horaIng" required="true" requiredMessage="#{message['horario.personal.horaEntrada.validation']}" value="#{horarioVendedorForm.horaIngreso}" pattern="HH:mm" timeOnly="true"/>
+					<p:message for="horaIng" />
+				</h:panelGroup>
+				 
+				<h:outputText value="#{message['horario.personal.horaSalida']}" />
+				<h:panelGroup>
+					<p:calendar id="horaSal" required="true" requiredMessage="#{message['horario.personal.horaSalida.validation']}" value="#{horarioVendedorForm.horaSalida}" pattern="HH:mm" timeOnly="true"/>
+					<p:message for="horaSal" />
+				</h:panelGroup>
+				 
+				<h:outputText value="#{message['horario.personal.descripcion']}"  />
+				<h:panelGroup  >
+					<p:inputText value="#{horarioVendedorForm.objFiltroHorario.observacion}"  />
+					<p:spacer/>
+				</h:panelGroup>
+				<p:commandButton  value="Guardar" update="@all"
+						action="#{horarioVendedorForm.insertar}" 
+						ajax="false" icon="ui-icon ui-icon-disk" />
+			</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+</ui:define>
+</ui:composition>
