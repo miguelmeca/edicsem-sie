@@ -49,7 +49,9 @@ public class Constants {
 	public static final String MANT_DET_EMPRESA_EMPLEADO_FORM_PAGE = "mantenimientoDetEmpresaEmpleadoForm";
 	public static final String MANT_DET_EMPRESA_EMPLEADO_FORM_LIST_PAGE = "mantenimientoDetEmpresaEmpleadoFormList";
 	
-	public static final String MANT_HORARIO_PERSONAL = "horarioPersonal";
+	public static final String MANT_HORARIO_PERSONAL = "mantenimientoHorarioPersonal";
+	
+	public static final String MANT_HORARIO_PERSONAL_VENTAS = "mantenimientoHorarioVendedor";
 	
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
