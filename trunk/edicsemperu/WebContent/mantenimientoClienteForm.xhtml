@@ -122,7 +122,7 @@
 				
 
 			</h:panelGrid>
-			</p:panel>
+		
 <!-- FIN DE  MANTENIMIENTO CLIENTE -->
 <p:panel header="Lista de Domicilio de Clientes">
 
@@ -136,26 +136,74 @@
 				effectSpeed="fast" type="none"				   >
 
 				
-
+				<p:column headerText="Domicilio" id="Domicilio" >
+				<h:outputText  value="#{d.domicilio}" />
+				</p:column>
 				
 				<p:column headerText="Departamento-Provincia-Distrito" id="DPD" >
 					<h:outputText  value="#{d.desUbigeo}" />
 				</p:column>
 				
-				
-				<p:column headerText="Domicilio" id="Domicilio" >
-					<h:outputText  value="#{d.domicilio}" />
+				<p:column headerText="Referencia" id="Referencia" >
+				<h:outputText  value="#{d.referencia}" />
 				</p:column>
+				
+				
+				<p:column headerText="Tipo de Casa" id="TipoCasa" >
+				<h:outputText  value="#{d.tbTipoCasa.descripcion}" />
+				</p:column>
+				
 				
 				<p:column headerText="Estado" id="estados" >
 <h:outputText  value="#{d.tbEstadoGeneral.descripcion}" />
 				</p:column>
+				
+				<!--********** BOTON EDITAR **********-->
+		
+	<p:column headerText="Editar">
+	
+			<p:commandButton value="Editar"  oncomplete="carDialogEditarUbigeoCliente.show()"
+								action="#{mantenimientoCargoEmpleadoFormAction.update}"
+			                    update=":EditarUbigeoCliente:display"
+			                    icon="ui-icon ui-icon-pencil"
+			  >
+			                    
+			<f:setPropertyActionListener value="#{m}" 
+			 target="#{mantenimientoCargoEmpleadoFormAction.objCargoEmpleadoSie}" />
+			 
+			</p:commandButton>
+					
+	</p:column>
+ 
+ <!--**********FIN EDITAR**********-->
+					
+					<!-- DESHABILITAR DOMICILIO -->
+					
+<p:column headerText="Deshabilitar">
+<p:commandButton id="showConfirmDeshabilitar4"
+	 			 value="Deshabilitar"
+	 			 icon="ui-icon ui-icon-close" 			
+	 			onclick="confirmation4.show()"> 
+<f:setPropertyActionListener value="#{d.iddomiciliopersona}" target="#{MantenimientoClienteFormAction.iddom}" />			
+</p:commandButton>	
+</p:column>
+						
+					<!--FIN DESHABILITAR DOMICILIO -->	
+					
+					
 					
 			</p:dataTable>
 	
 </h:panelGrid>
 
 
+
+
+</h:panelGrid>
+</p:panel>
+
+
+<!-- NUEVO DOMCILIO CLIENTE -->
 
 <p:panel header="Nuevo Domicilio de Cliente">
 
@@ -199,11 +247,21 @@
 				</p:selectOneMenu>
 				<p:message for="tipocasa" />
 					
-				<h:outputText value="dimicilio" />
+				<h:outputText value="domicilio" />
 				<p:inputText id="domicilio"
 					value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.domicilio}" 
 					/>
 				<p:message for="domicilio" />
+				
+				
+				
+				
+				<h:outputText value="Referencia" />
+				<p:inputText id="Referencia"
+					value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.referencia}" 
+					/>
+				<p:message for="Referencia" />
+				
 				
 				<h:panelGroup>
 					<p:spacer height="80px" width="80"></p:spacer>
@@ -216,14 +274,10 @@
 			</h:panelGrid>
 		</h:form>
 	</p:panel>
-</h:panelGrid>
-</p:panel>
 
+<!--FIN de NUEVO DOMCILIO CLIENTE -->
 
-
-
-
-<!-- LISTA DE TELEFONOS -->		
+<!-- 	DE TELEFONOS -->		
 
 <p:panel header="Lista de Telefonos de Clientes" >
 
@@ -286,7 +340,7 @@
 						action="#{MantenimientoClienteFormAction.insertar}"
 						ajax="false" icon="ui-icon ui-icon-disk"
 						 />
-			
+				</p:panel>
 		</h:form>
 	</ui:define>
 </ui:composition>
