@@ -67,4 +67,11 @@ public class DetEmpresaEmpleadoServiceImpl implements DetEmpresaEmpleadoService 
 		return objDetEmpresaEmpleadoDao.listarDetEmpresaEmpleadoSieXEmpresa(idempresa);
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.DetEmpresaEmpleadoService#filtrartipoventaPersonal(int)
+	 */
+	public int filtrartipoventaPersonal(int idvendedor) {
+		return objDetEmpresaEmpleadoDao.filtrartipoventaPersonal(idvendedor);
+	}
+	
 }
