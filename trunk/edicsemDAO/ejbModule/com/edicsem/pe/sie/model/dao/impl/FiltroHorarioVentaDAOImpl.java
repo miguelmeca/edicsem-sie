@@ -76,7 +76,7 @@ public class FiltroHorarioVentaDAOImpl implements FiltroHorarioVentaDAO{
 		try {
 			Query q = em.createQuery("select p from FiltroHorarioVentaSie p ");
 			lista =  q.getResultList(); 
-		   System.out.println("tamaño lista FiltroHorarioVenta --> " + lista.size()+"  ");
+			log.info("tamaño lista FiltroHorarioVenta --> " + lista.size()+"  ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

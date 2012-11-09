@@ -32,7 +32,7 @@ public class FechaDAOImpl implements FechaDAO{
 		try {
 			Query q = em.createQuery("select p from FechaSie p ");
 			lista =  q.getResultList(); 
-		   System.out.println("tamaño lista Fechas --> " + lista.size()+"  ");
+			log.info("tamaño lista Fechas --> " + lista.size()+"  ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

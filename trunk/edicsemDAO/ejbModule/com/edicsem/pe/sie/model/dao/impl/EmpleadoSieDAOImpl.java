@@ -92,7 +92,7 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 		try {
 			Query q = em.createQuery("select p from EmpleadoSie p where p.tbEstadoGeneral.idestadogeneral = "+3);
 			lista = q.getResultList();
-			System.out.println("tamaño lista Empleados --> " + lista.size());
+			log.info("tamaño lista Empleados --> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -108,7 +108,7 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 			Query q = em.createQuery("select p from EmpleadoSie p inner join p.tbDetCargoEmpleados q  " +
 					"inner join  q.tbCargoEmpleado r where r.idcargoempleado = "+idCargo);
 			lista = q.getResultList();
-			System.out.println("tamaño lista Empleados X Cargo --> " + lista.size());
+			log.info("tamaño lista Empleados X Cargo --> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

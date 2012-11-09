@@ -84,7 +84,7 @@ public class TipoLLamadaDAOImpl implements TipoLLamadaDAO {
 		try {
 			Query q = em.createQuery("select p from TipoLlamadaSie p");
 			lista =  q.getResultList(); 
-		   System.out.println("tamaño lista TipoLLamada  --> " + lista.size()+"  ");
+			log.info("tamaño lista TipoLLamada  --> " + lista.size()+"  ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -76,7 +76,7 @@ public class DetProductoContratoDAOImpl implements DetProductoContratoDAO{
 		try {
 			Query q = em.createQuery("select p from DetProductoContratoSie p ");
 			lista =  q.getResultList(); 
-		   System.out.println("tamaño lista DetProductoContrato --> " + lista.size()+"  ");
+			log.info("tamaño lista DetProductoContrato --> " + lista.size()+"  ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -82,7 +82,7 @@ public class HorarioPersonalDAOImpl implements HorarioPersonalDAO {
 		try {
 			Query q = em.createQuery("select p from HorarioPersonalSie p");
 			lista =  q.getResultList(); 
-		   System.out.println("tamaño lista horario personal  --> " + lista.size()+"  ");
+			log.info("tamaño lista horario personal  --> " + lista.size()+"  ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -97,11 +97,10 @@ public class HorarioPersonalDAOImpl implements HorarioPersonalDAO {
 		try {
 			Query q = em.createQuery("select p from HorarioPersonalSie p where p.tbEmpleado.idempleado = "+id);
 			lista =  q.getResultList(); 
-		   System.out.println("tamaño lista horario personal  --> " + lista.size()+"  ");
+			log.info("tamaño lista horario personal  --> " + lista.size()+"  ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return lista;
 	}
-	
 }

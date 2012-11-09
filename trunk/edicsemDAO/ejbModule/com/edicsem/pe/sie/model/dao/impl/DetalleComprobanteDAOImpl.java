@@ -43,7 +43,7 @@ public class DetalleComprobanteDAOImpl implements DetalleComprobanteDAO{
 		try {
 			Query q = em.createQuery("select p from DetalleComprobanteSie p where p.tbComprobante.idcomprobante = "+codcomp );
 			lista =  q.getResultList(); 
-		   System.out.println("tamaño lista Detalle Comprobante --> " + lista.size()+"  ");
+			log.info("tamaño lista Detalle Comprobante --> " + lista.size()+"  ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

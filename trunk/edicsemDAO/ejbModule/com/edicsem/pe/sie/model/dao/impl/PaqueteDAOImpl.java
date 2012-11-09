@@ -64,7 +64,7 @@ public class PaqueteDAOImpl implements PaqueteDAO {
 		try {
 			Query q = em.createQuery("select p from PaqueteSie p");
 			lista = q.getResultList();
-			System.out.println("tamaño lista Paquetes --> " + lista.size());
+			log.info("tamaño lista Paquetes --> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

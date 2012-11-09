@@ -98,7 +98,7 @@ public class DomicilioEmpleadoDAOImpl implements DomicilioEmpleadoDAO{
 		try {
 			Query q = em.createQuery("select p from DomicilioPersonaSie p where p.idempleado = "+ id);
 			domicilio = (DomicilioPersonaSie) q.getResultList().get(0);
-			//System.out.println("Domicilio x idempleado  --> " + domicilio.size());
+			//log.info("Domicilio x idempleado  --> " + domicilio.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

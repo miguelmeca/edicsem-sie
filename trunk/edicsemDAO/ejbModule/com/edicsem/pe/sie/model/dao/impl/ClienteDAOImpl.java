@@ -76,7 +76,7 @@ public class ClienteDAOImpl implements ClienteDAO{
 		try {
 			Query q = em.createQuery("select p from ClienteSie p where p.tbEstadoGeneral.idestadogeneral = "+ 23);
 			lista =  q.getResultList(); 
-		   System.out.println("tamaño lista Cliente --> " + lista.size()+"  ");
+			log.info("tamaño lista Cliente --> " + lista.size()+"  ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

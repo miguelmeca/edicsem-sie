@@ -100,7 +100,7 @@ public class ParametroDAOImpl implements ParametroDAO{
 		try {
 			Query q = em.createQuery("select p from ParametroSistemaSie p where p.tbEstadoGeneral.idestadogeneral = "+29);
 			lista = q.getResultList();
-			System.out.println("tamaño lista parametro --> " + lista.size());
+			log.info("tamaño lista parametro --> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

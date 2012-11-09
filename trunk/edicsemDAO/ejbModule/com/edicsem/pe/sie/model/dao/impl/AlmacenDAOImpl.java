@@ -81,7 +81,7 @@ public class AlmacenDAOImpl implements AlmacenDAO{
 		try {
 			Query q = em.createQuery("select p from PuntoVentaSie p where p.tbEstadoGeneral.idestadogeneral = "+ 13);
 			lista =  q.getResultList(); 
-		   System.out.println("tamaño lista Almacen --> " + lista.size()+"  ");
+		   log.info("tamaño lista Almacen --> " + lista.size()+"  ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
