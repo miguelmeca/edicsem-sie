@@ -58,13 +58,16 @@ public class TelefonoPersonaSie implements Serializable {
     @Transient
     private int NuevoT;
 
+    
+ 
     /**
 	 * @return the nuevoT
 	 */
 	public int getNuevoT() {
 		return NuevoT;
 	}
-
+	
+	
 	/**
 	 * @param nuevoT the nuevoT to set
 	 */
@@ -168,5 +171,6 @@ public class TelefonoPersonaSie implements Serializable {
 	public void setDescTelefono(String descTelefono) {
 		this.descTelefono = descTelefono;
 	}
+
 	
 }
