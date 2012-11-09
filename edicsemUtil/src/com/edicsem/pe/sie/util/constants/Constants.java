@@ -52,6 +52,7 @@ public class Constants {
 	public static final String MANT_HORARIO_PERSONAL = "mantenimientoHorarioPersonal";
 	
 	public static final String MANT_HORARIO_PERSONAL_VENTAS = "mantenimientoHorarioVendedor";
+	public static final String MANT_HORARIO_ASISTENCIA = "horarioAsistencia";
 	
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
