@@ -36,6 +36,7 @@ public class HorarioAsistenciaFormAction extends BaseMantenimientoAbstractAction
 	private String mensaje;
 	private int idempleado;
 	private boolean newRecord =false;
+	private boolean bandera =false;
 	private int ide;
 	private Date dDate, dDate2;
 	
@@ -61,48 +62,33 @@ public class HorarioAsistenciaFormAction extends BaseMantenimientoAbstractAction
 	public String mostrar() throws Exception {
 				log.info("listarHorarioAsistencia");
 				listaAsistencia = objHorarioAsistenciaService.listarHorarioAsistenciaXempleado(idempleado);
-				if (listaAsistencia == null) {
+				log.info("listaasistencia"+listaAsistencia.size());
+				if (listaAsistencia.size() == 0) {
+					log.info("listaasistencia"+listaAsistencia);
 					listaAsistencia = new ArrayList<HorarioAsistenciaSie>();
+				    bandera=true;
 				}
 				log.info(" ------------ xxxxxx :D ");
-				/*for(int i=0;i < listaHorario.size(); i++){
-					objHorarioPersonal.setDescripcion(listaHorario.get(i).getDescripcion());
-					objHorarioPersonal.setDiainicio(listaHorario.get(i).getDiainicio());
-					objHorarioPersonal.setDiafin(listaHorario.get(i).getDiafin());
-					objHorarioPersonal.setHoraIngreso(listaHorario.get(i).getHoraIngreso());
-					objHorarioPersonal.setHoraSalida(listaHorario.get(i).getHoraSalida());
-			 
-					objHorarioPersonal= listaHorario.get(i);
-	                dDate = objHorarioPersonal.getDiainicio();
-	                Calendar cal = new GregorianCalendar();
-	            	String[] a= (objHorarioPersonal.getHoraIngreso()+"").split(":");
-	            	log.info(" xd "+dDate);
-	            	cal.setTime(dDate);
-	            	log.info(" fecha xxx "+cal.getTime());
-	            	cal.add(Calendar.HOUR_OF_DAY, Integer.parseInt(a[0]));
-	            	cal.add(Calendar.MINUTE, Integer.parseInt(a[1]));
-	            	dDate = cal.getTime();
-	            	log.info(" fecha 1 "+dDate);
-	                dDate2 = objHorarioPersonal.getDiainicio();
-	                Calendar cal3 = new GregorianCalendar();
-	            	String[] a2= (objHorarioPersonal.getHoraSalida()+"").split(":");
-	            	log.info(" xd "+dDate2);
-	            	cal3.setTime(dDate2);
-	            	cal3.add(Calendar.HOUR_OF_DAY, Integer.parseInt(a2[0]));
-	            	cal3.add(Calendar.MINUTE, Integer.parseInt(a2[1]));
-	            	dDate2 = cal3.getTime();
-	            	log.info(" fecha 2 "+dDate2);
-	                log.info(" dia 1 " +dDate+ " dia 2 " +dDate2);
-	                log.info("  cccccc  " + dDate.getDate()+" "   +  dDate.getDay());
-					eventModel.addEvent(new DefaultScheduleEvent(objHorarioPersonal.getDescripcion()+" de "+ objHorarioPersonal.getHoraIngreso()+" hasta "+ objHorarioPersonal.getHoraSalida(), dDate, dDate2));  
-				}*/
 		return getViewList();
 	}
     
 	public void agregarhorario(){
+		
+		
 		newRecord=true;
 	}
 	
+	
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
+	 */
+	@Override
+	public String agregar() {
+		// TODO Auto-generated method stub
+		return super.agregar();
+	}
+
 	public String insertar() throws Exception {
 		try {
 			if (log.isInfoEnabled()) {
@@ -117,11 +103,17 @@ public class HorarioAsistenciaFormAction extends BaseMantenimientoAbstractAction
 				Time hora4= new Time( getHora4().getTime());
 				log.info(" get   "+ hora1);
 		
-				log.info(" get   "+ objHorarioAsistenciaService.obtenerFechaFinalXempleado(idempleado).get(0));
 				Calendar fecha= new GregorianCalendar();
+				if(bandera==false){
+				log.info("if"+bandera);
 				fecha.setTime((Date)objHorarioAsistenciaService.obtenerFechaFinalXempleado(idempleado).get(0));
 				log.info("1 "+ fecha);
-				fecha.add(Calendar.DATE, 1);
+				fecha.add(Calendar.DATE, 1);}
+				else{
+			    log.info("if"+bandera);
+				DateUtil du = new DateUtil();
+			    fecha.setTime(du.getToday().getTime());
+				}
 				log.info("2 "+ fecha);
 				objHorarioAsistencia.setHoraIngreso1(hora1);
 				objHorarioAsistencia.setHoraSalida1(hora2);
@@ -135,9 +127,9 @@ public class HorarioAsistenciaFormAction extends BaseMantenimientoAbstractAction
 				log.info("actualizando..... ");
 				
 				Time hora1 = new Time(getHora1().getTime());
-				Time hora2= new Time( getHora1().getTime());
-				Time hora3 = new Time(getHora1().getTime());
-				Time hora4= new Time( getHora1().getTime());
+				Time hora2= new Time( getHora2().getTime());
+				Time hora3 = new Time(getHora3().getTime());
+				Time hora4= new Time( getHora4().getTime());
 				log.info(" get   "+ hora1);
 				
 				objHorarioAsistencia.setHoraIngreso1(hora1);
@@ -169,16 +161,16 @@ public class HorarioAsistenciaFormAction extends BaseMantenimientoAbstractAction
 		   HorarioAsistenciaSie h = objHorarioAsistenciaService.findHorarioAsistencia(objHorarioAsistencia.getIdHorarioAsistencia());
 			/*Seteo para mostrar los datos*/
 			objHorarioAsistencia.setIdHorarioAsistencia(h.getIdHorarioAsistencia());
-		    objHorarioAsistencia.setHoraIngreso1(h.getHoraIngreso1());
-		    objHorarioAsistencia.setHoraSalida1(h.getHoraSalida1());
-		    objHorarioAsistencia.setHoraIngreso2(h.getHoraIngreso2());
-		    objHorarioAsistencia.setHoraSalida2(h.getHoraSalida2());
+		    setHora1(h.getHoraIngreso1());
+		    setHora2(h.getHoraSalida1());
+		    setHora3(h.getHoraIngreso2());
+		    setHora4(h.getHoraSalida2());
 			objHorarioAsistencia.setFecha(h.getFecha());
 			objHorarioAsistencia.setObservaciones(h.getObservaciones());
 	        objHorarioAsistencia.setTbEmpleado(h.getTbEmpleado());
 	        /*método bolean necesario para actualizar*/  
 			setNewRecord(false);
-			return getViewList();
+			return "";
 	}
 
 	public String onEdit(RowEditEvent event) throws Exception {
@@ -403,6 +395,22 @@ public class HorarioAsistenciaFormAction extends BaseMantenimientoAbstractAction
 	 */
 	public void setHora4(Date hora4) {
 		this.hora4 = hora4;
+	}
+
+	/**
+	 * @return the bandera
+	 */
+	public boolean isBandera() {
+		return bandera;
+	}
+
+	/**
+	 * @param bandera the bandera to set
+	 */
+	public void setBandera(boolean bandera) {
+		this.bandera = bandera;
 	}	
+	
+	
 	
 }
