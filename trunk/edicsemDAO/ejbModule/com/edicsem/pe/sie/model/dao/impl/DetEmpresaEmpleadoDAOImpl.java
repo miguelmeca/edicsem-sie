@@ -119,7 +119,9 @@ public class DetEmpresaEmpleadoDAOImpl implements DetEmpresaEmpleadoDAO{
 		int p=0;
 		try {
 			Query q = em.createQuery("select p.tbEmpresa.tipoVenta from DetEmpresaEmpleadoSie p where p.tbEmpleado.idempleado = "+idvendedor);
+			
 			p =  Integer.parseInt(q.getResultList().get(0).toString());
+			log.info(" filtrartipoventaPersonal " + p );
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
