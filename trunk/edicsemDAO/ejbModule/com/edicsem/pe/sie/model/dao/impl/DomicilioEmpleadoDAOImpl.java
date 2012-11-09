@@ -29,13 +29,13 @@ public class DomicilioEmpleadoDAOImpl implements DomicilioEmpleadoDAO{
 	 */
 	public void insertarDomicilioEmpleado(DomicilioPersonaSie domiciliopersona) {
 		log.info("apunto de insertar domicilio"+ domiciliopersona.getDomicilio()+
-				" - ");
+				" - " + domiciliopersona.getReferencia());
 		try {
 						
                                            
-
+			log.info("antes del Persist");
 			em.persist(domiciliopersona);
-			//em.flush();
+			
 			if (log.isInfoEnabled()) {
 				log.info("apunto de insertar Domicilio");
 			}
