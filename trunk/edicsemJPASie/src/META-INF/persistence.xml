@@ -21,7 +21,6 @@
 		<class>com.edicsem.pe.sie.entity.EstadoGeneralSie</class>
 		<class>com.edicsem.pe.sie.entity.HorarioAsistenciaSie</class>
 		<class>com.edicsem.pe.sie.entity.HorarioPersonalSie</class>
-		<class>com.edicsem.pe.sie.entity.HorariosPvSie</class>
 		<class>com.edicsem.pe.sie.entity.KardexSie</class>
 		<class>com.edicsem.pe.sie.entity.MetaEmpresaSie</class>
 		<class>com.edicsem.pe.sie.entity.ModuloOpcionSie</class>
@@ -51,6 +50,7 @@
 		<class>com.edicsem.pe.sie.entity.IncidenciaSie</class>
 		<class>com.edicsem.pe.sie.entity.ObservacionIncidenciaSie</class>
 		<class>com.edicsem.pe.sie.entity.TipoFiltroSie</class>
+		<class>com.edicsem.pe.sie.entity.HorarioPuntoVentaSie</class>
 	<properties>
 			<property name="eclipselink.jdbc.driver" value="org.postgresql.Driver" />
 			<property name="eclipselink.jdbc.url" value="jdbc:postgres://192.168.1.2:5432/bd_sie" />
