@@ -29,6 +29,8 @@ public class DomicilioEmpleadoServiceImpl implements DomicilioEmpleadoService{
 	 * @see com.edicsem.pe.sie.service.facade.DemoService#updateDemo(com.edicsem.pe.sie.entity.Usuario)
 	 */
 	public void actualizarDomicilioEmpleado(DomicilioPersonaSie domicilioempleado) {
+		
+		
 		objDomicilioEmpleadoDao.actualizarDomicilioEmpleado(domicilioempleado);
 	}
 
