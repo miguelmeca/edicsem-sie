@@ -18,6 +18,7 @@ import org.apache.commons.logging.LogFactory;
 import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
+import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.service.facade.ClienteService;
@@ -39,12 +40,10 @@ public class MantenimientoClienteFormAction extends
 	private String operadortelefonico;
 	private int TipoDocumento, telefonopersona;
 	private int ide, idEstadoGeneral;
-	private int idc,iddom;
+	private int idc,iddom, iddomicilio;
 	private int estado;
 	/* DATOS DE TELEFONO CLIENTE */
-	private TelefonoPersonaSie nuevoTelef;
-	
-	
+	private TelefonoPersonaSie nuevoTelef;	
 	private int TipoTelef, operadorTelefonico;
 	private String mensaje;	
 	/* COMBITO DE UBIGEO */
@@ -55,16 +54,14 @@ public class MantenimientoClienteFormAction extends
 	/* LISTA DE TELEFONOS */
 	private List<TelefonoPersonaSie> TelefonoPersonaList;
 	/* DOMICILIO CLIENTE */
-	private DomicilioPersonaSie nuevoDomicilio;
-	
+	private DomicilioPersonaSie nuevoDomicilio;	
 	private String domicilio,referencia;
 	private DomicilioPersonaSie objDomicilioPersonaSie;
 	private List<DomicilioPersonaSie> DomicilioPersonaList;
-	private Log log = LogFactory.getLog(MantenimientoClienteFormAction.class);
-	
+	private Log log = LogFactory.getLog(MantenimientoClienteFormAction.class);	
 	/*NUEVO UBIGEO*/
 	private boolean defectoUbigeo;
-	private String idProvincia, idDepartamento, ubigeoDefecto;
+	private String idProvincia, idDepartamento,idDistrito, ubigeoDefecto, idUbigeoD;
 	private int idUbigeo;
 	/*TIPO DE CAAS*/
 	private int Tipocasa;
@@ -138,17 +135,15 @@ public class MantenimientoClienteFormAction extends
 		objDomicilioPersonaSie.setTbUbigeo(objUbigeoService.findUbigeo(idUbigeo));	
 		log.info(""+ idUbigeo);
 		
-		objDomicilioPersonaSie.setTbTipoCasa(objTipoCasaService.findTipoCasa(Tipocasa));
-		
+		objDomicilioPersonaSie.setTbTipoCasa(objTipoCasaService.findTipoCasa(Tipocasa));		
 		objDomicilioPersonaSie.setNuevoD(1);
 		DomicilioPersonaList.add(objDomicilioPersonaSie);
-
 		ingresarUbigeo();
 		objDomicilioPersonaSie= new DomicilioPersonaSie();
 		
 	}
 	
-	/*METODO CREAR NUEVO UBIGEO*/
+	/*METODO CREAR NUEVO UBIGEO EN EL PANEL NUEVO DOMICILIO CLIENTE DEL FROMULARIO M.C.FORM*/
 	
 	public void cambioUbigeoDefecto() {
 		log.info(" defecto  " + defectoUbigeo);
@@ -321,19 +316,16 @@ public class MantenimientoClienteFormAction extends
 		nuevoTelef = new TelefonoPersonaSie();
 	}
 	
-	/* TMETODO EDITAR CLIENTE */
+	/* METODO EDITAR CLIENTE */
 
 	public String update() throws Exception {
 		log.info("update() --> objDomicilioPersonaSie");
 
-		ClienteSie c = objClienteService.findCliente(objClienteSie
-				.getIdcliente());
+		ClienteSie c = objClienteService.findCliente(objClienteSie.getIdcliente());
 
-		log.info(" id cliente " + objClienteSie.getIdcliente() + " nombre "
-				+ objClienteSie.getNombrecliente());
+		log.info(" id cliente " + objClienteSie.getIdcliente() + " nombre "	+ objClienteSie.getNombrecliente());
 
-		TelefonoPersonaList = objTelefonoService.listarTelefonoCliente(objClienteSie.getIdcliente());
-		
+		TelefonoPersonaList = objTelefonoService.listarTelefonoCliente(objClienteSie.getIdcliente());		
 		DomicilioPersonaList = objDomicilioPersonaService.listarDomicilioCliente(objClienteSie.getIdcliente());
 
 		ingresarUbigeo();
@@ -361,39 +353,29 @@ public class MantenimientoClienteFormAction extends
 		objClienteSie.setTelftrabajo(c.getTelftrabajo());
 
 		setNewRecord(true);
-		objDomicilioPersonaSie = new DomicilioPersonaSie();
 		return getViewMant();
 
-	}
+	}	
 	
-/*DESHABILITAR DOMICLIO*/
+/*DESHABILITAR DOMICILIO*/
 	public String updateDeshabilitarDomicilio() throws Exception {
 
-	
-		objDomicilioPersonaSie = new DomicilioPersonaSie();
-		int parametroObtenido2;
+		
+			objDomicilioPersonaSie = new DomicilioPersonaSie();
+			int parametroObtenido2;
 	try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'updateDESHABILITARDOMICILIO()'");
 			}
 			parametroObtenido2 = getIddom();
-			log.info(" ------>>>>>>aqui cactura el parametro ID "+ parametroObtenido2);
-
-
-			
+			log.info(" ------>>>>>>aqui cactura el parametro ID "+ parametroObtenido2);			
 			objDomicilioPersonaSie = objDomicilioPersonaService.buscarDomicilioEmpleado(parametroObtenido2);
-
-			log.info(" ------desps de la variable l"+ objDomicilioPersonaSie.getIddomiciliopersona());
-
-
-	
-			objDomicilioPersonaSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(16));
 			
-
+			log.info(" ------desps de la variable l"+ objDomicilioPersonaSie.getIddomiciliopersona());	
+			objDomicilioPersonaSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(16));
 
 			log.info("-----desps de setearlo con 16>>>"	+ objDomicilioPersonaSie.getTbEstadoGeneral().getIdestadogeneral());
 			log.info("actualizando ESTADO..... ");
-
 			
 			objDomicilioPersonaService.actualizarDomicilioEmpleado(objDomicilioPersonaSie);
 			log.info("actualizando.Domicilio.... ");
@@ -424,11 +406,9 @@ public class MantenimientoClienteFormAction extends
 			}
 			parametroObtenido = getIdc();
 			log.info(" ------>>>>>>aqui cactura el parametro ID "+ parametroObtenido);
-
 			objTelefonoPersonaSie = objTelefonoService.buscarTelefonoCliente(parametroObtenido);
 
 			log.info(" ------desps de la variable l"+ objTelefonoPersonaSie.getIdtelefonopersona());
-
 			objTelefonoPersonaSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(18));
 
 			log.info("-----desps de setearlo con 18>>>"	+ objTelefonoPersonaSie.getTbEstadoGeneral().getIdestadogeneral());
@@ -463,12 +443,9 @@ public class MantenimientoClienteFormAction extends
 
 			}
 			objClienteSie.setTbTipoDocumentoIdentidad(objTipoDocService.buscarTipoDocumento(TipoDocumento));
-			objClienteSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(23));
-			
-		
+			objClienteSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(23));		
 			
 			log.info("actualizando..... "+objClienteSie.getIdcliente() );
-
 			objClienteService.updateCliente(objClienteSie, TelefonoPersonaList, DomicilioPersonaList);//aqui eh puesto Ubigeo
 
 			log.info("insertando..... ");
@@ -485,7 +462,129 @@ public class MantenimientoClienteFormAction extends
 		return getViewList();
 	}
 
+	/*METODO EDITAR UBIGEO*/
 	
+	
+	public String updateDomicilio() throws Exception {
+		log.info("update()" + objDomicilioPersonaSie.getIddomiciliopersona());
+
+
+		
+DomicilioPersonaSie s = objDomicilioPersonaService.buscarDomicilioEmpleado(objDomicilioPersonaSie.getIddomiciliopersona());
+
+		log.info(" id cargo " + s.getIddomiciliopersona() + " des " + s.getDomicilio()+" direc "+s.getReferencia());
+		
+		setIddomicilio(s.getIddomiciliopersona());		
+		setEstado(s.getTbEstadoGeneral().getIdestadogeneral());		
+		setIdUbigeoD(s.getTbUbigeo().getIdubigeo()+"");		
+	
+		UbigeoSie ubigeo = objUbigeoService.findUbigeo(Integer.parseInt(getIdUbigeoD()));
+		setIdDepartamento(ubigeo.getCoddepartamento());
+		comboManagerDomicilio.setIdDepartamento(idDepartamento);
+		setIdProvincia(ubigeo.getCodprovincia());
+		comboManagerDomicilio.setIdProvincia(idProvincia);
+		setIdDistrito(ubigeo.getCoddistrito());
+	
+		ubigeoDefecto="";
+		log.info("busquedaUbigeo "+ getIdDepartamento()+" - "+getIdProvincia()+" - "+getIdDistrito()+" - "+getIdUbigeo());
+		setNewRecord(false);
+
+		return getViewList();
+	}
+
+	
+
+	/*FIN METODO EDITAR UBIGEO*/
+	
+public void limpiardialog(){
+		
+		if (defectoUbigeo) {
+			comboManagerDomicilio.setIdDepartamento("15");
+			comboManagerDomicilio.setIdProvincia("01");
+			log.info(" defecto lima true 1");
+			ubigeoDefecto = "";
+		} else {
+
+			comboManagerDomicilio.setIdDepartamento(null);
+			comboManagerDomicilio.setIdProvincia(null);
+			log.info(" cambio ubigeo   false  otro");
+		}
+		comboManagerDomicilio.setUbigeoDeparItems(null);
+		comboManagerDomicilio.setUbigeoProvinItems(null);
+		comboManagerDomicilio.setUbigeoDistriItems(null);
+	
+	
+}
+	
+	public void busquedaUbigeo(){
+		log.info("busquedaUbigeo");
+		UbigeoSie ubigeo = objUbigeoService.findUbigeo(Integer.parseInt(getIdUbigeoD()));		
+		log.info("busquedaUbigeo "+ getIdDepartamento()+" - "+getIdProvincia()+" - "+getIdDistrito()+" - "+getIdUbigeo());
+		
+		Iterator it = comboManagerDomicilio.getUbigeoDeparItems().entrySet().iterator();
+		Iterator it2 = comboManagerDomicilio.getUbigeoProvinItems().entrySet().iterator();
+		Iterator it3 = comboManagerDomicilio.getUbigeoDistriItems().entrySet().iterator();
+		
+		while (it.hasNext()) {
+			Map.Entry e = (Map.Entry) it.next();
+			System.out.println("key " + e.getKey() + " value " + e.getValue());
+			if (e.getValue().toString().equals(idDepartamento)) {
+				ubigeoDefecto = (String) e.getKey();
+				log.info("ubigeo depa " + ubigeoDefecto);
+				break;
+			}
+		}
+		while (it2.hasNext()) {
+			Map.Entry e = (Map.Entry) it2.next();
+			System.out.println("key " + e.getKey() + " value " + e.getValue());
+			if (e.getValue().toString().equals(idProvincia)) {
+				ubigeoDefecto += "-" + (String) e.getKey();
+				log.info("ubigeo prov " + ubigeoDefecto);
+				break;
+			}
+		}
+		while (it3.hasNext()) {	
+			Map.Entry e = (Map.Entry) it3.next();
+			System.out.println("key " + e.getKey() + " value " + e.getValue());
+			if (e.getValue().toString().equals(idUbigeo)) {
+				ubigeoDefecto += "-" + (String) e.getKey();
+				log.info("ubigeo distrito " + ubigeoDefecto);
+				break;
+			}
+		}
+		log.info("ubigeo ------> :D   " + ubigeoDefecto);
+	} 
+	
+	
+	
+	
+	/*INSERTAR LA ACTUALIZACIONDE DOMICILIO*/
+	public String insertar2() {
+		
+		log.info("insertar() " + " inicio del insert "	+ objDomicilioPersonaSie.getDomicilio() +
+				objDomicilioPersonaSie.getReferencia());
+		
+		try {
+			if (log.isInfoEnabled()) {
+
+			}
+			log.info("insertar() "+ objDomicilioPersonaSie.getIddomiciliopersona());
+			objDomicilioPersonaService.actualizarDomicilioEmpleado(objDomicilioPersonaSie);
+			log.info("insertando..... ");		
+			
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			nombrecliente = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, nombrecliente);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		
+		objDomicilioPersonaSie = new DomicilioPersonaSie();
+		return getViewList();
+	}
 	
 	
 	
@@ -990,6 +1089,48 @@ public class MantenimientoClienteFormAction extends
 	 */
 	public void setIddom(int iddom) {
 		this.iddom = iddom;
+	}
+
+	/**
+	 * @return the iddomicilio
+	 */
+	public int getIddomicilio() {
+		return iddomicilio;
+	}
+
+	/**
+	 * @param iddomicilio the iddomicilio to set
+	 */
+	public void setIddomicilio(int iddomicilio) {
+		this.iddomicilio = iddomicilio;
+	}
+
+	/**
+	 * @return the idUbigeoD
+	 */
+	public String getIdUbigeoD() {
+		return idUbigeoD;
+	}
+
+	/**
+	 * @param idUbigeoD the idUbigeoD to set
+	 */
+	public void setIdUbigeoD(String idUbigeoD) {
+		this.idUbigeoD = idUbigeoD;
+	}
+
+	/**
+	 * @return the idDistrito
+	 */
+	public String getIdDistrito() {
+		return idDistrito;
+	}
+
+	/**
+	 * @param idDistrito the idDistrito to set
+	 */
+	public void setIdDistrito(String idDistrito) {
+		this.idDistrito = idDistrito;
 	}
 
 
