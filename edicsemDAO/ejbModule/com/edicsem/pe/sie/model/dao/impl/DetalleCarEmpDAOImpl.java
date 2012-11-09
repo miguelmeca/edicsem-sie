@@ -99,7 +99,7 @@ public class DetalleCarEmpDAOImpl implements DetalleCarEmpDAO{
 		try {
 			Query q = em.createQuery("select p from DetCargoEmpleadoSie");
 			lista = q.getResultList();
-			System.out.println("tamaño lista detalleCargo --> " + lista.size());
+			log.info("tamaño lista detalleCargo --> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -111,7 +111,7 @@ public class DetalleCarEmpDAOImpl implements DetalleCarEmpDAO{
 		try {
 			Query q = em.createQuery("select p from DetCargoEmpleadoSie p where p.tbCargoEmpleado.idcargoempleado = "+cargo);
 			lista = q.getResultList();
-			System.out.println("tamaño lista detalleCargo --> " + lista.size());
+			log.info("tamaño lista detalleCargo --> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

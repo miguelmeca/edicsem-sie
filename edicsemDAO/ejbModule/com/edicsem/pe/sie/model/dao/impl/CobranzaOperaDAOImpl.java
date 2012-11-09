@@ -76,7 +76,7 @@ public class CobranzaOperaDAOImpl implements CobranzaOperaDAO{
 		try {
 			Query q = em.createQuery("select p from CobranzaOperadoraSie p ");
 			lista =  q.getResultList(); 
-		   System.out.println("tamaño lista CobranzaOperadora --> " + lista.size()+"  ");
+			log.info("tamaño lista CobranzaOperadora --> " + lista.size()+"  ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

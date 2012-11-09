@@ -48,7 +48,7 @@ public class TipoFiltroDAOImpl implements TipoFiltroDAO{
 		try {
 			Query q = em.createQuery("select p from TipoFiltroSie p ");
 			lista =  q.getResultList(); 
-		   System.out.println("tamaño lista TipoFiltroSie --> " + lista.size()+"  ");
+			log.info("tamaño lista TipoFiltroSie --> " + lista.size()+"  ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

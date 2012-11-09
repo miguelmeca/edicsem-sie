@@ -49,7 +49,7 @@ public class DetallePaqueteDAOImpl implements DetPaqueteDAO {
 		try {
 			Query q = em.createQuery("select p from DetPaqueteSie p where p.tbPaquete.idpaquete = "+ paquete);
 			lista = q.getResultList();
-			System.out.println("tamaño lista DetPaqueteSie --> " + lista.size());
+			log.info("tamaño lista DetPaqueteSie --> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

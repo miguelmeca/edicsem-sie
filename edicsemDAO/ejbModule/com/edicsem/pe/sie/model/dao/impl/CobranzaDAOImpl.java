@@ -76,7 +76,7 @@ public class CobranzaDAOImpl implements CobranzaDAO{
 		try {
 			Query q = em.createQuery("select p from CobranzaSie p ");
 			lista =  q.getResultList(); 
-		   System.out.println("tamaño lista Cobranza --> " + lista.size()+"  ");
+			log.info("tamaño lista Cobranza --> " + lista.size()+"  ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -88,7 +88,7 @@ public class CobranzaDAOImpl implements CobranzaDAO{
 		try {
 			Query q = em.createQuery("select p from CobranzaSie p where p.tbContrato.idcontrato = "+ idcontrato);
 			lista =  q.getResultList(); 
-		   System.out.println("tamaño lista Cobranza --> " + lista.size()+"  ");
+			log.info("tamaño lista Cobranza --> " + lista.size()+"  ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

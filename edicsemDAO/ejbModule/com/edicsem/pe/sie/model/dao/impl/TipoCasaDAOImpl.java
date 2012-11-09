@@ -83,7 +83,7 @@ public class TipoCasaDAOImpl implements TipoCasaDAO {
 		try {
 			Query q = em.createQuery("select p from TipoCasaSie p");
 			lista =  q.getResultList(); 
-		   System.out.println("tamaño lista TipoCasa  --> " + lista.size()+"  ");
+			log.info("tamaño lista TipoCasa  --> " + lista.size()+"  ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

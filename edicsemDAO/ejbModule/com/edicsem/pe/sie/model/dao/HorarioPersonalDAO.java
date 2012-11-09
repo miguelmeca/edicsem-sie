@@ -14,6 +14,5 @@ public interface HorarioPersonalDAO {
 	public abstract void eliminarHorarioPersonal(int id);
 	public abstract HorarioPersonalSie findHorarioPersonal(int id);
 	public abstract List  listarHorarioPersonal(); 
-	public abstract List  listarHorarioPersonalXempleado(int id); 
-	
+	public abstract List  listarHorarioPersonalXempleado(int id);
 }

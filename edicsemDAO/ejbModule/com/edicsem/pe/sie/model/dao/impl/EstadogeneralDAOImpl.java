@@ -71,7 +71,7 @@ public class EstadogeneralDAOImpl implements EstadoGeneralDAO {
 		try {
 			Query q = em.createQuery("select p from EstadoGeneralSie p where p.codestadogeneral  like  '%"+ codigo + "%'");
 			lista =  q.getResultList(); 
-		   System.out.println("tamaño lista EstadoGeneral IDAOImp --> " + lista.size()+"  "+codigo);
+			log.info("tamaño lista EstadoGeneral IDAOImp --> " + lista.size()+"  "+codigo);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

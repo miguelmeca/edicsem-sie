@@ -111,4 +111,18 @@ public class DetEmpresaEmpleadoDAOImpl implements DetEmpresaEmpleadoDAO{
 		}
 		return lista;
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.DetEmpresaEmpleadoDAO#filtrartipoventaPersonal(int)
+	 */
+	public int filtrartipoventaPersonal(int idvendedor) {
+		int p=0;
+		try {
+			Query q = em.createQuery("select p.tbEmpresa.tipoVenta from DetEmpresaEmpleadoSie p where p.tbEmpleado.idempleado = "+idvendedor);
+			p =  Integer.parseInt(q.getResultList().get(0).toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return p;
+	}
 }

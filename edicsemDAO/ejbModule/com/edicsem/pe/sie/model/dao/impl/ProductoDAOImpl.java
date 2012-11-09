@@ -94,7 +94,7 @@ public class ProductoDAOImpl implements ProductoDAO {
 		try {
 			Query q = em.createQuery("select p from ProductoSie p");
 			lista = q.getResultList();
-			System.out.println("tamaño lista Productos --> " + lista.size());
+			log.info("tamaño lista Productos --> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -108,7 +108,7 @@ public class ProductoDAOImpl implements ProductoDAO {
 			Query q = em
 					.createQuery("select p from ProductoSie p where p.tbTipoProducto.idtipoproducto = "+ tipoProducto);
 			lista = q.getResultList();
-			System.out.println("tamaño lista Productos x Tipo  --> " + lista.size());
+			log.info("tamaño lista Productos x Tipo  --> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

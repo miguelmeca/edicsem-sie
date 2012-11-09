@@ -95,7 +95,7 @@ public class TelefonoEmpleadoDAOImpl implements TelefonoEmpleadoDAO{
 		try {
 			Query q = em.createQuery("select p from TelefonoPersonaSie p where p.idempleado = "+ id);
 			telefono = (TelefonoPersonaSie) q.getResultList().get(0);
-			//System.out.println("Telefono x idempleado  --> " + lista.size());
+			//log.info("Telefono x idempleado  --> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -153,7 +153,7 @@ public class TelefonoEmpleadoDAOImpl implements TelefonoEmpleadoDAO{
 		try {
 			Query q = em.createQuery("select p from TelefonoPersonaSie p where p.idcliente = "+idcliente);
 			lista = q.getResultList();
-			System.out.println("tamaño lista telefonos x cliente --> " + lista.size());
+			log.info("tamaño lista telefonos x cliente --> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -166,7 +166,7 @@ public class TelefonoEmpleadoDAOImpl implements TelefonoEmpleadoDAO{
 		try {
 			Query q = em.createQuery("select p from TelefonoPersonaSie p where p.idcliente = "+ id);
 			telefono = (TelefonoPersonaSie) q.getResultList().get(0);
-			//System.out.println("Telefono x idcliente  --> " + lista.size());
+			//log.info("Telefono x idcliente  --> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -80,7 +80,7 @@ public class ContratoDAOImpl implements ContratoDAO{
 		try {
 			Query q = em.createQuery("select p from ContratoSie p ");
 			lista =  q.getResultList(); 
-		   System.out.println("tamaño lista Contrato --> " + lista.size()+"  ");
+			log.info("tamaño lista Contrato --> " + lista.size()+"  ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
