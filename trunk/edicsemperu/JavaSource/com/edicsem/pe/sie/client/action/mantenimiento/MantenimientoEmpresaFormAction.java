@@ -148,8 +148,7 @@ public class MantenimientoEmpresaFormAction extends
 				+ objEmpresaSie.getRazonsocial() +"  "+ "EMail"
 				+ objEmpresaSie.getEmail()  );
 
-		/* CODIGO DURO ---> */objEmpresaSie
-				.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(7));
+		/* CODIGO DURO ---> */objEmpresaSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(7));
 
 		/* Esto se setea cuando pertenece a una segunda tabla (--->) */
 		try {
