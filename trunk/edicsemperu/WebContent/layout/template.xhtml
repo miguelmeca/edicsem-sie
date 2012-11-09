@@ -112,7 +112,6 @@ body {
 						<p:menuitem value="Mantenimiento de Proveedores" ajax="false" action="#{mantenimientoProveedorSearchAction.listar}" />
 						<p:menuitem value="Parámetros del sistema" ajax="false" action="#{mantenimientoParametroSearchAction.listar}" />
 						<p:menuitem value="Seguimiento de Cobranzas" ajax="false" action="#{mantenimientoCobranzaOperaSearchAction.listar}" />
-						<p:menuitem value="Horario de Asistencia" ajax="false" action="horarioAsistencia.jsf" />
 						<p:menuitem value="Horario del Personal" ajax="false" action="horarioPersonal.jsf" />
 						<p:menuitem value="Mantenimiento Cargo Empleado" ajax="false" action="#{mantenimientoCargoEmpleadoSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento Empresa" ajax="false" action="#{empresaSearch.listar}" />
@@ -593,7 +592,6 @@ body {
 				</h:panelGroup>
 				 
 				<h:outputText value="Hora Salida"/>
-				
 				<h:outputText value="#{message['horario.personal.horaSalida']}" />
 				<h:panelGroup rendered="#{horarioPersonal.newRecord}" >
 					<p:calendar
@@ -958,7 +956,7 @@ body {
 		</p:dialog>
 	</h:form>
 <!--	  FIN  UBIGEOCLIENTE	   -->
-
+				
 <!--  Mantenimiento Horario ASISTENCIA -->
 	<h:form id="formMantAsistencia">
 		<p:dialog widgetVar="asistenciaDialog" showEffect="fade"
@@ -1004,7 +1002,7 @@ body {
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
-<!-- fin ASISTENCIA -->	
+<!-- fin ASISTENCIA -->
 				
 <!--	  DESACTIVAR PROVEEDOR	   -->
 
