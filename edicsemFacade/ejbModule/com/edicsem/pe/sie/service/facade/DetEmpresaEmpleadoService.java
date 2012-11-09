@@ -13,4 +13,5 @@ public interface DetEmpresaEmpleadoService {
 	public abstract DetEmpresaEmpleadoSie findDetEmpresaEmpleadoSie(int id);
 	public abstract List  listarDetEmpresaEmpleadoSie();
 	public abstract List  listarDetEmpresaEmpleadoSieXEmpresa(int idempresa);
+	public abstract int  filtrartipoventaPersonal(int idvendedor);
 }
