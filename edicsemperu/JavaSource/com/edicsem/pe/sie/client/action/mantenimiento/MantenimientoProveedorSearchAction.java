@@ -27,7 +27,7 @@ public class MantenimientoProveedorSearchAction extends BaseMantenimientoAbstrac
 	public static Log log = LogFactory.getLog(MantenimientoProveedorSearchAction.class);
 	
 	public MantenimientoProveedorSearchAction() {
-		System.out.println("ESTOY EN MI CONSTRUCTOR");
+		log.info("ESTOY EN MI CONSTRUCTOR");
 		log.info("inicializando mi constructor");
 		init();
 	}

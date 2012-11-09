@@ -42,7 +42,7 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 	public static Log log = LogFactory.getLog(MantenimientoProveedorFormAction.class);
 	
 	public MantenimientoProveedorFormAction() {
-		System.out.println("ESTOY EN MI CONSTRUCTOR");
+		log.info("ESTOY EN MI CONSTRUCTOR");
 		log.info("inicializando mi constructor");
 		init();
 	}

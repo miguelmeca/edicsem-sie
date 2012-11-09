@@ -25,7 +25,7 @@ public class MantenimientoParametroSearchAction extends BaseMantenimientoAbstrac
 	public static Log log = LogFactory.getLog(MantenimientoParametroSearchAction.class);
 	
 	public MantenimientoParametroSearchAction() {
-		System.out.println("ESTOY EN MI CONSTRUCTOR");
+		log.info("ESTOY EN MI CONSTRUCTOR");
 		log.info("inicializando mi constructor");
 		init();
 	}
