@@ -69,7 +69,25 @@ public class DomicilioPersonaSie implements Serializable {
     @Transient
     private int item;
 
-    public DomicilioPersonaSie() {
+    
+    @Transient
+    private int NuevoD;
+    
+    /**
+	 * @return the nuevoD
+	 */
+	public int getNuevoD() {
+		return NuevoD;
+	}
+
+	/**
+	 * @param nuevoD the nuevoD to set
+	 */
+	public void setNuevoD(int nuevoD) {
+		NuevoD = nuevoD;
+	}
+
+	public DomicilioPersonaSie() {
     }
 
     /**
