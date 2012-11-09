@@ -53,10 +53,6 @@ public class PuntoVentaSie implements Serializable {
 	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
 
-	//bi-directional many-to-one association to HorariosPvSie
-	@OneToMany(mappedBy="tbPuntoVenta")
-	private Set<HorariosPvSie> tbHorariosPvs;
-
 	//bi-directional many-to-one association to KardexSie
 	@OneToMany(mappedBy="tbPuntoVenta")
 	private Set<KardexSie> tbKardexs;
@@ -69,6 +65,10 @@ public class PuntoVentaSie implements Serializable {
     //bi-directional many-to-one association to FiltroHorarioVentaSie
   	@OneToMany(mappedBy="tbPuntoventa")
   	private Set<FiltroHorarioVentaSie> tbFiltroHorarioVentas;
+
+	//bi-directional many-to-one association to HorarioPuntoVentaSie
+	@OneToMany(mappedBy="tbPuntoVenta")
+	private Set<HorarioPuntoVentaSie> tbHorarioPuntoVentas;
   	
     @Transient
 	private String descTipoAlmacen;
@@ -139,14 +139,6 @@ public class PuntoVentaSie implements Serializable {
 	public void setUsuariomodifica(String usuariomodifica) {
 		this.usuariomodifica = usuariomodifica;
 	}
-
-	public Set<HorariosPvSie> getTbHorariosPvs() {
-		return this.tbHorariosPvs;
-	}
-
-	public void setTbHorariosPvs(Set<HorariosPvSie> tbHorariosPvs) {
-		this.tbHorariosPvs = tbHorariosPvs;
-	}
 	
 	public Set<KardexSie> getTbKardexs() {
 		return this.tbKardexs;
@@ -191,6 +183,15 @@ public class PuntoVentaSie implements Serializable {
 	public void setTbFiltroHorarioVentas(
 			Set<FiltroHorarioVentaSie> tbFiltroHorarioVentas) {
 		this.tbFiltroHorarioVentas = tbFiltroHorarioVentas;
+	}
+
+	public Set<HorarioPuntoVentaSie> getTbHorarioPuntoVentas() {
+		return tbHorarioPuntoVentas;
+	}
+
+	public void setTbHorarioPuntoVentas(
+			Set<HorarioPuntoVentaSie> tbHorarioPuntoVentas) {
+		this.tbHorarioPuntoVentas = tbHorarioPuntoVentas;
 	}
 	
 }

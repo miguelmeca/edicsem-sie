@@ -134,6 +134,10 @@ public class EstadoGeneralSie implements Serializable {
 	//bi-directional many-to-one association to FiltroHorarioVentaSie
 	@OneToMany(mappedBy="tbEstadoGeneral")
 	private Set<FiltroHorarioVentaSie> tbFiltroHorarioVentas;
+
+	//bi-directional many-to-one association to HorarioPuntoVentaSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<HorarioPuntoVentaSie> tbHorarioPuntos;
 	
     public EstadoGeneralSie() {
     }
@@ -378,6 +382,14 @@ public class EstadoGeneralSie implements Serializable {
 	public void setTbFiltroHorarioVentas(
 			Set<FiltroHorarioVentaSie> tbFiltroHorarioVentas) {
 		this.tbFiltroHorarioVentas = tbFiltroHorarioVentas;
+	}
+
+	public Set<HorarioPuntoVentaSie> getTbHorarioPuntos() {
+		return tbHorarioPuntos;
+	}
+
+	public void setTbHorarioPuntos(Set<HorarioPuntoVentaSie> tbHorarioPuntos) {
+		this.tbHorarioPuntos = tbHorarioPuntos;
 	}
 
 	
