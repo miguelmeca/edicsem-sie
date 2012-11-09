@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+  <ui:define name="body">
+  <h1 class="title ui-widget-header ui-corner-all">Horario del Punto de Venta </h1>
+<h:form id="horarioPuntoVenta">
+<p:growl id="messages" showDetail="true" />
+		<p:fieldset legend="Buscar Punto Venta" style="margin-top:20px">
+			<h:panelGrid columns="2">
+				<h:outputText value="Cargo :" />
+				<p:selectOneMenu value="#{horarioPuntoVentaForm.idPunto}" >
+					<f:selectItems value="#{comboAction.almacenItems}" />
+				</p:selectOneMenu>
+				<p:commandButton value="Buscar" ajax="false" action="#{horarioPersonal.mostrar}" />
+			</h:panelGrid>
+		</p:fieldset>
+ 
+<p:fieldset legend="Visualizar Horario" style="margin-top:20px">
+    
+</p:fieldset>
+</h:form>
+</ui:define>
+</ui:composition>
