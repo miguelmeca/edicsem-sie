@@ -42,7 +42,7 @@ public class EmpresaSie  implements Serializable {
 
 	private String razonsocial;
 	
-	private String tipoVenta;
+	private Integer tipoVenta;
 
 	//bi-directional many-to-one association to ContratoSie
 	@OneToMany(mappedBy="tbEmpresa")
@@ -157,11 +157,12 @@ public class EmpresaSie  implements Serializable {
 		this.tbDetEmpresaEmpleados = tbDetEmpresaEmpleados;
 	}
 
-	public String getTipoVenta() {
+	public Integer getTipoVenta() {
 		return tipoVenta;
 	}
 
-	public void setTipoVenta(String tipoVenta) {
+	public void setTipoVenta(Integer tipoVenta) {
 		this.tipoVenta = tipoVenta;
 	}
+ 
 }
