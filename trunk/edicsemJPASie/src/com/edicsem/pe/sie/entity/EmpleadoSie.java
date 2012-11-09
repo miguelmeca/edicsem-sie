@@ -99,18 +99,6 @@ public class EmpleadoSie implements Serializable {
 	//bi-directional many-to-one association to HorarioPersonalSie
 	@OneToMany(mappedBy="tbEmpleado")
 	private Set<HorarioPersonalSie> tbHorarioPersonals;
-
-	//bi-directional many-to-one association to HorariosPvSie
-	@OneToMany(mappedBy="tbEmpleado1")
-	private Set<HorariosPvSie> tbHorariosPvs1;
-
-	//bi-directional many-to-one association to HorariosPvSie
-	@OneToMany(mappedBy="tbEmpleado2")
-	private Set<HorariosPvSie> tbHorariosPvs2;
-
-	//bi-directional many-to-one association to HorariosPvSie
-	@OneToMany(mappedBy="tbEmpleado3")
-	private Set<HorariosPvSie> tbHorariosPvs3;
 	
 	//bi-directional many-to-one association to DetCargoEmpleadoSie
 	@OneToMany(mappedBy="tbEmpleado")
@@ -298,30 +286,6 @@ public class EmpleadoSie implements Serializable {
 
 	public void setTbHorarioPersonals(Set<HorarioPersonalSie> tbHorarioPersonals) {
 		this.tbHorarioPersonals = tbHorarioPersonals;
-	}
-	
-	public Set<HorariosPvSie> getTbHorariosPvs1() {
-		return this.tbHorariosPvs1;
-	}
-
-	public void setTbHorariosPvs1(Set<HorariosPvSie> tbHorariosPvs1) {
-		this.tbHorariosPvs1 = tbHorariosPvs1;
-	}
-	
-	public Set<HorariosPvSie> getTbHorariosPvs2() {
-		return this.tbHorariosPvs2;
-	}
-
-	public void setTbHorariosPvs2(Set<HorariosPvSie> tbHorariosPvs2) {
-		this.tbHorariosPvs2 = tbHorariosPvs2;
-	}
-	
-	public Set<HorariosPvSie> getTbHorariosPvs3() {
-		return this.tbHorariosPvs3;
-	}
-
-	public void setTbHorariosPvs3(Set<HorariosPvSie> tbHorariosPvs3) {
-		this.tbHorariosPvs3 = tbHorariosPvs3;
 	}
 
 	/**
