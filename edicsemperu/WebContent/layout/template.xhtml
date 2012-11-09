@@ -112,6 +112,7 @@ body {
 						<p:menuitem value="Mantenimiento de Proveedores" ajax="false" action="#{mantenimientoProveedorSearchAction.listar}" />
 						<p:menuitem value="Parámetros del sistema" ajax="false" action="#{mantenimientoParametroSearchAction.listar}" />
 						<p:menuitem value="Seguimiento de Cobranzas" ajax="false" action="#{mantenimientoCobranzaOperaSearchAction.listar}" />
+						<p:menuitem value="Horario de Asistencia" ajax="false" action="horarioAsistencia.jsf" />
 						<p:menuitem value="Horario del Personal" ajax="false" action="horarioPersonal.jsf" />
 						<p:menuitem value="Mantenimiento Cargo Empleado" ajax="false" action="#{mantenimientoCargoEmpleadoSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento Empresa" ajax="false" action="#{empresaSearch.listar}" />
@@ -957,6 +958,53 @@ body {
 		</p:dialog>
 	</h:form>
 <!--	  FIN  UBIGEOCLIENTE	   -->
+
+<!--  Mantenimiento Horario ASISTENCIA -->
+	<h:form id="formMantAsistencia">
+		<p:dialog widgetVar="asistenciaDialog" showEffect="fade"
+			hideEffect="explode" modal="true" width="450" position="center">
+			<h:panelGrid id="display" columns="2" cellpadding="2"
+				style="margin:0 auto;" title="Ingresar Asistencia">
+
+                <h:outputText value="#{message['asistencia.observacion']}"/>
+				<h:panelGroup>
+					<p:selectOneMenu id="observaciones" required="true" requiredMessage="#{message['asistencia.observacion.validation']}" value="#{horarioAsistencia.objHorarioAsistencia.observaciones}" >
+					<f:selectItem itemValue="Asistio" itemLabel="Asistio" />
+					<f:selectItem itemValue="Descanso" itemLabel="Descanso" />
+					<f:selectItem itemValue="Feriado" itemLabel="Feriado" />
+					<f:selectItem itemValue="Mal de Salud" itemLabel="Mal de Salud" />
+					<f:selectItem itemValue="No Asistio" itemLabel="No Asistio" />
+					</p:selectOneMenu>
+					<p:message for="observaciones" />
+				</h:panelGroup>
+
+               <h:outputText value="1er Ingreso"/>
+				<h:panelGroup>
+					<p:calendar  id="horaIng" required="true" value="#{horarioAsistencia.hora1}" pattern="HH:mm" timeOnly="true"/>
+				</h:panelGroup>
+				 
+				<h:outputText value="1ra Salida"/>
+				<h:panelGroup>
+					<p:calendar id="horaSal" required="true" value="#{horarioAsistencia.hora2}" pattern="HH:mm" timeOnly="true"/>
+				</h:panelGroup>
+				
+				<h:outputText value="2do Ingreso"/>
+				<h:panelGroup>
+					<p:calendar  id="horaIng2" required="true" value="#{horarioAsistencia.hora3}" pattern="HH:mm" timeOnly="true"/>
+				</h:panelGroup>
+				 
+				<h:outputText value="2da Salida"/>
+				<h:panelGroup>
+					<p:calendar id="horaSal2" required="true" value="#{horarioAsistencia.hora4}" pattern="HH:mm" timeOnly="true"/>
+				</h:panelGroup>
+				
+				<p:commandButton  value="Guardar" update="@all"
+						action="#{horarioAsistencia.insertar}" 
+						ajax="false" icon="ui-icon ui-icon-disk" />
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+<!-- fin ASISTENCIA -->	
 				
 <!--	  DESACTIVAR PROVEEDOR	   -->
 
