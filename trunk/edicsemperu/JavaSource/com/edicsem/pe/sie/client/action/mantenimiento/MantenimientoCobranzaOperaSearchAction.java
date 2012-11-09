@@ -72,7 +72,7 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	public static Log log = LogFactory.getLog(MantenimientoCobranzaOperaSearchAction.class);
 	
 	public MantenimientoCobranzaOperaSearchAction() {
-		System.out.println("ESTOY EN MI CONSTRUCTOR");
+		log.info("ESTOY EN MI CONSTRUCTOR");
 		log.info("inicializando mi constructor");
 		init();
 	}

@@ -249,7 +249,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		Iterator it = comboManagerPunto.getUbigeoDistriItems().entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry e = (Map.Entry) it.next();
-			System.out.println("key " + e.getKey() + " value " + e.getValue());
+			log.info("key " + e.getKey() + " value " + e.getValue());
 			if (e.getValue().toString().equals(idUbigeo)) {
 				dist = (String) e.getKey();
 				log.info("dist " + dist);
@@ -271,7 +271,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		
 		while (it.hasNext()) {
 			Map.Entry e = (Map.Entry) it.next();
-			System.out.println("key " + e.getKey() + " value " + e.getValue());
+			log.info("key " + e.getKey() + " value " + e.getValue());
 			if (e.getValue().toString().equals(idDepartamento)) {
 				ubigeoDefecto = (String) e.getKey();
 				log.info("ubigeo depa " + ubigeoDefecto);
@@ -280,7 +280,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		}
 		while (it2.hasNext()) {
 			Map.Entry e = (Map.Entry) it2.next();
-			System.out.println("key " + e.getKey() + " value " + e.getValue());
+			log.info("key " + e.getKey() + " value " + e.getValue());
 			if (e.getValue().toString().equals(idProvincia)) {
 				ubigeoDefecto += "-" + (String) e.getKey();
 				log.info("ubigeo prov " + ubigeoDefecto);
@@ -289,7 +289,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		}
 		while (it3.hasNext()) {
 			Map.Entry e = (Map.Entry) it3.next();
-			System.out.println("key " + e.getKey() + " value " + e.getValue());
+			log.info("key " + e.getKey() + " value " + e.getValue());
 			if (e.getValue().toString().equals(idUbigeo)) {
 				ubigeoDefecto += "-" + (String) e.getKey();
 				log.info("ubigeo distrito " + ubigeoDefecto);
@@ -311,7 +311,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		
 		while (it.hasNext()) {
 			Map.Entry e = (Map.Entry) it.next();
-			System.out.println("key " + e.getKey() + " value " + e.getValue());
+			log.info("key " + e.getKey() + " value " + e.getValue());
 			if (e.getValue().toString().equals(idDepartamento)) {
 				ubigeoDefecto = (String) e.getKey();
 				log.info("ubigeo depa " + ubigeoDefecto);
@@ -320,7 +320,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		}
 		while (it2.hasNext()) {
 			Map.Entry e = (Map.Entry) it2.next();
-			System.out.println("key " + e.getKey() + " value " + e.getValue());
+			log.info("key " + e.getKey() + " value " + e.getValue());
 			if (e.getValue().toString().equals(idProvincia)) {
 				ubigeoDefecto += "-" + (String) e.getKey();
 				log.info("ubigeo prov " + ubigeoDefecto);
@@ -329,7 +329,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		}
 		while (it3.hasNext()) {
 			Map.Entry e = (Map.Entry) it3.next();
-			System.out.println("key " + e.getKey() + " value " + e.getValue());
+			log.info("key " + e.getKey() + " value " + e.getValue());
 			if (e.getValue().toString().equals(idUbigeo)) {
 				ubigeoDefecto += "-" + (String) e.getKey();
 				log.info("ubigeo distrito " + ubigeoDefecto);

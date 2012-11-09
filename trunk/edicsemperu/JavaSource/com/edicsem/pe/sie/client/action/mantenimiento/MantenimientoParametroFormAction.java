@@ -37,7 +37,7 @@ public class MantenimientoParametroFormAction extends BaseMantenimientoAbstractA
 	public static Log log = LogFactory.getLog(MantenimientoParametroFormAction.class);
 	
 	public MantenimientoParametroFormAction() {
-		System.out.println("ESTOY EN MI CONSTRUCTOR");
+		log.info("ESTOY EN MI CONSTRUCTOR");
 		log.info("inicializando mi constructor");
 		init();
 	}

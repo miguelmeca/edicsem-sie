@@ -84,7 +84,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	public static Log log = LogFactory.getLog(MantenimientoEmpleadoFormAction.class);
 	
 	public MantenimientoEmpleadoFormAction() {
-		System.out.println("ESTOY EN MI CONSNTRUCTOR");
+		log.info("ESTOY EN MI CONSNTRUCTOR");
 		log.info("inicializando mi constructor");
 		init();
 	}
@@ -156,7 +156,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		Iterator it3 = comboManager.getUbigeoDistriItems().entrySet().iterator();	
 		while (it.hasNext()) {
 			Map.Entry e = (Map.Entry) it.next();
-			System.out.println("key " + e.getKey() + " value " + e.getValue());
+			log.info("key " + e.getKey() + " value " + e.getValue());
 			if (e.getValue().toString().equals(idDepartamento)) {
 				ubigeoDefecto = (String) e.getKey();
 				log.info("ubigeo depa " + ubigeoDefecto);
@@ -165,7 +165,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		}
 		while (it2.hasNext()) {
 			Map.Entry e = (Map.Entry) it2.next();
-			System.out.println("key " + e.getKey() + " value " + e.getValue());
+			log.info("key " + e.getKey() + " value " + e.getValue());
 			if (e.getValue().toString().equals(idProvincia)) {
 				ubigeoDefecto += "-" + (String) e.getKey();
 				log.info("ubigeo prov " + ubigeoDefecto);
@@ -174,7 +174,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		}
 		while (it3.hasNext()) {
 			Map.Entry e = (Map.Entry) it3.next();
-			System.out.println("key " + e.getKey() + " value " + e.getValue());
+			log.info("key " + e.getKey() + " value " + e.getValue());
 			if (e.getValue().toString().equals(idUbigeo+"")) {
 				ubigeoDefecto += "-" + (String) e.getKey();
 				log.info("ubigeo distrito " + ubigeoDefecto);
