@@ -6,7 +6,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -15,9 +14,7 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.primefaces.event.RowEditEvent;
-
 import com.edicsem.pe.sie.entity.HorarioAsistenciaSie;
-import com.edicsem.pe.sie.entity.ProveedorSie;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.HorarioAsistenciaService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -410,7 +407,5 @@ public class HorarioAsistenciaFormAction extends BaseMantenimientoAbstractAction
 	public void setBandera(boolean bandera) {
 		this.bandera = bandera;
 	}	
-	
-	
-	
+		
 }
