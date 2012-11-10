@@ -70,6 +70,13 @@ public class MantenimientoClienteSearchAction extends
 		return Constants.MANT_CLIENTE_FORM_LIST_PAGE;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewMant()
+	 */
+	public String getViewMant() {
+		return Constants.MANT_CLIENTE_FORM_PAGE;
+	}
+
 	public boolean isEditMode() {
 		return editMode;
 	}

@@ -13,11 +13,8 @@
 				var="c" paginator="true" rows="6"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15" widgetVar="table"
-					emptyMessage="No se encontro registros"
-					>
-
-				
-
+					emptyMessage="No se encontro registros">
+					
 				<p:column headerText="Nombres Completos" id="nombre" filterBy="#{c.nombresCompletos}">
 					<h:outputText value="#{c.nombresCompletos}" />
 				</p:column>
@@ -25,9 +22,7 @@
 				<p:column headerText="Nº de Documento" id="ndedocumento" filterBy="#{c.numdocumento}">
 					<h:outputText value="#{c.numdocumento}" />
 				</p:column>
-
-
-
+				
 				<p:column headerText="Editar">
 					<p:commandButton value="Editar" ajax="false"
 					 action="#{MantenimientoClienteFormAction.update}"
@@ -36,7 +31,6 @@
 							target="#{MantenimientoClienteFormAction.objClienteSie}" />
 					</p:commandButton>
 				</p:column>
-
 
 			</p:dataTable>
 		</h:form>
