@@ -8,20 +8,15 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.persistence.IdClass;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.CobranzaOperadoraSie;
 import com.edicsem.pe.sie.entity.CobranzaSie;
-import com.edicsem.pe.sie.entity.ProveedorSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.service.facade.ClienteService;
 import com.edicsem.pe.sie.service.facade.CobranzaOperaService;
 import com.edicsem.pe.sie.service.facade.CobranzaService;
-import com.edicsem.pe.sie.service.facade.ProveedorService;
 import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.TipoLLamadaService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -30,9 +25,7 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 @ManagedBean(name="mantenimientoCobranzaOperaSearchAction")
 @SessionScoped
 public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbstractAction {
-    
-	/*variables*/
-	//private int tipoDocumento;
+    /*variables*/
 	private CobranzaOperadoraSie objCobranzaOpera;
 	private CobranzaSie objCobranza;
 	private ClienteSie objcliente;
@@ -42,20 +35,9 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private List<TelefonoPersonaSie> listatelefono;
 	private Date fecPagoNull;
 	private int tipollamada; 
-	/*private String nombrescompletos;
-	private String correo;
-	private String direccion;
-	private String empresatrabajo;
-	private String cargo;*/
-	//private EmpleadoSie selectedEmpleado;
 	private boolean editMode;
-	//private EmpleadoSie nuevo ;
-	//private EstadoGeneralSie objEstado;
 	private String nombre;
-	//private int estado;
-	
 	private boolean newRecord =false;
-	/*variable que capta el id del proveedor*/
 	private int ide;
 	
 	@EJB 
@@ -80,24 +62,19 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	/*inicializamos los  objetos utilizados*/
 	public void init() {
 		log.info("init()");
-		// Colocar valores inicializados
 		objCobranza = new CobranzaSie();
 		objCobranzaOpera = new CobranzaOperadoraSie();
 		objcliente = new ClienteSie();
 		objtelefono = new TelefonoPersonaSie();
 		fecPagoNull=null;
-		//objEmpleado.setNombreemp("");
-		//nuevo = new EmpleadoSie();
 		log.info("despues de inicializar  ");
 	}
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#listar()
 	 */
-	
 	/*método que lista al hacer click en el menú del template*/
 	public String listar() {
-		// TODO Auto-generated method stub
 		log.info("listarcobranzaopera 'MantenimientoCobranzaOperadoraSieSearchAction' ");
 		cobranzaOperaList = objCobranzaOperaService.listarCobranzasOpera();
 		if (cobranzaOperaList == null) {
@@ -109,7 +86,6 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	public String mostrar() throws Exception {
 		int idcontrato;
 		log.info("mostrar detalle de pagos");
-		// p = objCobranzaOperaService.findCobranzaOpera(objCobranzaOpera.getIdCobranzaOperadora());
 		idcontrato = objCobranzaOpera.getTbCobranza().getTbContrato().getIdcontrato();
 		// comenzamos a mostrar el detalles
 				log.info("listarDetalleDePagos 'MantenimientoCobranzasPorCuotasSearchAction' ");
@@ -131,23 +107,18 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 		if (listatelefono == null) {
 			listatelefono = new ArrayList<TelefonoPersonaSie>();
 		}
-		
 		return getViewList();
 	}
 	
 	public String insertar() throws Exception {
 		try {
 				if (log.isInfoEnabled()) {
-					//log.info("Entering my method 'insertar(registrar, actualizar)'"+ objProveedor.getCodproveedor());
 				}
-				
 				objCobranzaOpera.setObservaciones(objCobranzaOpera.getObservaciones());
 				objCobranzaOpera.setTbTipoLlamada(objTipoLLamadaService.findTipoLLamada(tipollamada));
-				
 					log.info("actualizando..... ");
 					objCobranzaOperaService.updateCobranzaOpera(objCobranzaOpera);
 					log.info("insertando..... ");
-				
 		} catch (Exception e) {
 			e.printStackTrace();
 			nombre = e.getMessage();
@@ -160,7 +131,6 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	}
 	
 	/*GETs Y SETs*/
-	
 	public String getViewList() {
 		return "manteCobranzaOperaList";
 	}
@@ -253,13 +223,6 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	 * @return the detallePagos
 	 */
 	public List<CobranzaSie> getDetallePagos() {
-		/*log.info("entrando a detallePagos()");
-		for (int i = 0; i < detallePagos.size(); i++) {
-			if(fecPagoNull<data.get(i).getIdkardex())
-			idMAxKardex=data.get(i).getIdkardex();
-		}
-		log.info("entrando a detallePagos()"+ fecPagoNull);*/
-		
 		return detallePagos;
 	}
 
