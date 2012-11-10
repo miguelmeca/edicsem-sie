@@ -116,7 +116,8 @@ body {
 						<p:menuitem value="Mantenimiento Cargo Empleado" ajax="false" action="#{mantenimientoCargoEmpleadoSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento Empresa" ajax="false" action="#{empresaSearch.listar}" />
 						<p:menuitem value="Meta Empresa" update="messages" ajax="false" action="metaEmpresa.jsf" />
-						<p:menuitem value="Cliente" update="messages" ajax="false" action="#{MantenimientoClienteSearchAction.listar}" />
+						<p:menuitem value="Cliente" update="messages" ajax="false"
+							action="#{MantenimientoClienteSearchAction.listar}" />
 					</p:submenu>
 				</p:menu>
 			</h:form>
@@ -592,11 +593,17 @@ body {
 				</h:panelGroup>
 				 
 				<h:outputText value="Hora Salida"/>
+				
+			
+				
 				<h:outputText value="#{message['horario.personal.horaSalida']}" />
 				<h:panelGroup rendered="#{horarioPersonal.newRecord}" >
 					<p:calendar
 						value="#{horarioPersonal.horaSalida}" pattern="HH:mm" timeOnly="true"/>
 				</h:panelGroup>
+				
+				
+			
 				<h:panelGroup rendered="#{!horarioPersonal.newRecord}" >
 					<p:calendar id="horaSal2" required="true" requiredMessage="#{message['horario.personal.horaSalida.validation']}" value="#{horarioPersonal.horaSalida}" pattern="HH:mm" timeOnly="true"/>
 					<p:message for="horaSal2" />
@@ -619,6 +626,7 @@ body {
 		</p:dialog>
 	</h:form>
 	
+	
 	<h:form id="horarioDeshabilita" >
 
 		<p:confirmDialog id="confirmDeshabilitarHorario"
@@ -636,6 +644,7 @@ body {
 		</p:confirmDialog>
 
 	</h:form>
+
 
 
 
@@ -745,35 +754,104 @@ body {
 	<!-- EDITAR  UBIGEO	CLIENTE FROM   -->
 
 
-	<h:form id="EditarUbigeoCliente">
-		<p:dialog header="Ingrese Nuevo Cargo" widgetVar="carDialogEditarUbigeoCliente"
+	<h:form id="EditarDomicilio">
+		<p:dialog header="Ingrese Nuevo Domicilio" widgetVar="carDialogEditarUbigeocli"
 			showEffect="fade" hideEffect="explode" modal="true" width="300"
 			position="center">
 
-			<h:panelGrid id="display" columns="2" cellpadding="2"
-				style="margin:0 auto;">
+	
+ 		
+			
+<h:panelGrid id="display123" columns="2" >
 
+		<h:outputText value="referencia" />
+			
+		<h:panelGroup>
+			<p:inputText id="referenciaCliente"
+			value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.referencia}" required="true"		
+			style="font-weight:bold" />				
+		</h:panelGroup>
 				
+		<h:outputText value="ubigeo" />
+		</h:panelGrid><!-- Observacion -->
+			<h:panelGrid columns="2" id="panel" rendered="#{almacenForm.newRecord}"  >
+			<h:outputText value="Lima (defecto)" />
+			<p:selectBooleanCheckbox value="#{almacenForm.defectoUbigeo}">
+			<p:ajax update="panel,ubigeoDefecto" listener="#{almacenForm.limpiardialog}"
+			oncomplete="if(#{almacenForm.defectoUbigeo}) UbigeoAlmacenDialog.show()"></p:ajax>					
+			</p:selectBooleanCheckbox>
 
-					
-		
+				<h:outputText value="distrito" rendered="#{almacenForm.defectoUbigeo}" />
+				<p:selectOneMenu value="#{almacenForm.idUbigeo}" rendered="#{almacenForm.defectoUbigeo}" required="true" filter="true" filterMatchMode="startsWith"
+					style="width:200px" >
+					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+					<p:ajax update="panel" listener="#{almacenForm.cambioUbica}"></p:ajax>
+				</p:selectOneMenu>
 				
-
-				<h:panelGroup>
-					
-					<p:spacer height="20px"></p:spacer>
-					<p:commandButton id="btn" value="Guardar" update="panel"
-						action="#{mantenimientoCargoEmpleadoFormAction.insertar}"
-						ajax="false" icon="ui-icon ui-icon-disk" />
-
-				</h:panelGroup>
-
+				<h:outputText value="Ubigeo " />
+				<h:outputText id="ubigeoDefecto" value="#{MantenimientoClienteFormAction.ubigeoDefecto}" />
 			</h:panelGrid>
+			
+			<h:panelGrid columns="2" id="panel3" rendered="#{!almacenForm.newRecord}"  >
+				
+				<h:outputText value="departamento" />
+				<p:selectOneMenu size="1" value="#{MantenimientoClienteFormAction.idDepartamento}" filter="true" filterMatchMode="startsWith"
+					required="true" style="width:180px"
+					 >
+					<f:selectItem itemLabel="Seleccione Departamento"
+						itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
+					<p:ajax update="prov,dist" listener="#{MantenimientoClienteFormAction.cambiar}" />
+				</p:selectOneMenu>
 
+				<h:outputText value="provincia" />
+				<p:selectOneMenu id="prov" value="#{MantenimientoClienteFormAction.idProvincia}" filter="true" filterMatchMode="startsWith"
+					required="true" style="width:200px"
+					 >
+					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
+					<p:ajax update="dist" listener="#{almacenForm.cambiar2}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="distrito" />
+				<p:selectOneMenu id="dist" value="#{MantenimientoClienteFormAction.idUbigeo}" filter="true" filterMatchMode="startsWith"
+					required="true" style="width:200px"
+					 >
+					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+					<p:ajax update="ubigeoDefecto2" listener="#{MantenimientoClienteFormAction.busquedaUbigeo}" ></p:ajax>
+				</p:selectOneMenu>
+				
+				<h:outputText value="Ubigeo " />
+				<h:outputText id="ubigeoDefecto2" value="#{MantenimientoClienteFormAction.ubigeoDefecto}" />
+				
+			</h:panelGrid>
+			
+			<h:panelGrid columns="2" id="panel2" >
+				<h:outputText value="direccion" />
+				<h:panelGroup>
+					<p:inputText value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.domicilio}"  
+						
+						style="font-weight:bold"  />
+									</h:panelGroup>
+									
+									
+
+							<h:panelGroup>
+					<p:commandButton value="Guardar" update="panel"
+						actionListener="#{MantenimientoClienteFormAction.insertar2}" ajax="false"
+						icon="ui-icon ui-icon-disk" />
+				</h:panelGroup>
+				
+</h:panelGrid>
+		 
 		</p:dialog>
 
 	</h:form>
 	<!-- FIN EDITAR  UBIGEO CLIENTE FORM-->
+	
+	
 	<!--	  INICIO DESACTIVAR	   -->
 
 	<h:form>
@@ -804,14 +882,14 @@ body {
 <h:form>
 
 		<p:confirmDialog id="confirmDeshabilitar3"
-			message="Esta seguro de deshabilitar dicho movimiento?" width="325"
+			message="Los cambios se realizaran despues de hacer clic en Guardar?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
 			header="Confirm" severity="alert" widgetVar="confirmation3"
 			position="center">
 
 			<p:commandButton type="submit" value="Si"
 				action="#{MantenimientoClienteFormAction.updateDeshabilitar}"
-				update="listarTelefonos"
+				update="@all"
 				oncomplete="confirmation.hide()" ajax="false">
 			</p:commandButton>
 
@@ -835,7 +913,7 @@ body {
 
 			<p:commandButton type="submit" value="Si"
 				action="#{MantenimientoClienteFormAction.updateDeshabilitarDomicilio}"
-				update="listarDomocilio"
+				update="display4"
 				oncomplete="confirmation.hide()" ajax="false">
 			</p:commandButton>
 
