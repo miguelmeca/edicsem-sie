@@ -396,7 +396,7 @@ public class MantenimientoClienteFormAction extends
 
 	
 /*DESHABILITAR TELEFONOS*/
-	public String updateDeshabilitar() throws Exception {
+	public void updateDeshabilitar() throws Exception {
 
 		objTelefonoPersonaSie = new TelefonoPersonaSie();
 		int parametroObtenido;
@@ -427,7 +427,7 @@ public class MantenimientoClienteFormAction extends
 		}
 		objTelefonoPersonaSie = new TelefonoPersonaSie();
 
-		return getViewList();
+		
 	}
 
 /*REGISTRAR LO EDITADO*/
