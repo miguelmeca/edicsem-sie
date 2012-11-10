@@ -9,7 +9,7 @@
 <h:form id="horarioVendedor">
 <p:growl id="messages" showDetail="true" />
 		<p:fieldset legend="Buscar Personal" style="margin-top:20px">
-			<h:panelGrid columns="2">
+			<h:panelGrid columns="2" id="panel" >
 				<h:outputText value="Tipo de Ingreso/Permiso/Feriado :" />
 				<p:selectOneMenu  value="#{filtroHorarioVendedorForm.idtipoFiltro}">
 					<f:selectItems value="#{comboAction.tipoFiltroItems}" />
@@ -19,12 +19,12 @@
 				<h:panelGroup>
 				<p:selectOneMenu id="idvend" value="#{filtroHorarioVendedorForm.idvendedor}" required="true" requiredMessage="#{message['horario.vendedor.validation']}">
 					<f:selectItems value="#{comboAction.empleadoItems}" />
+					<p:ajax listener="#{filtroHorarioVendedorForm.vertipovendedor}" update="panel"/>
 				</p:selectOneMenu>
-				<p:message for="idvend" />
 				</h:panelGroup>
 					
-				<h:outputText value="Punto de Venta :" />
-				<p:selectOneMenu  value="#{filtroHorarioVendedorForm.idPuntoVenta}">
+				<h:outputText value="Punto de Venta :" rendered="#{filtroHorarioVendedorForm.tipoventa}" />
+				<p:selectOneMenu  value="#{filtroHorarioVendedorForm.idPuntoVenta}" rendered="#{filtroHorarioVendedorForm.tipoventa}" >
 				<f:selectItem itemLabel="Seleccione punto " itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.almacenItems}" />
 				</p:selectOneMenu>
