@@ -91,8 +91,8 @@ public class PuntoVentaSie implements Serializable {
 	public void setAlmacen(String almacen) {
 		this.almacen = almacen;
 	}
-
 	public String getDescripcion() {
+
 		return this.descripcion;
 	}
 
