@@ -70,20 +70,7 @@ public class HorarioAsistenciaFormAction extends BaseMantenimientoAbstractAction
 	}
     
 	public void agregarhorario(){
-		
-		
 		newRecord=true;
-	}
-	
-	
-	
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
-	 */
-	@Override
-	public String agregar() {
-		// TODO Auto-generated method stub
-		return super.agregar();
 	}
 
 	public String insertar() throws Exception {
@@ -151,7 +138,6 @@ public class HorarioAsistenciaFormAction extends BaseMantenimientoAbstractAction
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
 	 */
-	@Override
 	public String update() throws Exception {
 		   log.info("actualizar");
 		   log.info("update()" + objHorarioAsistencia.getIdHorarioAsistencia());
