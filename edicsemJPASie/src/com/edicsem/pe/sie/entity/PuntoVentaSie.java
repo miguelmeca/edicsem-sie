@@ -48,7 +48,7 @@ public class PuntoVentaSie implements Serializable {
 
 	private String usuariomodifica;
 	
-	private String telefono;
+	
 	
 	//bi-directional many-to-one association to EstadoGeneralSie
     @ManyToOne
@@ -196,18 +196,6 @@ public class PuntoVentaSie implements Serializable {
 		this.tbHorarioPuntoVentas = tbHorarioPuntoVentas;
 	}
 
-	/**
-	 * @return the telefono
-	 */
-	public String getTelefono() {
-		return telefono;
-	}
-
-	/**
-	 * @param telefono the telefono to set
-	 */
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
-	}
+	
 	
 }
