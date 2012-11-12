@@ -50,8 +50,6 @@ public class HorarioPuntoVentaSie implements Serializable {
 	@Column(name="hora_salida")
 	private Time horaSalida;
 
-
-
 	private String observacion;
 
 	private String usuariocreacion;
@@ -68,6 +66,7 @@ public class HorarioPuntoVentaSie implements Serializable {
 	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
     
+    //bi-directional many-to-one association to FechaSie
     @ManyToOne
 	@JoinColumn(name="idfecha")
 	private FechaSie tbFecha;
