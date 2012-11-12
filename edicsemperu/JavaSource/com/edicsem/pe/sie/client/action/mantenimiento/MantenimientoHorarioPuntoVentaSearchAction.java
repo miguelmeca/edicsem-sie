@@ -4,6 +4,7 @@
  */
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,8 +12,10 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,9 +48,15 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends	BaseMantenimient
 	private ScheduleModel eventModel;
 	private ScheduleEvent event = new DefaultScheduleEvent(); 
     private String theme; 
-    /*FIN*/
+    /*VARIABLES PARA MOSTRAR EN EL CALENDARIO*/
 	private Date dDate, dDate2, dhoy;
 	private int idpuntoventa;
+	
+	/*VARIABLES PARA NUEVO Y EDITAR */
+	private boolean newRecord =false;
+	private Date  horaIngreso,horaSalida;
+	private String mensaje;
+	private List<String> diaList;
 	
 	@EJB
 	private AlmacenService objAlmacenService; 
@@ -68,6 +77,19 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends	BaseMantenimient
 		init();
 		
 	}
+	
+	public String agregarhorario(){
+		newRecord=true;
+		return getViewList();
+	}
+	public String update() throws Exception {
+		
+		newRecord=false;		
+		setHoraIngreso(objHorarioPuntoVentaSie.getHoraIngreso());
+		setHoraSalida(objHorarioPuntoVentaSie.getHoraSalida());
+		return getViewList();
+	}
+	
 	public void init() {
 		log.info("dentro del init");
 		objPuntoVentaSie = new PuntoVentaSie();
@@ -75,7 +97,92 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends	BaseMantenimient
 		idpuntoventa=0;
 		log.info("despues de inicializar");
 	}
-
+/*METODO INSERTAR Y EDITAR*/
+	public String insertar() throws Exception {
+		mensaje="";
+		try {
+				if (log.isInfoEnabled()) {
+					log.info("Entering my method 'insertar'  xd ");
+				}
+				if(idpuntoventa!=idpuntoventa){
+					mensaje="Debe seleccionar un empleado";
+					msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+					FacesContext.getCurrentInstance().addMessage(null, msg);
+				}
+				else{
+					if(newRecord){
+					log.info("fecha pp  " + getHoraIngreso() );
+					Time hora1 = new Time( getHoraIngreso().getTime());
+					Time hora2= new Time( getHoraSalida().getTime());
+					log.info(" g   "+ hora1);
+					objHorarioPuntoVentaSie.setHoraIngreso(hora1);
+					objHorarioPuntoVentaSie.setHoraSalida(hora2);
+					
+					/** Validation **/
+		
+					//para que no hayan cruces de horario 
+					for (int j = 0; j < diaList.size();j++) {
+						for (int i = 0; i < listaHorario.size(); i++) {
+							log.info("  verificando ");
+							if( listaHorario.get(i).getTbFecha().getIdFecha()== Integer.parseInt(diaList.get(j))
+								 && (objHorarioPuntoVentaSie.getDiainicio().after(listaHorario.get(i).getDiainicio()) && 
+										 objHorarioPuntoVentaSie.getDiainicio().before(listaHorario.get(i).getDiafin() ) ||
+										 objHorarioPuntoVentaSie.getDiafin().after(listaHorario.get(i).getDiainicio()) && 
+										 objHorarioPuntoVentaSie.getDiafin().before(listaHorario.get(i).getDiafin() ) ||
+										 objHorarioPuntoVentaSie.getDiafin().equals(listaHorario.get(i).getDiafin()) ||
+										 objHorarioPuntoVentaSie.getDiafin().equals(listaHorario.get(i).getDiainicio())||
+										 objHorarioPuntoVentaSie.getDiainicio().equals(listaHorario.get(i).getDiafin())||
+										 objHorarioPuntoVentaSie.getDiainicio().equals(listaHorario.get(i).getDiainicio()))){
+								log.info("fechas con horario registrado   ");
+								if(	objHorarioPuntoVentaSie.getHoraIngreso().equals(listaHorario.get(i).getHoraIngreso()) ||
+										objHorarioPuntoVentaSie.getHoraIngreso().after(listaHorario.get(i).getHoraIngreso())
+										&& objHorarioPuntoVentaSie.getHoraIngreso().before(listaHorario.get(i).getHoraSalida())){
+									log.info(objHorarioPuntoVentaSie.getHoraIngreso() +" --->  getHoraIngreso "+ listaHorario.get(i).getHoraIngreso());
+									mensaje = "La hora de Ingreso es errónea";
+									break;
+								}else if(objHorarioPuntoVentaSie.getHoraSalida().equals(listaHorario.get(i).getHoraSalida()) ||
+										objHorarioPuntoVentaSie.getHoraSalida().after(listaHorario.get(i).getHoraIngreso())
+										&& objHorarioPuntoVentaSie.getHoraSalida().before(listaHorario.get(i).getHoraSalida())){
+									log.info(objHorarioPuntoVentaSie.getHoraSalida()+" --->  getHoraSalida "+listaHorario.get(i).getHoraSalida());
+									mensaje = "La hora de Salida es errónea";
+									break;
+									}
+								}
+							}
+						}
+					 if(mensaje.equals("")){
+						 objHorarioPuntoVentaService.insertHorarioPunto(diaList,objHorarioPuntoVentaSie,idpuntoventa);
+						 log.info("insertando..... ");
+						 msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
+						 FacesContext.getCurrentInstance().addMessage(null, msg);
+					 }else{
+						msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+						FacesContext.getCurrentInstance().addMessage(null, msg);
+					 }
+				}else{
+					log.info("actualizando " + getHoraIngreso()+"  hora salida  "+getHoraSalida() );
+					Time hora1 = new Time( getHoraIngreso().getTime());
+					Time hora2= new Time( getHoraSalida().getTime());
+					log.info(" g   "+ hora1);
+					objHorarioPuntoVentaSie.setHoraIngreso(hora1);
+					objHorarioPuntoVentaSie.setHoraSalida(hora2);
+					
+					objHorarioPuntoVentaService.updateHorarioPunto(objHorarioPuntoVentaSie);
+				}
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		objHorarioPuntoVentaSie= new HorarioPuntoVentaSie();
+		return mostrar();
+	}	
+	
+	
 /*LISTA LOS ALMACENES*/
 	public String listar() {
 		log.info("listarAlmacen en Search' ");
@@ -267,6 +374,104 @@ public int getIdpuntoventa() {
  */
 public void setIdpuntoventa(int idpuntoventa) {
 	this.idpuntoventa = idpuntoventa;
+}
+
+/**
+ * @return the newRecord
+ */
+public boolean isNewRecord() {
+	return newRecord;
+}
+
+/**
+ * @param newRecord the newRecord to set
+ */
+public void setNewRecord(boolean newRecord) {
+	this.newRecord = newRecord;
+}
+
+/**
+ * @return the event
+ */
+public ScheduleEvent getEvent() {
+	return event;
+}
+
+/**
+ * @param event the event to set
+ */
+public void setEvent(ScheduleEvent event) {
+	this.event = event;
+}
+
+/**
+ * @return the theme
+ */
+public String getTheme() {
+	return theme;
+}
+
+/**
+ * @param theme the theme to set
+ */
+public void setTheme(String theme) {
+	this.theme = theme;
+}
+
+/**
+ * @return the horaIngreso
+ */
+public Date getHoraIngreso() {
+	return horaIngreso;
+}
+
+/**
+ * @param horaIngreso the horaIngreso to set
+ */
+public void setHoraIngreso(Date horaIngreso) {
+	this.horaIngreso = horaIngreso;
+}
+
+/**
+ * @return the horaSalida
+ */
+public Date getHoraSalida() {
+	return horaSalida;
+}
+
+/**
+ * @param horaSalida the horaSalida to set
+ */
+public void setHoraSalida(Date horaSalida) {
+	this.horaSalida = horaSalida;
+}
+
+/**
+ * @return the mensaje
+ */
+public String getMensaje() {
+	return mensaje;
+}
+
+/**
+ * @param mensaje the mensaje to set
+ */
+public void setMensaje(String mensaje) {
+	this.mensaje = mensaje;
+}
+
+/**
+ * @return the diaList
+ */
+public List<String> getDiaList() {
+	return diaList;
+}
+
+/**
+ * @param diaList the diaList to set
+ */
+public void setDiaList(List<String> diaList) {
+	this.diaList = diaList;
 }	
 	
 
