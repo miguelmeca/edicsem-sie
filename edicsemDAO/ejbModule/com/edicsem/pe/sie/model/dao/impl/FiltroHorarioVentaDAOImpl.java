@@ -12,6 +12,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.FiltroHorarioVentaSie;
 import com.edicsem.pe.sie.model.dao.FiltroHorarioVentaDAO;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 
 /**
  * @author karen
@@ -77,6 +78,18 @@ public class FiltroHorarioVentaDAOImpl implements FiltroHorarioVentaDAO{
 			Query q = em.createQuery("select p from FiltroHorarioVentaSie p ");
 			lista =  q.getResultList(); 
 			log.info("tamaño lista FiltroHorarioVenta --> " + lista.size()+"  ");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+	public  List  listarFiltroHorarioVentaVigentes(){
+		List  lista = null;
+		try {
+			Query q = em.createQuery("select p from FiltroHorarioVentaSie p where  "+  DateUtil.getToday().getTime()+  " between  p.diainicio and p.diafin ");
+			lista =  q.getResultList();
+			log.info("tamaño lista FiltroHorarioVenta vigente --> " + lista.size()+"  ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
