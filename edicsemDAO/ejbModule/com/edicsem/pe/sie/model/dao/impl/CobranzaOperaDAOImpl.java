@@ -1,15 +1,12 @@
 package com.edicsem.pe.sie.model.dao.impl;
 
 import java.util.List;
-
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import com.edicsem.pe.sie.entity.CobranzaOperadoraSie;
 import com.edicsem.pe.sie.model.dao.CobranzaOperaDAO;
 
@@ -61,7 +58,7 @@ public class CobranzaOperaDAOImpl implements CobranzaOperaDAO{
 			if (log.isInfoEnabled()) {
 				log.info("buscar cobranzaopera");
 			} 
-		obj=	em.find(CobranzaOperadoraSie.class, id);
+		obj=em.find(CobranzaOperadoraSie.class, id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -82,4 +79,5 @@ public class CobranzaOperaDAOImpl implements CobranzaOperaDAO{
 		}
 		return lista;
 	}	
+
 }
