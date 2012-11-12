@@ -480,6 +480,7 @@ public class MantenimientoClienteFormAction extends
 		setIdDistrito(ubigeo.getCoddistrito());
 		setIdUbigeo(ubigeo.getIdubigeo());
 		ubigeoDefecto="";
+		Tipocasa= s.getTbTipoCasa().getIdtipocasa();
 		log.info("busquedaUbigeo "+ getIdDepartamento()+" - "+getIdProvincia()+" - "+getIdDistrito()+" - "+getIdUbigeo());
 		setNewRecord(false);
 
@@ -562,9 +563,10 @@ public class MantenimientoClienteFormAction extends
 			}
 			log.info("insertar() "+ objDomicilioPersonaSie.getIddomiciliopersona());
 			objDomicilioPersonaSie.setTbUbigeo(objUbigeoService.findUbigeo(idUbigeo));
+			objDomicilioPersonaSie.setTbTipoCasa(objTipoCasaService.findTipoCasa(Tipocasa));
 			objDomicilioPersonaService.actualizarDomicilioEmpleado(objDomicilioPersonaSie);
 			log.info("insertando..... ");
-			
+			ingresarUbigeo();
 		} catch (Exception e) {
 
 			e.printStackTrace();

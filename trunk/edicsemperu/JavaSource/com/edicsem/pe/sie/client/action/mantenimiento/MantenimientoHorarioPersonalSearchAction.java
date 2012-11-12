@@ -18,7 +18,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
-import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
 import com.edicsem.pe.sie.entity.HorarioPersonalSie;
@@ -36,9 +35,6 @@ public class MantenimientoHorarioPersonalSearchAction extends BaseMantenimientoA
 	private List<HorarioPersonalSie> listaHorario;
     /*schedule*/
 	private ScheduleModel eventModel;  
-  
-    private ScheduleEvent event = new DefaultScheduleEvent(); 
-    private String theme;  
 	/*fin schedule*/
 	private List<String> diaList;
 	private Date  horaIngreso,horaSalida;
@@ -397,34 +393,6 @@ public class MantenimientoHorarioPersonalSearchAction extends BaseMantenimientoA
 	 */
 	public void setEventModel(ScheduleModel eventModel) {
 		this.eventModel = eventModel;
-	}
-
-	/**
-	 * @return the event
-	 */
-	public ScheduleEvent getEvent() {
-		return event;
-	}
-
-	/**
-	 * @param event the event to set
-	 */
-	public void setEvent(ScheduleEvent event) {
-		this.event = event;
-	}
-
-	/**
-	 * @return the theme
-	 */
-	public String getTheme() {
-		return theme;
-	}
-
-	/**
-	 * @param theme the theme to set
-	 */
-	public void setTheme(String theme) {
-		this.theme = theme;
 	}
 
 	/**

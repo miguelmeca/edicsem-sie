@@ -11,6 +11,12 @@
 		<p:fieldset legend="Generar horario" style="margin-top:20px">
 			<h:panelGrid columns="2" id="panel" >
 			
+			<p:selectOneMenu value="#{horarioVendedorForm.idPunto}"
+				styleClass="required" title="El tipo es obligatorio!">
+				<f:selectItems value="#{comboAction.almacenItems}" />
+			</p:selectOneMenu>
+			
+			<p:commandButton value="ver" action="#{horarioVendedorForm.generarHorario}" />
 			
 			</h:panelGrid>
 		</p:fieldset>
