@@ -2,8 +2,6 @@ package com.edicsem.pe.sie.service.facade;
 
 import java.util.List;
 import javax.ejb.Local;
-
-import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DetCargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie; 
