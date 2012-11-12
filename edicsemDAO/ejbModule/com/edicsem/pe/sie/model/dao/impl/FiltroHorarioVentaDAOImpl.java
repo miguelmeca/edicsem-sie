@@ -87,7 +87,7 @@ public class FiltroHorarioVentaDAOImpl implements FiltroHorarioVentaDAO{
 	public  List  listarFiltroHorarioVentaVigentes(){
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from FiltroHorarioVentaSie p where  "+  DateUtil.getToday().getTime()+  " between  p.diainicio and p.diafin ");
+			Query q = em.createQuery("select p from FiltroHorarioVentaSie p ");
 			lista =  q.getResultList();
 			log.info("tamaño lista FiltroHorarioVenta vigente --> " + lista.size()+"  ");
 		} catch (Exception e) {
