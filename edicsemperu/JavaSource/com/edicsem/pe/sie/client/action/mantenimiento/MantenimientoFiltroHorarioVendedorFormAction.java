@@ -142,7 +142,7 @@ public class MantenimientoFiltroHorarioVendedorFormAction extends BaseMantenimie
 	/*GETs Y SETs*/
 	
 	public String getViewList() {
-		return Constants.MANT_FILTRO_HORARIO_PERSONAL_VENTAS;
+		return Constants.MANT_HORARIO_PERSONAL_VENTAS;
 	}
 
 	/**
