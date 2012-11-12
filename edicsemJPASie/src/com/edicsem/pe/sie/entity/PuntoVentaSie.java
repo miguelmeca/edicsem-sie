@@ -48,8 +48,6 @@ public class PuntoVentaSie implements Serializable {
 
 	private String usuariomodifica;
 	
-	
-	
 	//bi-directional many-to-one association to EstadoGeneralSie
     @ManyToOne
 	@JoinColumn(name="idestadogeneral")
@@ -93,8 +91,8 @@ public class PuntoVentaSie implements Serializable {
 	public void setAlmacen(String almacen) {
 		this.almacen = almacen;
 	}
-	public String getDescripcion() {
 
+	public String getDescripcion() {
 		return this.descripcion;
 	}
 
@@ -195,7 +193,5 @@ public class PuntoVentaSie implements Serializable {
 			Set<HorarioPuntoVentaSie> tbHorarioPuntoVentas) {
 		this.tbHorarioPuntoVentas = tbHorarioPuntoVentas;
 	}
-
-	
 	
 }
