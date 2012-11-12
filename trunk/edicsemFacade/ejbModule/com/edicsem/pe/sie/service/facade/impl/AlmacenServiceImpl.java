@@ -48,4 +48,9 @@ public class AlmacenServiceImpl implements AlmacenService {
 		 
 		return objAlmacenDao.listarAlmacenes();
 	}
+	
+	public List listarPuntoVenta() {
+		 
+		return objAlmacenDao.listarPuntoVenta();
+	}
 }
