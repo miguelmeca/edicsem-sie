@@ -14,4 +14,5 @@ public interface AlmacenDAO {
 	public abstract void updateAlmacen(PuntoVentaSie almacen);
 	public abstract PuntoVentaSie findAlmacen (int id);
 	public abstract List  listarAlmacenes();
+	public abstract List  listarPuntoVenta();
 }
