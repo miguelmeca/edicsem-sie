@@ -12,5 +12,5 @@ public interface FiltroHorarioVentaService {
 	public abstract void updateFiltroHorarioVenta(FiltroHorarioVentaSie f);
 	public abstract FiltroHorarioVentaSie findFiltroHorarioVenta (int id);
 	public abstract List  listarFiltroHorarioVenta();
-	
+	public abstract List  listarFiltroHorarioVentaVigentes();
 }

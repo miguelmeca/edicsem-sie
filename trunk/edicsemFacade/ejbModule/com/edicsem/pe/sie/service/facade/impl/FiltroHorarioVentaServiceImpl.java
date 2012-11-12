@@ -67,5 +67,12 @@ public class FiltroHorarioVentaServiceImpl implements FiltroHorarioVentaService 
 	public List listarFiltroHorarioVenta() {
 		return objFiltroHorarioVentaDao.listarFiltroHorarioVenta();
 	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.FiltroHorarioVentaService#listarFiltroHorarioVentaVigentes()
+	 */
+	public List listarFiltroHorarioVentaVigentes() {
+		return objFiltroHorarioVentaDao.listarFiltroHorarioVentaVigentes();
+	}
  
 }
