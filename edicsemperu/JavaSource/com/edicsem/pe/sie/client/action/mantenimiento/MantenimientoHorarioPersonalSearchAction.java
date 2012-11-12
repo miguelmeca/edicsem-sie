@@ -121,6 +121,7 @@ public class MantenimientoHorarioPersonalSearchAction extends BaseMantenimientoA
 	}
     
 	public String agregarhorario(){
+		objHorarioPersonal= new HorarioPersonalSie();
 		newRecord=true;
 		return getViewList();
 	}
@@ -129,8 +130,6 @@ public class MantenimientoHorarioPersonalSearchAction extends BaseMantenimientoA
 		if (log.isInfoEnabled()) {
 			log.info("Entering my method 'DeshabilitarHorarioPersonal()'" + getIde());
 		}
-			
-			log.info(" parametro ID "+ getIde());
 			objHorarioPersonal = objHorarioPersonalService.findHorarioPersonal(getIde());
 			objHorarioPersonal.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(37));
 
