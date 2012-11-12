@@ -13,4 +13,5 @@ public interface HorarioPuntoVentaDAO {
 	public abstract void updateHorarioPunto(HorarioPuntoVentaSie h);
 	public abstract HorarioPuntoVentaSie findHorarioPunto(int id);
 	public abstract List  listarHorarioPunto();
+	public abstract List  listarHorarioPuntoVentaXidPV(int id); 
 }
