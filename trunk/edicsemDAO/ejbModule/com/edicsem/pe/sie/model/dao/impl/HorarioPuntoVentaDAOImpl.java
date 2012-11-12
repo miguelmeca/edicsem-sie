@@ -88,7 +88,7 @@ public class HorarioPuntoVentaDAOImpl implements HorarioPuntoVentaDAO {
 		try {
 			Query q = em.createQuery("select p from HorarioPuntoVentaSie p where p.tbPuntoVenta.idpuntoventa = "+id);
 			lista =  q.getResultList(); 
-			log.info("tamaño lista horario punto venta   --> " + lista.size()+"  ");
+			log.info("tamaño lista horario punto venta DAOIMPL  --> " + lista.size()+"  ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
