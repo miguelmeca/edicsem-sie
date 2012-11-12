@@ -6,7 +6,6 @@ import com.edicsem.pe.sie.entity.HorarioAsistenciaSie;
 
 @Local
 public interface HorarioAsistenciaDAO {
-	
 	public abstract void insertHorarioAsistencia(HorarioAsistenciaSie horarioasistencia);
 	public abstract void updateHorarioAsistencia(HorarioAsistenciaSie horarioasistencia);
 	public abstract void eliminarHorarioAsistencia(int id);
