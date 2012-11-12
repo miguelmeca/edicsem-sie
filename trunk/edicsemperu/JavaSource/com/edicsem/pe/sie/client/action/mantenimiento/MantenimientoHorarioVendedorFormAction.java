@@ -88,10 +88,7 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 		//el horario solo es generado por 1 semana  
 		Calendar diaActual;
 		diaActual = DateUtil.getToday();
-		log.info("dia actual " + diaActual.getTime() );
-		log.info("dia actuallll " + diaActual.getTime()+" xd "+diaActual.DATE );
-		int dia =nextMonday(diaActual.DATE);
-		log.info("dia  xxx " + dia );
+		int dia =nextMonday(diaActual.get(Calendar.DAY_OF_WEEK));
 		cDesde.setTime(diaActual.getTime());
 		log.info("dia actual " + cDesde.getTime() );
 		cDesde.add(Calendar.DAY_OF_WEEK, dia);
@@ -110,16 +107,21 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 			
 			for (int i = 0; i < horariopv.size(); i++) {
 				log.info(" fech "+ cDesde.DATE +"  "+ horariopv.get(i).getTbFecha().getIdFecha());
-				log.info("comparando "+horariopv.get(i).getHoraIngreso().compareTo(horariopv.get(i).getHoraSalida()));
-				if(horariopv.get(i).getHoraIngreso().compareTo(horariopv.get(i).getHoraSalida())>4){
+				log.info("comparando "+horariopv.get(i).getHoraIngreso().getTime()+"  "+ horariopv.get(i).getHoraSalida().getTime());
+				
+				if( horariopv.get(i).getHoraSalida().getTime()-horariopv.get(i).getHoraIngreso().getTime()> 40000000 ){
+					log.info(" doa horarios ");
+					//esos horarios pueden ser de 4 horas, 6 horas y 8 horas
 					
 					//dividimos el horario de punto de venta en dos horarios
 					if(cDesde.DATE == horariopv.get(i).getTbFecha().getIdFecha() ){
+						log.info(" if  ");
 						for (int j = 0; j < vendedores.size(); j++) {
 						//buscamos las objecciones , permisos y descansos
 						int f = (int) (Math.floor(Math.random() * ((vendedores.size()-1) - 0 + 1)) +0);
 						objHorario.setTbEmpleado(vendedores.get(f));
 						horarioPersonalList.add(objHorario);
+						log.info("agregado  ");
 						vendedores.remove(f);
 						}
 					}
