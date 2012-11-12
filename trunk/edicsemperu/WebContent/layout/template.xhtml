@@ -118,7 +118,7 @@ body {
 						<p:menuitem value="Mantenimiento Empresa" ajax="false" action="#{empresaSearch.listar}" />
 						<p:menuitem value="Meta Empresa" update="messages" ajax="false" action="metaEmpresa.jsf" />
 						<p:menuitem value="Cliente" update="messages" ajax="false" action="#{MantenimientoClienteSearchAction.listar}" />
-						<p:menuitem value="Mantenimiento HPV" update="messages" ajax="false" action="#{MantenimientoHorarioPuntoVentaSearchAction.listar}" />
+						<p:menuitem value="Mantenimiento Horario Punto de Venta" update="messages" ajax="false" action="#{MantenimientoHorarioPuntoVentaSearchAction.listar}" />
 					</p:submenu>
 				</p:menu>
 			</h:form>
@@ -646,7 +646,81 @@ body {
 
 	</h:form>
 
+<!--  Mantenimiento Horario Punto Venta-->
+	<h:form id="formManteHorarioPV">
+		<p:dialog widgetVar="horariopvDialog" showEffect="fade"
+			hideEffect="explode" modal="true" width="450" position="center">
+			<h:panelGrid id="display" columns="2" cellpadding="2"
+				style="margin:0 auto;" title="Horario ">
 
+				<h:outputText value="#{message['horario.pv.dia']}" rendered="#{MantenimientoHorarioPuntoVentaSearchAction.newRecord}"  />
+				<h:panelGroup rendered="#{MantenimientoHorarioPuntoVentaSearchAction.newRecord}" >
+				<p:selectCheckboxMenu id="pvchk" required="true" value="#{MantenimientoHorarioPuntoVentaSearchAction.diaList}" filter="true" filterMatchMode="startsWith" requiredMessage="#{message['horario.pv.dia.validation']}"
+					 style="width:200px" >
+					<f:selectItems value="#{comboAction.diasItems}" />
+				</p:selectCheckboxMenu>
+				<p:message for="pvchk" />
+				</h:panelGroup>
+				
+				<h:outputText value="#{message['horario.pv.fechaDesde']}" />
+				<h:panelGroup rendered="#{MantenimientoHorarioPuntoVentaSearchAction.newRecord}" >
+					<p:calendar id="desdepv" required="true" requiredMessage="#{message['horario.pv.fechaDesde.validation']}" value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diainicio}" mindate="today" />
+					<p:message for="desdepv" />
+				</h:panelGroup>
+				<h:panelGroup rendered="#{!MantenimientoHorarioPuntoVentaSearchAction.newRecord}" >
+					<p:calendar id="desdepv2" required="true" requiredMessage="#{message['horario.pv.fechaDesde.validation']}" value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diainicio}" mindate="today" />
+					<p:message for="desdepv2" />
+				</h:panelGroup>
+				
+				<h:outputText value="#{message['horario.pv.fechaHasta']}" />
+				<h:panelGroup rendered="#{MantenimientoHorarioPuntoVentaSearchAction.newRecord}" >
+					<p:calendar value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diafin}" requiredMessage="#{message['horario.pv.fechaHasta.validation']}" mindate="today" />
+				</h:panelGroup>
+				<h:panelGroup rendered="#{!MantenimientoHorarioPuntoVentaSearchAction.newRecord}" >
+					<p:calendar value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diafin}" requiredMessage="#{message['horario.pv.fechaHasta.validation']}" mindate="today" />
+				</h:panelGroup>
+				
+				<h:outputText value="#{message['horario.pv.horaEntrada']}"  />
+				<h:panelGroup rendered="#{MantenimientoHorarioPuntoVentaSearchAction.newRecord}" >
+					<p:calendar  id="horaIngpv" required="true" requiredMessage="#{message['horario.pv.horaEntrada.validation']}" value="#{MantenimientoHorarioPuntoVentaSearchAction.horaIngreso}" pattern="HH:mm" timeOnly="true"/>
+					<p:message for="horaIngpv" />
+				</h:panelGroup>
+				<h:panelGroup rendered="#{!MantenimientoHorarioPuntoVentaSearchAction.newRecord}" >
+					<p:calendar  id="horaIngpv2" required="true" requiredMessage="#{message['horario.pv.horaEntrada.validation']}" value="#{MantenimientoHorarioPuntoVentaSearchAction.horaIngreso}" pattern="HH:mm" timeOnly="true"/>
+					<p:message for="horaIngpv2" />
+				</h:panelGroup>
+			
+				
+				<h:outputText value="#{message['horario.pv.horaSalida']}" />
+				<h:panelGroup rendered="#{MantenimientoHorarioPuntoVentaSearchAction.newRecord}" >
+					<p:calendar
+						value="#{MantenimientoHorarioPuntoVentaSearchAction.horaSalida}" pattern="HH:mm" timeOnly="true"/>
+				</h:panelGroup>
+				
+				
+			
+				<h:panelGroup rendered="#{!MantenimientoHorarioPuntoVentaSearchAction.newRecord}" >
+					<p:calendar id="horaSalpv2" required="true" requiredMessage="#{message['horario.pv.horaSalida.validation']}" value="#{MantenimientoHorarioPuntoVentaSearchAction.horaSalida}" pattern="HH:mm" timeOnly="true"/>
+					<p:message for="horaSalpv2" />
+				</h:panelGroup>
+				 
+				<h:outputText value="#{message['horario.pv.descripcion']}"  />
+				<h:panelGroup rendered="#{MantenimientoHorarioPuntoVentaSearchAction.newRecord}" >
+					<h:inputText value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.observacion}"  />
+					<p:spacer/>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{!MantenimientoHorarioPuntoVentaSearchAction.newRecord}" >
+					<h:inputText value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.observacion}"  />
+					<p:spacer/>
+				</h:panelGroup>
+				
+				<p:commandButton  value="Guardar" update="panel"
+						action="#{MantenimientoHorarioPuntoVentaSearchAction.insertar}"
+						ajax="false" icon="ui-icon ui-icon-disk" />
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+	
 
 
 	<h:form id="formCarEmpList">
@@ -785,7 +859,7 @@ body {
 				
 				<h:outputText value="referencia" />
 				<h:panelGroup>
-				<p:inputText id="referenciaCliente" value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.referencia}" required="true"		
+				<p:inputText id="referenciaCliente2" value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.referencia}" required="true"		
 				style="font-weight:bold" />
 				</h:panelGroup>
 		
