@@ -8,8 +8,6 @@ import javax.persistence.Query;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import com.edicsem.pe.sie.entity.ProveedorSie;
-import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
-import com.edicsem.pe.sie.entity.TipoDocumentoIdentidadSie;
 import com.edicsem.pe.sie.model.dao.ProveedorDAO;
 
 @Stateless
@@ -22,20 +20,14 @@ public class ProveedorDAOImpl implements ProveedorDAO{
 	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#insertDemo(com.edicsem.pe.sie.entity.Usuario)
 	 */
 	public void insertarProveedor(ProveedorSie proveedor) {
-		//em.getTransaction().begin();
-		try {
-                              
-			em.persist(proveedor);
-			//em.flush();
+		try {                           
+			em.persist(proveedor);		
 			if (log.isInfoEnabled()) {
 				log.info("apunto de insertar proveedor");
 			}
-			//em.getTransaction().commit();
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 
 	/* (non-Javadoc)
@@ -57,25 +49,19 @@ public class ProveedorDAOImpl implements ProveedorDAO{
 	 */
 	public void eliminarProveedor(int id) {
 		try {
-            //falta buscar
 			em.remove(id);
-			//em.flush();
 			if (log.isInfoEnabled()) {
 				log.info("apunto de eliminar Proveedor");
-			}
-			//em.getTransaction().commit();
-			
+			}			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	
 	}
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#findDemo(java.lang.String)
 	 */
 	public ProveedorSie findProveedor(int id) {
-		// TODO Auto-generated method stub
 		ProveedorSie proveedor= new ProveedorSie();
 		try {
 		if (log.isInfoEnabled()) {
@@ -103,6 +89,5 @@ public class ProveedorDAOImpl implements ProveedorDAO{
 		}
 		return lista;
 	}
-	
 	
 }
