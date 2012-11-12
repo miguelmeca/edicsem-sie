@@ -80,12 +80,15 @@ public class HorarioPuntoVentaDAOImpl implements HorarioPuntoVentaDAO {
 		return lista;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.HorarioPuntoVentaDAO#listarHorarioPuntoVentaXidPV(int)
+	 */
 	public List listarHorarioPuntoVentaXidPV(int id) {
 		List  lista = null;
 		try {
 			Query q = em.createQuery("select p from HorarioPuntoVentaSie p where p.tbPuntoVenta.idpuntoventa = "+id);
 			lista =  q.getResultList(); 
-			log.info("tamaño lista horario punto venta DAOIMPL  --> " + lista.size()+"  ");
+			log.info("tamaño lista horario punto venta   --> " + lista.size()+"  ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
