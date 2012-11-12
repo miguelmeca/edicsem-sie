@@ -79,4 +79,16 @@ public class HorarioPuntoVentaDAOImpl implements HorarioPuntoVentaDAO {
 		}
 		return lista;
 	}
+	
+	public List listarHorarioPuntoVentaXidPV(int id) {
+		List  lista = null;
+		try {
+			Query q = em.createQuery("select p from HorarioPuntoVentaSie p where p.tbPuntoVenta.idpuntoventa = "+id);
+			lista =  q.getResultList(); 
+			log.info("tamaño lista horario punto venta DAOIMPL  --> " + lista.size()+"  ");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 }
