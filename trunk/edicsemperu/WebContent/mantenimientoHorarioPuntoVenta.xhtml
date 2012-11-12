@@ -6,21 +6,74 @@
   xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
   <ui:define name="body">
   <h1 class="title ui-widget-header ui-corner-all">Horario del Punto de Venta </h1>
-<h:form id="horarioPuntoVenta">
-<p:growl id="messages" showDetail="true" />
-		<p:fieldset legend="Buscar Punto Venta" style="margin-top:20px">
-			<h:panelGrid columns="2">
-				<h:outputText value="Cargo :" />
-				<p:selectOneMenu value="#{horarioPuntoVentaForm.idPunto}" >
-					<f:selectItems value="#{comboAction.almacenItems}" />
-				</p:selectOneMenu>
-				<p:commandButton value="Buscar" ajax="false" action="#{horarioPersonal.mostrar}" />
-			</h:panelGrid>
-		</p:fieldset>
- 
-<p:fieldset legend="Visualizar Horario" style="margin-top:20px">
-    
-</p:fieldset>
+<h:form id="frmhorarioPuntoVenta"><p:growl id="message" showDetail="true" />	
+					
+<p:dataTable value="#{MantenimientoHorarioPuntoVentaSearchAction.puntoVentaList}" var="c"
+		 paginator="true" rows="6"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" widgetVar="table"
+					emptyMessage="No se encontro registros" >
+
+	
+		<p:column headerText="idpuntoventa"  id="idpuntoventa" >
+		<h:outputText value="#{c.idpuntoventa}" />
+		</p:column>	
+		
+				
+		<p:column headerText="Punto de Venta"  id="PuntodeVenta" >
+		<h:outputText value="#{c.descripcion}" />
+		</p:column>		
+			
+		
+		<p:column headerText="Ubicacíon"  id="Ubigeo" >
+		<h:outputText value="#{c.tbUbigeo.nombre}" />
+		</p:column>
+		
+		<p:column headerText="Direccón"  id="Direccion" >
+		<h:outputText value="#{c.direccion}" />
+		</p:column>			
+		
+		<p:column headerText="Teléfono"  id="telefono" >
+		<h:outputText value="#{c.telefono}" />
+		</p:column>		
+		
+		<p:column headerText="Mostrar"  id="mostrar" >
+<p:commandButton value="Buscar" ajax="false" action="#{MantenimientoHorarioPuntoVentaSearchAction.mostrar}" 
+update="horarioPuntoVentaList" >
+<f:setPropertyActionListener value="#{c}"
+target="#{MantenimientoHorarioPuntoVentaSearchAction.objPuntoVentaSie}" />
+</p:commandButton>
+		</p:column>			
+</p:dataTable>
+<p:spacer></p:spacer>
+<p:dataTable var="h" value="#{MantenimientoHorarioPuntoVentaSearchAction.listaHorario}" id="horarioPuntoVentaList" editable="true"  
+ rowStyleClass="#{h.diainicio le horarioPuntoVenta.dhoy ? null: 'colorPlomo' }"  >
+		<f:facet name="header">
+            Horario Punto de Venta
+        </f:facet>
+			<p:column headerText="Dia">
+				<h:outputText value="#{h.tbFecha.dia}" />
+			</p:column>
+			<p:column headerText="Entrada">
+				<h:outputText value="#{h.horaIngreso}" />
+			</p:column>
+			<p:column headerText="Salida">
+				<h:outputText value="#{h.horaSalida}" />
+			</p:column>
+			<p:column headerText="Dia inicio">
+				<h:outputText value="#{h.diainicio}" />
+			</p:column>
+			<p:column headerText="Dia Fin">
+				<h:outputText value="#{h.diafin}" />
+			</p:column>
+			  
+</p:dataTable>
+	<p:fieldset legend="Visualizar Horario" style="margin-top:20px">
+    <p:schedule value="#{MantenimientoHorarioPuntoVentaSearchAction.eventModel}" draggable="false" resizable="false" locale="tr"  />  
+</p:fieldset>		
 </h:form>
 </ui:define>
 </ui:composition>
+
+
+
