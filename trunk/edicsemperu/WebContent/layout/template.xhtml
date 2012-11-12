@@ -116,8 +116,8 @@ body {
 						<p:menuitem value="Mantenimiento Cargo Empleado" ajax="false" action="#{mantenimientoCargoEmpleadoSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento Empresa" ajax="false" action="#{empresaSearch.listar}" />
 						<p:menuitem value="Meta Empresa" update="messages" ajax="false" action="metaEmpresa.jsf" />
-						<p:menuitem value="Cliente" update="messages" ajax="false"
-							action="#{MantenimientoClienteSearchAction.listar}" />
+						<p:menuitem value="Cliente" update="messages" ajax="false" action="#{MantenimientoClienteSearchAction.listar}" />
+						<p:menuitem value="Mantenimiento HPV" update="messages" ajax="false" action="#{MantenimientoHorarioPuntoVentaSearchAction.listar}" />
 					</p:submenu>
 				</p:menu>
 			</h:form>
@@ -755,21 +755,60 @@ body {
 
 
 	<h:form id="EditarDomicilio">
-		<p:dialog header="Registro/Modificación Domicilio" widgetVar="carDialogEditarUbigeocli"
+		<p:dialog header="Ingrese Nuevo Domicilio" widgetVar="carDialogEditarUbigeocli"
 			showEffect="fade" hideEffect="explode" modal="true" width="300"
 			position="center">
-		<h:panelGrid id="display" columns="2" >
-			<h:outputText value="departamento" />
-			<p:selectOneMenu size="1" value="#{MantenimientoClienteFormAction.idDepartamento}" filter="true" filterMatchMode="startsWith"
-					required="true" style="width:180px">
-					<f:selectItem itemLabel="Seleccione Departamento" itemValue="#{null}" />
+
+	
+ 		
+			
+<h:panelGrid id="display123" columns="2" >
+
+		<h:outputText value="referencia" />
+			
+		<h:panelGroup>
+			<p:inputText id="referenciaCliente"
+			value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.referencia}" required="true"		
+			style="font-weight:bold" />				
+		</h:panelGroup>
+				
+		<h:outputText value="ubigeo" />
+		</h:panelGrid><!-- Observacion -->
+			<h:panelGrid columns="2" id="panel" rendered="#{almacenForm.newRecord}"  >
+			<h:outputText value="Lima (defecto)" />
+			<p:selectBooleanCheckbox value="#{almacenForm.defectoUbigeo}">
+			<p:ajax update="panel,ubigeoDefecto" listener="#{almacenForm.limpiardialog}"
+			oncomplete="if(#{almacenForm.defectoUbigeo}) UbigeoAlmacenDialog.show()"></p:ajax>					
+			</p:selectBooleanCheckbox>
+
+				<h:outputText value="distrito" rendered="#{almacenForm.defectoUbigeo}" />
+				<p:selectOneMenu value="#{almacenForm.idUbigeo}" rendered="#{almacenForm.defectoUbigeo}" required="true" filter="true" filterMatchMode="startsWith"
+					style="width:200px" >
+					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+					<p:ajax update="panel" listener="#{almacenForm.cambioUbica}"></p:ajax>
+				</p:selectOneMenu>
+				
+				<h:outputText value="Ubigeo " />
+				<h:outputText id="ubigeoDefecto" value="#{MantenimientoClienteFormAction.ubigeoDefecto}" />
+			</h:panelGrid>
+			
+			<h:panelGrid columns="2" id="panel3" rendered="#{!almacenForm.newRecord}"  >
+				
+				<h:outputText value="departamento" />
+				<p:selectOneMenu size="1" value="#{MantenimientoClienteFormAction.idDepartamento}" filter="true" filterMatchMode="startsWith"
+					required="true" style="width:180px"
+					 >
+					<f:selectItem itemLabel="Seleccione Departamento"
+						itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
 					<p:ajax update="prov,dist" listener="#{MantenimientoClienteFormAction.cambiar}" />
 				</p:selectOneMenu>
 
 				<h:outputText value="provincia" />
 				<p:selectOneMenu id="prov" value="#{MantenimientoClienteFormAction.idProvincia}" filter="true" filterMatchMode="startsWith"
-					required="true" style="width:200px">
+					required="true" style="width:200px"
+					 >
 					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
 					<p:ajax update="dist" listener="#{almacenForm.cambiar2}" />
