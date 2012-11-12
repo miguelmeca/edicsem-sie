@@ -653,8 +653,8 @@ body {
 			<h:panelGrid id="display" columns="2" cellpadding="2"
 				style="margin:0 auto;" title="Horario ">
 
-				<h:outputText value="#{message['horario.pv.dia']}" rendered="#{MantenimientoHorarioPuntoVentaSearchAction.newRecord}"  />
-				<h:panelGroup rendered="#{MantenimientoHorarioPuntoVentaSearchAction.newRecord}" >
+				<h:outputText value="#{message['horario.pv.dia']}"  />
+				<h:panelGroup  >
 				<p:selectCheckboxMenu id="pvchk" required="true" value="#{MantenimientoHorarioPuntoVentaSearchAction.diaList}" filter="true" filterMatchMode="startsWith" requiredMessage="#{message['horario.pv.dia.validation']}"
 					 style="width:200px" >
 					<f:selectItems value="#{comboAction.diasItems}" />
