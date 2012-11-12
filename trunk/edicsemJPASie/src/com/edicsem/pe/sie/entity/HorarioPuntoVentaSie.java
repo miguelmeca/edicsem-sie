@@ -50,7 +50,7 @@ public class HorarioPuntoVentaSie implements Serializable {
 	@Column(name="hora_salida")
 	private Time horaSalida;
 
-	private Integer idfecha;
+
 
 	private String observacion;
 
@@ -67,6 +67,10 @@ public class HorarioPuntoVentaSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
+    
+    @ManyToOne
+	@JoinColumn(name="idfecha")
+	private FechaSie tbFecha;
     
     public HorarioPuntoVentaSie() {
     }
@@ -127,14 +131,6 @@ public class HorarioPuntoVentaSie implements Serializable {
 		this.horaSalida = horaSalida;
 	}
 	
-	public Integer getIdfecha() {
-		return this.idfecha;
-	}
-
-	public void setIdfecha(Integer idfecha) {
-		this.idfecha = idfecha;
-	}
-
 	public String getObservacion() {
 		return this.observacion;
 	}
@@ -173,6 +169,20 @@ public class HorarioPuntoVentaSie implements Serializable {
 
 	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
 		this.tbEstadoGeneral = tbEstadoGeneral;
+	}
+
+	/**
+	 * @return the tbFecha
+	 */
+	public FechaSie getTbFecha() {
+		return tbFecha;
+	}
+
+	/**
+	 * @param tbFecha the tbFecha to set
+	 */
+	public void setTbFecha(FechaSie tbFecha) {
+		this.tbFecha = tbFecha;
 	}
 	
 }
