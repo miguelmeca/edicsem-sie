@@ -593,17 +593,11 @@ body {
 					<p:message for="horaIng2" />
 				</h:panelGroup>
 				 
-				<h:outputText value="Hora Salida"/>
-				
-			
-				
 				<h:outputText value="#{message['horario.personal.horaSalida']}" />
 				<h:panelGroup rendered="#{horarioPersonal.newRecord}" >
 					<p:calendar
 						value="#{horarioPersonal.horaSalida}" pattern="HH:mm" timeOnly="true"/>
 				</h:panelGroup>
-				
-				
 			
 				<h:panelGroup rendered="#{!horarioPersonal.newRecord}" >
 					<p:calendar id="horaSal2" required="true" requiredMessage="#{message['horario.personal.horaSalida.validation']}" value="#{horarioPersonal.horaSalida}" pattern="HH:mm" timeOnly="true"/>
