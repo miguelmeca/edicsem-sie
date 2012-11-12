@@ -86,7 +86,7 @@ public class ClienteServiceImpl implements ClienteService {
 				
 			objDomicilioEmpleadoDao.insertarDomicilioEmpleado(domicilioJ);
 			
-			log.info("objDomicilioEmpleadoDao JOSELITO"+ domicilioJ);
+			log.info("objDomicilioEmpleadoDao "+ domicilioJ);
 			
 			}else{
 				log.info(" actualizar domicilio ");
