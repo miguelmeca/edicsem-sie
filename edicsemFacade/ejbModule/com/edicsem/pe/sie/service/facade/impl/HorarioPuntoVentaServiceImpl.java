@@ -9,6 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.HorarioPuntoVentaSie;
+import com.edicsem.pe.sie.model.dao.HorarioPuntoVentaDAO;
 import com.edicsem.pe.sie.service.facade.HorarioPuntoVentaService;
 
 @Stateless
@@ -17,7 +18,7 @@ public class HorarioPuntoVentaServiceImpl implements HorarioPuntoVentaService{
 	public static Log log = LogFactory.getLog(HorarioPuntoVentaServiceImpl.class);
 	
 	@EJB
-	private HorarioPuntoVentaService objHorarioPuntoDao;
+	private HorarioPuntoVentaDAO objHorarioPuntoDao;
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.HorarioPuntoVentaService#insertHorarioPunto(com.edicsem.pe.sie.entity.HorarioPuntoVentaSie)
@@ -47,4 +48,9 @@ public class HorarioPuntoVentaServiceImpl implements HorarioPuntoVentaService{
 		return objHorarioPuntoDao.listarHorarioPunto();
 	}
 	
+	public List listarHorarioPuntoVentaXidPV(int id) {
+		log.info("En el servicio ");
+		return objHorarioPuntoDao.listarHorarioPuntoVentaXidPV(id);
+		
+	}	
 }
