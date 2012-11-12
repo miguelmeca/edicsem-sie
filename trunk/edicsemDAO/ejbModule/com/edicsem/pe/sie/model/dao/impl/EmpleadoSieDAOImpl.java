@@ -1,15 +1,12 @@
 package com.edicsem.pe.sie.model.dao.impl;
 
 import java.util.List;
-
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
 
@@ -23,19 +20,14 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 	 * @see com.edicsem.pe.sie.model.dao.EmpleadoSieDAO#insertarEmpleado(com.edicsem.pe.sie.entity.EmpleadoSie)
 	 */
 	public void insertarEmpleado(EmpleadoSie empleado) {
-		try {
-                              
+		try {                         
 			em.persist(empleado);
-			//em.flush();
 			if (log.isInfoEnabled()) {
 				log.info("apunto de insertar Empleado");
 			}
-			//em.getTransaction().commit();
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	/* (non-Javadoc)
@@ -70,7 +62,6 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 	 * @see com.edicsem.pe.sie.model.dao.EmpleadoSieDAO#buscarEmpleado(int)
 	 */
 	public EmpleadoSie buscarEmpleado(int id) {
-		
 		EmpleadoSie empleado= new EmpleadoSie();
 		try {
 		if (log.isInfoEnabled()) {
