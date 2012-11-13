@@ -39,7 +39,8 @@ public class HorarioPuntoVentaSie implements Serializable {
 
     @Temporal( TemporalType.DATE)
 	private Date diainicio;
-
+    
+	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
 
 	private Timestamp fechamodifica;
