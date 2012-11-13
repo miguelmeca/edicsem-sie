@@ -480,6 +480,20 @@ public List<String> getDiaList() {
  */
 public void setDiaList(List<String> diaList) {
 	this.diaList = diaList;
+}
+
+/**
+ * @return the editMode
+ */
+public boolean isEditMode() {
+	return editMode;
+}
+
+/**
+ * @param editMode the editMode to set
+ */
+public void setEditMode(boolean editMode) {
+	this.editMode = editMode;
 }	
 	
 
