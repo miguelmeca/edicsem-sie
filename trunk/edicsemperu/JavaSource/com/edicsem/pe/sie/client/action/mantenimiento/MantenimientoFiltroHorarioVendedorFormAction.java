@@ -130,7 +130,6 @@ public class MantenimientoFiltroHorarioVendedorFormAction extends BaseMantenimie
 	
 	public String vertipovendedor(){
 		int i = objDetEmpresaEmpleadoService.filtrartipoventaPersonal(idvendedor);
-		log.info("feliz --> " + i);
 		if(i==1){
 		 tipoventa= true;
 		}else{
@@ -142,7 +141,7 @@ public class MantenimientoFiltroHorarioVendedorFormAction extends BaseMantenimie
 	/*GETs Y SETs*/
 	
 	public String getViewList() {
-		return Constants.MANT_HORARIO_PERSONAL_VENTAS;
+		return Constants.MANT_FILTRO_HORARIO_PERSONAL_VENTAS;
 	}
 
 	/**

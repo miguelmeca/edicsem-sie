@@ -126,7 +126,6 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 						}
 					}
 				}else{
-					//los horarios de dicho dia se haran por 1 solo turno
 					
 				}
 			}
