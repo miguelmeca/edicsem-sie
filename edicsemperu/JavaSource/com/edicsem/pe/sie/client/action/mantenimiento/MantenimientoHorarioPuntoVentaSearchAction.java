@@ -80,6 +80,7 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends	BaseMantenimient
 	}
 	
 	public String agregarhorario(){
+		objHorarioPuntoVentaSie= new HorarioPuntoVentaSie();
 		newRecord=true;
 		return getViewList();
 	}
@@ -153,6 +154,8 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends	BaseMantenimient
 							}
 						}
 					 if(mensaje.equals("")){
+						log.info("hora ingreso  "+objHorarioPuntoVentaSie.getHoraIngreso());
+						log.info("punto de venta  "+objPuntoVentaSie.getIdpuntoventa());
 						 objHorarioPuntoVentaService.insertHorarioPunto(diaList,objHorarioPuntoVentaSie,objPuntoVentaSie.getIdpuntoventa());
 						 log.info("insertando..... ");
 						 msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);

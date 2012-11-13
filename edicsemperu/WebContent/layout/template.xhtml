@@ -636,53 +636,30 @@ body {
 				</h:panelGroup>
 				
 				<h:outputText value="#{message['horario.pv.fechaDesde']}" />
-				<h:panelGroup rendered="#{MantenimientoHorarioPuntoVentaSearchAction.newRecord}" >
+				<h:panelGroup >
 					<p:calendar id="desdepv" required="true" requiredMessage="#{message['horario.pv.fechaDesde.validation']}" value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diainicio}" mindate="today" />
 					<p:message for="desdepv" />
 				</h:panelGroup>
-				<h:panelGroup rendered="#{!MantenimientoHorarioPuntoVentaSearchAction.newRecord}" >
-					<p:calendar id="desdepv2" required="true" requiredMessage="#{message['horario.pv.fechaDesde.validation']}" value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diainicio}" mindate="today" />
-					<p:message for="desdepv2" />
-				</h:panelGroup>
 				
 				<h:outputText value="#{message['horario.pv.fechaHasta']}" />
-				<h:panelGroup rendered="#{MantenimientoHorarioPuntoVentaSearchAction.newRecord}" >
+				<h:panelGroup >
 					<p:calendar value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diafin}" requiredMessage="#{message['horario.pv.fechaHasta.validation']}" mindate="today" />
 				</h:panelGroup>
-				<h:panelGroup rendered="#{!MantenimientoHorarioPuntoVentaSearchAction.newRecord}" >
-					<p:calendar value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diafin}" requiredMessage="#{message['horario.pv.fechaHasta.validation']}" mindate="today" />
-				</h:panelGroup>
-				
+			
 				<h:outputText value="#{message['horario.pv.horaEntrada']}"  />
-				<h:panelGroup rendered="#{MantenimientoHorarioPuntoVentaSearchAction.newRecord}" >
+				<h:panelGroup >
 					<p:calendar  id="horaIngpv" required="true" requiredMessage="#{message['horario.pv.horaEntrada.validation']}" value="#{MantenimientoHorarioPuntoVentaSearchAction.horaIngreso}" pattern="HH:mm" timeOnly="true"/>
 					<p:message for="horaIngpv" />
 				</h:panelGroup>
-				<h:panelGroup rendered="#{!MantenimientoHorarioPuntoVentaSearchAction.newRecord}" >
-					<p:calendar  id="horaIngpv2" required="true" requiredMessage="#{message['horario.pv.horaEntrada.validation']}" value="#{MantenimientoHorarioPuntoVentaSearchAction.horaIngreso}" pattern="HH:mm" timeOnly="true"/>
-					<p:message for="horaIngpv2" />
-				</h:panelGroup>
-			
 				
 				<h:outputText value="#{message['horario.pv.horaSalida']}" />
-				<h:panelGroup rendered="#{MantenimientoHorarioPuntoVentaSearchAction.newRecord}" >
-					<p:calendar
-						value="#{MantenimientoHorarioPuntoVentaSearchAction.horaSalida}" pattern="HH:mm" timeOnly="true"/>
-				</h:panelGroup>
-				
-				
-			
-				<h:panelGroup rendered="#{!MantenimientoHorarioPuntoVentaSearchAction.newRecord}" >
+				<h:panelGroup  >
 					<p:calendar id="horaSalpv2" required="true" requiredMessage="#{message['horario.pv.horaSalida.validation']}" value="#{MantenimientoHorarioPuntoVentaSearchAction.horaSalida}" pattern="HH:mm" timeOnly="true"/>
 					<p:message for="horaSalpv2" />
 				</h:panelGroup>
 				 
 				<h:outputText value="#{message['horario.pv.descripcion']}"  />
-				<h:panelGroup rendered="#{MantenimientoHorarioPuntoVentaSearchAction.newRecord}" >
-					<h:inputText value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.observacion}"  />
-					<p:spacer/>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{!MantenimientoHorarioPuntoVentaSearchAction.newRecord}" >
+				<h:panelGroup  >
 					<h:inputText value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.observacion}"  />
 					<p:spacer/>
 				</h:panelGroup>
