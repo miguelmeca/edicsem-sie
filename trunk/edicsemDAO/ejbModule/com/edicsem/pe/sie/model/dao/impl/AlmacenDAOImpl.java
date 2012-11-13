@@ -63,9 +63,10 @@ public class AlmacenDAOImpl implements AlmacenDAO{
 		PuntoVentaSie almacen= new PuntoVentaSie();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("buscar Almacen");
+				log.info("buscar Almacen"+ id);
 			} 
 		almacen=	em.find(PuntoVentaSie.class, id);
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
