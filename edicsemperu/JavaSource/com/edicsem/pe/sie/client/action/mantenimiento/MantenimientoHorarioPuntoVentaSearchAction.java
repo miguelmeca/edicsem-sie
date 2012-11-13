@@ -5,6 +5,7 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
 import java.sql.Time;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,13 +25,12 @@ import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
-import com.edicsem.pe.sie.entity.HorarioPersonalSie;
 import com.edicsem.pe.sie.entity.HorarioPuntoVentaSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.service.facade.AlmacenService;
-import com.edicsem.pe.sie.service.facade.HorarioPersonalService;
 import com.edicsem.pe.sie.service.facade.HorarioPuntoVentaService;
 import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name = "MantenimientoHorarioPuntoVentaSearchAction")
@@ -57,6 +57,7 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends	BaseMantenimient
 	private Date  horaIngreso,horaSalida;
 	private String mensaje;
 	private List<String> diaList;
+	private boolean editMode;
 	
 	@EJB
 	private AlmacenService objAlmacenService; 
@@ -93,6 +94,7 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends	BaseMantenimient
 	public void init() {
 		log.info("dentro del init");
 		objPuntoVentaSie = new PuntoVentaSie();
+		objHorarioPuntoVentaSie= new HorarioPuntoVentaSie();
 		eventModel = new DefaultScheduleModel();
 		idpuntoventa=0;
 		log.info("despues de inicializar");
@@ -114,7 +116,7 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends	BaseMantenimient
 					log.info("fecha pp  " + getHoraIngreso() );
 					Time hora1 = new Time( getHoraIngreso().getTime());
 					Time hora2= new Time( getHoraSalida().getTime());
-					log.info(" g   "+ hora1);
+					log.info(" g   "+ hora1 + " g   "+ hora2);
 					objHorarioPuntoVentaSie.setHoraIngreso(hora1);
 					objHorarioPuntoVentaSie.setHoraSalida(hora2);
 					
@@ -151,7 +153,7 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends	BaseMantenimient
 							}
 						}
 					 if(mensaje.equals("")){
-						 objHorarioPuntoVentaService.insertHorarioPunto(diaList,objHorarioPuntoVentaSie,idpuntoventa);
+						 objHorarioPuntoVentaService.insertHorarioPunto(diaList,objHorarioPuntoVentaSie,objPuntoVentaSie.getIdpuntoventa());
 						 log.info("insertando..... ");
 						 msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
 						 FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -352,6 +354,12 @@ public void setdDate2(Date dDate2) {
  * @return the dhoy
  */
 public Date getDhoy() {
+	try {
+		dhoy = DateUtil.getToday().getTime();
+	} catch (ParseException e) {
+		e.printStackTrace();
+	}
+	
 	return dhoy;
 }
 
