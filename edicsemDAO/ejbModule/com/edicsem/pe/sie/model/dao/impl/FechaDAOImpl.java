@@ -46,9 +46,10 @@ public class FechaDAOImpl implements FechaDAO{
 		FechaSie f= new FechaSie();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("buscar FechaSie");
+				log.info("buscar FechaSie"+ id);
 			} 
 		f=	em.find(FechaSie.class, id);
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
