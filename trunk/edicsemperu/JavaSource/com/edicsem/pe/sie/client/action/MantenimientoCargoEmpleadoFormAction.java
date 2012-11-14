@@ -61,6 +61,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 	public String agregar() {
 		log.info("agregar()");
 		editMode = true;
+		objCargoEmpleadoSie = new CargoEmpleadoSie();
 		setNewRecord(true);
 		return getViewList();
 	}
