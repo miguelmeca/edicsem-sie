@@ -836,23 +836,23 @@ body {
 	<!-- FIN EDITAR  UBIGEO CLIENTE FORM-->
 	
 	
-	<!--	  INICIO DESACTIVAR	   -->
+	<!--	  INICIO DESACTIVAR	CARGO EMPLEADO   -->
 
 	<h:form>
 
 		<p:confirmDialog id="confirmDeshabilitar1"
 			message="Esta seguro de deshabilitar dicho movimiento?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
-			header="Confirm" severity="alert" widgetVar="confirmation1"
+			header="Confirm" severity="alert" widgetVar="confirmation24"
 			position="center">
 
 			<p:commandButton type="submit" value="Si"
 				action="#{mantenimientoCargoEmpleadoFormAction.updateDeshabilitar}"
 				update=":manteCargoEmpleado:listaPersonas"
-				oncomplete="confirmation.hide()" ajax="false">
+				oncomplete="confirmation24.hide()" ajax="false">
 			</p:commandButton>
 
-			<p:commandButton value="No" onclick="confirmation.hide()"
+			<p:commandButton value="No" onclick="confirmation24.hide()"
 				type="button" />
 
 		</p:confirmDialog>
