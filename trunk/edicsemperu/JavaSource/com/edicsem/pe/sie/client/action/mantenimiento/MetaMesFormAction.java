@@ -117,7 +117,6 @@ public class MetaMesFormAction extends
 
 			
 
-objMetaMesSie = new MetaMesSie();
 objMetaMesSietmp = new MetaMesSie();
 
 	
