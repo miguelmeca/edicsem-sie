@@ -39,6 +39,7 @@ import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.FechaService;
+import com.edicsem.pe.sie.service.facade.IncidenciaService;
 import com.edicsem.pe.sie.service.facade.MetaMesService;
 import com.edicsem.pe.sie.service.facade.PaqueteService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
@@ -314,7 +315,7 @@ public class ComboAction {
 	public void setEstadoitems(Map<String, Integer> estadoitems) {
 		this.estadoitems = estadoitems;
 	}
-
+	
 	/**
 	 * @return the empresaitems
 	 */
