@@ -112,6 +112,8 @@ body {
 						<p:menuitem value="Mantenimiento de Proveedores" ajax="false" action="#{mantenimientoProveedorSearchAction.listar}" />
 						<p:menuitem value="Parámetros del sistema" ajax="false" action="#{mantenimientoParametroSearchAction.listar}" />
 						<p:menuitem value="Seguimiento de Cobranzas" ajax="false" action="#{mantenimientoCobranzaOperaSearchAction.listar}" />
+						<p:menuitem value="Horario de Asistencia" ajax="false" action="horarioAsistencia.jsf" />
+						<p:menuitem value="Incidencias" ajax="false" action="#{mantenimientoIncidenciaSearch.listar}" />
 						<p:menuitem value="Horario del Personal" ajax="false" action="mantenimientoHorarioPersonal.jsf" />
 						<p:menuitem value="Mantenimiento Cargo Empleado" ajax="false" action="#{mantenimientoCargoEmpleadoSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento Empresa" ajax="false" action="#{empresaSearch.listar}" />
@@ -1065,6 +1067,41 @@ body {
 		</p:dialog>
 	</h:form>
 <!-- fin ASISTENCIA -->
+
+<!--	  EDITAR Y DESACTIVAR INCIDENCIA	   -->
+
+	<h:form id="editarIncidencia">
+		<p:dialog header="Editar" widgetVar="incidenciaDialog"
+			showEffect="fade" hideEffect="explode" modal="true" width="300"
+			position="center">
+			<h:panelGrid id="display" columns="2" cellpadding="2"
+				style="margin:0 auto;">
+				<h:outputText value="Estado" />				
+				<p:selectOneMenu id="estado" value="#{mantenimientoIncidenciaForm.estado}" styleClass="required" title="El estado es obligatorio!" >
+                <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
+                <f:selectItem  itemValue="42" itemLabel="Revisada"/>
+                <f:selectItem  itemValue="43" itemLabel="En proceso"/>
+                <f:selectItem  itemValue="44" itemLabel="En espera"/>
+                <f:selectItem  itemValue="45" itemLabel="Sin revisar"/>
+                </p:selectOneMenu>
+                <p:commandButton id="btn" value="Guardar" update="panel"
+						action="#{mantenimientoIncidenciaForm.insertar}"
+						ajax="false" icon="ui-icon ui-icon-disk" />
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+	
+<h:form>
+	<p:confirmDialog id="confirmDeshabilitarIncidencia" message="Esta seguro de deshabilitar dicha incidencia?" width="325" height="100" showEffect="explode" 
+				hideEffect="explode"  header="Confirm" severity="alert" widgetVar="confirmationIncidencia" position="center">					   
+       		<p:commandButton  type="submit" value="Si"  action="#{mantenimientoIncidenciaForm.deshabilitar}"  
+       			 update=":IncidenciaList:listaIncidencias" oncomplete="confirmationIncidencia.hide()" ajax="false">
+      			 </p:commandButton>  
+        		<p:commandButton value="No" onclick="confirmationIncidencia.hide()" type="button" />  
+    </p:confirmDialog>
+</h:form>
+
+<!--	  FIN EDITAR Y DESACTIVAR INCIDENCIA	   -->
 				
 <!--	  DESACTIVAR PROVEEDOR	   -->
 
