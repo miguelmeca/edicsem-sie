@@ -160,23 +160,19 @@ public class MantenimientoEmpresaFormAction extends
 				objEmpresaSie.getNumruc();
 				objEmpresaSie.getNumtelefono();
 				objEmpresaSie.getEmail();
+				
 				int error = 0;
-				List<EmpresaSie> lista = mantenimientoEmpresaSearch
-						.getEmpresaList();
+				List<EmpresaSie> lista = mantenimientoEmpresaSearch.getEmpresaList();
+				
 
 				for (int i = 0; i < lista.size(); i++) {
-					EmpresaSie s = lista.get(i);
-					if (s.getDescripcion().equalsIgnoreCase(
-							objEmpresaSie.getDescripcion())
-							&& s.getRazonsocial().equalsIgnoreCase(
-									objEmpresaSie.getRazonsocial())
-							&& s.getNumruc().equalsIgnoreCase(
-									objEmpresaSie.getNumruc())
-							&& s.getNumtelefono().equalsIgnoreCase(
-									objEmpresaSie.getNumtelefono())
-							&& s.getEmail().equalsIgnoreCase(
-									objEmpresaSie.getEmail())) {
-						log.info("Error ... Ya se encuentra una empresa igual");
+					 EmpresaSie s = lista.get(i);
+					if ( 		s.getRazonsocial().equalsIgnoreCase(objEmpresaSie.getRazonsocial())
+							 && s.getDescripcion().equalsIgnoreCase(objEmpresaSie.getDescripcion())							
+							 && s.getNumruc().equalsIgnoreCase(objEmpresaSie.getNumruc())
+							 && s.getNumtelefono().equalsIgnoreCase(objEmpresaSie.getNumtelefono())
+							 && s.getEmail().equalsIgnoreCase(objEmpresaSie.getEmail()))  {
+					log.info("Error ... Ya se encuentra una empresa igual");
 						error = 1;
 						break;
 					}
