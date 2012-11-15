@@ -115,7 +115,7 @@ body {
 						<p:menuitem value="Horario del Personal" ajax="false" action="mantenimientoHorarioPersonal.jsf" />
 						<p:menuitem value="Mantenimiento Cargo Empleado" ajax="false" action="#{mantenimientoCargoEmpleadoSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento Empresa" ajax="false" action="#{empresaSearch.listar}" />
-						<p:menuitem value="Meta Empresa" update="messages" ajax="false" action="metaEmpresa.jsf" />
+						<p:menuitem value="Meta Mes" update="messages" ajax="false" action="metaEmpresa.jsf" />
 						<p:menuitem value="Cliente" update="messages" ajax="false" action="#{MantenimientoClienteSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento Horario Punto de Venta" update="messages" ajax="false" action="#{MantenimientoHorarioPuntoVentaSearchAction.listar}" />
 					</p:submenu>
@@ -1090,7 +1090,7 @@ body {
 	<h:form>
 
 		<p:confirmDialog id="confirmDeshabilitarEmpresa"
-			message="Esta seguro de deshabilitar dicho movimiento?" width="325"
+			message="Esta seguro de deshabilitar dicho Empresa?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
 			header="Confirm" severity="alert" widgetVar="confirmationEmpresa"
 			position="center">
@@ -1098,10 +1098,10 @@ body {
 			<p:commandButton type="submit" value="Si"
 				action="#{empresaForm.Eliminarempresa}"
 				update=":frmEmpresaFormList:empresaTable"
-				oncomplete="confirmation.hide()" ajax="false">
+				oncomplete="confirmationEmpresa.hide()" ajax="false">
 			</p:commandButton>
 
-			<p:commandButton value="No" onclick="confirmation.hide()"
+			<p:commandButton value="No" onclick="confirmationEmpresa.hide()"
 				type="button" />
 
 		</p:confirmDialog>
@@ -1326,14 +1326,33 @@ body {
 			<h:panelGrid id="display" columns="2" cellpadding="2"
 				style="margin:0 auto;">
 
-				<h:outputText value="fecha Inicial"/>
-				<p:calendar value="#{MetaMesFormAction.date1}" id="popupCal"  />  
+
+
 				
+<h:outputText value="fecha inicial" />
 				
-					 
-				<h:outputText value="fecha Final"    />				
+<p:calendar id="popupCal" 
+value="#{MetaMesFormAction.date1}"
+ /> 
+				 
 			
-				<p:calendar value="#{MetaMesFormAction.date2}" id="popupCal2" />
+				
+				
+				
+<h:outputText value="fecha final" />
+
+				
+<p:calendar id="popupCal2" 
+value="#{MetaMesFormAction.date2}"  
+/>
+
+				
+				
+				
+			
+				
+				
+				
 				
 				
 
