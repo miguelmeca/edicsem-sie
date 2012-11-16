@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Random;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -104,24 +103,46 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 		log.info(" fecha lunes  --> "+ 		cDesde.getTime());
 		log.info(" fecha domingo  --> "+ 	cHasta.getTime());
 		
-		// Los horarios son generados por una semana
-		while(cDesde.before(cHasta)||cDesde.equals(cHasta)){
+		
+			log.info("tamaño   "+horariopv.size());
 			
-			log.info(" "+ cDesde.getTime());
-			
-			for (int i = 0; i < horariopv.size(); i++) {
-				log.info(" fech "+ cDesde.get(Calendar.DAY_OF_WEEK) +"  "+ horariopv.get(i).getTbFecha().getIdFecha());
+				// Los horarios son generados por una semana
+				while(cDesde.before(cHasta)||cDesde.equals(cHasta)){
+					log.info(" while   ");
+					for (int i = 0; i < horariopv.size(); i++) {
+						
+						 
+					log.info(" desde  :D  "+ cDesde.getTime() +" hasta  "+ cHasta.getTime());
+					log.info(" fech "+ cDesde.get(Calendar.DAY_OF_WEEK) +"  "+ horariopv.get(i).getTbFecha().getIdFecha());
 				
-					log.info(" depende de los acuerdos ");
+					log.info(" depende de los acuerdos :D");
+					
+					for (int s = 0; s < filtros.size(); s++) {
+						//Acuerdo
+						if(filtros.get(s).getTbTipoFiltro().getIdtipofiltro()==1){
+							
+						}
+						//Permiso
+						else if(filtros.get(s).getTbTipoFiltro().getIdtipofiltro()==1){
+							
+						}
+						//Descanso
+						else if(filtros.get(s).getTbTipoFiltro().getIdtipofiltro()==1){
+							
+						}
+						//Preferencia
+						else if(filtros.get(s).getTbTipoFiltro().getIdtipofiltro()==1){
+							
+						}
+					}
+					
 					log.info(" depende de las objeciones ");
 					log.info(" depende de las preferencias ");
 					
 					// se debe cumplir que los vendedores tengan un dia libre (descanso)
-					Time hora1,hora2, horaAuxi;
+					Time hora1,hora2;
 					Calendar hingreso = new GregorianCalendar();
-					Calendar hingreso2 = new GregorianCalendar();
-					if(cDesde.get(Calendar.DAY_OF_WEEK) == horariopv.get(i).getTbFecha().getIdFecha() ){
-						log.info(" entro  ");
+					
 						List<Integer> arreglo = new ArrayList<Integer>();
 						//guardamos en un arreglo los id de los vendedores
 						for (int j = 0; j < vendedores.size(); j++) {
@@ -130,11 +151,13 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 						}
 						
 						log.info(" arrreglo  " + arreglo.size());
-						for (int j = 0; j < arreglo.size(); j++) {
-							log.info("for  "+ arreglo.size());
+						log.info(" ==  " + cDesde.get(Calendar.DAY_OF_WEEK)+ "  "+ horariopv.get(i).getTbFecha().getIdFecha());
+							if(cDesde.get(Calendar.DAY_OF_WEEK) == horariopv.get(i).getTbFecha().getIdFecha() ){
+								log.info(" entro  ");
+								objHorario= new HorarioPersonalSie();
+								log.info("for  "+ arreglo.size());
 							
 							//se debe seleccionar los vendedores aleatoriamente
-							Random r = new Random();
 							int f = (int) (Math.random() * ((arreglo.size()-1)-0+1));
 							
 							log.info("random " + f +" tamaño  "+ arreglo.size());
@@ -143,7 +166,7 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 							log.info("random " + f +" tamaño  "+ arreglo.size());
 							log.info("agregado --> "+arreglo.get(f));
 							// ALEATORIAMENE las horas 
-							int arr[] = { 4, 6, 8, 12 };
+							int arr[] = { 4, 6, 8, 10 };
 							
 							int rho = (int) (Math.random() * (arr.length-1 + 1));
 							log.info("tamaño  "+arr.length+"  rho "+arr[rho]);
@@ -157,47 +180,33 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 							objHorario.setTbEmpleado(objVendedoresService.buscarEmpleado(arreglo.get(f)));
 							objHorario.setDiainicio(cDesde.getTime());
 							horarioPersonalList.add(objHorario);
+							log.info(arreglo);
 							arreglo.remove(f);
 							log.info(arreglo);
 							
-							log.info("hora sal primer turno  :D "+hora1+ "hora sal pv "+hora2);
-							log.info("primer turno 1 "+horarioPersonalList.size());
+							log.info("hora sal primer turno  :D "+hora1+ "hora sal pv "+hora2+ ""+horariopv.get(i).getHoraSalida());
+							log.info("tamaño xxxxxx XD "+horarioPersonalList.size());
+							 
 							while(hora2.before(horariopv.get(i).getHoraSalida())){
 								objHorario= new HorarioPersonalSie();
 								objHorario.setDiainicio(cDesde.getTime());
 								log.info("hora *** "+hora2);
 								objHorario.setHoraIngreso(hora2);
-								hingreso2.setTime(cDesde.getTime());
-								String[] a1= (hora2+"").split(":");
-								hingreso2.set(Calendar.HOUR, Integer.parseInt(a1[0]));
-								hingreso2.set(Calendar.MINUTE, Integer.parseInt(a1[1]));
-								log.info("h ingreso 2 " + hingreso2.getTime());
-								long v= horariopv.get(i).getHoraSalida().getTime()- hora2.getTime();
-								log.info("veee  ... :D "+ v);
-								horaAuxi= new Time(v);
-								Time e= new Time(v);
-								String[] a= (e+"").split(":");
-								log.info(hingreso2.getTime() + " + "+ e);
-								hingreso2.add(Calendar.HOUR, Integer.parseInt(a[0]) );
-								hingreso2.add(Calendar.MINUTE, Integer.parseInt(a[1]) );
-								hora2 = new Time(hingreso2.getTimeInMillis());
-								log.info("hora ingreso 2 "+ hora2);
-								objHorario.setHoraSalida(hora2);
+								log.info("***** " + horariopv.get(i).getHoraSalida()+"  - "+hora2);
+								objHorario.setHoraSalida(horariopv.get(i).getHoraSalida());
 								hora2=objHorario.getHoraSalida();
-								objHorario.setTbEmpleado(vendedores.get((int) (Math.random() * (arreglo.size()-0+1))));
+								log.info("hora 2 "+hora2);
+								log.info(arreglo);
+								int rho2 =(int) (Math.random() * (arreglo.size()-0+1));
+								objHorario.setTbEmpleado(objVendedoresService.buscarEmpleado(arreglo.get(rho2)));
 								horarioPersonalList.add(objHorario);
 								log.info("h  "+hora2+" h sal  "+horariopv.get(i).getHoraSalida());
 							}
-							log.info("primer turno "+horarioPersonalList.size());
 							for (int k = 0; k < horarioPersonalList.size(); k++) {
-								log.info("primer turno "+horarioPersonalList.get(k).getDiainicio()+ " " +horarioPersonalList.get(k).getHoraIngreso()+" - "+horarioPersonalList.get(k).getHoraSalida()+" empleado "+  horarioPersonalList.get(k).getTbEmpleado().getIdempleado());
+								log.info(horarioPersonalList.get(k).getDiainicio()+ " " +horarioPersonalList.get(k).getHoraIngreso()+" - "+horarioPersonalList.get(k).getHoraSalida()+" empleado "+  horarioPersonalList.get(k).getTbEmpleado().getIdempleado());
 							}
-						}
 					}
-				}
-			//tomar en cuenta que un solo punto pueden haber más de un vendedor en el mismo horario, máximo 3
-			
-			cDesde.add(Calendar.DAY_OF_WEEK, 1);
+				}cDesde.add(Calendar.DAY_OF_WEEK, 1);
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();
