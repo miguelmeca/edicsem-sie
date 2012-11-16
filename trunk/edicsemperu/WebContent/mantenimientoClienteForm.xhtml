@@ -129,11 +129,20 @@
 
 <h:panelGrid columns="2">
 
-<h:panelGrid id="display4" columns="3">
+<h:panelGrid id="display4" columns="3"
+
+>
 	
 				<p:dataTable value="#{MantenimientoClienteFormAction.domicilioPersonaList}" 	var="d"
 				id="listarDomocilio" 
-				effectSpeed="fast" type="none"				   >
+				effectSpeed="fast" type="none"	
+
+rowStyleClass="#{d.tbEstadoGeneral.idestadogeneral eq 16 ? 'color1': (d.tbEstadoGeneral.idestadogeneral eq 17 ? 'color2': 'color3') }"
+
+
+
+				
+							   >
 
 				
 				<p:column headerText="Domicilio" id="Domicilio" >
@@ -235,9 +244,10 @@
 					<p:spacer/>
 
 						
-				<h:outputText value="Tipo Casa" />
+				<h:outputText value="#{message['cliente.TipoCasa']}"	for="TipoCasa"  />
 				<p:selectOneMenu style="width:165px"
-						 id="tipocasa"
+						 id="tipocasa" required="true" label="TipoCasa"
+					requiredMessage="#{message['cliente.TipoCasa.validation']}" 
 						
 						value="#{MantenimientoClienteFormAction.tipocasa}">
 						<f:selectItem itemLabel="Seleccione tipo casa"
@@ -246,18 +256,22 @@
 				</p:selectOneMenu>
 				<p:message for="tipocasa" />
 					
-				<h:outputText value="domicilio" />
+				<h:outputText  value="#{message['cliente.domicilio']}"	for="domicilio" />
 				<p:inputText id="domicilio"
 					value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.domicilio}" 
+					required="true" label="domicilio"
+					requiredMessage="#{message['cliente.domicilio.validation']}" 
 					/>
 				<p:message for="domicilio" />
 				
 				
 				
 				
-				<h:outputText value="Referencia" />
+				<h:outputText value="#{message['cliente.referencia']}"	for="referencia"  />
 				<p:inputText id="Referencia"
-					value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.referencia}" 
+					value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.referencia}"
+					required="true" label="referencia"
+					requiredMessage="#{message['cliente.referencia.validation']}"  
 					/>
 				<p:message for="Referencia" />
 				
