@@ -15,6 +15,7 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleModel;
 
 import com.edicsem.pe.sie.entity.EmpleadoSie;
@@ -53,6 +54,7 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 	
 	public void init() {
 		log.info("init()");
+		eventModel = new DefaultScheduleModel(); 
 		horarioPersonalList= new ArrayList<HorarioPersonalSie>();
 		objHorario= new HorarioPersonalSie();
 	}
@@ -142,7 +144,7 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 					// se debe cumplir que los vendedores tengan un dia libre (descanso)
 					Time hora1,hora2;
 					Calendar hingreso = new GregorianCalendar();
-					
+					Calendar hAuxi = new GregorianCalendar();
 						List<Integer> arreglo = new ArrayList<Integer>();
 						//guardamos en un arreglo los id de los vendedores
 						for (int j = 0; j < vendedores.size(); j++) {
@@ -171,8 +173,25 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 							int rho = (int) (Math.random() * (arr.length-1 + 1));
 							log.info("tamaño  "+arr.length+"  rho "+arr[rho]);
 							hingreso.setTime(horariopv.get(i).getHoraIngreso());
+							hAuxi.setTime(horariopv.get(i).getHoraIngreso());
 							hora1 = new Time(hingreso.getTimeInMillis());
-							hingreso.add(Calendar.HOUR, arr[rho]);
+							hAuxi.add(Calendar.HOUR, arr[rho]);
+							
+							if(hAuxi.after(horariopv.get(i).getHoraSalida())){
+								
+								hingreso.add(Calendar.HOUR, 4);
+								log.info(" hora ingreso  " +hingreso.getTime());
+								log.info("auxi   1 "+hingreso.getTime());
+								
+								
+								
+								
+							}else{
+								
+								hingreso.add(Calendar.HOUR,arr[rho]);
+								log.info("auxi   2  "+hingreso.getTime());
+							}
+							
 							hora2 = new Time(hingreso.getTimeInMillis());
 							log.info("hora 1 "+ hora1+" hora2 "+hora2);
 							objHorario.setHoraIngreso(hora1);
