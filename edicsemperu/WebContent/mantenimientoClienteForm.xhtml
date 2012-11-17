@@ -244,10 +244,9 @@ rowStyleClass="#{d.tbEstadoGeneral.idestadogeneral eq 16 ? 'color1': (d.tbEstado
 					<p:spacer/>
 
 						
-				<h:outputText value="#{message['cliente.TipoCasa']}"	for="TipoCasa"  />
+				<h:outputText value="Tipo Casa" />
 				<p:selectOneMenu style="width:165px"
-						 id="tipocasa" required="true" label="TipoCasa"
-					requiredMessage="#{message['cliente.TipoCasa.validation']}" 
+						 id="tipocasa"
 						
 						value="#{MantenimientoClienteFormAction.tipocasa}">
 						<f:selectItem itemLabel="Seleccione tipo casa"
@@ -256,22 +255,18 @@ rowStyleClass="#{d.tbEstadoGeneral.idestadogeneral eq 16 ? 'color1': (d.tbEstado
 				</p:selectOneMenu>
 				<p:message for="tipocasa" />
 					
-				<h:outputText  value="#{message['cliente.domicilio']}"	for="domicilio" />
+				<h:outputText value="domicilio" />
 				<p:inputText id="domicilio"
 					value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.domicilio}" 
-					required="true" label="domicilio"
-					requiredMessage="#{message['cliente.domicilio.validation']}" 
 					/>
 				<p:message for="domicilio" />
 				
 				
 				
 				
-				<h:outputText value="#{message['cliente.referencia']}"	for="referencia"  />
+				<h:outputText value="Referencia" />
 				<p:inputText id="Referencia"
-					value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.referencia}"
-					required="true" label="referencia"
-					requiredMessage="#{message['cliente.referencia.validation']}"  
+					value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.referencia}" 
 					/>
 				<p:message for="Referencia" />
 				
