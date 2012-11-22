@@ -56,8 +56,7 @@
 		<h:outputText value="#{p.tbContrato.tbCliente.nombresCompletos}" />
 	   </p:column>
 	  <p:column headerText="Editar">
-				<p:commandButton value="Editar"  oncomplete="incidenciaDialog.show()"
-								action="#{mantenimientoIncidenciaForm.update}"
+				<p:commandButton value="Editar"  action="#{mantenimientoIncidenciaForm.update}" ajax="false"
 			                    update=":editarIncidencia:display"
 			                    icon="ui-icon ui-icon-pencil">                   
 			<f:setPropertyActionListener value="#{p}" 
