@@ -1068,28 +1068,7 @@ body {
 	</h:form>
 <!-- fin ASISTENCIA -->
 
-<!--	  EDITAR Y DESACTIVAR INCIDENCIA	   -->
-
-	<h:form id="editarIncidencia">
-		<p:dialog header="Editar" widgetVar="incidenciaDialog"
-			showEffect="fade" hideEffect="explode" modal="true" width="300"
-			position="center">
-			<h:panelGrid id="display" columns="2" cellpadding="2"
-				style="margin:0 auto;">
-				<h:outputText value="Estado" />				
-				<p:selectOneMenu id="estado" value="#{mantenimientoIncidenciaForm.estado}" styleClass="required" title="El estado es obligatorio!" >
-                <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
-                <f:selectItem  itemValue="42" itemLabel="Revisada"/>
-                <f:selectItem  itemValue="43" itemLabel="En proceso"/>
-                <f:selectItem  itemValue="44" itemLabel="En espera"/>
-                <f:selectItem  itemValue="45" itemLabel="Sin revisar"/>
-                </p:selectOneMenu>
-                <p:commandButton id="btn" value="Guardar" update="panel"
-						action="#{mantenimientoIncidenciaForm.insertar}"
-						ajax="false" icon="ui-icon ui-icon-disk" />
-			</h:panelGrid>
-		</p:dialog>
-	</h:form>
+<!-- DESACTIVAR INCIDENCIA	   -->
 	
 <h:form>
 	<p:confirmDialog id="confirmDeshabilitarIncidencia" message="Esta seguro de deshabilitar dicha incidencia?" width="325" height="100" showEffect="explode" 
@@ -1101,7 +1080,33 @@ body {
     </p:confirmDialog>
 </h:form>
 
-<!--	  FIN EDITAR Y DESACTIVAR INCIDENCIA	   -->
+<!-- fin DESACTIVAR INCIDENCIA	   -->
+
+<!-- NUEVA INCIDENCIA	   -->
+
+	<h:form id="nuevaobsinc">
+		<p:dialog header="Ingrese Observación" widgetVar="ObsIncDialog"
+			showEffect="fade" hideEffect="explode" modal="true" width="300"
+			position="center">
+			<h:panelGrid id="display" columns="2" cellpadding="2"
+				style="margin:0 auto;">
+            
+            <h:outputText value="Estado" />	
+            <h:inputTextarea value="#{mantenimientoIncidenciaForm.objObsIncidencia.observacion}" /> 
+            <h:outputText value="Fecha final" />				
+            <p:calendar id="fechafin" 
+            value="#{mantenimientoIncidenciaForm.fechafin}"  />
+            <p:commandButton 
+					    value="Guardar" 
+						update="display"
+						action="#{mantenimientoIncidenciaForm.insertarObs}"
+						ajax="false"
+						icon="ui-icon ui-icon-disk" />	
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+
+<!-- fin NUEVA OBSINCIDENCIA	   -->
 				
 <!--	  DESACTIVAR PROVEEDOR	   -->
 
