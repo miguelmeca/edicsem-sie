@@ -9,8 +9,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.IncidenciaSie;
+import com.edicsem.pe.sie.entity.ObservacionIncidenciaSie;
 import com.edicsem.pe.sie.entity.ProveedorSie;
 import com.edicsem.pe.sie.service.facade.IncidenciaService;
+import com.edicsem.pe.sie.service.facade.ObsIncidenciaService;
 import com.edicsem.pe.sie.service.facade.ProveedorService;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
@@ -20,10 +22,14 @@ public class MantenimientoIncidenciaSearchAction extends BaseMantenimientoAbstra
 	/*variables*/
 	private IncidenciaSie objIncidencia;
 	private List<IncidenciaSie> listaIncidencia;
+	private ObservacionIncidenciaSie objObsIncidencia;
+	private List<ObservacionIncidenciaSie> listaObsIncidencia;
 	private boolean editMode;
 	
 	@EJB 
 	private IncidenciaService objIncidenciaService;
+	@EJB 
+	private ObsIncidenciaService objObsIncidenciaService;
 	
 	public static Log log = LogFactory.getLog(MantenimientoIncidenciaSearchAction.class);
 	
@@ -38,6 +44,7 @@ public class MantenimientoIncidenciaSearchAction extends BaseMantenimientoAbstra
 		log.info("init()");
 		// Colocar valores inicializados
 		objIncidencia = new IncidenciaSie();
+		objObsIncidencia = new ObservacionIncidenciaSie();
 		log.info("despues de inicializar  ");		
 	}
 	
@@ -55,10 +62,27 @@ public class MantenimientoIncidenciaSearchAction extends BaseMantenimientoAbstra
 		return getViewList();
 	}
 	
+	/*método que lista*/
+	/*public String listarObsInc() {
+		listaObsIncidencia = objObsIncidenciaService.listarObsIncidencia(id);
+		if (listaObsIncidencia == null) {
+			listaObsIncidencia = new ArrayList<ObservacionIncidenciaSie>();
+		}
+		return "";
+	}*/
+	
 	/*GETs Y SETs*/
 	
 	public String getViewList() {
 		return "mantenimientoIncidenciaList";
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewMant()
+	 */
+	@Override
+	public String getViewMant() {
+		return "mantenimientoIncidenciaForm";
 	}
 
 	/**
@@ -101,6 +125,35 @@ public class MantenimientoIncidenciaSearchAction extends BaseMantenimientoAbstra
 	 */
 	public void setListaIncidencia(List<IncidenciaSie> listaIncidencia) {
 		this.listaIncidencia = listaIncidencia;
+	}
+
+	/**
+	 * @return the objObsIncidencia
+	 */
+	public ObservacionIncidenciaSie getObjObsIncidencia() {
+		return objObsIncidencia;
+	}
+
+	/**
+	 * @param objObsIncidencia the objObsIncidencia to set
+	 */
+	public void setObjObsIncidencia(ObservacionIncidenciaSie objObsIncidencia) {
+		this.objObsIncidencia = objObsIncidencia;
+	}
+
+	/**
+	 * @return the listaObsIncidencia
+	 */
+	public List<ObservacionIncidenciaSie> getListaObsIncidencia() {
+		return listaObsIncidencia;
+	}
+
+	/**
+	 * @param listaObsIncidencia the listaObsIncidencia to set
+	 */
+	public void setListaObsIncidencia(
+			List<ObservacionIncidenciaSie> listaObsIncidencia) {
+		this.listaObsIncidencia = listaObsIncidencia;
 	}
 	
 	
