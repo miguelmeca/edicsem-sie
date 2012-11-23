@@ -319,6 +319,38 @@ body {
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
+	
+		<!--  Mantenimiento HORARIO VENDEDOR -->
+
+	<h:form id="formHorarioVendedor">
+		<p:dialog header="Registro/Modificación horario Vendedor" widgetVar="horarioVendedorDialog" showEffect="fade"
+			hideEffect="explode" modal="true" width="450" position="center">
+			<h:panelGrid id="display" columns="2" cellpadding="2">
+			
+			<h:outputLabel value="Vendedor " />  
+            <p:selectCheckboxMenu value="#{horarioVendedorForm.vendedorList}" filter="true" filterText="Filter" filterMatchMode="startsWith">
+            <f:selectItems value="#{comboAction.empleadoxcargo}" />
+            </p:selectCheckboxMenu>
+            
+			<h:outputLabel value="Desde " />
+            <p:inputMask value="#{horarioVendedorForm.event.startDate}" mask="99/99/9999 99:99">  
+                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />  
+            </p:inputMask>
+            
+            <h:outputLabel value="Hasta " />  
+            <p:inputMask value="#{horarioVendedorForm.event.endDate}" mask="99/99/9999  99:99">  
+                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />  
+            </p:inputMask>
+            
+				<p:commandButton type="reset" value="Limpiar" />
+				<p:commandButton value="Grabar" action="#{horarioVendedorForm.insertar}"
+					 oncomplete="horarioVendedorDialog.hide();" update="@all">
+				</p:commandButton>
+				
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+	
 <!--  Mantenimiento JOSELO -->
 
 	<h:form id="formInsertUbigeoJoselo">
