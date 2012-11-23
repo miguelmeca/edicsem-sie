@@ -144,7 +144,7 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 					Time hora1,hora2, haux;
 					Calendar hingreso = new GregorianCalendar();
 					Calendar hAuxi = new GregorianCalendar();
-					int f=0, idAuxi = 0 ;
+					int f=0 ;
 						List<Integer> arreglo = new ArrayList<Integer>();
 						//guardamos en un arreglo los id de los vendedores
 						for (int j = 0; j < vendedores.size(); j++) {
@@ -182,11 +182,10 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 								log.info("auxi   1 "+hingreso.getTime());
 								
 							}else{
-								
 								hingreso.add(Calendar.HOUR,arr[rho]);
 								log.info("auxi   2  "+hingreso.getTime());
 							}
-							
+							List<Integer> auxiList= new ArrayList<Integer>();
 							hora2 = new Time(hingreso.getTimeInMillis());
 							log.info("hora 1 "+ hora1+" hora2 "+hora2);
 							objHorario.setHoraIngreso(hora1);
@@ -197,34 +196,35 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 							for (int s = 0; s < filtros.size(); s++) {
 								log.info(" FILTROS : "+filtros.size());
 								
-//								log.info("dinic "+cDesde.getTime().before(filtros.get(s).getDiainicio())+" dfin "+
-//										cDesde.getTime().before(filtros.get(s).getDiafin())+" fecha "+
-//										filtros.get(s).getTbFecha().getIdFecha()+" dia " +cDesde.get(Calendar.DAY_OF_WEEK)+"  ven"+
-//										arreglo.get(f)+" vend2 " + filtros.get(s).getTbEmpleado().getIdempleado());
-								if( filtros.get(s).getTbFecha().getIdFecha()==cDesde.get(Calendar.DAY_OF_WEEK)&& 
-									arreglo.get(f)== filtros.get(s).getTbEmpleado().getIdempleado()){
+								log.info(filtros.get(s).getTbFecha().getIdFecha()+"  "+cDesde.get(Calendar.DAY_OF_WEEK)+"  "+
+										arreglo.get(f)+ "    "+ filtros.get(s).getTbEmpleado().getIdempleado());
+								if( filtros.get(s).getTbFecha().getIdFecha()==cDesde.get(Calendar.DAY_OF_WEEK)){
 									log.info(" ** FILTROS ** ");
 									
 									//Acuerdo (horario previamente establecido) //Permiso
 									if(filtros.get(s).getTbTipoFiltro().getIdtipofiltro()==1||filtros.get(s).getTbTipoFiltro().getIdtipofiltro()==2){
 										log.info(" ** 1 ** "+filtros.get(s).getObservacion());
-									// Acuerdo (no debería registrarse otro horario para dicha persona en dicho día, porque ya se registro 1)
-										 
-									//permiso (Se debe enviar otro vendedor) 
-										log.info(" ** 2 ** "+filtros.get(s).getObservacion());
-										idAuxi=f;//luego volver a isertarlo
-										log.info("idauxi "+ idAuxi+" "+arreglo.get(f) );
-										arreglo.remove(f);
-										f = (int) (Math.random() * ((arreglo.size()-1)-0+1));
-										objHorario.setTbEmpleado(objVendedoresService.buscarEmpleado(arreglo.get(f)));
-										log.info("f   "+f );
+										// Acuerdo (no debería registrarse otro horario para dicha persona en dicho día, porque ya se registro 1)
+										//permiso (Se debe enviar otro vendedor) 
+										log.info(" ** 2 *2* "+filtros.get(s).getObservacion());
+										auxiList.add(filtros.get(s).getTbEmpleado().getIdempleado());//luego volver a isertarlo
 									}
 									//Descanso
 									else if(filtros.get(s).getTbTipoFiltro().getIdtipofiltro()==3){
 										log.info(" ** 3 ** "+filtros.get(s).getObservacion());
-										
 									}
-								}
+								}log.info("otra vez  ");
+							}
+							
+							for (int j = 0; j < auxiList.size(); j++) {
+									log.info(" --> xd  "+ (auxiList.get(j)));
+									arreglo.remove(auxiList.get(j)); 
+							}
+							
+							if(auxiList.size()>0){
+							f = (int) (Math.random() * ((arreglo.size()-1)-0+1));
+							objHorario.setTbEmpleado(objVendedoresService.buscarEmpleado(arreglo.get(f)));
+							log.info("f   "+f );
 							}
 							
 							horarioPersonalList.add(objHorario);
@@ -248,8 +248,10 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 								objHorario.setTbEmpleado(objVendedoresService.buscarEmpleado(arreglo.get(rho2)));
 								horarioPersonalList.add(objHorario);
 								log.info("h  "+hora2+" h sal  "+horariopv.get(i).getHoraSalida());
-								if(idAuxi!=0){
-								arreglo.add(idAuxi);
+								if(auxiList.size()>0){
+									for (int j = 0; j < auxiList.size(); j++) {
+										arreglo.add(auxiList.get(j));
+									}
 								}
 							}
 						}
@@ -266,7 +268,7 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 					String[] a= (horarioPersonalList.get(k).getHoraIngreso()+"").split(":");
 					db1.add(Calendar.HOUR_OF_DAY, Integer.parseInt(a[0]));
 					db1.add(Calendar.MINUTE, Integer.parseInt(a[1]));
-					dDate = db1.getTime(); 
+					dDate = db1.getTime();
 					String[] a2= (horarioPersonalList.get(k).getHoraSalida()+"").split(":");
 					db2.add(Calendar.HOUR_OF_DAY, Integer.parseInt(a2[0]));
 					db2.add(Calendar.MINUTE, Integer.parseInt(a2[1]));
