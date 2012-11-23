@@ -281,7 +281,7 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 					horarioPersonalList.get(k).getHoraSalida() + " , "+horarioPersonalList.get(k).getTbEmpleado().getNombresCompletos() , dDate, dDate2));
 				}
 			}
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
