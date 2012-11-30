@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,7 +33,8 @@ public class EstadoGeneralSie implements Serializable {
 	private String codestadogeneral;
 
 	private String descripcion;
-
+	
+	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
 
 	//bi-directional many-to-one association to CargoEmpleadoSie
@@ -138,6 +140,18 @@ public class EstadoGeneralSie implements Serializable {
 	//bi-directional many-to-one association to HorarioPuntoVentaSie
 	@OneToMany(mappedBy="tbEstadoGeneral")
 	private Set<HorarioPuntoVentaSie> tbHorarioPuntos;
+	
+	//bi-directional many-to-one association to FactorSancionSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<FactorSancionSie> tbFactorSancion;
+	
+	//bi-directional many-to-one association to SancionSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<SancionSie> tbSancion;
+	
+	//bi-directional many-to-one association to DetSancionCargoSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<DetSancionCargoSie> tbDetSancionCargo;
 	
     public EstadoGeneralSie() {
     }
@@ -390,6 +404,30 @@ public class EstadoGeneralSie implements Serializable {
 
 	public void setTbHorarioPuntos(Set<HorarioPuntoVentaSie> tbHorarioPuntos) {
 		this.tbHorarioPuntos = tbHorarioPuntos;
+	}
+
+	public Set<FactorSancionSie> getTbFactorSancion() {
+		return tbFactorSancion;
+	}
+
+	public void setTbFactorSancion(Set<FactorSancionSie> tbFactorSancion) {
+		this.tbFactorSancion = tbFactorSancion;
+	}
+
+	public Set<SancionSie> getTbSancion() {
+		return tbSancion;
+	}
+
+	public void setTbSancion(Set<SancionSie> tbSancion) {
+		this.tbSancion = tbSancion;
+	}
+
+	public Set<DetSancionCargoSie> getTbDetSancionCargo() {
+		return tbDetSancionCargo;
+	}
+
+	public void setTbDetSancionCargo(Set<DetSancionCargoSie> tbDetSancionCargo) {
+		this.tbDetSancionCargo = tbDetSancionCargo;
 	}
 
 	

@@ -55,6 +55,10 @@ public class CargoEmpleadoSie  implements Serializable {
 	//bi-directional many-to-one association to PermisoSie
 	@OneToMany(mappedBy="tbCargoEmpleado")
 	private Set<PermisoSie> tbPermisos;
+	
+	//bi-directional many-to-one association to DetSancionCargoSie
+	@OneToMany(mappedBy="tbCargoempleado")
+	private Set<DetSancionCargoSie> tbDetSancionCargo;
 
     public CargoEmpleadoSie() {
     }
@@ -129,6 +133,14 @@ public class CargoEmpleadoSie  implements Serializable {
 
 	public void setTbDetCargoEmpleados(Set<DetCargoEmpleadoSie> tbDetCargoEmpleados) {
 		this.tbDetCargoEmpleados = tbDetCargoEmpleados;
+	}
+
+	public Set<DetSancionCargoSie> getTbDetSancionCargo() {
+		return tbDetSancionCargo;
+	}
+
+	public void setTbDetSancionCargo(Set<DetSancionCargoSie> tbDetSancionCargo) {
+		this.tbDetSancionCargo = tbDetSancionCargo;
 	}
 	
 }

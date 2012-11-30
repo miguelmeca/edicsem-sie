@@ -51,6 +51,9 @@
 		<class>com.edicsem.pe.sie.entity.ObservacionIncidenciaSie</class>
 		<class>com.edicsem.pe.sie.entity.TipoFiltroSie</class>
 		<class>com.edicsem.pe.sie.entity.HorarioPuntoVentaSie</class>
+		<class>com.edicsem.pe.sie.entity.FactorSancionSie</class>
+		<class>com.edicsem.pe.sie.entity.SancionSie</class>
+		<class>com.edicsem.pe.sie.entity.DetSancionCargoSie</class>
 	<properties>
 			<property name="eclipselink.jdbc.driver" value="org.postgresql.Driver" />
 			<property name="eclipselink.jdbc.url" value="jdbc:postgres://192.168.1.2:5432/bd_sie" />
