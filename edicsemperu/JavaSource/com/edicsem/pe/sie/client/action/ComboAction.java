@@ -19,6 +19,7 @@ import com.edicsem.pe.sie.entity.DetCargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.EstadoGeneralSie;
+import com.edicsem.pe.sie.entity.FactorSancionSie;
 import com.edicsem.pe.sie.entity.FechaSie;
 import com.edicsem.pe.sie.entity.MetaMesSie;
 import com.edicsem.pe.sie.entity.PaqueteSie;
@@ -38,8 +39,8 @@ import com.edicsem.pe.sie.service.facade.DetalleCarEmpService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
+import com.edicsem.pe.sie.service.facade.FactorSancionService;
 import com.edicsem.pe.sie.service.facade.FechaService;
-import com.edicsem.pe.sie.service.facade.IncidenciaService;
 import com.edicsem.pe.sie.service.facade.MetaMesService;
 import com.edicsem.pe.sie.service.facade.PaqueteService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
@@ -87,6 +88,7 @@ public class ComboAction {
 	private Map<String, Integer> empleadoxcargo = new HashMap<String, Integer>();
 	private Map<String, Integer> diasItems = new HashMap<String, Integer>();
 	private Map<String, Integer> tipoFiltroItems = new HashMap<String, Integer>();
+	private Map<String, Integer> factorSancionItems = new HashMap<String, Integer>();
 	@EJB
 	private AlmacenService objAlmacenService;
 	@EJB
@@ -123,6 +125,8 @@ public class ComboAction {
 	private FechaService objFechaService;
 	@EJB
 	private TipoFiltroService objTipoFiltroService;
+	@EJB
+	private FactorSancionService objFactorService;
 
 	public ComboAction() {
 		log.info("inicializando constructor");
@@ -978,6 +982,40 @@ public class ComboAction {
 	 */
 	public void setTipoFiltroItems(Map<String, Integer> tipoFiltroItems) {
 		this.tipoFiltroItems = tipoFiltroItems;
+	}
+
+	/**
+	 * @return the factorSancionItems
+	 */
+	public Map<String, Integer> getFactorSancionItems() {
+		List lista = new ArrayList<FactorSancionSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getFactorSancionItems()'");
+			}
+			lista = objFactorService.listarFactorSancion();
+			for (int i = 0; i < lista.size(); i++) {
+				FactorSancionSie entidad = new FactorSancionSie();
+				entidad = (FactorSancionSie) lista.get(i);
+				factorSancionItems.put(entidad.getDescripcion(),
+						entidad.getIdfactor());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return factorSancionItems;
+	}
+
+	/**
+	 * @param factorSancionItems the factorSancionItems to set
+	 */
+	public void setFactorSancionItems(Map<String, Integer> factorSancionItems) {
+		this.factorSancionItems = factorSancionItems;
 	}
 	
 }

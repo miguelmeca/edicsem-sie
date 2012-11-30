@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Sancion</h1>
+		<h:form id="frmPagoVentasForm">
+			<p:growl id="message" showDetail="true" />
+			<p:fieldset legend="Buscar Personal" style="margin-top:20px">
+				<h:panelGrid columns="2">
+					
+					<h:outputText value="Empleado :" />
+					<p:selectOneMenu id="empleado"
+						value="#{horarioPersonal.idempleado}" styleClass="required"
+						title="El tipo es obligatorio!">
+						<f:selectItems value="#{comboAction.empleadoxcargo}" />
+					</p:selectOneMenu>
+					<h:outputText value="Empleado :" />
+					<p:selectOneMenu id="empleado"
+						value="#{horarioPersonal.idempleado}" styleClass="required"
+						title="El tipo es obligatorio!">
+						<f:selectItems value="#{comboAction.diasItems}" />
+					</p:selectOneMenu>
+					
+					
+					
+					<p:commandButton value="Buscar" ajax="false" action="#{PagoVenta.agregar}" />
+				</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+	 </ui:define>
+</ui:composition>
