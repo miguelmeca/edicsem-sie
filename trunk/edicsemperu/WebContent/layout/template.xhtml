@@ -107,6 +107,7 @@ body {
 						<p:menuitem value="Mantenimiento Valorizado" update="messages" ajax="false" action="mantenimientoKardex.jsf" />
 						<p:menuitem value="Movimiento Mercader&iacute;a" ajax="false" action="#{movimientoMercaderia.listar}" />
 						<p:menuitem value="Registro Comprobante" ajax="false" action="#{comprobanteSearch.listar}" />
+						<p:menuitem value="Registro de Sanciones " update="messages" ajax="false" action="#{factorSancionSearch.listar}" />
 						<p:menuitem value="Mantenimiento de Empleados por Empresa" ajax="false" action="#{detEmpresaEmpleadoSearch.listar}" />
 						<p:menuitem value="Mantenimiento de Empleados" ajax="false" action="#{mantenimientoEmpleadoSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento de Proveedores" ajax="false" action="#{mantenimientoProveedorSearchAction.listar}" />
@@ -633,10 +634,70 @@ body {
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
-	
+		
+<!--  Mantenimiento Sancion -->
+	<h:form id="formSancion">
+		<p:dialog header="Registro/Modificacion de Sancion" widgetVar="sancionesDialog" showEffect="fade"
+			hideEffect="explode" modal="true" position="center">
+			
+				<p:fieldset legend="Sancion por cargo" >
+				 <h:panelGrid id="display" columns="4"  >
+					<h:outputText value="Descripcion :" />
+					<p:inputText value="#{SancionForm.objSancionSie.descripcion}" />
+					<h:outputText value="Detalle :" />
+					<p:inputText value="#{SancionForm.objSancionSie.detalle}" />
+					<h:outputText value="Día Inicio :" />
+					<p:calendar value="#{SancionForm.objSancionSie.diainicio}" />
+					<h:outputText value="Día Fin :" />
+					<p:calendar value="#{SancionForm.objSancionSie.diafin}" />
+					</h:panelGrid>
+				</p:fieldset>
+				
+				<p:fieldset legend="Sancion por cargo"  columns="4"  >
+					<h:outputText value="Cargo :" />
+					<p:selectOneMenu value="#{SancionForm.idcargo}" >
+						<f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
+					</p:selectOneMenu>
+					<h:outputText value="Días suspension :" />
+					<p:inputText value="#{SancionForm.objDetSancionCargo.cantdiaSuspension}" />
+					<h:outputText value="Descuento Sancion :" />
+					<p:inputText value="#{SancionForm.objDetSancionCargo.descuento}" />
+					<h:outputText value="Factor :" />
+					<p:selectOneMenu required="true" value="#{SancionForm.factor}" >
+						<f:selectItem itemLabel="Seleccione un factor" itemValue="#{null}" />
+						<f:selectItems value="#{comboAction.factorSancionItems}" />
+					</p:selectOneMenu>
+					<p:commandButton value="Agregar" action="#{SancionForm.agregarSancionCargo}" update="listaCargo" />
+				</p:fieldset>
+				<p:fieldset legend="Sancion por cargo" >
+					  <p:dataTable value="#{SancionForm.detSancionCargoList}" var="p"
+					  id="listaCargo" widgetVar="table" emptyMessage="No se encontro registros">
+					  <f:facet name="header">Sancion por cargo</f:facet>
+					  <p:column>
+					  <f:facet name="header">
+					  <h:outputText value="Cargo" />
+					  </f:facet>
+					  <h:outputText value="#{p.tbCargoempleado.descripcion}" />
+					  </p:column>
+					  <p:column>
+					  <f:facet name="header">
+					  <h:outputText value="Descuento" />
+					  </f:facet>
+					  <h:outputText value="#{p.descuento}" />
+					  </p:column>
+					  <p:column>
+					  <f:facet name="header">
+					  <h:outputText value="Suspensión" />
+					  </f:facet>
+					  <h:outputText value="#{p.cantdiaSuspension}" />
+					  </p:column>
+					  </p:dataTable>
+				</p:fieldset>
+				<p:commandButton value="Grabar" action="#{SancionForm.insertar}" oncomplete="sancionesDialog.hide()" icon="ui-icon ui-icon-pencil"/>
+		</p:dialog>
+	</h:form>
 	
 	<h:form id="horarioDeshabilita" >
-
 		<p:confirmDialog id="confirmDeshabilitarHorario"
 			message="Esta seguro de deshabilitar dicho horario?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
@@ -650,7 +711,6 @@ body {
 			<p:commandButton value="No" onclick="confirmation.hide()"
 				type="button" />
 		</p:confirmDialog>
-
 	</h:form>
 
 <!--  Mantenimiento Horario Punto Venta-->
