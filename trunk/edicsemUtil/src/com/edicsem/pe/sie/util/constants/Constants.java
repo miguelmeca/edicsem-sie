@@ -56,6 +56,11 @@ public class Constants {
 	
 	public static final String MANT_HORARIO_PUNTO_VENTA = "mantenimientoHorarioPuntoVenta";
 	
+	public static final String MANT_FACTOR_SANCION_FORM_LIST_PAGE = "mantenimientoFactorSancionFormList";
+	
+	public static final String MANT_FILTRO_HORARIO_PERSONAL_VENTAS = "mantenimientoFiltroHorarioVendedor";
+	public static final String MANT_SANCION_FORM_LIST_PAGE = "mantenimientoSancionForm";
+	
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
 	public static final String COD_ESTADO_TB_CARGO_EMPLEADO = "CE";
@@ -67,6 +72,6 @@ public class Constants {
 	
 	//aviso mensaje "las contraseñas no coinciden"
 	public static final String MESSAGE_PASSWORDS_DESIGUALES = "Contraseñas no coinciden";
-	public static final String MANT_FILTRO_HORARIO_PERSONAL_VENTAS = "mantenimientoFiltroHorarioVendedor";
+
 	
 	}
