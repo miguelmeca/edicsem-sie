@@ -21,8 +21,6 @@ public class DetSancionCargoSie implements Serializable {
 	@SequenceGenerator(name="TB_DET_SANCION_CARGO_IDDETSANCIONCARGO_GENERATOR", sequenceName="SIE.TB_DET_SANCION_CARGO_IDDETSANCIONCARGO_SEQ", initialValue=1, allocationSize =1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_DET_SANCION_CARGO_IDDETSANCIONCARGO_GENERATOR")
 	private Integer iddetsancioncargo;
-
-	private String descripcion;
 	
 	private BigDecimal descuento;
 	
@@ -52,14 +50,6 @@ public class DetSancionCargoSie implements Serializable {
 
 	public void setIddetsancioncargo(Integer iddetsancioncargo) {
 		this.iddetsancioncargo = iddetsancioncargo;
-	}
-
-	public String getDescripcion() {
-		return this.descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
 	}
 
 	public EstadoGeneralSie getTbEstadoGeneral() {
