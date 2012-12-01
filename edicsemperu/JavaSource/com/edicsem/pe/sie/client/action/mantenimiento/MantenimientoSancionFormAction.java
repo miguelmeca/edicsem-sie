@@ -12,11 +12,10 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.edicsem.pe.sie.client.action.ComboAction;
-import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DetSancionCargoSie;
 import com.edicsem.pe.sie.entity.SancionSie;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
+import com.edicsem.pe.sie.service.facade.DetSancionCargoService;
 import com.edicsem.pe.sie.service.facade.SancionService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
@@ -40,6 +39,8 @@ public class MantenimientoSancionFormAction extends BaseMantenimientoAbstractAct
 	private SancionService objSancionService;
 	@EJB
 	private CargoEmpleadoService objCargoService;
+	@EJB
+	private DetSancionCargoService objDetSancionCargoService;
 	
 	public MantenimientoSancionFormAction() {
 		init();
@@ -58,6 +59,8 @@ public class MantenimientoSancionFormAction extends BaseMantenimientoAbstractAct
 		detSancionList = new ArrayList<SancionSie>();
 		detSancionCargoList = new ArrayList<DetSancionCargoSie>();
 		objDetSancionCargo = new DetSancionCargoSie();
+		idFactor=0;
+		idSancion =0;
 	}
 
 	/* (non-Javadoc)
@@ -74,8 +77,9 @@ public class MantenimientoSancionFormAction extends BaseMantenimientoAbstractAct
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
 	 */
 	public String update() throws Exception {
-		log.info("update()  " );
+		log.info("update()  "+idSancion );
 		setNewRecord(false);
+		detSancionCargoList = objDetSancionCargoService.listarDetSancionCargo(objSancionSie.getIdsancion());
 		return getViewList();
 	}
 	
@@ -109,9 +113,13 @@ public class MantenimientoSancionFormAction extends BaseMantenimientoAbstractAct
 	}
 	
 	public void agregarSancionCargo(){
+		log.info("agregarSancionCargo");
 		objDetSancionCargo.setTbCargoempleado(objCargoService.buscarCargoEmpleado(idcargo));
-		objDetSancionCargo.setTbSancion(objSancionService.findSancion(idSancion));
 		detSancionCargoList.add(objDetSancionCargo);
+		objDetSancionCargo = new DetSancionCargoSie();
+		for (int i = 0; i < detSancionCargoList.size(); i++) {
+			log.info("sus  "+detSancionCargoList.get(i).getCantdiaSuspension());
+		}
 	}
 
 	/*

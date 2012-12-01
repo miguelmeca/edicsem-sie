@@ -693,7 +693,7 @@ body {
 					  </p:column>
 					  </p:dataTable>
 				</p:fieldset>
-				<p:commandButton value="Grabar" action="#{SancionForm.insertar}" oncomplete="sancionesDialog.hide()" icon="ui-icon ui-icon-pencil"/>
+				<p:commandButton value="Grabar" action="#{SancionForm.insertar}" oncomplete="sancionesDialog.hide()" icon="ui-icon ui-icon-pencil" update="@all" />
 		</p:dialog>
 	</h:form>
 	
