@@ -10,6 +10,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.edicsem.pe.sie.client.action.SMTPConfig;
 import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.CobranzaOperadoraSie;
 import com.edicsem.pe.sie.entity.CobranzaSie;
@@ -112,6 +114,16 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	
 	public String insertar() throws Exception {
 		try {
+			  if(SMTPConfig.sendMail("Seguimiento del cliente",objCobranzaOpera.getObservaciones(),"geraldine8513@gmail.com")){
+				   
+				   log.info("envío Correcto");
+				    
+				  }else {
+					  
+			       log.info("envío Fallido");
+				 
+				 }
+			
 				if (log.isInfoEnabled()) {
 				}
 				objCobranzaOpera.setObservaciones(objCobranzaOpera.getObservaciones());
