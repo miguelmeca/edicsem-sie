@@ -12,6 +12,6 @@ public interface DetSancionCargoService {
 	public abstract void insertDetSancionCargo(DetSancionCargoSie d);
 	public abstract void updateDetSancionCargo(DetSancionCargoSie d);
 	public abstract DetSancionCargoSie findDetSancionCargo (int id);
-	public abstract List  listarDetSancionCargo();
+	public abstract List  listarDetSancionCargo(int idSancion);
 }
 
