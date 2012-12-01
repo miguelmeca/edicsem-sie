@@ -60,6 +60,7 @@ public class Constants {
 	
 	public static final String MANT_FILTRO_HORARIO_PERSONAL_VENTAS = "mantenimientoFiltroHorarioVendedor";
 	public static final String MANT_SANCION_FORM_LIST_PAGE = "mantenimientoSancionForm";
+	public static final String MANT_PAGO_VENDEDOR_FORM_PAGE = "mantenimientoPagoVendedorForm";
 	
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
