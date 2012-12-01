@@ -62,14 +62,14 @@ public class DetSancionCargoDAOImpl implements DetSancionCargoDAO{
 		}
 		return d;
 	}
-
+	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.DetSancionCargoDAO#listarDetSancionCargo()
+	 * @see com.edicsem.pe.sie.model.dao.DetSancionCargoDAO#listarDetSancionCargo(int)
 	 */
-	public List listarDetSancionCargo() {
+	public List listarDetSancionCargo(int idSancion) {
 		List lista = null;
 		try {
-			Query q = em.createQuery("select p from DetSancionCargoSie p");
+			Query q = em.createQuery("select p from DetSancionCargoSie p where p.tbSancion.idsancion = "+idSancion);
 			lista = q.getResultList();
 			log.info("tamaño lista detalleCargo --> " + lista.size());
 		} catch (Exception e) {
