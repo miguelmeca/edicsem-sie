@@ -32,11 +32,12 @@ public class SancionServiceImpl implements SancionService {
 
 		s.setTbFactorSancion(objFactorSancionDao.findFactorSancion(factor));
 		s.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(46));
+		objSancionDao.insertSancion(s);
 		for (int i = 0; i < detSancionCargo.size(); i++) {
+			detSancionCargo.get(i).setTbSancion(s);
 			detSancionCargo.get(i).setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(46));
 			objDetSancionCargoDao.insertDetSancionCargo(detSancionCargo.get(i));
 		}
-		objSancionDao.insertSancion(s);
 	}
 
 	/* (non-Javadoc)

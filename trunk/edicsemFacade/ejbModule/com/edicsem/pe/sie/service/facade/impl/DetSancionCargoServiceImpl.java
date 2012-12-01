@@ -48,7 +48,7 @@ public class DetSancionCargoServiceImpl implements DetSancionCargoService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.DetSancionCargoService#listarDetSancionCargo()
 	 */
-	public List listarDetSancionCargo() {
-		return objDetSancionCargoDao.listarDetSancionCargo();
+	public List listarDetSancionCargo(int idSancion) {
+		return objDetSancionCargoDao.listarDetSancionCargo(idSancion);
 	}
 }
