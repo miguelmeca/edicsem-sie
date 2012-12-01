@@ -108,6 +108,7 @@ body {
 						<p:menuitem value="Movimiento Mercader&iacute;a" ajax="false" action="#{movimientoMercaderia.listar}" />
 						<p:menuitem value="Registro Comprobante" ajax="false" action="#{comprobanteSearch.listar}" />
 						<p:menuitem value="Registro de Sanciones " update="messages" ajax="false" action="#{factorSancionSearch.listar}" />
+						<p:menuitem value="Pago a vendedores" update="messages" ajax="false" action="#{PagoVenta.agregar}" />
 						<p:menuitem value="Mantenimiento de Empleados por Empresa" ajax="false" action="#{detEmpresaEmpleadoSearch.listar}" />
 						<p:menuitem value="Mantenimiento de Empleados" ajax="false" action="#{mantenimientoEmpleadoSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento de Proveedores" ajax="false" action="#{mantenimientoProveedorSearchAction.listar}" />
@@ -693,7 +694,7 @@ body {
 					  </p:column>
 					  </p:dataTable>
 				</p:fieldset>
-				<p:commandButton value="Grabar" action="#{SancionForm.insertar}" oncomplete="sancionesDialog.hide()" icon="ui-icon ui-icon-pencil" update="@all" />
+				<p:commandButton value="Grabar" action="#{SancionForm.insertar}" oncomplete="sancionesDialog.hide()" icon="ui-icon ui-icon-pencil" ajax="false" />
 		</p:dialog>
 	</h:form>
 	
