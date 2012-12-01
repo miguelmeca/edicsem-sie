@@ -26,6 +26,7 @@ import com.edicsem.pe.sie.entity.PaqueteSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.ProveedorSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
+import com.edicsem.pe.sie.entity.SancionSie;
 import com.edicsem.pe.sie.entity.TipoCasaSie;
 import com.edicsem.pe.sie.entity.TipoDocumentoIdentidadSie;
 import com.edicsem.pe.sie.entity.TipoFiltroSie;
@@ -45,6 +46,7 @@ import com.edicsem.pe.sie.service.facade.MetaMesService;
 import com.edicsem.pe.sie.service.facade.PaqueteService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.service.facade.ProveedorService;
+import com.edicsem.pe.sie.service.facade.SancionService;
 import com.edicsem.pe.sie.service.facade.TipoCasaService;
 import com.edicsem.pe.sie.service.facade.TipoDocumentoService;
 import com.edicsem.pe.sie.service.facade.TipoFiltroService;
@@ -63,7 +65,7 @@ public class ComboAction {
 	private String mensaje;
 	private String codigoEstado;
 	private String idProvincia, idDepartamento;
-	private int idCargo;
+	private int idCargo, idFactor;
 	private Map<String, Integer> tipoitems = new HashMap<String, Integer>();
 	private Map<String, Integer> productositems = new HashMap<String, Integer>();
 	private Map<String, Integer> almacenItems = new HashMap<String, Integer>();
@@ -89,6 +91,7 @@ public class ComboAction {
 	private Map<String, Integer> diasItems = new HashMap<String, Integer>();
 	private Map<String, Integer> tipoFiltroItems = new HashMap<String, Integer>();
 	private Map<String, Integer> factorSancionItems = new HashMap<String, Integer>();
+	private Map<String, Integer> sancionItems = new HashMap<String, Integer>();
 	@EJB
 	private AlmacenService objAlmacenService;
 	@EJB
@@ -127,7 +130,9 @@ public class ComboAction {
 	private TipoFiltroService objTipoFiltroService;
 	@EJB
 	private FactorSancionService objFactorService;
-
+	@EJB
+	private SancionService objSancionService;
+	
 	public ComboAction() {
 		log.info("inicializando constructor");
 		init();
@@ -1016,6 +1021,45 @@ public class ComboAction {
 	 */
 	public void setFactorSancionItems(Map<String, Integer> factorSancionItems) {
 		this.factorSancionItems = factorSancionItems;
+	}
+
+	/**
+	 * @return the sancionItems
+	 */
+	public Map<String, Integer> getSancionItems() {
+		log.info("tipo --> " + getTipoProducto());
+		productositems = new HashMap<String, Integer>();
+
+		List lista = new ArrayList<SancionSie>();
+		lista = (List<ProductoSie>) objSancionService.listarSanciones(idFactor);
+		log.info("tamaño Sanciones  X factor --> " + lista.size());
+		for (int i = 0; i < lista.size(); i++) {
+			SancionSie s = new SancionSie();
+			s =  (SancionSie) lista.get(i);
+			sancionItems.put(s.getDescripcion(),s.getIdsancion());
+		}
+		return sancionItems;
+	}
+
+	/**
+	 * @param sancionItems the sancionItems to set
+	 */
+	public void setSancionItems(Map<String, Integer> sancionItems) {
+		this.sancionItems = sancionItems;
+	}
+
+	/**
+	 * @return the idFactor
+	 */
+	public int getIdFactor() {
+		return idFactor;
+	}
+
+	/**
+	 * @param idFactor the idFactor to set
+	 */
+	public void setIdFactor(int idFactor) {
+		this.idFactor = idFactor;
 	}
 	
 }

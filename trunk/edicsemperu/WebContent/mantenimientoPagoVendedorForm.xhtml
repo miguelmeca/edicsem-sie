@@ -6,26 +6,27 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
-		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Sancion</h1>
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Pago Vendedor</h1>
 		<h:form id="frmPagoVentasForm">
 			<p:growl id="message" showDetail="true" />
 			<p:fieldset legend="Buscar Personal" style="margin-top:20px">
 				<h:panelGrid columns="2">
 					
 					<h:outputText value="Empleado :" />
-					<p:selectOneMenu id="empleado"
-						value="#{horarioPersonal.idempleado}" styleClass="required"
-						title="El tipo es obligatorio!">
+					<p:selectOneMenu value="#{PagoVenta.idEmpleado}">
 						<f:selectItems value="#{comboAction.empleadoxcargo}" />
 					</p:selectOneMenu>
-					<h:outputText value="Empleado :" />
-					<p:selectOneMenu id="empleado"
-						value="#{horarioPersonal.idempleado}" styleClass="required"
-						title="El tipo es obligatorio!">
-						<f:selectItems value="#{comboAction.diasItems}" />
+					
+					<h:outputText value="Factor de Sanción :" />
+					<p:selectOneMenu value="#{PagoVenta.idFactor}" >
+						<f:selectItems value="#{comboAction.factorSancionItems}" />
+						<p:ajax update="sancion" ></p:ajax>
 					</p:selectOneMenu>
 					
-					
+					<h:outputText value="Sancion :" />
+					<p:selectOneMenu value="#{PagoVenta.idSancion}" id="sancion" >
+						<f:selectItems value="#{comboAction.sancionItems}" />
+					</p:selectOneMenu>
 					
 					<p:commandButton value="Buscar" ajax="false" action="#{PagoVenta.agregar}" />
 				</h:panelGrid>

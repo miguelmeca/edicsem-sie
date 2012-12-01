@@ -69,6 +69,8 @@ public class MantenimientoSancionFormAction extends BaseMantenimientoAbstractAct
 	public String agregar() {
 		log.info("agregar()");
 		setNewRecord(true);
+		objDetSancionCargo = new DetSancionCargoSie();
+		detSancionCargoList = new ArrayList<DetSancionCargoSie>();
 		objSancionSie = new SancionSie();
 		return getViewList();
 	}
@@ -77,8 +79,9 @@ public class MantenimientoSancionFormAction extends BaseMantenimientoAbstractAct
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
 	 */
 	public String update() throws Exception {
-		log.info("update()  "+idSancion );
+		log.info("update()  " );
 		setNewRecord(false);
+		objDetSancionCargo = new DetSancionCargoSie();
 		detSancionCargoList = objDetSancionCargoService.listarDetSancionCargo(objSancionSie.getIdsancion());
 		return getViewList();
 	}
@@ -107,7 +110,6 @@ public class MantenimientoSancionFormAction extends BaseMantenimientoAbstractAct
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-
 		objSancionSie = new SancionSie();
 		return listar();
 	}
@@ -244,10 +246,16 @@ public class MantenimientoSancionFormAction extends BaseMantenimientoAbstractAct
 		this.factor = factor;
 	}
 
+	/**
+	 * @return the idcargo
+	 */
 	public int getIdcargo() {
 		return idcargo;
 	}
 
+	/**
+	 * @param idcargo the idcargo to set
+	 */
 	public void setIdcargo(int idcargo) {
 		this.idcargo = idcargo;
 	}
@@ -266,10 +274,16 @@ public class MantenimientoSancionFormAction extends BaseMantenimientoAbstractAct
 		this.detSancionCargoList = detSancionCargoList;
 	}
 
+	/**
+	 * @return the objDetSancionCargo
+	 */
 	public DetSancionCargoSie getObjDetSancionCargo() {
 		return objDetSancionCargo;
 	}
 
+	/**
+	 * @param objDetSancionCargo the objDetSancionCargo to set
+	 */
 	public void setObjDetSancionCargo(DetSancionCargoSie objDetSancionCargo) {
 		this.objDetSancionCargo = objDetSancionCargo;
 	}
