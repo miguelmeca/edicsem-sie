@@ -27,7 +27,7 @@ public class MantenimientoParametroFormAction extends BaseMantenimientoAbstractA
 	private int ide;
 		
 	@ManagedProperty(value = "#{mantenimientoParametroSearchAction}")
-	private MantenimientoProveedorSearchAction mantenimientoParametroSearch;
+	private MantenimientoParametroSearchAction mantenimientoParametroSearch;
 	
 	@EJB
 	private ParametroService objParametroService;
@@ -193,7 +193,7 @@ public class MantenimientoParametroFormAction extends BaseMantenimientoAbstractA
 	/**
 	 * @return the mantenimientoParametroSearch
 	 */
-	public MantenimientoProveedorSearchAction getMantenimientoParametroSearch() {
+	public MantenimientoParametroSearchAction getMantenimientoParametroSearch() {
 		return mantenimientoParametroSearch;
 	}
 
@@ -201,7 +201,7 @@ public class MantenimientoParametroFormAction extends BaseMantenimientoAbstractA
 	 * @param mantenimientoParametroSearch the mantenimientoParametroSearch to set
 	 */
 	public void setMantenimientoParametroSearch(
-			MantenimientoProveedorSearchAction mantenimientoParametroSearch) {
+			MantenimientoParametroSearchAction mantenimientoParametroSearch) {
 		this.mantenimientoParametroSearch = mantenimientoParametroSearch;
 	}
 	
