@@ -2,6 +2,7 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -40,8 +41,24 @@ public class DetSancionCargoSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idsancion")
 	private SancionSie tbSancion;
+    
+  //bi-directional many-to-one association to DetSancionEmpleadoSie
+  	@OneToMany(mappedBy="tbEmpleado")
+  	private Set<DetSancionEmpleadoSie> tbDetSancionEmpleado;
+  	
+  	@Transient
+  	private String isnew;
+  	
+    public Set<DetSancionEmpleadoSie> getTbDetSancionEmpleado() {
+		return tbDetSancionEmpleado;
+	}
 
-    public DetSancionCargoSie() {
+	public void setTbDetSancionEmpleado(
+			Set<DetSancionEmpleadoSie> tbDetSancionEmpleado) {
+		this.tbDetSancionEmpleado = tbDetSancionEmpleado;
+	}
+
+	public DetSancionCargoSie() {
     }
 
 	public Integer getIddetsancioncargo() {
@@ -90,6 +107,20 @@ public class DetSancionCargoSie implements Serializable {
 
 	public void setCantdiaSuspension(Integer cantdiaSuspension) {
 		this.cantdiaSuspension = cantdiaSuspension;
+	}
+
+	/**
+	 * @return the isnew
+	 */
+	public String getIsnew() {
+		return isnew;
+	}
+
+	/**
+	 * @param isnew the isnew to set
+	 */
+	public void setIsnew(String isnew) {
+		this.isnew = isnew;
 	}
 
 }

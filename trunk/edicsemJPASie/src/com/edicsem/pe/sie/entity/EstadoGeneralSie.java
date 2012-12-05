@@ -153,7 +153,20 @@ public class EstadoGeneralSie implements Serializable {
 	@OneToMany(mappedBy="tbEstadoGeneral")
 	private Set<DetSancionCargoSie> tbDetSancionCargo;
 	
-    public EstadoGeneralSie() {
+	//bi-directional many-to-one association to DetSancionEmpleadoSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<DetSancionEmpleadoSie> tbDetSancionEmpleado;
+	
+    public Set<DetSancionEmpleadoSie> getTbDetSancionEmpleado() {
+		return tbDetSancionEmpleado;
+	}
+
+	public void setTbDetSancionEmpleado(
+			Set<DetSancionEmpleadoSie> tbDetSancionEmpleado) {
+		this.tbDetSancionEmpleado = tbDetSancionEmpleado;
+	}
+
+	public EstadoGeneralSie() {
     }
 
 	public Integer getIdestadogeneral() {
