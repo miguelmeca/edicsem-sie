@@ -77,4 +77,17 @@ public class DetSancionCargoDAOImpl implements DetSancionCargoDAO{
 		}
 		return lista;
 	}
+	
+	public List listarDetSancionXFactorXCargo(int idFactor, int idCargo) {
+		List lista = null;
+		try {
+			Query q = em.createQuery("select a from DetSancionCargoSie a inner join  a.tbSancion b " +
+					" where b.tbFactorSancion.idfactor = "+idFactor +" and a.tbCargoempleado.idcargoempleado = "+ idCargo );
+			lista = q.getResultList();
+			log.info("tamaño lista detalleCargo --> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 }

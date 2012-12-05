@@ -5,7 +5,6 @@ import java.util.List;
 import javax.ejb.Local;
 
 import com.edicsem.pe.sie.entity.DetCargoEmpleadoSie;
-import com.edicsem.pe.sie.entity.ProveedorSie;
 
 @Local
 public interface DetalleCarEmpDAO {
@@ -16,5 +15,4 @@ public interface DetalleCarEmpDAO {
 	public abstract DetCargoEmpleadoSie findDetalleCarEmp (int id);
 	public abstract List listarDetalleCarEmp ();
 	public abstract List listarxCargo (int cargo);
-	
 }

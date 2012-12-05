@@ -14,4 +14,5 @@ public interface DetSancionCargoDAO {
 	public abstract void updateDetSancionCargo(DetSancionCargoSie d);
 	public abstract DetSancionCargoSie findDetSancionCargo (int id);
 	public abstract List  listarDetSancionCargo(int idSancion);
+	public abstract List listarDetSancionXFactorXCargo(int idFactor, int idCargo);
 }

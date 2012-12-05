@@ -1,17 +1,16 @@
 package com.edicsem.pe.sie.model.dao.impl;
 
 import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.DetCargoEmpleadoSie;
-import com.edicsem.pe.sie.entity.ProveedorSie;
-import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
-import com.edicsem.pe.sie.entity.TipoDocumentoIdentidadSie;
 import com.edicsem.pe.sie.model.dao.DetalleCarEmpDAO;
 
 @Stateless
@@ -106,7 +105,11 @@ public class DetalleCarEmpDAOImpl implements DetalleCarEmpDAO{
 		return lista;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.DetalleCarEmpDAO#listarxCargo(int)
+	 */
 	public List listarxCargo(int cargo) {
+		log.info("cargo--> " +cargo);
 		List lista = null;
 		try {
 			Query q = em.createQuery("select p from DetCargoEmpleadoSie p where p.tbCargoEmpleado.idcargoempleado = "+cargo);
