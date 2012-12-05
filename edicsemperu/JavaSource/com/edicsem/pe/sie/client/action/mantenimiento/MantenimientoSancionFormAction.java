@@ -6,11 +6,13 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.primefaces.event.RowEditEvent;
 
 import com.edicsem.pe.sie.entity.DetSancionCargoSie;
 import com.edicsem.pe.sie.entity.SancionSie;
@@ -42,6 +44,9 @@ public class MantenimientoSancionFormAction extends BaseMantenimientoAbstractAct
 	@EJB
 	private DetSancionCargoService objDetSancionCargoService;
 	
+	@ManagedProperty(value = "#{SancionSearch}")
+	private MantenimientoSancionSearchAction manteSancionSearch;
+	
 	public MantenimientoSancionFormAction() {
 		init();
 	}
@@ -72,7 +77,7 @@ public class MantenimientoSancionFormAction extends BaseMantenimientoAbstractAct
 		objDetSancionCargo = new DetSancionCargoSie();
 		detSancionCargoList = new ArrayList<DetSancionCargoSie>();
 		objSancionSie = new SancionSie();
-		return getViewList();
+		return manteSancionSearch.getViewMant();
 	}
 
 	/* (non-Javadoc)
@@ -83,7 +88,7 @@ public class MantenimientoSancionFormAction extends BaseMantenimientoAbstractAct
 		setNewRecord(false);
 		objDetSancionCargo = new DetSancionCargoSie();
 		detSancionCargoList = objDetSancionCargoService.listarDetSancionCargo(objSancionSie.getIdsancion());
-		return getViewList();
+		return manteSancionSearch.getViewMant();
 	}
 	
 	/* (non-Javadoc)
@@ -94,13 +99,22 @@ public class MantenimientoSancionFormAction extends BaseMantenimientoAbstractAct
 		log.info("insertar()" + isNewRecord()  );
 		try {
 			if(isNewRecord()){
-				objSancionService.insertSancion(objSancionSie, factor, detSancionCargoList);
-				log.info("insertandio "  );
+				log.info("tañano lista "+ detSancionCargoList.size() );	
+				if(detSancionCargoList.size()==0){
+					mensaje="Debe registrar la sanción para el tipo de cargo que corresponda";
+				}else{
+					mensaje =Constants.MESSAGE_REGISTRO_TITULO;
+					objSancionService.insertSancion(objSancionSie, factor, detSancionCargoList);
+					log.info("insertandio "  );	
+				}
 			}
 			else{
-			objSancionService.updateSancion(objSancionSie);
-			log.info("actualizado");
+				log.info("actualizado "+objSancionSie.getDescripcion());
+				objSancionService.updateSancion(objSancionSie,detSancionCargoList);
+				log.info("actualizado");
 			}
+			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -110,20 +124,50 @@ public class MantenimientoSancionFormAction extends BaseMantenimientoAbstractAct
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
+		log.info("mensaje -->* "+mensaje );
+		
 		objSancionSie = new SancionSie();
-		return listar();
+		return manteSancionSearch.getViewMant();
 	}
 	
-	public void agregarSancionCargo(){
+	public String agregarSancionCargo(){
+		mensaje=null;
 		log.info("agregarSancionCargo");
+		boolean isadd = false;
 		objDetSancionCargo.setTbCargoempleado(objCargoService.buscarCargoEmpleado(idcargo));
-		detSancionCargoList.add(objDetSancionCargo);
-		objDetSancionCargo = new DetSancionCargoSie();
+		
 		for (int i = 0; i < detSancionCargoList.size(); i++) {
-			log.info("sus  "+detSancionCargoList.get(i).getCantdiaSuspension());
+			if(detSancionCargoList.get(i).getTbCargoempleado().getIdcargoempleado()==idcargo){
+				isadd=true;
+				break;
+			}
+		}
+		if(isadd==true){
+				mensaje = "Dicho cargo ya tiene una sanción registrada ";
+				msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, Constants.MESSAGE_INFO_TITULO, mensaje);
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+		}else{
+			objDetSancionCargo.setIsnew("N");
+			detSancionCargoList.add(objDetSancionCargo);
+			objDetSancionCargo = new DetSancionCargoSie();
+			isadd=true;
+		}
+		log.info(" "+ mensaje);
+		return manteSancionSearch.getViewMant();
+	}
+	
+	public void onEditDetSancion(RowEditEvent event) {
+		log.info("en onEditDetPaquete() ");
+			
+		for (int i = 0; i < detSancionCargoList.size(); i++) {
+			log.info(" ------- "+i+"  "+detSancionCargoList.get(i).getTbCargoempleado().getDescripcion());
 		}
 	}
-
+	
+	public void onCancelDetSancion (RowEditEvent event) {
+		
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -286,6 +330,21 @@ public class MantenimientoSancionFormAction extends BaseMantenimientoAbstractAct
 	 */
 	public void setObjDetSancionCargo(DetSancionCargoSie objDetSancionCargo) {
 		this.objDetSancionCargo = objDetSancionCargo;
+	}
+
+	/**
+	 * @return the manteSancionSearch
+	 */
+	public MantenimientoSancionSearchAction getManteSancionSearch() {
+		return manteSancionSearch;
+	}
+
+	/**
+	 * @param manteSancionSearch the manteSancionSearch to set
+	 */
+	public void setManteSancionSearch(
+			MantenimientoSancionSearchAction manteSancionSearch) {
+		this.manteSancionSearch = manteSancionSearch;
 	}
 
 }

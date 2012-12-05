@@ -10,25 +10,34 @@
 		<h:form id="frmPagoVentasForm">
 			<p:growl id="message" showDetail="true" />
 			<p:fieldset legend="Buscar Personal" style="margin-top:20px">
-				<h:panelGrid columns="2">
+				<h:panelGrid id="panel" columns="2">
+					
+					<h:outputText value="Cargo :" />
+					<p:selectOneMenu value="#{PagoVenta.idcargo}">
+						<f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
+						<p:ajax update="panel" listener="#{PagoVenta.listarEmpleadoFactorXCargo}" />
+					</p:selectOneMenu>
 					
 					<h:outputText value="Empleado :" />
-					<p:selectOneMenu value="#{PagoVenta.idEmpleado}">
-						<f:selectItems value="#{comboAction.empleadoxcargo}" />
+					<p:selectOneMenu value="#{PagoVenta.idEmpleado}" id="empleado" >
+						<f:selectItems value="#{comboAction.empleadoItems}" />
 					</p:selectOneMenu>
 					
 					<h:outputText value="Factor de Sanción :" />
-					<p:selectOneMenu value="#{PagoVenta.idFactor}" >
-						<f:selectItems value="#{comboAction.factorSancionItems}" />
-						<p:ajax update="sancion" ></p:ajax>
+					<p:selectOneMenu value="#{PagoVenta.idFactor}" id="factor">
+						<f:selectItem itemLabel="Seleccione factor"  itemValue="#{null}" />
+						<f:selectItems value="#{PagoVenta.factorItems}" />
+						<p:ajax update="sancion" listener="#{PagoVenta.listarXFactor}" />
 					</p:selectOneMenu>
 					
 					<h:outputText value="Sancion :" />
 					<p:selectOneMenu value="#{PagoVenta.idSancion}" id="sancion" >
-						<f:selectItems value="#{comboAction.sancionItems}" />
+						<f:selectItem itemLabel="Seleccione sanción"  itemValue="#{null}" />
+						<f:selectItems value="#{PagoVenta.sancionItems}" />
 					</p:selectOneMenu>
 					
-					<p:commandButton value="Buscar" ajax="false" action="#{PagoVenta.agregar}" />
+					<p:commandButton value="Buscar" ajax="false" action="#{PagoVenta.insertar}" />
+					
 				</h:panelGrid>
 			</p:fieldset>
 		</h:form>
