@@ -8,31 +8,91 @@
 	<ui:define name="body">
 		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Sancion</h1>
 		<h:form id="frmSancionForm">
-			<p:growl id="message" showDetail="true" />
-			
-			<p:dataTable value="#{SancionForm.detSancionList}" var="c" id="Table" >
+		<p:growl id="message" showDetail="true" />
+			 
+				<p:fieldset legend="Sanción" >
+				 <h:panelGrid  columns="4"  >
+					<h:outputText value="Descripcion :" />
+					<p:inputText value="#{SancionForm.objSancionSie.descripcion}" />
+					<h:outputText value="Detalle :" />
+					<p:inputText value="#{SancionForm.objSancionSie.detalle}" />
+					<h:outputText value="Día Inicio :" />
+					<p:calendar value="#{SancionForm.objSancionSie.diainicio}" />
+					<h:outputText value="Día Fin :" />
+					<p:calendar value="#{SancionForm.objSancionSie.diafin}" />
+					</h:panelGrid>
+				</p:fieldset>
 				
-				<p:column headerText="Descripción" >
-					<h:outputText value="#{c.descripcion}" />
-				</p:column>
+				<p:fieldset legend="Sanciones por cargo">
+				<h:panelGrid  columns="4"  >
+					<h:outputText value="Cargo :" />
+					<p:selectOneMenu value="#{SancionForm.idcargo}" >
+						<f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
+					</p:selectOneMenu>
+					<h:outputText value="Días suspension :" />
+					<p:inputText value="#{SancionForm.objDetSancionCargo.cantdiaSuspension}" />
+					<h:outputText value="Descuento Sancion :" />
+					<p:inputText value="#{SancionForm.objDetSancionCargo.descuento}" />
+					<h:outputText value="Factor :" />
+					<p:selectOneMenu  value="#{SancionForm.factor}" >
+						<f:selectItem itemLabel="Seleccione un factor" itemValue="#{null}" />
+						<f:selectItems value="#{comboAction.factorSancionItems}" />
+					</p:selectOneMenu>
+					<p:commandButton value="Agregar" action="#{SancionForm.agregarSancionCargo}" update="frmSancionForm" />
+				</h:panelGrid>
+				</p:fieldset>
 				
-				<p:column headerText="Detalle" >
-					<h:outputText value="#{c.detalle}" />
-				</p:column>
+					  <p:dataTable value="#{SancionForm.detSancionCargoList}" var="p" editable="true" id="listaCargo">
+					  <f:facet name="header">
+					  	Sancion por cargo
+					  </f:facet>
+					  
+					  <p:ajax event="rowEdit" listener="#{SancionForm.onEditDetSancion}"  update="@this" />
+					  <p:ajax event="rowEditCancel" listener="#{SancionForm.onCancelDetSancion}" update="listaCargo" />
+					  
+					  <p:column  headerText="Cargo" style="width:125px" >
+					    <p:cellEditor>
+					    <f:facet name="output">
+	                    	<h:outputText value="#{p.tbCargoempleado.descripcion}" />
+	                    </f:facet>
+	                    <f:facet name="input">
+		                    <p:selectOneMenu value="#{p.tbCargoempleado.descripcion}" >
+								<f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
+							</p:selectOneMenu>
+	                    </f:facet>
+	                    </p:cellEditor>
+					  </p:column>
+					  
+					 <p:column  headerText="Descuento" style="width:125px" >
+					    <p:cellEditor>
+					    <f:facet name="output">
+					    	<h:outputText value="#{p.descuento}" />
+					    </f:facet>
+	                    <f:facet name="input">
+		                    <h:inputText value="#{p.descuento}" />
+	                    </f:facet>
+	                    </p:cellEditor>
+					 </p:column>
+					  
+					 <p:column  headerText="Días Suspensión" style="width:125px" >
+					    <p:cellEditor>
+					    <f:facet name="output">
+					    	<h:outputText value="#{p.cantdiaSuspension}" />
+					    </f:facet>
+					    <f:facet name="input">
+		                    <p:spinner value="#{p.cantdiaSuspension}" />
+	                    </f:facet>
+	                    </p:cellEditor>
+					  </p:column>
+					  
+					  <p:column headerText="Editar" style="width:50px">
+					 	<p:rowEditor />
+					  </p:column>
+					</p:dataTable>
 				
-				<p:column headerText="Editar">
-					<p:commandButton value="Editar " oncomplete="sancionesDialog.show()" action="#{SancionForm.update}" update=":formSancion" icon="ui-icon ui-icon-pencil" >
-						<f:setPropertyActionListener value="#{c}" target="#{SancionForm.objSancionSie}" />
-					</p:commandButton>
-				</p:column>
-				
-				<f:facet name="footer">
-				<div align="left">
-				<p:commandLink value="Nueva Sancion"  oncomplete="sancionesDialog.show()"  update=":formSancion"
-				action="#{SancionForm.agregar}"/>
-				</div>
-				</f:facet>
-			</p:dataTable>
+				<p:commandButton value="Grabar" action="#{SancionForm.insertar}" 
+				icon="ui-icon ui-icon-pencil" ajax="false" update="frmSancionForm:message" />
+			 
 		</h:form>
 	 </ui:define>
 </ui:composition>

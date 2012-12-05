@@ -830,11 +830,10 @@ public class ComboAction {
 		return idCargo;
 	}
 	/**
-	 * @param metaMesItems
-	 *            the metaMesItems to set
 	 * @param idCargo the idCargo to set
 	 */
 	public void setIdCargo(int idCargo) {
+		log.info("idCargo    seteando ** "+ idCargo);
 		this.idCargo = idCargo;
 	}
 
@@ -845,7 +844,7 @@ public class ComboAction {
 		List lista = new ArrayList<EmpleadoSie>();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'getEmpleadoItems()'");
+				log.info("Entering my method 'getEmpleadoItems()' "+getIdCargo());
 			}
 			lista = objEmpleadoService.listarEmpleadosXCargo(getIdCargo());
 			if(lista.size()==0)
@@ -1027,11 +1026,14 @@ public class ComboAction {
 	 * @return the sancionItems
 	 */
 	public Map<String, Integer> getSancionItems() {
-		log.info("tipo --> " + getTipoProducto());
-		productositems = new HashMap<String, Integer>();
+		log.info("idFactor --> " + idFactor);
+		sancionItems = new HashMap<String, Integer>();
 
 		List lista = new ArrayList<SancionSie>();
+		if(idFactor>0){
 		lista = (List<ProductoSie>) objSancionService.listarSanciones(idFactor);
+		}
+		
 		log.info("tamaño Sanciones  X factor --> " + lista.size());
 		for (int i = 0; i < lista.size(); i++) {
 			SancionSie s = new SancionSie();

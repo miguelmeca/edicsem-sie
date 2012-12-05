@@ -107,7 +107,7 @@ body {
 						<p:menuitem value="Mantenimiento Valorizado" update="messages" ajax="false" action="mantenimientoKardex.jsf" />
 						<p:menuitem value="Movimiento Mercader&iacute;a" ajax="false" action="#{movimientoMercaderia.listar}" />
 						<p:menuitem value="Registro Comprobante" ajax="false" action="#{comprobanteSearch.listar}" />
-						<p:menuitem value="Registro de Sanciones " update="messages" ajax="false" action="#{factorSancionSearch.listar}" />
+						<p:menuitem value="Registro de Sanciones " ajax="false" action="#{factorSancionSearch.listar}" />
 						<p:menuitem value="Pago a vendedores" update="messages" ajax="false" action="#{PagoVenta.agregar}" />
 						<p:menuitem value="Mantenimiento de Empleados por Empresa" ajax="false" action="#{detEmpresaEmpleadoSearch.listar}" />
 						<p:menuitem value="Mantenimiento de Empleados" ajax="false" action="#{mantenimientoEmpleadoSearchAction.listar}" />
@@ -635,7 +635,23 @@ body {
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
-		
+	
+	<!--  Mantenimiento Factor Sancion -->
+	<h:form id="formFactorSancion">
+		<p:dialog header="Registro/Modificacion de Factor" widgetVar="FactorDialog" showEffect="fade"
+			hideEffect="explode" modal="true" position="center">
+			<p:fieldset legend="Factor de Sanción" >
+			<h:panelGrid id="display" columns="4"  >
+				<h:outputText value="Descripcion :" />
+				<p:inputText value="#{factorSancionSearch.objFactorSie.descripcion}" />
+				
+				<p:commandButton value="Grabar" action="#{factorSancionSearch.insertar}" oncomplete="FactorDialog.hide()" 
+				icon="ui-icon ui-icon-pencil" ajax="false" update="panel" />
+				</h:panelGrid>
+			</p:fieldset>
+		</p:dialog>
+	</h:form>
+				
 <!--  Mantenimiento Sancion -->
 	<h:form id="formSancion">
 		<p:dialog header="Registro/Modificacion de Sancion" widgetVar="sancionesDialog" showEffect="fade"
@@ -654,7 +670,8 @@ body {
 					</h:panelGrid>
 				</p:fieldset>
 				
-				<p:fieldset legend="Sancion por cargo"  columns="4"  >
+				<p:fieldset legend="Sancion por cargo">
+				<h:panelGrid  columns="4"  >
 					<h:outputText value="Cargo :" />
 					<p:selectOneMenu value="#{SancionForm.idcargo}" >
 						<f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
@@ -664,12 +681,14 @@ body {
 					<h:outputText value="Descuento Sancion :" />
 					<p:inputText value="#{SancionForm.objDetSancionCargo.descuento}" />
 					<h:outputText value="Factor :" />
-					<p:selectOneMenu required="true" value="#{SancionForm.factor}" >
+					<p:selectOneMenu  value="#{SancionForm.factor}" >
 						<f:selectItem itemLabel="Seleccione un factor" itemValue="#{null}" />
 						<f:selectItems value="#{comboAction.factorSancionItems}" />
 					</p:selectOneMenu>
 					<p:commandButton value="Agregar" action="#{SancionForm.agregarSancionCargo}" update="listaCargo" />
+				</h:panelGrid>
 				</p:fieldset>
+				
 				<p:fieldset legend="Sancion por cargo" >
 					  <p:dataTable value="#{SancionForm.detSancionCargoList}" var="p"
 					  id="listaCargo" widgetVar="table" emptyMessage="No se encontro registros">
@@ -688,13 +707,13 @@ body {
 					  </p:column>
 					  <p:column>
 					  <f:facet name="header">
-					  <h:outputText value="Suspensión" />
+					  <h:outputText value="Días Suspensión" />
 					  </f:facet>
 					  <h:outputText value="#{p.cantdiaSuspension}" />
 					  </p:column>
 					  </p:dataTable>
 				</p:fieldset>
-				<p:commandButton value="Grabar" action="#{SancionForm.insertar}" oncomplete="sancionesDialog.hide()" icon="ui-icon ui-icon-pencil" ajax="false" />
+				<p:commandButton value="Grabar" action="#{SancionForm.insertar}" oncomplete="sancionesDialog.hide()" icon="ui-icon ui-icon-pencil" ajax="false" update="@all" />
 		</p:dialog>
 	</h:form>
 	
