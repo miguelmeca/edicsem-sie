@@ -51,4 +51,12 @@ public class DetSancionCargoServiceImpl implements DetSancionCargoService {
 	public List listarDetSancionCargo(int idSancion) {
 		return objDetSancionCargoDao.listarDetSancionCargo(idSancion);
 	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.DetSancionCargoService#listarDetSancionXFactorXCargo(int, int)
+	 */
+	public List listarDetSancionXFactorXCargo(int idFactor, int idCargo) {
+		return objDetSancionCargoDao.listarDetSancionXFactorXCargo(idFactor, idCargo);
+	}
+	
 }

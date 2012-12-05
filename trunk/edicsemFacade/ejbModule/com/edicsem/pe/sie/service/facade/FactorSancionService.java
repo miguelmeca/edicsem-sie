@@ -12,4 +12,5 @@ public interface FactorSancionService {
 	public abstract void updateFactorSancion(FactorSancionSie s);
 	public abstract FactorSancionSie findFactorSancion (int id);
 	public abstract List  listarFactorSancion();
+	public abstract List listarFactorSancionXcargo(int idCargo);
 }
