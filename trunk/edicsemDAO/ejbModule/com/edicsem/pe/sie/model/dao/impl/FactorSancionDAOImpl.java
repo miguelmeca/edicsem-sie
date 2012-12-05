@@ -82,4 +82,20 @@ public class FactorSancionDAOImpl implements FactorSancionDAO {
 		return lista;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.FactorSancionDAO#listarFactorSancion()
+	 */
+	public List listarFactorSancionXcargo(int idCargo) {
+		log.info(" -->  "+idCargo);
+		List lista = null;
+		try {
+			Query q = em.createQuery("select c from FactorSancionSie c inner join c.tbSancions d " +
+					" inner join d.tbDetSancionCargo e inner join e.tbCargoempleado  f where f.idcargoempleado = " + idCargo);
+			lista = q.getResultList();
+			log.info("  tamaño  -->" + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 }
