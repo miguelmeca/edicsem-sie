@@ -10,7 +10,8 @@ package com.edicsem.pe.sie.util.constants;
  */
 public class Constants {
 	
-	public static final String MESSAGE_INFO_TITULO = "Se registro correctamente";
+	public static final String MESSAGE_INFO_TITULO = "Mensaje";
+	public static final String MESSAGE_REGISTRO_TITULO = "Se registro correctamente";
 	public static final String MESSAGE_ERROR_FATAL_TITULO = "Mensaje de Error";
 	public static final String MESSAGE_ERROR_ID_NOT_FOUND = "No se encuentra el Id";
 	public static final String ESQUEMA_SIE_POSTGRE = "sie";
@@ -59,7 +60,8 @@ public class Constants {
 	public static final String MANT_FACTOR_SANCION_FORM_LIST_PAGE = "mantenimientoFactorSancionFormList";
 	
 	public static final String MANT_FILTRO_HORARIO_PERSONAL_VENTAS = "mantenimientoFiltroHorarioVendedor";
-	public static final String MANT_SANCION_FORM_LIST_PAGE = "mantenimientoSancionForm";
+	public static final String MANT_SANCION_FORM_LIST_PAGE = "mantenimientoSancionList";
+	public static final String MANT_SANCION_FORM_PAGE  = "mantenimientoSancionForm";
 	public static final String MANT_PAGO_VENDEDOR_FORM_PAGE = "mantenimientoPagoVendedorForm";
 	
 	//constantes de tablas con la TB_ESTADO_GENERAL
