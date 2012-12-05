@@ -10,7 +10,7 @@ import com.edicsem.pe.sie.entity.SancionSie;
 public interface SancionService {
 
 	public abstract void insertSancion(SancionSie s, int factor, List<DetSancionCargoSie> detSancionCargo);
-	public abstract void updateSancion(SancionSie s);
+	public abstract void updateSancion(SancionSie s,List<DetSancionCargoSie> detSancionCargo);
 	public abstract SancionSie findSancion (int id);
 	public abstract List  listarSanciones(int id);
 	

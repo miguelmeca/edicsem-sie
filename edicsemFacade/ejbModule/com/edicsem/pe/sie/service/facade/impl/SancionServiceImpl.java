@@ -39,14 +39,22 @@ public class SancionServiceImpl implements SancionService {
 			objDetSancionCargoDao.insertDetSancionCargo(detSancionCargo.get(i));
 		}
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.SancionService#updateSancion(com.edicsem.pe.sie.entity.SancionSie)
 	 */
-	public void updateSancion(SancionSie s) {
+	public void updateSancion(SancionSie s, List<DetSancionCargoSie> detSancionCargo) {
 		objSancionDao.updateSancion(s);
+		
+		for (int i = 0; i < detSancionCargo.size(); i++) {
+			if(detSancionCargo.get(i).getIsnew()!=null){
+				detSancionCargo.get(i).setTbSancion(s);
+				detSancionCargo.get(i).setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(46));
+				objDetSancionCargoDao.insertDetSancionCargo(detSancionCargo.get(i));
+			}
+		}
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.SancionService#findSancion(int)
 	 */

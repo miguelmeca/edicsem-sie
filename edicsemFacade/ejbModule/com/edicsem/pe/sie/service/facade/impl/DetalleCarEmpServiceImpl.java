@@ -9,10 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.DetCargoEmpleadoSie;
-import com.edicsem.pe.sie.entity.ProveedorSie;
- 
 import com.edicsem.pe.sie.model.dao.DetalleCarEmpDAO;
-import com.edicsem.pe.sie.model.dao.ProveedorDAO;
 import com.edicsem.pe.sie.service.facade.DetalleCarEmpService;
 @Stateless
 public class DetalleCarEmpServiceImpl implements DetalleCarEmpService{
@@ -63,10 +60,13 @@ public class DetalleCarEmpServiceImpl implements DetalleCarEmpService{
 		return objDetCargoDao.listarDetalleCarEmp();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.DetalleCarEmpService#listarxCargo(int)
+	 */
 	public List listarxCargo(int cargo) {
 		log.info("En el servicio ");
 
 		return objDetCargoDao.listarxCargo(cargo);
 	}
-		
+	
 }
