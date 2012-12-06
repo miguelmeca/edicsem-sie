@@ -49,6 +49,9 @@ public class DetSancionCargoSie implements Serializable {
   	@Transient
   	private String isnew;
   	
+  	@Transient
+    private int item;
+  	
     public Set<DetSancionEmpleadoSie> getTbDetSancionEmpleado() {
 		return tbDetSancionEmpleado;
 	}
@@ -121,6 +124,20 @@ public class DetSancionCargoSie implements Serializable {
 	 */
 	public void setIsnew(String isnew) {
 		this.isnew = isnew;
+	}
+
+	/**
+	 * @return the item
+	 */
+	public int getItem() {
+		return item;
+	}
+
+	/**
+	 * @param item the item to set
+	 */
+	public void setItem(int item) {
+		this.item = item;
 	}
 
 }
