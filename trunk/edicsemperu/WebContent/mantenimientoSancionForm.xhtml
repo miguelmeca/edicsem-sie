@@ -30,7 +30,7 @@
 						<f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
 					</p:selectOneMenu>
 					<h:outputText value="Días suspension :" />
-					<p:inputText value="#{SancionForm.objDetSancionCargo.cantdiaSuspension}" />
+					<p:spinner value="#{SancionForm.objDetSancionCargo.cantdiaSuspension}" />
 					<h:outputText value="Descuento Sancion :" />
 					<p:inputText value="#{SancionForm.objDetSancionCargo.descuento}" />
 					<h:outputText value="Factor :" />
@@ -40,53 +40,37 @@
 					</p:selectOneMenu>
 					<p:commandButton value="Agregar" action="#{SancionForm.agregarSancionCargo}" update="frmSancionForm" />
 				</h:panelGrid>
-				</p:fieldset>
 				
-					  <p:dataTable value="#{SancionForm.detSancionCargoList}" var="p" editable="true" id="listaCargo">
+				</p:fieldset>
+					  <p:dataTable value="#{SancionForm.detSancionCargoList}" var="p" id="listaCargo">
 					  <f:facet name="header">
 					  	Sancion por cargo
 					  </f:facet>
 					  
-					  <p:ajax event="rowEdit" listener="#{SancionForm.onEditDetSancion}"  update="@this" />
-					  <p:ajax event="rowEditCancel" listener="#{SancionForm.onCancelDetSancion}" update="listaCargo" />
-					  
 					  <p:column  headerText="Cargo" style="width:125px" >
-					    <p:cellEditor>
-					    <f:facet name="output">
 	                    	<h:outputText value="#{p.tbCargoempleado.descripcion}" />
-	                    </f:facet>
-	                    <f:facet name="input">
-		                    <p:selectOneMenu value="#{p.tbCargoempleado.descripcion}" >
-								<f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
-							</p:selectOneMenu>
-	                    </f:facet>
-	                    </p:cellEditor>
-					  </p:column>
-					  
-					 <p:column  headerText="Descuento" style="width:125px" >
-					    <p:cellEditor>
-					    <f:facet name="output">
-					    	<h:outputText value="#{p.descuento}" />
-					    </f:facet>
-	                    <f:facet name="input">
-		                    <h:inputText value="#{p.descuento}" />
-	                    </f:facet>
-	                    </p:cellEditor>
 					 </p:column>
 					  
-					 <p:column  headerText="Días Suspensión" style="width:125px" >
-					    <p:cellEditor>
-					    <f:facet name="output">
+					 <p:column  headerText="Descuento"  >
+					    	<h:outputText value="#{p.descuento}" />
+					 </p:column>
+					  
+					 <p:column  headerText="Días Suspensión" >
 					    	<h:outputText value="#{p.cantdiaSuspension}" />
-					    </f:facet>
-					    <f:facet name="input">
-		                    <p:spinner value="#{p.cantdiaSuspension}" />
-	                    </f:facet>
-	                    </p:cellEditor>
 					  </p:column>
 					  
-					  <p:column headerText="Editar" style="width:50px">
-					 	<p:rowEditor />
+					  <p:column headerText="Editar">
+					  <p:commandButton value="Editar" oncomplete="sancionCargoDialog.show()" update=":formDetSancionCargo:display" >
+					  <f:setPropertyActionListener value="#{p}"  target="#{SancionForm.objAuxiSancionCargo}" />
+					  <f:setPropertyActionListener value="#{p.tbCargoempleado.idcargoempleado}"  target="#{SancionForm.idcargo}" />
+					  </p:commandButton>
+					  </p:column>
+					  
+					  <p:column headerText="Deshabilitar">
+					  <p:commandButton value="Deshabilitar" icon="ui-icon ui-icon-close" 
+					  onclick="confirmDeshabSancionCargo.show()">
+					  <f:setPropertyActionListener value="#{p.item}" target="#{SancionForm.itemSancionCargo}" />	
+					  </p:commandButton>
 					  </p:column>
 					</p:dataTable>
 				

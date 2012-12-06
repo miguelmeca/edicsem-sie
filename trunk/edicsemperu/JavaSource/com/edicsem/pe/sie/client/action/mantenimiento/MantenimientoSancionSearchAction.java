@@ -4,18 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.DetSancionCargoSie;
 import com.edicsem.pe.sie.entity.SancionSie;
-import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
-import com.edicsem.pe.sie.service.facade.DetSancionCargoService;
 import com.edicsem.pe.sie.service.facade.SancionService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
@@ -36,10 +32,6 @@ public class MantenimientoSancionSearchAction extends BaseMantenimientoAbstractA
 	
 	@EJB
 	private SancionService objSancionService;
-	@EJB
-	private CargoEmpleadoService objCargoService;
-	@EJB
-	private DetSancionCargoService objDetSancionCargoService;
 	
 	public MantenimientoSancionSearchAction() {
 		init();
@@ -60,7 +52,6 @@ public class MantenimientoSancionSearchAction extends BaseMantenimientoAbstractA
 		idFactor=0;
 		idSancion =0;
 	}
-
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#listar()
