@@ -27,7 +27,7 @@
 				</p:column>
 				
 				<p:column headerText="Editar">
-					<p:commandButton value="Editar " oncomplete="FactorDialog.show()" action="#{factorSancionSearch.update}" 
+					<p:commandButton value="Editar "  oncomplete="FactorDialog.show()" action="#{factorSancionSearch.update}" 
 					update=":formFactorSancion:display" icon="ui-icon ui-icon-pencil" >
 						<f:setPropertyActionListener value="#{c}" target="#{factorSancionSearch.objFactorSie}" />
 					</p:commandButton>

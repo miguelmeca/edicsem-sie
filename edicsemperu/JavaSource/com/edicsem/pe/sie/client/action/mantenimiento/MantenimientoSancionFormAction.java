@@ -12,7 +12,6 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.primefaces.event.RowEditEvent;
 
 import com.edicsem.pe.sie.entity.DetSancionCargoSie;
 import com.edicsem.pe.sie.entity.SancionSie;
@@ -34,8 +33,8 @@ public class MantenimientoSancionFormAction extends BaseMantenimientoAbstractAct
 	private List<SancionSie> detSancionList;
 	private List<DetSancionCargoSie> detSancionCargoList;
 	private int idFactor,idSancion, factor;
-	private int idcargo;
-	private DetSancionCargoSie objDetSancionCargo;
+	private int idcargo,itemSancionCargo;
+	private DetSancionCargoSie objDetSancionCargo, objAuxiSancionCargo;
 	
 	@EJB
 	private SancionService objSancionService;
@@ -88,9 +87,59 @@ public class MantenimientoSancionFormAction extends BaseMantenimientoAbstractAct
 		setNewRecord(false);
 		objDetSancionCargo = new DetSancionCargoSie();
 		detSancionCargoList = objDetSancionCargoService.listarDetSancionCargo(objSancionSie.getIdsancion());
+		
+		for (int i = 0; i < detSancionCargoList.size(); i++) {
+			DetSancionCargoSie det =detSancionCargoList.get(i);
+			det.setItem(i+1);
+			detSancionCargoList.set(i, det);
+		}
+		
 		return manteSancionSearch.getViewMant();
 	}
+
+	/**
+	 * actualizar el detCargoSancion
+	 */
+	public void updateDetCargoSancion(){
+		log.info("updateDetCargoSancion()  "+objAuxiSancionCargo.getItem() );
+		for (int i = 0; i < detSancionCargoList.size(); i++) {
+			log.info(" **** "+ detSancionCargoList.get(i).getItem()+"  "+ detSancionCargoList.get(i).getDescuento());
+		}
+		for (int i = 0; i < detSancionCargoList.size(); i++) {
+			
+			if(detSancionCargoList.get(i).getItem()==(objAuxiSancionCargo.getItem())){
+				log.info("item ********* "+ objAuxiSancionCargo.getItem());
+				detSancionCargoList.get(i).setDescuento(objAuxiSancionCargo.getDescuento());
+				detSancionCargoList.get(i).setTbCargoempleado(objCargoService.buscarCargoEmpleado(idcargo));
+				detSancionCargoList.get(i).setCantdiaSuspension(objAuxiSancionCargo.getCantdiaSuspension());
+				log.info("descr   "+detSancionCargoList.get(i).getTbCargoempleado().getDescripcion());
+			}
+		}
+		log.info("actualizo  ********* " );
+		setNewRecord(false);
+	}
 	
+	public String updateDeshabilitar() throws Exception{
+		 
+		if (log.isInfoEnabled()) {
+			log.info("updateDeshabilitar()' " +itemSancionCargo);
+		}
+		for (int i = 0; i < detSancionCargoList.size(); i++) {
+			if(detSancionCargoList.get(i).getItem()==(itemSancionCargo)){
+				detSancionCargoList.remove(i);
+			
+				for (int j = i; j < detSancionCargoList.size(); j++) {
+					log.info(" i " +i+"  j "+ j);
+					i=i+1;
+					detSancionCargoList.get(j).setItem(i);
+					detSancionCargoList.set(j, detSancionCargoList.get(j));
+				}
+			}
+		}
+		log.info("actualizando..... ");
+		return manteSancionSearch.getViewMant();
+	}
+    
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
 	 */
@@ -135,7 +184,7 @@ public class MantenimientoSancionFormAction extends BaseMantenimientoAbstractAct
 		log.info("agregarSancionCargo");
 		boolean isadd = false;
 		objDetSancionCargo.setTbCargoempleado(objCargoService.buscarCargoEmpleado(idcargo));
-		
+		int cantidad= detSancionCargoList.size();
 		for (int i = 0; i < detSancionCargoList.size(); i++) {
 			if(detSancionCargoList.get(i).getTbCargoempleado().getIdcargoempleado()==idcargo){
 				isadd=true;
@@ -147,25 +196,19 @@ public class MantenimientoSancionFormAction extends BaseMantenimientoAbstractAct
 				msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, Constants.MESSAGE_INFO_TITULO, mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 		}else{
-			objDetSancionCargo.setIsnew("N");
-			detSancionCargoList.add(objDetSancionCargo);
-			objDetSancionCargo = new DetSancionCargoSie();
-			isadd=true;
+			
+			if(cantidad==0){
+				objDetSancionCargo.setItem(1);
+				objDetSancionCargo.setIsnew("N");
+				detSancionCargoList.add(objDetSancionCargo);
+				objDetSancionCargo = new DetSancionCargoSie();
+				isadd=true;
+			}else{
+				objDetSancionCargo.setItem(cantidad+1);
+			}
 		}
 		log.info(" "+ mensaje);
 		return manteSancionSearch.getViewMant();
-	}
-	
-	public void onEditDetSancion(RowEditEvent event) {
-		log.info("en onEditDetPaquete() ");
-			
-		for (int i = 0; i < detSancionCargoList.size(); i++) {
-			log.info(" ------- "+i+"  "+detSancionCargoList.get(i).getTbCargoempleado().getDescripcion());
-		}
-	}
-	
-	public void onCancelDetSancion (RowEditEvent event) {
-		
 	}
 	
 	/*
@@ -233,7 +276,7 @@ public class MantenimientoSancionFormAction extends BaseMantenimientoAbstractAct
 		}
 		return getViewList();
 	}
-
+    
 	/**
 	 * @return the objSancionSie
 	 */
@@ -345,6 +388,34 @@ public class MantenimientoSancionFormAction extends BaseMantenimientoAbstractAct
 	public void setManteSancionSearch(
 			MantenimientoSancionSearchAction manteSancionSearch) {
 		this.manteSancionSearch = manteSancionSearch;
+	}
+
+	/**
+	 * @return the objAuxiSancionCargo
+	 */
+	public DetSancionCargoSie getObjAuxiSancionCargo() {
+		return objAuxiSancionCargo;
+	}
+
+	/**
+	 * @param objAuxiSancionCargo the objAuxiSancionCargo to set
+	 */
+	public void setObjAuxiSancionCargo(DetSancionCargoSie objAuxiSancionCargo) {
+		this.objAuxiSancionCargo = objAuxiSancionCargo;
+	}
+
+	/**
+	 * @return the itemSancionCargo
+	 */
+	public int getItemSancionCargo() {
+		return itemSancionCargo;
+	}
+
+	/**
+	 * @param itemSancionCargo the itemSancionCargo to set
+	 */
+	public void setItemSancionCargo(int itemSancionCargo) {
+		this.itemSancionCargo = itemSancionCargo;
 	}
 
 }
