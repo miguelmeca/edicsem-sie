@@ -60,8 +60,6 @@ body {
 .colorPlomo{
         background: #D8D8D8;
 }
-
-
 </style>
 	</h:head>
 	<f:loadBundle var="message"
@@ -90,6 +88,7 @@ body {
 					<p:submenu label="Ejemplo Mantenimiento">
 						<p:menuitem value="Subir Archivos " update="messages" ajax="false"
 							action="demo.jsf" />
+							<p:menuitem value="Modulo de Migracion" ajax="false" action="ModuloSubirArchivo.jsf" />
 					</p:submenu>
 					<p:submenu label="Opciones Secundarias">
 						<p:menuitem value="Proyectos" update="messages" ajax="false" />
@@ -122,6 +121,7 @@ body {
 						<p:menuitem value="Meta Mes" update="messages" ajax="false" action="metaEmpresa.jsf" />
 						<p:menuitem value="Cliente" update="messages" ajax="false" action="#{MantenimientoClienteSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento Horario Punto de Venta" update="messages" ajax="false" action="#{MantenimientoHorarioPuntoVentaSearchAction.listar}" />
+						<p:menuitem value="Modulo de Migracion" ajax="false" action="ModuloMigracion.jsf" />
 					</p:submenu>
 				</p:menu>
 			</h:form>
@@ -240,6 +240,28 @@ body {
 		</p:dialog>
 	</h:form>
 
+	<!--  Subir Archivo-->
+	<h:form id="formInsertArchivo">
+		<p:dialog header="Imagen Producto" widgetVar="archivoDialog"
+			showEffect="fade" hideEffect="explode" modal="true" width="450"
+			position="center">
+			<h:panelGrid id="display" columns="2" cellpadding="2"
+				style="margin:0 auto;">
+
+				<h:outputText value="#{message['mantenimiento.migracion.archivo']}"
+					id="idarchivo" />
+
+				<p:fileUpload
+					fileUploadListener="#{productoForm.cargarImagenInsertar}"
+					label="Cargar Archivo" allowTypes="/(\.|\/)(xls|xlsx)$/"
+					description="Images" multiple="false" customUI="true"
+					required="true" />
+
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+	
+	
 	<!--  Mantenimiento ALMACEN -->
 
 	<h:form id="formInsertUbigeoAlmacen">
@@ -353,47 +375,7 @@ body {
 		</p:dialog>
 	</h:form>
 	
-<!--  Mantenimiento JOSELO -->
 
-	<h:form id="formInsertUbigeoJoselo">
-		<p:dialog header="Ubigeo" widgetVar="UbigeoJDialog" showEffect="fade"
-			hideEffect="explode" modal="true" width="450" position="center">
-			<h:panelGrid id="display" columns="2" cellpadding="2">
-				<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
-				<p:selectOneMenu size="1" value="#{MantenimientoClienteFormAction.idDepartamento}"
-					required="true" style="width:180px"
-					requiredMessage="#{message['contrato.ubigeo.departamento.validation']}">
-					<f:selectItem itemLabel="Seleccione Departamento"
-						itemValue="#{null}" />
-					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
-					<p:ajax update="prov,dist" listener="#{MantenimientoClienteFormAction.cambiar}" />
-				</p:selectOneMenu>
-
-				<h:outputText value="#{message['contrato.ubigeo.provincia']}" />
-				<p:selectOneMenu id="prov" value="#{MantenimientoClienteFormAction.idProvincia}"
-					required="true" style="width:200px"
-					requiredMessage="#{message['contrato.ubigeo.provincia.validation']}">
-					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
-					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
-					<p:ajax update="dist" listener="#{MantenimientoClienteFormAction.cambiar2}" />
-				</p:selectOneMenu>
-
-				<h:outputText value="#{message['contrato.ubigeo.distrito']}" />
-				<p:selectOneMenu id="dist" value="#{MantenimientoClienteFormAction.idUbigeo}"
-					required="true" style="width:200px"
-					requiredMessage="#{message['contrato.ubigeo.distrito.validation']}">
-					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
-					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
-
-				</p:selectOneMenu>
-				<p:commandButton value="Insertar Ubigeo:"
-					action="#{MantenimientoClienteFormAction.ingresarUbigeoOficial}"
-					oncomplete="UbigeoJDialog.hide()" update="@all">
-				</p:commandButton>
-			</h:panelGrid>
-		</p:dialog>
-	</h:form>
-	<!-- FIN JOSELO -->
 
 	<h:form id="NuevoModificaPunto">
 		<p:dialog header="Ingrese Nuevo Punto de Venta/Almacen"
@@ -691,6 +673,7 @@ body {
 	
 	
 	<h:form id="horarioDeshabilita" >
+
 		<p:confirmDialog id="confirmDeshabilitarHorario"
 			message="Esta seguro de deshabilitar dicho horario?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
@@ -704,6 +687,7 @@ body {
 			<p:commandButton value="No" onclick="confirmation.hide()"
 				type="button" />
 		</p:confirmDialog>
+
 	</h:form>
 
 <!--  Mantenimiento Horario Punto Venta-->
@@ -863,64 +847,7 @@ body {
 	<!-- FIN PUPAP NUEVO Y EDITAR  CARGO EMPLEDO-->
 
 
-	<!-- EDITAR  UBIGEO	CLIENTE FROM   -->
-
-
-	<h:form id="EditarDomicilio">
-		<p:dialog header="Registro/Modificación Domicilio" widgetVar="carDialogEditarUbigeocli"
-			showEffect="fade" hideEffect="explode" modal="true" width="300"
-			position="center">
-		<h:panelGrid id="display" columns="2" >
-			<h:outputText value="departamento" />
-			<p:selectOneMenu size="1" value="#{MantenimientoClienteFormAction.idDepartamento}" filter="true" filterMatchMode="startsWith"
-					required="true" style="width:180px">
-					<f:selectItem itemLabel="Seleccione Departamento" itemValue="#{null}" />
-					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
-					<p:ajax update="prov,dist" listener="#{MantenimientoClienteFormAction.cambiar}" />
-				</p:selectOneMenu>
-
-				<h:outputText value="provincia" />
-				<p:selectOneMenu id="prov" value="#{MantenimientoClienteFormAction.idProvincia}" filter="true" filterMatchMode="startsWith"
-					required="true" style="width:200px">
-					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
-					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
-					<p:ajax update="dist" listener="#{MantenimientoClienteFormAction.cambiar2}" />
-				</p:selectOneMenu>
-
-				<h:outputText value="distrito" />
-				<p:selectOneMenu id="dist" value="#{MantenimientoClienteFormAction.idUbigeo}" filter="true" filterMatchMode="startsWith"
-					required="true" style="width:200px">
-					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
-					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
-				</p:selectOneMenu>
-				
-				<h:outputText value="referencia" />
-				<h:panelGroup>
-				<p:inputText id="referenciaCliente2" value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.referencia}" required="true"		
-				style="font-weight:bold" />
-				</h:panelGroup>
-		
-				<h:outputText value="direccion" />
-				<h:panelGroup>
-					<p:inputText value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.domicilio}"  
-						style="font-weight:bold"  />
-				</h:panelGroup>
-				
-				<h:outputText value="Tipo Casa" />
-				<h:panelGroup>
-					<p:selectOneMenu  value="#{MantenimientoClienteFormAction.tipocasa}"  
-					required="true" style="width:200px">
-					<f:selectItems value="#{comboAction.tipocasaItems}" />
-				</p:selectOneMenu>
-				</h:panelGroup>
-				<h:panelGroup>
-					<p:commandButton value="Guardar" update="panel" ajax="false"
-						actionListener="#{MantenimientoClienteFormAction.insertar2}" icon="ui-icon ui-icon-disk" />
-				</h:panelGroup>
-			</h:panelGrid>
-		</p:dialog>
-	</h:form>
-	<!-- FIN EDITAR  UBIGEO CLIENTE FORM-->
+	
 	
 	
 	<!--	  INICIO DESACTIVAR	CARGO EMPLEADO   -->
@@ -964,7 +891,7 @@ body {
 				oncomplete="confirmation.hide()" ajax="false">
 			</p:commandButton>
 
-			<p:commandButton value="No" onclick="confirmation.hide()"
+			<p:commandButton value="No" onclick="confirmation3.hide()"
 				type="button" />
 
 		</p:confirmDialog>
@@ -1064,47 +991,8 @@ body {
 	</h:form>
 <!--	  FIN  UBIGEOEMPLEADO	   -->
 
-<!-- UBIGEOCLIENTE -->
-	
-	<h:form id="formInsertUbigeoCliente">
-		<p:dialog header="Ubigeo" widgetVar="UbigeoCliDialog" showEffect="fade"
-			hideEffect="explode" modal="true" width="450" position="center">
-			<h:panelGrid id="display" columns="2" cellpadding="2">
-				<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
-				<p:selectOneMenu size="1" value="#{MantenimientoClienteFormAction.idDepartamento}"
-					required="true" style="width:180px"
-					requiredMessage="#{message['contrato.ubigeo.departamento.validation']}">
-					<f:selectItem itemLabel="Seleccione Departamento"
-						itemValue="#{null}" />
-					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
-					<p:ajax update="prov,dist" listener="#{MantenimientoClienteFormAction.cambiar}" />
-				</p:selectOneMenu>
 
-				<h:outputText value="#{message['contrato.ubigeo.provincia']}" />
-				<p:selectOneMenu id="prov" value="#{MantenimientoClienteFormAction.idProvincia}"
-					required="true" style="width:200px"
-					requiredMessage="#{message['contrato.ubigeo.provincia.validation']}">
-					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
-					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
-					<p:ajax update="dist" listener="#{MantenimientoClienteFormAction.cambiar2}" />
-				</p:selectOneMenu>
-
-				<h:outputText value="#{message['contrato.ubigeo.distrito']}" />
-				<p:selectOneMenu id="dist" value="#{MantenimientoClienteFormAction.idUbigeo}"
-					required="true" style="width:200px"
-					requiredMessage="#{message['contrato.ubigeo.distrito.validation']}">
-					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
-					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
-
-				</p:selectOneMenu>
-				<p:commandButton value="Insertar Ubigeo:"
-					action="#{MantenimientoClienteFormAction.ingresarUbigeoOficial}"
-					oncomplete="UbigeoCliDialog.hide()" update="@all">
-				</p:commandButton>
-			</h:panelGrid>
-		</p:dialog>
-	</h:form>
-<!--	  FIN  UBIGEOCLIENTE	   -->
+		
 				
 <!--  Mantenimiento Horario ASISTENCIA -->
 	<h:form id="formMantAsistencia">
@@ -1527,6 +1415,243 @@ value="#{MetaMesFormAction.date2}"
 
 
 	<!-- FIN PUPAP NUEVO Y EDITAR META -->
+
+
+
+<!--EN UN SOLO PUPAP NUEVO Y EDITAR DOMICILIO CLIENTE  -->
+
+
+	<h:form id="PupudDomiCli">
+		<p:dialog header="Ingrese Nuevo Cargo" widgetVar="carDialogDC"
+			showEffect="fade" hideEffect="explode" modal="true" width="450"
+			position="center">
+
+			
+			
+		
+
+			
+			
+			
+			<h:panelGrid columns="2" id="display" rendered="#{!MantenimientoClienteFormAction.newRecord}"  >
+				
+				<h:outputText value="#{message['cliente.ubigeo.departamento']}" />
+				<p:selectOneMenu size="1" value="#{MantenimientoClienteFormAction.idDepartamento}" filter="true" filterMatchMode="startsWith"
+					required="true" style="width:180px"
+					requiredMessage="#{message['cliente.ubigeo.departamento.validation']}" >
+					<f:selectItem itemLabel="Seleccione Departamento"
+						itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
+					<p:ajax update="prov,dist" listener="#{MantenimientoClienteFormAction.cambiar}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="#{message['cliente.ubigeo.provincia']}" />
+				<p:selectOneMenu id="prov" value="#{MantenimientoClienteFormAction.idProvincia}" filter="true" filterMatchMode="startsWith"
+					required="true" style="width:200px"
+					requiredMessage="#{message['cliente.ubigeo.provincia.validation']}" >
+					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
+					<p:ajax update="dist" listener="#{MantenimientoClienteFormAction.cambiar2}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="#{message['cliente.ubigeo.distrito']}" />
+				<p:selectOneMenu id="dist" value="#{MantenimientoClienteFormAction.idUbigeo}" filter="true" filterMatchMode="startsWith"
+					required="true" style="width:200px"
+					requiredMessage="#{message['cliente.ubigeo.distrito.validation']}" >
+					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+					<p:ajax update="ubigeoDefecto2" listener="#{MantenimientoClienteFormAction.busquedaUbigeo}" ></p:ajax>
+				</p:selectOneMenu>
+				
+				<h:outputText value="Ubigeo " />
+				<h:outputText id="ubigeoDefecto2" value="#{MantenimientoClienteFormAction.ubigeoDefecto}" />
+				
+			</h:panelGrid>
+			
+			
+				<h:panelGrid id="display10" columns="2"  >
+
+				<h:outputText value="#{message['cliente.domicilio']}" />
+				<h:panelGroup>
+				
+					<p:inputText id="domicilio1"
+						value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.domicilio}" required="true"
+						requiredMessage="#{message['cliente.domicilio.validation']}"
+						style="font-weight:bold"  />
+						
+						
+				</h:panelGroup>
+		</h:panelGrid>
+			
+			<h:panelGrid id="display11" columns="2"  >
+
+				<h:outputText value="#{message['cliente.referencia']}" />
+				<h:panelGroup>
+					<p:inputText 
+						value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.referencia}" required="true"
+						requiredMessage="#{message['cliente.referencia.validation']}"
+						style="font-weight:bold"  />
+						
+						
+				</h:panelGroup>
+		</h:panelGrid>
+		
+	
+		<h:panelGrid columns="2" cellpadding="5">				    
+			<p:outputLabel for="tipocasa" value="Tipo de Casa :" styleClass="textoAzulFuerteGrande" id="tipocasaL"/>
+            <p:selectOneMenu id="tipocasa" value="#{MantenimientoClienteFormAction.tipocasa}" styleClass="required" title="El tipo de casa es obligatorio!" >
+            <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
+            <f:selectItems value="#{comboAction.tipocasaItems}" />
+			</p:selectOneMenu>
+			
+				<h:panelGroup>
+					<p:commandButton value="Guardar" update="display"
+						actionListener="#{MantenimientoClienteFormAction.insertar}" ajax="false"
+						icon="ui-icon ui-icon-disk" />
+				</h:panelGroup>
+				
+				
+        </h:panelGrid>    
+			
+			
+		
+			
+			
+
+		</p:dialog>
+
+	</h:form>
+	<!-- FIN PUPAP NUEVO Y EDITAR  DOMICILIO CLIENTE-->
+
+
+
+<!--EN UN SOLO PUPAP NUEVO Y EDITAR DOMICILIO CLIENTE 22222222222222222 -->
+
+
+	<h:form id="PupudDomiCli1">
+		<p:dialog header="Ingrese Nuevo Cargo" widgetVar="carDialogDC1"
+			showEffect="fade" hideEffect="explode" modal="true" width="450"
+			position="center">
+
+			
+			
+		
+
+			
+			
+			
+			<h:panelGrid columns="2" id="display123" rendered="#{MantenimientoClienteFormAction.newRecord}"  >
+				
+				<h:outputText value="#{message['cliente.ubigeo.departamento']}" />
+				<p:selectOneMenu size="1" value="#{MantenimientoClienteFormAction.idDepartamento}" filter="true" filterMatchMode="startsWith"
+					required="true" style="width:180px"
+					requiredMessage="#{message['cliente.ubigeo.departamento.validation']}" >
+					<f:selectItem itemLabel="Seleccione Departamento"
+						itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
+					<p:ajax update="prov,dist" listener="#{MantenimientoClienteFormAction.cambiar}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="#{message['cliente.ubigeo.provincia']}" />
+				<p:selectOneMenu id="prov" value="#{MantenimientoClienteFormAction.idProvincia}" filter="true" filterMatchMode="startsWith"
+					required="true" style="width:200px"
+					requiredMessage="#{message['cliente.ubigeo.provincia.validation']}" >
+					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
+					<p:ajax update="dist" listener="#{MantenimientoClienteFormAction.cambiar2}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="#{message['cliente.ubigeo.distrito']}" />
+				<p:selectOneMenu id="dist" value="#{MantenimientoClienteFormAction.idUbigeo}" filter="true" filterMatchMode="startsWith"
+					required="true" style="width:200px"
+					requiredMessage="#{message['cliente.ubigeo.distrito.validation']}" >
+					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+					<p:ajax update="ubigeoDefecto2" listener="#{MantenimientoClienteFormAction.busquedaUbigeo}" ></p:ajax>
+				</p:selectOneMenu>
+				
+				<h:outputText value="Ubigeo " />
+				<h:outputText id="ubigeoDefecto2" value="#{MantenimientoClienteFormAction.ubigeoDefecto}" />
+				
+			</h:panelGrid>
+			
+			
+				<h:panelGrid id="display10" columns="2"  >
+
+				<h:outputText value="#{message['cliente.domicilio']}" />
+				<h:panelGroup>
+				
+					<p:inputText id="domicilio1"
+						value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.domicilio}" required="true"
+						requiredMessage="#{message['cliente.domicilio.validation']}"
+						style="font-weight:bold"  />
+						
+						
+				</h:panelGroup>
+		</h:panelGrid>
+			
+			<h:panelGrid id="display11" columns="2"  >
+
+				<h:outputText value="#{message['cliente.referencia']}" />
+				<h:panelGroup>
+					<p:inputText 
+						value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.referencia}" required="true"
+						requiredMessage="#{message['cliente.referencia.validation']}"
+						style="font-weight:bold"  />
+						
+						
+				</h:panelGroup>
+		</h:panelGrid>
+		
+		<h:panelGrid columns="2" cellpadding="5">				    
+			<p:outputLabel for="tipocasa" value="Tipo de Casa :" styleClass="textoAzulFuerteGrande" id="tipocasaL"/>
+            <p:selectOneMenu id="tipocasa" value="#{MantenimientoClienteFormAction.tipocasa}" styleClass="required" title="El tipo de casa es obligatorio!" >
+            <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
+            <f:selectItems value="#{comboAction.tipocasaItems}" />
+			</p:selectOneMenu>
+			
+				<h:panelGroup>
+					<p:commandButton value="Guardar" update="display"
+						actionListener="#{MantenimientoClienteFormAction.insertar}" ajax="false"
+						icon="ui-icon ui-icon-disk" />
+				</h:panelGroup>
+				
+				
+        </h:panelGrid>    
+			
+			
+		
+			
+			
+
+		</p:dialog>
+
+	</h:form>
+	<!-- FIN PUPAP NUEVO Y EDITAR  DOMICILIO CLIENTE2222222-->
+
+
+<!--  Modulo Migracion - Excel-->
+	<h:form id="formInsertExcelProduc">
+		<p:dialog header="Imagen Producto" widgetVar="excelProducDialog"
+			showEffect="fade" hideEffect="explode" modal="true" width="450"
+			position="center">
+			<h:panelGrid id="display" columns="2" cellpadding="2"
+				style="margin:0 auto;">
+
+				<h:outputText value="#{message['mantenimiento.producto.imagen']}"
+					id="idimagen" />
+
+				<p:fileUpload
+					fileUploadListener="#{productoForm.cargarImagenInsertar}"
+					label="Cargar Imagen" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+					description="Images" multiple="false" customUI="true"
+					required="true" />
+
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+
+	<!-- Modulo Migracion - Excel -->
 
 	<ui:insert name="highlight">
 		<script language="javascript"
