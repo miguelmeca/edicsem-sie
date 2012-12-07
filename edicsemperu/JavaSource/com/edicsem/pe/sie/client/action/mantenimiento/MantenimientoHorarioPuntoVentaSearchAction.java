@@ -112,6 +112,10 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends	BaseMantenimient
 					msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 					FacesContext.getCurrentInstance().addMessage(null, msg);
 				}
+				if(insertar()==null) {
+					mensaje="Debe seleccionar un Almacen";	
+					
+				}
 				else{
 					if(newRecord){
 					log.info("fecha pp  " + getHoraIngreso() );
