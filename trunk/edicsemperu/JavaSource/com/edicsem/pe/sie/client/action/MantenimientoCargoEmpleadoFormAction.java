@@ -20,7 +20,9 @@ import org.primefaces.model.StreamedContent;
 
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
+import com.edicsem.pe.sie.service.facade.DetalleCarEmpService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
+import com.edicsem.pe.sie.util.FaceMessage.FaceMessage;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
@@ -50,6 +52,9 @@ public class MantenimientoCargoEmpleadoFormAction extends
 
 	@EJB
 	private EstadogeneralService objEstadoGeneralService;
+	
+	@EJB
+	private DetalleCarEmpService objDetalleCarEmpService;
 
 	public void init() {
 		log.info("init()");
@@ -161,18 +166,31 @@ public class MantenimientoCargoEmpleadoFormAction extends
 			parametroObtenido = getIdc();
 			log.info(" ------>>>>>>aqui cactura el parametro ID "+ parametroObtenido);
 
-			c = objCargoEmpleadoService.buscarCargoEmpleado(parametroObtenido);
-			log.info(" ------Android>" + c.getDescripcion() + " "+ c.getIdcargoempleado());
+			
+				if(verificarEmpleadoConCargo(parametroObtenido)){//true - no hay empleado con cargo, tonce procede
+					
+					c = objCargoEmpleadoService.buscarCargoEmpleado(parametroObtenido);
+					log.info(" ------Android>" + c.getDescripcion() + " "+ c.getIdcargoempleado());
 
-			objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(2));
-			objCargoEmpleadoSie.setIdcargoempleado(c.getIdcargoempleado());
-			objCargoEmpleadoSie.setDescripcion(c.getDescripcion());
+					
+					
+					objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(2));
+					objCargoEmpleadoSie.setIdcargoempleado(c.getIdcargoempleado());
+					objCargoEmpleadoSie.setDescripcion(c.getDescripcion());
 
-			log.info("-----Android1>>>"	+ objCargoEmpleadoSie.getTbEstadoGeneral().getIdestadogeneral());
-			log.info("actualizando ESTADO..... ");
+					log.info("-----ID estado general>>>"	+ objCargoEmpleadoSie.getTbEstadoGeneral().getIdestadogeneral());
+					log.info("actualizando ESTADO..... ");
 
-			objCargoEmpleadoService.actualizarCargoEmpleado(objCargoEmpleadoSie);
-			log.info("actualizando..... ");
+					objCargoEmpleadoService.actualizarCargoEmpleado(objCargoEmpleadoSie);
+					log.info("actualizando..... ");	
+					
+					
+				}	
+				
+				else {
+					
+					FaceMessage.FaceMessageError("ALERTA", "El cargo no se puede elminar ya que se encontraron usuarios con ese cargo");
+				}	
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -184,6 +202,25 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		}
 		objCargoEmpleadoSie = new CargoEmpleadoSie();
 		return mantenimientoCargoEmpleadoSearch.listar();
+	}
+
+	
+	
+	private boolean verificarEmpleadoConCargo(int idcargo) {
+		  	
+		
+		return objDetalleCarEmpService.verificarEmpleadoConCargo(idcargo) ;
+				
+		
+		
+		
+
+
+
+		
+		
+		
+		
 	}
 
 	/*
