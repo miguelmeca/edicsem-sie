@@ -15,5 +15,7 @@ public interface DetalleCarEmpService {
 	public abstract DetCargoEmpleadoSie findDetalleCarEmp (int id);
 	public abstract List listarDetalleCarEmp ();
 	public abstract List listarxCargo (int cargo);
+	public abstract boolean verificarEmpleadoConCargo (int idcargo);
+	
 }
 
