@@ -113,6 +113,7 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 		    log.info("-----Id estado del proveedor>>>"	+ getEstado());
 			log.info("actualizando ESTADO..... ");
 			objProveedor.setTbTipoDocumentoIdentidad(objTipoDocService.buscarTipoDocumento(TipoDocumento));
+			/*Estado del Proveedor: deshabilitado(10)*/
 			objProveedor.setTbEstadoGeneral(objEstadoService.findEstadogeneral(10));
 			objProveedorService.actualizarProveedor(objProveedor);
 			log.info("actualizando..... ");
@@ -136,6 +137,7 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 					log.info("Entering my method 'insertar(registrar, actualizar)'"+ objProveedor.getCodproveedor());
 				}
 				objProveedor.setTbTipoDocumentoIdentidad(objTipoDocService.buscarTipoDocumento(TipoDocumento));
+				/*Estado del Proveedor: habilitado(9)*/
 				objProveedor.setTbEstadoGeneral(objEstadoService.findEstadogeneral(9));
 				if (isNewRecord()) {
 					log.info("insertando..... ");
