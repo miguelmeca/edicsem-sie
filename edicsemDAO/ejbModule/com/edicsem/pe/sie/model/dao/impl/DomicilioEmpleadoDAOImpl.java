@@ -11,10 +11,7 @@ import javax.persistence.Query;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
-import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
-
 import com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO;
 
 @Stateless
@@ -31,15 +28,11 @@ public class DomicilioEmpleadoDAOImpl implements DomicilioEmpleadoDAO{
 		log.info("apunto de insertar domicilio"+ domiciliopersona.getDomicilio()+
 				" - " + domiciliopersona.getReferencia());
 		try {
-						
-                                           
+			
+			
 			log.info("antes del Persist");
 			em.persist(domiciliopersona);
 			
-			if (log.isInfoEnabled()) {
-				log.info("apunto de insertar Domicilio");
-			}
-			//em.getTransaction().commit();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
