@@ -145,6 +145,7 @@ public class MantenimientoIncidenciaFormAction extends BaseMantenimientoAbstract
 		    objIncidencia.setUsuariomodifica(p.getUsuariomodifica());
 		    objIncidencia.setDescripcion(p.getDescripcion());
 		    objIncidencia.setDetalle(p.getDetalle());
+		    /*Estado de la Incidencia: deshabilitado(41)*/
 		    objIncidencia.setTbEstadoGeneral(objEstadoService.findEstadogeneral(41));
 		    objIncidencia.setTbContrato(p.getTbContrato());
 			objIncidenciaService.updateIncidencia(objIncidencia);
@@ -192,6 +193,7 @@ public class MantenimientoIncidenciaFormAction extends BaseMantenimientoAbstract
 					log.info("Entering my method 'insertar(registrar, actualizar)'"+idincidencia);
 				}
 				    
+			        /*Estado de la Observación Incidencia: habilitado(40)*/ 
 				    objObsIncidencia.setTbEstadoGeneral(objEstadoService.findEstadogeneral(40));
 				    objObsIncidencia.setTbIncidencia(objIncidenciaService.findIncidencia(idincidencia));
 				    objObsIncidencia.setFechafin(fechafin);
