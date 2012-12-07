@@ -100,23 +100,37 @@ public class MantenimientoSancionFormAction extends BaseMantenimientoAbstractAct
 	/**
 	 * actualizar el detCargoSancion
 	 */
-	public void updateDetCargoSancion(){
+	public String updateDetCargoSancion(){
+		boolean isadd=false;
 		log.info("updateDetCargoSancion()  "+objAuxiSancionCargo.getItem() );
 		for (int i = 0; i < detSancionCargoList.size(); i++) {
 			log.info(" **** "+ detSancionCargoList.get(i).getItem()+"  "+ detSancionCargoList.get(i).getDescuento());
-		}
-		for (int i = 0; i < detSancionCargoList.size(); i++) {
+				if(detSancionCargoList.get(i).getTbCargoempleado().getIdcargoempleado()==idcargo){
+					isadd=true;
+					break;
+				}
+			}
+		
+		if(isadd==false){
+			for (int i = 0; i < detSancionCargoList.size(); i++) {
 			
-			if(detSancionCargoList.get(i).getItem()==(objAuxiSancionCargo.getItem())){
+				if(detSancionCargoList.get(i).getItem()==(objAuxiSancionCargo.getItem())){
 				log.info("item ********* "+ objAuxiSancionCargo.getItem());
 				detSancionCargoList.get(i).setDescuento(objAuxiSancionCargo.getDescuento());
 				detSancionCargoList.get(i).setTbCargoempleado(objCargoService.buscarCargoEmpleado(idcargo));
 				detSancionCargoList.get(i).setCantdiaSuspension(objAuxiSancionCargo.getCantdiaSuspension());
 				log.info("descr   "+detSancionCargoList.get(i).getTbCargoempleado().getDescripcion());
+				}
 			}
+		}else{
+			mensaje = "ya existe una sanción para dicho cargo";
+			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
+		
 		log.info("actualizo  ********* " );
 		setNewRecord(false);
+		return manteSancionSearch.getViewMant();
 	}
 	
 	public String updateDeshabilitar() throws Exception{
