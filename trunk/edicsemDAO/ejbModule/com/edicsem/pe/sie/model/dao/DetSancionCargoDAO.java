@@ -12,7 +12,7 @@ public interface DetSancionCargoDAO {
 	
 	public abstract void insertDetSancionCargo(DetSancionCargoSie d);
 	public abstract void updateDetSancionCargo(DetSancionCargoSie d);
-	public abstract DetSancionCargoSie findDetSancionCargo (int id);
+	public abstract DetSancionCargoSie findDetSancionCargo (int id, int idcargo);
 	public abstract List  listarDetSancionCargo(int idSancion);
 	public abstract List listarDetSancionXFactorXCargo(int idFactor, int idCargo);
 }
