@@ -64,6 +64,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 			/**Inserta el empleado**/
 			//objEmpleado.setTbCargoEmpleado(objCargoEmpDao.buscarCargoEmpleado(CargoEmpleado));
 			objEmpleado.setTbTipoDocumentoIdentidad(objTipoDocDao.buscarTipoDocumento(TipoDocumento));
+			/*Estado del empleado: habilitado(3)*/
 			objEmpleado.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(3));
 			objEmpleadoDao.insertarEmpleado(objEmpleado);
 			
@@ -72,12 +73,14 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 			//objDomicilio.setTbUbigeo(objUbigeoDao.findUbigeo(ubigeo));
 			objDomicilio.setTbUbigeo(objUbigeoDao.findUbigeo(idUbigeo));
 			objDomicilio.setTbTipoCasa(objTipoCasaDao.findTipoCasa(tipo));
+			/*Estado del domicilio: habilitado(15)*/
 			objDomicilio.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(15));
 			objDomicilio.setDomicilio(direccion);
 			objDomicilioDao.insertarDomicilioEmpleado(objDomicilio);
 			
 			/**Inserta el telefono**/
 			objTelefono.setIdempleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
+			/*Estado del telefono: habilitado(17)*/
 			objTelefono.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
 			objTelefono.setTelefono(fijo);
 			objTelefonoDao.insertarTelefonoEmpleado(objTelefono);
