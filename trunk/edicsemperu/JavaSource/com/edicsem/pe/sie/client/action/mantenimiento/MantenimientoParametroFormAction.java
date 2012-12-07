@@ -68,6 +68,7 @@ public class MantenimientoParametroFormAction extends BaseMantenimientoAbstractA
 		try {
 				if (log.isInfoEnabled()) {
 				}
+				/*Nota: El estado del Parámetro es por defecto habilitado(29)*/
 				objParametro.setTbEstadoGeneral(objEstadoService.findEstadogeneral(estado));
 					log.info("actualizando..... ");
 					objParametroService.actualizarParametro(objParametro);
