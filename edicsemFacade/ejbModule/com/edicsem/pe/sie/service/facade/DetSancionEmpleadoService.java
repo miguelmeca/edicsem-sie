@@ -9,7 +9,7 @@ import com.edicsem.pe.sie.entity.DetSancionEmpleadoSie;
 @Local
 public interface DetSancionEmpleadoService {
 	
-	public abstract void insertDetSancionEmpleado(DetSancionEmpleadoSie d, int idSancion, int idEmpleado);
+	public abstract void insertDetSancionEmpleado(DetSancionEmpleadoSie d, int idSancion, int idEmpleado, int idcargo);
 	public abstract void updateDetSancionEmpleado(DetSancionEmpleadoSie d);
 	public abstract DetSancionEmpleadoSie findContrato (int id);
 	public abstract List  listarDetSancionEmpleado();
