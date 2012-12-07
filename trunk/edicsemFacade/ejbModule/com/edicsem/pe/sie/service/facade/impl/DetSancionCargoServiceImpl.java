@@ -41,8 +41,8 @@ public class DetSancionCargoServiceImpl implements DetSancionCargoService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.DetSancionCargoService#findDetSancionCargo(int)
 	 */
-	public DetSancionCargoSie findDetSancionCargo(int id) {
-		return objDetSancionCargoDao.findDetSancionCargo(id);
+	public DetSancionCargoSie findDetSancionCargo(int id, int idcargo) {
+		return objDetSancionCargoDao.findDetSancionCargo(id, idcargo);
 	}
 
 	/* (non-Javadoc)

@@ -8,6 +8,7 @@ import javax.ejb.Stateless;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.edicsem.pe.sie.entity.DetSancionCargoSie;
 import com.edicsem.pe.sie.entity.DetSancionEmpleadoSie;
 import com.edicsem.pe.sie.model.dao.DetSancionCargoDAO;
 import com.edicsem.pe.sie.model.dao.DetSancionEmpleadoDAO;
@@ -24,7 +25,7 @@ public class DetSancionEmpleadoServiceImpl implements DetSancionEmpleadoService{
 	@EJB
 	private DetSancionEmpleadoDAO objDetSancionEmpleadoDao;
 	@EJB
-	private DetSancionCargoDAO objSancionCargoDao;
+	private DetSancionCargoDAO objDetSancionCargoDao;
 	@EJB
 	private EmpleadoSieDAO objEmpleadoDao;
 	@EJB
@@ -33,10 +34,13 @@ public class DetSancionEmpleadoServiceImpl implements DetSancionEmpleadoService{
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.DetSancionEmpleadoService#insertDetSancionEmpleado(com.edicsem.pe.sie.entity.DetSancionEmpleadoSie, int, int)
 	 */
-	public void insertDetSancionEmpleado(DetSancionEmpleadoSie d, int idSancion, int idEmpleado) {
+	public void insertDetSancionEmpleado(DetSancionEmpleadoSie d, int idSancion, int idEmpleado,int idcargo) {
 		log.info(" -->   ***    "+idSancion+"   "+idEmpleado);
 		d.setTbEmpleado(objEmpleadoDao.buscarEmpleado(idEmpleado));
-		d.setTbDetsancioncargo(objSancionCargoDao.findDetSancionCargo(idSancion));
+		log.info(" "+idSancion +" "+idcargo);
+		DetSancionCargoSie det=objDetSancionCargoDao.findDetSancionCargo(idSancion,idcargo);
+		log.info(" "+det.getIddetsancioncargo());
+		d.setTbDetsancioncargo(det);
 		d.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(1));
 		objDetSancionEmpleadoDao.insertDetSancionEmpleado(d);
 	}
