@@ -214,16 +214,19 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	        setTipoDocumento(e.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad());
 	        objEmpleado.setNumdocumento(e.getNumdocumento());
 	        objEmpleado.setFechanacimiento(e.getFechanacimiento());
+	        /*Estado del empleado: deshabilitado(4)*/
 	        objEmpleado.setTbEstadoGeneral(objEstadoService.findEstadogeneral(4));
 	        /*seteo domicilio*/
 	        objDomicilio.setIddomiciliopersona(d.getIddomiciliopersona());
 	        setDireccion(d.getDomicilio());
 	        setTipo(d.getTbTipoCasa().getIdtipocasa());
 	        setIdDistrito(getIdDistrito());	        
+	        /*Estado del domicilio: deshabilitado(16)*/
 	        objDomicilio.setTbEstadoGeneral(objEstadoService.findEstadogeneral(16));
 	        /*seteo telefono*/
 	        objTelefono.setIdtelefonopersona(t.getIdtelefonopersona());
 	        setFijo(t.getTelefono());
+	        /*Estado del teléfono: deshabilitado(18)*/
 	        objTelefono.setTbEstadoGeneral(objEstadoService.findEstadogeneral(18));
 			log.info("-----Id estado del empleado>>>"	+ getEstadoe());
 			log.info("actualizando ESTADO..... ");
