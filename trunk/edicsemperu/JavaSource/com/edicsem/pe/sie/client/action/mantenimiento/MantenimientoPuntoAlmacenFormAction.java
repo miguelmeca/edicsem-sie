@@ -31,7 +31,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 	private Log log = LogFactory.getLog(MantenimientoPuntoAlmacenFormAction.class);
 	
 	public int idalmacen;
-	public String mensaje, descripcion, direccion,ubigeoDefecto,idUbigeo;
+	public String descripcion, direccion,ubigeoDefecto,idUbigeo;
 	private String idProvincia, idDepartamento, idDistrito;
 	private int ide, idEstadoGeneral;
 	private boolean editMode, puntoVenta,defectoUbigeo;
@@ -145,15 +145,17 @@ public class MantenimientoPuntoAlmacenFormAction extends
 
 	public String DeshabilitarPunto() throws Exception {
 
+		objAlmacenSie = new PuntoVentaSie();
+		int parametroObtenido;
 		PuntoVentaSie punto = new PuntoVentaSie();
 
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'DeshabilitarPunto()'" + getIde());
 			}
-			
-			log.info(" parametro ID "+ getIde());
-			punto = objAlmacenService.findAlmacen(getIde());
+			parametroObtenido = getIde();
+			log.info(" parametro ID "+ parametroObtenido);
+			punto = objAlmacenService.findAlmacen(parametroObtenido);
 			punto.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(14));
 
 			objAlmacenService.updateAlmacen(punto);
@@ -162,13 +164,14 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		} catch (Exception e) {
 			e.printStackTrace();
 
-			mensaje = e.getMessage();
+			descripcion = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+					Constants.MESSAGE_ERROR_FATAL_TITULO, descripcion);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		
+		objAlmacenSie = new PuntoVentaSie();
+
 		return mantenimientoPuntoAlmacenSearch.listar();
 	}
 
@@ -218,9 +221,9 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		} catch (Exception e) {
 
 			e.printStackTrace();
-			mensaje = e.getMessage();
+			descripcion = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+					Constants.MESSAGE_ERROR_FATAL_TITULO, descripcion);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
@@ -249,7 +252,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		Iterator it = comboManagerPunto.getUbigeoDistriItems().entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry e = (Map.Entry) it.next();
-			log.info("key " + e.getKey() + " value " + e.getValue());
+			System.out.println("key " + e.getKey() + " value " + e.getValue());
 			if (e.getValue().toString().equals(idUbigeo)) {
 				dist = (String) e.getKey();
 				log.info("dist " + dist);
@@ -271,7 +274,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		
 		while (it.hasNext()) {
 			Map.Entry e = (Map.Entry) it.next();
-			log.info("key " + e.getKey() + " value " + e.getValue());
+			System.out.println("key " + e.getKey() + " value " + e.getValue());
 			if (e.getValue().toString().equals(idDepartamento)) {
 				ubigeoDefecto = (String) e.getKey();
 				log.info("ubigeo depa " + ubigeoDefecto);
@@ -280,7 +283,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		}
 		while (it2.hasNext()) {
 			Map.Entry e = (Map.Entry) it2.next();
-			log.info("key " + e.getKey() + " value " + e.getValue());
+			System.out.println("key " + e.getKey() + " value " + e.getValue());
 			if (e.getValue().toString().equals(idProvincia)) {
 				ubigeoDefecto += "-" + (String) e.getKey();
 				log.info("ubigeo prov " + ubigeoDefecto);
@@ -289,7 +292,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		}
 		while (it3.hasNext()) {
 			Map.Entry e = (Map.Entry) it3.next();
-			log.info("key " + e.getKey() + " value " + e.getValue());
+			System.out.println("key " + e.getKey() + " value " + e.getValue());
 			if (e.getValue().toString().equals(idUbigeo)) {
 				ubigeoDefecto += "-" + (String) e.getKey();
 				log.info("ubigeo distrito " + ubigeoDefecto);
@@ -311,7 +314,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		
 		while (it.hasNext()) {
 			Map.Entry e = (Map.Entry) it.next();
-			log.info("key " + e.getKey() + " value " + e.getValue());
+			System.out.println("key " + e.getKey() + " value " + e.getValue());
 			if (e.getValue().toString().equals(idDepartamento)) {
 				ubigeoDefecto = (String) e.getKey();
 				log.info("ubigeo depa " + ubigeoDefecto);
@@ -320,7 +323,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		}
 		while (it2.hasNext()) {
 			Map.Entry e = (Map.Entry) it2.next();
-			log.info("key " + e.getKey() + " value " + e.getValue());
+			System.out.println("key " + e.getKey() + " value " + e.getValue());
 			if (e.getValue().toString().equals(idProvincia)) {
 				ubigeoDefecto += "-" + (String) e.getKey();
 				log.info("ubigeo prov " + ubigeoDefecto);
@@ -329,7 +332,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		}
 		while (it3.hasNext()) {
 			Map.Entry e = (Map.Entry) it3.next();
-			log.info("key " + e.getKey() + " value " + e.getValue());
+			System.out.println("key " + e.getKey() + " value " + e.getValue());
 			if (e.getValue().toString().equals(idUbigeo)) {
 				ubigeoDefecto += "-" + (String) e.getKey();
 				log.info("ubigeo distrito " + ubigeoDefecto);
@@ -425,7 +428,21 @@ public class MantenimientoPuntoAlmacenFormAction extends
 	public void setIde(int ide) {
 		this.ide = ide;
 	}
- 
+
+	/**
+	 * @return the descripcion
+	 */
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	/**
+	 * @param descripcion
+	 *            the descripcion to set
+	 */
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -587,34 +604,6 @@ public class MantenimientoPuntoAlmacenFormAction extends
 	 */
 	public void setIdDistrito(String idDistrito) {
 		this.idDistrito = idDistrito;
-	}
-
-	/**
-	 * @return the mensaje
-	 */
-	public String getMensaje() {
-		return mensaje;
-	}
-
-	/**
-	 * @param mensaje the mensaje to set
-	 */
-	public void setMensaje(String mensaje) {
-		this.mensaje = mensaje;
-	}
-
-	/**
-	 * @return the descripcion
-	 */
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	/**
-	 * @param descripcion the descripcion to set
-	 */
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
 	}
 
 }
