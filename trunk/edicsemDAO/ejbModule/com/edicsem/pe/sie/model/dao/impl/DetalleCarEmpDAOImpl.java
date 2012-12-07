@@ -120,5 +120,34 @@ public class DetalleCarEmpDAOImpl implements DetalleCarEmpDAO{
 		}
 		return lista;
 	}
+
+
+	public boolean verificarEmpleadoConCargo(int idcargo) {
+		boolean bandera = true;
+		List lista = null;
+		try {
+			Query q = em.createQuery("select p from DetCargoEmpleadoSie p where p.tbCargoEmpleado.idcargoempleado = "+ idcargo);
+			lista = q.getResultList();
+			log.info("tamaño lista detalleCargo --> " + lista.size());
+			if(lista.size()>0){ //hay uno o mas empleados retornados.
+				bandera=false;
+			}else{//no hay empleados, entonces puede proseguir
+				bandera=true;
+			}
+			
+		} catch (Exception e) {
+			bandera=false;
+			e.printStackTrace();
+		}
+		return bandera;
+	}
+
+	
+	
+	
+
+	
+
+	
 	
 }
