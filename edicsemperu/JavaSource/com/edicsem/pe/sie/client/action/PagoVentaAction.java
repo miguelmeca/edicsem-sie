@@ -41,34 +41,7 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 	private FactorSancionService objFactorService;
 	@EJB
 	private DetSancionCargoService objDetSancionCargoService;
-	/**
-	 * @return the newRecord
-	 */
-	public boolean isNewRecord() {
-		return newRecord;
-	}
-
-	/**
-	 * @param newRecord the newRecord to set
-	 */
-	public void setNewRecord(boolean newRecord) {
-		this.newRecord = newRecord;
-	}
-
-	/**
-	 * @return the objDetSancionEmpleado
-	 */
-	public DetSancionEmpleadoSie getObjDetSancionEmpleado() {
-		return objDetSancionEmpleado;
-	}
-
-	/**
-	 * @param objDetSancionEmpleado the objDetSancionEmpleado to set
-	 */
-	public void setObjDetSancionEmpleado(DetSancionEmpleadoSie objDetSancionEmpleado) {
-		this.objDetSancionEmpleado = objDetSancionEmpleado;
-	}
-
+	
 	@ManagedProperty(value = "#{comboAction}")
 	private ComboAction comboManager;
 	
@@ -85,6 +58,7 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 		idFactor=0;
 		idSancion=0;
 		idEmpleado=0;
+		idcargo =0;
 		objDetSancionEmpleado = new DetSancionEmpleadoSie();
 	}
 	
@@ -92,9 +66,6 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
 	 */
 	public String agregar() {
-		log.info("idfactor  " +idFactor );
-		comboManager.setIdCargo(2);
-		comboManager.setIdFactor(idFactor);
 		setNewRecord(true);
 		return getViewList();
 	}
@@ -107,7 +78,7 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 		try {
 			if(isNewRecord()){
 				mensaje =Constants.MESSAGE_REGISTRO_TITULO;
-				objDetSancionempleadoService.insertDetSancionEmpleado(objDetSancionEmpleado, idSancion, idEmpleado);
+				objDetSancionempleadoService.insertDetSancionEmpleado(objDetSancionEmpleado, idSancion, idEmpleado, idcargo);
 				log.info("insertando "  );
 			}
 			else{
@@ -117,7 +88,8 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 			}
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
 						Constants.MESSAGE_INFO_TITULO, mensaje);
-		
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -129,7 +101,13 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 		objDetSancionEmpleado = new DetSancionEmpleadoSie();
 		return getViewList();
 	}
-
+	
+	public String generar(){
+		
+		
+		return getViewList();
+	}
+	
 	/* (non-Javadoc)
 	* @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
 	*/
@@ -149,7 +127,7 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 		//buscamos los factores de dichas sanciones  perteneciente a dicho cargo
 		factorItems  = new HashMap<String, Integer>();
 		List<FactorSancionSie> lista =  objFactorService.listarFactorSancionXcargo(idcargo);
-	 
+		comboManager.setIdCargo(idcargo);
 		for (int i = 0; i < lista.size(); i++) {
 			FactorSancionSie entidad = new FactorSancionSie();
 			entidad = (FactorSancionSie) lista.get(i);
@@ -308,7 +286,32 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 	public void setSancionItems(Map<String, Integer> sancionItems) {
 		SancionItems = sancionItems;
 	}
+	/**
+	 * @return the newRecord
+	 */
+	public boolean isNewRecord() {
+		return newRecord;
+	}
 
-	 
+	/**
+	 * @param newRecord the newRecord to set
+	 */
+	public void setNewRecord(boolean newRecord) {
+		this.newRecord = newRecord;
+	}
 
+	/**
+	 * @return the objDetSancionEmpleado
+	 */
+	public DetSancionEmpleadoSie getObjDetSancionEmpleado() {
+		return objDetSancionEmpleado;
+	}
+
+	/**
+	 * @param objDetSancionEmpleado the objDetSancionEmpleado to set
+	 */
+	public void setObjDetSancionEmpleado(DetSancionEmpleadoSie objDetSancionEmpleado) {
+		this.objDetSancionEmpleado = objDetSancionEmpleado;
+	}
+	
 }

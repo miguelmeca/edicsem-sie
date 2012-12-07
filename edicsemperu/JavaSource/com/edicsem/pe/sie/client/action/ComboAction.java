@@ -842,13 +842,12 @@ public class ComboAction {
 	 */
 	public Map<String, Integer> getEmpleadoItems() {
 		List lista = new ArrayList<EmpleadoSie>();
+		empleadoItems = new HashMap<String, Integer>();
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'getEmpleadoItems()' "+getIdCargo());
 			}
 			lista = objEmpleadoService.listarEmpleadosXCargo(getIdCargo());
-			if(lista.size()==0)
-			lista = objEmpleadoService.listarEmpleados();
 
 			for (int i = 0; i < lista.size(); i++) {
 				EmpleadoSie entidad = new EmpleadoSie();
