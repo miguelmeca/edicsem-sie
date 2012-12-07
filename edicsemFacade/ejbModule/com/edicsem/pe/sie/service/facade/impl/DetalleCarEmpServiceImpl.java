@@ -68,5 +68,15 @@ public class DetalleCarEmpServiceImpl implements DetalleCarEmpService{
 
 		return objDetCargoDao.listarxCargo(cargo);
 	}
+
+
+	public boolean verificarEmpleadoConCargo(int idcargo) {
+		log.info("En el servicio ");
+		return objDetCargoDao.verificarEmpleadoConCargo(idcargo);
+	}
+
+
+	
+	
 	
 }
