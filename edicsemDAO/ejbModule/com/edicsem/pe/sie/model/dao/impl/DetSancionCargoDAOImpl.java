@@ -47,16 +47,23 @@ public class DetSancionCargoDAOImpl implements DetSancionCargoDAO{
 		}
 	}
 
+
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.DetSancionCargoDAO#findDetSancionCargo(int)
+	 * @see com.edicsem.pe.sie.model.dao.DetSancionCargoDAO#findDetSancionCargo(int, int)
 	 */
-	public DetSancionCargoSie findDetSancionCargo(int id) {
+	public DetSancionCargoSie findDetSancionCargo(int id, int idcargo) {
+		List lista = null;
 		DetSancionCargoSie d= new DetSancionCargoSie();
 		try {
 		if (log.isInfoEnabled()) {
 		log.info("buscar detallecaremp");
 		} 
-		d=	em.find(DetSancionCargoSie.class, id);
+		Query q = em.createQuery("select p from DetSancionCargoSie p where " +
+				" p.tbSancion.idsancion = "+id +" and p.tbCargoempleado.idcargoempleado = "+ idcargo);
+		lista = q.getResultList();
+		log.info("tamaño lista detalleSancionCargo --> " + lista.size());
+		d=	(DetSancionCargoSie) lista.get(0);
+		log.info(" "+d.getIddetsancioncargo());
 		} catch (Exception e) {
 		e.printStackTrace();
 		}
