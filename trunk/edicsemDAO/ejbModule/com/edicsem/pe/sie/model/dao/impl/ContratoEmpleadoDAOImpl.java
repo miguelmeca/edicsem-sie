@@ -77,11 +77,27 @@ public class ContratoEmpleadoDAOImpl implements ContratoEmpleadoDAO{
 		try {
 			Query q = em.createQuery("select p from ContratoEmpleadoSie p ");
 			lista =  q.getResultList(); 
-			log.info("tamaño lista Contrato Empleado --> " + lista.size()+"  ");
+			log.info("tamaño lista Contrato --> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return lista;
-	}	
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ContratoEmpleadoDAO#listarPatrocinados(int)
+	 */
+	public List listarPatrocinados(int idEmpleado) {
+		log.info("listarPatrocinados "+idEmpleado);
+		List  lista = null;
+		try {
+			Query q = em.createQuery("select p from ContratoEmpleadoSie p where p.tbEmpleado2.idempleado = "+  idEmpleado);
+			lista =  q.getResultList();
+			log.info("tamaño listarPatrocinados--> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 	
 }

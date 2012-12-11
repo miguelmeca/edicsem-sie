@@ -82,5 +82,20 @@ public class DetContratoEmpleadoDAOImpl implements DetContratoEmpleadoDAO{
 			e.printStackTrace();
 		}
 		return lista;
-	}	
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.DetContratoEmpleadoDAO#listarContratoXEmpleado(int, int)
+	 */
+	public List listarContratoXEmpleado(int idempleado, int idMes) {
+		List  lista = null;
+		try {
+			Query q = em.createQuery("select p from DetContratoEmpleadoSie p where p.tbEmpleado.idempleado = "+ idempleado);
+			lista =  q.getResultList();
+			log.info("tamaño lista Contrato X Empleado --> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 }

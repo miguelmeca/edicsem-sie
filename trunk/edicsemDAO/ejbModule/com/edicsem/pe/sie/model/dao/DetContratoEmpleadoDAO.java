@@ -14,4 +14,5 @@ public interface DetContratoEmpleadoDAO {
 	public abstract void updateDetContratoEmpleado(DetContratoEmpleadoSie d);
 	public abstract DetContratoEmpleadoSie findDetContratoEmpleado(int id);
 	public abstract List  listarDetContratoEmpleado();
+	public abstract List listarContratoXEmpleado(int idempleado, int idMes);
 }
