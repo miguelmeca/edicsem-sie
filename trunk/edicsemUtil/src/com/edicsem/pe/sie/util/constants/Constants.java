@@ -60,9 +60,12 @@ public class Constants {
 	public static final String MANT_FACTOR_SANCION_FORM_LIST_PAGE = "mantenimientoFactorSancionFormList";
 	
 	public static final String MANT_FILTRO_HORARIO_PERSONAL_VENTAS = "mantenimientoFiltroHorarioVendedor";
+	
 	public static final String MANT_SANCION_FORM_LIST_PAGE = "mantenimientoSancionList";
 	public static final String MANT_SANCION_FORM_PAGE  = "mantenimientoSancionForm";
-	public static final String MANT_PAGO_VENDEDOR_FORM_PAGE = "mantenimientoPagoVendedorForm";
+	
+	public static final String MANT_PAGO_VENDEDOR_FORM_PAGE = "mantenimientoPagoVentaForm";
+	public static final String MANT_PAGO_VENDEDOR_LIST_PAGE = "mantenimientoPagoVentaList";
 	
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
