@@ -13,4 +13,5 @@ public interface ContratoEmpleadoService {
 	public abstract void updateContratoEmpleado(ContratoEmpleadoSie contrato);
 	public abstract ContratoEmpleadoSie findContratoEmpleado (int id);
 	public abstract List  listarContrato();
+	public abstract List  listarPatrocinados(int idEmpleado);
 }
