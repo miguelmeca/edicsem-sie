@@ -100,6 +100,7 @@ body {
 							action="#{productoSearch.listar}" />
 						<p:menuitem value="Orden de Reposicion" update="messages" ajax="false" action="#" />
 						<p:menuitem value="Buscar Cliente" update="messages" ajax="false" action="#" />
+						<p:menuitem value="Registro Contrato" update="messages" ajax="false" action="#{contratoForm.agregar}" />
 						<p:menuitem value="Registro de Filtros de horario Ventas" update="messages" ajax="false" action="#{filtroHorarioVendedorForm.agregar}" />
 						<p:menuitem value="Registro de horario Ventas" update="messages" ajax="false" action="#{horarioVendedorForm.agregar}" />
 						<p:menuitem value="Mantenimiento de Punto de Venta/Almacen" ajax="false" action="#{almacenSearch.listar}" />
@@ -107,7 +108,7 @@ body {
 						<p:menuitem value="Movimiento Mercader&iacute;a" ajax="false" action="#{movimientoMercaderia.listar}" />
 						<p:menuitem value="Registro Comprobante" ajax="false" action="#{comprobanteSearch.listar}" />
 						<p:menuitem value="Registro de Sanciones " ajax="false" action="#{factorSancionSearch.listar}" />
-						<p:menuitem value="Pago a vendedores" update="messages" ajax="false" action="#{PagoVenta.agregar}" />
+						<p:menuitem value="Pago a vendedores" update="messages" ajax="false" action="#{PagoVentaSearch.listar}" />
 						<p:menuitem value="Mantenimiento de Empleados por Empresa" ajax="false" action="#{detEmpresaEmpleadoSearch.listar}" />
 						<p:menuitem value="Mantenimiento de Empleados" ajax="false" action="#{mantenimientoEmpleadoSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento de Proveedores" ajax="false" action="#{mantenimientoProveedorSearchAction.listar}" />

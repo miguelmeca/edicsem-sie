@@ -415,10 +415,10 @@
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['contrato.colaborador']}" />
-				<p:selectOneMenu value="#{contratoForm.idempleadoColaborador}" filter="true" filterMatchMode="startsWith"  style="width:165px">
+				<p:selectCheckboxMenu value="#{contratoForm.colaboradorList}" filter="true" filterMatchMode="startsWith"  style="width:165px">
 					<f:selectItem itemLabel="Seleccione empleado" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.empleadoItems}" />
-				</p:selectOneMenu>
+				</p:selectCheckboxMenu>
 				
 				<h:outputText value="#{message['contrato.fechEntrega']}" />
 				<p:calendar id="fechaentrega" value="#{contratoForm.objContratoSie.fechaentrega}" />

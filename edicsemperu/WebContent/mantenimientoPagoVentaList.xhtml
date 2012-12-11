@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Pago Ventas</h1>
+		<h:form id="frmPagoVentaList">
+			<p:growl id="message" showDetail="true" />
+			
+			<p:dataTable value="#{PagoVentaSearch.detEmpleadoList}" var="d">
+				
+				<p:column headerText="Descripción" >
+					<h:outputText value="#{d.nombresCompletos}" />
+				</p:column>
+				
+				<p:column headerText="Pagos">
+					<p:commandButton value="Editar" action="#{PagoVentaForm.update}" 
+					 icon="ui-icon ui-icon-pencil" >
+						<f:setPropertyActionListener value="#{d}" target="#{PagoVentaForm.objEmpleado}" />
+					</p:commandButton>
+				</p:column>
+				
+			</p:dataTable>
+			
+		</h:form>
+	 </ui:define>
+</ui:composition>
