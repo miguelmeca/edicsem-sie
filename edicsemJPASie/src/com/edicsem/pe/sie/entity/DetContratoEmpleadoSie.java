@@ -1,6 +1,7 @@
 package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -12,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.edicsem.pe.sie.util.constants.Constants;
 
@@ -33,6 +35,17 @@ public class DetContratoEmpleadoSie implements Serializable {
 	private Integer idcontrato;
 
 	private Integer idempleado;
+	
+	private Integer  idCargoContrato;
+	
+	@Transient
+	private String NombreCargo;
+	
+	@Transient
+	private Integer cantContratosXCargo;
+	
+	@Transient
+	private BigDecimal comision;
 	
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
@@ -123,4 +136,62 @@ public class DetContratoEmpleadoSie implements Serializable {
 	public void setIdDetContratoEmpl(Integer idDetContratoEmpl) {
 		this.idDetContratoEmpl = idDetContratoEmpl;
 	}
+
+	public Integer getIdCargoContrato() {
+		return idCargoContrato;
+	}
+
+	public void setIdCargoContrato(Integer idCargoContrato) {
+		this.idCargoContrato = idCargoContrato;
+	}
+
+	/**
+	 * @return the nombreCargo
+	 */
+	public String getNombreCargo() {
+		if(idCargoContrato==1){
+			NombreCargo="Expositor";
+		}else if(idCargoContrato==2){
+			NombreCargo="Vendedor";
+		}else if(idCargoContrato==3){
+			NombreCargo="Colaborador";
+		}
+		return NombreCargo;
+	}
+
+	/**
+	 * @param nombreCargo the nombreCargo to set
+	 */
+	public void setNombreCargo(String nombreCargo) {
+		NombreCargo = nombreCargo;
+	}
+
+	/**
+	 * @return the cantContratosXCargo
+	 */
+	public Integer getCantContratosXCargo() {
+		return cantContratosXCargo;
+	}
+
+	/**
+	 * @param cantContratosXCargo the cantContratosXCargo to set
+	 */
+	public void setCantContratosXCargo(Integer cantContratosXCargo) {
+		this.cantContratosXCargo = cantContratosXCargo;
+	}
+
+	/**
+	 * @return the comision
+	 */
+	public BigDecimal getComision() {
+		return comision;
+	}
+
+	/**
+	 * @param comision the comision to set
+	 */
+	public void setComision(BigDecimal comision) {
+		this.comision = comision;
+	}
+
 }
