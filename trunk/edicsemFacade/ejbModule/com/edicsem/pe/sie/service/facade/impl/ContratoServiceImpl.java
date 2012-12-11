@@ -67,21 +67,16 @@ public class ContratoServiceImpl implements ContratoService {
 		log.info(" * en insertar el contrato  ");
 		cliente.setTbTipoDocumentoIdentidad(objtipoDao.buscarTipoDocumento(idtipodoc));
 		cliente.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23));
-		log.info(" cliente estado " + cliente.getTbEstadoGeneral().getCodestadogeneral() );
 		objClienteDao.insertCliente(cliente);	
-		log.info(" cliente estado " + cliente.getTbEstadoGeneral().getCodestadogeneral() );
 		for (TelefonoPersonaSie telefonoPersonaSie : telefonoList) {
 			telefonoPersonaSie.setIdcliente(cliente);
 			telefonoPersonaSie.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(17));
 			objTelefonoDao.insertarTelefonoEmpleado(telefonoPersonaSie);
-		}	
-		log.info(" domicilio  ");
-		
+		}
 		domicilio.setTbTipoCasa(objTipoCasaService.findTipoCasa(Tipocasa));
 		domicilio.setTbUbigeo(objUbigeoDao.findUbigeo(idUbigeo));
 		domicilio.setIdcliente(cliente);
 		domicilio.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(15));
-		log.info(" seteo domi"  );
 		objDomicilioDao.insertarDomicilioEmpleado(domicilio);
 		log.info(" inser domicilio "  );
 		contrato.setTbCliente(cliente);
@@ -92,22 +87,15 @@ public class ContratoServiceImpl implements ContratoService {
 		for (DetProductoContratoSie detprodcontrato : detprodcont) {
 			detprodcontrato.setTbContrato(contrato);
 			objDetProductoContratoDao.insertDetProductoContrato(detprodcontrato);
-			log.info(" 1 contrato " );
 		}
 		log.info(" terminado tamaño cobranza " + cobranza.size());
 		for (CobranzaSie objcobranza : cobranza) {
-			log.info(" terminado cliente " +cliente.getIdcliente());
-			log.info(" terminado contrato " +contrato.getIdcontrato());
 			objcobranza.setCantcuotas(""+ contrato.getNumcuotas());
 			objcobranza.setIdcliente(cliente.getIdcliente());
 			objcobranza.setIdcontrato(contrato.getIdcontrato());
-			log.info(" terminado estado " );
 			objcobranza.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(27));
-			log.info(" terminado estado 2" );
 			objcobranza.setTbContrato(contrato);
-			log.info(" terminado con " );
 			objcobranza.setTbCliente(cliente);
-			log.info(" terminado cli " );
 			objCobranzaDao.insertCobranza(objcobranza);
 			log.info(" terminado cobranza " );
 		}
@@ -115,17 +103,15 @@ public class ContratoServiceImpl implements ContratoService {
 		
 		DetContratoEmpleadoSie d;
 		for (int i = 0; i < detidEmpleadosList.size() ; i++) {
-			log.info(" IDEMPL "+detidEmpleadosList.get(i));
-			
 			d = new DetContratoEmpleadoSie();
 			d.setIdempleado(detidEmpleadosList.get(i));
+			if(i==0)d.setIdCargoContrato(1);
+			if(i==1)d.setIdCargoContrato(2);
+			if(i>1)d.setIdCargoContrato(3);
 			d.setIdcontrato(contrato.getIdcontrato());
 			d.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(31));
-			log.info(" vamos a insertar  " );
 			objDetContratoEmpleadoDao.insertDetContratoEmpleado(d);
-			log.info(" terminado EMPL " );
 		}
-		log.info("fin  " );
 	}
 
 	/* (non-Javadoc)
