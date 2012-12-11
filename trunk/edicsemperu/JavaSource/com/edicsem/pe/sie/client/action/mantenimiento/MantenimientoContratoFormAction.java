@@ -47,7 +47,7 @@ public class MantenimientoContratoFormAction extends
 
 	private String mensaje;
 	public static Log log = LogFactory.getLog(MantenimientoContratoFormAction.class);
-	private int Tipocasa,idtipodoc,idUbigeo, idempresa,tipoVenta,tipopago, idpaquete, idProducto, idempleadoExpositor, idempleadoVendedor, idempleadoColaborador;
+	private int Tipocasa,idtipodoc,idUbigeo, idempresa,tipoVenta,tipopago, idpaquete, idProducto, idempleadoExpositor, idempleadoVendedor;
 	private String idProvincia, idDepartamento,  ubigeoDefecto,selectTelef;
 	private ProductoSie objProductoSie;
 	private ClienteSie objClienteSie;
@@ -65,7 +65,7 @@ public class MantenimientoContratoFormAction extends
 	private boolean newRecord = false;
 	private PaqueteSie objPaquete;
 	private DetPaqueteSie objDetPaquete;
-	
+	private List<Integer> colaboradorList;
 	@EJB
 	private ProductoService objProductoService;
 	@EJB
@@ -104,7 +104,7 @@ public class MantenimientoContratoFormAction extends
 		idCobranza=0;
 		TipoTelef=1;
 		tipoVenta=1;
-		idempleadoColaborador=0;
+		colaboradorList = new ArrayList<Integer>();
 		idempleadoExpositor=0;
 		idempleadoVendedor=0;
 		cobranzaList= new ArrayList<CobranzaSie>() ;
@@ -478,8 +478,11 @@ public class MantenimientoContratoFormAction extends
 					detidEmpleadosList.add(getIdempleadoExpositor());
 				if(getIdempleadoVendedor()!=0)
 					detidEmpleadosList.add(getIdempleadoVendedor());
-				if(getIdempleadoColaborador()!=0)
-					detidEmpleadosList.add(getIdempleadoColaborador());
+				if(getColaboradorList().size()>0){
+					for (int i = 0; i < colaboradorList.size(); i++) {
+						detidEmpleadosList.add(colaboradorList.get(i));
+					}
+				}
 				
 				log.info("a insertar contratito");
 				objContratoService.insertContrato(idtipodoc,Tipocasa,idUbigeo, idempresa, objClienteSie, telefonoList, objDomicilioSie,  objContratoSie,detProductoContratoList, cobranzaList, detidEmpleadosList);
@@ -974,20 +977,6 @@ public class MantenimientoContratoFormAction extends
 	}
 
 	/**
-	 * @return the idempleadoColaborador
-	 */
-	public int getIdempleadoColaborador() {
-		return idempleadoColaborador;
-	}
-
-	/**
-	 * @param idempleadoColaborador the idempleadoColaborador to set
-	 */
-	public void setIdempleadoColaborador(int idempleadoColaborador) {
-		this.idempleadoColaborador = idempleadoColaborador;
-	}
-
-	/**
 	 * @return the idtipodoc
 	 */
 	public int getIdtipodoc() {
@@ -1013,6 +1002,20 @@ public class MantenimientoContratoFormAction extends
 	 */
 	public void setIdUbigeo(int idUbigeo) {
 		this.idUbigeo = idUbigeo;
+	}
+
+	/**
+	 * @return the colaboradorList
+	 */
+	public List<Integer> getColaboradorList() {
+		return colaboradorList;
+	}
+
+	/**
+	 * @param colaboradorList the colaboradorList to set
+	 */
+	public void setColaboradorList(List<Integer> colaboradorList) {
+		this.colaboradorList = colaboradorList;
 	}
 
 	

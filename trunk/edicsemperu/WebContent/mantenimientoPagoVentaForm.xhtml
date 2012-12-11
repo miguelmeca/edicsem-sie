@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Pago Vendedor</h1>
+		<h:form id="frmPagoVentasForm">
+			<p:growl id="message" showDetail="true" />
+			<p:fieldset legend="Buscar Personal" style="margin-top:20px">
+				<h:panelGrid id="panel" columns="2">
+					<p:fieldset legend="Sancionar Empleado" >
+					<h:panelGrid columns="2">
+					<h:outputText value="Cargo :" />
+					<p:selectOneMenu value="#{PagoVentaForm.idcargo}" required="true">
+						<f:selectItem itemLabel="Seleccione cargo"  itemValue="#{null}" />
+						<f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
+						<p:ajax update="panel" listener="#{PagoVentaForm.listarEmpleadoFactorXCargo}" />
+					</p:selectOneMenu>
+					
+					<h:outputText value="Empleado :" />
+					<p:selectOneMenu value="#{PagoVentaForm.idEmpleado}" id="empleado" required="true">
+						<f:selectItem itemLabel="Seleccione empleado"  itemValue="#{null}" />
+						<f:selectItems value="#{comboAction.empleadoItems}" />
+					</p:selectOneMenu>
+					
+					<h:outputText value="Factor de Sanción :" />
+					<p:selectOneMenu value="#{PagoVentaForm.idFactor}" id="factor" required="true">
+						<f:selectItem itemLabel="Seleccione factor"  itemValue="#{null}" />
+						<f:selectItems value="#{PagoVentaForm.factorItems}" />
+						<p:ajax update="sancion" listener="#{PagoVentaForm.listarXFactor}" />
+					</p:selectOneMenu>
+					
+					<h:outputText value="Sancion :" />
+					<p:selectOneMenu value="#{PagoVentaForm.idSancion}" id="sancion" required="true">
+						<f:selectItem itemLabel="Seleccione sanción"  itemValue="#{null}" />
+						<f:selectItems value="#{PagoVentaForm.sancionItems}" />
+					</p:selectOneMenu>
+					
+					<p:commandButton value="Registrar" ajax="false" action="#{PagoVentaForm.insertar}" update="@form" />
+					
+					</h:panelGrid>
+					</p:fieldset>
+					
+					<p:fieldset legend="Generar Pago" >
+					
+					<p:fieldset legend="Detalle de Pago">
+					<h:panelGrid columns="2">
+					<h:outputText value="Promociones :" />
+					<p:dataTable value="#{PagoVentaForm.contratoXEmpleadoList}" var="c">
+						<p:column headerText="Cargo" >
+							<h:outputText value="#{c.nombreCargo}" />
+						</p:column>
+						<p:column headerText="Cant. Contratos" >
+							<h:outputText value="#{c.cantContratosXCargo}" />
+						</p:column>
+					</p:dataTable>
+					
+					<h:outputText value="Cargo(s) :" />
+					<p:dataTable value="#{PagoVentaForm.contratoXEmpleadoList}" var="c">
+						<p:column headerText="Cargo" >
+							<h:outputText value="#{c.nombreCargo}" />
+						</p:column>
+						<p:column headerText="Cant. Contratos" >
+							<h:outputText value="#{c.cantContratosXCargo}" />
+						</p:column>
+						<p:column headerText="Comisión" >
+							<h:outputText value="#{c.comision}" />
+						</p:column>
+					</p:dataTable>
+					
+					<h:outputText value="Patrocinados :" />
+					<p:dataTable value="#{PagoVentaForm.patrocinadosList}" var="d">
+						<p:column headerText="Descripción" >
+							<h:outputText value="#{d.tbEmpleado1.nombresCompletos}" />
+						</p:column>
+						<p:column headerText="Detalle" >
+							<h:outputText value="#{d.pago}" />
+						</p:column>
+					</p:dataTable>
+					
+					<h:outputText value="Relacionista : *" />
+					
+					<!-- lista de patrocinados con la cantidad de contrato x cada uno -->
+					
+					<h:outputText value="Comisión por Adelantos :" />
+					
+					<h:outputText value="Abono :" />
+					
+					<h:outputText value="Total :" />
+					
+					<h:outputText value="Total Real :" />
+					
+					
+					</h:panelGrid>
+					</p:fieldset>
+					
+					<p:fieldset  legend="Adelantos">
+					
+					<!--  FECHA	IMPORTE	CONCEPTO
+										COM X ADELANTOS
+										ADELANTOS CAJA CHICA
+					TOTAL:	 S/. -   	
+					 -->
+					
+					</p:fieldset>
+					<p:fieldset  legend="Descuentos">
+					
+					<!--  FECHA	IMPORTE	CONCEPTO
+										RPC
+										FALTAS VARIAS
+										ONP
+										ESSALUD
+										SANCIONES *
+					TOTAL:	 S/. -   	
+					 -->
+					
+					</p:fieldset>
+					<p:fieldset  legend="Abonos">
+					
+					<!--  FECHA	IMPORTE	CONCEPTO
+										ESSALUD
+										BONO PREMIO
+					TOTAL:	 S/. -   	
+					 -->
+					
+					</p:fieldset>
+					
+					<p:fieldset  legend="Resumen">
+					
+					<!-- 	ADELANTOS	 S/. -   
+							DESCUENTOS	 S/. -   
+							TOTAL -	 S/. -   
+							A COBRAR:	 S/. -   
+					CHEQUE:	
+					 -->
+					
+					</p:fieldset>
+					<p:commandButton value="Generar" ajax="false" action="#{PagoVenta.generar}" update="@form" />
+					
+					</p:fieldset>
+				</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+	 </ui:define>
+</ui:composition>
