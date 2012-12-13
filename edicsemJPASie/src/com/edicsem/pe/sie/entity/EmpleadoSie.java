@@ -63,9 +63,9 @@ public class EmpleadoSie implements Serializable {
 	@Transient
 	private String nombresCompletos;
 	
-	//bi-directional many-to-one association to BeneficiosDescuentoSie
-	@OneToMany(mappedBy="tbEmpleado")
-	private Set<BeneficiosDescuentoSie> tbBeneficiosDescuentos;
+//	//bi-directional many-to-one association to BeneficiosDescuentoSie
+//	@OneToMany(mappedBy="tbEmpleado")
+//	private Set<BeneficiosDescuentoSie> tbBeneficiosDescuentos;
 
 	//bi-directional many-to-one association to CobranzaOperadoraSie
 	@OneToMany(mappedBy="tbEmpleado")
@@ -83,7 +83,7 @@ public class EmpleadoSie implements Serializable {
   	@OneToMany(mappedBy="idempleado")
   	private Set<TelefonoPersonaSie> tbTelefonoPersona;
   	
-	//bi-directional many-to-one association to TelefonoPersonaSie
+	//bi-directional many-to-one association to DomicilioPersonaSie
   	@OneToMany(mappedBy="idempleado")
   	private Set<DomicilioPersonaSie> tbDomicilioPersona;
   	
@@ -129,15 +129,14 @@ public class EmpleadoSie implements Serializable {
 	@OneToMany(mappedBy="tbEmpleado")
 	private Set<DetSancionEmpleadoSie> tbDetSancionEmpleado;
 	
-    public Set<DetSancionEmpleadoSie> getTbDetSancionEmpleado() {
-		return tbDetSancionEmpleado;
-	}
-
-	public void setTbDetSancionEmpleado(
-			Set<DetSancionEmpleadoSie> tbDetSancionEmpleado) {
-		this.tbDetSancionEmpleado = tbDetSancionEmpleado;
-	}
-
+	//bi-directional many-to-one association to DomicilioPersonaSie
+  	@OneToMany(mappedBy="idempleado")
+  	private Set<AdelantoSie> tbAdelanto;
+  	
+  	//bi-directional many-to-one association to DomicilioPersonaSie
+  	@OneToMany(mappedBy="idempleado")
+  	private Set<DetpagoSie> tbDetpago;
+	
 	public EmpleadoSie() {
     }
 
@@ -236,14 +235,6 @@ public class EmpleadoSie implements Serializable {
 	public void setUsuariomodifica(String usuariomodifica) {
 		this.usuariomodifica = usuariomodifica;
 	}
-
-	public Set<BeneficiosDescuentoSie> getTbBeneficiosDescuentos() {
-		return this.tbBeneficiosDescuentos;
-	}
-
-	public void setTbBeneficiosDescuentos(Set<BeneficiosDescuentoSie> tbBeneficiosDescuentos) {
-		this.tbBeneficiosDescuentos = tbBeneficiosDescuentos;
-	}
 	
 	public Set<CobranzaOperadoraSie> getTbCobranzaOperadoras() {
 		return this.tbCobranzaOperadoras;
@@ -316,6 +307,14 @@ public class EmpleadoSie implements Serializable {
 		this.nombresCompletos = nombresCompletos;
 	}
 
+    public Set<DetSancionEmpleadoSie> getTbDetSancionEmpleado() {
+		return tbDetSancionEmpleado;
+	}
+
+	public void setTbDetSancionEmpleado(Set<DetSancionEmpleadoSie> tbDetSancionEmpleado) {
+		this.tbDetSancionEmpleado = tbDetSancionEmpleado;
+	}
+
 	public Set<DomicilioPersonaSie> getTbDomicilioPersona() {
 		return tbDomicilioPersona;
 	}
@@ -347,17 +346,11 @@ public class EmpleadoSie implements Serializable {
 	public void setTbDetCargoEmpleados(Set<DetCargoEmpleadoSie> tbDetCargoEmpleados) {
 		this.tbDetCargoEmpleados = tbDetCargoEmpleados;
 	}
-
-	/**
-	 * @return the tbDetContratoEmpleados
-	 */
+	
 	public Set<DetContratoEmpleadoSie> getTbDetContratoEmpleados() {
 		return tbDetContratoEmpleados;
 	}
-
-	/**
-	 * @param tbDetContratoEmpleados the tbDetContratoEmpleados to set
-	 */
+	
 	public void setTbDetContratoEmpleados(
 			Set<DetContratoEmpleadoSie> tbDetContratoEmpleados) {
 		this.tbDetContratoEmpleados = tbDetContratoEmpleados;
@@ -379,6 +372,22 @@ public class EmpleadoSie implements Serializable {
 	public void setTbFiltroHorarioVentas(
 			Set<FiltroHorarioVentaSie> tbFiltroHorarioVentas) {
 		this.tbFiltroHorarioVentas = tbFiltroHorarioVentas;
+	}
+	
+	public Set<AdelantoSie> getTbAdelanto() {
+		return tbAdelanto;
+	}
+	
+	public void setTbAdelanto(Set<AdelantoSie> tbAdelanto) {
+		this.tbAdelanto = tbAdelanto;
+	}
+
+	public Set<DetpagoSie> getTbDetpago() {
+		return tbDetpago;
+	}
+
+	public void setTbDetpago(Set<DetpagoSie> tbDetpago) {
+		this.tbDetpago = tbDetpago;
 	}
 
 }
