@@ -46,8 +46,8 @@ public class DetContratoEmpleadoServiceImpl implements DetContratoEmpleadoServic
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.DetContratoEmpleadoService#listarContratoXEmpleado(int, int)
 	 */
-	public List listarContratoXEmpleado(int idempleado, int idMes) {
-		return objDetContratoEmpleadoDAO.listarContratoXEmpleado(idempleado, idMes);
+	public List listarContratoXEmpleado(int idempleado,String fechaInicio,String fechaFin ) {
+		return objDetContratoEmpleadoDAO.listarContratoXEmpleado(idempleado, fechaInicio, fechaFin );
 	}
 	
 }
