@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.model.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -83,19 +84,58 @@ public class DetContratoEmpleadoDAOImpl implements DetContratoEmpleadoDAO{
 		}
 		return lista;
 	}
-
+	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.DetContratoEmpleadoDAO#listarContratoXEmpleado(int, int)
+	 * @see com.edicsem.pe.sie.model.dao.DetContratoEmpleadoDAO#listarContratoXEmpleado(int, java.lang.String, java.lang.String)
 	 */
-	public List listarContratoXEmpleado(int idempleado, int idMes) {
-		List  lista = null;
+	public List listarContratoXEmpleado(int idempleado,String fechaInicio,String fechaFin) {
+		List<DetContratoEmpleadoSie>  lista = null;
+		List<DetContratoEmpleadoSie>  lista2 = new ArrayList<DetContratoEmpleadoSie>();
+		DetContratoEmpleadoSie objExpositor = new DetContratoEmpleadoSie();
+		DetContratoEmpleadoSie objVendedor = new DetContratoEmpleadoSie();
+		DetContratoEmpleadoSie objColaborador = new DetContratoEmpleadoSie();
+		
 		try {
-			Query q = em.createQuery("select p from DetContratoEmpleadoSie p where p.tbEmpleado.idempleado = "+ idempleado);
+			
+			Query q = em.createQuery("select p from DetContratoEmpleadoSie p where p.tbEmpleado.idempleado = "+ idempleado
+					+" and DATE(p.tbContrato.fechaentrega) between DATE('" + fechaInicio + "') and  DATE('" + fechaFin +"') ");
 			lista =  q.getResultList();
-			log.info("tamaño lista Contrato X Empleado --> " + lista.size());
+			
+			log.info("tamaño lista Contrato X Empleado 1 --> " + lista.size());
+			int cantidad =0, cantidad2=0, cantidad3=0;
+			
+			for (int i = 0; i < lista.size(); i++) {
+				
+				if(lista.get(i).getIdCargoContrato()==1 ){
+					//expositor
+					cantidad+=1;
+					objExpositor=lista.get(i);
+					objExpositor.setCantContratosXCargo(cantidad);
+					log.info(" objExpositor "+objExpositor.getCantContratosXCargo());
+				}
+				else if(lista.get(i).getIdCargoContrato()==2 ){
+					//vendedor
+					cantidad2+=1;
+					objVendedor=lista.get(i);
+					objVendedor.setCantContratosXCargo(cantidad2);
+					log.info(" objVendedor "+objVendedor.getCantContratosXCargo());
+				}
+				else if(lista.get(i).getIdCargoContrato()==3 ){
+					//colaborador
+					cantidad3+=1;
+					objColaborador=lista.get(i);
+					objColaborador.setCantContratosXCargo(cantidad3);
+					log.info(" objColaborador "+objColaborador.getCantContratosXCargo());
+				}
+			}
+			
+			if(objExpositor.getCantContratosXCargo()!=null)lista2.add(objExpositor);
+			if(objVendedor.getCantContratosXCargo()!=null)lista2.add(objVendedor);
+			if(objColaborador.getCantContratosXCargo()!=null)lista2.add(objColaborador);
+			log.info("tamaño lista Contrato X Empleado --> " + lista2.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return lista;
+		return lista2;
 	}
 }
