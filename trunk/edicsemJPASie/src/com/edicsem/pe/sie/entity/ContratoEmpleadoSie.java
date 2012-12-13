@@ -16,6 +16,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.edicsem.pe.sie.util.constants.Constants;
 
@@ -42,6 +43,9 @@ public class ContratoEmpleadoSie implements Serializable {
 	private Timestamp fechacreacion;
 
 	private String pago;
+	
+	@Transient
+	private Integer cantContratoXPatrocinado;
 	
 	@Temporal( TemporalType.DATE)
 	private Date fechainiciopatrocinio;
@@ -157,6 +161,20 @@ public class ContratoEmpleadoSie implements Serializable {
 	 */
 	public void setIdContratoEmpl(Integer idContratoEmpl) {
 		this.idContratoEmpl = idContratoEmpl;
+	}
+
+	/**
+	 * @return the cantContratoXPatrocinado
+	 */
+	public Integer getCantContratoXPatrocinado() {
+		return cantContratoXPatrocinado;
+	}
+
+	/**
+	 * @param cantContratoXPatrocinado the cantContratoXPatrocinado to set
+	 */
+	public void setCantContratoXPatrocinado(Integer cantContratoXPatrocinado) {
+		this.cantContratoXPatrocinado = cantContratoXPatrocinado;
 	}
 	
 }
