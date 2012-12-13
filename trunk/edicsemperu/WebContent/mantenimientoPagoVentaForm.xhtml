@@ -47,7 +47,20 @@
 					<p:fieldset legend="Generar Pago" >
 					
 					<p:fieldset legend="Detalle de Pago">
-					<h:panelGrid columns="2">
+					<h:panelGrid columns="2" id="panel2" >
+					
+					<h:outputText value="Mes  " />
+					<p:selectOneMenu value="#{PagoVentaForm.idMes}" >
+						<f:selectItems value="#{comboAction.metaMesItems}" />
+						<p:ajax update="panel2"  listener="#{PagoVentaForm.otrosMeses}"  />
+					</p:selectOneMenu>
+					
+					<h:outputLabel value="Fecha Inicial :" />
+					<p:inputText value="#{PagoVentaForm.fechaInicio}" disabled="true" id="FecIni"/>
+					
+					<h:outputLabel value="Fecha Final :" />
+					<p:inputText value="#{PagoVentaForm.fechaFin}" disabled="true" id="FecFin"/>	
+					
 					<h:outputText value="Promociones :" />
 					<p:dataTable value="#{PagoVentaForm.contratoXEmpleadoList}" var="c">
 						<p:column headerText="Cargo" >
@@ -76,14 +89,13 @@
 						<p:column headerText="Descripción" >
 							<h:outputText value="#{d.tbEmpleado1.nombresCompletos}" />
 						</p:column>
-						<p:column headerText="Detalle" >
-							<h:outputText value="#{d.pago}" />
+						<p:column headerText="cant Contratos" >
+							<h:outputText value="#{d.cantContratoXPatrocinado}" />
 						</p:column>
 					</p:dataTable>
 					
 					<h:outputText value="Relacionista : *" />
 					
-					<!-- lista de patrocinados con la cantidad de contrato x cada uno -->
 					
 					<h:outputText value="Comisión por Adelantos :" />
 					

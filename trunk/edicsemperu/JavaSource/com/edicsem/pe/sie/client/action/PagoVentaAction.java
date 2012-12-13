@@ -1,6 +1,7 @@
 package com.edicsem.pe.sie.client.action;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,12 +23,15 @@ import com.edicsem.pe.sie.entity.DetSancionCargoSie;
 import com.edicsem.pe.sie.entity.DetSancionEmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.FactorSancionSie;
+import com.edicsem.pe.sie.entity.MetaMesSie;
 import com.edicsem.pe.sie.service.facade.ContratoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.DetContratoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.DetSancionCargoService;
 import com.edicsem.pe.sie.service.facade.DetSancionEmpleadoService;
 import com.edicsem.pe.sie.service.facade.FactorSancionService;
+import com.edicsem.pe.sie.service.facade.MetaMesService;
 import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name = "PagoVentaForm")
@@ -44,7 +48,9 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 	private Map<String, Integer> SancionItems = new HashMap<String, Integer>();
 	private List<DetContratoEmpleadoSie> contratoXEmpleadoList;
 	private List<ContratoEmpleadoSie> patrocinadosList;
-	
+	private MetaMesSie objMetaMesSie;
+	private String fechaInicio ="",fechaFin="";
+	Calendar cal;
 	@EJB
 	private DetSancionEmpleadoService objDetSancionempleadoService;
 	@EJB
@@ -55,6 +61,8 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 	private DetContratoEmpleadoService objDetContratoEmpleadoService;
 	@EJB
 	private ContratoEmpleadoService objContratoEmpleadoService;
+	@EJB 
+	private MetaMesService objMetaMesService;
 	
 	@ManagedProperty(value = "#{comboAction}")
 	private ComboAction comboManager;
@@ -87,7 +95,8 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 	 */
 	public String agregar() {
 		setNewRecord(true);
-		return getViewList();
+		
+		return pagoVentaSearchManager.getViewMant();
 	}
 
 	/* (non-Javadoc)
@@ -97,8 +106,8 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 		log.info("insertar()");
 		try {
 			if(isNewRecord()){
-				mensaje =Constants.MESSAGE_REGISTRO_TITULO;
 				objDetSancionempleadoService.insertDetSancionEmpleado(objDetSancionEmpleado, idSancion, idEmpleado, idcargo);
+				mensaje =Constants.MESSAGE_REGISTRO_TITULO;
 				log.info("insertando "  );
 			}
 			else{
@@ -125,7 +134,7 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 	public String generar(){
 		
 		
-		return getViewList();
+		return pagoVentaSearchManager.getViewMant();
 	}
 	
 	/* (non-Javadoc)
@@ -133,44 +142,45 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 	*/
 	public String update() throws Exception {
 		log.info("update()  :D");
-		// idMes mes actual
-		//lista total de contratos en el mes actual
-		DetContratoEmpleadoSie objExpositor = new DetContratoEmpleadoSie();
-		DetContratoEmpleadoSie objVendedor = new DetContratoEmpleadoSie();
-		DetContratoEmpleadoSie objColaborador = new DetContratoEmpleadoSie();
-		int cantidad =0, cantidad2=0, cantidad3=0;
-		contratoXEmpleadoList = objDetContratoEmpleadoService.listarContratoXEmpleado(objEmpleado.getIdempleado(), idMes);
-		patrocinadosList = objContratoEmpleadoService.listarPatrocinados(objEmpleado.getIdempleado());
+		cal =  DateUtil.getToday();
 		
-		for (int i = 0; i < contratoXEmpleadoList.size(); i++) {
-		
-			if(contratoXEmpleadoList.get(i).getIdCargoContrato()==1 ){
-				//expositor
-				cantidad+=1;
-				objExpositor=contratoXEmpleadoList.get(i);
-				objExpositor.setCantContratosXCargo(cantidad);
-				//lista diferente segun cargo
-			}
-			else if(contratoXEmpleadoList.get(i).getIdCargoContrato()==2 ){
-				//vendedor
-				cantidad2+=1;
-				objVendedor=contratoXEmpleadoList.get(i);
-				objVendedor.setCantContratosXCargo(cantidad2);
-			}
-			else if(contratoXEmpleadoList.get(i).getIdCargoContrato()==3 ){
-				//colaborador
-				cantidad3+=1;
-				objColaborador=contratoXEmpleadoList.get(i);
-				objColaborador.setCantContratosXCargo(cantidad3);
-			}
+		contratoXEmpleadoList = new ArrayList<DetContratoEmpleadoSie>();
+		patrocinadosList = new ArrayList<ContratoEmpleadoSie>();
+		try {
+			
+			log.info(" "+cal.getTime());
+			idMes =cal.get(Calendar.MONTH)+1;
+			log.info(" " +idMes);
+			reuti();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		log.info(" tamaño " + contratoXEmpleadoList.size() );
-		contratoXEmpleadoList= new ArrayList<DetContratoEmpleadoSie>();
-		
-		if(objExpositor.getCantContratosXCargo()!=null)contratoXEmpleadoList.add(objExpositor);
-		if(objVendedor.getCantContratosXCargo()!=null)contratoXEmpleadoList.add(objVendedor);
-		if(objColaborador.getCantContratosXCargo()!=null)contratoXEmpleadoList.add(objColaborador);
-		log.info(" tamaño " + contratoXEmpleadoList.size() );
+		return pagoVentaSearchManager.getViewMant();
+	}
+	
+	public void  reuti(){
+		objMetaMesSie = objMetaMesService.findMetaMes(idMes);
+		log.info(" " +objMetaMesSie.getFechainicio() );
+		if(idMes<=11){
+			fechaInicio =objMetaMesSie.getFechainicio()+"/"+cal.get(Calendar.YEAR);
+			fechaFin = objMetaMesSie.getFechafin()+"/"+cal.get(Calendar.YEAR);
+			log.info(" fec i "+fechaInicio+" fec f "+fechaFin);
+		}else
+		{
+			fechaInicio = objMetaMesSie.getFechainicio()+"/"+cal.get(Calendar.YEAR);
+			fechaFin = objMetaMesSie.getFechafin()+"/"+(cal.get(Calendar.YEAR)+1);
+			log.info(" fec i "+fechaInicio+" fec f "+fechaFin);
+		}
+		contratoXEmpleadoList = objDetContratoEmpleadoService.listarContratoXEmpleado(objEmpleado.getIdempleado(), fechaInicio ,fechaFin );
+		patrocinadosList = objContratoEmpleadoService.listarPatrocinados(objEmpleado.getIdempleado(), fechaInicio, fechaFin);
+		for (int i = 0; i < patrocinadosList.size(); i++) {
+			log.info("-->   "+patrocinadosList.get(i).getTbEmpleado2().getNombresCompletos()+" "+  patrocinadosList.get(i).getCantContratoXPatrocinado());
+		}
+	}
+	
+	public String otrosMeses() throws Exception {
+		cal =  DateUtil.getToday();
+		reuti();
 		return pagoVentaSearchManager.getViewMant();
 	}
 	
@@ -178,7 +188,8 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 	* @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#listar()
 	*/
 	public String listar() {
-		return super.listar();
+		
+		return pagoVentaSearchManager.getViewMant();
 	}
 	
 	public void listarEmpleadoFactorXCargo(){
@@ -443,6 +454,48 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 	public void setPagoVentaSearchManager(
 			MantenimientoPagoVentaSearchAction pagoVentaSearchManager) {
 		this.pagoVentaSearchManager = pagoVentaSearchManager;
+	}
+
+	/**
+	 * @return the objMetaMesSie
+	 */
+	public MetaMesSie getObjMetaMesSie() {
+		return objMetaMesSie;
+	}
+
+	/**
+	 * @param objMetaMesSie the objMetaMesSie to set
+	 */
+	public void setObjMetaMesSie(MetaMesSie objMetaMesSie) {
+		this.objMetaMesSie = objMetaMesSie;
+	}
+
+	/**
+	 * @return the fechaInicio
+	 */
+	public String getFechaInicio() {
+		return fechaInicio;
+	}
+
+	/**
+	 * @param fechaInicio the fechaInicio to set
+	 */
+	public void setFechaInicio(String fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+	/**
+	 * @return the fechaFin
+	 */
+	public String getFechaFin() {
+		return fechaFin;
+	}
+
+	/**
+	 * @param fechaFin the fechaFin to set
+	 */
+	public void setFechaFin(String fechaFin) {
+		this.fechaFin = fechaFin;
 	}
 
 	
