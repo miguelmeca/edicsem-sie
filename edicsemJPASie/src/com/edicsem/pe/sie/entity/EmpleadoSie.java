@@ -63,10 +63,6 @@ public class EmpleadoSie implements Serializable {
 	@Transient
 	private String nombresCompletos;
 	
-//	//bi-directional many-to-one association to BeneficiosDescuentoSie
-//	@OneToMany(mappedBy="tbEmpleado")
-//	private Set<BeneficiosDescuentoSie> tbBeneficiosDescuentos;
-
 	//bi-directional many-to-one association to CobranzaOperadoraSie
 	@OneToMany(mappedBy="tbEmpleado")
 	private Set<CobranzaOperadoraSie> tbCobranzaOperadoras;
@@ -128,10 +124,6 @@ public class EmpleadoSie implements Serializable {
 	//bi-directional many-to-one association to DetSancionEmpleadoSie
 	@OneToMany(mappedBy="tbEmpleado")
 	private Set<DetSancionEmpleadoSie> tbDetSancionEmpleado;
-	
-	//bi-directional many-to-one association to DomicilioPersonaSie
-  	@OneToMany(mappedBy="idempleado")
-  	private Set<AdelantoSie> tbAdelanto;
   	
   	//bi-directional many-to-one association to DomicilioPersonaSie
   	@OneToMany(mappedBy="idempleado")
@@ -374,14 +366,6 @@ public class EmpleadoSie implements Serializable {
 		this.tbFiltroHorarioVentas = tbFiltroHorarioVentas;
 	}
 	
-	public Set<AdelantoSie> getTbAdelanto() {
-		return tbAdelanto;
-	}
-	
-	public void setTbAdelanto(Set<AdelantoSie> tbAdelanto) {
-		this.tbAdelanto = tbAdelanto;
-	}
-
 	public Set<DetpagoSie> getTbDetpago() {
 		return tbDetpago;
 	}

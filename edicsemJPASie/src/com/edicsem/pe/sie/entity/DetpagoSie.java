@@ -24,6 +24,7 @@ public class DetpagoSie implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_DETPAGO_IDDETPAGO_GENERATOR")
 	private Integer iddetpago;
 
+	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
 
     @Temporal( TemporalType.DATE)
