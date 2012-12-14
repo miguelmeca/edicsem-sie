@@ -21,6 +21,7 @@ import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.EstadoGeneralSie;
 import com.edicsem.pe.sie.entity.FactorSancionSie;
 import com.edicsem.pe.sie.entity.FechaSie;
+import com.edicsem.pe.sie.entity.ImporteSie;
 import com.edicsem.pe.sie.entity.MetaMesSie;
 import com.edicsem.pe.sie.entity.PaqueteSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
@@ -30,6 +31,7 @@ import com.edicsem.pe.sie.entity.SancionSie;
 import com.edicsem.pe.sie.entity.TipoCasaSie;
 import com.edicsem.pe.sie.entity.TipoDocumentoIdentidadSie;
 import com.edicsem.pe.sie.entity.TipoFiltroSie;
+import com.edicsem.pe.sie.entity.TipoImporteSie;
 import com.edicsem.pe.sie.entity.TipoKardexProductoSie;
 import com.edicsem.pe.sie.entity.TipoLlamadaSie;
 import com.edicsem.pe.sie.entity.TipoProductoSie;
@@ -42,6 +44,7 @@ import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.FactorSancionService;
 import com.edicsem.pe.sie.service.facade.FechaService;
+import com.edicsem.pe.sie.service.facade.ImporteService;
 import com.edicsem.pe.sie.service.facade.MetaMesService;
 import com.edicsem.pe.sie.service.facade.PaqueteService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
@@ -50,6 +53,7 @@ import com.edicsem.pe.sie.service.facade.SancionService;
 import com.edicsem.pe.sie.service.facade.TipoCasaService;
 import com.edicsem.pe.sie.service.facade.TipoDocumentoService;
 import com.edicsem.pe.sie.service.facade.TipoFiltroService;
+import com.edicsem.pe.sie.service.facade.TipoImporteService;
 import com.edicsem.pe.sie.service.facade.TipoKardexService;
 import com.edicsem.pe.sie.service.facade.TipoLLamadaService;
 import com.edicsem.pe.sie.service.facade.TipoProductoService;
@@ -65,7 +69,7 @@ public class ComboAction {
 	private String mensaje;
 	private String codigoEstado;
 	private String idProvincia, idDepartamento;
-	private int idCargo, idFactor;
+	private int idCargo, idFactor, tipoImporte;
 	private Map<String, Integer> tipoitems = new HashMap<String, Integer>();
 	private Map<String, Integer> productositems = new HashMap<String, Integer>();
 	private Map<String, Integer> almacenItems = new HashMap<String, Integer>();
@@ -92,6 +96,9 @@ public class ComboAction {
 	private Map<String, Integer> tipoFiltroItems = new HashMap<String, Integer>();
 	private Map<String, Integer> factorSancionItems = new HashMap<String, Integer>();
 	private Map<String, Integer> sancionItems = new HashMap<String, Integer>();
+	private Map<String, Integer> tipoImporteItems = new HashMap<String, Integer>();
+	private Map<String, Integer> importeItems = new HashMap<String, Integer>();
+	
 	@EJB
 	private AlmacenService objAlmacenService;
 	@EJB
@@ -132,6 +139,10 @@ public class ComboAction {
 	private FactorSancionService objFactorService;
 	@EJB
 	private SancionService objSancionService;
+	@EJB
+	private TipoImporteService objTipoImporteService;
+	@EJB
+	private ImporteService objImporteService;
 	
 	public ComboAction() {
 		log.info("inicializando constructor");
@@ -1061,6 +1072,71 @@ public class ComboAction {
 	 */
 	public void setIdFactor(int idFactor) {
 		this.idFactor = idFactor;
+	}
+
+	/**
+	 * @return the tipoImporteItems
+	 */
+	public Map<String, Integer> getTipoImporteItems() {
+		tipoImporteItems = new HashMap<String, Integer>();
+
+		List lista = new ArrayList<TipoImporteSie>();
+
+		lista = (List<TipoImporteSie>) objTipoImporteService.listarTipoImporte();
+		
+		log.info("tamaño Tipo Importe  --> " + lista.size());
+		for (int i = 0; i < lista.size(); i++) {
+			TipoImporteSie s = new TipoImporteSie();
+			s =  (TipoImporteSie) lista.get(i);
+			tipoImporteItems.put(s.getDescripcion(),s.getIdtipoimporte());
+		}
+		return tipoImporteItems;
+	}
+
+	/**
+	 * @param tipoImporteItems the tipoImporteItems to set
+	 */
+	public void setTipoImporteItems(Map<String, Integer> tipoImporteItems) {
+		this.tipoImporteItems = tipoImporteItems;
+	}
+
+	/**
+	 * @return the importeItems
+	 */
+	public Map<String, Integer> getImporteItems() {
+		log.info("tipoImporte --> " + tipoImporte);
+		importeItems = new HashMap<String, Integer>();
+		List lista = new ArrayList<ImporteSie>();
+		lista = (List<ImporteSie>) objImporteService.listarImporte(tipoImporte);
+		
+		log.info("tamaño Importe  --> " + lista.size());
+		for (int i = 0; i < lista.size(); i++) {
+			ImporteSie s = new ImporteSie();
+			s =  (ImporteSie) lista.get(i);
+			importeItems.put(s.getDescripcion(),s.getIdimporte());
+		}
+		return importeItems;
+	}
+
+	/**
+	 * @param importeItems the importeItems to set
+	 */
+	public void setImporteItems(Map<String, Integer> importeItems) {
+		this.importeItems = importeItems;
+	}
+
+	/**
+	 * @return the tipoImporte
+	 */
+	public int getTipoImporte() {
+		return tipoImporte;
+	}
+
+	/**
+	 * @param tipoImporte the tipoImporte to set
+	 */
+	public void setTipoImporte(int tipoImporte) {
+		this.tipoImporte = tipoImporte;
 	}
 	
 }
