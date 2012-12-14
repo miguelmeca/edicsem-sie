@@ -53,7 +53,6 @@
 		<class>com.edicsem.pe.sie.entity.SancionSie</class>
 		<class>com.edicsem.pe.sie.entity.DetSancionCargoSie</class>
 		<class>com.edicsem.pe.sie.entity.DetSancionEmpleadoSie</class>
-		<class>com.edicsem.pe.sie.entity.AdelantoSie</class>
 		<class>com.edicsem.pe.sie.entity.DetpagoSie</class>
 		<class>com.edicsem.pe.sie.entity.ImporteSie</class>
 		<class>com.edicsem.pe.sie.entity.PromocionSie</class>

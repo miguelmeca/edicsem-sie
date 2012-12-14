@@ -24,13 +24,16 @@ public class ImporteSie implements Serializable {
 	private Integer idimporte;
 
 	private String descripcion;
-
+	
+	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
 
 	private BigDecimal monto;
 
 	private Integer porcentaje;
 
+	private String tipoconfig;
+	
 	//bi-directional many-to-one association to TipoImporteSie
     @ManyToOne
 	@JoinColumn(name="idtipoimporte")
@@ -85,6 +88,14 @@ public class ImporteSie implements Serializable {
 
 	public void setTbTipoImporte(TipoImporteSie tbTipoImporte) {
 		this.tbTipoImporte = tbTipoImporte;
+	}
+
+	public String getTipoconfig() {
+		return tipoconfig;
+	}
+
+	public void setTipoconfig(String tipoconfig) {
+		this.tipoconfig = tipoconfig;
 	}
 	
 }

@@ -23,7 +23,7 @@ public class TipoImporteSie implements Serializable {
 	private Integer idtipoimporte;
 
 	private String descripcion;
-
+	
 	//bi-directional many-to-one association to DetpagoSie
 	@OneToMany(mappedBy="tbTipoImporte")
 	private Set<DetpagoSie> tbDetpagos;
