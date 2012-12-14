@@ -40,6 +40,7 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 	private String mensaje;
 	private boolean editMode;
 	private int idFactor, idEmpleado, idSancion,idcargo, idMes;
+	private int idTipoImporte, idImporte;
 	private Log log = LogFactory.getLog(MovimientoAction.class);
 	private DetSancionEmpleadoSie objDetSancionEmpleado;
 	private EmpleadoSie objEmpleado;
@@ -498,6 +499,33 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 		this.fechaFin = fechaFin;
 	}
 
-	
-	
+	/**
+	 * @return the idTipoImporte
+	 */
+	public int getIdTipoImporte() {
+		return idTipoImporte;
+	}
+
+	/**
+	 * @param idTipoImporte the idTipoImporte to set
+	 */
+	public void setIdTipoImporte(int idTipoImporte) {
+		comboManager.setTipoImporte(idTipoImporte);
+		this.idTipoImporte = idTipoImporte;
+	}
+
+	/**
+	 * @return the idImporte
+	 */
+	public int getIdImporte() {
+		return idImporte;
+	}
+
+	/**
+	 * @param idImporte the idImporte to set
+	 */
+	public void setIdImporte(int idImporte) {
+		log.info("importe  "+ idImporte);
+		this.idImporte = idImporte;
+	}
 }
