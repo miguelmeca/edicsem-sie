@@ -87,7 +87,7 @@ body {
 				<p:menu style="width:100%">
 					<p:submenu label="Ejemplo Mantenimiento">
 						<p:menuitem value="Subir Archivos " update="messages" ajax="false"
-							action="demo.jsf" />
+							action="ModuloSubirArchivob.jsf" />
 							<p:menuitem value="Modulo de Migracion" ajax="false" action="ModuloSubirArchivo.jsf" />
 					</p:submenu>
 					<p:submenu label="Opciones Secundarias">
@@ -120,7 +120,7 @@ body {
 						<p:menuitem value="Mantenimiento Cargo Empleado" ajax="false" action="#{mantenimientoCargoEmpleadoSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento Empresa" ajax="false" action="#{empresaSearch.listar}" />
 						<p:menuitem value="Meta Mes" update="messages" ajax="false" action="metaEmpresa.jsf" />
-						<p:menuitem value="Cliente" update="messages" ajax="false" action="#{MantenimientoClienteSearchAction.listar}" />
+						<p:menuitem value="Mantenimiento Cliente" update="messages" ajax="false" action="#{MantenimientoClienteSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento Horario Punto de Venta" update="messages" ajax="false" action="#{MantenimientoHorarioPuntoVentaSearchAction.listar}" />
 						<p:menuitem value="Modulo de Migracion" ajax="false" action="ModuloMigracion.jsf" />
 					</p:submenu>
@@ -254,11 +254,11 @@ body {
 
 				<p:fileUpload
 					fileUploadListener="#{productoForm.cargarImagenInsertar}"
-					label="Cargar Archivo" allowTypes="/(\.|\/)(xls|xlsx)$/"
+					label="Cargar Archivo" allowTypes="/(\.|\/)(xls|xlsx)$/"	
 					description="Images" multiple="false" customUI="true"
 					required="true" />
-
-			</h:panelGrid>
+					
+			</h:panelGrid>			
 		</p:dialog>
 	</h:form>
 	
@@ -671,7 +671,7 @@ body {
 				type="button" />
 		</p:confirmDialog>
 	</h:form>
-
+	
 	<h:form id="horarioDeshabilita" >
 
 		<p:confirmDialog id="confirmDeshabilitarHorario"
