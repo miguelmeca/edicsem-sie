@@ -11,7 +11,10 @@
 		<h:form id="frmComprobanteFormList" prependId="false">
 			<p:growl id="message" showDetail="true" />
 			<p:dataTable value="#{comprobanteSearch.comprobanteList}" var="c"
-				id="comproTable" paginator="true" rows="10">
+				id="comproTable" paginator="true" rows="10"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" widgetVar="table"
+					emptyMessage="No se encontro registros">
 
 				<f:facet name="header">
 					<h:outputLabel

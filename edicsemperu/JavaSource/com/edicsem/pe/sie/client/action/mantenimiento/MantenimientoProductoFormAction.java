@@ -124,31 +124,41 @@ public class MantenimientoProductoFormAction extends
 	 * #insertar()
 	 */
 	public String insertar() {
+		mensaje=null;
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'insertar()' " + objProductoSie.getRutaimagenproducto());
+				log.info("Entering my method 'insertar()' " );
 			}
 			
 			if (isNewRecord()) {
-				if (image == null) {
-					log.info("imagen nula");
-					String rutaDefecto ="C:\\proyecto-sie\\ws-sie\\edicsemperu\\WebContent\\images\\bibliaXDefecto.png";
-					InputStream stream =  new FileInputStream(rutaDefecto);
-					log.info("ruta" + rutaDefecto);
-					objProductoSie.setRutaimagenproducto(rutaDefecto);
+				if(objProductoSie.getStkmaximo()<= objProductoSie.getStkminimoproducto()){
+					mensaje ="El stock minimo no puede ser mayor o igual al máximo";
 				}
+				else{
+					 if (image == null) {
+						log.info("imagen nula");
+						String rutaDefecto ="C:\\proyecto-sie\\ws-sie\\edicsemperu\\WebContent\\images\\bibliaXDefecto.png";
+						log.info("ruta" + rutaDefecto);
+						objProductoSie.setRutaimagenproducto(rutaDefecto);
+					 }
 				log.info("a insertar "+TipoProducto +" " +estadoProducto);
 				objProductoService.insertProducto(objProductoSie,TipoProducto, estadoProducto);
+				mensaje ="Se registro correctamente";
 				objProductoSie = new ProductoSie();
 				limpiarCampos();
+				}
 			} else {
 				log.info("a actualizar "+ TipoProducto +" " +estadoProducto+ " ruta " + objProductoSie.getRutaimagenproducto());
 				if(TipoProducto>0||estadoProducto>0){
-				objProductoService.updateProducto(objProductoSie,TipoProducto, estadoProducto);
-				objProductoSie = new ProductoSie();
-				limpiarCampos();
+					objProductoService.updateProducto(objProductoSie,TipoProducto, estadoProducto);
+					mensaje ="Se actualizó correctamente";
+					objProductoSie = new ProductoSie();
+					limpiarCampos();
 				}
 			}
+			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -157,8 +167,11 @@ public class MantenimientoProductoFormAction extends
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		
-		return productoSearch.listar() ;
+		if(mensaje.contains("correctamente")){
+			return productoSearch.getViewList();	
+		}else {
+			return productoSearch.getViewMant();
+		}
 	}
 	
 	public void limpiarCampos(){

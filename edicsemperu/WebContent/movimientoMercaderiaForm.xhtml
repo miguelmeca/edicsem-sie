@@ -5,7 +5,10 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
-	
+	<script type="JavaScript">
+	function text_onkeypress() {
+	}
+	</script>
 	<ui:define name="body">
 		<h1 class="title ui-widget-header ui-corner-all">Movimiento
 			Mercadería</h1>
@@ -63,7 +66,7 @@
 					</p:selectOneMenu>
 					<p:message for="idAlmacen" />
 					
-					<h:outputText value="almacen 2" />
+					<h:outputText value="#{message['mantenimiento.kardex.almacenDestino']}" />
 					<p:selectOneMenu id="idAlmacen2" size="1"  style="width:165px" 
 						value="#{movimientoMercaderia.idAlmacen2}"   >
 						<f:selectItem itemLabel="Seleccione almacen" itemValue="0" />
@@ -99,8 +102,9 @@
 				<p:message for="valortotal" rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
 				
 					<h:outputText value="#{message['movimiento.comprobante.numero']}" rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
-					<p:inputMask id="num_comp" mask="9999999999" value="#{movimientoMercaderia.objcomprobante.codcomprobante}" required="true" 
+					<p:inputMask id="num_comp" mask="9999999999" value="#{movimientoMercaderia.objcomprobante.codcomprobante}" required="true"  onkeydown="text_onkeypress();" 
 					requiredMessage="#{message['movimiento.comprobante.numero.validation']}"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
+					
 				<p:message for="num_comp" rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
 				</h:panelGrid>
 				
@@ -109,7 +113,7 @@
 						value="Grabar Mercadería" ajax="false"
 						update="formMovMerc:listaMovim, message">
 					</p:commandButton>
-				<p:dataTable id="listaMovim" var="d" value="#{movimientoMercaderia.data}"   rowStyleClass="#{d.idkardex == movimientoMercaderia.idMAxKardex ? 'color' : null}">
+				<p:dataTable id="listaMovim" var="d" value="#{movimientoMercaderia.data}"   rowStyleClass="#{d.idkardex == movimientoMercaderia.idMAxKardex ? 'verdeLimon' : null}">
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Id Kardex" />

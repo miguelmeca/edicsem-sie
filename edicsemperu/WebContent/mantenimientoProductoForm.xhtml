@@ -13,22 +13,14 @@
 			<p:growl id="message" showDetail="true" />
 			<h:panelGrid columns="3">
 			
-				<h:outputText for="codigo"
-					value="#{message['mantenimiento.producto.codigo']}" />
+				<h:outputText for="codigo" value="#{message['mantenimiento.producto.codigo']}" />
 				<p:inputText id="codigoProducto"
 					value="#{productoForm.objProductoSie.codproducto}"
 					size="10" required="true"
 					requiredMessage="#{message['mantenimiento.producto.codigo.validation']}">
 					<f:validateLength minimum="1"/>
 					</p:inputText>
-					<p:message for="codigoProducto" />
-				<h:outputText value="#{message['mantenimiento.producto.anio']}" />
-				<h:selectOneListbox id="anio" size="1" required="true"
-					value="#{productoForm.objProductoSie.anioproducto}">
-					<f:selectItem itemValue="1" itemLabel="2011" />
-					<f:selectItem itemValue="2" itemLabel="2012" />
-				</h:selectOneListbox>
-				<p:message for="anio" />
+				<p:message for="codigoProducto" />
 				<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
 				<h:panelGroup>
 				<p:selectOneMenu id="tipoproducto1"
@@ -44,7 +36,7 @@
 					value="#{message['mantenimiento.producto.descripcion']}" />
 				<p:inputText id="desc_prod"
 					value="#{productoForm.objProductoSie.descripcionproducto}"
-					size="10" required="true"
+					size="25" required="true"
 					requiredMessage="#{message['mantenimiento.producto.descripcion.validation']}">
 				</p:inputText>
 				<p:message for="desc_prod" />
@@ -82,40 +74,25 @@
 				</p:inputText>
 				<p:message for="stock_mximo_producto" />
 				
-				<h:outputText value="#{message['mantenimiento.producto.precio']}" />
-				<p:inputText id="precio_venta" size="10"
-					value="#{productoForm.objProductoSie.precioventa}"
-					maxlength="10" required="true"
-					requiredMessage="#{message['mantenimiento.producto.stockmax.validation']}" />
-				<p:message for="precio_venta" />
-				
 				 <h:outputText value="#{message['mantenimiento.producto.estado']}" />
-				<p:selectOneMenu id="estproducto1"
+				<p:selectOneMenu id="estproducto1" 
 					value="#{productoForm.estadoProducto}" required="true"
 					requiredMessage="#{message['mantenimiento.producto.estado.validation']}" >
 					<f:selectItem itemValue="#{null}" itemLabel="Seleccionar Estado" />
 					<f:selectItems value="#{comboAction.estadoitems}" />
 				</p:selectOneMenu> 
 				<p:message for="estproducto1" />
- 
-           <p:graphicImage id="imgFotoInserta"  value="#{productoForm.image}" cache="false" rendered="#{productoForm.image != null}" 
-           style="height:90px;width:90px" /> 
-             <p:commandButton value="Insertar Imagen"  update=":formInsertImageProduc:display"
-							oncomplete="imageProducDialog.show()" title="Ingresar Empleado">
-						</p:commandButton>
-		<f:facet name="footer"> 
-                
-					<p:commandButton value="Registrar" 
-					  actionListener="#{productoForm.insertar}"  
-					   icon="ui-icon ui-icon-check"
-                      oncomplete="onEditCompleteRegistrar(args)" ajax = "false" >
-                       </p:commandButton>
+				<p:graphicImage id="imgFotoInserta"  value="#{productoForm.image}" cache="false" rendered="#{productoForm.image != null}"
+				 style="height:90px;width:90px" />
+				 <p:commandButton value="Insertar Imagen"  update=":formInsertImageProduc:display"
+					oncomplete="imageProducDialog.show()" title="Ingresar Empleado"/>
+				
+				<p:commandButton value="Registrar" actionListener="#{productoForm.insertar}"  
+					icon="ui-icon ui-icon-check" oncomplete="onEditCompleteRegistrar(args)" ajax = "false" />
                      
-                    <p:commandButton value="Cancelar s" action="#{productoSearch.listar}"
-                    icon="ui-icon ui-icon-close" ajax="false" />
-  				
-             
-          </f:facet> 
+                <p:commandButton value="Regresar" action="#{productoSearch.listar}" immediate="true" ajax = "false"
+                    icon="ui-icon ui-icon-close" />
+  			
 		</h:panelGrid>
 		 </h:form>
 	</ui:define>

@@ -44,13 +44,13 @@
 				value="#{kardexAction.fechaHasta}"  />
 
 				<p:commandButton  value="Consultar" action="#{kardexAction.consultar}" 
-				update=":frmKardex:listakardex,stock_actual, message" />
+				update=":frmKardex" />
 					 </p:panelGrid>  
 				<p:spacer width="40" />
-				<p:dataTable value="#{kardexAction.kardexList}" var="p"
+				<p:dataTable value="#{kardexAction.kardexList}" var="p" 
 					id="listakardex" paginator="true" rows="5"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="5,10,15" widgetVar="table"
+					rowsPerPageTemplate="5,10,15" widgetVar="tableKardex"
 					emptyMessage="No se encontro registros">
 					<f:facet name="header">  
          Listado Kardex
@@ -77,7 +77,7 @@
             </p:row>
         </p:columnGroup>
 					 
-					<p:column>#{p.fechacreacion}
+					<p:column>#{p.fecha}
 					</p:column>
 					<p:column>#{p.tbTipoKardexProducto.descripcion}
 					</p:column>
