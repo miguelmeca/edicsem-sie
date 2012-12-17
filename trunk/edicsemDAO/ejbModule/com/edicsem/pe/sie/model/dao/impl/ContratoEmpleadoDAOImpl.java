@@ -13,8 +13,10 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.ContratoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DetContratoEmpleadoSie;
+import com.edicsem.pe.sie.entity.MetaEmpleadoSie;
 import com.edicsem.pe.sie.model.dao.ContratoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.DetContratoEmpleadoDAO;
+import com.edicsem.pe.sie.model.dao.MetaEmpleadoDAO;
 
 /**
  * @author karen
@@ -28,6 +30,8 @@ public class ContratoEmpleadoDAOImpl implements ContratoEmpleadoDAO{
 	private static Log log = LogFactory.getLog(ContratoEmpleadoDAOImpl.class);
 	@EJB
 	private DetContratoEmpleadoDAO objDetContratoEmpleadoDao;
+	@EJB 
+	private MetaEmpleadoDAO objMetaEmpleadoDao;
  
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.ContratoEmpleadoDAO#insertContratoEmpleado(com.edicsem.pe.sie.entity.ContratoEmpleadoSie)
@@ -94,20 +98,27 @@ public class ContratoEmpleadoDAOImpl implements ContratoEmpleadoDAO{
 	 */
 	public List listarPatrocinados(int idEmpleado,String fechaInicio,String fechaFin ) {
 		log.info("listarPatrocinados "+idEmpleado);
-		List<ContratoEmpleadoSie>  lista = null;
+		List<ContratoEmpleadoSie> lista = null;
 		try {
 			Query q = em.createQuery("select p from ContratoEmpleadoSie p where p.tbEmpleado2.idempleado = "+  idEmpleado);
 			lista =  q.getResultList();
 			
 			log.info(" aki  ");
-			for (int i = 0; i < lista.size(); i++) {
-				//averiguar cantidad de contratos por cada patrociando
-				List<DetContratoEmpleadoSie> lista2 = objDetContratoEmpleadoDao.listarContratoXEmpleado(lista.get(i).getIdempleado(), fechaInicio, fechaFin);
+			
+			//si las ventas llegan a la meta esperada, se cuenta sus contratos pagados (facturados), el expositor podrá cobrar las comisiones por sus patrocinados
+			MetaEmpleadoSie metaEmpl = objMetaEmpleadoDao.findMetaEmpleado(idEmpleado);
+			
+			if(metaEmpl.getValormeta()>0){
 				
-				lista.get(i).setCantContratoXPatrocinado(lista2.size());
-			}
-			for (int i = 0; i < lista.size(); i++) {
-				log.info("--> in DAO   "+lista.get(i).getTbEmpleado1().getNombresCompletos()+" "+  lista.get(i).getCantContratoXPatrocinado());
+				for (int i = 0; i < lista.size(); i++) {
+					//averiguar cantidad de contratos por cada patrociando (contratos en los que el patrocinado es expositor = 1)
+					List<DetContratoEmpleadoSie> lista2 = objDetContratoEmpleadoDao.listarContratoXEmpleado(lista.get(i).getIdempleado(), fechaInicio, fechaFin, 1 );
+					
+					lista.get(i).setCantContratoXPatrocinado(lista2.size());
+				}
+				for (int i = 0; i < lista.size(); i++) {
+					log.info("--> in DAO   "+lista.get(i).getTbEmpleado1().getNombresCompletos()+" "+  lista.get(i).getCantContratoXPatrocinado());
+				}
 			}
 			log.info("tamaño listarPatrocinados--> " + lista.size());
 		} catch (Exception e) {
