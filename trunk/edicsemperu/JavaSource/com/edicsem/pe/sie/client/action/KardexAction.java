@@ -92,17 +92,16 @@ public class KardexAction extends BaseMantenimientoAbstractAction {
 				fechaD = "" + sdf.format(fechaDesde);
 				fechaH = "" + sdf.format(fechaHasta);
 			}
-			kardexList = objKardexService.ConsultaProductos(getIdproducto(),
-					getIdalmacen(), fechaD, fechaH);
+			kardexList = objKardexService.ConsultaProductos(getIdproducto(), getIdalmacen(), fechaD, fechaH);
 			if(kardexList.size()==0){
 				kardexList = new ArrayList<KardexSie>();
 				stockActual=0;
 			}else{ 
 				
-			log.info("cantidad existente :D "+ kardexList.get(kardexList.size() - 1).getCantexistencia());
-			stockActual = kardexList.get(kardexList.size() - 1).getCantexistencia();
-			log.info("nuevo stock actual " + getStockActual());
-			setMensaje(" consulta realizada ");
+				log.info("cantidad existente :D "+ kardexList.get(kardexList.size() - 1).getCantexistencia());
+				stockActual = kardexList.get(kardexList.size() - 1).getCantexistencia();
+				log.info("nuevo stock actual " + getStockActual());
+				setMensaje(" consulta realizada ");
 			}
 		return getViewList();
 	}
