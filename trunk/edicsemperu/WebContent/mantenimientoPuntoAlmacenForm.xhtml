@@ -98,6 +98,9 @@
 					<p:commandButton value="Guardar" update="panel"
 						actionListener="#{almacenForm.insertar}" ajax="false"
 						icon="ui-icon ui-icon-disk" />
+						
+					<p:commandButton value="Regresar" action="#{almacenSearch.listar}" 
+						immediate="true" ajax = "false" icon="ui-icon ui-icon-close" />
 				</h:panelGroup>
 				
 			</h:panelGrid>

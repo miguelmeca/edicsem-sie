@@ -304,7 +304,6 @@ public class MantenimientoContratoFormAction extends
 		}
 		log.info(" karenx d");
 		setPrecioProducto(objPaqueteService.findPaquete(getIdpaquete()).getPrecioventa().doubleValue());
-		log.info(" karenx precio "+objProductoSie.getPrecioventa());
 		}
 	}
 

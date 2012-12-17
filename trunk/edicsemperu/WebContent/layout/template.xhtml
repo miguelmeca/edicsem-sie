@@ -32,8 +32,8 @@ body {
 .ui-widget {
 	font-size: 75%;
 }
-.color{
-        background: #925265;
+.verdeLimon{
+        background: #D0FA58;
 }
 .color1{
         background: #FF0000;
@@ -102,6 +102,7 @@ body {
 						<p:menuitem value="Buscar Cliente" update="messages" ajax="false" action="#" />
 						<p:menuitem value="Registro Contrato" update="messages" ajax="false" action="#{contratoForm.agregar}" />
 						<p:menuitem value="Registro de Filtros de horario Ventas" update="messages" ajax="false" action="#{filtroHorarioVendedorForm.agregar}" />
+						<p:menuitem value="Kardex" update="messages" ajax="false" action="#{kardexAction.listar}" />
 						<p:menuitem value="Registro de horario Ventas" update="messages" ajax="false" action="#{horarioVendedorForm.agregar}" />
 						<p:menuitem value="Mantenimiento de Punto de Venta/Almacen" ajax="false" action="#{almacenSearch.listar}" />
 						<p:menuitem value="Mantenimiento Valorizado" update="messages" ajax="false" action="mantenimientoKardex.jsf" />
@@ -132,7 +133,7 @@ body {
 			<ui:insert name="body" />
 		</p:layoutUnit>
 	</p:layout>
-	<!--  Mantenimiento Kardex Detalle - Modificar-->
+	<!--  Mantenimiento |x Detalle - Modificar-->
 	<h:form id="formManteKardexList">
 		<p:dialog widgetVar="kardexDialog" showEffect="fade"
 			hideEffect="explode" modal="true" width="450" position="center">
@@ -212,9 +213,8 @@ body {
 					</h:outputText>
 
 				</h:panelGroup>
-				<p:commandButton id="id" actionListener="#{kardexAction.insertar}"
-					rendered="#{!kardexAction.editMode}" value="Actualizar kardex "
-					ajax="false" />
+				<p:commandButton id="id" actionListener="#{kardexAction.insertar}" 
+					rendered="#{!kardexAction.editMode}" value="Actualizar kardex" update="@form"  />
 
 			</h:panelGrid>
 		</p:dialog>
@@ -223,20 +223,14 @@ body {
 	<!--  Mantenimiento Producto - Imagen-->
 	<h:form id="formInsertImageProduc">
 		<p:dialog header="Imagen Producto" widgetVar="imageProducDialog"
-			showEffect="fade" hideEffect="explode" modal="true" width="450"
+			showEffect="fade" hideEffect="explode" modal="true" 
 			position="center">
-			<h:panelGrid id="display" columns="2" cellpadding="2"
-				style="margin:0 auto;">
-
-				<h:outputText value="#{message['mantenimiento.producto.imagen']}"
-					id="idimagen" />
-
-				<p:fileUpload
-					fileUploadListener="#{productoForm.cargarImagenInsertar}"
-					label="Cargar Imagen" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-					description="Images" multiple="false" customUI="true"
-					required="true" />
-
+			<h:panelGrid id="display"  >
+			<h:outputText value="#{message['mantenimiento.producto.imagen']}" />
+			<p:fileUpload fileUploadListener="#{productoForm.cargarImagenInsertar}" 
+				label="Cargar Imagen" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" oncomplete="imageProducDialog.hide()"
+				description="Images" multiple="false" customUI="true" required="true">
+			</p:fileUpload>
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
@@ -1653,9 +1647,6 @@ value="#{MetaMesFormAction.date2}"
 
 	<!-- Modulo Migracion - Excel -->
 
-	<ui:insert name="highlight">
-		<script language="javascript"
-			src="#{request.contextPath}/syntaxhighlighter/scripts/sh.js"></script>
-	</ui:insert>
+ 
 </f:view>
 </html>

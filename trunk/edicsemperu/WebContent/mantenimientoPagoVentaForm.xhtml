@@ -30,16 +30,17 @@
 					<p:selectOneMenu value="#{PagoVentaForm.idTipoImporte}" required="true" >
 						<f:selectItem itemLabel="Seleccione tipo "  itemValue="#{null}" />
 						<f:selectItems value="#{comboAction.tipoImporteItems}" />
-						<p:ajax update="panel" />
+						<p:ajax update="importe" />
 					</p:selectOneMenu>
 					
 					<h:outputText value="Importe" />
 					<p:selectOneMenu id="importe" value="#{PagoVentaForm.idImporte}" required="true">
 						<f:selectItem itemLabel="Seleccione importe "  itemValue="#{null}" />
 						<f:selectItems value="#{comboAction.importeItems}" />
-						<p:ajax update="panel" />
+						<p:ajax update="panelAlt" />
 					</p:selectOneMenu>
 					
+					<h:panelGrid id="panelAlt">
 					<p:fieldset legend="Sancionar Empleado" rendered="#{PagoVentaForm.idImporte==4}" >
 					<h:panelGrid columns="2">
 					<h:outputText value="Factor de Sanción :" />
@@ -69,7 +70,7 @@
 					<p:commandButton value="Registrar" ajax="false" action="#{PagoVentaForm.insertar}" update="@form" />
 					</h:panelGrid>
 					</p:fieldset>
-					
+					</h:panelGrid>
 					</h:panelGrid>
 					</p:fieldset>
 					
