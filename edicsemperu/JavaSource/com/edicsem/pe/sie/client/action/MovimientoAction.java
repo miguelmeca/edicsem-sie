@@ -62,6 +62,9 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 		idAlmacen2 = 0;
 		data = new ArrayList<KardexSie>();
 		objKardexSie = new KardexSie();
+		objKardexSie.setCantentrada(1);
+		objKardexSie.setCantsalida(1);
+		objKardexSie.setValortotal("1.0");
 		objcomprobante = new ComprobanteSie();
 		objDetComprobante = new DetalleComprobanteSie();
 		idMAxKardex=0;
@@ -105,6 +108,19 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 			}
 			
 			else{
+				if(idtipokardexproducto==1){
+					//si es entrada
+					objKardexSie.setCantsalida(0);
+				}
+				else if(idtipokardexproducto==2){
+					//si es salida
+					objKardexSie.setValortotal(null);
+					objKardexSie.setCantentrada(0);
+				}else{
+					//deposito
+					objKardexSie.setValortotal(null);
+					objKardexSie.setCantsalida(0);
+				}
 				log.info("   antes de la consulta");
 				List<KardexSie> k = objKardexService.ConsultaStockActual(idproducto);
 				

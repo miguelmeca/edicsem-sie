@@ -172,7 +172,7 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 			fechaFin = objMetaMesSie.getFechafin()+"/"+(cal.get(Calendar.YEAR)+1);
 			log.info(" fec i "+fechaInicio+" fec f "+fechaFin);
 		}
-		contratoXEmpleadoList = objDetContratoEmpleadoService.listarContratoXEmpleado(objEmpleado.getIdempleado(), fechaInicio ,fechaFin );
+		contratoXEmpleadoList = objDetContratoEmpleadoService.listarContratoXEmpleado(objEmpleado.getIdempleado(), fechaInicio ,fechaFin,0 );
 		patrocinadosList = objContratoEmpleadoService.listarPatrocinados(objEmpleado.getIdempleado(), fechaInicio, fechaFin);
 		for (int i = 0; i < patrocinadosList.size(); i++) {
 			log.info("-->   "+patrocinadosList.get(i).getTbEmpleado2().getNombresCompletos()+" "+  patrocinadosList.get(i).getCantContratoXPatrocinado());
