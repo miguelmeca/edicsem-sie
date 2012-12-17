@@ -86,9 +86,9 @@ public class DetContratoEmpleadoDAOImpl implements DetContratoEmpleadoDAO{
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.DetContratoEmpleadoDAO#listarContratoXEmpleado(int, java.lang.String, java.lang.String)
+	 * @see com.edicsem.pe.sie.model.dao.DetContratoEmpleadoDAO#listarContratoXEmpleado(int, java.lang.String, java.lang.String, int)
 	 */
-	public List listarContratoXEmpleado(int idempleado,String fechaInicio,String fechaFin) {
+	public List listarContratoXEmpleado(int idempleado,String fechaInicio,String fechaFin, int idCargoContrato) {
 		List<DetContratoEmpleadoSie>  lista = null;
 		List<DetContratoEmpleadoSie>  lista2 = new ArrayList<DetContratoEmpleadoSie>();
 		DetContratoEmpleadoSie objExpositor = new DetContratoEmpleadoSie();
@@ -96,12 +96,15 @@ public class DetContratoEmpleadoDAOImpl implements DetContratoEmpleadoDAO{
 		DetContratoEmpleadoSie objColaborador = new DetContratoEmpleadoSie();
 		
 		try {
-			
-			Query q = em.createQuery("select p from DetContratoEmpleadoSie p where p.tbEmpleado.idempleado = "+ idempleado
-					+" and DATE(p.tbContrato.fechaentrega) between DATE('" + fechaInicio + "') and  DATE('" + fechaFin +"') ");
+			String query= "select p from DetContratoEmpleadoSie p where p.tbEmpleado.idempleado = "+ idempleado
+					+" and DATE(p.tbContrato.fechaentrega) between DATE('" + fechaInicio + "') and  DATE('" + fechaFin +"') ";
+					if(idCargoContrato!=0){
+						query=query + " and p.idCargoContrato = "+ idCargoContrato;
+					}
+			Query q = em.createQuery(query);
 			lista =  q.getResultList();
 			
-			log.info("tamaño lista Contrato X Empleado 1 --> " + lista.size());
+			log.info("tamaño lista Contrato X Empleado  --> " + lista.size());
 			int cantidad =0, cantidad2=0, cantidad3=0;
 			
 			for (int i = 0; i < lista.size(); i++) {
