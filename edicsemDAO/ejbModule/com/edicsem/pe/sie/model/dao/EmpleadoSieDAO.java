@@ -12,4 +12,5 @@ public interface EmpleadoSieDAO {
 	public abstract EmpleadoSie buscarEmpleado (int id);
 	public abstract List listarEmpleados ();
 	public abstract List listarEmpleadosXCargo(int idCargo);
+	public abstract List listarEmpleadosXEmpresa(int idEmpresa);
 }

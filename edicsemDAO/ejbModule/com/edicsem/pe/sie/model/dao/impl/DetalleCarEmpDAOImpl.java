@@ -76,7 +76,6 @@ public class DetalleCarEmpDAOImpl implements DetalleCarEmpDAO{
 	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#findDemo(java.lang.String)
 	 */
 	public DetCargoEmpleadoSie findDetalleCarEmp(int id) {
-		// TODO Auto-generated method stub
 		DetCargoEmpleadoSie detallecaremp= new DetCargoEmpleadoSie();
 		try {
 		if (log.isInfoEnabled()) {
@@ -142,12 +141,20 @@ public class DetalleCarEmpDAOImpl implements DetalleCarEmpDAO{
 		return bandera;
 	}
 
-	
-	
-	
-
-	
-
-	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.DetalleCarEmpDAO#listarCargoXEmp(int)
+	 */
+	public List listarCargoXEmp(int idEmpleado) {
+		List lista = null;
+		try {
+			Query q = em.createQuery("select p from DetCargoEmpleadoSie p where p.tbEmpleado.idempleado = "+ idEmpleado);
+			lista = q.getResultList();
+			log.info("tamaño lista listarCargoXEmp --> " + lista.size());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 	
 }

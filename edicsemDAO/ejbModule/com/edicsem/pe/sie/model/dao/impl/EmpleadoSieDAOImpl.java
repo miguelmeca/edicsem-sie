@@ -105,4 +105,20 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 		}
 		return lista;
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.EmpleadoSieDAO#listarEmpleadosXEmpresa(int)
+	 */
+	public List listarEmpleadosXEmpresa(int idEmpresa) {
+		List lista = null;
+		try {
+			Query q = em.createQuery("select e from EmpleadoSie e inner join e.tbDetEmpresaEmpleados f  " +
+					" inner join f.tbEmpresa g where g.idempresa = " + idEmpresa);
+			lista = q.getResultList();
+			log.info("tamaño lista listarEmpleadosXEmpresa --> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 }
