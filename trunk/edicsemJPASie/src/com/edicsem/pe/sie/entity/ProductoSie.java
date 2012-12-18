@@ -34,8 +34,6 @@ public class ProductoSie implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_PRODUCTO_IDPRODUCTO_GENERATOR")
 	private Integer idproducto;
 
-	private String anioproducto;
-
 	private String codproducto;
 
 	private String descripcionproducto;
@@ -46,8 +44,6 @@ public class ProductoSie implements Serializable {
 	private Timestamp fechacreacion;
 
 	private Timestamp fechamodifica;
-
-	private BigDecimal precioventa;
 
 	private String rutaimagenproducto;
 
@@ -102,14 +98,6 @@ public class ProductoSie implements Serializable {
 		this.idproducto = idproducto;
 	}
 
-	public String getAnioproducto() {
-		return this.anioproducto;
-	}
-
-	public void setAnioproducto(String anioproducto) {
-		this.anioproducto = anioproducto;
-	}
-
 	public String getCodproducto() {
 		return this.codproducto;
 	}
@@ -148,14 +136,6 @@ public class ProductoSie implements Serializable {
 
 	public void setFechamodifica(Timestamp fechamodifica) {
 		this.fechamodifica = fechamodifica;
-	}
-
-	public BigDecimal getPrecioventa() {
-		return this.precioventa;
-	}
-
-	public void setPrecioventa(BigDecimal precioventa) {
-		this.precioventa = precioventa;
 	}
 
 	public String getRutaimagenproducto() {
