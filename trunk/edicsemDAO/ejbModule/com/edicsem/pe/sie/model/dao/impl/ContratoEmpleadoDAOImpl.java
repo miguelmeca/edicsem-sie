@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.model.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -12,10 +13,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.ContratoEmpleadoSie;
+import com.edicsem.pe.sie.entity.DetCargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DetContratoEmpleadoSie;
 import com.edicsem.pe.sie.entity.MetaEmpleadoSie;
 import com.edicsem.pe.sie.model.dao.ContratoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.DetContratoEmpleadoDAO;
+import com.edicsem.pe.sie.model.dao.DetalleCarEmpDAO;
 import com.edicsem.pe.sie.model.dao.MetaEmpleadoDAO;
 
 /**
@@ -32,6 +35,8 @@ public class ContratoEmpleadoDAOImpl implements ContratoEmpleadoDAO{
 	private DetContratoEmpleadoDAO objDetContratoEmpleadoDao;
 	@EJB 
 	private MetaEmpleadoDAO objMetaEmpleadoDao;
+	@EJB 
+	private DetalleCarEmpDAO  objDetCargoEmpleadoDao;
  
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.ContratoEmpleadoDAO#insertContratoEmpleado(com.edicsem.pe.sie.entity.ContratoEmpleadoSie)
@@ -99,16 +104,26 @@ public class ContratoEmpleadoDAOImpl implements ContratoEmpleadoDAO{
 	public List listarPatrocinados(int idEmpleado,String fechaInicio,String fechaFin ) {
 		log.info("listarPatrocinados "+idEmpleado);
 		List<ContratoEmpleadoSie> lista = null;
+		DetCargoEmpleadoSie detc = new DetCargoEmpleadoSie();
+		List<DetContratoEmpleadoSie> listaDetContrato= new ArrayList<DetContratoEmpleadoSie>();
 		try {
 			Query q = em.createQuery("select p from ContratoEmpleadoSie p where p.tbEmpleado2.idempleado = "+  idEmpleado);
 			lista =  q.getResultList();
 			
-			log.info(" aki  ");
+			log.info(" aki  -----  ");
 			
 			//si las ventas llegan a la meta esperada, se cuenta sus contratos pagados (facturados), el expositor podrá cobrar las comisiones por sus patrocinados
 			MetaEmpleadoSie metaEmpl = objMetaEmpleadoDao.findMetaEmpleado(idEmpleado);
 			
-			if(metaEmpl.getValormeta()>0){
+			//cantidad de  ventas del empleado , dependiendo de cargo
+			detc = (DetCargoEmpleadoSie) objDetCargoEmpleadoDao.listarCargoXEmp(idEmpleado).get(0);
+			listaDetContrato = objDetContratoEmpleadoDao.listarContratoXEmpleado(idEmpleado, fechaInicio, fechaFin, detc.getTbCargoEmpleado().getIdcargoempleado() );
+			if(listaDetContrato==null){
+				listaDetContrato = new ArrayList<DetContratoEmpleadoSie>();
+			}
+			
+			//SOLO SI SUPERA LA META SE LE PAGA POR SUS PATROCINADOS
+			if(metaEmpl.getValormeta() > listaDetContrato.size()){
 				
 				for (int i = 0; i < lista.size(); i++) {
 					//averiguar cantidad de contratos por cada patrociando (contratos en los que el patrocinado es expositor = 1)

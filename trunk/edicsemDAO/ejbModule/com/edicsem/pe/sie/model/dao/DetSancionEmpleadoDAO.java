@@ -13,5 +13,5 @@ public interface DetSancionEmpleadoDAO {
 	public abstract void insertDetSancionEmpleado(DetSancionEmpleadoSie d);
 	public abstract void updateDetSancionEmpleado(DetSancionEmpleadoSie d);
 	public abstract DetSancionEmpleadoSie findContrato (int id);
-	public abstract List  listarDetSancionEmpleado();
+	public abstract List  listarDetSancionEmpleado(int idEmpleado,String fechaInicio,String fechaFin);
 }
