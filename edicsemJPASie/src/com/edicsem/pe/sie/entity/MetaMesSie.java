@@ -2,14 +2,14 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -46,16 +46,14 @@ public class MetaMesSie implements Serializable {
 	private String usuariocreacion;
 
 	private String usuariomodifica;
-
-	//bi-directional many-to-one association to MetaEmpresaSie
-    @ManyToOne
-	@JoinColumn(name="idmetaempresa")
-	private MetaEmpresaSie tbMetaEmpresa;
     
-    //bi-directional many-to-one association to MetaEmpleadoSie
-    @ManyToOne
-	@JoinColumn(name="idmetaempleado")
-	private MetaEmpleadoSie tbMetaEmpleado;
+	//bi-directional many-to-one association to MetaEmpresaSie
+	@OneToMany(mappedBy="tbMetaMes")
+	private Set<MetaEmpresaSie> tbMetaEmpresas;
+	
+	//bi-directional many-to-one association to MetaEmpleadoSie
+	@OneToMany(mappedBy="tbMetaMes")
+	private Set<MetaEmpleadoSie> tbMetaEmpleados;
 
     public MetaMesSie() {
     }
@@ -116,22 +114,6 @@ public class MetaMesSie implements Serializable {
 		this.codmes = codmes;
 	}
 
-	public MetaEmpresaSie getTbMetaEmpresa() {
-		return tbMetaEmpresa;
-	}
-
-	public void setTbMetaEmpresa(MetaEmpresaSie tbMetaEmpresa) {
-		this.tbMetaEmpresa = tbMetaEmpresa;
-	}
-
-	public MetaEmpleadoSie getTbMetaEmpleado() {
-		return tbMetaEmpleado;
-	}
-
-	public void setTbMetaEmpleado(MetaEmpleadoSie tbMetaEmpleado) {
-		this.tbMetaEmpleado = tbMetaEmpleado;
-	}
-
 	public String getFechafin() {
 		return fechafin;
 	}
@@ -146,6 +128,22 @@ public class MetaMesSie implements Serializable {
 
 	public void setFechainicio(String fechainicio) {
 		this.fechainicio = fechainicio;
+	}
+
+	public Set<MetaEmpresaSie> getTbMetaEmpresas() {
+		return tbMetaEmpresas;
+	}
+
+	public void setTbMetaEmpresas(Set<MetaEmpresaSie> tbMetaEmpresas) {
+		this.tbMetaEmpresas = tbMetaEmpresas;
+	}
+
+	public Set<MetaEmpleadoSie> getTbMetaEmpleados() {
+		return tbMetaEmpleados;
+	}
+
+	public void setTbMetaEmpleados(Set<MetaEmpleadoSie> tbMetaEmpleados) {
+		this.tbMetaEmpleados = tbMetaEmpleados;
 	}
 	
 }
