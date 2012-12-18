@@ -105,7 +105,7 @@ body {
 						<p:menuitem value="Kardex" update="messages" ajax="false" action="#{kardexAction.listar}" />
 						<p:menuitem value="Registro de horario Ventas" update="messages" ajax="false" action="#{horarioVendedorForm.agregar}" />
 						<p:menuitem value="Mantenimiento de Punto de Venta/Almacen" ajax="false" action="#{almacenSearch.listar}" />
-						<p:menuitem value="Mantenimiento Valorizado" update="messages" ajax="false" action="mantenimientoKardex.jsf" />
+						<p:menuitem value="Mantenimiento Valorizado" ajax="false" action="mantenimientoKardex.jsf" />
 						<p:menuitem value="Movimiento Mercader&iacute;a" ajax="false" action="#{movimientoMercaderia.listar}" />
 						<p:menuitem value="Registro Comprobante" ajax="false" action="#{comprobanteSearch.listar}" />
 						<p:menuitem value="Registro de Sanciones " ajax="false" action="#{factorSancionSearch.listar}" />
@@ -121,6 +121,7 @@ body {
 						<p:menuitem value="Mantenimiento Cargo Empleado" ajax="false" action="#{mantenimientoCargoEmpleadoSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento Empresa" ajax="false" action="#{empresaSearch.listar}" />
 						<p:menuitem value="Meta Mes" update="messages" ajax="false" action="metaEmpresa.jsf" />
+						<p:menuitem value="Meta Empleado" ajax="false" action="#{metaEmpleadoSearch.listar}" />
 						<p:menuitem value="Mantenimiento Cliente" update="messages" ajax="false" action="#{MantenimientoClienteSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento Horario Punto de Venta" update="messages" ajax="false" action="#{MantenimientoHorarioPuntoVentaSearchAction.listar}" />
 						<p:menuitem value="Modulo de Migracion" ajax="false" action="ModuloMigracion.jsf" />
@@ -524,13 +525,6 @@ body {
 				<h:panelGroup>
 					<h:outputText
 						value="#{productoForm.selectedProducto.descripcionproducto}"
-						style="font-weight:bold" rendered="#{!productoForm.editMode}" />
-				</h:panelGroup>
-
-				<h:outputText value="#{message['mantenimiento.producto.precio']}"
-					id="precioProd" />
-				<h:panelGroup>
-					<h:outputText value="#{productoForm.selectedProducto.precioventa}"
 						style="font-weight:bold" rendered="#{!productoForm.editMode}" />
 				</h:panelGroup>
 

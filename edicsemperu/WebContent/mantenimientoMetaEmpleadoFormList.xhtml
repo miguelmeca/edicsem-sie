@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Lista Meta Empleados</h1>
+
+		<h:form id="frmMetaEmpleadoFormList">
+			<p:growl id="message" showDetail="true" />
+			
+			<p:dataTable value="#{metaEmpleadoSearch.metaEmpleadoList}" var="m" paginator="true" rows="10">
+				<f:facet name="header">
+					<h:outputLabel
+						value="Lista de Meta Empleado" />
+				</f:facet>
+				
+				<p:column headerText="Mes" >
+					<h:outputText value="#{m.tbMetaMes.mes}" />
+				</p:column>
+
+				<p:column headerText="Empleado" >
+					<h:outputText value="#{m.tbEmpleado.nombresCompletos}" />
+				</p:column>
+
+				<p:column headerText="Editar">
+					<p:commandButton value="Editar"
+						action="#{metaEmpleadoForm.update}"	icon="ui-icon ui-icon-pencil">
+						<f:setPropertyActionListener value="#{m.idmetaempleado}"
+							target="#{metaEmpleadoForm.ide}" />
+					</p:commandButton>
+				</p:column>
+				
+				<f:facet name="footer">
+					<div align="left">
+						<p:commandLink value="Nuevo Meta Empleado" action="#{metaEmpleadoForm.agregar}"	/>
+					</div>
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

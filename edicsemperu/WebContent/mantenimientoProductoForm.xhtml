@@ -82,17 +82,19 @@
 					<f:selectItems value="#{comboAction.estadoitems}" />
 				</p:selectOneMenu> 
 				<p:message for="estproducto1" />
+				
 				<p:graphicImage id="imgFotoInserta"  value="#{productoForm.image}" cache="false" rendered="#{productoForm.image != null}"
 				 style="height:90px;width:90px" />
+				 
 				 <p:commandButton value="Insertar Imagen"  update=":formInsertImageProduc:display"
 					oncomplete="imageProducDialog.show()" title="Ingresar Empleado"/>
+					<p:spacer/> 
 				
-				<p:commandButton value="Registrar" actionListener="#{productoForm.insertar}"  
-					icon="ui-icon ui-icon-check" oncomplete="onEditCompleteRegistrar(args)" ajax = "false" />
+				<p:commandButton value="Registrar" actionListener="#{productoForm.insertar}"  ajax = "false"
+					icon="ui-icon ui-icon-check" />
                      
                 <p:commandButton value="Regresar" action="#{productoSearch.listar}" immediate="true" ajax = "false"
                     icon="ui-icon ui-icon-close" />
-  			
 		</h:panelGrid>
 		 </h:form>
 	</ui:define>

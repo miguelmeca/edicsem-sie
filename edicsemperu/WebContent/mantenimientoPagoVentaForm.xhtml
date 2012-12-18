@@ -149,7 +149,18 @@
 					
 					</p:fieldset>
 					<p:fieldset  legend="Descuentos">
-					
+					Sanciones
+					<p:dataTable value="#{PagoVentaForm.detsancion}" var="s">
+						<p:column headerText="Sanción" >
+							<h:outputText value="#{s.tbDetsancioncargo.tbSancion.descripcion}" />
+						</p:column>
+						<p:column headerText="Descuento" >
+							<h:outputText value="#{s.tbDetsancioncargo.descuento}" />
+						</p:column>
+						<p:column headerText="Dias Suspensión" >
+							<h:outputText value="#{s.tbDetsancioncargo.cantdiaSuspension}" />
+						</p:column>
+					</p:dataTable>
 					<!--  FECHA	IMPORTE	CONCEPTO
 										RPC
 										FALTAS VARIAS
