@@ -2,7 +2,6 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -51,9 +49,10 @@ public class MetaEmpresaSie implements Serializable {
 	private EmpresaSie tbEmpresa;
     
     //bi-directional many-to-one association to MetaMesSie
-  	@OneToMany(mappedBy="tbMetaEmpresa")
-  	private Set<MetaMesSie> tbMetaEmpresa;
-
+    @ManyToOne
+	@JoinColumn(name="idmetames")
+	private MetaMesSie tbMetaMes;
+    
     public MetaEmpresaSie() {
     }
 
@@ -120,13 +119,13 @@ public class MetaEmpresaSie implements Serializable {
 	public void setTbEmpresa(EmpresaSie tbEmpresa) {
 		this.tbEmpresa = tbEmpresa;
 	}
-
-	public Set<MetaMesSie> getTbMetaEmpresa() {
-		return tbMetaEmpresa;
+	
+	public MetaMesSie getTbMetaMes() {
+		return tbMetaMes;
 	}
-
-	public void setTbMetaEmpresa(Set<MetaMesSie> tbMetaEmpresa) {
-		this.tbMetaEmpresa = tbMetaEmpresa;
+	
+	public void setTbMetaMes(MetaMesSie tbMetaMes) {
+		this.tbMetaMes = tbMetaMes;
 	}
 
 	
