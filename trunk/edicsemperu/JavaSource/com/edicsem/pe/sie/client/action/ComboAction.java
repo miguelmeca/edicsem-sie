@@ -883,14 +883,12 @@ public class ComboAction {
 		return empleadoItems;
 	}
 
-
 	/**
 	 * @param empleadoItems the empleadoItems to set
 	 */
 	public void setEmpleadoItems(Map<String, Integer> empleadoItems) {
 		this.empleadoItems = empleadoItems;
 	}
-
 
 	/**
 	 * @return the empleadoxcargo
