@@ -58,11 +58,12 @@ public class DetSancionEmpleadoServiceImpl implements DetSancionEmpleadoService{
 	public DetSancionEmpleadoSie findContrato(int id) {
 		return objDetSancionEmpleadoDao.findContrato(id);
 	}
+	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.DetSancionEmpleadoService#listarDetSancionEmpleado()
+	 * @see com.edicsem.pe.sie.service.facade.DetSancionEmpleadoService#listarDetSancionEmpleado(int, java.lang.String, java.lang.String)
 	 */
-	public List listarDetSancionEmpleado() {
-		return objDetSancionEmpleadoDao.listarDetSancionEmpleado();
+	public List listarDetSancionEmpleado(int idEmpleado,String fechaInicio,String fechaFin) {
+		return objDetSancionEmpleadoDao.listarDetSancionEmpleado(idEmpleado, fechaInicio, fechaFin);
 	}
 
 }

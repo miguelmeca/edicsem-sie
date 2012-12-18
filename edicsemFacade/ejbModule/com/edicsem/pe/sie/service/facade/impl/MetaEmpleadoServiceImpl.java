@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 
 import com.edicsem.pe.sie.entity.MetaEmpleadoSie;
 import com.edicsem.pe.sie.model.dao.MetaEmpleadoDAO;
+import com.edicsem.pe.sie.model.dao.MetaMesDAO;
 import com.edicsem.pe.sie.service.facade.MetaEmpleadoService;
 
 @Stateless
@@ -14,11 +15,14 @@ public class MetaEmpleadoServiceImpl implements MetaEmpleadoService {
 
 	@EJB
 	private  MetaEmpleadoDAO objMetaEmpleadoDao;
-
+	@EJB
+	private  MetaMesDAO objMetaMesDao;
+	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.MetaEmpleadoService#insertMetaEmpleado(com.edicsem.pe.sie.entity.MetaEmpleadoSie)
+	 * @see com.edicsem.pe.sie.service.facade.MetaEmpleadoService#insertMetaEmpleado(com.edicsem.pe.sie.entity.MetaEmpleadoSie, int)
 	 */
-	public void insertMetaEmpleado(MetaEmpleadoSie m) {
+	public void insertMetaEmpleado(MetaEmpleadoSie m, int idmetames) {
+		m.setTbMetaMes(objMetaMesDao.findMetaMes(idmetames));
 		objMetaEmpleadoDao.insertMetaEpleado(m);
 	}
 

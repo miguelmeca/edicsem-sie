@@ -1,15 +1,16 @@
 package com.edicsem.pe.sie.service.facade.impl;
 
 import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DetCargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
-import com.edicsem.pe.sie.entity.EmpleadoSie; 
+import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.DetalleCarEmpDAO;
@@ -233,6 +234,13 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	 */
 	public List listarEmpleadosXCargo(int idCargo) {
 		return objEmpleadoDao.listarEmpleadosXCargo(idCargo);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#listarEmpleadosXEmpresa(int)
+	 */
+	public List listarEmpleadosXEmpresa(int idEmpresa) {
+		return objEmpleadoDao.listarEmpleadosXEmpresa(idEmpresa);
 	}
 
 }
