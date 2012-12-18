@@ -17,8 +17,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 
 
 /**
@@ -84,6 +86,9 @@ public class KardexSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idempresa")
 	private EmpresaSie tbEmpresa;
+    
+    @Transient
+    private String fecha;
     
     public KardexSie() {
     }
@@ -230,6 +235,23 @@ public class KardexSie implements Serializable {
 
 	public void setTbEmpresa(EmpresaSie tbEmpresa) {
 		this.tbEmpresa = tbEmpresa;
+	}
+
+	/**
+	 * @return the fecha
+	 */
+	public String getFecha() {
+		fecha = DateUtil.convertDateToString(fechacreacion)+" "+DateUtil.getTimeNow(fechacreacion);
+		
+		return fecha;
+	}
+
+	/**
+	 * @param fecha the fecha to set
+	 */
+	public void setFecha(String fecha) {
+	
+		this.fecha = fecha;
 	}
 	
 	
