@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Meta Empleado</h1>
+		<h:form id="frmAlmacenForm">
+			<p:growl id="message" showDetail="true" />
+			
+			<h:panelGrid id="display" columns="2" >
+
+				<h:outputText value="Mes" />
+				<p:selectOneMenu id="metaempresa" value="#{metaEmpleadoForm.idmetames}">
+					<f:selectItems value="#{comboAction.metaMesItems}" />
+				</p:selectOneMenu>
+				
+				<h:outputText value="Empresa" />
+				<p:selectOneMenu value="#{metaEmpleadoForm.idEmpresa}" required="true" >
+					<f:selectItem itemLabel="Seleccione Empresa" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.empresaitems}" />
+					<p:ajax update="idempleado" />
+				</p:selectOneMenu>
+				
+				<h:outputText value="Empleado" />
+				<p:selectOneMenu id="idempleado" value="#{metaEmpleadoForm.idEmpleado}" required="true" filter="true" filterMatchMode="startsWith">
+					<f:selectItem itemLabel="Seleccione Empleado" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.empleadosXEmpresaitems}" />
+				</p:selectOneMenu>
+				
+				<h:outputText value="valor" />
+				<p:inputText value="#{metaEmpleadoForm.objMetaEmpleado.valormeta}" />
+				
+				<p:commandButton value="Registrar" action="#{metaEmpleadoForm.insertar}" ajax = "false" icon="ui-icon ui-icon-check"/>
+				
+				<p:commandButton value="Regresar" action="#{metaEmpleadoSearch.listar}" immediate="true" ajax = "false" icon="ui-icon ui-icon-close" />
+				
+			</h:panelGrid>
+		 </h:form>
+	</ui:define>
+</ui:composition>

@@ -9,7 +9,7 @@
 		<h:form  id="frmKardex" >
 			 <p:growl id="message" showDetail="true" />
 			<p:panel  header="#{message['panel.seleccion.producto']}">
-			<p:panelGrid columns="9" >
+			<h:panelGrid columns="9" >
 				<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
 				<p:selectOneMenu id="tipoProd" value="#{comboAction.tipoProducto}" required="true"
 				requiredMessage="#{message['kardex.tipoProducto.validation']}">
@@ -45,7 +45,7 @@
 
 				<p:commandButton  value="Consultar" action="#{kardexAction.consultar}" 
 				update=":frmKardex" />
-					 </p:panelGrid>  
+				</h:panelGrid> 
 				<p:spacer width="40" />
 				<p:dataTable value="#{kardexAction.kardexList}" var="p" 
 					id="listakardex" paginator="true" rows="5"

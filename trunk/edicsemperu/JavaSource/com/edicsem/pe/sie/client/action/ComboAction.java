@@ -69,7 +69,7 @@ public class ComboAction {
 	private String mensaje;
 	private String codigoEstado;
 	private String idProvincia, idDepartamento;
-	private int idCargo, idFactor, tipoImporte;
+	private int idCargo, idFactor, tipoImporte,idEmpresa;
 	private Map<String, Integer> tipoitems = new HashMap<String, Integer>();
 	private Map<String, Integer> productositems = new HashMap<String, Integer>();
 	private Map<String, Integer> almacenItems = new HashMap<String, Integer>();
@@ -81,6 +81,7 @@ public class ComboAction {
 	private Map<String, Map<String, Integer>> dataEmpleado = new HashMap<String, Map<String, Integer>>();
 	private Map<String, Integer> estadoitems = new HashMap<String, Integer>();
 	private Map<String, Integer> empresaitems = new HashMap<String, Integer>();
+	private Map<String, Integer> empleadosXEmpresaitems = new HashMap<String, Integer>();
 	private Map<String, Integer> proveedoritems = new HashMap<String, Integer>();
 	private Map<String, Integer> tipoKardexItems = new HashMap<String, Integer>();
 	private Map<String, Integer> tipocasaItems = new HashMap<String, Integer>();
@@ -1141,6 +1142,57 @@ public class ComboAction {
 	 */
 	public void setTipoImporte(int tipoImporte) {
 		this.tipoImporte = tipoImporte;
+	}
+
+	/**
+	 * @return the idEmpresa
+	 */
+	public int getIdEmpresa() {
+		return idEmpresa;
+	}
+
+	/**
+	 * @param idEmpresa the idEmpresa to set
+	 */
+	public void setIdEmpresa(int idEmpresa) {
+		this.idEmpresa = idEmpresa;
+	}
+
+	/**
+	 * @return the empleadosXEmpresaitems
+	 */
+	public Map<String, Integer> getEmpleadosXEmpresaitems() {
+		List lista = new ArrayList<EmpleadoSie>();
+		empleadosXEmpresaitems = new HashMap<String, Integer>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getEmpleadoItems()' "+getIdCargo());
+			}
+			lista = objEmpleadoService.listarEmpleadosXEmpresa(getIdEmpresa());
+			
+			for (int i = 0; i < lista.size(); i++) {
+				EmpleadoSie entidad = new EmpleadoSie();
+				entidad = (EmpleadoSie) lista.get(i);
+				empleadosXEmpresaitems.put(entidad.getNombresCompletos(),
+						entidad.getIdempleado());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return empleadosXEmpresaitems;
+	}
+
+	/**
+	 * @param empleadosXEmpresaitems the empleadosXEmpresaitems to set
+	 */
+	public void setEmpleadosXEmpresaitems(
+			Map<String, Integer> empleadosXEmpresaitems) {
+		this.empleadosXEmpresaitems = empleadosXEmpresaitems;
 	}
 	
 }

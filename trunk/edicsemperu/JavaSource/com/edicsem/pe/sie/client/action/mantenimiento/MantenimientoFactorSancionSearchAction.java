@@ -64,21 +64,6 @@ public class MantenimientoFactorSancionSearchAction extends BaseMantenimientoAbs
 	}
 
 	/**
-	 * @return the objFactorSancionService
-	 */
-	public FactorSancionService getObjFactorSancionService() {
-		return objFactorSancionService;
-	}
-
-	/**
-	 * @param objFactorSancionService the objFactorSancionService to set
-	 */
-	public void setObjFactorSancionService(
-			FactorSancionService objFactorSancionService) {
-		this.objFactorSancionService = objFactorSancionService;
-	}
-
-	/**
 	 * @return the factorSancionList
 	 */
 	public List<FactorSancionSie> getFactorSancionList() {

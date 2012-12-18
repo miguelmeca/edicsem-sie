@@ -49,6 +49,7 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 	private Map<String, Integer> SancionItems = new HashMap<String, Integer>();
 	private List<DetContratoEmpleadoSie> contratoXEmpleadoList;
 	private List<ContratoEmpleadoSie> patrocinadosList;
+	private List<DetSancionEmpleadoSie> detsancion;
 	private MetaMesSie objMetaMesSie;
 	private String fechaInicio ="",fechaFin="";
 	Calendar cal;
@@ -80,7 +81,7 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#init()
 	 */
 	public void init() {
-		log.info("init() XD :D");
+		log.info("init()");
 		idFactor=0;
 		idSancion=0;
 		idEmpleado=0;
@@ -89,6 +90,7 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 		objDetSancionEmpleado = new DetSancionEmpleadoSie();
 		contratoXEmpleadoList = new ArrayList<DetContratoEmpleadoSie>();
 		patrocinadosList = new ArrayList<ContratoEmpleadoSie>();
+		detsancion = new ArrayList<DetSancionEmpleadoSie>();
 	}
 	
 	/* (non-Javadoc)
@@ -177,6 +179,7 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 		for (int i = 0; i < patrocinadosList.size(); i++) {
 			log.info("-->   "+patrocinadosList.get(i).getTbEmpleado2().getNombresCompletos()+" "+  patrocinadosList.get(i).getCantContratoXPatrocinado());
 		}
+		detsancion = objDetSancionempleadoService.listarDetSancionEmpleado(idEmpleado, fechaInicio, fechaFin);
 	}
 	
 	public String otrosMeses() throws Exception {
@@ -527,5 +530,19 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 	public void setIdImporte(int idImporte) {
 		log.info("importe  "+ idImporte);
 		this.idImporte = idImporte;
+	}
+
+	/**
+	 * @return the detsancion
+	 */
+	public List<DetSancionEmpleadoSie> getDetsancion() {
+		return detsancion;
+	}
+
+	/**
+	 * @param detsancion the detsancion to set
+	 */
+	public void setDetsancion(List<DetSancionEmpleadoSie> detsancion) {
+		this.detsancion = detsancion;
 	}
 }
