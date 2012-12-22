@@ -11,11 +11,16 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.primefaces.context.RequestContext;
 
 import com.edicsem.pe.sie.client.action.ComboAction;
+import com.edicsem.pe.sie.client.action.MantenimientoCargoEmpleadoSearchAction;
 import com.edicsem.pe.sie.entity.EmpresaSie;
+import com.edicsem.pe.sie.service.facade.DetEmpresaEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
+import com.edicsem.pe.sie.service.facade.KardexService;
+import com.edicsem.pe.sie.util.FaceMessage.FaceMessage;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
@@ -33,6 +38,7 @@ public class MantenimientoEmpresaFormAction extends
 	public String email;
 
 	private boolean editMode;
+	private String mensaje;
 
 	private Log log = LogFactory.getLog(MantenimientoEmpresaFormAction.class);
 	private boolean newRecord = false;
@@ -50,6 +56,13 @@ public class MantenimientoEmpresaFormAction extends
 	private EmpresaService empresaService;
 	@EJB
 	private EstadogeneralService objEstadoGeneralService;
+	
+	@EJB
+	private DetEmpresaEmpleadoService objDetEmpresaEmpleadoService;
+	
+	@EJB
+	private KardexService objKardexService;
+	
 
 	/*
 	 * (non-Javadoc)
@@ -94,25 +107,30 @@ public class MantenimientoEmpresaFormAction extends
 	}
 
 	public String Eliminarempresa() throws Exception {
-
+		mensaje = null;
 		objEmpresaSie = new EmpresaSie();
 		int parametroObtenido;
 		EmpresaSie em = new EmpresaSie();
+		  RequestContext context = RequestContext.getCurrentInstance();
 
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'updateDESHABILITAR()'" + getIde());
 			}
-
+			
 			parametroObtenido = getIde();
-			log.info(" ------>>>>>>aqui cactura el parametro ID "
-					+ parametroObtenido);
+			log.info(" ------>>>>>>aqui cactura el parametro ID "+ parametroObtenido);
+			
+//aqui declaro la condicional para poder eliminar empresa y empleados.
+			
+if((verificarEmpleadoConEmpresa(parametroObtenido)) == (verificarProductoConEmpresa(parametroObtenido))){
 
+	// valida si el ID parametroObtenido no pertenece a ninguna de las dos Tablas Detalle EMpleado y Kardex
+	//se ejecutara el DESHABILITAR
 			em = empresaService.findEmpresa(parametroObtenido);
 			log.info(" ------Emilinando ");
 
-			objEmpresaSie.setTbEstadoGeneral(objEstadoGeneralService
-					.findEstadogeneral(8));
+			objEmpresaSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(8));
 			objEmpresaSie.setIdempresa(em.getIdempresa());
 			objEmpresaSie.setDescripcion(em.getDescripcion());
 			objEmpresaSie.setRazonsocial(em.getRazonsocial());
@@ -120,12 +138,38 @@ public class MantenimientoEmpresaFormAction extends
 			objEmpresaSie.setNumtelefono(em.getNumtelefono());
 			objEmpresaSie.setEmail(em.getEmail());
 
-			log.info("-----Android1>>>"
-					+ objEmpresaSie.getTbEstadoGeneral().getIdestadogeneral());
+			log.info("-----Android1>>>"+ objEmpresaSie.getTbEstadoGeneral().getIdestadogeneral());
 			log.info("actualizando ESTADO..... ");
 
 			empresaService.updateEmpresa(objEmpresaSie);
 			log.info("actualizando..... ");
+			
+			context.execute(":frmEmpresaFormList:empresaTable");
+//return mantenimientoEmpresaSearch.listar();
+//context.execute("confirmationEmpresa.hide()"); FALTA poner el el popud ajax="false"
+//context.execute("mantenimientoEmpresaFormList.jsf");
+//action="#{empresaSearch.listar}"
+//@ManagedProperty(value = "#{mantenimientoCargoEmpleadoSearchAction}")
+//private MantenimientoCargoEmpleadoSearchAction mantenimientoCargoEmpleadoSearch;
+//			 
+			}
+else {
+
+	  if (verificarEmpleadoConEmpresa(parametroObtenido) == false) {
+		  context.execute("someDialog.show()");
+	}
+	  else if(verificarProductoConEmpresa(parametroObtenido) == false) {
+		  context.execute("someDialog2.show()");
+	}
+	
+//	context.execute("someDialog.show()");
+	
+	
+//	mensaje = "tiene relacion : ";
+//	RequestContext.getCurrentInstance().addCallbackParam("showDialog", false);
+//    FaceMessage.FaceMessageError("ALERTA", "La Empresa no se puede elminar ya que se encontraron empleados con esta empresa");
+//	FaceMessage.FaceMessageInfo("ALERTA", "La Empresa no se puede elminar ya que se encontraron productos con esta empresa");
+}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -141,6 +185,22 @@ public class MantenimientoEmpresaFormAction extends
 		return mantenimientoEmpresaSearch.listar();
 	}
 
+	
+
+	private boolean verificarEmpleadoConEmpresa(int idcargo) {
+		// Aqui verificaremos si esta empresa pertenece a un empleado en la TB.DetalleEmpresaEmpleado
+		return objDetEmpresaEmpleadoService.verificarEmpleadoConEmpresa(idcargo) ;
+	}
+
+	private boolean verificarProductoConEmpresa(int idcargo) {
+		// Aqui verificaremos si esta empresa pertenece a un empleado en la TB.DetalleEmpresaEmpleado
+		return objKardexService.verificarProductoConEmpresa(idcargo) ;
+	}
+	
+	
+	
+	
+	
 	public String insertar() {
 
 		log.info("insertar() " + isNewRecord() + " desc "
@@ -489,6 +549,20 @@ public class MantenimientoEmpresaFormAction extends
 	 */
 	public void setObjEmpresaSie(EmpresaSie objEmpresaSie) {
 		this.objEmpresaSie = objEmpresaSie;
+	}
+
+	/**
+	 * @return the mensaje
+	 */
+	public String getMensaje() {
+		return mensaje;
+	}
+
+	/**
+	 * @param mensaje the mensaje to set
+	 */
+	public void setMensaje(String mensaje) {
+		this.mensaje = mensaje;
 	}
 
 }
