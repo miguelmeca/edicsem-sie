@@ -149,5 +149,14 @@ public class KardexServiceImpl implements KardexService {
 	public KardexSie findKardex(int id) {
 		return objKardexDao.findKardex(id);
 	}
+
+
+
+	public boolean verificarProductoConEmpresa(int idcargo) {
+		log.info("En el servicio verificar Producto Con Empresa ");
+		return objKardexDao.verificarProductoConEmpresa(idcargo) ;
+	}
+	
+
 	
 }
