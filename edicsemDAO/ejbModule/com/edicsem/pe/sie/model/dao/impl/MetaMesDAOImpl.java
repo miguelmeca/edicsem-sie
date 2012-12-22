@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.model.dao.impl;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -12,6 +13,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.MetaMesSie;
 import com.edicsem.pe.sie.model.dao.MetaMesDAO;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 
 /**
  * @author joselo
@@ -76,21 +78,49 @@ public  class MetaMesDAOImpl implements MetaMesDAO {
 		}
 		return metames;
 	}
+	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.EmpresaDAO#listarEmpresas()
 	 */
-	 
-		public List<MetaMesSie> listarMetaMeses() {
-			List<MetaMesSie> lista = null;
-			try {
+	public List<MetaMesSie> listarMetaMeses() {
+		List<MetaMesSie> lista = null;
+		try {
 			Query q = em.createQuery("select m from MetaMesSie m");
 			lista = q.getResultList();
-			log.info("DAOIMPL tamaño de lista de Metames--->" + lista.size());
+			log.info("tamaño de lista de Metames--->" + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return lista;
 	}
-
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.MetaMesDAO#fechasEfectividad()
+	 */
+	public MetaMesSie fechasEfectividad() {
+		List<MetaMesSie> lista = null;
+		MetaMesSie objMetaMes = new MetaMesSie();
+		try {
+			Calendar cal =	DateUtil.getToday();
+			int MesInicial =0, Mesfinal=0;
+			log.info(" "+cal.get(Calendar.MONTH)+"  ");
+			MesInicial= cal.get(Calendar.MONTH)-6;
+			if(MesInicial<0){
+				MesInicial= MesInicial*-1;
+			}
+			Mesfinal =MesInicial+6;
+			log.info("mes inicial "+ MesInicial +"  mes final "+ Mesfinal);
+			Query q = em.createQuery("select m from MetaMesSie m where m.codmes =" + MesInicial );
+			lista = q.getResultList();
+			objMetaMes.setFechainicio(lista.get(0).getFechainicio()+"/2012");
+			Query q2 = em.createQuery("select m from MetaMesSie m where  m.codmes = "+ Mesfinal);
+			lista = q2.getResultList();
+			objMetaMes.setFechafin(lista.get(0).getFechafin()+"/2012");
+			log.info("f inicial "+ objMetaMes.getFechainicio() +"  f final "+ objMetaMes.getFechafin());
+			log.info("tamaño de fechasEfectividad--->" + lista.size());
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			return objMetaMes;
+		}
 	}

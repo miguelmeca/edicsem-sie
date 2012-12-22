@@ -72,9 +72,11 @@ public class DetSancionEmpleadoDAOImpl implements DetSancionEmpleadoDAO{
 	 * @see com.edicsem.pe.sie.model.dao.DetSancionEmpleadoDAO#listarDetSancionEmpleado(int, java.lang.String, java.lang.String)
 	 */
 	public List listarDetSancionEmpleado(int idEmpleado,String fechaInicio,String fechaFin) {
+		log.info("empleado :D :D "+ idEmpleado );
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from DetSancionEmpleadoSie p where p.tbEmpleado.idempleado = "+ idEmpleado);
+			Query q = em.createQuery("select p from DetSancionEmpleadoSie p where p.tbEmpleado.idempleado = "+ idEmpleado
+						+" where DATE(p.fechacreacion ) between DATE('" + fechaInicio +"') and  DATE('" + fechaFin +"')  ");
 			lista =  q.getResultList(); 
 			log.info("tamaño  --> " + lista.size()+"  ");
 		} catch (Exception e) {

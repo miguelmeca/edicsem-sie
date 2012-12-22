@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.model.dao.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,11 +107,16 @@ public class DetContratoEmpleadoDAOImpl implements DetContratoEmpleadoDAO{
 			
 			log.info("tamaño lista Contrato X Empleado  --> " + lista.size());
 			int cantidad =0, cantidad2=0, cantidad3=0;
+			BigDecimal comision1,comision2,comision3;
+			
+			///buscamos la comision por cargo , por empresa, o es personal
+			
 			
 			for (int i = 0; i < lista.size(); i++) {
 				
 				if(lista.get(i).getIdCargoContrato()==1 ){
 					//expositor
+					 
 					cantidad+=1;
 					objExpositor=lista.get(i);
 					objExpositor.setCantContratosXCargo(cantidad);
@@ -132,7 +138,10 @@ public class DetContratoEmpleadoDAOImpl implements DetContratoEmpleadoDAO{
 				}
 			}
 			
-			if(objExpositor.getCantContratosXCargo()!=null)lista2.add(objExpositor);
+			if(objExpositor.getCantContratosXCargo()!=null){
+				//objExpositor.setComision();
+				lista2.add(objExpositor);
+			}
 			if(objVendedor.getCantContratosXCargo()!=null)lista2.add(objVendedor);
 			if(objColaborador.getCantContratosXCargo()!=null)lista2.add(objColaborador);
 			log.info("tamaño lista Contrato X Empleado --> " + lista2.size());
