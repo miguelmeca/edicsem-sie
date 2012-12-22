@@ -2,18 +2,24 @@ package com.edicsem.pe.sie.client.action.mantenimiento;
 
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import com.edicsem.pe.sie.client.action.ComboAction;
+import com.edicsem.pe.sie.entity.ContratoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DetCargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
@@ -34,6 +40,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	private TelefonoPersonaSie objTelefono;
 	private DomicilioPersonaSie objDomicilio;
 	private DetCargoEmpleadoSie objDetCargo;
+	private ContratoEmpleadoSie objContratoEmpleado;
 	/*variables para telefono*/
 	private String mensaje;
 	private String fijo;
@@ -62,8 +69,11 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	/*variable bolean necesaria*/
 	private boolean newRecord =false;
 	/*variables*/
-	private boolean defectoUbigeo;	
-	private ArrayList<String> listacargo;
+	private int idCargo;
+	private boolean defectoUbigeo;
+	private Date fechaInicioContrato;
+	 
+	private List<ContratoEmpleadoSie> contratoEmpleadoList;
 	
 	@ManagedProperty(value="#{comboAction}") 
 	private ComboAction comboManager;
@@ -79,7 +89,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	@EJB 
 	private EstadogeneralService objEstadoService;
 	@EJB 
-	private CargoEmpleadoService objCargoService;
+	private CargoEmpleadoService objCargoEmpleadoService;
 	
 	public static Log log = LogFactory.getLog(MantenimientoEmpleadoFormAction.class);
 	
@@ -97,7 +107,8 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		objDomicilio = new DomicilioPersonaSie();
 		objDetCargo = new DetCargoEmpleadoSie();
 		defectoUbigeo=true;
-		listacargo = new ArrayList<String>();		
+		objContratoEmpleado = new ContratoEmpleadoSie();
+		contratoEmpleadoList =  new ArrayList<ContratoEmpleadoSie>();
 	}
 	
 	public void cambioUbigeoDefecto() {
@@ -232,7 +243,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 			log.info("actualizando ESTADO..... ");
 			objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, objTelefono, objDetCargo, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
 					estado, direccion, idUbigeo, estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
-					TipoDocumento, codigoEmpleado, estadoe, listacargo);
+					TipoDocumento, codigoEmpleado, estadoe, contratoEmpleadoList);
 			log.info("actualizando..... ");
 			log.info("deshabilitando..... ");
 		} catch (Exception e2) {
@@ -278,7 +289,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		objDomicilio = new DomicilioPersonaSie();
 		comboManager.setIdDepartamento("15");
 		comboManager.setIdProvincia("01");
-		listacargo = new ArrayList<String>();
 		setNewRecord(true);
 		return getViewMant();
 	}
@@ -332,18 +342,17 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 				  else: actualiza al empleado, domicilio y telefono*/
 				if (isNewRecord()) {
 					log.info("insertando..... ");
-					log.info("insertando..... "+listacargo.size());
 					log.info("insertar empleado  ");
 					objEmpleadoService.insertarEmpleado(objEmpleado,objDomicilio,objTelefono, objDetCargo, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
 							estado, direccion,  idUbigeo,  estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
-							TipoDocumento, codigoEmpleado, estadoe, listacargo);
+							TipoDocumento, codigoEmpleado, estadoe, contratoEmpleadoList);
 					log.info("insertando..... ");
 					setNewRecord(false);
 				} else {
 					log.info("actualizando..... ");
 					objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, objTelefono, objDetCargo, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
 							estado, direccion,  idUbigeo,  estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
-							TipoDocumento, codigoEmpleado, estadoe, listacargo);
+							TipoDocumento, codigoEmpleado, estadoe, contratoEmpleadoList);
 					log.info("insertando..... ");
 				}
 		} catch (Exception e) {
@@ -362,6 +371,16 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return getViewMant();
 		}
+	}
+	
+	public String agregarPago(){
+		log.info("agregarPago()" );
+		objContratoEmpleado.setTbCargoempleado(objCargoEmpleadoService.buscarCargoEmpleado(idCargo));
+		objContratoEmpleado.setFechaInicioContrato(fechaInicioContrato);
+		contratoEmpleadoList.add(objContratoEmpleado);
+		log.info("agregado ooo " );
+		objContratoEmpleado= new ContratoEmpleadoSie();
+		return getViewMant();
 	}
     
     /*métodos GET y SET*/
@@ -791,17 +810,60 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	}
 
 	/**
-	 * @return the listacargo
+	 * @return the objContratoEmpleado
 	 */
-	public ArrayList<String> getListacargo() {
-		return listacargo;
+	public ContratoEmpleadoSie getObjContratoEmpleado() {
+		return objContratoEmpleado;
 	}
 
 	/**
-	 * @param listacargo the listacargo to set
+	 * @param objContratoEmpleado the objContratoEmpleado to set
 	 */
-	public void setListacargo(ArrayList<String> listacargo) {
-		this.listacargo = listacargo;
+	public void setObjContratoEmpleado(ContratoEmpleadoSie objContratoEmpleado) {
+		this.objContratoEmpleado = objContratoEmpleado;
+	}
+
+	/**
+	 * @return the contratoEmpleadoList
+	 */
+	public List<ContratoEmpleadoSie> getContratoEmpleadoList() {
+		return contratoEmpleadoList;
+	}
+
+	/**
+	 * @param contratoEmpleadoList the contratoEmpleadoList to set
+	 */
+	public void setContratoEmpleadoList(
+			List<ContratoEmpleadoSie> contratoEmpleadoList) {
+		this.contratoEmpleadoList = contratoEmpleadoList;
+	}
+
+	/**
+	 * @return the fechaInicioContrato
+	 */
+	public Date getFechaInicioContrato() {
+		return fechaInicioContrato;
+	}
+
+	/**
+	 * @param fechaInicioContrato the fechaInicioContrato to set
+	 */
+	public void setFechaInicioContrato(Date fechaInicioContrato) {
+		this.fechaInicioContrato = fechaInicioContrato;
+	}
+
+	/**
+	 * @return the idCargo
+	 */
+	public int getIdCargo() {
+		return idCargo;
+	}
+
+	/**
+	 * @param idCargo the idCargo to set
+	 */
+	public void setIdCargo(int idCargo) {
+		this.idCargo = idCargo;
 	}
 		
 }

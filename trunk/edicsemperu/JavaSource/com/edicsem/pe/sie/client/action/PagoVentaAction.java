@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.client.action;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.client.action.mantenimiento.MantenimientoPagoVentaSearchAction;
+import com.edicsem.pe.sie.entity.CobranzaSie;
 import com.edicsem.pe.sie.entity.ContratoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DetContratoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DetSancionCargoSie;
@@ -24,6 +26,7 @@ import com.edicsem.pe.sie.entity.DetSancionEmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.FactorSancionSie;
 import com.edicsem.pe.sie.entity.MetaMesSie;
+import com.edicsem.pe.sie.service.facade.CobranzaService;
 import com.edicsem.pe.sie.service.facade.ContratoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.DetContratoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.DetSancionCargoService;
@@ -39,7 +42,7 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 	private String mensaje;
 	private boolean editMode;
-	private int idFactor, idEmpleado, idSancion,idcargo, idMes;
+	private int idFactor, idSancion,idcargo, idMes,idEmpleado;
 	private int idTipoImporte, idImporte;
 	private Log log = LogFactory.getLog(MovimientoAction.class);
 	private DetSancionEmpleadoSie objDetSancionEmpleado;
@@ -65,6 +68,8 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 	private ContratoEmpleadoService objContratoEmpleadoService;
 	@EJB 
 	private MetaMesService objMetaMesService;
+	@EJB
+	private CobranzaService objCobranzaService;
 	
 	@ManagedProperty(value = "#{comboAction}")
 	private ComboAction comboManager;
@@ -84,7 +89,6 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 		log.info("init()");
 		idFactor=0;
 		idSancion=0;
-		idEmpleado=0;
 		idcargo =0;
 		objEmpleado= new EmpleadoSie();
 		objDetSancionEmpleado = new DetSancionEmpleadoSie();
@@ -109,7 +113,7 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 		log.info("insertar()");
 		try {
 			if(isNewRecord()){
-				objDetSancionempleadoService.insertDetSancionEmpleado(objDetSancionEmpleado, idSancion, idEmpleado, idcargo);
+				objDetSancionempleadoService.insertDetSancionEmpleado(objDetSancionEmpleado, idSancion, objEmpleado.getIdempleado(), idcargo);
 				mensaje =Constants.MESSAGE_REGISTRO_TITULO;
 				log.info("insertando "  );
 			}
@@ -179,7 +183,11 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 		for (int i = 0; i < patrocinadosList.size(); i++) {
 			log.info("-->   "+patrocinadosList.get(i).getTbEmpleado2().getNombresCompletos()+" "+  patrocinadosList.get(i).getCantContratoXPatrocinado());
 		}
-		detsancion = objDetSancionempleadoService.listarDetSancionEmpleado(idEmpleado, fechaInicio, fechaFin);
+		detsancion = objDetSancionempleadoService.listarDetSancionEmpleado(objEmpleado.getIdempleado(), fechaInicio, fechaFin);
+		List<CobranzaSie> cobranzaList =  objCobranzaService.calcularEfectividad(objEmpleado.getIdempleado());
+		for (int i = 0; i < cobranzaList.size(); i++) {
+			BigDecimal importeTotal = cobranzaList.get(i).getImpcobrado();
+		}
 	}
 	
 	public String otrosMeses() throws Exception {
@@ -283,21 +291,7 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 	public void setIdFactor(int idFactor) {
 		this.idFactor = idFactor;
 	}
-
-	/**
-	* @return the idEmpleado
-	*/
-	public int getIdEmpleado() {
-		return idEmpleado;
-	}
-
-	/**
-	* @param idEmpleado the idEmpleado to set
-	*/
-	public void setIdEmpleado(int idEmpleado) {
-		this.idEmpleado = idEmpleado;
-	}
-
+	
 	/**
 	* @return the idSancion
 	*/
@@ -544,5 +538,19 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 	 */
 	public void setDetsancion(List<DetSancionEmpleadoSie> detsancion) {
 		this.detsancion = detsancion;
+	}
+
+	/**
+	 * @return the idEmpleado
+	 */
+	public int getIdEmpleado() {
+		return idEmpleado;
+	}
+
+	/**
+	 * @param idEmpleado the idEmpleado to set
+	 */
+	public void setIdEmpleado(int idEmpleado) {
+		this.idEmpleado = idEmpleado;
 	}
 }
