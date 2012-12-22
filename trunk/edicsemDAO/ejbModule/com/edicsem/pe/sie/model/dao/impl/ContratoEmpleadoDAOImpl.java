@@ -106,6 +106,7 @@ public class ContratoEmpleadoDAOImpl implements ContratoEmpleadoDAO{
 		List<ContratoEmpleadoSie> lista = null;
 		DetCargoEmpleadoSie detc = new DetCargoEmpleadoSie();
 		List<DetContratoEmpleadoSie> listaDetContrato= new ArrayList<DetContratoEmpleadoSie>();
+		int valormeta=0;
 		try {
 			Query q = em.createQuery("select p from ContratoEmpleadoSie p where p.tbEmpleado2.idempleado = "+  idEmpleado);
 			lista =  q.getResultList();
@@ -121,9 +122,11 @@ public class ContratoEmpleadoDAOImpl implements ContratoEmpleadoDAO{
 			if(listaDetContrato==null){
 				listaDetContrato = new ArrayList<DetContratoEmpleadoSie>();
 			}
-			
+			if(metaEmpl!=null){
+				valormeta = metaEmpl.getValormeta();
+			}
 			//SOLO SI SUPERA LA META SE LE PAGA POR SUS PATROCINADOS
-			if(metaEmpl.getValormeta() > listaDetContrato.size()){
+			if(valormeta > listaDetContrato.size()){
 				
 				for (int i = 0; i < lista.size(); i++) {
 					//averiguar cantidad de contratos por cada patrociando (contratos en los que el patrocinado es expositor = 1)

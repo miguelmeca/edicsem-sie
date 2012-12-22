@@ -2,6 +2,7 @@ package com.edicsem.pe.sie.model.dao.impl;
 
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,7 +12,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.CobranzaSie;
+import com.edicsem.pe.sie.entity.MetaMesSie;
 import com.edicsem.pe.sie.model.dao.CobranzaDAO;
+import com.edicsem.pe.sie.model.dao.MetaMesDAO;
 
 /**
  * @author karen
@@ -23,6 +26,9 @@ public class CobranzaDAOImpl implements CobranzaDAO{
 	@PersistenceContext(name="edicsemJPASie")
 	private EntityManager em;
 	private static Log log = LogFactory.getLog(CobranzaDAOImpl.class);
+	
+	@EJB
+	private MetaMesDAO metaMesDao;
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.CobranzaDAO#insertCobranza(com.edicsem.pe.sie.entity.CobranzaSie)
@@ -89,6 +95,25 @@ public class CobranzaDAOImpl implements CobranzaDAO{
 			Query q = em.createQuery("select p from CobranzaSie p where p.tbContrato.idcontrato = "+ idcontrato);
 			lista =  q.getResultList(); 
 			log.info("tamaño lista Cobranza --> " + lista.size()+"  ");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+	public List calcularEfectividad(int idEmpleado) {
+		List  lista = null;
+		try {
+			/* cantidad de contratos pagados de un personal como expositor entre fechas correspondientes 
+			 * que son los 6 meses anteriores*/
+			MetaMesSie objMetaMes = metaMesDao.fechasEfectividad();
+			
+			Query q = em.createQuery("select a from CobranzaSie a inner join a.tbContrato b " +
+					" inner join b.tbDetContratoEmpleados c where c.tbEmpleado.idempleado = "+ idEmpleado+ 
+					" and DATE(c.tbContrato.fechaentrega) between DATE('" + objMetaMes.getFechainicio() +
+					"') and  DATE('" + objMetaMes.getFechafin() +"') and a.tbEstadoGeneral.idestadogeneral = 27 ");
+			lista =  q.getResultList();
+			log.info("tamaño lista Cobranza --> " + lista.size() );
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
