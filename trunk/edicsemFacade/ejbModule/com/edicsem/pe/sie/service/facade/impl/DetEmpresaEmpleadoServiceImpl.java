@@ -79,4 +79,13 @@ public class DetEmpresaEmpleadoServiceImpl implements DetEmpresaEmpleadoService 
 		return objDetEmpresaEmpleadoDao.filtrartipoventaPersonal(idvendedor);
 	}
 	
+
+	
+	public boolean verificarEmpleadoConEmpresa(int idcargo) {
+		
+		log.info("En el servicio verificarEmpleadoConEmpresa ");
+		return objDetEmpresaEmpleadoDao.verificarEmpleadoConEmpresa(idcargo);
+	}
+	
+	
 }
