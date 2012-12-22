@@ -105,6 +105,23 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 		}
 		return lista;
 	}
+
+//	Lista de Empleados por Empresa
+	public List listarEmpleadoxEmpresas(int idCargo) {
+		log.info("DENTRO DEL DAO IMPL idcargo"+idCargo);
+		List lista = null;
+		try {
+			Query q = em.createQuery("select p from EmpleadoSie p inner join p.tbDetEmpresaEmpleados q  " +
+					"inner join  q.tbEmpresa r where r.idempresa = "+idCargo);
+			lista = q.getResultList();
+			log.info("tamaño lista Empleados X Cargo --> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+//	select p from DetEmpresaEmpleadoSie p where p.tbEmpresa.idempresa = "+ idcargo);
+	
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.EmpleadoSieDAO#listarEmpleadosXEmpresa(int)
