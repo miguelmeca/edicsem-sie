@@ -20,4 +20,6 @@ public interface KardexDAO {
 	public abstract List<KardexSie> ConsultaStockActual(int idProducto);
 	
 	public abstract void updateKardex(KardexSie kardex);
+	
+	public abstract boolean verificarProductoConEmpresa (int idcargo);
 }
