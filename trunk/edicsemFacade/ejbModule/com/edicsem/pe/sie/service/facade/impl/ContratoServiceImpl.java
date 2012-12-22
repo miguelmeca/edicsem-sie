@@ -21,6 +21,7 @@ import com.edicsem.pe.sie.model.dao.ContratoDAO;
 import com.edicsem.pe.sie.model.dao.DetContratoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.DetProductoContratoDAO;
 import com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO;
+import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
 import com.edicsem.pe.sie.model.dao.EmpresaDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
 import com.edicsem.pe.sie.model.dao.TelefonoEmpleadoDAO;
@@ -56,6 +57,8 @@ public class ContratoServiceImpl implements ContratoService {
 	private EmpresaDAO objEmpresaDao;
 	@EJB
 	private DetContratoEmpleadoDAO objDetContratoEmpleadoDao;
+	@EJB
+	private EmpleadoSieDAO objEmpleadoDao;
 	
 	public static Log log = LogFactory.getLog(ContratoServiceImpl.class);
 
@@ -104,11 +107,11 @@ public class ContratoServiceImpl implements ContratoService {
 		DetContratoEmpleadoSie d;
 		for (int i = 0; i < detidEmpleadosList.size() ; i++) {
 			d = new DetContratoEmpleadoSie();
-			d.setIdempleado(detidEmpleadosList.get(i));
+			d.setTbEmpleado(objEmpleadoDao.buscarEmpleado(detidEmpleadosList.get(i)));
 			if(i==0)d.setIdCargoContrato(1);
 			if(i==1)d.setIdCargoContrato(2);
 			if(i>1)d.setIdCargoContrato(3);
-			d.setIdcontrato(contrato.getIdcontrato());
+			d.setTbContrato(objContratoDao.findContrato(contrato.getIdcontrato()));
 			d.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(31));
 			objDetContratoEmpleadoDao.insertDetContratoEmpleado(d);
 		}

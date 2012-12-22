@@ -43,7 +43,17 @@ public class CobranzaServiceImpl implements CobranzaService {
 		return objCobranzaDao.listarCobranzas();
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.CobranzaService#listarCobranzasXidcontrato(int)
+	 */
 	public List listarCobranzasXidcontrato(int idcontrato) {
 		return objCobranzaDao.listarCobranzasXidcontrato(idcontrato);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.CobranzaService#calcularEfectividad(int)
+	 */
+	public List calcularEfectividad(int idEmpleado) {
+		return objCobranzaDao.calcularEfectividad(idEmpleado);
 	}
 }

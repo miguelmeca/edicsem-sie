@@ -14,4 +14,5 @@ public interface CobranzaService {
 	public abstract CobranzaSie findCobranza (int id);
 	public abstract List  listarCobranzas();
 	public abstract List  listarCobranzasXidcontrato(int idcontrato);
+	public abstract List  calcularEfectividad(int idEmpleado);
 }
