@@ -127,4 +127,28 @@ public class DetEmpresaEmpleadoDAOImpl implements DetEmpresaEmpleadoDAO{
 		}
 		return p;
 	}
+	
+	
+
+	// aqui veremos si pertenece la empresa a un empleado para poder eliminarlo
+		public boolean verificarEmpleadoConEmpresa(int idcargo) {
+			boolean bandera = true;
+			List lista = null;
+			try {
+				Query q = em.createQuery("select p from DetEmpresaEmpleadoSie p where p.tbEmpresa.idempresa = "+ idcargo);
+				lista = q.getResultList();
+				log.info("tamaño lista empresas --> " + lista.size());
+				if(lista.size()>0){ //hay uno o mas empresas retorna y muestra el msj de que no se podra eliminar.
+//					lista =  q.getResultList();
+					bandera=false;
+				}else{//no hay empresas, entonces puede proseguir
+					bandera=true;//se ejecuta el query
+				}
+				
+			} catch (Exception e) {
+				bandera=false;
+				e.printStackTrace();
+			}
+			return bandera;
+		}
 }
