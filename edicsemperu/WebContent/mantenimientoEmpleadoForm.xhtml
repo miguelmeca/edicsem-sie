@@ -68,7 +68,7 @@
 			<h:outputText id="ubigeoDefecto" value="#{mantenimientoEmpleadoFormAction.ubigeoDefecto}" /> 
 			</h:panelGrid>
 			
-		    <h:panelGrid columns="2" cellpadding="5">				    
+		    <h:panelGrid columns="2" >				    
 			<p:outputLabel for="tipocasa" value="Tipo de Casa :" styleClass="textoAzulFuerteGrande" id="tipocasaL"/>
             <p:selectOneMenu id="tipocasa" value="#{mantenimientoEmpleadoFormAction.tipo}" styleClass="required" title="El tipo de casa es obligatorio!" >
             <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
@@ -79,17 +79,40 @@
             <p:outputLabel value="#{message['empleado.fechanac']}" for="fechanac" />
 			<p:calendar value="#{mantenimientoEmpleadoFormAction.objEmpleado.fechanacimiento}" id="fechanac" showButtonPanel="true" required="true" 
 			label="Fecha de nacimiento" requiredMessage="#{message['empleado.fechanac.validation']}"/>                  
+            </h:panelGrid>
+            <p:fieldset legend="Contrato Empleado" >
+            <h:panelGrid columns="2" id="panelPagos" >	
+            <h:outputText value="Fecha Inicio :" />
+            <p:calendar value="#{mantenimientoEmpleadoFormAction.fechaInicioContrato}" />
+            <h:outputText value="Cargo(s) :" />
+            <p:selectOneMenu value="#{mantenimientoEmpleadoFormAction.idCargo}" label="Seleccione" filter="true" filterText="Filter" filterMatchMode="startsWith" panelStyle="width:300px">  
+            <f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
+            </p:selectOneMenu>
+            <h:outputText value="Básico :" />
+            <p:inputText value="#{mantenimientoEmpleadoFormAction.objContratoEmpleado.basico}" required="true"/> 
+            <h:outputText value="Periodo de Prueba:" />
+            <p:inputText value="#{mantenimientoEmpleadoFormAction.objContratoEmpleado.periodoPrueba}" required="true"/> 
+            <p:commandButton value="Agregar" update="panelPagos" action="#{mantenimientoEmpleadoFormAction.agregarPago}" icon="ui-icon-check"/>
+           
+            	<p:dataTable value="#{mantenimientoEmpleadoFormAction.contratoEmpleadoList}" var="c"  >
+						<p:column headerText="Cargo" >
+							<h:outputText value="#{c.tbCargoempleado.descripcion}" />
+						</p:column>
+						<p:column headerText="Fecha Inicio" >
+							<h:outputText value="#{c.fechaInicioContrato}" />
+						</p:column>
+						<p:column headerText="Sueldo" >
+							<h:outputText value="#{c.basico}" />
+						</p:column>
+				</p:dataTable>
+			</h:panelGrid>
+            </p:fieldset>
             
-            <h:outputText value="Cargo(s) :" />    
-            <p:selectCheckboxMenu value="#{mantenimientoEmpleadoFormAction.listacargo}" label="Seleccione" filter="true" filterText="Filter" filterMatchMode="startsWith" panelStyle="width:220px">  
-            <f:selectItems value="#{comboAction.cargoEmpleadoItems}" />  
-            </p:selectCheckboxMenu>  
-                         	
 		    <f:facet name="footer">
-            <p:commandButton id="btn" value="Guardar" update="panel" action="#{mantenimientoEmpleadoFormAction.insertar}" ajax="false" icon="ui-icon-check"/>
-            </f:facet>				
-		</h:panelGrid>
+            <p:commandButton value="Guardar" update="panel" action="#{mantenimientoEmpleadoFormAction.insertar}" ajax="false" icon="ui-icon-check"/>
+            </f:facet>
+
 	</p:panel>	            
-</h:form>
+	</h:form>
 	</ui:define>
 </ui:composition>

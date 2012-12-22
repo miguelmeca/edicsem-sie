@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Sancion</h1>
+		<h:form id="frmSancionList">
+			<p:growl id="message" showDetail="true" />
+			
+			<p:dataTable value="#{SancionSearch.detSancionList}" var="c">
+				
+				<p:column headerText="Descripción" >
+					<h:outputText value="#{c.descripcion}" />
+				</p:column>
+				
+				<p:column headerText="Detalle" >
+					<h:outputText value="#{c.detalle}" />
+				</p:column>
+				
+				<p:column headerText="Editar">
+					<p:commandButton value="Editar" action="#{SancionForm.update}" 
+					 icon="ui-icon ui-icon-pencil" >
+						<f:setPropertyActionListener value="#{c}" target="#{SancionForm.objSancionSie}" />
+					</p:commandButton>
+				</p:column>
+				
+				<f:facet name="footer">
+				<div align="left">
+				<p:commandLink value="Nueva Sancion"  action="#{SancionForm.agregar}"  />
+				</div>
+				</f:facet>
+				
+			</p:dataTable>
+			
+		</h:form>
+	 </ui:define>
+</ui:composition>
