@@ -56,13 +56,6 @@ public class MantenimientoEmpresaFormAction extends
 	private EmpresaService empresaService;
 	@EJB
 	private EstadogeneralService objEstadoGeneralService;
-	
-	@EJB
-	private DetEmpresaEmpleadoService objDetEmpresaEmpleadoService;
-	
-	@EJB
-	private KardexService objKardexService;
-	
 
 	/*
 	 * (non-Javadoc)

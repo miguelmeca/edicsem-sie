@@ -102,6 +102,7 @@ body {
 						<p:menuitem value="Buscar Cliente" update="messages" ajax="false" action="#" />
 						<p:menuitem value="Registro Contrato" update="messages" ajax="false" action="#{contratoForm.agregar}" />
 						<p:menuitem value="Registro de Filtros de horario Ventas" update="messages" ajax="false" action="#{filtroHorarioVendedorForm.agregar}" />
+						<p:menuitem value="Kardex" update="messages" ajax="false" action="#{kardexAction.listar}" />
 						<p:menuitem value="Registro de horario Ventas" update="messages" ajax="false" action="#{horarioVendedorForm.agregar}" />
 						<p:menuitem value="Mantenimiento de Punto de Venta/Almacen" ajax="false" action="#{almacenSearch.listar}" />
 						<p:menuitem value="Mantenimiento Valorizado" ajax="false" action="mantenimientoKardex.jsf" />
@@ -1086,7 +1087,7 @@ body {
         		<p:commandButton value="No" onclick="confirmation.hide()" type="button" />  
         		
     </p:confirmDialog>
-    	
+    
 </h:form>
 
 	<!-- 	FIN DESACTIVAR PROVEEDOR  -->
@@ -1399,8 +1400,9 @@ message="La Empresa no se puede elminar ya que se encontraron productos con esta
 
 	</h:form>
 	<!-- FIN PUPAP NUEVO Y EDITAR EMPRESA -->
-	
-	<!--EN UN SOLO PUPAP NUEVO Y EDITAR META MES -->
+	<!--EN UN SOLO PUPAP NUEVO Y EDITAR META -->
+
+
 	<h:form id="editarMeta">
 		<p:dialog header="Ingrese meta" widgetVar="carDialog2"
 			showEffect="fade" hideEffect="explode" modal="true" width="300"
