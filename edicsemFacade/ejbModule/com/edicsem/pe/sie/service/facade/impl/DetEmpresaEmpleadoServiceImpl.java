@@ -5,6 +5,9 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.edicsem.pe.sie.entity.DetEmpresaEmpleadoSie;
 import com.edicsem.pe.sie.model.dao.DetEmpresaEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
@@ -14,6 +17,8 @@ import com.edicsem.pe.sie.service.facade.DetEmpresaEmpleadoService;
 
 @Stateless
 public class DetEmpresaEmpleadoServiceImpl implements DetEmpresaEmpleadoService {
+	
+	public static Log log = LogFactory.getLog(DetalleCarEmpServiceImpl.class);
 
 	@EJB
 	private  DetEmpresaEmpleadoDAO objDetEmpresaEmpleadoDao;
@@ -74,4 +79,13 @@ public class DetEmpresaEmpleadoServiceImpl implements DetEmpresaEmpleadoService 
 		return objDetEmpresaEmpleadoDao.filtrartipoventaPersonal(idvendedor);
 	}
 	
+	
+	public boolean verificarEmpleadoConEmpresa(int idcargo) {
+		
+		log.info("En el servicio verificarEmpleadoConEmpresa ");
+		return objDetEmpresaEmpleadoDao.verificarEmpleadoConEmpresa(idcargo);
+	}
+	
+	
+
 }
