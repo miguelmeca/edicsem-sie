@@ -172,7 +172,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 					c = objCargoEmpleadoService.buscarCargoEmpleado(parametroObtenido);
 					log.info(" ------Android>" + c.getDescripcion() + " "+ c.getIdcargoempleado());
 
-					
+			
 					
 					objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(2));
 					objCargoEmpleadoSie.setIdcargoempleado(c.getIdcargoempleado());
@@ -208,19 +208,8 @@ public class MantenimientoCargoEmpleadoFormAction extends
 	
 	private boolean verificarEmpleadoConCargo(int idcargo) {
 		  	
-		
-		return objDetalleCarEmpService.verificarEmpleadoConCargo(idcargo) ;
+return objDetalleCarEmpService.verificarEmpleadoConCargo(idcargo) ;
 				
-		
-		
-		
-
-
-
-		
-		
-		
-		
 	}
 
 	/*
