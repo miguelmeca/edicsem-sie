@@ -71,7 +71,7 @@ public class DetalleCarEmpServiceImpl implements DetalleCarEmpService{
 
 
 	public boolean verificarEmpleadoConCargo(int idcargo) {
-		log.info("En el servicio ");
+		log.info("En el servicio  verificar Empleado ConCargo");
 		return objDetCargoDao.verificarEmpleadoConCargo(idcargo);
 	}
 
