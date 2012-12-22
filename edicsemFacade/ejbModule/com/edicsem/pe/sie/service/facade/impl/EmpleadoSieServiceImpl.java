@@ -8,11 +8,13 @@ import javax.ejb.Stateless;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.edicsem.pe.sie.entity.ContratoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DetCargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO;
+import com.edicsem.pe.sie.model.dao.ContratoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.DetalleCarEmpDAO;
 import com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
@@ -38,7 +40,8 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	private TelefonoEmpleadoDAO objTelefonoDao;
 	@EJB 
 	private DetalleCarEmpDAO objDetCargoDao;
-	
+	@EJB
+	private ContratoEmpleadoDAO objContratoEmpleadoDao;
 	@EJB
 	private EstadoGeneralDAO objEstadoDao;
 	
@@ -52,7 +55,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	
 	public void insertarEmpleado(EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, TelefonoPersonaSie objTelefono, DetCargoEmpleadoSie objDetCargo, int codigoTipoDocumento, int codigoCargoEmpleado, String mensaje, 
 			String fijo, int estado, String direccion, int idUbigeo, int estado2, int tipo, String nombre, int CargoEmpleado, 
-			int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado, int estadoe, List<String> listacargo){
+			int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado, int estadoe, List<ContratoEmpleadoSie> contratoEmpleadoList){
 		//si tengo que insertar a mas de 1 tabla todo lo hago aqui, llamando a todas las entidades que
 		//mi interfaz DAO tiene y si algo falla, el EJB hace un rollback de todo  lo que se hizo, 
 		//para eso sirve el Service
@@ -88,8 +91,8 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 			
             
             /**Inserta el detallecargo**/
-			log.info("sxsx   --->  "+listacargo.size());
-			for(int i = 0; i < listacargo.size(); i++){
+			log.info("sxsx   --->  "+contratoEmpleadoList.size());
+			for(int i = 0; i < contratoEmpleadoList.size(); i++){
 			objDetCargo= new DetCargoEmpleadoSie();
 			objDetCargo.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(19));
 			objDetCargo.setTbEmpleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
@@ -99,8 +102,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 			//int cargo;
 			//listacargo.get(j);
 			//int cargo= (int)listacargo.get(i);
-			log.info("probemossssss :)  "+listacargo.get(i));
-			int d = Integer.parseInt(listacargo.get(i)+"");
+			int d = Integer.parseInt(contratoEmpleadoList.get(i).getTbCargoempleado().getIdcargoempleado()+"");
 			objDetCargo.setTbCargoEmpleado(objCargoEmpDao.buscarCargoEmpleado(d));
 			//int a = Integer.parseInt(listacargo.get(i).toString());
 			//CargoEmpleadoSie ca =objCargoEmpDao.buscarCargoEmpleado(a);
@@ -111,6 +113,8 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 			//objDetCargo.setTbCargoEmpleado(listacargo.get(i));
 			//objDetCargo.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(19));
 			objDetCargoDao.insertarDetalleCarEmp(objDetCargo);
+			contratoEmpleadoList.get(i).setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(56));
+			objContratoEmpleadoDao.insertContratoEmpleado(contratoEmpleadoList.get(i));
 			}
 			
 			log.info("insertando..... ");
@@ -138,7 +142,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	 */
 	public void actualizarEmpleado(EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, TelefonoPersonaSie objTelefono, DetCargoEmpleadoSie objDetCargo, int codigoTipoDocumento, int codigoCargoEmpleado, String mensaje, 
 			String fijo, int estado, String direccion, int idUbigeo, int estado2, int tipo, String nombre, int CargoEmpleado, 
-			int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado, int estadoe, List<String> listacargo) {			
+			int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado, int estadoe, List<ContratoEmpleadoSie> contratoEmpleadoList) {			
 			try {
 				if (log.isInfoEnabled()) {
 					log.info("Entering my method 'actualizar()'"+ objDomicilio.getIddomiciliopersona());
@@ -172,7 +176,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 				objTelefonoDao.actualizarTelefonoEmpleado(objTelefono);
 				
 				/**Actualiza el detallecargo**/
-				for(int i = 0; i < listacargo.size(); i++){
+				for(int i = 0; i < contratoEmpleadoList.size(); i++){
 				objDetCargo= new DetCargoEmpleadoSie();
 				objDetCargo.setIddetcargoempl(objDetCargo.getIddetcargoempl());
 				objDetCargo.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(19));
@@ -182,7 +186,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 				//listacargo.get();
 				//CargoEmpleadoSie cargo = new CargoEmpleadoSie();
 				//listacargo.get(j);
-				objDetCargo.setTbCargoEmpleado(objCargoEmpDao.buscarCargoEmpleado(Integer.parseInt(listacargo.get(i))));
+				objDetCargo.setTbCargoEmpleado(objCargoEmpDao.buscarCargoEmpleado(contratoEmpleadoList.get(i).getTbCargoempleado().getIdcargoempleado()));
 				//objDetCargo.setTbCargoEmpleado(cargo);
 				//log.info(" " + listacargo.get(i).getDescripcion()+"  "+ listacargo.get(i).getIdcargoempleado() );
 				//objDetCargo.setTbCargoEmpleado(listacargo.get(i));
