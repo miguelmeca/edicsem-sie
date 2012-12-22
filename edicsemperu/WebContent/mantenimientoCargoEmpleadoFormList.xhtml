@@ -54,14 +54,19 @@
 
 <!--**********INICIO 	DESACTIVAR**********-->
 
-		<p:column headerText="Deshabilitar">
-	
-	 			<p:commandButton id="showConfirmDeshabilitar1" value="Eliminar"  icon="ui-icon ui-icon-close"
-	 			
-	 							onclick="confirmation24.show()"> 
-								<f:setPropertyActionListener value="#{m.idcargoempleado}" target="#{mantenimientoCargoEmpleadoFormAction.idc}" />							
+<p:column headerText="Deshabilitar">
 
-				</p:commandButton>
+<p:commandButton id="showConfirmDeshabilitar1"
+				 value="Eliminar"
+				 icon="ui-icon ui-icon-close"	 			
+	 			 onclick="confirmation24.show()">
+	 			  
+<f:setPropertyActionListener
+		 value="#{m.idcargoempleado}"
+		 target="#{mantenimientoCargoEmpleadoFormAction.idc}" 
+/>							
+
+</p:commandButton>
 				
 		</p:column>
 
