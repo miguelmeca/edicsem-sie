@@ -176,7 +176,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 				objTelefonoDao.actualizarTelefonoEmpleado(objTelefono);
 				
 				/**Actualiza el detallecargo**/
-				for(int i = 0; i < listacargo.size(); i++){
+				for(int i = 0; i < contratoEmpleadoList.size(); i++){
 				objDetCargo= new DetCargoEmpleadoSie();
 				objDetCargo.setIddetcargoempl(objDetCargo.getIddetcargoempl());
 				objDetCargo.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(19));
@@ -186,7 +186,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 				//listacargo.get();
 				//CargoEmpleadoSie cargo = new CargoEmpleadoSie();
 				//listacargo.get(j);
-				objDetCargo.setTbCargoEmpleado(objCargoEmpDao.buscarCargoEmpleado(Integer.parseInt(listacargo.get(i))));
+				objDetCargo.setTbCargoEmpleado(objCargoEmpDao.buscarCargoEmpleado(contratoEmpleadoList.get(i).getTbCargoempleado().getIdcargoempleado()));
 				//objDetCargo.setTbCargoEmpleado(cargo);
 				//log.info(" " + listacargo.get(i).getDescripcion()+"  "+ listacargo.get(i).getIdcargoempleado() );
 				//objDetCargo.setTbCargoEmpleado(listacargo.get(i));
