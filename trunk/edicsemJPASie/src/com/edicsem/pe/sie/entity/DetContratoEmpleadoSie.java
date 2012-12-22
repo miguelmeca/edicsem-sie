@@ -32,10 +32,6 @@ public class DetContratoEmpleadoSie implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_DET_CONTRATO_EMPLEADO_IDDETCONTRATOEMPL_GENERATOR")
 	private Integer idDetContratoEmpl;
 	
-	private Integer idcontrato;
-
-	private Integer idempleado;
-	
 	private Integer  idCargoContrato;
 	
 	@Transient
@@ -108,19 +104,6 @@ public class DetContratoEmpleadoSie implements Serializable {
 	 */
 	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
 		this.tbEstadoGeneral = tbEstadoGeneral;
-	}
-
-	public Integer getIdcontrato() {
-		return this.idcontrato;
-	}
-	public void setIdcontrato(Integer idcontrato) {
-		this.idcontrato = idcontrato;
-	}
-	public Integer getIdempleado() {
-		return this.idempleado;
-	}
-	public void setIdempleado(Integer idempleado) {
-		this.idempleado = idempleado;
 	}
 
 	/**

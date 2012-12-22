@@ -37,22 +37,27 @@ public class ContratoEmpleadoSie implements Serializable {
 
 	private Integer idempleado;
 
-	private BigDecimal comision;
+	private BigDecimal basico;
+	
+	private Integer  periodoPrueba;
 	
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
-
-	private String pago;
 	
-	@Transient
-	private Integer cantContratoXPatrocinado;
+	@Temporal( TemporalType.DATE)
+	private Date fechaInicioContrato;
 	
 	@Temporal( TemporalType.DATE)
 	private Date fechainiciopatrocinio;
 	
 	@Temporal( TemporalType.DATE)
 	private Date fechafinpatrocinio;
-
+	
+	//bi-directional many-to-one association to CargoEmpleadoSie
+    @ManyToOne
+	@JoinColumn(name="idcargoempleado")
+	private CargoEmpleadoSie tbCargoempleado;
+    
 	//bi-directional many-to-one association to EmpleadoSie
     @ManyToOne
 	@JoinColumn(name="idempleado", insertable = false, updatable = false)
@@ -63,36 +68,28 @@ public class ContratoEmpleadoSie implements Serializable {
 	@JoinColumn(name="patrocinador", insertable = false, updatable = false)
 	private EmpleadoSie tbEmpleado2;
     
+    //bi-directional many-to-one association to TipoPagoSie
+    @ManyToOne
+	@JoinColumn(name="idtipopago")
+	private TipoPagoSie tbTipoPago;
+    
     //bi-directional many-to-one association to EstadoGeneralSie
     @ManyToOne
 	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
     
+	@Transient
+	private Integer cantContratoXPatrocinado;
+	
     public ContratoEmpleadoSie() {
     }
-	
-	public BigDecimal getComision() {
-		return this.comision;
-	}
-
-	public void setComision(BigDecimal comision) {
-		this.comision = comision;
-	}
-
+    
 	public Timestamp getFechacreacion() {
 		return this.fechacreacion;
 	}
 
 	public void setFechacreacion(Timestamp fechacreacion) {
 		this.fechacreacion = fechacreacion;
-	}
-
-	public String getPago() {
-		return this.pago;
-	}
-
-	public void setPago(String pago) {
-		this.pago = pago;
 	}
 	
 	public EmpleadoSie getTbEmpleado1() {
@@ -175,6 +172,46 @@ public class ContratoEmpleadoSie implements Serializable {
 	 */
 	public void setCantContratoXPatrocinado(Integer cantContratoXPatrocinado) {
 		this.cantContratoXPatrocinado = cantContratoXPatrocinado;
+	}
+
+	public BigDecimal getBasico() {
+		return basico;
+	}
+
+	public void setBasico(BigDecimal basico) {
+		this.basico = basico;
+	}
+
+	public Date getFechaInicioContrato() {
+		return fechaInicioContrato;
+	}
+
+	public void setFechaInicioContrato(Date fechaInicioContrato) {
+		this.fechaInicioContrato = fechaInicioContrato;
+	}
+
+	public TipoPagoSie getTbTipoPago() {
+		return tbTipoPago;
+	}
+
+	public void setTbTipoPago(TipoPagoSie tbTipoPago) {
+		this.tbTipoPago = tbTipoPago;
+	}
+
+	public Integer getPeriodoPrueba() {
+		return periodoPrueba;
+	}
+
+	public void setPeriodoPrueba(Integer periodoPrueba) {
+		this.periodoPrueba = periodoPrueba;
+	}
+
+	public CargoEmpleadoSie getTbCargoempleado() {
+		return tbCargoempleado;
+	}
+
+	public void setTbCargoempleado(CargoEmpleadoSie tbCargoempleado) {
+		this.tbCargoempleado = tbCargoempleado;
 	}
 	
 }

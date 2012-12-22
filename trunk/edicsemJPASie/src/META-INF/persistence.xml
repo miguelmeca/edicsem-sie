@@ -57,6 +57,7 @@
 		<class>com.edicsem.pe.sie.entity.ImporteSie</class>
 		<class>com.edicsem.pe.sie.entity.PromocionSie</class>
 		<class>com.edicsem.pe.sie.entity.TipoImporteSie</class>
+		<class>com.edicsem.pe.sie.entity.TipoPagoSie</class>
 	<properties>
 			<property name="eclipselink.jdbc.driver" value="org.postgresql.Driver" />
 			<property name="eclipselink.jdbc.url" value="jdbc:postgres://192.168.1.2:5432/bd_sie" />
