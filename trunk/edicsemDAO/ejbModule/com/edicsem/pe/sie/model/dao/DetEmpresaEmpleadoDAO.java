@@ -16,4 +16,5 @@ public interface DetEmpresaEmpleadoDAO {
 	public abstract List  listarDetEmpresaEmpleadoSie();
 	public abstract List  listarDetEmpresaEmpleadoSieXEmpresa(int idempresa);
 	public abstract int  filtrartipoventaPersonal(int idvendedor); 
+	public abstract boolean verificarEmpleadoConEmpresa (int idcargo);
 }
