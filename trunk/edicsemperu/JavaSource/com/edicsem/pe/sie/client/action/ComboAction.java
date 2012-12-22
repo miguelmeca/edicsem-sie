@@ -1168,7 +1168,7 @@ public class ComboAction {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'getEmpleadoItems()' "+getIdCargo());
 			}
-			lista = objEmpleadoService.listarEmpleadosXEmpresa(getIdEmpresa());
+			lista = objEmpleadoService.listarEmpleadoxEmpresas(getIdEmpresa());
 			
 			for (int i = 0; i < lista.size(); i++) {
 				EmpleadoSie entidad = new EmpleadoSie();
