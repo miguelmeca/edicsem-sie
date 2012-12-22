@@ -102,7 +102,6 @@ body {
 						<p:menuitem value="Buscar Cliente" update="messages" ajax="false" action="#" />
 						<p:menuitem value="Registro Contrato" update="messages" ajax="false" action="#{contratoForm.agregar}" />
 						<p:menuitem value="Registro de Filtros de horario Ventas" update="messages" ajax="false" action="#{filtroHorarioVendedorForm.agregar}" />
-						<p:menuitem value="Kardex" update="messages" ajax="false" action="#{kardexAction.listar}" />
 						<p:menuitem value="Registro de horario Ventas" update="messages" ajax="false" action="#{horarioVendedorForm.agregar}" />
 						<p:menuitem value="Mantenimiento de Punto de Venta/Almacen" ajax="false" action="#{almacenSearch.listar}" />
 						<p:menuitem value="Mantenimiento Valorizado" ajax="false" action="mantenimientoKardex.jsf" />
@@ -119,11 +118,15 @@ body {
 						<p:menuitem value="Incidencias" ajax="false" action="#{mantenimientoIncidenciaSearch.listar}" />
 						<p:menuitem value="Horario del Personal" ajax="false" action="mantenimientoHorarioPersonal.jsf" />
 						<p:menuitem value="Mantenimiento Cargo Empleado" ajax="false" action="#{mantenimientoCargoEmpleadoSearchAction.listar}" />
+						
 						<p:menuitem value="Mantenimiento Empresa" ajax="false" action="#{empresaSearch.listar}" />
-						<p:menuitem value="Meta Mes" update="messages" ajax="false" action="metaEmpresa.jsf" />
+						<p:menuitem value="mantenimiento Empresa Producto" ajax="false" action="mantenimientoEmpresaProductoFormList.jsf" />
+						<p:menuitem value="mantenimiento Empresa Empleado" ajax="false"  action="#{empresaEmpleProducSearchAction.listarEmpleadosXempresa}"  />
+						
+						<p:menuitem value="Meta Mes" ajax="false" action="metaMes.jsf" />
 						<p:menuitem value="Meta Empleado" ajax="false" action="#{metaEmpleadoSearch.listar}" />
 						<p:menuitem value="Mantenimiento Cliente" update="messages" ajax="false" action="#{MantenimientoClienteSearchAction.listar}" />
-						<p:menuitem value="Mantenimiento Horario Punto de Venta" update="messages" ajax="false" action="#{MantenimientoHorarioPuntoVentaSearchAction.listar}" />
+						<p:menuitem value="Mantenimiento Horario Punto de Venta"  ajax="false" action="#{MantenimientoHorarioPuntoVentaSearchAction.listar}" />
 						<p:menuitem value="Modulo de Migracion" ajax="false" action="ModuloMigracion.jsf" />
 					</p:submenu>
 				</p:menu>
@@ -719,7 +722,7 @@ body {
 				 
 				<h:outputText value="#{message['horario.pv.descripcion']}"  />
 				<h:panelGroup  >
-					<h:inputText value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.observacion}"  />
+					<p:inputText value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.observacion}"  />
 					<p:spacer/>
 				</h:panelGroup>
 				
@@ -843,7 +846,7 @@ body {
 	<h:form>
 
 		<p:confirmDialog id="confirmDeshabilitar1"
-			message="Esta seguro de deshabilitar dicho movimiento?" width="325"
+			message="Esta seguro de deshabilitar este Cargo Empleado?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
 			header="Confirm" severity="alert" widgetVar="confirmation24"
 			position="center">
@@ -1083,7 +1086,7 @@ body {
         		<p:commandButton value="No" onclick="confirmation.hide()" type="button" />  
         		
     </p:confirmDialog>
-    
+    	
 </h:form>
 
 	<!-- 	FIN DESACTIVAR PROVEEDOR  -->
@@ -1092,26 +1095,104 @@ body {
 
 	<h:form>
 
-		<p:confirmDialog id="confirmDeshabilitarEmpresa"
-			message="Esta seguro de deshabilitar dicho Empresa?" width="325"
-			height="100" showEffect="explode" hideEffect="explode"
-			header="Confirm" severity="alert" widgetVar="confirmationEmpresa"
-			position="center">
+<p:confirmDialog id="confirmDeshabilitarEmpresa"
+			     message="esta seguro de eliminar esta empresa?" 
+			     width="325"
+				 height="100" showEffect="explode" hideEffect="explode"
+			     header="Confirm" severity="alert" widgetVar="confirmationEmpresa"
+				 position="center">
 
-			<p:commandButton type="submit" value="Si"
+<p:commandButton type="submit" value="Si"
 				action="#{empresaForm.Eliminarempresa}"
-				update=":frmEmpresaFormList:empresaTable"
-				oncomplete="confirmationEmpresa.hide()" ajax="false">
-			</p:commandButton>
+				
+				
+	
+			
+/>
 
-			<p:commandButton value="No" onclick="confirmationEmpresa.hide()"
-				type="button" />
+<p:commandButton value="No" onclick="confirmationEmpresa.hide()"
+					type="button" />
 
 		</p:confirmDialog>
 
 	</h:form>
 
 	<!-- 	FIN DESACTICAR EMPRESA (ESTADOS)  -->
+	
+	
+	<!--	  INICIO DESACTIVAR	 EMPRESA 22 message="#{empresaForm.mensaje}" -->
+<h:form>
+
+		<p:confirmDialog id="confirmDeshabilitarEmpresa22"
+			message="La Empresa no se puede elminar ya que se encontraron 
+			empleados con esta empresa, desea derivar estos empleados
+			 a otra empresa ?" 
+			 width="325"
+			height="100" showEffect="explode" hideEffect="explode"
+			header="Confirm" severity="alert" widgetVar="someDialog"
+			position="center">
+			
+<p:commandButton type="submit" value="Si"
+action="mantenimientoEmpresaEmpleadoFormList.jsf"
+
+> 
+
+
+</p:commandButton>
+
+		<p:commandButton value="No" onclick="confirmationEmpresa.hide()" 
+		immediate="true" ajax = "false"
+				type="button" />
+
+		</p:confirmDialog>
+
+	</h:form>
+	<!-- 	FIN DESACTICAR EMPRESA (ESTADOS)  22-->
+	
+	
+	
+	
+	
+<!--	  INICIO DESACTIVAR	 EMPRESA 222 message="#{empresaForm.mensaje}" -->
+<h:form>
+
+		<p:confirmDialog id="confirmDeshabilitarEmpresa222"
+message="La Empresa no se puede elminar ya que se encontraron productos con esta empresa, desea derivar estos empleados a otra empresa ?" 
+			 width="325"
+			height="100" showEffect="explode" hideEffect="explode"
+			header="Confirm" severity="alert" widgetVar="someDialog2"
+			position="center">
+			
+			<p:commandButton type="submit" value="Si"
+			
+			action="#{empresaEmpleProducSearchAction.listarEmpleadosXempresa}"
+			
+			
+			><f:setPropertyActionListener
+		 value="#{empresa.idempresa}"
+		 target="#{empresaEmpleProducSearchAction.idCargo}" 
+/>
+			</p:commandButton>
+
+		<p:commandButton value="No" onclick="confirmationEmpresa.hide()" 
+		immediate="true" ajax = "false"
+				type="button" />
+
+		</p:confirmDialog>
+
+	</h:form>
+	<!-- 	FIN DESACTICAR EMPRESA (ESTADOS)  222-->
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 <!--NUEVO TELEFONO DE CLIENTE -->
@@ -1318,9 +1399,8 @@ body {
 
 	</h:form>
 	<!-- FIN PUPAP NUEVO Y EDITAR EMPRESA -->
-	<!--EN UN SOLO PUPAP NUEVO Y EDITAR META -->
-
-
+	
+	<!--EN UN SOLO PUPAP NUEVO Y EDITAR META MES -->
 	<h:form id="editarMeta">
 		<p:dialog header="Ingrese meta" widgetVar="carDialog2"
 			showEffect="fade" hideEffect="explode" modal="true" width="300"
@@ -1328,43 +1408,23 @@ body {
 
 			<h:panelGrid id="display" columns="2" cellpadding="2"
 				style="margin:0 auto;">
-
-
-
 				
 <h:outputText value="fecha inicial" />
 				
 <p:calendar id="popupCal" 
 value="#{MetaMesFormAction.date1}"
  /> 
-				 
-			
-				
-				
-				
+		
 <h:outputText value="fecha final" />
-
-				
 <p:calendar id="popupCal2" 
 value="#{MetaMesFormAction.date2}"  
 />
-
-				
-				
-				
-			
-				
-				
-				
-				
-				
-
-			</h:panelGrid>
+</h:panelGrid>
 
 		</p:dialog>
 
 	</h:form>
-	<!-- FIN PUPAP NUEVO Y EDITAR EMPRESA -->
+	<!-- FIN PUPAP NUEVO Y EDITAR META MES -->
 	<!--EN UN SOLO PUPAP NUEVO Y EDITAR META -->
 
 
