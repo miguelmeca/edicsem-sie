@@ -88,6 +88,10 @@
             <p:selectOneMenu value="#{mantenimientoEmpleadoFormAction.idCargo}" label="Seleccione" filter="true" filterText="Filter" filterMatchMode="startsWith" panelStyle="width:300px">  
             <f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
             </p:selectOneMenu>
+            <p:outputLabel  value="Tipo de Pago:"/>
+            <p:selectOneMenu value="#{mantenimientoEmpleadoFormAction.idTipoPago}">
+            <f:selectItems value="#{comboAction.tipoPagoItems}"/>
+            </p:selectOneMenu>
             <h:outputText value="Básico :" />
             <p:inputText value="#{mantenimientoEmpleadoFormAction.objContratoEmpleado.basico}" required="true"/> 
             <h:outputText value="Periodo de Prueba:" />

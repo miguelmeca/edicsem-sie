@@ -29,6 +29,7 @@ import com.edicsem.pe.sie.service.facade.DomicilioEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
+import com.edicsem.pe.sie.service.facade.TipoPagoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
@@ -44,7 +45,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	/*variables para telefono*/
 	private String mensaje;
 	private String fijo;
-	private int estado;
+	private int estado,idTipoPago;
 	/*variables para domicilio*/
 	private String direccion;
 	private String idProvincia, idDepartamento, ubigeoDefecto;
@@ -90,6 +91,8 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	private EstadogeneralService objEstadoService;
 	@EJB 
 	private CargoEmpleadoService objCargoEmpleadoService;
+	@EJB 
+	private TipoPagoService objTipoPagoService;
 	
 	public static Log log = LogFactory.getLog(MantenimientoEmpleadoFormAction.class);
 	
@@ -377,6 +380,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		log.info("agregarPago()" );
 		objContratoEmpleado.setTbCargoempleado(objCargoEmpleadoService.buscarCargoEmpleado(idCargo));
 		objContratoEmpleado.setFechaInicioContrato(fechaInicioContrato);
+		objContratoEmpleado.setTbTipoPago(objTipoPagoService.findTipoPago(idTipoPago));
 		contratoEmpleadoList.add(objContratoEmpleado);
 		log.info("agregado ooo " );
 		objContratoEmpleado= new ContratoEmpleadoSie();
@@ -864,6 +868,20 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	 */
 	public void setIdCargo(int idCargo) {
 		this.idCargo = idCargo;
+	}
+
+	/**
+	 * @return the idTipoPago
+	 */
+	public int getIdTipoPago() {
+		return idTipoPago;
+	}
+
+	/**
+	 * @param idTipoPago the idTipoPago to set
+	 */
+	public void setIdTipoPago(int idTipoPago) {
+		this.idTipoPago = idTipoPago;
 	}
 		
 }
