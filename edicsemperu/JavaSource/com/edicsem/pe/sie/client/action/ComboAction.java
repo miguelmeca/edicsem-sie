@@ -34,6 +34,7 @@ import com.edicsem.pe.sie.entity.TipoFiltroSie;
 import com.edicsem.pe.sie.entity.TipoImporteSie;
 import com.edicsem.pe.sie.entity.TipoKardexProductoSie;
 import com.edicsem.pe.sie.entity.TipoLlamadaSie;
+import com.edicsem.pe.sie.entity.TipoPagoSie;
 import com.edicsem.pe.sie.entity.TipoProductoSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.service.facade.AlmacenService;
@@ -56,6 +57,7 @@ import com.edicsem.pe.sie.service.facade.TipoFiltroService;
 import com.edicsem.pe.sie.service.facade.TipoImporteService;
 import com.edicsem.pe.sie.service.facade.TipoKardexService;
 import com.edicsem.pe.sie.service.facade.TipoLLamadaService;
+import com.edicsem.pe.sie.service.facade.TipoPagoService;
 import com.edicsem.pe.sie.service.facade.TipoProductoService;
 import com.edicsem.pe.sie.service.facade.UbigeoService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -99,6 +101,7 @@ public class ComboAction {
 	private Map<String, Integer> sancionItems = new HashMap<String, Integer>();
 	private Map<String, Integer> tipoImporteItems = new HashMap<String, Integer>();
 	private Map<String, Integer> importeItems = new HashMap<String, Integer>();
+	private Map<String, Integer> tipoPagoItems = new HashMap<String, Integer>();
 	
 	@EJB
 	private AlmacenService objAlmacenService;
@@ -144,6 +147,8 @@ public class ComboAction {
 	private TipoImporteService objTipoImporteService;
 	@EJB
 	private ImporteService objImporteService;
+	@EJB 
+	private TipoPagoService objTipoPagoService;
 	
 	public ComboAction() {
 		log.info("inicializando constructor");
@@ -1193,6 +1198,42 @@ public class ComboAction {
 	public void setEmpleadosXEmpresaitems(
 			Map<String, Integer> empleadosXEmpresaitems) {
 		this.empleadosXEmpresaitems = empleadosXEmpresaitems;
+	}
+
+	/**
+	 * @return the tipoPagoItems
+	 */
+	public Map<String, Integer> getTipoPagoItems() {
+		List lista = new ArrayList<TipoPagoSie>();
+		tipoPagoItems = new HashMap<String, Integer>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getTipoPago()' ");
+			}
+			lista = objTipoPagoService.listarTipoPago();
+			
+			for (int i = 0; i < lista.size(); i++) {
+				TipoPagoSie entidad = new TipoPagoSie();
+				entidad = (TipoPagoSie) lista.get(i);
+				tipoPagoItems.put(entidad.getDescripcion(),
+						entidad.getIdtipopago());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return tipoPagoItems;
+	}
+
+	/**
+	 * @param tipoPagoItems the tipoPagoItems to set
+	 */
+	public void setTipoPagoItems(Map<String, Integer> tipoPagoItems) {
+		this.tipoPagoItems = tipoPagoItems;
 	}
 	
 }
