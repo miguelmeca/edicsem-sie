@@ -76,7 +76,7 @@ public class DetSancionEmpleadoDAOImpl implements DetSancionEmpleadoDAO{
 		List  lista = null;
 		try {
 			Query q = em.createQuery("select p from DetSancionEmpleadoSie p where p.tbEmpleado.idempleado = "+ idEmpleado
-						+" where DATE(p.fechacreacion ) between DATE('" + fechaInicio +"') and  DATE('" + fechaFin +"')  ");
+						+" and  DATE(p.fechacreacion ) between DATE('" + fechaInicio +"') and  DATE('" + fechaFin +"')  ");
 			lista =  q.getResultList(); 
 			log.info("tamaño  --> " + lista.size()+"  ");
 		} catch (Exception e) {
