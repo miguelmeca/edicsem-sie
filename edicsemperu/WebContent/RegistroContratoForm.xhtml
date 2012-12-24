@@ -143,36 +143,35 @@
 						requiredMessage="#{message['contrato.telefono.casa.validation']}"  rendered="#{contratoForm.tipoTelef==1}"/>
 					<p:message for="numTelef" rendered="#{contratoForm.tipoTelef==1}"/>
 					
-					<h:outputText value="#{message['contrato.celular']}"  rendered="#{contratoForm.tipoTelef==2}"/>
-					<p:inputMask mask="999-999999" value="#{contratoForm.nuevoTelef.telefono}" id="numCelular"
-						requiredMessage="#{message['contrato.celular.validation']}"  rendered="#{contratoForm.tipoTelef==2}"/>
-					<p:message for="numCelular"  rendered="#{contratoForm.tipoTelef==2}"/>
-					
-					<h:outputText value="#{message['contrato.telefono.descripcion']}" />
-					<p:inputText value="#{contratoForm.nuevoTelef.descTelefono}"/>
-					<p:spacer />
-					
-					<p:commandButton value="Agregar Telefono Referencia" icon="ui-icon ui-icon-check" 
-					update="mytable, message" actionListener="#{contratoForm.telefonoAgregar}" process="@this" >
-					</p:commandButton>
-					
-					<p:dataTable value="#{contratoForm.telefonoList}" id="mytable" var="t"   
-						 rowStyleClass="#{t.operadorTelefonico eq 'Claro' ? 'color1': (t.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }"   >
-
-						<f:facet name="header">
-						<h:outputLabel value="Telefonos de Referencia" />
-						</f:facet>
+						<h:outputText value="#{message['contrato.celular']}"  rendered="#{contratoForm.tipoTelef==2}"/>
+						<p:inputMask mask="999-999999" value="#{contratoForm.nuevoTelef.telefono}" id="numCelular"
+							requiredMessage="#{message['contrato.celular.validation']}"  rendered="#{contratoForm.tipoTelef==2}"/>
+						<p:message for="numCelular"  rendered="#{contratoForm.tipoTelef==2}"/>
 						
-						<p:commandButton icon="ui-icon-close"
-							oncomplete="confirmationTelefono.show()" title="eliminar">
-							<f:setPropertyActionListener value="#{t.telefono}" target="#{contratoForm.selectTelef}" />
+						<h:outputText value="#{message['contrato.telefono.descripcion']}" />
+						<p:inputText value="#{contratoForm.nuevoTelef.descTelefono}" />
+						<p:spacer />
+						
+						<p:commandButton value="Agregar Telefono Referencia"  icon="ui-icon ui-icon-check" 
+						update="mytable, message" actionListener="#{contratoForm.telefonoAgregar}" immediate="true" >
 						</p:commandButton>
 						
-						  <p:column headerText="Observación" style="width:125px">
-                    <h:outputText value="#{t.tipoTelef}, #{t.operadorTelefonico}, #{t.telefono}" />
-                    </p:column>
- 
-					</p:dataTable>
+						<p:dataTable value="#{contratoForm.telefonoList}" id="mytable" var="t"   
+							 rowStyleClass="#{t.operadorTelefonico eq 'Claro' ? 'color1': (t.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }"   >
+	
+							<f:facet name="header">
+								<h:outputLabel value="Telefonos de Referencia" />
+							</f:facet>
+							
+							<p:commandButton icon="ui-icon-close" oncomplete="confirmationTelefono.show()" title="eliminar">
+								<f:setPropertyActionListener value="#{t.telefono}" target="#{contratoForm.selectTelef}" />
+							</p:commandButton>
+							
+						<p:column headerText="Observación" style="width:125px">
+	                    <h:outputText value="#{t.tipoTelef}, #{t.operadorTelefonico}, #{t.telefono}" />
+	                    </p:column>
+	 
+						</p:dataTable>
 					
 				</h:panelGrid>
 				</p:panel>
