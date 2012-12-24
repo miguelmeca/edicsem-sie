@@ -89,7 +89,6 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 			objTelefono.setTelefono(fijo);
 			objTelefonoDao.insertarTelefonoEmpleado(objTelefono);
 			
-            
             /**Inserta el detallecargo**/
 			log.info("sxsx   --->  "+contratoEmpleadoList.size());
 			for(int i = 0; i < contratoEmpleadoList.size(); i++){
@@ -97,38 +96,19 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 			objDetCargo.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(19));
 			objDetCargo.setTbEmpleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
 			log.info("YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-			//listacargo.get(i).getIdcargoempleado();
-			//listacargo.get();
-			//int cargo;
-			//listacargo.get(j);
-			//int cargo= (int)listacargo.get(i);
 			int d = Integer.parseInt(contratoEmpleadoList.get(i).getTbCargoempleado().getIdcargoempleado()+"");
 			objDetCargo.setTbCargoEmpleado(objCargoEmpDao.buscarCargoEmpleado(d));
-			//int a = Integer.parseInt(listacargo.get(i).toString());
-			//CargoEmpleadoSie ca =objCargoEmpDao.buscarCargoEmpleado(a);
-			//log.info(" "+ ca.getDescripcion());
-			//objDetCargo.setTbCargoEmpleado(ca);
-			//objDetCargo.setTbCargoEmpleado(cargo);
-			//log.info(" " + listacargo.get(i).getDescripcion()+"  "+ listacargo.get(i).getIdcargoempleado() );
-			//objDetCargo.setTbCargoEmpleado(listacargo.get(i));
-			//objDetCargo.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(19));
+			//insertamos en detalle cargo empresa
 			objDetCargoDao.insertarDetalleCarEmp(objDetCargo);
 			contratoEmpleadoList.get(i).setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(56));
+			//insertamos en detalle contrato empleado
 			objContratoEmpleadoDao.insertContratoEmpleado(contratoEmpleadoList.get(i));
 			}
 			
 			log.info("insertando..... ");
-
-			//Agregen esto a tus redirecciones parece que esta referenciando a otra cosa verifiquen a donde estan 
-			//llenando los datos 
-			//Redirections.redirectionsPage(Constants.PAGE_MODULE, Constants.LISTA_CARGO_PAGE);
+			
 		   }catch (Exception e) {
 			e.printStackTrace();
-			//nombre = e.getMessage();
-			//msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					//Constants.MESSAGE_ERROR_FATAL_TITULO, nombre);
-			//log.error(e.getMessage());
-			//FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 		objEmpleado = new EmpleadoSie();
 		objTelefono = new TelefonoPersonaSie();
@@ -136,7 +116,6 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 		objDetCargo = new DetCargoEmpleadoSie();
 	}
 	
-
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#actualizarEmpleado(com.edicsem.pe.sie.entity.EmpleadoSie, com.edicsem.pe.sie.entity.DomicilioPersonaSie, com.edicsem.pe.sie.entity.TelefonoPersonaSie, int, int, java.lang.String, java.lang.String, int, java.lang.String, java.lang.String, int, int, java.lang.String, int, int, int, int, int, int)
 	 */
@@ -182,29 +161,15 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 				objDetCargo.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(19));
 				objDetCargo.setTbEmpleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
 				log.info("YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-				//listacargo.get(i).getIdcargoempleado();
-				//listacargo.get();
-				//CargoEmpleadoSie cargo = new CargoEmpleadoSie();
-				//listacargo.get(j);
 				objDetCargo.setTbCargoEmpleado(objCargoEmpDao.buscarCargoEmpleado(contratoEmpleadoList.get(i).getTbCargoempleado().getIdcargoempleado()));
-				//objDetCargo.setTbCargoEmpleado(cargo);
-				//log.info(" " + listacargo.get(i).getDescripcion()+"  "+ listacargo.get(i).getIdcargoempleado() );
-				//objDetCargo.setTbCargoEmpleado(listacargo.get(i));
-				//objDetCargo.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(19));
 				objDetCargoDao.insertarDetalleCarEmp(objDetCargo);
 				}
 				log.info("actualizando..... ");
-
 				//Agregen esto a tus redirecciones parece que esta referenciando a otra cosa verifiquen a donde estan 
 				//llenando los datos 
 				//Redirections.redirectionsPage(Constants.PAGE_MODULE, Constants.LISTA_CARGO_PAGE);
 			   }catch (Exception e) {
 				e.printStackTrace();
-				//nombre = e.getMessage();
-				//msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-						//Constants.MESSAGE_ERROR_FATAL_TITULO, nombre);
-				//log.error(e.getMessage());
-				//FacesContext.getCurrentInstance().addMessage(null, msg);
 			}
 			objEmpleado = new EmpleadoSie();
 			objTelefono = new TelefonoPersonaSie();
