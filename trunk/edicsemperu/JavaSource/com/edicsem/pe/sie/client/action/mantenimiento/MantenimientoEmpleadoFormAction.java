@@ -334,7 +334,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 			/*encripta la contraseña*/
 		    objEmpleado.setContrasena(getMD5(objEmpleado.getContrasena()));
 			log.info("probando MD5..."+objEmpleado.getContrasena());
-		try {
+			try {
 				if (log.isInfoEnabled()) {
 					log.info("Entering my method 'insertar(registrar, actualizar)'"+ objEmpleado.getNombreemp());
 				}
