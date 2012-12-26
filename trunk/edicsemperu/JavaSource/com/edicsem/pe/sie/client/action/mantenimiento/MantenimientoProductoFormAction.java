@@ -71,7 +71,7 @@ public class MantenimientoProductoFormAction extends
 		limpiarCampos();
 		objProductoSie = new ProductoSie();
 		setNewRecord(true);
-		return getViewList();
+		return productoSearch.getViewMant();
 	}
  
 	/*
@@ -89,10 +89,10 @@ public class MantenimientoProductoFormAction extends
 		InputStream stream = new FileInputStream(objProductoSie.getRutaimagenproducto());
 		setImage( new DefaultStreamedContent(stream));
 		setNewRecord(false);
-		return getViewList();
+		return productoSearch.getViewMant();
 	}
 
-	public void cargarImagenInsertar(FileUploadEvent event) {
+	public String cargarImagenInsertar(FileUploadEvent event) {
 		log.info("cargarImagenInsertar " + event.getFile().getFileName() );
 		String photo = event.getFile().getFileName();
 		FileImageOutputStream imageOutput;
@@ -114,6 +114,7 @@ public class MantenimientoProductoFormAction extends
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		return productoSearch.getViewMant();
 	}
 
 	/*
@@ -267,7 +268,7 @@ public class MantenimientoProductoFormAction extends
 	 * #getViewList()
 	 */
 	public String getViewList() {
-		return Constants.MANT_PRODUCTO_FORM_PAGE;
+		return Constants.MANT_PRODUCTO_FORM_LIST_PAGE;
 	}
 
 	/*
@@ -278,7 +279,8 @@ public class MantenimientoProductoFormAction extends
 	 * #getViewMant()
 	 */
 	public String getViewMant() {
-		return Constants.MANT_PRODUCTO_FORM_LIST_PAGE;
+		log.info("getViewMant *******");
+		return Constants.MANT_PRODUCTO_FORM_PAGE;
 	}
 
 	/**

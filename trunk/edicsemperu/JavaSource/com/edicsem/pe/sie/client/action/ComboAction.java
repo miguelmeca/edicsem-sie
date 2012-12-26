@@ -912,7 +912,7 @@ public class ComboAction {
 			c = (ContratoEmpleadoSie) listaP.get(i);
 			empleadoxcargo.put(c.getTbEmpleado1().getNombresCompletos(),
 					c.getTbEmpleado1().getIdempleado());
-		}	
+		}
 		
 		return empleadoxcargo;
 	}
