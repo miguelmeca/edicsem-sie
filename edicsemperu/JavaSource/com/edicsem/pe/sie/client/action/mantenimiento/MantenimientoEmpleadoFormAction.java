@@ -17,10 +17,10 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.primefaces.event.FlowEvent;
 
 import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.entity.ContratoEmpleadoSie;
-import com.edicsem.pe.sie.entity.DetCargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
@@ -41,7 +41,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	private EmpleadoSie objEmpleado;
 	private TelefonoPersonaSie objTelefono;
 	private DomicilioPersonaSie objDomicilio;
-	private DetCargoEmpleadoSie objDetCargo;
 	private ContratoEmpleadoSie objContratoEmpleado;
 	/*variables para telefono*/
 	private String mensaje;
@@ -73,6 +72,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	/*variables*/
 	private int idCargo;
 	private boolean defectoUbigeo;
+	private boolean skip;
 	private Date fechaInicioContrato;
 	 
 	private List<ContratoEmpleadoSie> contratoEmpleadoList;
@@ -98,7 +98,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	public static Log log = LogFactory.getLog(MantenimientoEmpleadoFormAction.class);
 	
 	public MantenimientoEmpleadoFormAction() {
-		log.info("ESTOY EN MI CONSNTRUCTOR");
 		log.info("inicializando mi constructor");
 		init();
 	}
@@ -109,11 +108,10 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		objEmpleado = new EmpleadoSie();
 		objTelefono = new TelefonoPersonaSie();
 		objDomicilio = new DomicilioPersonaSie();
-		objDetCargo = new DetCargoEmpleadoSie();
 		defectoUbigeo=true;
-		//listacargo = new ArrayList<String>();	
 		objContratoEmpleado = new ContratoEmpleadoSie();
 		contratoEmpleadoList =  new ArrayList<ContratoEmpleadoSie>();
+		skip = false;
 	}
 		
 	//UBIGEO....
@@ -247,7 +245,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	        objTelefono.setTbEstadoGeneral(objEstadoService.findEstadogeneral(18));
 			log.info("-----Id estado del empleado>>>"	+ getEstadoe());
 			log.info("actualizando ESTADO..... ");
-			objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, objTelefono, objDetCargo, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
+			objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, objTelefono, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
 					estado, direccion, idUbigeo, estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
 					TipoDocumento, codigoEmpleado, estadoe, contratoEmpleadoList);
 			log.info("actualizando..... ");
@@ -349,14 +347,14 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 				if (isNewRecord()) {
 					log.info("insertando..... ");
 					log.info("insertar empleado  ");
-					objEmpleadoService.insertarEmpleado(objEmpleado,objDomicilio,objTelefono, objDetCargo, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
+					objEmpleadoService.insertarEmpleado(objEmpleado,objDomicilio,objTelefono, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
 							estado, direccion,  idUbigeo,  estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
 							TipoDocumento, codigoEmpleado, estadoe, contratoEmpleadoList);
 					log.info("insertando..... ");
 					setNewRecord(false);
 				} else {
 					log.info("actualizando..... ");
-					objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, objTelefono, objDetCargo, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
+					objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, objTelefono, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
 							estado, direccion,  idUbigeo,  estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
 							TipoDocumento, codigoEmpleado, estadoe, contratoEmpleadoList);
 					log.info("insertando..... ");
@@ -389,7 +387,20 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		objContratoEmpleado= new ContratoEmpleadoSie();
 		return getViewMant();
 	}
-    
+
+	public String onFlowProcess(FlowEvent event) {  
+	    log.info("Current wizard step:" + event.getOldStep());  
+	    log.info("Next step:" + event.getNewStep());  
+	    
+	     if(skip) {  
+	            skip = false;   //reset in case user goes back  
+	            return "confirm";  
+	        }  
+	     else {  
+	            return event.getNewStep();  
+	      }
+	}
+	
     /*métodos GET y SET*/
 	/**
 	 * @return the codigoEmpleado
@@ -803,20 +814,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	}
 
 	/**
-	 * @return the objDetCargo
-	 */
-	public DetCargoEmpleadoSie getObjDetCargo() {
-		return objDetCargo;
-	}
-
-	/**
-	 * @param objDetCargo the objDetCargo to set
-	 */
-	public void setObjDetCargo(DetCargoEmpleadoSie objDetCargo) {
-		this.objDetCargo = objDetCargo;
-	}
-
-	/**
 	 * @return the objContratoEmpleado
 	 */
 	public ContratoEmpleadoSie getObjContratoEmpleado() {
@@ -900,5 +897,18 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	public void setMask(String mask) {
 		this.mask = mask;
 	}
-		
+
+	/**
+	 * @return the skip
+	 */
+	public boolean isSkip() {
+		return skip;
+	}
+
+	/**
+	 * @param skip the skip to set
+	 */
+	public void setSkip(boolean skip) {
+		this.skip = skip;
+	}  
 }

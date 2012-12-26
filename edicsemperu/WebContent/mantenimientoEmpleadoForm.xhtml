@@ -8,8 +8,11 @@
 	<ui:define name="body">
 		<h:form id="form">
 	<p:panel header="Registrar Empleado"  id="panel">
-	        <p:growl/>	
-			<h:panelGrid columns="2" cellpadding="5">						
+	    <p:growl/>
+	    <p:wizard widgetVar="wiz" flowListener="#{mantenimientoEmpleadoFormAction.onFlowProcess}">
+	    <p:tab title="Personal">
+	    <p:panel header="Datos Personales">  
+        <h:panelGrid columns="2" cellpadding="5">						
 			<p:outputLabel value="#{message['empleado.nombre']}" for="nombre" />
 			<p:inputText id="nombre" value="#{mantenimientoEmpleadoFormAction.objEmpleado.nombreemp}" required="true" label="Nombre" 
 			requiredMessage="#{message['empleado.nombre.validation']}"/>
@@ -35,7 +38,7 @@
             <p:ajax update="panel"></p:ajax>
             </p:selectOneMenu>
             <p:outputLabel value="#{message['empleado.nrodoc']}" for="nrodoc" />
-			<p:inputMask id="nrodoc"
+						<p:inputMask id="nrodoc"
 					value="#{mantenimientoEmpleadoFormAction.objEmpleado.numdocumento}" mask="99999999"
 					rendered="#{mantenimientoEmpleadoFormAction.tipoDocumento==1}"
 					required="true" label="nrodoc"
@@ -47,17 +50,19 @@
 		    <p:inputMask id="nrodoc3"
 					value="#{mantenimientoEmpleadoFormAction.objEmpleado.numdocumento}" disabled="true" 
 					rendered="#{mantenimientoEmpleadoFormAction.tipoDocumento!=1 and mantenimientoEmpleadoFormAction.tipoDocumento!=2}"/>                                   
-            <p:outputLabel value="#{message['empleado.fijo']}" for="fijo" />
+           <p:outputLabel value="#{message['empleado.fijo']}" for="fijo" />
 			<p:inputMask mask="999-9999" id="fijo" value="#{mantenimientoEmpleadoFormAction.fijo}" required="true" label="Fijo"
 			requiredMessage="#{message['empleado.fijo.validation']}"/>                        
             
             <p:outputLabel value="#{message['domicilio.direccion']}" for="domicilio" />
 			<p:inputText id="domicilio" value="#{mantenimientoEmpleadoFormAction.direccion}" required="true" label="Domicilio"
-			requiredMessage="#{message['domicilio.direccion.validation']}"/>     
+			requiredMessage="#{message['domicilio.direccion.validation']}"/>  
 			</h:panelGrid>
-	
-	
-		    <h:panelGrid columns="3" cellpadding="5">				    
+			</p:panel>
+        </p:tab>
+        <p:tab title="Dirección">
+        <p:panel header="Dirección"> 
+         <h:panelGrid columns="3" cellpadding="5">				    
 		    <h:outputText value="Ubigeo :" />    
 		    
 			<h:outputText value="Indicar otro Distrito" />  
@@ -66,40 +71,40 @@
 			oncomplete="if(#{mantenimientoEmpleadoFormAction.defectoUbigeo}) UbigeoEmpDialog.show()"></p:ajax>
 			</p:selectBooleanCheckbox>
 			
-			<h:outputText value="#{message['contrato.ubigeo.distrito']}"
-						rendered="#{mantenimientoEmpleadoFormAction.defectoUbigeo}" />
+			<h:outputText value="#{message['contrato.ubigeo.distrito']}" rendered="#{mantenimientoEmpleadoFormAction.defectoUbigeo}" />
 			<p:selectOneMenu  value="#{mantenimientoEmpleadoFormAction.idUbigeo}" filter="true" filterMatchMode="startsWith" rendered="#{mantenimientoEmpleadoFormAction.defectoUbigeo}"
-			required="true"   effect="fade"	style="width:200px" id="idubigeoDistrito" requiredMessage="#{message['contrato.ubigeo.distrito.validation']}">
+			required="true" effect="fade"	style="width:200px" id="idubigeoDistrito" requiredMessage="#{message['contrato.ubigeo.distrito.validation']}">
 			<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
 			<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
 			<p:ajax update="ubigeoDefecto" listener="#{mantenimientoEmpleadoFormAction.cambioUbica}"></p:ajax>
 			</p:selectOneMenu>
             <p:message for="idubigeoDistrito" rendered="#{mantenimientoEmpleadoFormAction.defectoUbigeo}"/>
-			<h:outputText id="ubigeoDefecto" value="#{mantenimientoEmpleadoFormAction.ubigeoDefecto}" /> 
-			</h:panelGrid>
-			
-		    <h:panelGrid columns="2" >				    
+			<h:outputText id="ubigeoDefecto" value="#{mantenimientoEmpleadoFormAction.ubigeoDefecto}" />
+						    
 			<p:outputLabel for="tipocasa" value="Tipo de Casa :" styleClass="textoAzulFuerteGrande" id="tipocasaL"/>
             <p:selectOneMenu id="tipocasa" value="#{mantenimientoEmpleadoFormAction.tipo}" styleClass="required" title="El tipo de casa es obligatorio!" >
             <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
             <f:selectItems value="#{comboAction.tipocasaItems}" />
 			<p:ajax update="ubigeoDefecto" listener="#{mantenimientoEmpleadoFormAction.cambioUbica}"></p:ajax>
             </p:selectOneMenu>
-                           
+                          
             <p:outputLabel value="#{message['empleado.fechanac']}" for="fechanac" />
 			<p:calendar pagedate="-8380" value="#{mantenimientoEmpleadoFormAction.objEmpleado.fechanacimiento}" id="fechanac" showButtonPanel="true" required="true"  
 			label="Fecha de nacimiento" requiredMessage="#{message['empleado.fechanac.validation']}"/>                  
             </h:panelGrid>
-            <p:fieldset legend="Contrato Empleado" >
-            <h:panelGrid columns="2" id="panelPagos" >	
+            </p:panel>
+        </p:tab>
+         <p:tab title="Contrato Empleado">
+         <p:panel header="Datos Contrato"> 
+           <h:panelGrid columns="2" id="panelPagos" >	
             <h:outputText value="Fecha Inicio :" />
             <p:calendar value="#{mantenimientoEmpleadoFormAction.fechaInicioContrato}" />
             <h:outputText value="Cargo(s) :" />
             <p:selectOneMenu value="#{mantenimientoEmpleadoFormAction.idCargo}" label="Seleccione" filter="true" filterText="Filter" filterMatchMode="startsWith" panelStyle="width:300px">  
             <f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
             </p:selectOneMenu>
-            <p:outputLabel  value="Tipo de Pago:"/>
-            <p:selectOneMenu value="#{mantenimientoEmpleadoFormAction.idTipoPago}">
+            <p:outputLabel  value="Tipo de Pago:" for="tipopago" />
+            <p:selectOneMenu id="tipopago" value="#{mantenimientoEmpleadoFormAction.idTipoPago}">
             <f:selectItems value="#{comboAction.tipoPagoItems}"/>
             </p:selectOneMenu>
             <h:outputText value="Básico :" />
@@ -120,13 +125,14 @@
 						</p:column>
 				</p:dataTable>
 			</h:panelGrid>
-            </p:fieldset>
-            
+			</p:panel>
+        </p:tab>
+        </p:wizard>
+	        
 		    <f:facet name="footer">
             <p:commandButton id="btn" value="Guardar" update="panel" action="#{mantenimientoEmpleadoFormAction.insertar}" ajax="false" icon="ui-icon-check"/>
             <p:commandButton value="Regresar" action="#{mantenimientoEmpleadoSearchAction.listar}" immediate="true" ajax = "false" icon="ui-icon ui-icon-close" />
-            </f:facet>				
-
+            </f:facet>
 	</p:panel>	            
 	</h:form>
 	</ui:define>
