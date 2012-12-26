@@ -111,7 +111,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		objDomicilio = new DomicilioPersonaSie();
 		objDetCargo = new DetCargoEmpleadoSie();
 		defectoUbigeo=true;
-		listacargo = new ArrayList<String>();	
+		//listacargo = new ArrayList<String>();	
 		objContratoEmpleado = new ContratoEmpleadoSie();
 		contratoEmpleadoList =  new ArrayList<ContratoEmpleadoSie>();
 	}
