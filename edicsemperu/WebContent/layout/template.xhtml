@@ -154,17 +154,12 @@ body {
 				<h:outputText value="#{message['mantenimiento.producto.codigo']}"
 					id="codProd" />
 				<h:panelGroup>
-					<h:outputText
-						value="#{kardexAction.objKardexSie.tbProducto.idproducto}"
-						style="font-weight:bold" />
+					<h:outputText value="#{kardexAction.objKardexSie.tbProducto.idproducto}" style="font-weight:bold" />
 				</h:panelGroup>
 
-				<h:outputText
-					value="#{message['mantenimiento.producto.descripcion']}" />
+				<h:outputText value="#{message['mantenimiento.producto.descripcion']}" />
 				<h:panelGroup>
-					<h:outputText
-						value="#{kardexAction.objKardexSie.tbProducto.descripcionproducto}"
-						style="font-weight:bold" />
+					<h:outputText value="#{kardexAction.objKardexSie.tbProducto.descripcionproducto}" style="font-weight:bold" />
 				</h:panelGroup>
 
 				<h:outputText value="Detalle" id="detProd" />
@@ -218,9 +213,10 @@ body {
 					</h:outputText>
 
 				</h:panelGroup>
-				<p:commandButton id="id" actionListener="#{kardexAction.insertar}" 
-					rendered="#{!kardexAction.editMode}" value="Actualizar kardex" update="@form"  />
-
+				<h:panelGroup>
+				<p:commandButton id="id" actionListener="#{kardexAction.insertar}"  ajax="false"
+					rendered="#{!kardexAction.editMode}" value="Actualizar kardex"  />
+				</h:panelGroup>
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
@@ -232,10 +228,13 @@ body {
 			position="center">
 			<h:panelGrid id="display"  >
 			<h:outputText value="#{message['mantenimiento.producto.imagen']}" />
-			<p:fileUpload fileUploadListener="#{productoForm.cargarImagenInsertar}" 
+			
+			<h:panelGroup>
+			<p:fileUpload fileUploadListener="#{productoForm.cargarImagenInsertar}" immediate="true" process=""
 				label="Cargar Imagen" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" oncomplete="imageProducDialog.hide()"
 				description="Images" multiple="false" customUI="true" required="true">
 			</p:fileUpload>
+			</h:panelGroup>
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
