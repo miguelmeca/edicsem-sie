@@ -15,7 +15,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
-import com.edicsem.pe.sie.entity.DetCargoEmpleadoSie;
+import com.edicsem.pe.sie.entity.ContratoEmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.EstadoGeneralSie;
@@ -39,7 +39,7 @@ import com.edicsem.pe.sie.entity.TipoProductoSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.service.facade.AlmacenService;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
-import com.edicsem.pe.sie.service.facade.DetalleCarEmpService;
+import com.edicsem.pe.sie.service.facade.ContratoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
@@ -134,8 +134,6 @@ public class ComboAction {
 	@EJB
 	private TipoLLamadaService objTipoLLamadaService;
 	@EJB
-	private DetalleCarEmpService objDetCarEmpService;
-	@EJB
 	private FechaService objFechaService;
 	@EJB
 	private TipoFiltroService objTipoFiltroService;
@@ -149,6 +147,8 @@ public class ComboAction {
 	private ImporteService objImporteService;
 	@EJB 
 	private TipoPagoService objTipoPagoService;
+	@EJB 
+	private ContratoEmpleadoService objContratoEmpleadoService;
 	
 	public ComboAction() {
 		log.info("inicializando constructor");
@@ -904,14 +904,14 @@ public class ComboAction {
 		log.info("cargo --> " + getCargoEmpleado());
 		empleadoxcargo = new HashMap<String, Integer>();
 
-		List listaP = new ArrayList<DetCargoEmpleadoSie>();
-		listaP = (List<DetCargoEmpleadoSie>) objDetCarEmpService.listarxCargo(cargoEmpleado);
+		List listaP = new ArrayList<ContratoEmpleadoSie>();
+		listaP = (List<ContratoEmpleadoSie>) objContratoEmpleadoService.listarxCargo(cargoEmpleado);
 		log.info("tamaño empleado X cargo --> " + listaP.size());
 		for (int i = 0; i < listaP.size(); i++) {
-			DetCargoEmpleadoSie empleado = new DetCargoEmpleadoSie();
-			empleado = (DetCargoEmpleadoSie) listaP.get(i);
-			empleadoxcargo.put(empleado.getTbEmpleado().getNombresCompletos(),
-					empleado.getTbEmpleado().getIdempleado());
+			ContratoEmpleadoSie c = new ContratoEmpleadoSie();
+			c = (ContratoEmpleadoSie) listaP.get(i);
+			empleadoxcargo.put(c.getTbEmpleado1().getNombresCompletos(),
+					c.getTbEmpleado1().getIdempleado());
 		}	
 		
 		return empleadoxcargo;

@@ -20,7 +20,7 @@ import org.primefaces.model.StreamedContent;
 
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
-import com.edicsem.pe.sie.service.facade.DetalleCarEmpService;
+import com.edicsem.pe.sie.service.facade.ContratoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.util.FaceMessage.FaceMessage;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -52,9 +52,8 @@ public class MantenimientoCargoEmpleadoFormAction extends
 
 	@EJB
 	private EstadogeneralService objEstadoGeneralService;
-	
 	@EJB
-	private DetalleCarEmpService objDetalleCarEmpService;
+	private ContratoEmpleadoService objContratoEmpleadoService;
 
 	public void init() {
 		log.info("init()");
@@ -165,14 +164,11 @@ public class MantenimientoCargoEmpleadoFormAction extends
 
 			parametroObtenido = getIdc();
 			log.info(" ------>>>>>>aqui cactura el parametro ID "+ parametroObtenido);
-
 			
 				if(verificarEmpleadoConCargo(parametroObtenido)){//true - no hay empleado con cargo, tonce procede
 					
 					c = objCargoEmpleadoService.buscarCargoEmpleado(parametroObtenido);
 					log.info(" ------Android>" + c.getDescripcion() + " "+ c.getIdcargoempleado());
-
-			
 					
 					objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(2));
 					objCargoEmpleadoSie.setIdcargoempleado(c.getIdcargoempleado());
@@ -183,8 +179,6 @@ public class MantenimientoCargoEmpleadoFormAction extends
 
 					objCargoEmpleadoService.actualizarCargoEmpleado(objCargoEmpleadoSie);
 					log.info("actualizando..... ");	
-					
-					
 				}	
 				
 				else {
@@ -207,9 +201,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 	
 	
 	private boolean verificarEmpleadoConCargo(int idcargo) {
-		  	
-return objDetalleCarEmpService.verificarEmpleadoConCargo(idcargo) ;
-				
+		  return objContratoEmpleadoService.verificarEmpleadoConCargo(idcargo) ;
 	}
 
 	/*
