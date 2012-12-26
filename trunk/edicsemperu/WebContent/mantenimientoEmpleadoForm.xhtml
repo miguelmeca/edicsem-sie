@@ -30,13 +30,23 @@
 			requiredMessage="#{message['empleado.confcontra.validation']}"/>
 			<p:outputLabel for="tipo" value="Tipo de Doc. :" styleClass="textoAzulFuerteGrande" id="tipoL"/>
             <p:selectOneMenu id="tipo" value="#{mantenimientoEmpleadoFormAction.tipoDocumento}" styleClass="required" title="El tipo es obligatorio!" >
-            <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
+            <f:selectItem  value="#{null}" itemValue="#{null}" itemLabel="Seleccione una opción"/>
             <f:selectItems  value="#{comboAction.tipoDocumentoitems}" />
+            <p:ajax update="panel"></p:ajax>
             </p:selectOneMenu>
             <p:outputLabel value="#{message['empleado.nrodoc']}" for="nrodoc" />
-			<p:inputText id="nrodoc" value="#{mantenimientoEmpleadoFormAction.objEmpleado.numdocumento}" required="true" label="Nro del documento"
-			requiredMessage="#{message['empleado.nrodoc.validation']}"/>                                
-            
+			<p:inputMask id="nrodoc"
+					value="#{mantenimientoEmpleadoFormAction.objEmpleado.numdocumento}" mask="99999999"
+					rendered="#{mantenimientoEmpleadoFormAction.tipoDocumento==1}"
+					required="true" label="nrodoc"
+					requiredMessage="#{message['empleado.nrodoc.validation']}" />
+					
+			<p:inputMask id="nrodoc2"
+					value="#{mantenimientoEmpleadoFormAction.objEmpleado.numdocumento}" mask="99999999999"
+					rendered="#{mantenimientoEmpleadoFormAction.tipoDocumento==2}"/>
+		    <p:inputMask id="nrodoc3"
+					value="#{mantenimientoEmpleadoFormAction.objEmpleado.numdocumento}" disabled="true" 
+					rendered="#{mantenimientoEmpleadoFormAction.tipoDocumento!=1 and mantenimientoEmpleadoFormAction.tipoDocumento!=2}"/>                                   
             <p:outputLabel value="#{message['empleado.fijo']}" for="fijo" />
 			<p:inputMask mask="999-9999" id="fijo" value="#{mantenimientoEmpleadoFormAction.fijo}" required="true" label="Fijo"
 			requiredMessage="#{message['empleado.fijo.validation']}"/>                        
@@ -50,7 +60,7 @@
 		    <h:panelGrid columns="3" cellpadding="5">				    
 		    <h:outputText value="Ubigeo :" />    
 		    
-			<h:outputText value="Lima (defecto)" />  
+			<h:outputText value="Indicar otro Distrito" />  
 			<p:selectBooleanCheckbox id="sel" value="#{mantenimientoEmpleadoFormAction.defectoUbigeo}">
 			<p:ajax update="ubigeoDefecto" listener="#{mantenimientoEmpleadoFormAction.cambioUbigeoDefecto}" 
 			oncomplete="if(#{mantenimientoEmpleadoFormAction.defectoUbigeo}) UbigeoEmpDialog.show()"></p:ajax>
@@ -77,7 +87,7 @@
             </p:selectOneMenu>
                            
             <p:outputLabel value="#{message['empleado.fechanac']}" for="fechanac" />
-			<p:calendar value="#{mantenimientoEmpleadoFormAction.objEmpleado.fechanacimiento}" id="fechanac" showButtonPanel="true" required="true" 
+			<p:calendar pagedate="-8380" value="#{mantenimientoEmpleadoFormAction.objEmpleado.fechanacimiento}" id="fechanac" showButtonPanel="true" required="true"  
 			label="Fecha de nacimiento" requiredMessage="#{message['empleado.fechanac.validation']}"/>                  
             </h:panelGrid>
             <p:fieldset legend="Contrato Empleado" >
@@ -113,9 +123,10 @@
             </p:fieldset>
             
 		    <f:facet name="footer">
-            <p:commandButton value="Guardar" update="panel" action="#{mantenimientoEmpleadoFormAction.insertar}" ajax="false" icon="ui-icon-check"/>
-            </f:facet>
-
+            <p:commandButton id="btn" value="Guardar" update="panel" action="#{mantenimientoEmpleadoFormAction.insertar}" ajax="false" icon="ui-icon-check"/>
+            <p:commandButton value="Regresar" action="#{mantenimientoEmpleadoSearchAction.listar}" immediate="true" ajax = "false" icon="ui-icon ui-icon-close" />
+            </f:facet>				
+		</h:panelGrid>
 	</p:panel>	            
 	</h:form>
 	</ui:define>
