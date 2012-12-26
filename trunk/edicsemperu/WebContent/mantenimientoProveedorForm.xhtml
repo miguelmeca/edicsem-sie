@@ -33,6 +33,7 @@
             
 		    <f:facet name="footer">
             <p:commandButton id="btn" value="Guardar" update="panel" action="#{mantenimientoProveedorFormAction.insertar}" ajax="false" icon="ui-icon-check"/>
+            <p:commandButton value="Regresar" action="#{mantenimientoProveedorSearchAction.listar}" immediate="true" ajax = "false" icon="ui-icon ui-icon-close" />
             </f:facet>				
 		</p:panelGrid>	
 	</p:panel>	            
