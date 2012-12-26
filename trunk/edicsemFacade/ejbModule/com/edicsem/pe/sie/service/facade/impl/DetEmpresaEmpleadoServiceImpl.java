@@ -18,7 +18,7 @@ import com.edicsem.pe.sie.service.facade.DetEmpresaEmpleadoService;
 @Stateless
 public class DetEmpresaEmpleadoServiceImpl implements DetEmpresaEmpleadoService {
 	
-	public static Log log = LogFactory.getLog(DetalleCarEmpServiceImpl.class);
+	public static Log log = LogFactory.getLog(DetEmpresaEmpleadoServiceImpl.class);
 
 	@EJB
 	private  DetEmpresaEmpleadoDAO objDetEmpresaEmpleadoDao;

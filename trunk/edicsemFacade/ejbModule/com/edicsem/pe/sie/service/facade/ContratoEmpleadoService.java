@@ -14,4 +14,7 @@ public interface ContratoEmpleadoService {
 	public abstract ContratoEmpleadoSie findContratoEmpleado (int id);
 	public abstract List  listarContrato();
 	public abstract List  listarPatrocinados(int idEmpleado,String fechaInicio,String fechaFin );
+	public abstract boolean verificarEmpleadoConCargo(int idcargo);
+	public abstract List listarxCargo(int cargo) ;
+	public abstract List listarCargoXEmp(int idEmpleado);
 }
