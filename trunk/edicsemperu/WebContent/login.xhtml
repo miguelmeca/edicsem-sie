@@ -1,36 +1,74 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+<html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui">
-	
-	
-	<h:form id="form">
-
-    <p:panel id="panel" header="INICIAR SESION">
-
-        <p:messages id="msgs"/>
-
-        <h:panelGrid columns="3">
-            <h:outputLabel for="usuario" value="usuario: *" />
-            <p:inputText id="usuario" value="#{loginBean.usuario}" required="true" label="usuario">
-                <f:validateLength minimum="2" />
-            </p:inputText>
-            <p:message for="usuario" display="icon"/>
-
-            <h:outputLabel for="contrasena" value="contrasena: *" />
-            <p:inputText id="contrasena" value="#{loginBean.contrasena}" label="contrasena" required="true">
-                <f:validateLength minim="2" />
-                <p:ajax update="msgcontrasenya" event="keyup" />
-            </p:inputText>
-            <p:message for="contrasena" id="msgcontrasenya" display="icon"/>
-
-        </h:panelGrid>
-
-        <p:commandButton id="btn" value="Save" update="panel" actionListener="#{loginBean.verificarLogin}"/>
-    </p:panel>
-
-</h:form>
-	
-</ui:composition>
+<f:view>
+	<h:head>
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/default.css" />
+        <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/syntaxhighlighter/syntaxhighlighter.css" />
+		<style type="text/css">
+.ui-message-error-detail{
+	font-family: Arial, sans-serif;
+	font-size: 0.8em;
+}
+#midiv {
+	    position: absolute;
+	    left: 50%;
+	    top: 50%;
+	    height: 317px;
+	    margin-top: -162px;
+	    width: 482px;
+	    margin-left: -241px;
+	}
+</style>
+	</h:head>
+	<p:dialog modal="true" widgetVar="statusDialog" closeOnEscape="false"
+		header="Ingresando al sistema" draggable="false" closable="false">
+		<p:graphicImage value="/images/ajaxloadingbar.gif" />
+	</p:dialog>
+<f:loadBundle var="message" basename="com.edicsem.pe.sie.client.properties.ApplicationResources"/>
+	<h:form>
+		<div id="midiv" style="background-image: url(images/log_intra.png); width: 482px; height: 317px;">
+			<br /> <br /> <br /> <br /> <br /> <br /><br />
+			<div align="center">
+				<table>
+					<tr>
+						<th align="right">
+						<p:outputLabel value="#{message['login.usuario']}" for="txtUsuario" style="width: 30px; " /></th>
+						<td align="left">
+						<p:inputText id="txtUsuario"
+								value="#{login.usuario}" style="width: 160px; "
+								required="true" requiredMessage="#{message['login.password.validation']}" /></td>
+						<td><p:message for="txtUsuario" /></td>
+					</tr>
+					<tr><td><br /></td></tr>
+					<tr>
+						<th align="right">
+						<p:outputLabel value="#{message['login.usuario']}" for="txtPasswordL" style="width: 30px;"/> 
+						</th>
+						<td align="left">
+						<h:inputSecret id="txtPasswordL" value="#{login.contrasenia}" style="width: 160px; "
+								required="true" requiredMessage="#{message['login.usuario.validation']}" /></td>
+						<td><p:message for="txtPasswordL" /></td>
+					</tr>
+				</table>
+			</div>
+			<br/>
+			<br/>
+			<div align="center">
+				<h:panelGrid columns="3">
+					<h:commandButton image="images/user_log.png"
+						title="Ingresar al sistema" action="#{login.ingresarUsuario}" 
+						onclick="statusDialog.show();" style="width: 80px; height: 20px;" />
+					<p:spacer width="20" />
+					
+				</h:panelGrid>
+			</div>
+		</div>
+	</h:form>
+<p:growl id="msg" />
+</f:view>
+</html>
