@@ -12,7 +12,6 @@ import com.edicsem.pe.sie.entity.ContratoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
-import com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.ContratoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
@@ -28,8 +27,6 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	/*llamo a mi EJB y redirecciono todo al DAO*/
 	@EJB
 	private EmpleadoSieDAO objEmpleadoDao;  
-	@EJB
-	private CargoEmpleadoDAO objCargoEmpDao;
 	@EJB
 	private TipoDocumentoDAO objTipoDocDao;
 	@EJB 
@@ -49,20 +46,13 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	public static Log log = LogFactory.getLog(EmpleadoSieServiceImpl.class);
 	
 	
-	public void insertarEmpleado(EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, TelefonoPersonaSie objTelefono, int codigoTipoDocumento, int codigoCargoEmpleado, String mensaje, 
-			String fijo, int estado, String direccion, int idUbigeo, int estado2, int tipo, String nombre, int CargoEmpleado, 
-			int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado, int estadoe, List<ContratoEmpleadoSie> contratoEmpleadoList){
+	public void insertarEmpleado(EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, TelefonoPersonaSie objTelefono, int codigoTipoDocumento, int codigoCargoEmpleado,
+		int idUbigeo, int tipo, int CargoEmpleado, int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado, List<ContratoEmpleadoSie> contratoEmpleadoList){
 		//si tengo que insertar a mas de 1 tabla todo lo hago aqui, llamando a todas las entidades que
 		//mi interfaz DAO tiene y si algo falla, el EJB hace un rollback de todo  lo que se hizo, 
 		//para eso sirve el Service
-		
-		try {
-			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'insertar()'"+ fijo);
-			}
-			
+		log.info("empl  "+objEmpleado.getApematemp());
 			/**Inserta el empleado**/
-			//objEmpleado.setTbCargoEmpleado(objCargoEmpDao.buscarCargoEmpleado(CargoEmpleado));
 			objEmpleado.setTbTipoDocumentoIdentidad(objTipoDocDao.buscarTipoDocumento(TipoDocumento));
 			/*Estado del empleado: habilitado(3)*/
 			objEmpleado.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(3));
@@ -70,52 +60,47 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 			
 			/**Inserta el domicilio**/
 			objDomicilio.setIdempleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
+			log.info("empl id "+objEmpleado.getIdempleado());
 			//objDomicilio.setTbUbigeo(objUbigeoDao.findUbigeo(ubigeo));
 			objDomicilio.setTbUbigeo(objUbigeoDao.findUbigeo(idUbigeo));
 			objDomicilio.setTbTipoCasa(objTipoCasaDao.findTipoCasa(tipo));
 			/*Estado del domicilio: habilitado(15)*/
 			objDomicilio.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(15));
-			objDomicilio.setDomicilio(direccion);
 			objDomicilioDao.insertarDomicilioEmpleado(objDomicilio);
 			
 			/**Inserta el telefono**/
 			objTelefono.setIdempleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
 			/*Estado del telefono: habilitado(17)*/
 			objTelefono.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
-			objTelefono.setTelefono(fijo);
 			objTelefonoDao.insertarTelefonoEmpleado(objTelefono);
 			
             /**Inserta el detallecargo**/
 			log.info("sxsx   --->  "+contratoEmpleadoList.size());
 			for(int i = 0; i < contratoEmpleadoList.size(); i++){
-			log.info("YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-			contratoEmpleadoList.get(i).setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(56));
+			log.info("YAAA  :D ");
+			ContratoEmpleadoSie c = new ContratoEmpleadoSie();
+			c=contratoEmpleadoList.get(i);
+			log.info("empl id "+objEmpleado.getIdempleado());
+			c.setTbEmpleado1(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
+			c.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(56));
 			//insertamos en detalle contrato empleado
-			objContratoEmpleadoDao.insertContratoEmpleado(contratoEmpleadoList.get(i));
+			objContratoEmpleadoDao.insertContratoEmpleado(c);
 			}
 			
 			log.info("insertando..... ");
-			
-		   }catch (Exception e) {
-			e.printStackTrace();
-		}
-		objEmpleado = new EmpleadoSie();
-		objTelefono = new TelefonoPersonaSie();
-		objDomicilio = new DomicilioPersonaSie();
 	}
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#actualizarEmpleado(com.edicsem.pe.sie.entity.EmpleadoSie, com.edicsem.pe.sie.entity.DomicilioPersonaSie, com.edicsem.pe.sie.entity.TelefonoPersonaSie, int, int, java.lang.String, java.lang.String, int, java.lang.String, java.lang.String, int, int, java.lang.String, int, int, int, int, int, int)
 	 */
-	public void actualizarEmpleado(EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, TelefonoPersonaSie objTelefono, int codigoTipoDocumento, int codigoCargoEmpleado, String mensaje, 
-			String fijo, int estado, String direccion, int idUbigeo, int estado2, int tipo, String nombre, int CargoEmpleado, 
-			int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado, int estadoe, List<ContratoEmpleadoSie> contratoEmpleadoList) {			
+	public void actualizarEmpleado(EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, TelefonoPersonaSie objTelefono, int codigoTipoDocumento, int codigoCargoEmpleado, 
+			String fijo, int estado, int idUbigeo, int tipo, int CargoEmpleado, 
+			int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado,  List<ContratoEmpleadoSie> contratoEmpleadoList) {			
 			try {
 				if (log.isInfoEnabled()) {
 					log.info("Entering my method 'actualizar()'"+ objDomicilio.getIddomiciliopersona());
 					log.info("Entering my method 'actualizar()'"+ objTelefono.getIdtelefonopersona());
 					log.info("Entering my method 'actualizar()'"+ objEmpleado.getIdempleado());
-					log.info("Entering my method 'actualizar()'"+ direccion);
 				}
 					
 				/**Actualiza el empleado**/
@@ -132,7 +117,6 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 				objDomicilio.setTbUbigeo(objUbigeoDao.findUbigeo(idUbigeo));
 				objDomicilio.setTbTipoCasa(objTipoCasaDao.findTipoCasa(tipo));
 				objDomicilio.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(15));
-				objDomicilio.setDomicilio(direccion);
 				objDomicilioDao.actualizarDomicilioEmpleado(objDomicilio);
 				
 				/**Actualiza el telefono**/

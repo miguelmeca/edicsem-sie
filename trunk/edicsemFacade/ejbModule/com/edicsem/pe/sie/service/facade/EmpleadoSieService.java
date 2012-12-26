@@ -11,12 +11,11 @@ import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 
 @Local
 public interface EmpleadoSieService {
-	public abstract void insertarEmpleado (EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, TelefonoPersonaSie objTelefono, int codigoTipoDocumento, int codigoCargoEmpleado, String mensaje, 
-			String fijo, int estado, String direccion, int idUbigeo, int estado2, int tipo, String nombre, int CargoEmpleado, 
-			int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado, int estadoe, List<ContratoEmpleadoSie> contratoEmpleadoList);
-	public abstract void actualizarEmpleado (EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, TelefonoPersonaSie objTelefono, int codigoTipoDocumento, int codigoCargoEmpleado, String mensaje, 
-			String fijo, int estado, String direccion, int idUbigeo, int estado2, int tipo, String nombre, int CargoEmpleado, 
-			int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado, int estadoe, List<ContratoEmpleadoSie> contratoEmpleadoList);
+	public abstract void insertarEmpleado (EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, TelefonoPersonaSie objTelefono, int codigoTipoDocumento, int codigoCargoEmpleado,
+			int idUbigeo, int tipo, int CargoEmpleado, int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado, List<ContratoEmpleadoSie> contratoEmpleadoList);
+	public abstract void actualizarEmpleado (EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, TelefonoPersonaSie objTelefono, int codigoTipoDocumento, int codigoCargoEmpleado, 
+			String fijo, int estado, int idUbigeo, int tipo, int CargoEmpleado, 
+			int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado,  List<ContratoEmpleadoSie> contratoEmpleadoList);
 	public abstract void eliminarEmpleado (int id);
 	public abstract EmpleadoSie buscarEmpleado (int id);
 	public abstract List listarEmpleados ();
