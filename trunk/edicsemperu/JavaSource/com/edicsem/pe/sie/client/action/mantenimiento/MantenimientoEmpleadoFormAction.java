@@ -36,7 +36,8 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 @ManagedBean(name="mantenimientoEmpleadoFormAction")
 @SessionScoped
 public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAction {
-    /*Se crean los objetos de las entidades empleado, domicilio y telefono*/	
+    private String mask;
+	/*Se crean los objetos de las entidades empleado, domicilio y telefono*/	
 	private EmpleadoSie objEmpleado;
 	private TelefonoPersonaSie objTelefono;
 	private DomicilioPersonaSie objDomicilio;
@@ -110,10 +111,12 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		objDomicilio = new DomicilioPersonaSie();
 		objDetCargo = new DetCargoEmpleadoSie();
 		defectoUbigeo=true;
+		listacargo = new ArrayList<String>();	
 		objContratoEmpleado = new ContratoEmpleadoSie();
 		contratoEmpleadoList =  new ArrayList<ContratoEmpleadoSie>();
 	}
-	
+		
+	//UBIGEO....
 	public void cambioUbigeoDefecto() {
 		log.info(" defecto  " + defectoUbigeo);
 		comboManager.setUbigeoDeparItems(null);
@@ -882,6 +885,20 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	 */
 	public void setIdTipoPago(int idTipoPago) {
 		this.idTipoPago = idTipoPago;
+	}
+
+	/**
+	 * @return the mask
+	 */
+	public String getMask() {
+		return mask;
+	}
+
+	/**
+	 * @param mask the mask to set
+	 */
+	public void setMask(String mask) {
+		this.mask = mask;
 	}
 		
 }
