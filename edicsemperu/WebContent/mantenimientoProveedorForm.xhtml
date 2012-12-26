@@ -19,8 +19,8 @@
 			<p:outputLabel value="#{message['proveedor.contacto']}" for="contacto" />
 			<p:inputText id="contacto" value="#{mantenimientoProveedorFormAction.objProveedor.personacontacto}" required="true" label="Contacto"
 			requiredMessage="#{message['proveedor.contacto.validation']}"/>						
-			<p:outputLabel for="tipo" value="Tipo de Doc. :" styleClass="textoAzulFuerteGrande" id="tipoL"/>
-            <p:selectOneMenu id="tipo" value="#{mantenimientoProveedorFormAction.tipoDocumento}" styleClass="required" title="El tipo es obligatorio!" >
+			<p:outputLabel for="tipo" value="#{message['proveedor.tipoDoc']}" styleClass="textoAzulFuerteGrande" id="tipoL"/>
+            <p:selectOneMenu id="tipo" requiredMessage="#{message['proveedor.tipoDoc.validation']}" value="#{mantenimientoProveedorFormAction.tipoDocumento}" styleClass="required" title="El tipo es obligatorio!" >
             <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
             <f:selectItems  value="#{comboAction.tipoDocumentoitems}" />
             </p:selectOneMenu>
