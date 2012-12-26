@@ -58,4 +58,25 @@ public class ContratoEmpleadoServiceImpl implements ContratoEmpleadoService {
 	public List listarPatrocinados(int idEmpleado,String fechaInicio,String fechaFin) {
 		return objContratoEmpleadoDao.listarPatrocinados(idEmpleado, fechaInicio, fechaFin );
 	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ContratoEmpleadoService#verificarEmpleadoConCargo(int)
+	 */
+	public boolean verificarEmpleadoConCargo(int idcargo) {
+		return objContratoEmpleadoDao.verificarEmpleadoConCargo(idcargo);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ContratoEmpleadoService#listarxCargo(int)
+	 */
+	public List listarxCargo(int cargo) {
+		return objContratoEmpleadoDao.listarxCargo(cargo);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ContratoEmpleadoService#listarCargoXEmp(int)
+	 */
+	public List listarCargoXEmp(int idEmpleado) {
+		return objContratoEmpleadoDao.listarCargoXEmp(idEmpleado);
+	}
 }
