@@ -13,12 +13,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.ContratoEmpleadoSie;
-import com.edicsem.pe.sie.entity.DetCargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DetContratoEmpleadoSie;
 import com.edicsem.pe.sie.entity.MetaEmpleadoSie;
 import com.edicsem.pe.sie.model.dao.ContratoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.DetContratoEmpleadoDAO;
-import com.edicsem.pe.sie.model.dao.DetalleCarEmpDAO;
 import com.edicsem.pe.sie.model.dao.MetaEmpleadoDAO;
 
 /**
@@ -36,7 +34,7 @@ public class ContratoEmpleadoDAOImpl implements ContratoEmpleadoDAO{
 	@EJB 
 	private MetaEmpleadoDAO objMetaEmpleadoDao;
 	@EJB 
-	private DetalleCarEmpDAO  objDetCargoEmpleadoDao;
+	private ContratoEmpleadoDAO objContratoEmpleadoDao;
  
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.ContratoEmpleadoDAO#insertContratoEmpleado(com.edicsem.pe.sie.entity.ContratoEmpleadoSie)
@@ -104,8 +102,8 @@ public class ContratoEmpleadoDAOImpl implements ContratoEmpleadoDAO{
 	public List listarPatrocinados(int idEmpleado,String fechaInicio,String fechaFin ) {
 		log.info("listarPatrocinados "+idEmpleado);
 		List<ContratoEmpleadoSie> lista = null;
-		DetCargoEmpleadoSie detc = new DetCargoEmpleadoSie();
 		List<DetContratoEmpleadoSie> listaDetContrato= new ArrayList<DetContratoEmpleadoSie>();
+		ContratoEmpleadoSie c ;
 		int valormeta=0;
 		try {
 			Query q = em.createQuery("select p from ContratoEmpleadoSie p where p.tbEmpleado2.idempleado = "+  idEmpleado);
@@ -117,8 +115,8 @@ public class ContratoEmpleadoDAOImpl implements ContratoEmpleadoDAO{
 			MetaEmpleadoSie metaEmpl = objMetaEmpleadoDao.findMetaEmpleado(idEmpleado);
 			
 			//cantidad de  ventas del empleado , dependiendo de cargo
-			detc = (DetCargoEmpleadoSie) objDetCargoEmpleadoDao.listarCargoXEmp(idEmpleado).get(0);
-			listaDetContrato = objDetContratoEmpleadoDao.listarContratoXEmpleado(idEmpleado, fechaInicio, fechaFin, detc.getTbCargoEmpleado().getIdcargoempleado() );
+			c = (ContratoEmpleadoSie) objContratoEmpleadoDao.listarCargoXEmp(idEmpleado).get(0);
+			listaDetContrato = objDetContratoEmpleadoDao.listarContratoXEmpleado(idEmpleado, fechaInicio, fechaFin, c.getTbCargoempleado().getIdcargoempleado() );
 			if(listaDetContrato==null){
 				listaDetContrato = new ArrayList<DetContratoEmpleadoSie>();
 			}
@@ -139,6 +137,61 @@ public class ContratoEmpleadoDAOImpl implements ContratoEmpleadoDAO{
 				}
 			}
 			log.info("tamaño listarPatrocinados--> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ContratoEmpleadoDAO#verificarEmpleadoConCargo(int)
+	 */
+	public boolean verificarEmpleadoConCargo(int idcargo) {
+		boolean bandera = true;
+		List lista = null;
+		try {
+			Query q = em.createQuery("select p from ContratoEmpleadoSie p where p.tbCargoempleado.idcargoempleado = "+ idcargo);
+			lista = q.getResultList();
+			log.info("tamaño lista detalleCargo --> " + lista.size());
+			if(lista.size()>0){ //hay uno o mas empleados retornados.
+				bandera=false;
+			}else{//no hay empleados, entonces puede proseguir
+				bandera=true;
+			}
+			
+		} catch (Exception e) {
+			bandera=false;
+			e.printStackTrace();
+		}
+		return bandera;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ContratoEmpleadoDAO#listarxCargo(int)
+	 */
+	public List listarxCargo(int cargo) {
+		log.info("cargo--> " +cargo);
+		List lista = null;
+		try {
+			Query q = em.createQuery("select p from ContratoEmpleadoSie p where p.tbCargoempleado.idcargoempleado = "+cargo);
+			lista = q.getResultList();
+			log.info("tamaño lista x Cargo --> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ContratoEmpleadoDAO#listarCargoXEmp(int)
+	 */
+	public List listarCargoXEmp(int idEmpleado) {
+		List lista = null;
+		try {
+			Query q = em.createQuery("select p from ContratoEmpleadoSie p where p.tbEmpleado1.idempleado = "+ idEmpleado);
+			lista = q.getResultList();
+			log.info("tamaño lista listar Cargo X Emp --> " + lista.size());
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
