@@ -13,6 +13,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -47,14 +48,11 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	private String fijo;
 	private int estado,idTipoPago;
 	/*variables para domicilio*/
-	private String direccion;
 	private String idProvincia, idDepartamento, ubigeoDefecto;
 	private String idDistrito;
-	private int estado2;
 	private int idUbigeo; 
 	private int tipo;
 	/*variables para empleado*/
-	private String nombre;
 	private int CargoEmpleado;
 	private int DomicilioPersona;
 	private int TelefonoPersona;
@@ -62,7 +60,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	private int codigoEmpleado;
 	private int codigoTipoDocumento;
 	private int codigoCargoEmpleado;
-	private int estadoe;
     /*variable para confirmar contraseña*/
 	private String confcontra;
 	/*variable que capta el id del empleado*/
@@ -111,6 +108,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		defectoUbigeo=true;
 		objContratoEmpleado = new ContratoEmpleadoSie();
 		contratoEmpleadoList =  new ArrayList<ContratoEmpleadoSie>();
+		TipoDocumento=1;
 		skip = false;
 	}
 		
@@ -233,28 +231,27 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	        objEmpleado.setTbEstadoGeneral(objEstadoService.findEstadogeneral(4));
 	        /*seteo domicilio*/
 	        objDomicilio.setIddomiciliopersona(d.getIddomiciliopersona());
-	        setDireccion(d.getDomicilio());
+	        objDomicilio.setDomicilio(d.getDomicilio());
 	        setTipo(d.getTbTipoCasa().getIdtipocasa());
 	        setIdDistrito(getIdDistrito());	        
 	        /*Estado del domicilio: deshabilitado(16)*/
 	        objDomicilio.setTbEstadoGeneral(objEstadoService.findEstadogeneral(16));
 	        /*seteo telefono*/
 	        objTelefono.setIdtelefonopersona(t.getIdtelefonopersona());
+	        objTelefono.setTelefono(fijo);
 	        setFijo(t.getTelefono());
 	        /*Estado del teléfono: deshabilitado(18)*/
 	        objTelefono.setTbEstadoGeneral(objEstadoService.findEstadogeneral(18));
-			log.info("-----Id estado del empleado>>>"	+ getEstadoe());
 			log.info("actualizando ESTADO..... ");
-			objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, objTelefono, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
-					estado, direccion, idUbigeo, estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
-					TipoDocumento, codigoEmpleado, estadoe, contratoEmpleadoList);
+			objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, objTelefono, codigoTipoDocumento,  codigoCargoEmpleado, fijo ,
+					estado, idUbigeo,  tipo, CargoEmpleado, DomicilioPersona,  TelefonoPersona, TipoDocumento, codigoEmpleado, contratoEmpleadoList);
 			log.info("actualizando..... ");
 			log.info("deshabilitando..... ");
 		} catch (Exception e2) {
 			e2.printStackTrace();
-			nombre = e2.getMessage();
+			mensaje = e2.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, nombre);
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e2.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
@@ -288,7 +285,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		objEmpleado = new EmpleadoSie();
 		setFijo("");
 		objTelefono = new TelefonoPersonaSie();
-		setDireccion("");
 		setTipo(0);
 		objDomicilio = new DomicilioPersonaSie();
 		comboManager.setIdDepartamento("15");
@@ -320,7 +316,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
         objEmpleado.setFechanacimiento(c.getFechanacimiento());
         objEmpleado.setTbEstadoGeneral(c.getTbEstadoGeneral());
         objDomicilio.setIddomiciliopersona(d.getIddomiciliopersona());
-        setDireccion(d.getDomicilio());
+        objDomicilio.setDomicilio(d.getDomicilio());
         setTipo(d.getTbTipoCasa().getIdtipocasa());
         setIdDistrito(getIdDistrito());
         objDomicilio.setTbEstadoGeneral(d.getTbEstadoGeneral());
@@ -333,7 +329,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	}
 	
 	/*método del botón GUARDAR(inserta o actualiza el empleado, domicilio y telefono)*/
-	public String insertar() throws Exception {
+	public String insertar(ActionEvent actionEvent) throws Exception {
 		if(StringUtils.equals(objEmpleado.getContrasena(), confcontra)){ /*probar compararcontra*/
 			/*encripta la contraseña*/
 		    objEmpleado.setContrasena(getMD5(objEmpleado.getContrasena()));
@@ -347,23 +343,22 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 				if (isNewRecord()) {
 					log.info("insertando..... ");
 					log.info("insertar empleado  ");
-					objEmpleadoService.insertarEmpleado(objEmpleado,objDomicilio,objTelefono, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
-							estado, direccion,  idUbigeo,  estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
-							TipoDocumento, codigoEmpleado, estadoe, contratoEmpleadoList);
+					objEmpleadoService.insertarEmpleado(objEmpleado,objDomicilio,objTelefono, codigoTipoDocumento,  codigoCargoEmpleado,  
+					idUbigeo, tipo,  CargoEmpleado, DomicilioPersona, TelefonoPersona,TipoDocumento, codigoEmpleado, contratoEmpleadoList);
 					log.info("insertando..... ");
 					setNewRecord(false);
 				} else {
 					log.info("actualizando..... ");
-					objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, objTelefono, codigoTipoDocumento,  codigoCargoEmpleado,  mensaje, fijo,  
-							estado, direccion,  idUbigeo,  estado2,  tipo,  nombre,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
-							TipoDocumento, codigoEmpleado, estadoe, contratoEmpleadoList);
+					objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, objTelefono, codigoTipoDocumento,  codigoCargoEmpleado, fijo,  
+							estado,  idUbigeo,  tipo,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
+							TipoDocumento, codigoEmpleado,  contratoEmpleadoList);
 					log.info("insertando..... ");
 				}
 		} catch (Exception e) {
 			e.printStackTrace();
-			nombre = e.getMessage();
+			mensaje = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, nombre);
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
@@ -391,9 +386,9 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	public String onFlowProcess(FlowEvent event) {  
 	    log.info("Current wizard step:" + event.getOldStep());  
 	    log.info("Next step:" + event.getNewStep());  
-	    
+	    log.info("skip :"+skip);
 	     if(skip) {  
-	            skip = false;   //reset in case user goes back  
+	            skip = true;   //reset in case user goes back  
 	            return "confirm";  
 	        }  
 	     else {  
@@ -469,20 +464,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	 */
 	public void setCodigoTipoDocumento(int codigoTipoDocumento) {
 		this.codigoTipoDocumento = codigoTipoDocumento;
-	}
-	
-	/**
-	 * @return the nombre
-	 */
-	public String getNombre() {
-		return nombre;
-	}
-
-	/**
-	 * @param nombre the nombre to set
-	 */
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
 	}
 	
 	public int getCargoEmpleado() {
@@ -588,34 +569,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	}
 
 	/**
-	 * @return the direccion
-	 */
-	public String getDireccion() {
-		return direccion;
-	}
-
-	/**
-	 * @param direccion the direccion to set
-	 */
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
-	}
-
-	/**
-	 * @return the estado2
-	 */
-	public int getEstado2() {
-		return estado2;
-	}
-
-	/**
-	 * @param estado2 the estado2 to set
-	 */
-	public void setEstado2(int estado2) {
-		this.estado2 = estado2;
-	}
-
-	/**
 	 * @return the tipo
 	 */
 	public int getTipo() {
@@ -628,21 +581,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	public void setTipo(int tipo) {
 		this.tipo = tipo;
 	}
-
-	/**
-	 * @return the estadoe
-	 */
-	public int getEstadoe() {
-		return estadoe;
-	}
-
-	/**
-	 * @param estadoe the estadoe to set
-	 */
-	public void setEstadoe(int estadoe) {
-		this.estadoe = estadoe;
-	}
-
+	
 	/**
 	 * @return the newRecord
 	 */
