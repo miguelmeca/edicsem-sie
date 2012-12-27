@@ -33,12 +33,12 @@
 					<f:selectItem itemLabel="Seleccione" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.almacenItems}" />
 				</p:selectOneMenu>
-				 <p:message for="almacen" />
+				<p:message for="almacen" />
 				 
 				<h:outputText value="#{message['kardex.desde']}" />
 				<p:calendar pattern="dd/MM/yyyy"  locale="br" effect="explode" 
 				value="#{kardexAction.fechaDesde}"  />
-
+				
 				<h:outputText value="#{message['kardex.hasta']}" />
 				<p:calendar pattern="dd/MM/yyyy"  locale="br" effect="explode"
 				value="#{kardexAction.fechaHasta}"  />
@@ -53,27 +53,27 @@
 					rowsPerPageTemplate="5,10,15" widgetVar="tableKardex"
 					emptyMessage="No se encontro registros">
 					<f:facet name="header">  
-         Listado Kardex
+         #{message['kardex.listadoKardex']}
         </f:facet>
 			<p:columnGroup type="header">  
           
             <p:row>
-                <p:column rowspan="3" headerText="Fec Creación" />
-                 <p:column rowspan="3" headerText="Tipo" />
-                <p:column colspan="2" headerText="Entrada" />  
-                <p:column colspan="2" headerText="Salida" />
-                <p:column colspan="2" headerText="Existencia" />
-                <p:column rowspan="2" headerText="Empresa" />
-                <p:column rowspan="2" headerText="Editar" />
+                <p:column rowspan="3" headerText="#{message['kardex.fecCreacion']}" />
+                 <p:column rowspan="3" headerText="#{message['kardex.tipo']}" />
+                <p:column colspan="2" headerText="#{message['kardex.entrada']}" />
+                <p:column colspan="2" headerText="#{message['kardex.salida']}" />
+                <p:column colspan="2" headerText="#{message['kardex.existencia']}" />
+                <p:column rowspan="2" headerText="#{message['kardex.empresa']}" />
+                <p:column rowspan="2" headerText="#{message['kardex.editar']}" />
             </p:row>  
   
             <p:row>  
-                <p:column headerText="Cant Entrada" />
-                <p:column headerText="Valor Entrada" />
-                <p:column headerText="Cant Salida" />
-                <p:column headerText="Valor Salida" />
-                <p:column headerText="Cant Existencia" />
-                <p:column headerText="Valor Existencia" />
+                <p:column headerText="#{message['kardex.cantEntrada']}" />
+                <p:column headerText="#{message['kardex.valorEntrada']}" />
+                <p:column headerText="#{message['kardex.cantSalida']}" />
+                <p:column headerText="#{message['kardex.valorExistencia']}" />
+                <p:column headerText="#{message['kardex.cantExistencia']}" />
+                <p:column headerText="#{message['kardex.valorExistencia']}" />
             </p:row>
         </p:columnGroup>
 					 

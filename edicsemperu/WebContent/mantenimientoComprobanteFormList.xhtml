@@ -5,8 +5,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
-		<h1 class="title ui-widget-header ui-corner-all">Lista de
-		Comprobantes</h1>
+		<h1 class="title ui-widget-header ui-corner-all">Lista de Comprobantes</h1>
 
 		<h:form id="frmComprobanteFormList" prependId="false">
 			<p:growl id="message" showDetail="true" />
@@ -21,16 +20,16 @@
 						value="#{message['lista.mantenimiento.empresa.titulo']}" />
 				</f:facet>
 				
-				<p:column headerText="Código de Comprobante" >
+				<p:column headerText="#{message['comprobante.codigo']}" >
 					<h:outputText value="#{c.codcomprobante}" />
 				</p:column>
 
-				<p:column headerText="Tipo de Comprobante" >
+				<p:column headerText="#{message['comprobante.tipo']}" >
 					<h:outputText value="#{c.tipocomprobante}" />
 				</p:column>
 
-				<p:column headerText="Ver Detalle">
-					<p:commandButton value="Detalle"
+				<p:column headerText="#{message['comprobante.verDetalle']}" >
+					<p:commandButton value="#{message['comprobante.detalle']}"  
 						action="#{comprobanteForm.update}"	icon="ui-icon ui-icon-pencil">
 						<f:setPropertyActionListener value="#{c}"
 							target="#{comprobanteForm.objComprobanteSie}" />

@@ -83,10 +83,11 @@
 				</p:selectOneMenu> 
 				<p:message for="estproducto1" />
 				
-				<p:graphicImage id="imgFotoInserta"  value="#{productoForm.image}" cache="false" rendered="#{productoForm.image != null}"
-				 style="height:90px;width:90px" />
+				<p:outputPanel id="display32"  autoUpdate="true" >  
+				<p:graphicImage id="imgFotoInserta"  value="#{productoForm.image}" style="height:90px;width:90px"/>
+				</p:outputPanel>
 				 
-				 <p:commandButton value="Insertar Imagen"  update=":formInsertImageProduc:display"
+				 <p:commandButton value="Insertar Imagen *"  update=":formInsertImageProduc:display"
 					oncomplete="imageProducDialog.show()" title="Ingresar Empleado"/>
 					<p:spacer/> 
 				

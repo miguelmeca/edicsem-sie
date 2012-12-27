@@ -15,7 +15,6 @@ import org.apache.commons.logging.LogFactory;
 import com.edicsem.pe.sie.entity.DetEmpresaEmpleadoSie;
 import com.edicsem.pe.sie.service.facade.DetEmpresaEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
-import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
@@ -35,8 +34,6 @@ public class MantenimientoDetEmpresaEmpleadoFormAction extends
 	private DetEmpresaEmpleadoService objDetEmpresaEmpleadoService;
 	@EJB
 	private EmpresaService objEmpresaService;
-	@EJB
-	private EstadogeneralService objEstadoGeneralService;
 	
 	public MantenimientoDetEmpresaEmpleadoFormAction() {
 		init();
@@ -136,6 +133,7 @@ public class MantenimientoDetEmpresaEmpleadoFormAction extends
 							// ACTUALIZAR LA EMPRESA DE UN VENDEDOR QUE ESTA EN UNA EMPRESA
 							else if(listadet.get(i).getTbEmpresa().getIdempresa()!=idEmpresa &&
 									listadet.get(i).getTbEmpleado().getIdempleado()== Integer.parseInt(empleadosList.get(0)) ){
+								log.info(" terccera  ");
 								objDetEmpresaEmpleadoSie = objDetEmpresaEmpleadoService.findDetEmpresaEmpleadoSie(listadet.get(i).getIdDetEmpresaEmpl());
 								objDetEmpresaEmpleadoSie.setTbEmpresa(objEmpresaService.findEmpresa(idEmpresa));
 								objDetEmpresaEmpleadoService.updateDetEmpresaEmpleadoSie(objDetEmpresaEmpleadoSie);

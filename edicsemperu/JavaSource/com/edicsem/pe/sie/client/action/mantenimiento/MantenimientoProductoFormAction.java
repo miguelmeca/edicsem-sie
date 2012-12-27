@@ -100,7 +100,7 @@ public class MantenimientoProductoFormAction extends
 				+ File.separator + "images" + File.separator + photo;
 		try {
 			image = new DefaultStreamedContent(event.getFile().getInputstream());
-			setImage(image);
+			
 			log.info("ruta " + newFileName + " - " + event.getFile().getFileName());
 			imageOutput = new FileImageOutputStream(new File(newFileName));
 			if(objProductoSie.getRutaimagenproducto()==null){
@@ -219,6 +219,7 @@ public class MantenimientoProductoFormAction extends
 	 * @return the image
 	 */
 	public StreamedContent getImage() {
+		log.info(" getImage() ");
 		return image;
 	}
 
@@ -227,6 +228,7 @@ public class MantenimientoProductoFormAction extends
 	 *            the image to set
 	 */
 	public void setImage(StreamedContent image) {
+		log.info(" setImage() ");
 		this.image = image;
 	}
 

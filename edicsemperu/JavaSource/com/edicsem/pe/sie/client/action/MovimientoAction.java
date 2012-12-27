@@ -18,7 +18,6 @@ import com.edicsem.pe.sie.entity.ComprobanteSie;
 import com.edicsem.pe.sie.entity.DetalleComprobanteSie;
 import com.edicsem.pe.sie.entity.KardexSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
-import com.edicsem.pe.sie.service.facade.ComprobanteService;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.KardexService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
@@ -111,11 +110,13 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 				if(idtipokardexproducto==1){
 					//si es entrada
 					objKardexSie.setCantsalida(0);
+					objKardexSie.setValorunitariosalida("0.0");
 				}
 				else if(idtipokardexproducto==2){
 					//si es salida
 					objKardexSie.setValortotal(null);
 					objKardexSie.setCantentrada(0);
+					objKardexSie.setValorunitarioentrada("0.0");
 				}else{
 					//deposito
 					objKardexSie.setValortotal(null);
@@ -149,17 +150,20 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 					 
 					if (objKardexSie.getCantsalida() > 0) {
 						log.info(" cantexist "+ cantExistenteTotalAlmacenes + " cant Sal "+objKardexSie.getCantsalida() +" stk min " +stkminimo+ " almacen 2 " + idAlmacen2);
-						if (cantExistenteTotalAlmacenes - objKardexSie.getCantsalida() < stkminimo && 
-							cantExistenteTotalAlmacenes - objKardexSie.getCantsalida() >= 0 && idAlmacen2==0 ){
-							stockTotalAlmacenado = cantExistenteTotalAlmacenes - objKardexSie.getCantsalida();
-							mensaje = "  Se registro correctamente, el stock actual de dicho producto es  " + stockTotalAlmacenado+ " debe realizar una solicitud de dicho producto";
-							validado = true;
-							log.info(mensaje);
-							//Mandar correo
-						}else if (cantExistenteTotalAlmacenes - objKardexSie.getCantsalida() < 0) {
+//						if (cantExistenteTotalAlmacenes - objKardexSie.getCantsalida() < stkminimo && 
+//							cantExistenteTotalAlmacenes - objKardexSie.getCantsalida() >= 0 && idAlmacen2==0 ){
+//							stockTotalAlmacenado = cantExistenteTotalAlmacenes - objKardexSie.getCantsalida();
+//							mensaje = "  Se registro correctamente, el stock actual de dicho producto es  " + stockTotalAlmacenado+ " debe realizar una solicitud de dicho producto";
+//							validado = true;
+//							log.info(mensaje);
+//							//Mandar correo
+//						}
+						if (cantExistenteTotalAlmacenes - objKardexSie.getCantsalida() < 0) {
 							mensaje = " No puede exceder la cantidad de salida al stock actual del producto, el cual es " + cantExistenteTotalAlmacenes;
 							log.info(mensaje);
-						}else {
+						}
+						
+						else {
 							log.info("en el for 1 ");
 							for (int j = 0; j< k.size(); j++) {
 								log.info("en el for 1 2");
@@ -167,13 +171,16 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 								if (k.get(j).getCantexistencia()- objKardexSie.getCantsalida() < 0) {
 									mensaje = "La cantidad existente del producto es " + k.get(j).getCantexistencia();
 								}
-								else if(idAlmacen2!=0 ){
+								else if(idAlmacen2==0 ){
 									for (int i = 0; i < k.size(); i++) {
 										//la cantidad existente en un almacen no puede resultar menor que 0
+										
+										log.info("  .... "+ k.get(i).getTbPuntoVenta().getIdpuntoventa() +"    "+ idAlmacen);
 										if( k.get(i).getTbPuntoVenta().getIdpuntoventa() == idAlmacen ){
-											log.info(" aki karencita!  *** ");
+											log.info(" aki karencita!  *** "+k.get(i).getValorunitarioentrada());
 											objKardexSie.setValorunitariosalida(k.get(i).getValorunitarioentrada());
-											objKardexSie.setValortotal(Double.parseDouble(k.get(i).getValorunitarioentrada())* objKardexSie.getCantsalida()+"");
+											double valorT = Double.parseDouble(k.get(i).getValorunitarioentrada()) * objKardexSie.getCantsalida();
+											objKardexSie.setValortotal(valorT+"");
 											objKardexSie.setValorunitarioexistencia(objKardexSie.getValorunitarioexistencia());
 											valorTotalAlmacenes= valorExistenteTotalAlmacenes - Double.parseDouble(objKardexSie.getValortotal());
 											log.info(" valor total almacenadoS "+ valorTotalAlmacenes +"  "+ objKardexSie.getValorunitarioexistencia());
@@ -227,7 +234,9 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 									valorexistencia =valoruniex  + Double.parseDouble(objKardexSie.getValortotal());
 									objKardexSie.setValorunitarioexistencia(valorexistencia+"");
 									
+									log.info("** "+valorTotalAlmacenes+ " "+ valorExistenteTotalAlmacenes+"  "+ Double.parseDouble(objKardexSie.getValortotal()));
 									valorTotalAlmacenes= valorExistenteTotalAlmacenes+ Double.parseDouble(objKardexSie.getValortotal());
+									log.info("** "+valorTotalAlmacenes);
 									stockTotalAlmacenado= cantExistenteTotalAlmacenes + objKardexSie.getCantentrada();
 									
 									log.info(" vex "+ valorexistencia+ "");
@@ -313,8 +322,13 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 								double valorexistencia=0, valoruniex= 0;
 								log.info(" v "+ valoruniex);
 								valorexistencia =valoruniex  + Double.parseDouble(objKardexSie.getValortotal());
+								log.info(" v "+ valorexistencia);
 								objKardexSie.setValorunitarioexistencia(valorexistencia+"");
 								log.info(" vex "+ valorexistencia);
+								stockTotalAlmacenado = objKardexSie.getCantentrada();
+								valorTotalAlmacenes=Double.parseDouble(objKardexSie.getValortotal());
+								log.info(" vex "+ valorexistencia);
+								objKardexSie.setValorunitarioexistencia(objKardexSie.getValortotal()+"");
 								}
 							}
 							
@@ -333,9 +347,11 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 				if (validado == true) {
 					log.info(mensaje);
 					
-					if(idproveedor!=0)
+					if(idproveedor!=0){
 					objcomprobante.setTbProveedor(objProveedorService.findProveedor(idproveedor));
-					 
+					}
+					log.info("stockTotalAlmacenado --> "+ stockTotalAlmacenado );
+					log.info("valorTotalAlmacenes --> "+valorTotalAlmacenes);
 					objKardexSie.setValorunitarioexistencia(""+ valorTotalAlmacenes );
 					
 						log.info(" *************** INSERTAR *********"  );
