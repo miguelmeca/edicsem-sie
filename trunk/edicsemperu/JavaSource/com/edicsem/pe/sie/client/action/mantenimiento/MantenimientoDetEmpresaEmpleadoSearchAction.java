@@ -44,12 +44,7 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#listar()
 	 */
 	public String listar() {
-		idempresa =0;
-		log.info("listar() 'MantenimientoDetEmpresaEmpleadoSearchAction' ");
-		detEmpresaEmplList = detempresaEmplService.listarDetEmpresaEmpleadoSie();
-		if (detEmpresaEmplList == null) {
-			detEmpresaEmplList = new ArrayList<DetEmpresaEmpleadoSie>();
-		}
+		listarXEmpresa();
 		return getViewList();
 	}
 	public String listarXEmpresa() {

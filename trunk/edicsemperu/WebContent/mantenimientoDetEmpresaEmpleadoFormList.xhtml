@@ -12,7 +12,7 @@
 			<p:growl id="message" showDetail="true" />
 			
 			<p:panel header="#{message['panel.detEmpresaEmpleado']}">
-			<h:panelGrid columns="4" >
+			<h:panelGrid columns="2" >
 				<h:outputText value="#{message['detempresaEmpl.empresa']}" />
 				<p:selectOneMenu size="1" id="idempresa" 
 					style="width:165px"
@@ -22,6 +22,7 @@
 					<p:ajax update="grupoVentaTable" listener="#{detEmpresaEmpleadoSearch.listarXEmpresa}" ></p:ajax>
 				</p:selectOneMenu>
 			
+			</h:panelGrid>
 			<p:dataTable value="#{detEmpresaEmpleadoSearch.detEmpresaEmplList}" var="c"
 				id="grupoVentaTable" paginator="true" rows="10"
 				 rowStyleClass="#{c.lider eq 'S' ? 'amarillo':null }"  >
@@ -39,13 +40,11 @@
 				</p:column>
 				 
 				<f:facet name="footer">
-		<div align="left">
-	     <h:commandLink  value="Agregar empleado a la empresa" 
-	     action="#{detEmpresaEmpleadoForm.agregar}"	title="Ingresar el Nuevo Punto de Venta/Almacen"/>
-					</div>
+				<div align="left">
+					<h:commandLink  value="Agregar empleado a la empresa" action="#{detEmpresaEmpleadoForm.agregar}"/>
+				</div>
 				</f:facet>
 			</p:dataTable>
-			</h:panelGrid>
 			</p:panel>
 		</h:form>
 	</ui:define>

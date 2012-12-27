@@ -11,7 +11,7 @@
 			<p:growl id="message" showDetail="true" />
 			
 			<h:panelGrid id="display" columns="2" >
-				<h:outputText value="Código de Comprobante" />
+				<h:outputText value="#{message['comprobante.codigo']}" />
 				<h:panelGroup>
 					<p:inputText value="#{comprobanteForm.objComprobanteSie.codcomprobante}" readonly="true" />
 				</h:panelGroup>
@@ -27,34 +27,34 @@
 						value="#{message['lista.detcomprobante.titulo']}" />
 				</f:facet>
 				
-				<p:column headerText="Comprobante" >
+				<p:column headerText="#{message['comprobante.comprobante']}" >
 					<h:outputText value="#{c.tbComprobante.codcomprobante}" />
 				</p:column>
 				
-				<p:column headerText="Producto" >
+				<p:column headerText="#{message['comprobante.producto']}" >
 					<h:outputText value="#{c.tbKardex.tbProducto.descripcionproducto}" />
 				</p:column>
 				
-				<p:column headerText="Cantidad" >
+				<p:column headerText="#{message['comprobante.cantidad']}" >
 					<h:outputText value="#{c.tbKardex.cantentrada}" />
 				</p:column>
 				
-				<p:column headerText="Precio" >
+				<p:column headerText="#{message['comprobante.precio']}" >
 					<h:outputText value="#{c.tbKardex.valortotal}" />
 				</p:column>
 				
-				<p:column headerText="Observación" >
+				<p:column headerText="#{message['comprobante.observacion']}" >
 					<h:outputText value="#{c.descripcion}" />
 				</p:column>
 				
-				<p:column headerText="Fecha Creación" >
+				<p:column headerText="#{message['comprobante.fechaCreacion']}" >
 					<h:outputText value="#{c.tbKardex.fechacreacion}" />
 				</p:column>
 				
 			</p:dataTable>
 			
 			<h:panelGrid  columns="2" >
-				<h:outputText value="Monto Total" />
+				<h:outputText value="#{message['comprobante.montoTotal']}" />
 				<h:panelGroup>
 					<p:inputText value="#{comprobanteForm.montoTotal}" readonly="true" />
 				</h:panelGroup>

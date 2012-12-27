@@ -42,6 +42,7 @@
 					 <p:message for="spinnerE" />
 					 <p:message for="spinnerS" />
 					 </h:panelGroup>
+					 
 					<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
 					<p:selectOneMenu id="tipoProd" value="#{comboAction.tipoProducto}" requiredMessage="#{message['movimiento.tipoProducto.validation']}"
 						required="true"  style="width:165px" >
@@ -50,6 +51,7 @@
 						<p:ajax update="produc" listener="#{comboAction.cambiar}" />
 					</p:selectOneMenu>
 					<p:message for="tipoProd" />
+					
 					<h:outputText value="#{message['mantenimiento.producto']}" />
 					<p:selectOneMenu id="produc" requiredMessage="#{message['movimiento.producto.validation']} "
 						value="#{movimientoMercaderia.idproducto}" required="true"  style="width:165px" >
@@ -75,11 +77,8 @@
 					<p:spacer />
 					
 					<h:outputText value="Detalle" id="detProd" />
-					<p:inputTextarea
-						value="#{movimientoMercaderia.objKardexSie.detallekardex}" />
-				
-				<!-- tipo producto, producto,  empresa, valorTotal, cantidad producto   -->
-				
+					<p:inputTextarea value="#{movimientoMercaderia.objKardexSie.detallekardex}" />
+					
 					<h:outputText value="#{message['movimiento.empresa.descripcion']}" rendered="#{!movimientoMercaderia.editMode}"/>
 					<p:selectOneMenu size="1" rendered="#{!movimientoMercaderia.editMode}"   style="width:165px" 
 						value="#{movimientoMercaderia.idempresa}">

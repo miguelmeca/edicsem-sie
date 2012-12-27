@@ -14,29 +14,29 @@
 					rowsPerPageTemplate="5,10,15" widgetVar="table"
 					emptyMessage="No se encontro registros">
 					<f:facet name="header">
-            Mantenimiento Producto 
-        </f:facet> 
+           #{message['mantenimiento.productoList.mantenimientoProducto']
+        </f:facet>
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Codigo" />
 						</f:facet>
-						<h:outputText value="#{p.codproducto}" />
+						<h:outputText value="#{message['mantenimiento.productoList.codigo']}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Descripción" />
+							<h:outputText value="#{message['mantenimiento.productoList.descripcion']}"/>
 						</f:facet>
 						<h:outputText value="#{p.descripcionproducto}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Detalle" />
+							<h:outputText value="#{message['mantenimiento.productoList.detalle']}"/>
 						</f:facet>
 						<h:outputText value="#{p.detalleproducto}" />
 					</p:column>
-					<p:column id="columna">
+					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Ver detalle" />
+							<h:outputText value="#{message['mantenimiento.productoList.verdetalle']}" />
 						</f:facet>
 							<p:commandButton id="btn1" update=":formManteProdDetalle:display"
 								oncomplete="prodDialog.show()" value="ver detalle"
@@ -48,11 +48,11 @@
 						</p:column>
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Modificar" />
+							<h:outputText value="#{message['mantenimiento.productoList.modificar']}" />
 						</f:facet>
 						<p:commandButton update=":formManteProdDetalle:display"
 							  icon="ui-icon ui-icon-pencil"
-							title="Editar los Datos" action="#{productoForm.update}" >
+							title="#{message['mantenimiento.productoList.editarDatos']}" action="#{productoForm.update}" >
 							<f:setPropertyActionListener value="#{p}"
 								target="#{productoForm.objProductoSie}" /> 
 								<f:setPropertyActionListener value="#{false}" target="#{productoForm.editMode}" />
@@ -60,7 +60,7 @@
 					</p:column>
 					<f:facet name="footer">
 						<div align="left">
-							<h:commandLink value="Nuevo" action="#{productoForm.agregar}">
+							<h:commandLink value="#{message['mantenimiento.productoList.nuevo']}"  action="#{productoForm.agregar}">
 							<f:setPropertyActionListener value="#{true}" target="#{productoForm.editMode}" />
 							</h:commandLink>
 						</div>

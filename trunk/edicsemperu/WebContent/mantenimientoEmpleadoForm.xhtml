@@ -10,7 +10,7 @@
 	<p:panel header="Registrar Empleado"  id="panel">
 	    <p:growl/>
 	    <p:wizard id="wiz" widgetVar="wiz" flowListener="#{mantenimientoEmpleadoFormAction.onFlowProcess}">
-	    <p:tab title="Personal">
+	    <p:tab title="#{message['empleado.tabpersonal']}">
 	    <p:panel header="Datos Personales"> 
 	    <h:messages errorClass="error"/>  
         <h:panelGrid columns="2" cellpadding="5">						
@@ -55,7 +55,7 @@
 			</h:panelGrid>
 			</p:panel>
         </p:tab>
-        <p:tab title="Números Telefónicos">
+        <p:tab title="#{message['empleado.tabnumeros']}">
         <p:panel header="Números Telefónicos">
         <h:messages errorClass="error"/>  
         <h:panelGrid columns="2" cellpadding="5">
@@ -66,7 +66,7 @@
         </h:panelGrid>
         </p:panel>
         </p:tab>
-        <p:tab title="Dirección">
+        <p:tab title="#{message['empleado.tabdireccion']}">
         <p:panel header="Dirección">
         <h:messages errorClass="error"/>  
         <h:panelGrid columns="2" cellpadding="5">	
@@ -91,7 +91,7 @@
             <p:message for="idubigeoDistrito" rendered="#{mantenimientoEmpleadoFormAction.defectoUbigeo}"/>
 			<h:outputText id="ubigeoDefecto" value="#{mantenimientoEmpleadoFormAction.ubigeoDefecto}" />
 			
-			<p:outputLabel for="tipocasa" value="Tipo de Casa :" styleClass="textoAzulFuerteGrande" id="tipocasaL"/>
+			<p:outputLabel for="tipocasa" value="#{message['empleado.tipoCasa']}" styleClass="textoAzulFuerteGrande" id="tipocasaL"/>
             <p:selectOneMenu id="tipocasa" value="#{mantenimientoEmpleadoFormAction.tipo}" styleClass="required" title="El tipo de casa es obligatorio!" >
             <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
             <f:selectItems value="#{comboAction.tipocasaItems}" />
@@ -100,35 +100,35 @@
            </h:panelGrid>
             </p:panel>
         </p:tab>
-         <p:tab title="Contrato Empleado" id="contemp"  >
+         <p:tab title="#{message['empleado.tabcontrato']}" id="contemp"  >
          <p:panel id="panlcont" header="Datos Contrato">
          
         <h:messages errorClass="error"/>  
-           <h:panelGrid columns="2" id="panelPagos" >
-            <h:outputText value="Fecha Inicio :" />
+           <h:panelGrid columns="2"  >
+            <h:outputText value="#{message['empleado.fecInicio']}" />
             <p:calendar value="#{mantenimientoEmpleadoFormAction.fechaInicioContrato}" />
-            <h:outputText value="Cargo(s) :" />
+            <h:outputText value="#{message['empleado.cargo']}" />
             <p:selectOneMenu value="#{mantenimientoEmpleadoFormAction.idCargo}" label="Seleccione" filter="true" filterText="Filter" filterMatchMode="startsWith" panelStyle="width:300px">  
             <f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
             </p:selectOneMenu>
-            <p:outputLabel  value="Tipo de Pago:" for="tipopago" />
+            <p:outputLabel  value="#{message['empleado.tipoPago']}" for="tipopago" />
             <p:selectOneMenu id="tipopago" value="#{mantenimientoEmpleadoFormAction.idTipoPago}">
             <f:selectItems value="#{comboAction.tipoPagoItems}"/>
             </p:selectOneMenu>
-            <h:outputText value="Básico :" />
+            <h:outputText value="#{message['empleado.basico']}}" />
             <p:inputText value="#{mantenimientoEmpleadoFormAction.objContratoEmpleado.basico}"/> 
-            <h:outputText value="Periodo de Prueba:" />
+            <h:outputText value="#{message['empleado.periodoPrueba']}" />
             <p:inputText value="#{mantenimientoEmpleadoFormAction.objContratoEmpleado.periodoPrueba}"/> 
             <p:commandButton value="Agregar" update="panelPagos" action="#{mantenimientoEmpleadoFormAction.agregarPago}" icon="ui-icon-check"/>
            
             	<p:dataTable value="#{mantenimientoEmpleadoFormAction.contratoEmpleadoList}" var="c"  >
-						<p:column headerText="Cargo" >
+						<p:column headerText="#{message['empleado.tabla.cargo']}" >
 							<h:outputText value="#{c.tbCargoempleado.descripcion}" />
 						</p:column>
-						<p:column headerText="Fecha Inicio" >
+						<p:column headerText="#{message['empleado.tabla.fecIni']}" >
 							<h:outputText value="#{c.fechaInicioContrato}" />
 						</p:column>
-						<p:column headerText="Sueldo" >
+						<p:column headerText="#{message['empleado.tabla.sueldo']}" >
 							<h:outputText value="#{c.basico}" />
 						</p:column>
 				</p:dataTable>

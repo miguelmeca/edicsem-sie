@@ -40,7 +40,7 @@ public class LoginAction {
 		String redireccion = Constants.INDEX_PAGE;
 		try {
 			//Captura del Usuario y contraseña, Validando el Usuario
-			objEmpleado = loginService.getValidarUsuario(objLogin);
+			//objEmpleado = loginService.getValidarUsuario(objLogin);
 			if (objEmpleado!= null) {
 				//Se valida si la contraseña del usuario encontrado esta en lo cierto.
 				if (StringUtils.equals(usuario.trim(), contrasenia.trim())) {
