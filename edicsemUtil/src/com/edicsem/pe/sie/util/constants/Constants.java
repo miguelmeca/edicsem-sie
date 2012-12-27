@@ -14,6 +14,7 @@ public class Constants {
 	public static final String MESSAGE_REGISTRO_TITULO = "Se registro correctamente";
 	public static final String MESSAGE_ERROR_FATAL_TITULO = "Mensaje de Error";
 	public static final String MESSAGE_ERROR_ID_NOT_FOUND = "No se encuentra el Id";
+	public static final String MESSAGE_ERROR_TITULO = "Mensaje de Error";
 	public static final String ESQUEMA_SIE_POSTGRE = "sie";
 	//Tablas
 	public static final String TB_COBRANZA_OPERADORA_SIE = ESQUEMA_SIE_POSTGRE+"."+"tb_cobranza_operadora";
@@ -25,7 +26,6 @@ public class Constants {
 	
 	public static final String MANT_EMPRESA_FORM_PAGE = "mantenimientoEmpresaForm";
 	public static final String MANT_EMPRESA_FORM_LIST_PAGE = "mantenimientoEmpresaFormList";
-	public static final String MANT_EMPRESA_EMPLEADO_PRODUCTO_FORM_LIST_PAGE = "mantenimientoEmpresaEmpleadoFormList";
 	public static final String MANT_META_LIST_PAGE = "metaEmpresa";
 	
 	
@@ -83,4 +83,8 @@ public class Constants {
 	//aviso mensaje "las contraseñas no coinciden"
 	public static final String MESSAGE_PASSWORDS_DESIGUALES = "Contraseñas no coinciden";
 	
+	//Valores para Login
+	public static final String INDEX_PAGE = "index";
+	public static final String LOGIN_PAGE = "login";
+	public static final String USER_KEY = "loginUserSession";
 	}
