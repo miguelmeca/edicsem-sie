@@ -27,7 +27,8 @@ public class Constants {
 	public static final String MANT_EMPRESA_FORM_PAGE = "mantenimientoEmpresaForm";
 	public static final String MANT_EMPRESA_FORM_LIST_PAGE = "mantenimientoEmpresaFormList";
 	public static final String MANT_META_LIST_PAGE = "metaEmpresa";
-	
+
+	public static final String MANT_EMPRESA_EMPLEADO_PRODUCTO_FORM_LIST_PAGE = null;
 	
 	public static final String MANT_CLIENTE_FORM_LIST_PAGE = "mantenimientoClienteFormList";
 	public static final String MANT_CLIENTE_FORM_PAGE = "mantenimientoClienteForm";
