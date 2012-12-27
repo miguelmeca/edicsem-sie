@@ -230,7 +230,7 @@ body {
 			<h:outputText value="#{message['mantenimiento.producto.imagen']}" />
 			
 			<h:panelGroup>
-			<p:fileUpload fileUploadListener="#{productoForm.cargarImagenInsertar}" immediate="true" process=""
+			<p:fileUpload fileUploadListener="#{productoForm.cargarImagenInsertar}" immediate="true"
 				label="Cargar Imagen" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" oncomplete="imageProducDialog.hide()"
 				description="Images" multiple="false" customUI="true" required="true">
 			</p:fileUpload>
