@@ -20,30 +20,27 @@ public class ProductoServiceImpl implements ProductoService {
 	private EstadoGeneralDAO objestadoDao;
 
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.ProductoService#insertProducto(com.edicsem.pe.sie.entity.ProductoSie)
+	 * @see com.edicsem.pe.sie.service.facade.ProductoService#insertProducto(com.edicsem.pe.sie.entity.ProductoSie, int)
 	 */
-	
-	public void insertProducto(ProductoSie producto,int TipoProducto,int estadoProducto) {
+	public void insertProducto(ProductoSie producto,int TipoProducto) {
 		
 		producto.setTbTipoProducto(objTipoProductoDao.findTipoProducto(TipoProducto));
-		producto.setTbEstadoGeneral(objestadoDao.findEstadoGeneral(estadoProducto));
+		producto.setTbEstadoGeneral(objestadoDao.findEstadoGeneral(5));
 		objProductoDao.insertProducto(producto);
 	}
-
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.ProductoService#updateProducto(com.edicsem.pe.sie.entity.ProductoSie)
-	 */
 	
-	public void updateProducto(ProductoSie producto,int TipoProducto,int estadoProducto) {
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ProductoService#updateProducto(com.edicsem.pe.sie.entity.ProductoSie, int)
+	 */
+	public void updateProducto(ProductoSie producto,int TipoProducto) {
 		producto.setTbTipoProducto(objTipoProductoDao.findTipoProducto(TipoProducto));
-		producto.setTbEstadoGeneral(objestadoDao.findEstadoGeneral(estadoProducto));
+		producto.setTbEstadoGeneral(objestadoDao.findEstadoGeneral(6));
 		objProductoDao.updateProducto(producto);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ProductoService#findProducto(java.lang.String)
 	 */
-	
 	public ProductoSie findProducto(int id) {
 	return 	objProductoDao.findProducto(id);
 	}
@@ -51,18 +48,14 @@ public class ProductoServiceImpl implements ProductoService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ProductoService#listarProductos()
 	 */
-	
 	public List listarProductos() {
-		 
 		return objProductoDao.listarProductos();
 	}
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ProductoService#listarProductosXTipo(int)
 	 */
-	
 	public List listarProductosXTipo(int tipoProducto) { 
-		
 		return objProductoDao.listarProductosXTipo(tipoProducto); 
 	}
 }
