@@ -14,13 +14,13 @@
 					rowsPerPageTemplate="5,10,15" widgetVar="table"
 					emptyMessage="No se encontro registros">
 					<f:facet name="header">
-           #{message['mantenimiento.productoList.mantenimientoProducto']
+Mantenimiento Producto
         </f:facet>
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Codigo" />
 						</f:facet>
-						<h:outputText value="#{message['mantenimiento.productoList.codigo']}" />
+						<h:outputText value="#{p.codproducto}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">
@@ -60,9 +60,7 @@
 					</p:column>
 					<f:facet name="footer">
 						<div align="left">
-							<h:commandLink value="#{message['mantenimiento.productoList.nuevo']}"  action="#{productoForm.agregar}">
-							<f:setPropertyActionListener value="#{true}" target="#{productoForm.editMode}" />
-							</h:commandLink>
+							<h:commandLink value="#{message['mantenimiento.productoList.nuevo']}" action="#{productoForm.agregar}"/>
 						</div>
 					</f:facet>
 				</p:dataTable>
