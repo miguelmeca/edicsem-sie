@@ -20,13 +20,14 @@
 			<p:inputText id="contacto" value="#{mantenimientoProveedorFormAction.objProveedor.personacontacto}" required="true" label="Contacto"
 			requiredMessage="#{message['proveedor.contacto.validation']}"/>						
 			<p:outputLabel for="tipo" value="#{message['proveedor.tipoDoc']}" styleClass="textoAzulFuerteGrande" id="tipoL"/>
-            <p:selectOneMenu id="tipo" requiredMessage="#{message['proveedor.tipoDoc.validation']}" value="#{mantenimientoProveedorFormAction.tipoDocumento}" styleClass="required" title="El tipo es obligatorio!" >
+            <p:selectOneMenu id="tipo" requiredMessage="#{message['proveedor.tipoDoc.validation']}" value="#{mantenimientoProveedorFormAction.tipoDocumento}" required="true" styleClass="required" title="El tipo es obligatorio!" >
             <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
             <f:selectItems  value="#{comboAction.tipoDocumentoitems}" />
+            <p:ajax update="panel"></p:ajax>
             </p:selectOneMenu>
             <p:outputLabel value="#{message['proveedor.nrodoc']}" for="nrodoc" />
-			<p:inputText id="nrodoc" value="#{mantenimientoProveedorFormAction.objProveedor.numdocumentoproveedor}" required="true" label="Nro del documento"
-			requiredMessage="#{message['proveedor.nrodoc.validation']}"/>                    
+			<p:inputMask id="nrodoc" value="#{mantenimientoProveedorFormAction.objProveedor.numdocumentoproveedor}" mask="99999999" required="true" label="Nro del documento"
+			requiredMessage="#{message['proveedor.nrodoc.validation']}" rendered="#{mantenimientoProveedorFormAction.tipoDocumento==1}"/>                    
 			<p:outputLabel value="#{message['proveedor.direccion']}" for="direccion" />
 			<p:inputText id="direccion" value="#{mantenimientoProveedorFormAction.objProveedor.direccion}" required="true" label="Direccion"
 			requiredMessage="#{message['proveedor.direccion.validation']}"/>             
