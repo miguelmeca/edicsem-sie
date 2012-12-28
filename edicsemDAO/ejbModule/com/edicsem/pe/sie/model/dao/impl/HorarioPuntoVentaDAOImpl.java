@@ -27,7 +27,7 @@ public class HorarioPuntoVentaDAOImpl implements HorarioPuntoVentaDAO {
 	public void insertHorarioPunto(HorarioPuntoVentaSie h) {
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("insertar el HorarioPuntoVenta");
+				log.info("insertar el HorarioPuntoVenta"+h.getTbFecha().getDia());
 			}
 			em.persist(h);
 		} catch (Exception e) {
