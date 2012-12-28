@@ -8,7 +8,6 @@ import javax.ejb.Stateless;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.edicsem.pe.sie.entity.HorarioPersonalSie;
 import com.edicsem.pe.sie.entity.HorarioPuntoVentaSie;
 import com.edicsem.pe.sie.model.dao.AlmacenDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
@@ -29,23 +28,25 @@ public class HorarioPuntoVentaServiceImpl implements HorarioPuntoVentaService{
 	private FechaDAO objFechaDao;
 	@EJB
 	private AlmacenDAO objAlmacenDao;
-
+	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.HorarioPuntoVentaService#insertHorarioPunto(com.edicsem.pe.sie.entity.HorarioPuntoVentaSie)
+	 * @see com.edicsem.pe.sie.service.facade.HorarioPuntoVentaService#insertHorarioPunto(java.util.List, com.edicsem.pe.sie.entity.HorarioPuntoVentaSie, int)
 	 */
 	public void insertHorarioPunto(List<String> diaList, HorarioPuntoVentaSie h, int idpuntoventa) {
-		for (int i = 0; i < diaList.size(); i++) {
+		log.info("  insertHorarioPunto ");
+		
+		for (String d : diaList) {
 			HorarioPuntoVentaSie auxi = new HorarioPuntoVentaSie();	
-			auxi=h;
-			auxi.setTbFecha(objFechaDao.findFecha(Integer.parseInt(diaList.get(i))));
+			auxi.setFechaInicio(h.getFechaInicio());
+			auxi.setFechahasta(h.getFechahasta());
+			auxi.setHoraIngreso(h.getHoraIngreso());
+			auxi.setHoraSalida(h.getHoraSalida());
+			auxi.setObservacion(h.getObservacion());
+			auxi.setTbFecha(objFechaDao.findFecha(Integer.parseInt(d)));
 			auxi.setTbPuntoVenta(objAlmacenDao.findAlmacen(idpuntoventa));
 			auxi.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(38));
-			log.info("insertando 1 ");
 			objHorarioPuntoDao.insertHorarioPunto(auxi);
-			log.info("insertando 2  ");
 		}
-		
-		
 	}
 
 	/* (non-Javadoc)
