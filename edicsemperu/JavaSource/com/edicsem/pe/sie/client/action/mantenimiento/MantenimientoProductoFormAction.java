@@ -39,7 +39,6 @@ public class MantenimientoProductoFormAction extends
 	private StreamedContent image;
 	private ProductoSie objProductoSie;
 	private ProductoSie selectedProducto;
-	private boolean editMode;
 	private boolean newRecord = false;
 	byte[] foto ;
 	@ManagedProperty(value = "#{productoSearch}")
@@ -57,7 +56,6 @@ public class MantenimientoProductoFormAction extends
 		log.info("init()");
 		objProductoSie = new ProductoSie();
 		image = null;
-		editMode=true;
 		foto =null;
 	}
 
@@ -86,8 +84,14 @@ public class MantenimientoProductoFormAction extends
 	public String update() throws Exception {
 		log.info("update()"+ objProductoSie.getRutaimagenproducto() );
 		TipoProducto = objProductoSie.getTbTipoProducto().getIdtipoproducto();
-		InputStream stream = new FileInputStream(objProductoSie.getRutaimagenproducto());
-		setImage( new DefaultStreamedContent(stream));
+		if(objProductoSie.getRutaimagenproducto()!=null){
+			InputStream stream = new FileInputStream(objProductoSie.getRutaimagenproducto());
+			setImage( new DefaultStreamedContent(stream));
+		}else{
+			log.info("imagen nula ");
+			setImage(null);
+		}
+		
 		setNewRecord(false);
 		return productoSearch.getViewMant();
 	}
@@ -138,6 +142,7 @@ public class MantenimientoProductoFormAction extends
 				if(objProductoSie.getStkmaximo()<= objProductoSie.getStkminimoproducto()){
 					mensaje ="El stock minimo no puede ser mayor o igual al máximo";
 					paginaRetorno = productoSearch.getViewMant();
+					msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
 				}
 				else{
 					 if (image == null) {
@@ -151,7 +156,8 @@ public class MantenimientoProductoFormAction extends
 				mensaje ="Se registro correctamente";
 				objProductoSie = new ProductoSie();
 				limpiarCampos();
-				paginaRetorno = productoSearch.getViewList();
+				paginaRetorno = productoSearch.listar();
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 				}
 			} else {
 				log.info("a actualizar "+ TipoProducto +" " + " ruta " + objProductoSie.getRutaimagenproducto());
@@ -160,10 +166,11 @@ public class MantenimientoProductoFormAction extends
 					mensaje ="Se actualizó correctamente";
 					objProductoSie = new ProductoSie();
 					limpiarCampos();
-					paginaRetorno = productoSearch.getViewList();
+					paginaRetorno = productoSearch.listar();
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 				}
 			}
-			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
+			
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 			
 		} catch (Exception e) {
@@ -191,21 +198,6 @@ public class MantenimientoProductoFormAction extends
 	public String consultar() throws Exception {
 		log.info("en el consultar ");
 		return getViewMant();
-	}
-
-	/**
-	 * @return the editMode
-	 */
-	public boolean isEditMode() {
-		return editMode;
-	}
-
-	/**
-	 * @param editMode
-	 *            the editMode to set
-	 */
-	public void setEditMode(boolean editMode) {
-		this.editMode = editMode;
 	}
 
 	public ProductoSie getSelectedProducto() {

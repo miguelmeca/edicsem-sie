@@ -147,8 +147,7 @@ body {
 						style="font-weight:bold" />
 				</h:panelGroup>
 
-				<h:outputText value="#{message['mantenimiento.producto.codigo']}"
-					id="codProd" />
+				<h:outputText value="#{message['mantenimiento.producto.codigo']}" />
 				<h:panelGroup>
 					<h:outputText value="#{kardexAction.objKardexSie.tbProducto.idproducto}" style="font-weight:bold" />
 				</h:panelGroup>
@@ -158,7 +157,7 @@ body {
 					<h:outputText value="#{kardexAction.objKardexSie.tbProducto.descripcionproducto}" style="font-weight:bold" />
 				</h:panelGroup>
 
-				<h:outputText value="Detalle" id="detProd" />
+				<h:outputText value="#{message['mantenimiento.producto.detalle']}"/>
 				<h:panelGroup>
 					<h:inputTextarea value="#{kardexAction.objKardexSie.detallekardex}"
 						style="font-weight:bold" disabled="true" />
@@ -380,16 +379,10 @@ body {
 			<h:panelGrid id="display">
 
 				<h:outputText value="#{message['almacen.descripcion']}" />
-				<h:panelGroup>
-					<p:inputText id="descripcion1"
-						value="#{almacenForm.objAlmacenSie.descripcion}" required="true"
+				<p:inputText value="#{almacenForm.objAlmacenSie.descripcion}" required="true"
 						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" rendered="#{almacenForm.editMode}" />
-					<p:inputText id="descripcion2" value="#{almacenForm.descripcion}"
-						required="true"
-						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" rendered="#{!almacenForm.editMode}" />
-				</h:panelGroup>
+						style="font-weight:bold" />
+					
 				<h:outputText value="#{message['almacen.ubigeo']}" />
 			</h:panelGrid>
 			<h:panelGrid columns="2" id="panel">
@@ -417,20 +410,14 @@ body {
 			</h:panelGrid>
 			<h:panelGrid columns="2" id="panel2">
 				<h:outputText value="#{message['almacen.direccion']}" />
-				<h:panelGroup>
-					<p:inputText value="#{almacenForm.objAlmacenSie.direccion}"
-						required="true"
-						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" rendered="#{almacenForm.editMode}" />
-					<p:inputText value="#{almacenForm.direccion}" required="true"
-						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" rendered="#{!almacenForm.editMode}" />
-				</h:panelGroup>
+				<p:inputText value="#{almacenForm.objAlmacenSie.direccion}"
+					required="true" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
+					style="font-weight:bold"  />
 
 				<h:outputText value="#{message['almacen.PuntoVenta']}" />
 				<p:selectBooleanCheckbox value="#{almacenForm.puntoVenta}">
 				</p:selectBooleanCheckbox>
-
+				
 				<h:panelGroup>
 					<p:commandButton id="btn" value="Guardar" update="panel"
 						action="#{almacenForm.insertar}" ajax="false"
@@ -506,50 +493,26 @@ body {
 			<h:panelGrid id="display" columns="2" cellpadding="2"
 				style="margin:0 auto;">
 				<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
-				<h:panelGroup>
-					<h:outputText
-						value="#{productoForm.selectedProducto.tbTipoProducto.nombretipoproducto}"
-						rendered="#{!productoForm.editMode}" />
-				</h:panelGroup>
-				<h:outputText value="#{message['mantenimiento.producto.codigo']}"
-					id="codProd" />
-				<h:panelGroup>
-					<h:outputText value="#{productoForm.selectedProducto.codproducto}"
-						style="font-weight:bold" rendered="#{!productoForm.editMode}" />
-				</h:panelGroup>
-
-				<h:outputText
-					value="#{message['mantenimiento.producto.descripcion']}"
-					id="descProd" />
-				<h:panelGroup>
-					<h:outputText
-						value="#{productoForm.selectedProducto.descripcionproducto}"
-						style="font-weight:bold" rendered="#{!productoForm.editMode}" />
-				</h:panelGroup>
-
-				<h:outputText
-					value="#{message['mantenimiento.producto.stock.minimo']}"
-					id="stckMinProd" />
-				<h:panelGroup>
-					<h:outputText
-						value="#{productoForm.selectedProducto.stkminimoproducto}"
-						style="font-weight:bold" rendered="#{!productoForm.editMode}" />
-				</h:panelGroup>
-
-				<h:outputText
-					value="#{message['mantenimiento.producto.stock.maximo']}"
-					id="stcKMaxProd" />
-				<h:panelGroup>
-					<h:outputText value="#{productoForm.selectedProducto.stkmaximo}"
-						style="font-weight:bold" rendered="#{!productoForm.editMode}" />
-				</h:panelGroup>
-
+				<h:outputText value="#{productoForm.selectedProducto.tbTipoProducto.nombretipoproducto}" style="font-weight:bold" />
+				
+				<h:outputText value="#{message['mantenimiento.producto.codigo']}" id="codProd" />
+				<h:outputText value="#{productoForm.selectedProducto.codproducto}" style="font-weight:bold" />
+				
+				<h:outputText value="#{message['mantenimiento.producto.descripcion']}"/>
+				<h:outputText value="#{productoForm.selectedProducto.descripcionproducto}"
+					style="font-weight:bold" />
+			
+				<h:outputText value="#{message['mantenimiento.producto.stock.minimo']}" />
+				<h:outputText value="#{productoForm.selectedProducto.stkminimoproducto}"
+					style="font-weight:bold" />
+				
+				<h:outputText value="#{message['mantenimiento.producto.stock.maximo']}" />
+				<h:outputText value="#{productoForm.selectedProducto.stkmaximo}"
+					style="font-weight:bold" />
+				
 				<h:outputText value="#{message['mantenimiento.producto.detalle']}" />
-				<h:panelGroup>
-					<p:inputTextarea id="detalle"
-						value="#{productoForm.selectedProducto.detalleproducto}" rows="4"
-						cols="30" rendered="#{!productoForm.editMode}" />
-				</h:panelGroup>
+				<p:inputTextarea value="#{productoForm.selectedProducto.detalleproducto}" rows="4"
+						cols="30" style="font-weight:bold" disabled="true" />
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
@@ -685,12 +648,17 @@ body {
 				style="margin:0 auto;" title="Horario ">
 
 				<h:outputText value="#{message['horario.pv.dia']}"  />
-				<h:panelGroup  >
-				<p:selectCheckboxMenu id="pvchk" required="true" value="#{MantenimientoHorarioPuntoVentaSearchAction.diaList}" filter="true" filterMatchMode="startsWith" requiredMessage="#{message['horario.pv.dia.validation']}"
-					 style="width:200px" >
+				<h:panelGroup rendered="#{MantenimientoHorarioPuntoVentaSearchAction.newRecord==true}"  >
+				<p:selectCheckboxMenu id="pvchk" required="true" value="#{MantenimientoHorarioPuntoVentaSearchAction.diaList}" 
+				filter="true" filterMatchMode="startsWith" requiredMessage="#{message['horario.pv.dia.validation']}"
+					 style="width:250px" >
 					<f:selectItems value="#{comboAction.diasItems}" />
 				</p:selectCheckboxMenu>
 				<p:message for="pvchk" />
+				</h:panelGroup>
+				<h:panelGroup  rendered="#{MantenimientoHorarioPuntoVentaSearchAction.newRecord==false}" >
+				<h:outputText value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.tbFecha.dia}" 
+				 disabled="true" />
 				</h:panelGroup>
 				
 				<h:outputText value="#{message['horario.pv.fechaDesde']}" />
@@ -701,7 +669,8 @@ body {
 				
 				<h:outputText value="#{message['horario.pv.fechaHasta']}" />
 				<h:panelGroup >
-					<p:calendar value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diafin}" requiredMessage="#{message['horario.pv.fechaHasta.validation']}" mindate="today" />
+					<p:calendar id="hastapv" value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diafin}" required="true"  requiredMessage="#{message['horario.pv.fechaHasta.validation']}" mindate="today" />
+					<p:message for="hastapv" />
 				</h:panelGroup>
 			
 				<h:outputText value="#{message['horario.pv.horaEntrada']}"  />

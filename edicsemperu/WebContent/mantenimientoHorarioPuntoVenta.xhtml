@@ -35,21 +35,23 @@
 		
 		
 		<p:column headerText="Mostrar"  id="mostrar" >
-<p:commandButton value="Mostrar" ajax="false" action="#{MantenimientoHorarioPuntoVentaSearchAction.mostrar}" 
- >
-<f:setPropertyActionListener value="#{c}"
-target="#{MantenimientoHorarioPuntoVentaSearchAction.objPuntoVentaSie}" />
-</p:commandButton>
+		<p:commandButton value="Mostrar" ajax="false" action="#{MantenimientoHorarioPuntoVentaSearchAction.mostrar}" update="panelMostrarHorario" >
+			<f:setPropertyActionListener value="#{c}"
+			target="#{MantenimientoHorarioPuntoVentaSearchAction.objPuntoVentaSie}" />
+		</p:commandButton>
 		</p:column>			
 </p:dataTable>
-<p:spacer></p:spacer>
+<p:spacer/>
+<p:outputPanel id="panelMostrarHorario" rendered="#{MantenimientoHorarioPuntoVentaSearchAction.objPuntoVentaSie.idpuntoventa!=null}" >
+
 <p:fieldset legend="Detalle de Punto de Venta" style="margin-top:20px" >
 
-<p:commandButton  value="Nuevo Horario" action="#{MantenimientoHorarioPuntoVentaSearchAction.agregarhorario}" 
-oncomplete="horariopvDialog.show()"  update="horarioPuntoVenta12,message"  />
-<p:spacer></p:spacer>
+<p:commandButton  value="Nuevo Horario" action="#{MantenimientoHorarioPuntoVentaSearchAction.agregar}" 
+oncomplete="horariopvDialog.show()"  update="horarioPuntoVenta12,message, :formManteHorarioPV:display" >
+</p:commandButton>
+<p:spacer/>
 
-<p:dataTable var="h" value="#{MantenimientoHorarioPuntoVentaSearchAction.listaHorario}" id="horarioPuntoVentaList" editable="true"  
+<p:dataTable var="h" value="#{MantenimientoHorarioPuntoVentaSearchAction.listaHorario}" id="horarioPuntoVentaList"  
  rowStyleClass="#{h.diainicio le horarioPuntoVenta.dhoy ? null: 'colorPlomo' }"  >
 		<f:facet name="header">
             Horario Punto de Venta
@@ -64,26 +66,26 @@ oncomplete="horariopvDialog.show()"  update="horarioPuntoVenta12,message"  />
 				<h:outputText value="#{h.horaSalida}" />
 			</p:column>
 			<p:column headerText="Dia inicio">
-				<h:outputText value="#{h.diainicio}" />
+				<h:outputText value="#{h.fechaInicio}" />
 			</p:column>
 			<p:column headerText="Dia Fin">
-				<h:outputText value="#{h.diafin}" />
+				<h:outputText value="#{h.fechahasta}" />
 			</p:column>
 			
 		<p:column headerText="Editar">
-	    <p:commandButton value="Editar" 
-action="#{MantenimientoHorarioPuntoVentaSearchAction.update}" oncomplete="horariopvDialog.show()"  update=":formManteHorarioPV:display"  >
-		 <f:setPropertyActionListener value="#{h}"  
-		  target="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie}" />
-		  
-		</p:commandButton>
+		    <p:commandButton value="Editar" action="#{MantenimientoHorarioPuntoVentaSearchAction.update}" 
+		    oncomplete="horariopvDialog.show()"  update=":formManteHorarioPV:display"  >
+				 <f:setPropertyActionListener value="#{h}"  
+				  target="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie}" />
+			</p:commandButton>
 	   </p:column>
 			  
 </p:dataTable>
 </p:fieldset>
 	<p:fieldset legend="Visualizar Horario" style="margin-top:20px">
     <p:schedule value="#{MantenimientoHorarioPuntoVentaSearchAction.eventModel}" draggable="false" resizable="false" locale="tr"  />  
-</p:fieldset>		
+</p:fieldset>
+ </p:outputPanel>
 </h:form>
 </ui:define>
 </ui:composition>
