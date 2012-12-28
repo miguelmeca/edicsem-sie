@@ -16,8 +16,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 
 
 /**
@@ -56,6 +58,12 @@ public class HorarioPuntoVentaSie implements Serializable {
 	private String usuariocreacion;
 
 	private String usuariomodifica;
+	
+	@Transient
+	private String  fechaInicio;
+	
+	@Transient
+	private String  fechahasta;
 
 	//bi-directional many-to-one association to PuntoVenta
     @ManyToOne
@@ -183,6 +191,36 @@ public class HorarioPuntoVentaSie implements Serializable {
 	 */
 	public void setTbFecha(FechaSie tbFecha) {
 		this.tbFecha = tbFecha;
+	}
+
+	/**
+	 * @return the fechaInicio
+	 */
+	public String getFechaInicio() {
+		fechaInicio = DateUtil.convertDateToString(diainicio);
+		return fechaInicio;
+	}
+
+	/**
+	 * @param fechaInicio the fechaInicio to set
+	 */
+	public void setFechaInicio(String fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+	/**
+	 * @return the fechahasta
+	 */
+	public String getFechahasta() {
+		fechahasta = DateUtil.convertDateToString(diafin);
+		return fechahasta;
+	}
+
+	/**
+	 * @param fechahasta the fechahasta to set
+	 */
+	public void setFechahasta(String fechahasta) {
+		this.fechahasta = fechahasta;
 	}
 	
 }
