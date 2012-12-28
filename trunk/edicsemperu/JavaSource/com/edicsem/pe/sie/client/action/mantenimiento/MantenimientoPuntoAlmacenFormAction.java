@@ -31,12 +31,11 @@ public class MantenimientoPuntoAlmacenFormAction extends
 	private Log log = LogFactory.getLog(MantenimientoPuntoAlmacenFormAction.class);
 	
 	public int idalmacen;
-	public String descripcion, direccion,ubigeoDefecto,idUbigeo;
+	public String mensaje,ubigeoDefecto,idUbigeo;
 	private String idProvincia, idDepartamento, idDistrito;
-	private int ide, idEstadoGeneral;
-	private boolean editMode, puntoVenta,defectoUbigeo;
+	private int ide;
+	private boolean puntoVenta,defectoUbigeo;
 	private boolean newRecord = false;
-	private int estado;
 	private PuntoVentaSie objAlmacenSie;
 
 	@ManagedProperty(value = "#{comboAction}")
@@ -82,10 +81,9 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		comboManagerPunto.setIdDepartamento("15");
 		comboManagerPunto.setIdProvincia("01");
 		}
-		
+		idUbigeo="0";
 		ubigeoDefecto="";
 		comboManagerPunto.setUbigeoDistriItems(null);
-		editMode = true;
 		puntoVenta = false;
 		setNewRecord(true);
 		objAlmacenSie = new PuntoVentaSie();
@@ -117,19 +115,16 @@ public class MantenimientoPuntoAlmacenFormAction extends
 	public String update() throws Exception {
 		log.info("update()" + objAlmacenSie.getIdpuntoventa());
 
-		PuntoVentaSie s = objAlmacenService.findAlmacen(objAlmacenSie.getIdpuntoventa());
+		objAlmacenSie = objAlmacenService.findAlmacen(objAlmacenSie.getIdpuntoventa());
 
-		log.info(" id cargo " + s.getIdpuntoventa() + " des " + s.getDescripcion()+" direc "+s.getDireccion());
+		log.info(" id cargo " + objAlmacenSie.getIdpuntoventa() + " des " +objAlmacenSie.getDescripcion()+" direc "+objAlmacenSie.getDireccion());
 
-		setIdalmacen(s.getIdpuntoventa());
-		setDescripcion(s.getDescripcion());
-		setDireccion(s.getDireccion());
-		setEstado(s.getTbEstadoGeneral().getIdestadogeneral());
-		setIdUbigeo(s.getTbUbigeo().getIdubigeo()+"");
+		setIdalmacen(objAlmacenSie.getIdpuntoventa());
+		setIdUbigeo(objAlmacenSie.getTbUbigeo().getIdubigeo()+"");
 		if(objAlmacenSie.getAlmacen().equals("P"))
 			puntoVenta=true;
 		else puntoVenta=false;
-	
+		
 		UbigeoSie ubigeo = objUbigeoService.findUbigeo(Integer.parseInt(getIdUbigeo()));
 		setIdDepartamento(ubigeo.getCoddepartamento());
 		comboManagerPunto.setIdDepartamento(idDepartamento);
@@ -139,34 +134,32 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		ubigeoDefecto="";
 		log.info("busquedaUbigeo "+ getIdDepartamento()+" - "+getIdProvincia()+" - "+getIdDistrito()+" - "+getIdUbigeo());
 		setNewRecord(false);
-		editMode = false;
 		return getViewList();
 	}
 
 	public String DeshabilitarPunto() throws Exception {
 
 		objAlmacenSie = new PuntoVentaSie();
-		int parametroObtenido;
 		PuntoVentaSie punto = new PuntoVentaSie();
 
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'DeshabilitarPunto()'" + getIde());
 			}
-			parametroObtenido = getIde();
-			log.info(" parametro ID "+ parametroObtenido);
-			punto = objAlmacenService.findAlmacen(parametroObtenido);
+			log.info(" parametro ID "+ getIde());
+			punto = objAlmacenService.findAlmacen(getIde());
+			
+			//deshabilitando punto de venta
 			punto.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(14));
 
 			objAlmacenService.updateAlmacen(punto);
-			log.info("actualizando..... ");
+			log.info("deshabilitando punto ..... ");
 
 		} catch (Exception e) {
 			e.printStackTrace();
-
-			descripcion = e.getMessage();
+			mensaje = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, descripcion);
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
@@ -183,53 +176,55 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		log.info("insertar() sv " + isNewRecord() + " desc "
 				+ objAlmacenSie.getDescripcion() +"  "+ "almacen"
 				+ objAlmacenSie.getAlmacen() +" direc " + objAlmacenSie.getDireccion() );
-		objAlmacenSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(13));
 		int error = 0;
+		String paginaRetorno="";
 		try {
-			if(puntoVenta) objAlmacenSie.setAlmacen("P");else objAlmacenSie.setAlmacen("A");
+			if(puntoVenta) 
+				objAlmacenSie.setAlmacen("P");
+			else objAlmacenSie.setAlmacen("A");
 			objAlmacenSie.setTbUbigeo(objUbigeoService.findUbigeo(Integer.parseInt(idUbigeo)));
-			
+			paginaRetorno =mantenimientoPuntoAlmacenSearch.getViewList();
 			if (isNewRecord()) {
 				
 				List<PuntoVentaSie> lista = mantenimientoPuntoAlmacenSearch.getAlmacenList();
 
 				for (int i = 0; i < lista.size(); i++) {
 					PuntoVentaSie s = lista.get(i);
-					if (s.getDescripcion().equalsIgnoreCase(
-							objAlmacenSie.getDescripcion())) {
-						log.info("Error ... Ya se encuentra un almacen/Punto de Venta igual");
+					if (s.getDescripcion().equalsIgnoreCase(objAlmacenSie.getDescripcion())) {
+						mensaje ="Existe un almacen/Punto de Venta con el mismo nombre";
 						error = 1;
 						break;
 					}
 				}
-
 				if (error == 0) {
 					objAlmacenService.insertAlmacen(objAlmacenSie);
+					mensaje ="Se registro correctamente";
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+					objAlmacenSie = new PuntoVentaSie();
 				} else {
 					log.info("mensaje de error");
+					msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
+					paginaRetorno =mantenimientoPuntoAlmacenSearch.getViewMant();
 				}
 			} else {
-
-				objAlmacenSie.setIdpuntoventa(getIdalmacen());
-				objAlmacenSie.setDescripcion(getDescripcion());
-				objAlmacenSie.setDireccion(getDireccion());
-				objAlmacenSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(13));
 				objAlmacenService.updateAlmacen(objAlmacenSie);
-				
+				mensaje ="Se actualizó correctamente";
 				log.info("actualizado");
+				objAlmacenSie = new PuntoVentaSie();
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 			}
+			FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (Exception e) {
-
 			e.printStackTrace();
-			descripcion = e.getMessage();
+			mensaje = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, descripcion);
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
+		log.info("pagina  "+ paginaRetorno+" mensaj "+mensaje);
 
-		objAlmacenSie = new PuntoVentaSie();
-		return mantenimientoPuntoAlmacenSearch.listar();
+		return paginaRetorno;
 	}
 
 	public void cambiar() {
@@ -374,46 +369,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 	public void setNewRecord(boolean newRecord) {
 		this.newRecord = newRecord;
 	}
-
-	/**
-	 * @return the estado
-	 */
-	public int getEstado() {
-		return estado;
-	}
-
-	/**
-	 * @param estado
-	 *            the estado to set
-	 */
-	public void setEstado(int estado) {
-		this.estado = estado;
-	}
- 
-
-	/**
-	 * @return the idEstadoGeneral
-	 */
-	public int getIdEstadoGeneral() {
-		return idEstadoGeneral;
-	}
-
-	/**
-	 * @param idEstadoGeneral
-	 *            the idEstadoGeneral to set
-	 */
-	public void setIdEstadoGeneral(int idEstadoGeneral) {
-		this.idEstadoGeneral = idEstadoGeneral;
-	}
-
-	public boolean isEditMode() {
-		return editMode;
-	}
-
-	public void setEditMode(boolean editMode) {
-		this.editMode = editMode;
-	}
-
+	
 	/**
 	 * @return the ide
 	 */
@@ -428,30 +384,6 @@ public class MantenimientoPuntoAlmacenFormAction extends
 	public void setIde(int ide) {
 		this.ide = ide;
 	}
-
-	/**
-	 * @return the descripcion
-	 */
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	/**
-	 * @param descripcion
-	 *            the descripcion to set
-	 */
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
-	 * #insertar()
-	 */
-
 
 	public MantenimientoPuntoAlmacenSearchAction getMantenimientoPuntoAlmacenSearch() {
 		return mantenimientoPuntoAlmacenSearch;
@@ -506,20 +438,6 @@ public class MantenimientoPuntoAlmacenFormAction extends
 	 */
 	public void setPuntoVenta(boolean puntoVenta) {
 		this.puntoVenta = puntoVenta;
-	}
-
-	/**
-	 * @return the direccion
-	 */
-	public String getDireccion() {
-		return direccion;
-	}
-
-	/**
-	 * @param direccion the direccion to set
-	 */
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
 	}
 
 	/**
@@ -604,6 +522,20 @@ public class MantenimientoPuntoAlmacenFormAction extends
 	 */
 	public void setIdDistrito(String idDistrito) {
 		this.idDistrito = idDistrito;
+	}
+
+	/**
+	 * @return the mensaje
+	 */
+	public String getMensaje() {
+		return mensaje;
+	}
+
+	/**
+	 * @param mensaje the mensaje to set
+	 */
+	public void setMensaje(String mensaje) {
+		this.mensaje = mensaje;
 	}
 
 }

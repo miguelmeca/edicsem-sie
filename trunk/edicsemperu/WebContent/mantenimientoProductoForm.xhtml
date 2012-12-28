@@ -1,3 +1,4 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -85,7 +86,7 @@
 					oncomplete="imageProducDialog.show()" title="Ingresar Empleado"/>
 					<p:spacer/> 
 				
-				<p:commandButton value="Registrar" actionListener="#{productoForm.insertar}"  ajax = "false"
+				<p:commandButton value="Registrar" action="#{productoForm.insertar}"  ajax = "false" 
 					icon="ui-icon ui-icon-check" />
                      
                 <p:commandButton value="Regresar" action="#{productoSearch.listar}" immediate="true" ajax = "false" update="panel"
