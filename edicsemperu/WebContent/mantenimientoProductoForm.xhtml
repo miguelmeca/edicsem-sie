@@ -16,9 +16,9 @@
 				<h:outputText for="codigo" value="#{message['mantenimiento.producto.codigo']}" />
 				<p:inputText id="codigoProducto"
 					value="#{productoForm.objProductoSie.codproducto}"
-					size="10" required="true"
+					size="10" required="true" maxlength="10"
 					requiredMessage="#{message['mantenimiento.producto.codigo.validation']}">
-					<f:validateLength minimum="1"/>
+					<f:validateLength minimum="1" maximum="10"/>
 					</p:inputText>
 				<p:message for="codigoProducto" />
 				<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
@@ -74,27 +74,21 @@
 				</p:inputText>
 				<p:message for="stock_mximo_producto" />
 				
-				 <h:outputText value="#{message['mantenimiento.producto.estado']}" />
-				<p:selectOneMenu id="estproducto1" 
-					value="#{productoForm.estadoProducto}" required="true"
-					requiredMessage="#{message['mantenimiento.producto.estado.validation']}" >
-					<f:selectItem itemValue="#{null}" itemLabel="Seleccionar Estado" />
-					<f:selectItems value="#{comboAction.estadoitems}" />
-				</p:selectOneMenu> 
-				<p:message for="estproducto1" />
-				
-				<p:outputPanel id="display32"  autoUpdate="true" >  
-				<p:graphicImage id="imgFotoInserta"  value="#{productoForm.image}" style="height:90px;width:90px"/>
+				<p:outputPanel autoUpdate="true" >  
+				<p:graphicImage id="imgFotoInserta"  value="#{productoForm.image}" cache="false" style="height:90px;width:90px" >
+				 <f:param value="#{productoForm.idFoto}" />
+				</p:graphicImage>
+				  
 				</p:outputPanel>
 				 
-				 <p:commandButton value="Insertar Imagen *"  update=":formInsertImageProduc:display"
+				<p:commandButton value="Insertar Imagen *"  update=":formInsertImageProduc:display"
 					oncomplete="imageProducDialog.show()" title="Ingresar Empleado"/>
 					<p:spacer/> 
 				
 				<p:commandButton value="Registrar" actionListener="#{productoForm.insertar}"  ajax = "false"
 					icon="ui-icon ui-icon-check" />
                      
-                <p:commandButton value="Regresar" action="#{productoSearch.listar}" immediate="true" ajax = "false"
+                <p:commandButton value="Regresar" action="#{productoSearch.listar}" immediate="true" ajax = "false" update="panel"
                     icon="ui-icon ui-icon-close" />
 		</h:panelGrid>
 		 </h:form>

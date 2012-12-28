@@ -34,8 +34,9 @@
 			requiredMessage="#{message['empleado.confcontra.validation']}"/>
 			<p:outputLabel for="tipo" value="Tipo de Doc. :" styleClass="textoAzulFuerteGrande" id="tipoL"/>
             <p:selectOneMenu id="tipo" value="#{mantenimientoEmpleadoFormAction.tipoDocumento}" styleClass="required" title="El tipo es obligatorio!" >
+            <f:selectItem itemLabel="Seleccione tipo Documento" itemValue="#{null}" />
             <f:selectItems  value="#{comboAction.tipoDocumentoitems}" />
-            <p:ajax update="nrodoc"></p:ajax>
+            <p:ajax update="nrodoc"/>
             </p:selectOneMenu>
             <h:outputText value="#{message['empleado.nrodoc']}" />
             <h:panelGroup id="nrodoc" >

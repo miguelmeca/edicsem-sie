@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -34,13 +35,13 @@ public class MantenimientoProductoFormAction extends
 
 	private String mensaje;
 	private Log log = LogFactory.getLog(MantenimientoProductoFormAction.class);
-	private int TipoProducto, estadoProducto;
+	private int TipoProducto, idFoto=1;
 	private StreamedContent image;
 	private ProductoSie objProductoSie;
 	private ProductoSie selectedProducto;
 	private boolean editMode;
 	private boolean newRecord = false;
-	
+	byte[] foto ;
 	@ManagedProperty(value = "#{productoSearch}")
 	private MantenimientoProductoSearchAction productoSearch;
 	
@@ -57,6 +58,7 @@ public class MantenimientoProductoFormAction extends
 		objProductoSie = new ProductoSie();
 		image = null;
 		editMode=true;
+		foto =null;
 	}
 
 	/*
@@ -84,8 +86,6 @@ public class MantenimientoProductoFormAction extends
 	public String update() throws Exception {
 		log.info("update()"+ objProductoSie.getRutaimagenproducto() );
 		TipoProducto = objProductoSie.getTbTipoProducto().getIdtipoproducto();
-		estadoProducto = objProductoSie.getTbEstadoGeneral().getIdestadogeneral();
-		log.info("update()"+ TipoProducto +"  "+estadoProducto );
 		InputStream stream = new FileInputStream(objProductoSie.getRutaimagenproducto());
 		setImage( new DefaultStreamedContent(stream));
 		setNewRecord(false);
@@ -93,24 +93,26 @@ public class MantenimientoProductoFormAction extends
 	}
 
 	public String cargarImagenInsertar(FileUploadEvent event) {
-		log.info("cargarImagenInsertar " + event.getFile().getFileName() );
+		log.info("cargarImagenInsertar** " + event.getFile().getFileName() );
 		String photo = event.getFile().getFileName();
 		FileImageOutputStream imageOutput;
 		String newFileName = "C:\\proyecto-sie\\ws-sie\\edicsemperu\\WebContent"
 				+ File.separator + "images" + File.separator + photo;
 		try {
-			image = new DefaultStreamedContent(event.getFile().getInputstream());
+			setImage(new DefaultStreamedContent(event.getFile().getInputstream()));
 			
 			log.info("ruta " + newFileName + " - " + event.getFile().getFileName());
 			imageOutput = new FileImageOutputStream(new File(newFileName));
 			if(objProductoSie.getRutaimagenproducto()==null){
 			objProductoSie.setRutaimagenproducto(newFileName);
 			log.info(" Ruta " + objProductoSie.getRutaimagenproducto()   );
-			byte[] foto = event.getFile().getContents();
+			
+			}
+			
+			foto = event.getFile().getContents();
 			imageOutput.write(foto, 0, foto.length);
 			imageOutput.close();
-			 
-			}
+			idFoto+=1;
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -144,17 +146,17 @@ public class MantenimientoProductoFormAction extends
 						log.info("ruta" + rutaDefecto);
 						objProductoSie.setRutaimagenproducto(rutaDefecto);
 					 }
-				log.info("a insertar "+TipoProducto +" " +estadoProducto);
-				objProductoService.insertProducto(objProductoSie,TipoProducto, estadoProducto);
+				log.info("a insertar "+TipoProducto +" " );
+				objProductoService.insertProducto(objProductoSie,TipoProducto);
 				mensaje ="Se registro correctamente";
 				objProductoSie = new ProductoSie();
 				limpiarCampos();
 				paginaRetorno = productoSearch.getViewList();
 				}
 			} else {
-				log.info("a actualizar "+ TipoProducto +" " +estadoProducto+ " ruta " + objProductoSie.getRutaimagenproducto());
-				if(TipoProducto>0||estadoProducto>0){
-					objProductoService.updateProducto(objProductoSie,TipoProducto, estadoProducto);
+				log.info("a actualizar "+ TipoProducto +" " + " ruta " + objProductoSie.getRutaimagenproducto());
+				if(TipoProducto>0){
+					objProductoService.updateProducto(objProductoSie,TipoProducto);
 					mensaje ="Se actualizó correctamente";
 					objProductoSie = new ProductoSie();
 					limpiarCampos();
@@ -179,7 +181,7 @@ public class MantenimientoProductoFormAction extends
 	public void limpiarCampos(){
 		setImage(null);
 		TipoProducto=0;
-		estadoProducto=0;
+		foto =null;
 	}
 	
 	/* (non-Javadoc)
@@ -219,7 +221,11 @@ public class MantenimientoProductoFormAction extends
 	 * @return the image
 	 */
 	public StreamedContent getImage() {
-		log.info(" getImage() ");
+		log.info(" getImage() "+ image);
+		if(foto!=null){
+			log.info(" foto!=null" );
+		image =  new DefaultStreamedContent(new ByteArrayInputStream(foto));
+		}
 		return image;
 	}
 
@@ -301,21 +307,6 @@ public class MantenimientoProductoFormAction extends
 	}
 
 	/**
-	 * @return the estadoProducto
-	 */
-	public int getEstadoProducto() {
-		return estadoProducto;
-	}
-
-	/**
-	 * @param estadoProducto
-	 *            the estadoProducto to set
-	 */
-	public void setEstadoProducto(int estadoProducto) {
-		this.estadoProducto = estadoProducto;
-	}
-
-	/**
 	 * @return the comboManager
 	 */
 	public ComboAction getComboManager() {
@@ -343,5 +334,19 @@ public class MantenimientoProductoFormAction extends
 	public void setProductoSearch(MantenimientoProductoSearchAction productoSearch) {
 		this.productoSearch = productoSearch;
 	}
+	
+	/**
+	 * @return the idFoto
+	 */
+	public int getIdFoto() {
+		return idFoto;
+	}
 
+	/**
+	 * @param idFoto the idFoto to set
+	 */
+	public void setIdFoto(int idFoto) {
+		this.idFoto = idFoto;
+	}
+	
 }

@@ -2,12 +2,14 @@ package com.edicsem.pe.sie.client.action.mantenimiento;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.event.ActionEvent;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
@@ -25,7 +27,6 @@ public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstract
 	private List<EmpleadoSie> empleadoList;
 	private EmpleadoSie selectedEmpleado;
 	private boolean editMode;
-	private EmpleadoSie nuevo ;
 	
 	@EJB 
 	private EmpleadoSieService objEmpleadoService;
@@ -44,7 +45,6 @@ public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstract
 		// Colocar valores inicializados
 		objEmpleado = new EmpleadoSie();
 		objEmpleado.setNombreemp("");
-		nuevo = new EmpleadoSie();
 		log.info("despues de inicializar  ");		
 	}
 	
@@ -53,29 +53,12 @@ public class MantenimientoEmpleadoSearchAction extends BaseMantenimientoAbstract
 	 */
 	/*método que lista al hacer click en el menú del template*/
 	public String listar() {
-		// TODO Auto-generated method stub
 		log.info("listarEmpleados 'MantenimientoEmpleadoSearchAction' ");
 		empleadoList = objEmpleadoService.listarEmpleados();
 		if (empleadoList == null) {
 			empleadoList = new ArrayList<EmpleadoSie>();
 		}
 		return getViewList();
-	}
-		
-	public void Nuevo(ActionEvent e) throws Exception {
-		setObjEmpleado(null);
-	}
-
-    /*Gets y Sets*/	
-	public EmpleadoSie getNuevo() {
-		return nuevo;
-	}
-	
-	/**
-	 * @param nuevo the nuevo to set
-	 */
-	public void setNuevo(EmpleadoSie nuevo) {
-		this.nuevo = nuevo;
 	}
 
 	public int getCargoEmpleado() {
