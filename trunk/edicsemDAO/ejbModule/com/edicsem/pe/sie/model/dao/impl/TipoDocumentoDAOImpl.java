@@ -22,7 +22,7 @@ public class TipoDocumentoDAOImpl implements TipoDocumentoDAO{
 	private static Log log = LogFactory.getLog(TipoDocumentoDAOImpl.class);
 	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#insertDemo(com.edicsem.pe.sie.entity.Usuario)
+	 * @see com.edicsem.pe.sie.model.dao.TipoDocumentoDAO#insertarTipoDocumento(com.edicsem.pe.sie.entity.TipoDocumentoIdentidadSie)
 	 */
 	public void insertarTipoDocumento(TipoDocumentoIdentidadSie tipodocumento) {
 	 
@@ -40,7 +40,7 @@ public class TipoDocumentoDAOImpl implements TipoDocumentoDAO{
 	}
 
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#updateDemo(com.edicsem.pe.sie.entity.Usuario)
+	 * @see com.edicsem.pe.sie.model.dao.TipoDocumentoDAO#actualizarTipoDocumento(com.edicsem.pe.sie.entity.TipoDocumentoIdentidadSie)
 	 */
 	public void actualizarTipoDocumento(TipoDocumentoIdentidadSie tipodocumento) {
 		try {
@@ -52,16 +52,16 @@ public class TipoDocumentoDAOImpl implements TipoDocumentoDAO{
 			e.printStackTrace();
 		}
 	}
-
+	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#deleteDemo(java.lang.String)
+	 * @see com.edicsem.pe.sie.model.dao.TipoDocumentoDAO#eliminarTipoDocumento(int)
 	 */
 	public void eliminarTipoDocumento(int id) {
 	
 	}
-
+	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#findDemo(java.lang.String)
+	 * @see com.edicsem.pe.sie.model.dao.TipoDocumentoDAO#buscarTipoDocumento(int)
 	 */
 	public TipoDocumentoIdentidadSie buscarTipoDocumento(int id) {
 		// TODO Auto-generated method stub
@@ -78,8 +78,10 @@ public class TipoDocumentoDAOImpl implements TipoDocumentoDAO{
 				return tipodocumento;
 	}
   
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.TipoDocumentoDAO#listarTipoDocumentos()
+	 */
 	public List listarTipoDocumentos() {
-		log.info("***************** delistar tipodocumento");
 		List lista= null;
 		try {
 			if (log.isInfoEnabled()) {
