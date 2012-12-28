@@ -9,7 +9,7 @@ public interface AlmacenService {
 	public abstract void insertAlmacen( PuntoVentaSie almacen);
 	public abstract void updateAlmacen(PuntoVentaSie almacen);
 	public abstract PuntoVentaSie findAlmacen (int id);
-	public abstract List  listarAlmacenes();
-	public abstract List  listarPuntoVenta();
+	public abstract List listarAlmacenes();
+	public abstract List listarAlmacenXtipo(String tipo);
 	
 }

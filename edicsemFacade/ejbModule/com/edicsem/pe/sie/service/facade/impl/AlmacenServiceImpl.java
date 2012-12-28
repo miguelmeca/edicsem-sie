@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.model.dao.AlmacenDAO;
+import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
 import com.edicsem.pe.sie.service.facade.AlmacenService;
 
 @Stateless
@@ -14,12 +15,15 @@ public class AlmacenServiceImpl implements AlmacenService {
 
 	@EJB
 	private  AlmacenDAO objAlmacenDao;
+	@EJB
+	private  EstadoGeneralDAO objEstadoGeneralDao;
  
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.AlmacenService#insertAlmacen(com.edicsem.pe.sie.entity.PuntoVentaSie)
 	 */
 	
 	public void insertAlmacen(PuntoVentaSie almacen) {
+		almacen.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(13));
 		objAlmacenDao.insertAlmacen(almacen);
 	}
 
@@ -36,7 +40,6 @@ public class AlmacenServiceImpl implements AlmacenService {
 	 */
 	
 	public PuntoVentaSie findAlmacen(int id) {
-		 
 		return objAlmacenDao.findAlmacen(id); 
 	}
 
@@ -49,8 +52,8 @@ public class AlmacenServiceImpl implements AlmacenService {
 		return objAlmacenDao.listarAlmacenes();
 	}
 	
-	public List listarPuntoVenta() {
+	public List listarAlmacenXtipo(String tipo) {
 		 
-		return objAlmacenDao.listarPuntoVenta();
+		return objAlmacenDao.listarPuntoVenta(tipo);
 	}
 }
