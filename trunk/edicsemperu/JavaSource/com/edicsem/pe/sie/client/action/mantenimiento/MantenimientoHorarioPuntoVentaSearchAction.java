@@ -149,7 +149,7 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends
 									log.info(objHorarioPuntoVentaSie.getHoraIngreso()
 											+ " --->  getHoraIngreso "
 											+ listaHorario.get(i).getHoraIngreso());
-									mensaje = "La hora de Ingreso es errónea";
+									mensaje = "La hora de Ingreso es errónea " ;
 									break;
 								} else if (objHorarioPuntoVentaSie.getHoraSalida().equals(
 											listaHorario.get(i).getHoraSalida())
