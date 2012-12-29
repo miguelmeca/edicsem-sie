@@ -92,6 +92,20 @@ function validarLetrasyNumeros(e) { // 1
     return patron.test(te); // 6
 } 
 </script>
+
+
+
+<script	 type="text/javascript">
+function validarEspaciosLetrasNumeros(e) { // 1
+    tecla = (document.all) ? e.keyCode : e.which; // 2
+    if (tecla==8) return true; // 3
+    patron = /[QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890.-_\s]/; // Acepta solo Letras
+    te = String.fromCharCode(tecla); // 5
+    return patron.test(te); // 6
+} 
+</script>
+
+
 <!--  FIN Validar los Datos de un Formulario -->
 	</h:head>
 	<f:loadBundle var="message"
@@ -1430,14 +1444,14 @@ message="La Empresa no se puede elminar ya que se encontraron
 						label="descripcion"
 						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
 						style="font-weight:bold" rendered="#{empresaForm.editMode}"
-						onkeypress="return validarLetrasyNumeros(event)" 
+						onkeypress="return validarEspaciosLetrasNumeros(event)" 
 						title="Ejm: Ediciones Sembrando "  />
 
 					<p:inputText id="descripcion2" value="#{empresaForm.descripcion}"
 						required="true" label="descripcion"
 						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
 						style="font-weight:bold" rendered="#{!empresaForm.editMode}" 
-						onkeypress="return validarLetrasyNumeros(event)"
+						onkeypress="return validarEspaciosLetrasNumeros(event)"
 						title="Ejm: Ediciones Sembrando "/>
 					<p:message for="descripcion1" />
 				</h:panelGroup>
@@ -1596,7 +1610,7 @@ value="#{MetaMesFormAction.date2}"
 
 
 	<h:form id="PupudDomiCli">
-		<p:dialog header="Ingrese Nuevo Cargo" widgetVar="carDialogDC"
+		<p:dialog header="Domicilio" widgetVar="carDialogDC"
 			showEffect="fade" hideEffect="explode" modal="true" width="450"
 			position="center">
 
@@ -1645,14 +1659,14 @@ value="#{MetaMesFormAction.date2}"
 			
 				<h:panelGrid id="display10" columns="2"  >
 
-				<h:outputText value="#{message['cliente.domicilio']}" />
+				<h:outputText value="#{message['cliente.domicilio.ubigeo']}" />
 				<h:panelGroup>
 				
 					<p:inputText id="domicilio1"
 						value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.domicilio}" required="true"
 						requiredMessage="#{message['cliente.domicilio.validation']}"
 						style="font-weight:bold" 
-						onkeypress="return validarLetrasyNumeros(event)" />
+						onkeypress="return validarEspaciosLetrasNumeros(event)" />
 						
 						
 				</h:panelGroup>
@@ -1666,7 +1680,7 @@ value="#{MetaMesFormAction.date2}"
 						value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.referencia}" required="true"
 						requiredMessage="#{message['cliente.referencia.validation']}"
 						style="font-weight:bold" 
-						onkeypress="return validarLetrasyNumeros(event)" />
+						onkeypress="return validarEspaciosLetrasNumeros(event)" />
 						
 						
 				</h:panelGroup>
