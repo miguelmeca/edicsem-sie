@@ -108,6 +108,7 @@ body {
 						<p:menuitem value="Mantenimiento Meta Mes" ajax="false" action="metaMes.jsf" />
 						<p:menuitem value="Mantenimiento Meta Empleado" ajax="false" action="#{metaEmpleadoSearch.listar}" />
 						<p:menuitem value="Mantenimiento Comprobante" ajax="false" action="#{comprobanteSearch.listar}" />
+						<p:menuitem value="Mantenimiento TipoProducto" ajax="false" action="#{tipoProductoSearch.listar}" />
 					</p:submenu>
 					<p:submenu label="Opciones Avanzadas">
 						<p:menuitem value="Movimiento Mercader&iacute;a" ajax="false" action="#{movimientoMercaderia.listar}" />
@@ -830,6 +831,83 @@ body {
 	</h:form>
 
 	<!-- 	FIN DESACTICAR (ESTADOS)  -->
+	
+		<!--EN UN SOLO PUPAP NUEVO Y EDITAR TIPO PRODUCTO	  -->
+
+
+	<h:form id="NuevoModificaTipoProd">
+		<p:dialog header="Ingrese Nuevo Tipo de Producto" widgetVar="DialogTipoProd"
+			showEffect="fade" hideEffect="explode" modal="true" width="300"
+			position="center">
+
+			<h:panelGrid id="display" columns="2" cellpadding="2"
+				style="margin:0 auto;">
+
+				<h:outputText value="#{message['codigo.tipoProducto']}" />
+
+				<h:panelGroup>
+
+					<h:inputText id="codigo"
+						value="#{mantenimientoTipoProductoFormAction.objTipoProductoSie.codtipoproducto}"
+						required="true" label="codigo"
+						requiredMessage="#{message['codigo.tipoProducto.validation']}"
+						style="font-weight:bold"
+						/>
+
+				</h:panelGroup>
+				
+				<h:outputText value="#{message['nombre.tipoProducto']}" />
+
+				<h:panelGroup>
+
+					<h:inputText id="nombre"
+						value="#{mantenimientoTipoProductoFormAction.objTipoProductoSie.nombretipoproducto}"
+						required="true" label="tipoProducto"
+						requiredMessage="#{message['nombre.tipoProducto.validation']}"
+						style="font-weight:bold"
+						/>
+
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<p:spacer height="20px"></p:spacer>
+					<p:commandButton id="btn" value="Guardar" update="panel"
+						action="#{mantenimientoTipoProductoFormAction.insertar}"
+						ajax="false" icon="ui-icon ui-icon-disk" />
+
+				</h:panelGroup>
+
+			</h:panelGrid>
+
+		</p:dialog>
+
+	</h:form>
+	<!-- FIN PUPAP NUEVO Y EDITAR  TIPO PRODUCTO-->
+	
+	<!--	  INICIO DESACTIVAR	TIPO PRODUCTO  -->
+
+	<h:form>
+
+		<p:confirmDialog id="confirmDeshabilitartipoProducto"
+			message="Esta seguro de deshabilitar este tipo de producto?" width="325"
+			height="100" showEffect="explode" hideEffect="explode"
+			header="Confirm" severity="alert" widgetVar="confirmationTipoProd"
+			position="center">
+
+			<p:commandButton type="submit" value="Si"
+				action="#{mantenimientoTipoProductoFormAction.updateDeshabilitar}"
+				update=":frmTipoProdFormList:tipoProductoTable"
+				oncomplete="confirmationTipoProd.hide()" ajax="false">
+			</p:commandButton>
+
+			<p:commandButton value="No" onclick="confirmationTipoProd.hide()"
+				type="button" />
+
+		</p:confirmDialog>
+
+	</h:form>
+
+	<!-- 	FIN DESACTIVAR TIPO PRODUCTO  -->
 	
 	<!--	  INICIO DESACTIVAR	 TELEFONO DE CLIENTE  -->
 
