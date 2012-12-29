@@ -3,6 +3,10 @@ package com.edicsem.pe.sie.service.facade.impl;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
 import com.edicsem.pe.sie.model.dao.ProductoDAO;
@@ -18,6 +22,8 @@ public class ProductoServiceImpl implements ProductoService {
 	private TipoProductoDAO objTipoProductoDao;
 	@EJB
 	private EstadoGeneralDAO objestadoDao;
+	
+	public static Log log = LogFactory.getLog(EmpleadoSieServiceImpl.class);
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ProductoService#insertProducto(com.edicsem.pe.sie.entity.ProductoSie, int)
@@ -58,4 +64,14 @@ public class ProductoServiceImpl implements ProductoService {
 	public List listarProductosXTipo(int tipoProducto) { 
 		return objProductoDao.listarProductosXTipo(tipoProducto); 
 	}
+	
+	
+	
+
+
+	public List listarProductoxEmpresas(int parametroObtenido) {
+		log.info("dentro del servicio listar Producto x Empresas ");
+		return objProductoDao.listarProductoxEmpresas(parametroObtenido);
+	}
+
 }
