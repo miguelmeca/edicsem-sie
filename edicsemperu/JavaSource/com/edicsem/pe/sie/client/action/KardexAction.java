@@ -6,8 +6,10 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,6 +17,8 @@ import org.apache.commons.logging.LogFactory;
 import com.edicsem.pe.sie.entity.KardexSie;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.KardexService;
+import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name = "kardexAction")
@@ -23,8 +27,9 @@ public class KardexAction extends BaseMantenimientoAbstractAction {
 	private Log log = LogFactory.getLog(KardexAction.class);
 	private List<KardexSie> kardexList;
 	private KardexSie objKardexSie;
-	private String mensaje;
+	private String mensaje,idtipoAlmacen;
 	private int tipoProducto, stockActual;
+	private String valorActual;
 	private int idproducto, idalmacen, idempresa=0;
 	private Date fechaDesde, fechaHasta;
 	private List<KardexSie> listadoKardex;
@@ -34,7 +39,7 @@ public class KardexAction extends BaseMantenimientoAbstractAction {
 	private KardexService objKardexService;
 	@EJB
 	private EmpresaService objEmpresaService;
-
+	
 	public KardexAction() {
 		log.info("inicializando constructor MantenimientoKardex");
 		init();
@@ -44,7 +49,9 @@ public class KardexAction extends BaseMantenimientoAbstractAction {
 		log.info("init()");
 		objKardexSie = new KardexSie();
 		stockActual = 0;
+		valorActual ="";
 		idempresa=0;
+		kardexList = new ArrayList<KardexSie>();
 	}
 	/*
 	 * (non-Javadoc)
@@ -76,23 +83,36 @@ public class KardexAction extends BaseMantenimientoAbstractAction {
 	 * #consultar()
 	 */
 	public String consultar() throws Exception {
+		mensaje =null;
 		stockActual=0;
-		log.info("entreando a consultar()");
+		kardexList = new ArrayList<KardexSie>();
+		log.info("entreando a consultar() x");
 		
-		log.info(" dentro de getKardexList  " + getTipoProducto() + ""
-				+ getIdproducto() + "" + getIdalmacen());
-
+		log.info(" dentro de getKardexList  " + getTipoProducto() + " " + getIdproducto() + "" + getIdalmacen());
+		log.info(" f  "+fechaDesde +" "+fechaHasta);
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			String fechaD = "", fechaH = "";
-			if (fechaDesde == null)
+			log.info((fechaDesde == null )+"  - "+(fechaHasta != null));
+			log.info((fechaDesde == null && fechaHasta != null));
+			if (fechaDesde == null && fechaHasta != null){
+				log.info(" f  ");
+				mensaje ="Por favor ingresar una fecha de inicio ";
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
+			}else{
+			if (fechaDesde != null && fechaHasta == null){
+				//la fecha hasta será la actual
+				fechaHasta= DateUtil.getToday().getTime();
+			}
+			if (fechaDesde == null){
 				fechaD = "";
-			if (fechaDesde == null)
+			}if (fechaHasta == null){
 				fechaH = "";
-			else {
+			}else if (fechaDesde != null && fechaHasta != null){
 				fechaD = "" + sdf.format(fechaDesde);
 				fechaH = "" + sdf.format(fechaHasta);
-			}
+			}log.info("con ");
 			kardexList = objKardexService.ConsultaProductos(getIdproducto(), getIdalmacen(), fechaD, fechaH);
+
 			if(kardexList.size()==0){
 				kardexList = new ArrayList<KardexSie>();
 				stockActual=0;
@@ -100,13 +120,16 @@ public class KardexAction extends BaseMantenimientoAbstractAction {
 				
 				log.info("cantidad existente :D "+ kardexList.get(kardexList.size() - 1).getCantexistencia());
 				stockActual = kardexList.get(kardexList.size() - 1).getCantexistencia();
+				valorActual = kardexList.get(kardexList.size() - 1).getValorunitarioexistencia();
 				log.info("nuevo stock actual " + getStockActual());
 				setMensaje(" consulta realizada ");
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 			}
+			}
+			FacesContext.getCurrentInstance().addMessage(null, msg);
 		return getViewList();
 	}
 	
-
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
 	 */
@@ -336,6 +359,34 @@ public class KardexAction extends BaseMantenimientoAbstractAction {
 	 */
 	public void setNewRecord(boolean newRecord) {
 		this.newRecord = newRecord;
+	}
+
+	/**
+	 * @return the idtipoAlmacen
+	 */
+	public String getIdtipoAlmacen() {
+		return idtipoAlmacen;
+	}
+
+	/**
+	 * @param idtipoAlmacen the idtipoAlmacen to set
+	 */
+	public void setIdtipoAlmacen(String idtipoAlmacen) {
+		this.idtipoAlmacen = idtipoAlmacen;
+	}
+
+	/**
+	 * @return the valorActual
+	 */
+	public String getValorActual() {
+		return valorActual;
+	}
+
+	/**
+	 * @param valorActual the valorActual to set
+	 */
+	public void setValorActual(String valorActual) {
+		this.valorActual = valorActual;
 	}
 	
 }

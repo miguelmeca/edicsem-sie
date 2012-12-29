@@ -70,11 +70,12 @@ public class ComboAction {
 	private static FacesMessage msg = null;
 	private String mensaje;
 	private String codigoEstado;
-	private String idProvincia, idDepartamento;
+	private String idProvincia, idDepartamento,tipoAlmacen;
 	private int idCargo, idFactor, tipoImporte,idEmpresa;
 	private Map<String, Integer> tipoitems = new HashMap<String, Integer>();
 	private Map<String, Integer> productositems = new HashMap<String, Integer>();
 	private Map<String, Integer> almacenItems = new HashMap<String, Integer>();
+	private Map<String, Integer> almacenItemsXTipo = new HashMap<String, Integer>();
 	private Map<String, Integer> tipoDocumentoItems = new HashMap<String, Integer>();
 	private Map<String, Integer> cargoEmpleadoItems = new HashMap<String, Integer>();
 	private int tipoProducto;
@@ -1234,6 +1235,62 @@ public class ComboAction {
 	 */
 	public void setTipoPagoItems(Map<String, Integer> tipoPagoItems) {
 		this.tipoPagoItems = tipoPagoItems;
+	}
+
+	/**
+	 * @return the almacenItemsXTipo
+	 */
+	public Map<String, Integer> getAlmacenItemsXTipo() {
+		List lista = new ArrayList<PuntoVentaSie>();
+		almacenItemsXTipo = new HashMap<String, Integer>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getAlmacenItemsXTipo()'");
+			}
+			lista = objAlmacenService.listarAlmacenXtipo(tipoAlmacen);
+			log.info(" tamaño " + lista.size());
+			PuntoVentaSie punto;
+			for (int i = 0; i < lista.size(); i++) {
+				punto = new PuntoVentaSie();
+				if (lista.get(i) != null) {
+					punto = (PuntoVentaSie) lista.get(i);
+					almacenItemsXTipo.put(punto.getDescripcion(),
+							punto.getIdpuntoventa());
+				} else {
+					break;
+				}
+			}
+			log.info("finalizacion del metodo 'getAlmacenItemsXTipo'  ");
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return almacenItemsXTipo;
+	}
+
+	/**
+	 * @param almacenItemsXTipo the almacenItemsXTipo to set
+	 */
+	public void setAlmacenItemsXTipo(Map<String, Integer> almacenItemsXTipo) {
+		this.almacenItemsXTipo = almacenItemsXTipo;
+	}
+
+	/**
+	 * @return the tipoAlmacen
+	 */
+	public String getTipoAlmacen() {
+		return tipoAlmacen;
+	}
+
+	/**
+	 * @param tipoAlmacen the tipoAlmacen to set
+	 */
+	public void setTipoAlmacen(String tipoAlmacen) {
+		this.tipoAlmacen = tipoAlmacen;
 	}
 	
 }
