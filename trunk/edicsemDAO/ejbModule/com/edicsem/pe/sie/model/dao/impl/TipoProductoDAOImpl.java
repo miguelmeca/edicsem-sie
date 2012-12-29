@@ -11,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
   
 import com.edicsem.pe.sie.entity.ProductoSie;
+import com.edicsem.pe.sie.entity.TipoCasaSie;
 import com.edicsem.pe.sie.entity.TipoProductoSie;
 import com.edicsem.pe.sie.model.dao.TipoProductoDAO;
 
@@ -48,7 +49,7 @@ public class TipoProductoDAOImpl implements TipoProductoDAO{
 		 
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("insertar Tipo Producto"+ tipoproducto.getCodtipoproducto()+" nombre "+ tipoproducto.getNombretipoproducto());
+				log.info("insertar Tipo Producto "+ tipoproducto.getCodtipoproducto()+" nombre "+ tipoproducto.getNombretipoproducto());
 			} 
 			em.persist(tipoproducto);
 		} catch (Exception e) {
@@ -68,6 +69,17 @@ public class TipoProductoDAOImpl implements TipoProductoDAO{
 			e.printStackTrace();
 		}
 		return tipoproducto;
+	}
+	
+	public void updateTipoProducto(TipoProductoSie producto) {
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Actualizar el tipo de producto");
+			}
+			em.merge(producto);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
