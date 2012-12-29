@@ -10,16 +10,7 @@
 	<ui:define name="body">
 		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
 			Cliente</h1>
-			
-			<script type="text/javascript">
-function validar(e) { // 1
-    tecla = (document.all) ? e.keyCode : e.which; // 2
-    if (tecla==8) return true; // 3
-    patron =/[A-Za-z\s]/; // 4 solo acepta letras
-    te = String.fromCharCode(tecla); // 5
-    return patron.test(te); // 6
-} 
-</script>
+	
 		<h:form id="frmcliente">
 <center>
 <p:commandButton value="Regresar"
