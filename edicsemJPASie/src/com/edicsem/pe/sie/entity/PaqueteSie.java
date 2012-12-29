@@ -31,6 +31,7 @@ public class PaqueteSie implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_PAQUETE_IDPAQUETE_GENERATOR")
 	private Integer idpaquete;
 
+	private String codpaquete;	
 	private String descripcionpaquete;
 	
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
@@ -113,6 +114,20 @@ public class PaqueteSie implements Serializable {
 
 	public void setTbDetPaquetes(Set<DetPaqueteSie> tbDetPaquetes) {
 		this.tbDetPaquetes = tbDetPaquetes;
+	}
+
+	/**
+	 * @return the codpaquete
+	 */
+	public String getCodpaquete() {
+		return codpaquete;
+	}
+
+	/**
+	 * @param codpaquete the codpaquete to set
+	 */
+	public void setCodpaquete(String codpaquete) {
+		this.codpaquete = codpaquete;
 	}
 	
 }
