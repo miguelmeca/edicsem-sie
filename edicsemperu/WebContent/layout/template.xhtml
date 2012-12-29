@@ -61,6 +61,38 @@ body {
         background: #D8D8D8;
 }
 </style>
+<!-- Validar los Datos de un Formulario -->
+<script	 type="text/javascript">
+function validarNumeros(e) { // 1
+    tecla = (document.all) ? e.keyCode : e.which; // 2
+    if (tecla==8) return true; // 3
+    patron = /\d/; // Acepta solo Numeros 
+    te = String.fromCharCode(tecla); // 5
+    return patron.test(te); // 6
+} 
+</script>
+   
+   
+<script	 type="text/javascript">
+function validarLetras(e) { // 1
+    tecla = (document.all) ? e.keyCode : e.which; // 2
+    if (tecla==8) return true; // 3
+    patron =/[A-Za-z\s]/; // Acepta solo Letras
+    te = String.fromCharCode(tecla); // 5
+    return patron.test(te); // 6
+} 
+</script>
+
+<script	 type="text/javascript">
+function validarLetrasyNumeros(e) { // 1
+    tecla = (document.all) ? e.keyCode : e.which; // 2
+    if (tecla==8) return true; // 3
+    patron = /\w/; // Acepta solo Letras
+    te = String.fromCharCode(tecla); // 5
+    return patron.test(te); // 6
+} 
+</script>
+<!--  FIN Validar los Datos de un Formulario -->
 	</h:head>
 	<f:loadBundle var="message"
 		basename="com.edicsem.pe.sie.client.properties.ApplicationResources" />
@@ -100,9 +132,13 @@ body {
 						<p:menuitem value="Mantenimiento Incidencias" ajax="false" action="#{mantenimientoIncidenciaSearch.listar}" />
 						<p:menuitem value="Mantenimiento Cargo Empleado" ajax="false" action="#{mantenimientoCargoEmpleadoSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento Empresa" ajax="false" action="#{empresaSearch.listar}" />
-						<p:menuitem value="mantenimiento Empresa Producto" ajax="false" action="mantenimientoEmpresaProductoFormList.jsf" />
-						<p:menuitem value="mantenimiento Empresa Empleado" ajax="false"  action="#{empresaEmpleProducSearchAction.listarEmpleadosXempresa}"  />
-						<p:menuitem value="Mantenimiento de Sanciones " ajax="false" action="#{factorSancionSearch.listar}" />
+						<p:menuitem value="mantenimiento Empresa Producto" ajax="false" action="#{empresaForm.productoList}" />
+						<p:menuitem value="mantenimiento Empresa Empleado" ajax="false"  action="#{empresaForm.empleadoList}"  />
+						<p:menuitem value="Mantenimiento de Sanciones" ajax="false" action="#{factorSancionSearch.listar}" />
+						
+						<p:menuitem value="Mantenimiento de Paquete biblico " ajax="false" action="#{MantenimientoPaqueteBiblicoSearchAction.listar}" />
+						<p:menuitem value="Mantenimiento Detalle Paquete biblico " ajax="false" action="#{MantenimientoDetallePaqueteBiblicoSearchAction.listar}" />
+						
 						<p:menuitem value="Mantenimiento Cliente" update="messages" ajax="false" action="#{MantenimientoClienteSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento Parámetros del sistema" ajax="false" action="#{mantenimientoParametroSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento Meta Mes" ajax="false" action="metaMes.jsf" />
@@ -586,6 +622,28 @@ body {
 		</p:dialog>
 	</h:form>
 				
+				
+				<!--  Mantenimiento Paquete Biblico -->
+	<h:form id="formPaqueteBiblico">
+		<p:dialog header="Registro/Modificacion Paquete Biblico" widgetVar="PaqueteBiblico" showEffect="fade"
+			hideEffect="explode" modal="true" position="center">
+			<p:fieldset legend="Paquete Biblico" >
+			<h:panelGrid id="display" columns="4"  >
+			
+			
+				<h:outputText value="Codigo de Paquete :" />			
+				<p:inputText value="#{MantenimientoPaqueteBiblicoSearchAction.objPaqueteSie.codpaquete}" />
+				
+				<h:outputText value="Descripcion de Paquete :" />				
+				<p:inputText value="#{MantenimientoPaqueteBiblicoSearchAction.objPaqueteSie.descripcionpaquete}" />
+				
+				<p:commandButton value="Grabar" action="#{MantenimientoPaqueteBiblicoSearchAction.insertar}" oncomplete="PaqueteBiblico.hide()" 
+				icon="ui-icon ui-icon-pencil" ajax="false" update="panel" />
+				</h:panelGrid>
+			</p:fieldset>
+		</p:dialog>
+	</h:form>
+				
 	<!--  Mantenimiento Det Sancion Cargo -->
 	<h:form id="formDetSancionCargo">
 		<p:dialog header="Modificacion Sancion por Cargo" widgetVar="sancionCargoDialog" showEffect="fade"
@@ -762,14 +820,18 @@ body {
 						required="true" label="descripcion"
 						requiredMessage="#{message['Cargoempleado.descripcion.validation']}"
 						style="font-weight:bold"
-						rendered="#{mantenimientoCargoEmpleadoFormAction.editMode}" />
+						rendered="#{mantenimientoCargoEmpleadoFormAction.editMode}" 
+						onkeypress="return validarLetras(event)"
+						 title="nombre del cargo de empleado"/>
 
 					<p:inputText id="descripcion2"
 						value="#{mantenimientoCargoEmpleadoFormAction.descripcion}"
 						required="true" label="descripcion"
 						requiredMessage="#{message['Cargoempleado.descripcion.validation']}"
 						style="font-weight:bold"
-						rendered="#{!mantenimientoCargoEmpleadoFormAction.editMode}" />
+						rendered="#{!mantenimientoCargoEmpleadoFormAction.editMode}" 
+						onkeypress="return validarLetras(event)"
+						 title="nombre del cargo de empleado"/>
 					<p:message for="descripcion1" />
 
 				</h:panelGroup>
@@ -1122,8 +1184,13 @@ body {
 	<p:confirmDialog id="confirmDeshabilitarPro" message="Esta seguro de deshabilitar dicho proveedor?" width="325" height="100" showEffect="explode" 
 				hideEffect="explode"  header="Confirm" severity="alert" widgetVar="confirmation" position="center">
 					   
-       			 <p:commandButton  type="submit" value="Si"  action="#{mantenimientoProveedorFormAction.deshabilitar}"  
-       			 update=":manteProList:listaPersonas" oncomplete="confirmation.hide()" ajax="false">
+       			 <p:commandButton 
+       			 type="submit" 
+       			 value="Si"  
+       			 action="#{mantenimientoProveedorFormAction.deshabilitar}"  
+       			 update=":manteProList:listaPersonas" 
+       			 oncomplete="confirmation.hide()" 
+       			 ajax="false">
       			 </p:commandButton>  
         
         		<p:commandButton value="No" onclick="confirmation.hide()" type="button" />  
@@ -1145,12 +1212,12 @@ body {
 			     header="Confirm" severity="alert" widgetVar="confirmationEmpresa"
 				 position="center">
 
-<p:commandButton type="submit" value="Si"
-				action="#{empresaForm.Eliminarempresa}"
-				
-				
-	
-			
+<p:commandButton type="submit"
+				 value="Si"
+				 action="#{empresaForm.Eliminarempresa}" 
+				 oncomplete="confirmationEmpresa.hide()"
+				 update=":frmfrmEmpresaFormListpresaTable" 				
+	             ajax="false"
 />
 
 <p:commandButton value="No" onclick="confirmationEmpresa.hide()"
@@ -1179,8 +1246,6 @@ body {
 action="mantenimientoEmpresaEmpleadoFormList.jsf"
 
 > 
-
-
 </p:commandButton>
 
 		<p:commandButton value="No" onclick="confirmationEmpresa.hide()" 
@@ -1200,7 +1265,8 @@ action="mantenimientoEmpresaEmpleadoFormList.jsf"
 <h:form>
 
 		<p:confirmDialog id="confirmDeshabilitarEmpresa222"
-message="La Empresa no se puede elminar ya que se encontraron productos con esta empresa, desea derivar estos empleados a otra empresa ?" 
+message="La Empresa no se puede elminar ya que se encontraron
+ productos con esta empresa, desea derivar estos empleados a otra empresa ?" 
 			 width="325"
 			height="100" showEffect="explode" hideEffect="explode"
 			header="Confirm" severity="alert" widgetVar="someDialog2"
@@ -1336,12 +1402,16 @@ message="La Empresa no se puede elminar ya que se encontraron productos con esta
 						value="#{empresaForm.objEmpresaSie.razonsocial}" required="true"
 						label="razonsocial"
 						requiredMessage="#{message['mantenimiento.razonSocial.validation']}"
-						style="font-weight:bold" rendered="#{empresaForm.editMode}" />
+						style="font-weight:bold" rendered="#{empresaForm.editMode}"
+						onkeypress="return validarLetras(event)" 
+						 title="Ejm: EDICSEM "/>
 
 					<p:inputText id="razonSocial2" value="#{empresaForm.razonsocial}"
 						required="true" label="razonsocial"
 						requiredMessage="#{message['mantenimiento.razonSocial.validation']}"
-						style="font-weight:bold" rendered="#{!empresaForm.editMode}" />
+						style="font-weight:bold" rendered="#{!empresaForm.editMode}" 
+						onkeypress="return validarLetras(event)"
+						title="Ejm: EDICSEM "/>
 					<p:message for="razonSocial1" />
 
 				</h:panelGroup>
@@ -1357,12 +1427,16 @@ message="La Empresa no se puede elminar ya que se encontraron productos con esta
 						value="#{empresaForm.objEmpresaSie.descripcion}" required="true"
 						label="descripcion"
 						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" rendered="#{empresaForm.editMode}" />
+						style="font-weight:bold" rendered="#{empresaForm.editMode}"
+						onkeypress="return validarLetrasyNumeros(event)" 
+						title="Ejm: Ediciones Sembrando "  />
 
 					<p:inputText id="descripcion2" value="#{empresaForm.descripcion}"
 						required="true" label="descripcion"
 						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" rendered="#{!empresaForm.editMode}" />
+						style="font-weight:bold" rendered="#{!empresaForm.editMode}" 
+						onkeypress="return validarLetrasyNumeros(event)"
+						title="Ejm: Ediciones Sembrando "/>
 					<p:message for="descripcion1" />
 				</h:panelGroup>
 
@@ -1398,12 +1472,14 @@ message="La Empresa no se puede elminar ya que se encontraron productos con esta
 						value="#{empresaForm.objEmpresaSie.numtelefono}" mask="999-9999"
 						required="true" label="telefono"
 						requiredMessage="#{message['mantenimiento.numtel.validation']}"
-						style="font-weight:bold" rendered="#{empresaForm.editMode}" />
+						style="font-weight:bold" rendered="#{empresaForm.editMode}" 
+						title="no ingrese el codigo de la ciudad ejemplo: 01" />
 
 					<p:inputMask id="telefono2" value="#{empresaForm.numtel}"
 						required="true" label="telefono" mask="999-9999"
 						requiredMessage="#{message['mantenimiento.numtel.validation']}"
-						style="font-weight:bold" rendered="#{!empresaForm.editMode}" />
+						style="font-weight:bold" rendered="#{!empresaForm.editMode}"
+						title="no ingrese el codigo de la ciudad ejemplo: 01" />
 					<p:message for="telefono1" />
 
 				</h:panelGroup>
@@ -1417,22 +1493,26 @@ message="La Empresa no se puede elminar ya que se encontraron productos con esta
 					<p:inputText id="email1" value="#{empresaForm.objEmpresaSie.email}"
 						required="true" label="email"
 						requiredMessage="#{message['mantenimiento.email.validation']}"
-						style="font-weight:bold" rendered="#{empresaForm.editMode}" />
+						style="font-weight:bold" rendered="#{empresaForm.editMode}" 
+						title="para el @ presione: la tecla Alt + 64 y en laptop Alt Gr + Q"/>
 
 					<p:inputText id="email2" value="#{empresaForm.email}"
 						required="true" label="email"
 						requiredMessage="#{message['mantenimiento.email.validation']}"
-						style="font-weight:bold" rendered="#{!empresaForm.editMode}" />
+						style="font-weight:bold" rendered="#{!empresaForm.editMode}" 
+						title="para el @ presione: la tecla Alt + 64 y en laptop Alt Gr + Q"/>
 					<p:message for="email1" />
 				</h:panelGroup>
 
 				<!-- BOTON GUARDAR -->
 				<h:panelGroup>
 
-					<p:spacer height="80px" width="80"></p:spacer>
+					<p:spacer height="20px" width="80"></p:spacer>
 					<p:commandButton id="btn" value="Guardar" update="panel"
 						action="#{empresaForm.insertar}" ajax="false"
-						icon="ui-icon ui-icon-disk" />
+						icon="ui-icon ui-icon-disk"
+						title="verifique bien los datos, antes de hacer clic en Guardar" />
+						
 
 				</h:panelGroup>
 
@@ -1569,7 +1649,8 @@ value="#{MetaMesFormAction.date2}"
 					<p:inputText id="domicilio1"
 						value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.domicilio}" required="true"
 						requiredMessage="#{message['cliente.domicilio.validation']}"
-						style="font-weight:bold"  />
+						style="font-weight:bold" 
+						onkeypress="return validarLetrasyNumeros(event)" />
 						
 						
 				</h:panelGroup>
@@ -1582,7 +1663,8 @@ value="#{MetaMesFormAction.date2}"
 					<p:inputText 
 						value="#{MantenimientoClienteFormAction.objDomicilioPersonaSie.referencia}" required="true"
 						requiredMessage="#{message['cliente.referencia.validation']}"
-						style="font-weight:bold"  />
+						style="font-weight:bold" 
+						onkeypress="return validarLetrasyNumeros(event)" />
 						
 						
 				</h:panelGroup>
