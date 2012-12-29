@@ -26,9 +26,10 @@ public class Constants {
 	
 	public static final String MANT_EMPRESA_FORM_PAGE = "mantenimientoEmpresaForm";
 	public static final String MANT_EMPRESA_FORM_LIST_PAGE = "mantenimientoEmpresaFormList";
+	public static final String MANT_EMPRESA_EMPLEADO_PRODUCTO_FORM_LIST_PAGE = "mantenimientoEmpresaEmpleadoFormList";
 	public static final String MANT_META_LIST_PAGE = "metaEmpresa";
 
-	public static final String MANT_EMPRESA_EMPLEADO_PRODUCTO_FORM_LIST_PAGE = null;
+
 	
 	public static final String MANT_CLIENTE_FORM_LIST_PAGE = "mantenimientoClienteFormList";
 	public static final String MANT_CLIENTE_FORM_PAGE = "mantenimientoClienteForm";
@@ -66,6 +67,10 @@ public class Constants {
 	
 	public static final String MANT_SANCION_FORM_LIST_PAGE = "mantenimientoSancionList";
 	public static final String MANT_SANCION_FORM_PAGE  = "mantenimientoSancionForm";
+	
+	public static final String MANT_PAQUETEBIBLICO_FORM_LIST_PAGE = "mantenimientoPaqueteBiblicoList";
+	public static final String MANT_DETALLEPAQUETEBIBLICO_FORM_LIST_PAGE = "mantenimientoDetallePaqueteBiblicoList.xhtml";
+	public static final String MANT_DETALLE_PAQUETEBIBLICO_FORM_PAGE  = "mantenimientoDetallePaqueteBiblicoForm";
 	
 	public static final String MANT_PAGO_VENDEDOR_FORM_PAGE = "mantenimientoPagoVentaForm";
 	public static final String MANT_PAGO_VENDEDOR_LIST_PAGE = "mantenimientoPagoVentaList";
