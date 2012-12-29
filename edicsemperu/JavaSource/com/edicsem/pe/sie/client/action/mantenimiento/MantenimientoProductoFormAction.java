@@ -38,7 +38,6 @@ public class MantenimientoProductoFormAction extends
 	private int TipoProducto, idFoto=1;
 	private StreamedContent image;
 	private ProductoSie objProductoSie;
-	private ProductoSie selectedProducto;
 	private boolean newRecord = false;
 	byte[] foto ;
 	@ManagedProperty(value = "#{productoSearch}")
@@ -137,20 +136,18 @@ public class MantenimientoProductoFormAction extends
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()' " );
 			}
-			
-			if (isNewRecord()) {
-				if(objProductoSie.getStkmaximo()<= objProductoSie.getStkminimoproducto()){
-					mensaje ="El stock minimo no puede ser mayor o igual al máximo";
-					paginaRetorno = productoSearch.getViewMant();
-					msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
+			if(objProductoSie.getStkmaximo()<= objProductoSie.getStkminimoproducto()){
+				mensaje ="El stock minimo no puede ser mayor o igual al máximo";
+				paginaRetorno = productoSearch.getViewMant();
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
+			}
+			else if (isNewRecord()) {
+				if (image == null) {
+					log.info("imagen nula");
+					String rutaDefecto ="C:\\proyecto-sie\\ws-sie\\edicsemperu\\WebContent\\images\\bibliaXDefecto.png";
+					log.info("ruta" + rutaDefecto);
+					objProductoSie.setRutaimagenproducto(rutaDefecto);
 				}
-				else{
-					 if (image == null) {
-						log.info("imagen nula");
-						String rutaDefecto ="C:\\proyecto-sie\\ws-sie\\edicsemperu\\WebContent\\images\\bibliaXDefecto.png";
-						log.info("ruta" + rutaDefecto);
-						objProductoSie.setRutaimagenproducto(rutaDefecto);
-					 }
 				log.info("a insertar "+TipoProducto +" " );
 				objProductoService.insertProducto(objProductoSie,TipoProducto);
 				mensaje ="Se registro correctamente";
@@ -158,7 +155,6 @@ public class MantenimientoProductoFormAction extends
 				limpiarCampos();
 				paginaRetorno = productoSearch.listar();
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
-				}
 			} else {
 				log.info("a actualizar "+ TipoProducto +" " + " ruta " + objProductoSie.getRutaimagenproducto());
 				if(TipoProducto>0){
@@ -199,16 +195,7 @@ public class MantenimientoProductoFormAction extends
 		log.info("en el consultar ");
 		return getViewMant();
 	}
-
-	public ProductoSie getSelectedProducto() {
-		return selectedProducto;
-	}
-
-	public void setSelectedProducto(ProductoSie selectedProducto) {
-		this.selectedProducto = selectedProducto;
-	}
-
-
+	
 	/**
 	 * @return the image
 	 */
