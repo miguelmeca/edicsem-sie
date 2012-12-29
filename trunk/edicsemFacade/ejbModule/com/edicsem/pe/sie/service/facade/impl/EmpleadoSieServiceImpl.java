@@ -21,6 +21,7 @@ import com.edicsem.pe.sie.model.dao.TipoCasaDAO;
 import com.edicsem.pe.sie.model.dao.TipoDocumentoDAO;
 import com.edicsem.pe.sie.model.dao.UbigeoDAO;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
+import com.edicsem.pe.sie.service.facade.ProductoService;
 
 @Stateless
 public class EmpleadoSieServiceImpl implements EmpleadoSieService{
@@ -37,6 +38,8 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	private ContratoEmpleadoDAO objContratoEmpleadoDao;
 	@EJB
 	private EstadoGeneralDAO objEstadoDao;
+	@EJB
+	private ProductoService objProductoService;
 	
 	@EJB
 	private UbigeoDAO objUbigeoDao;
@@ -173,9 +176,12 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 
 
 	
-	public List listarEmpleadoxEmpresas(int idCargo) {
-		log.info("dentro del servicio listarEmpleadoxEmpresas ");
-		return objEmpleadoDao.listarEmpleadoxEmpresas(idCargo);
+	public List listarEmpleadoxEmpresas(int parametroObtenido) {
+		log.info("dentro del servicio listar Empleado x Empresas ");
+		return objEmpleadoDao.listarEmpleadoxEmpresas(parametroObtenido);
 	}
 
+
+
+	
 }
