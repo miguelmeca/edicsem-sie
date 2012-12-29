@@ -909,12 +909,14 @@ function validarLetrasyNumeros(e) { // 1
 
 				<h:panelGroup>
 
-					<h:inputText id="codigo"
+					<p:inputText id="codigo"
 						value="#{mantenimientoTipoProductoFormAction.objTipoProductoSie.codtipoproducto}"
 						required="true" label="codigo"
 						requiredMessage="#{message['codigo.tipoProducto.validation']}"
 						style="font-weight:bold"
-						/>
+						>
+					 <f:validateLength maximum="3" />  	
+					</p:inputText>	
 
 				</h:panelGroup>
 				
