@@ -210,20 +210,6 @@ public class MantenimientoClienteFormAction extends
 	
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		try {
 			
 objDomicilioPersonaSie.setTbUbigeo(objUbigeoService.findUbigeo(Integer.parseInt(idUbigeo)));
@@ -478,8 +464,7 @@ public void cambiar2() {
 		else if (operadorTelefonico == 3)
 			nuevoTelef.setOperadorTelefonico("Nextel");
 		nuevoTelef.setNuevoT(1);
-		nuevoTelef.setTbEstadoGeneral(objEstadoGeneralService
-				.findEstadogeneral(17));
+		nuevoTelef.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(17));
 
 		for (int i = 0; i < TelefonoPersonaList.size(); i++) {
 			log.info("  " + TelefonoPersonaList.get(i).getTelefono() + " "
