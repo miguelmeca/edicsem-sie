@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Detalle Paquete Biblico RALPH EL DEMOLEDOR</h1>
+		<h:form id="frmSancionForm">
+		<p:growl id="message" showDetail="true" />
+			 
+				<p:fieldset legend="Detalles del Paquete Biblico" >
+				 <h:panelGrid  columns="4"  >
+					<h:outputText value="nombre de Producto:" />
+					<p:inputText value="#{MantenimientoDetallePaqueteBiblicoFormAction.objDetPaqueteSie.tbProducto.descripcionproducto}" />
+					<h:outputText value="Cantidad de producto :" />
+					<p:inputText value="#{MantenimientoDetallePaqueteBiblicoFormAction.objDetPaqueteSie.cantidad}" />
+					
+				  </h:panelGrid>
+				 </p:fieldset>
+				
+				<p:fieldset legend="Ingreso de productos">
+				<h:panelGrid  columns="4"  >
+					<h:outputText value="Producto:" />
+					<p:selectOneMenu value="#{SancionForm.idcargo}" >
+						<f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
+					</p:selectOneMenu>
+					
+					<h:outputText value="Días suspension :" />
+					<p:spinner value="#{SancionForm.objDetSancionCargo.cantdiaSuspension}" />
+					
+					<p:commandButton value="Agregar" action="#{SancionForm.agregarSancionCargo}" update="frmSancionForm" />
+				</h:panelGrid>
+				
+				</p:fieldset>
+					  <p:dataTable value="#{SancionForm.detSancionCargoList}" var="p" id="listaCargo">
+					  <f:facet name="header">
+					  	Paquete Biblico
+					  </f:facet>
+					  
+					  <p:column  headerText="Producto" style="width:125px" >
+	                    	<h:outputText value="#{p.tbCargoempleado.descripcion}" />
+					 </p:column>
+					  
+					 
+
+					  
+					 <p:column  headerText="Cantidad" >
+					    	<h:outputText value="#{p.cantdiaSuspension}" />
+					  </p:column>
+					  
+					  <p:column headerText="Editar">
+					  <p:commandButton value="Editar" oncomplete="sancionCargoDialog.show()" update=":formDetSancionCargo:display" >
+					  <f:setPropertyActionListener value="#{p}"  target="#{SancionForm.objAuxiSancionCargo}" />
+					  <f:setPropertyActionListener value="#{p.tbCargoempleado.idcargoempleado}"  target="#{SancionForm.idcargo}" />
+					  </p:commandButton>
+					  </p:column>
+					  
+					  <p:column headerText="Deshabilitar">
+					  <p:commandButton value="Deshabilitar" icon="ui-icon ui-icon-close" 
+					  onclick="confirmDeshabSancionCargo.show()">
+					  <f:setPropertyActionListener value="#{p.item}" target="#{SancionForm.itemSancionCargo}" />	
+					  </p:commandButton>
+					  </p:column>
+					</p:dataTable>
+				
+				<p:commandButton value="Grabar" action="#{SancionForm.insertar}" 
+				icon="ui-icon ui-icon-pencil" ajax="false" update="frmSancionForm:message" />
+			 
+		</h:form>
+	 </ui:define>
+</ui:composition>
