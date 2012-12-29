@@ -10,8 +10,22 @@
 	<ui:define name="body">
 		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
 			Cliente</h1>
-		<h:form id="frmcliente">
 			
+			<script type="text/javascript">
+function validar(e) { // 1
+    tecla = (document.all) ? e.keyCode : e.which; // 2
+    if (tecla==8) return true; // 3
+    patron =/[A-Za-z\s]/; // 4 solo acepta letras
+    te = String.fromCharCode(tecla); // 5
+    return patron.test(te); // 6
+} 
+</script>
+		<h:form id="frmcliente">
+<center>
+<p:commandButton value="Regresar"
+ action="#{MantenimientoClienteSearchAction.listar}"
+  immediate="true" ajax = "false" icon="ui-icon ui-icon-close" />
+</center>	<br></br>		 
 <p:panel id="panel" >
 <p:growl  />
 			<h:panelGrid id="display" columns="6">	
@@ -22,7 +36,8 @@
 				<p:inputText id="nombre"
 					value="#{MantenimientoClienteFormAction.objClienteSie.nombrecliente}"
 					required="true" label="nombre"
-					requiredMessage="#{message['cliente.nombre.validation']}" />
+					requiredMessage="#{message['cliente.nombre.validation']}"
+					onkeypress="return validar(event)" />
 
 
 				<h:outputText value="#{message['cliente.apellidopaterno']}"	for="apellidopaterno" />
@@ -30,7 +45,8 @@
 				<p:inputText id="apellidopaterno"
 					value="#{MantenimientoClienteFormAction.objClienteSie.apepatcliente}"
 					required="true" label="apellidopaterno"
-					requiredMessage="#{message['cliente.apellidopaterno.validation']}" />
+					requiredMessage="#{message['cliente.apellidopaterno.validation']}" 
+					onkeypress="return validar(event)"/>
 
 
 				<h:outputText value="#{message['cliente.apellidomaterno']}"
@@ -39,7 +55,8 @@
 				<p:inputText id="apellidomaterno"
 					value="#{MantenimientoClienteFormAction.objClienteSie.apematcliente}"
 					required="true" label="apellidomaterno"
-					requiredMessage="#{message['cliente.apellidomaterno.validation']}" />
+					requiredMessage="#{message['cliente.apellidomaterno.validation']}" 
+					onkeypress="return validar(event)"/>
 					 
 
 				<h:outputText  value="#{message['cliente.empresatrabajo']}"
@@ -48,7 +65,8 @@
 				<p:inputText id="empresatrabajo"
 					value="#{MantenimientoClienteFormAction.objClienteSie.empresatrabajo}"
 					required="true" label="empresatrabajo"
-					requiredMessage="#{message['cliente.empresatrabajo.validation']}" />
+					requiredMessage="#{message['cliente.empresatrabajo.validation']}" 
+					/>
 					  
 
 				<h:outputText  value="#{message['cliente.cargotrabajo']}"
@@ -57,12 +75,15 @@
 				<p:inputText id="cargotrabajo"
 					value="#{MantenimientoClienteFormAction.objClienteSie.cargotrabajo}" 
 					 label="cargotrabajo"
+					  onkeypress="return validarLetras(event)"
 					 />
 
 				<h:outputText value="#{message['cliente.direcciontrabajo']}"
 					for="direcciontrabajo" />
+					
 				<p:inputText id="direcciontrabajo"
 					value="#{MantenimientoClienteFormAction.objClienteSie.directrabajo}"
+					onkeypress="return validarLetrasyNumeros(event)"
 					 />
 					
 					
