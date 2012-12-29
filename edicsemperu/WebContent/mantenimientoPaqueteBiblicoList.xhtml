@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Paquete Biblico</h1>
+		<h:form id="frmSancionList">
+			<p:growl id="message" showDetail="true" />
+			
+			<p:dataTable value="#{MantenimientoPaqueteBiblicoSearchAction.detPaqueteList}" var="pb">
+				
+				<p:column headerText="Codigo" >
+					<h:outputText value="#{pb.codpaquete}" />
+				</p:column>
+				
+				<p:column headerText="Descripcion" >
+					<h:outputText value="#{pb.descripcionpaquete}" />
+				</p:column>
+				
+				
+				<p:column headerText="Ver detalles del paquete">
+					<p:commandButton value="detalles"  
+						action="#{MantenimientoDetallePaqueteBiblicoSearchAction.listar}"	icon="ui-icon ui-icon-pencil">
+						<f:setPropertyActionListener value="#{pb.idpaquete}"
+							target="#{MantenimientoDetallePaqueteBiblicoSearchAction.paquete}" />
+					</p:commandButton>
+				</p:column>
+				
+				
+				
+				
+				<p:column headerText="Editar">
+					<p:commandButton value="Editar "  oncomplete="PaqueteBiblico.show()" action="#{MantenimientoPaqueteBiblicoSearchAction.update}" 
+					update=":formPaqueteBiblico:display" icon="ui-icon ui-icon-pencil" >
+						<f:setPropertyActionListener value="#{pb}" target="#{MantenimientoPaqueteBiblicoSearchAction.objPaqueteSie}" />
+					</p:commandButton>
+				</p:column>
+				
+				
+				<f:facet name="footer">
+				<div align="left">
+				<p:commandLink value="Nuevo Paquete Biblico"  oncomplete="PaqueteBiblico.show()"  
+				update=":formPaqueteBiblico:display" action="#{MantenimientoPaqueteBiblicoSearchAction.agregar}"/>
+				</div>
+				</f:facet>
+				
+			</p:dataTable>
+			
+		</h:form>
+	 </ui:define>
+</ui:composition>
