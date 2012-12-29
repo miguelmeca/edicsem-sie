@@ -159,7 +159,7 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 		objProveedor = new ProveedorSie();
-		return getViewList();
+		return mantenimientoProveedorSearch.listar();
 	}
 
 	/*métodos GET y SET*/

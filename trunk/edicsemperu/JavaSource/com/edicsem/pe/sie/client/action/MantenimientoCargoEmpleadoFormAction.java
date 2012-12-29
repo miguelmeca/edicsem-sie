@@ -84,36 +84,30 @@ public class MantenimientoCargoEmpleadoFormAction extends
 	}
 
 	public String insertar() {
-
+		mensaje =null;
 		log.info("insertar() " + isNewRecord() + " desc "
 				+ objCargoEmpleadoSie.getDescripcion());
 		/* ---> */objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(1));
 		/* Esto se setea cuando pertenece a una segunda tabla (--->) */
 		try {
 
+			log.info("aqui validadndo si existe o no");
+			int error = 0;
+			List<CargoEmpleadoSie> lista = mantenimientoCargoEmpleadoSearch.getCargoEmpleadomodel();
+			for (int i = 0; i < lista.size(); i++) {
+				CargoEmpleadoSie a = lista.get(i);
+				if (a.getDescripcion().equalsIgnoreCase(objCargoEmpleadoSie.getDescripcion())) {
+					log.info("Error ... Ya se encuentra un cargo igual");
+					mensaje ="Ya se encuentra un cargo con el mismo nombre";
+					error = 1;
+					break;
+				}
+			}
+			if (error == 0) {
 			if (isNewRecord()) {
-
-				objCargoEmpleadoSie.getDescripcion();
-
-				int error = 0;
-				List<CargoEmpleadoSie> lista = mantenimientoCargoEmpleadoSearch.getCargoEmpleadomodel();
-				for (int i = 0; i < lista.size(); i++) {
-					CargoEmpleadoSie a = lista.get(i);
-					if (a.getDescripcion().equalsIgnoreCase(objCargoEmpleadoSie.getDescripcion())) {
-						log.info("Error ... Ya se encuentra un cargo igual");
-						error = 1;
-						break;
-					}
-				}
-
-				if (error == 0) {
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+							Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 					objCargoEmpleadoService.insertarCargoEmpleado(objCargoEmpleadoSie);
-				} else {
-					// Mostrar Validacion
-					log.info("mensaje de error");
-				}
-				log.info("aqui validadndo si existe o no");
-
 			} else {
 
 				objCargoEmpleadoSie.setIdcargoempleado(Integer.parseInt(getIdcargoempleado()));
@@ -124,17 +118,25 @@ public class MantenimientoCargoEmpleadoFormAction extends
 				log.info("----->>>"
 						+ objCargoEmpleadoSie.getTbEstadoGeneral().getIdestadogeneral()+ objCargoEmpleadoSie.getDescripcion());
 				log.info("actualizando..... ");
-
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+						Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 				objCargoEmpleadoService.actualizarCargoEmpleado(objCargoEmpleadoSie);				
 				log.info("actualizando..... ");				
 				log.info("objCargoEmpleadoSie.isNewRecord() : ");	
 			}
+			} else {
+				// Mostrar Validacion
+				log.info("mensaje de error");
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+						Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			}
+			FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (Exception e) {
 
 			e.printStackTrace();
-			descripcion = e.getMessage();
+			mensaje = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, descripcion);
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
