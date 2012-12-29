@@ -36,9 +36,6 @@ Mantenimiento Producto
 							<p:commandButton id="btn1" update=":formManteProdDetalle:display"
 								oncomplete="prodDialog.show()" value="ver detalle"
 								title="Vea datos del producto">
-								<f:setPropertyActionListener value="#{p}"
-									target="#{productoForm.selectedProducto}" />
-										<f:setPropertyActionListener value="#{false}" target="#{productoForm.editMode}" />
 							</p:commandButton>
 						</p:column>
 					<p:column>

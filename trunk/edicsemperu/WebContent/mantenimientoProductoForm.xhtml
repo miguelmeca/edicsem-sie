@@ -49,12 +49,12 @@
 					
 				<p:message for="detalle" />
 				
-				<h:outputText value="#{message['mantenimiento.producto.unidad']}" />
+				<h:outputText value="#{message['mantenimiento.producto.unidad']}" rendered="#{productoForm.newRecord!=true}" />
 				<p:inputText id="unidadProducto" size="10"
 					value="#{productoForm.objProductoSie.unidproducto}"
 					required="true" maxlength="10"
-					requiredMessage="#{message['mantenimiento.producto.unidad.validation']}" />
-				<p:message for="unidadProducto" />
+					requiredMessage="#{message['mantenimiento.producto.unidad.validation']}" rendered="#{productoForm.newRecord!=true}" />
+				<p:message for="unidadProducto" rendered="#{productoForm.newRecord!=true}" />
 				
 				<h:outputText
 					value="#{message['mantenimiento.producto.stock.minimo']}" />

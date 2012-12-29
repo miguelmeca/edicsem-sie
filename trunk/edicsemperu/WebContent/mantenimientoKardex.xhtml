@@ -38,11 +38,14 @@
 				<h:outputText value="#{message['kardex.desde']}" />
 				<p:calendar pattern="dd/MM/yyyy"  locale="br" effect="explode" 
 				value="#{kardexAction.fechaDesde}"  />
+				<p:spacer/>
 				
 				<h:outputText value="#{message['kardex.hasta']}" />
 				<p:calendar pattern="dd/MM/yyyy"  locale="br" effect="explode"
 				value="#{kardexAction.fechaHasta}"  />
-
+				<p:spacer/>
+				<p:spacer/>
+				
 				<p:commandButton  value="Consultar" action="#{kardexAction.consultar}" 
 				update=":frmKardex" />
 				</h:panelGrid> 
