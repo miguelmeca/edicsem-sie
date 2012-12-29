@@ -37,4 +37,8 @@ public class TipoProductoServiceImpl implements TipoProductoService {
 	public TipoProductoSie findTipoProducto(int idtipoproducto) {
 		return  objTipoProductoDao.findTipoProducto(idtipoproducto);
 	}
+	
+	public void updateTipoProducto(TipoProductoSie producto) {
+		  objTipoProductoDao.updateTipoProducto(producto);
+	}
 }
