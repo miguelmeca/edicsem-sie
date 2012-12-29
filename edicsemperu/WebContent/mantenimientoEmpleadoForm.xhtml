@@ -107,7 +107,7 @@
         <h:messages errorClass="error"/>  
            <h:panelGrid columns="2"  >
             <h:outputText value="#{message['empleado.fecInicio']}" />
-            <p:calendar value="#{mantenimientoEmpleadoFormAction.fechaInicioContrato}" />
+            <p:calendar value="#{mantenimientoEmpleadoFormAction.fechaInicioContrato}" pattern="dd/mm/yyyy" />
             <h:outputText value="#{message['empleado.cargo']}" />
             <p:selectOneMenu value="#{mantenimientoEmpleadoFormAction.idCargo}" label="Seleccione" filter="true" filterText="Filter" filterMatchMode="startsWith" panelStyle="width:300px">  
             <f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
@@ -122,7 +122,7 @@
             <p:inputText value="#{mantenimientoEmpleadoFormAction.objContratoEmpleado.periodoPrueba}"/> 
             <p:commandButton value="Agregar" update="panelPagos" action="#{mantenimientoEmpleadoFormAction.agregarPago}" icon="ui-icon-check"/>
            
-            	<p:dataTable value="#{mantenimientoEmpleadoFormAction.contratoEmpleadoList}" var="c"  >
+            	<p:dataTable id="panelPagos" value="#{mantenimientoEmpleadoFormAction.contratoEmpleadoList}" var="c"  >
 						<p:column headerText="#{message['empleado.tabla.cargo']}" >
 							<h:outputText value="#{c.tbCargoempleado.descripcion}" />
 						</p:column>

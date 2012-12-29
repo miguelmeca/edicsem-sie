@@ -8,6 +8,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.ArrayDataModel;
+import javax.faces.model.DataModel;
+import javax.faces.model.ListDataModel;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,7 +19,6 @@ import org.primefaces.context.RequestContext;
 import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpresaSie;
-import com.edicsem.pe.sie.entity.KardexSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.service.facade.DetEmpresaEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
@@ -55,7 +57,7 @@ public class MantenimientoEmpresaFormAction extends
 	
 	//PRODUCTO
 	private ProductoSie objProductoSie;
-	private List<ProductoSie> productoList;
+	private DataModel<ProductoSie> productoList;
    private ProductoSie[] selectedCars;  
 	  
 	  //DATA MODEL
@@ -127,12 +129,6 @@ public class MantenimientoEmpresaFormAction extends
 	public List<EmpleadoSie> getEmpleadoList() {
 		return empleadoList;
 	}
-	
-	//PRODUCTO x EMPLEADO
-	public List<ProductoSie> getProductoList() {
-		return productoList;
-	}
-	
 
 	public String agregar() {
 		log.info("agregar()");
@@ -253,7 +249,10 @@ else {
 	private void listarProductoXempresa(int parametroObtenido) {
 		// TODO Auto-generated method stub
 		log.info("captura idParametro para poder listar PRODUCTO X EMPRESA en el Bean dentro del metodo Eliminar "+parametroObtenido);
-		productoList = objProductoService.listarProductoxEmpresas(parametroObtenido);
+
+		productoList =  new ListDataModel<ProductoSie>(objProductoService.listarProductoxEmpresas(parametroObtenido));
+		
+		log.info("capt");
 	}
 	private void listarEmpleadosXempresa(int parametroObtenido) {
 		log.info("captura idParametro para poder listar EMPLEADOS X EMPRESA en el Bean dentro del metodo Eliminar  "+parametroObtenido);
@@ -675,9 +674,15 @@ else {
 		this.objProductoSie = objProductoSie;
 	}
 	/**
+	 * @return the productoList
+	 */
+	public DataModel<ProductoSie> getProductoList() {
+		return productoList;
+	}
+	/**
 	 * @param productoList the productoList to set
 	 */
-	public void setProductoList(List<ProductoSie> productoList) {
+	public void setProductoList(DataModel<ProductoSie> productoList) {
 		this.productoList = productoList;
 	}
 
