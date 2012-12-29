@@ -10,5 +10,5 @@ public interface TipoProductoService {
 	public abstract List listarTipo ();
 	public abstract void insertTipoProducto (TipoProductoSie producto);
 	public abstract TipoProductoSie findTipoProducto (int idtipoproducto);
-	
+	public abstract void updateTipoProducto(TipoProductoSie producto);
 }
