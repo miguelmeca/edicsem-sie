@@ -12,4 +12,6 @@ public interface ProductoService {
 	public abstract ProductoSie findProducto (int id);
 	public abstract List  listarProductos();
 	public abstract List  listarProductosXTipo(int tipoProducto);
+	//MANTENIMIENTO EMPRESA VALIDACIONES PRODUCTO Y EMPLEADO
+	public abstract List listarProductoxEmpresas(int parametroObtenido);
 }
