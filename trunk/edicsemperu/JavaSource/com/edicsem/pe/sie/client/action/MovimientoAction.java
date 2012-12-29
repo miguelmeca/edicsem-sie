@@ -166,12 +166,15 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 						else {
 							log.info("en el for 1 ");
 							for (int j = 0; j< k.size(); j++) {
-								log.info("en el for 1 2");
+								log.info("en el for 1 2 "+idAlmacen2);
 							if (objKardexSie.getCantsalida() > 0) {
+								log.info(" a ");
 								if (k.get(j).getCantexistencia()- objKardexSie.getCantsalida() < 0) {
+									log.info(" b ");
 									mensaje = "La cantidad existente del producto es " + k.get(j).getCantexistencia();
 								}
 								else if(idAlmacen2==0 ){
+									log.info(" c ");
 									for (int i = 0; i < k.size(); i++) {
 										//la cantidad existente en un almacen no puede resultar menor que 0
 										
@@ -182,16 +185,27 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 											double valorT = Double.parseDouble(k.get(i).getValorunitarioentrada()) * objKardexSie.getCantsalida();
 											objKardexSie.setValortotal(valorT+"");
 											objKardexSie.setValorunitarioexistencia(objKardexSie.getValorunitarioexistencia());
-											valorTotalAlmacenes= valorExistenteTotalAlmacenes - Double.parseDouble(objKardexSie.getValortotal());
+											log.info(" "+valorExistenteTotalAlmacenes+"   - " +k.get(i).getValorunitarioexistencia() +" - "+objKardexSie.getValortotal());
+											valorTotalAlmacenes= Double.parseDouble(k.get(i).getValorunitarioexistencia()) - Double.parseDouble(objKardexSie.getValortotal());
 											log.info(" valor total almacenadoS "+ valorTotalAlmacenes +"  "+ objKardexSie.getValorunitarioexistencia());
+											log.info(" "+k.get(i).getCantexistencia()+"   "+ objKardexSie.getCantsalida());
 											if( k.get(i).getCantexistencia()- objKardexSie.getCantsalida()<0){
+												log.info(" d ");
 												mensaje = "La cantidad de salida de dicho producto no puede ser mayor al actual: " + k.get(i).getCantexistencia();
+												log.info(" d msj  "+ mensaje);
+												break;
 											}else{
+												log.info(" e ");
 												validado=true;
 											}
+										}else{
+											log.info(" f ");
+											mensaje = "La cantidad de dicho producto es 0 ";
 										}
+										
 									}
 								}else{
+									log.info(" g ");
 									validado=true;
 								}
 							}
@@ -380,6 +394,7 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 		limpiar();
 		return listar();
 	}
+	
 	public void limpiar(){
 		objKardexSie = new KardexSie();
 		objcomprobante = new ComprobanteSie();
@@ -407,12 +422,10 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 	 * @return the data
 	 */
 	public List<KardexSie> getData() {
-		log.info("entrando a getata(9");
 		for (int i = 0; i < data.size(); i++) {
 			if(idMAxKardex<data.get(i).getIdkardex())
 			idMAxKardex=data.get(i).getIdkardex();
 		}
-		log.info("entrando a getata(9"+ idMAxKardex);
 		return data;
 	}
 
