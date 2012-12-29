@@ -51,6 +51,7 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 	public void init() {
 		log.info("init()");
 		objProveedor = new ProveedorSie();
+		//TipoDocumento=1;
 	} 
 	
 	/* (non-Javadoc)
