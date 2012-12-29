@@ -90,7 +90,7 @@ public class AlmacenDAOImpl implements AlmacenDAO{
 	public List listarPuntoVenta(String tipo) {
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from PuntoVentaSie p where p.almacen like  '"+tipo +"' and p.tbEstadoGeneral.idestadogeneral = "+ 13 );
+			Query q = em.createQuery("select p from PuntoVentaSie p where p.almacen =  '"+tipo +"' and p.tbEstadoGeneral.idestadogeneral = "+ 13 );
 			lista =  q.getResultList(); 						
 		   log.info("tamaño lista PuntoVenta DAOIMPL --> " + lista.size()+"  ");
 		} catch (Exception e) {
