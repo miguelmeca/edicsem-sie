@@ -48,11 +48,12 @@ public class KardexDAOImpl implements KardexDAO {
 		try {
 			consulta = "select p from KardexSie p where p.tbProducto.idproducto =:x1 and "
 					+ "p.tbPuntoVenta.idpuntoventa =:x2 ";
-			if (fechaDesde != "" && fechaHasta != ""){
+			if (fechaDesde != "" || fechaHasta != ""){
 				consulta += " and DATE(p.fechacreacion) between DATE('"
 						+ fechaDesde + "') and  DATE('" + fechaHasta
-						+ "')   ORDER BY p.fechacreacion ASC  ";
+						+ "')  ";
 			}
+			consulta += "  ORDER BY p.fechacreacion ASC  ";
 			Query q = em.createQuery(consulta);
 			q.setParameter("x1", idproducto);
 			q.setParameter("x2", idalmacen);
