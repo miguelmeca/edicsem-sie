@@ -16,4 +16,6 @@ public interface ProductoDAO {
 	public abstract List  listarProductosXTipo(int tipoProducto);
 	public abstract List  listarProductos();
 	
+	public abstract List listarProductoxEmpresas(int parametroObtenido);
+	
 }
