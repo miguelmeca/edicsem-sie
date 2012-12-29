@@ -68,16 +68,17 @@
 					</p:selectOneMenu>
 					<p:message for="idAlmacen" />
 					
-					<h:outputText value="#{message['mantenimiento.kardex.almacenDestino']}" />
+					<h:outputText value="#{message['mantenimiento.kardex.almacenDestino']}" rendered="#{movimientoMercaderia.idtipokardexproducto!=3}" />
 					<p:selectOneMenu id="idAlmacen2" size="1"  style="width:165px" 
-						value="#{movimientoMercaderia.idAlmacen2}"   >
+						value="#{movimientoMercaderia.idAlmacen2}"   rendered="#{movimientoMercaderia.idtipokardexproducto!=3}" >
 						<f:selectItem itemLabel="Seleccione almacen" itemValue="0" />
 						<f:selectItems value="#{comboAction.almacenItems}" />
 					</p:selectOneMenu>
-					<p:spacer />
+					<p:spacer  rendered="#{movimientoMercaderia.idtipokardexproducto!=3}" />
 					
 					<h:outputText value="Detalle" id="detProd" />
 					<p:inputTextarea value="#{movimientoMercaderia.objKardexSie.detallekardex}" />
+					<p:spacer />
 					
 					<h:outputText value="#{message['movimiento.empresa.descripcion']}" rendered="#{!movimientoMercaderia.editMode}"/>
 					<p:selectOneMenu size="1" rendered="#{!movimientoMercaderia.editMode}"   style="width:165px" 

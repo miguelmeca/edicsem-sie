@@ -26,22 +26,31 @@
 					<f:selectItems value="#{comboAction.productositems}" />
 				</p:selectOneMenu>
 				 <p:message for="product" />
+				
+				<h:outputText value="#{message['mantenimiento.kardex.almacen']}" />
+				<p:selectOneMenu id="tipoAlmacen"  value="#{comboAction.tipoAlmacen}"  required="true"
+				requiredMessage="#{message['kardex.almacen.validation']}" >
+					<f:selectItem itemLabel="Punto de Venta" itemValue="P" />
+					<f:selectItem itemLabel="Almacen" itemValue="A" />
+					<p:ajax update="almacen"  />
+				</p:selectOneMenu>
+				<p:message for="tipoAlmacen" />
 				 
 				<h:outputText value="#{message['mantenimiento.kardex.almacen']}" />
 				<p:selectOneMenu id="almacen"  value="#{kardexAction.idalmacen}"  required="true"
 				requiredMessage="#{message['kardex.almacen.validation']}" >
 					<f:selectItem itemLabel="Seleccione" itemValue="#{null}" />
-					<f:selectItems value="#{comboAction.almacenItems}" />
+					<f:selectItems value="#{comboAction.almacenItemsXTipo}" />
 				</p:selectOneMenu>
 				<p:message for="almacen" />
 				 
 				<h:outputText value="#{message['kardex.desde']}" />
 				<p:calendar pattern="dd/MM/yyyy"  locale="br" effect="explode" 
-				value="#{kardexAction.fechaDesde}"  />
+				value="#{kardexAction.fechaDesde}" maxdate="today" />
 				<p:spacer/>
 				
 				<h:outputText value="#{message['kardex.hasta']}" />
-				<p:calendar pattern="dd/MM/yyyy"  locale="br" effect="explode"
+				<p:calendar pattern="dd/MM/yyyy"  locale="br" effect="explode" maxdate="today"
 				value="#{kardexAction.fechaHasta}"  />
 				<p:spacer/>
 				<p:spacer/>
@@ -51,7 +60,7 @@
 				</h:panelGrid> 
 				<p:spacer width="40" />
 				<p:dataTable value="#{kardexAction.kardexList}" var="p" 
-					id="listakardex" paginator="true" rows="5"
+					id="listakardex" paginator="true" rows="5" 
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15" widgetVar="tableKardex"
 					emptyMessage="No se encontro registros">
@@ -80,7 +89,7 @@
             </p:row>
         </p:columnGroup>
 					 
-					<p:column>#{p.fecha}
+					<p:column  >#{p.fecha}
 					</p:column>
 					<p:column>#{p.tbTipoKardexProducto.descripcion}
 					</p:column>
@@ -117,7 +126,7 @@
 				<p:inputText id="stock_actual" value="#{kardexAction.stockActual}" size="15" readonly="true" />
  
 				<h:outputText value="#{message['kardex.Stock.valorizado']}" />
-				<p:inputText id="stock_valoriz" size="15" />
+				<p:inputText id="stock_valoriz" value="#{kardexAction.valorActual}" size="15" />
 
 			</p:panel>
 		</h:form>

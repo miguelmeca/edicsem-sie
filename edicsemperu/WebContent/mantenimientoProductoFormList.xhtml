@@ -36,6 +36,7 @@ Mantenimiento Producto
 							<p:commandButton id="btn1" update=":formManteProdDetalle:display"
 								oncomplete="prodDialog.show()" value="ver detalle"
 								title="Vea datos del producto">
+								<f:setPropertyActionListener target="#{productoForm.selectedProducto}" value="p"></f:setPropertyActionListener>
 							</p:commandButton>
 						</p:column>
 					<p:column>
@@ -44,9 +45,8 @@ Mantenimiento Producto
 						</f:facet>
 						<p:commandButton update=":formManteProdDetalle:display"
 							  icon="ui-icon ui-icon-pencil"
-							title="#{message['mantenimiento.productoList.editarDatos']}" action="#{productoForm.update}" >
-							<f:setPropertyActionListener value="#{p}"
-								target="#{productoForm.objProductoSie}" />
+							title="#{message['mantenimiento.productoList.editarDatos']}" action="#{productoForm.update2}" >
+							<f:setPropertyActionListener value="#{p}" target="#{productoForm.objProductoSie}" />
 						</p:commandButton>
 					</p:column>
 					<f:facet name="footer">
