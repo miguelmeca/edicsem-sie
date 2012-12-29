@@ -114,4 +114,22 @@ public class ProductoDAOImpl implements ProductoDAO {
 		}
 		return lista;
 	}
+
+
+	public List listarProductoxEmpresas(int parametroObtenido) {
+		List lista = null;
+		log.info("por entrar al QUERY PRODUCTO  "+ parametroObtenido);
+		try {
+			Query q = em.createQuery("SELECT e FROM ProductoSie e inner join e.tbKardexs f  " +
+					"inner join f.tbEmpresa g  where g.idempresa = " + parametroObtenido);
+			lista = q.getResultList();
+			log.info("despues del QUERY tamaño lista Producto X  parametroObtenido--> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+
+	}
+	
+	
 }
