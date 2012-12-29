@@ -20,7 +20,11 @@ public interface EmpleadoSieService {
 	public abstract EmpleadoSie buscarEmpleado (int id);
 	public abstract List listarEmpleados ();
 	public abstract List listarEmpleadosXCargo(int idCargo);
-	public abstract List listarEmpleadoxEmpresas(int idCargo);
+	// MANTENIMIENTO EMPRESA VALIDACION DE EMPLEADO Y PRODUCTO
+	public abstract List listarEmpleadoxEmpresas(int parametroObtenido);
+
+	
+	
 	
 	
 }
