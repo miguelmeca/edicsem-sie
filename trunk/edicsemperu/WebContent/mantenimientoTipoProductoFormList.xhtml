@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
+			Tipo de Productos</h1>
+			
+		<h:form id="frmTipoProdFormList" prependId="false">
+		<p:growl id="message" showDetail="true" />	
+		
+			
+			<p:dataTable value="#{tipoProductoSearch.tipoProdList}" var="tipoProducto"
+				id="tipoProductoTable" paginator="true" rows="5"
+       paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	   rowsPerPageTemplate="5,10,15" widgetVar="table"
+	   emptyMessage="No se encontro registros">
+			
+				<p:column headerText="Código">
+				  
+						<h:outputText value="#{tipoProducto.codtipoproducto}" />
+											 
+				</p:column>	
+				
+				<p:column headerText="Tipo de Producto"  id="tipoProducto" sortBy="#{tipoProducto.nombretipoproducto}" filterBy="#{tipoProducto.nombretipoproducto}">
+				  
+						<h:outputText value="#{tipoProducto.nombretipoproducto}" />
+											 
+				</p:column>																							
+        		
+        		<!--********** BOTON EDITAR **********-->
+		
+	<p:column headerText="Editar">
+	
+<p:commandButton
+value="Editar"
+oncomplete="DialogTipoProd.show()"
+action="#{mantenimientoTipoProductoFormAction.update}"
+update=":NuevoModificaTipoProd:display"
+icon="ui-icon ui-icon-pencil"
+			                    
+			  >
+			                    
+<f:setPropertyActionListener value="#{tipoProducto}" 
+target="#{mantenimientoTipoProductoFormAction.objTipoProductoSie}" />
+			 
+			</p:commandButton>
+					
+	</p:column>
+ 
+ <!--**********FIN EDITAR**********-->
+
+<f:facet name="footer">
+<div align="left">		
+		<!--********** BOTON NUEVO **********-->
+		
+		
+		<p:commandLink value="Nuevo Tipo de Producto"  update=":NuevoModificaTipoProd:display" 
+				
+				action="#{mantenimientoTipoProductoFormAction.agregar}"
+				oncomplete="DialogTipoProd.show()" 	title="Ingresar Nuevo Tipo de Producto"
+				
+>
+</p:commandLink>
+</div>
+</f:facet>
+			</p:dataTable>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
