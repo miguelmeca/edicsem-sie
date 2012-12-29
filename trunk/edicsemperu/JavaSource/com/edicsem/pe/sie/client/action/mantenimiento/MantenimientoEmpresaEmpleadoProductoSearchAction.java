@@ -61,19 +61,9 @@ public class MantenimientoEmpresaEmpleadoProductoSearchAction extends BaseManten
 		
 	
 		
-//		objEmpresaSie= new EmpresaSie();
+
 		objEmpleadoSie= new EmpleadoSie();
-		
-//		Datos de Empresa
-		
-//		objEmpresaSie.setDescripcion("");
-//		objEmpresaSie.setRazonsocial("");
-//		objEmpresaSie.setNumruc("");
-//		objEmpresaSie.setNumtelefono("");
-//		objEmpresaSie.setNumtelefono("");
-//		objEmpresaSie.setEmail("");
-		
-//		Datos del Empleado
+
 		objEmpleadoSie.setNombresCompletos("");
 		objEmpleadoSie.setNumdocumento("");
 		objEmpleadoSie.setNombreemp("");
