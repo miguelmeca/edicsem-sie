@@ -37,7 +37,7 @@ public class MantenimientoProductoFormAction extends
 	private Log log = LogFactory.getLog(MantenimientoProductoFormAction.class);
 	private int TipoProducto, idFoto=1;
 	private StreamedContent image;
-	private ProductoSie objProductoSie;
+	private ProductoSie objProductoSie,selectedProducto;
 	private boolean newRecord = false;
 	byte[] foto ;
 	@ManagedProperty(value = "#{productoSearch}")
@@ -326,6 +326,20 @@ public class MantenimientoProductoFormAction extends
 	 */
 	public void setIdFoto(int idFoto) {
 		this.idFoto = idFoto;
+	}
+
+	/**
+	 * @return the selectedProducto
+	 */
+	public ProductoSie getSelectedProducto() {
+		return selectedProducto;
+	}
+
+	/**
+	 * @param selectedProducto the selectedProducto to set
+	 */
+	public void setSelectedProducto(ProductoSie selectedProducto) {
+		this.selectedProducto = selectedProducto;
 	}
 	
 }
