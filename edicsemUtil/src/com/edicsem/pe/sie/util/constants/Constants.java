@@ -33,9 +33,10 @@ public class Constants {
 	public static final String MANT_CLIENTE_FORM_LIST_PAGE = "mantenimientoClienteFormList";
 	public static final String MANT_CLIENTE_FORM_PAGE = "mantenimientoClienteForm";
 
-	
 	public static final String MANT_PRODUCTO_FORM_PAGE = "mantenimientoProductoForm";
 	public static final String MANT_PRODUCTO_FORM_LIST_PAGE = "mantenimientoProductoFormList";
+	
+	public static final String MANT_TIPO_PRODUCTO_FORM_LIST_PAGE = "mantenimientoTipoProductoFormList";
 	
 	public static final String MANT_CARGO_EMPLEADO_FORM_LIST_PAGE = "mantenimientoCargoEmpleadoFormList";
 	
