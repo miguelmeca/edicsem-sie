@@ -14,11 +14,16 @@ import org.apache.commons.logging.LogFactory;
 import org.primefaces.context.RequestContext;
 
 import com.edicsem.pe.sie.client.action.ComboAction;
+import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpresaSie;
+import com.edicsem.pe.sie.entity.KardexSie;
+import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.service.facade.DetEmpresaEmpleadoService;
+import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.KardexService;
+import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
@@ -34,7 +39,7 @@ public class MantenimientoEmpresaFormAction extends
 	public String numruc;
 	public String numtel;
 	public String email;
-
+	
 	private boolean editMode;
 	private String mensaje;
 
@@ -43,21 +48,59 @@ public class MantenimientoEmpresaFormAction extends
 	private int estado;
 	private EmpresaSie objEmpresaSie;
 	private EmpresaSie nuevo;
+	
+	//EMPLEADO
+	private EmpleadoSie objEmpleadoSie;
+	private List<EmpleadoSie> empleadoList;
+	
+	//PRODUCTO
+	private ProductoSie objProductoSie;
+	private List<ProductoSie> productoList;
+   private ProductoSie[] selectedCars;  
+	  
+	  //DATA MODEL
 
+	  
+	 
+	    
+	    
+	//Seleccionar Todos
+
+	/**
+	 * @return the selectedCars
+	 */
+	public ProductoSie[] getSelectedCars() {
+		return selectedCars;
+	}
+	/**
+	 * @param selectedCars the selectedCars to set
+	 */
+	public void setSelectedCars(ProductoSie[] selectedCars) {
+		this.selectedCars = selectedCars;
+	}
 	@ManagedProperty(value = "#{comboAction}")
 	private ComboAction comboManagerEmpresa;
 
 	@ManagedProperty(value = "#{empresaSearch}")
 	private MantenimientoEmpresaSearchAction mantenimientoEmpresaSearch;
-
+	
+	//LISTA DE EMPRESA Y MANTEMINIENTO EMPRESA
 	@EJB
 	private EmpresaService empresaService;
 	@EJB
 	private EstadogeneralService objEstadoGeneralService;
+	
+	//EMPLEADO X EMPRESA
 	@EJB
 	private DetEmpresaEmpleadoService objDetEmpresaEmpleadoService;
 	@EJB
+	private EmpleadoSieService objEmpleadoSieService;
+	//PRODUCTO X EMPRESA
+	@EJB
 	private KardexService objKardexService;
+	@EJB
+	private ProductoService objProductoService;
+	
 	
 	/*
 	 * (non-Javadoc)
@@ -69,8 +112,27 @@ public class MantenimientoEmpresaFormAction extends
 	public void init() {
 		log.info("Inicializando el Constructor de 'MantenimientoEmpresaFormAction'");
 		objEmpresaSie = new EmpresaSie();
+		//EMPLEADO X EMPRESA
+		objEmpleadoSie= new EmpleadoSie();
+		objEmpleadoSie.setNombreemp("");
+		//PRODUCTO X EMPRESA
+		objProductoSie= new ProductoSie();
+		objProductoSie.setDescripcionproducto("");
+		
+		
+		
 		nuevo = new EmpresaSie();
 	}
+	//EMPRESA X EMPLEADO
+	public List<EmpleadoSie> getEmpleadoList() {
+		return empleadoList;
+	}
+	
+	//PRODUCTO x EMPLEADO
+	public List<ProductoSie> getProductoList() {
+		return productoList;
+	}
+	
 
 	public String agregar() {
 		log.info("agregar()");
@@ -138,8 +200,11 @@ if((verificarEmpleadoConEmpresa(parametroObtenido)) == (verificarProductoConEmpr
 
 			empresaService.updateEmpresa(objEmpresaSie);
 			log.info("actualizando..... ");
+			return mantenimientoEmpresaSearch.listar();
 			
-			context.execute(":frmEmpresaFormList:empresaTable");
+			
+			
+//			return Constants.MANT_EMPRESA_FORM_LIST_PAGE;
 //return mantenimientoEmpresaSearch.listar();
 //context.execute("confirmationEmpresa.hide()"); FALTA poner el el popud ajax="false"
 //context.execute("mantenimientoEmpresaFormList.jsf");
@@ -150,11 +215,15 @@ if((verificarEmpleadoConEmpresa(parametroObtenido)) == (verificarProductoConEmpr
 			}
 else {
 
-	  if (verificarEmpleadoConEmpresa(parametroObtenido) == false) {
-		  context.execute("someDialog.show()");
+	  if (verificarEmpleadoConEmpresa(parametroObtenido) == false || verificarProductoConEmpresa(parametroObtenido) == false) {
+		  listarEmpleadosXempresa(parametroObtenido);
+		  listarProductoXempresa(parametroObtenido);
+		return Constants.MANT_EMPRESA_EMPLEADO_PRODUCTO_FORM_LIST_PAGE;
 	}
-	  else if(verificarProductoConEmpresa(parametroObtenido) == false) {
-		  context.execute("someDialog2.show()");
+	  else if(verificarProductoConEmpresa(parametroObtenido) == false && verificarEmpleadoConEmpresa(parametroObtenido) == false) {
+		  listarEmpleadosXempresa(parametroObtenido);
+		  listarProductoXempresa(parametroObtenido);
+		return Constants.MANT_EMPRESA_EMPLEADO_PRODUCTO_FORM_LIST_PAGE;
 	}
 	
 //	context.execute("someDialog.show()");
@@ -181,7 +250,16 @@ else {
 	}
 
 	
-
+	private void listarProductoXempresa(int parametroObtenido) {
+		// TODO Auto-generated method stub
+		log.info("captura idParametro para poder listar PRODUCTO X EMPRESA en el Bean dentro del metodo Eliminar "+parametroObtenido);
+		productoList = objProductoService.listarProductoxEmpresas(parametroObtenido);
+	}
+	private void listarEmpleadosXempresa(int parametroObtenido) {
+		log.info("captura idParametro para poder listar EMPLEADOS X EMPRESA en el Bean dentro del metodo Eliminar  "+parametroObtenido);
+		empleadoList = objEmpleadoSieService.listarEmpleadoxEmpresas(parametroObtenido);
+		}
+	
 	private boolean verificarEmpleadoConEmpresa(int idcargo) {
 		// Aqui verificaremos si esta empresa pertenece a un empleado en la TB.DetalleEmpresaEmpleado
 		return objDetEmpresaEmpleadoService.verificarEmpleadoConEmpresa(idcargo) ;
@@ -558,6 +636,49 @@ else {
 	 */
 	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
+	}
+
+	/**
+	 * @return the objEmpleadoSie
+	 */
+	public EmpleadoSie getObjEmpleadoSie() {
+		return objEmpleadoSie;
+	}
+
+	/**
+	 * @param objEmpleadoSie the objEmpleadoSie to set
+	 */
+	public void setObjEmpleadoSie(EmpleadoSie objEmpleadoSie) {
+		this.objEmpleadoSie = objEmpleadoSie;
+	}
+
+	/**
+	 * @return the empleadoList
+	 */
+	
+	/**
+	 * @param empleadoList the empleadoList to set
+	 */
+	public void setEmpleadoList(List<EmpleadoSie> empleadoList) {
+		this.empleadoList = empleadoList;
+	}
+	/**
+	 * @return the objProductoSie
+	 */
+	public ProductoSie getObjProductoSie() {
+		return objProductoSie;
+	}
+	/**
+	 * @param objProductoSie the objProductoSie to set
+	 */
+	public void setObjProductoSie(ProductoSie objProductoSie) {
+		this.objProductoSie = objProductoSie;
+	}
+	/**
+	 * @param productoList the productoList to set
+	 */
+	public void setProductoList(List<ProductoSie> productoList) {
+		this.productoList = productoList;
 	}
 
 }
