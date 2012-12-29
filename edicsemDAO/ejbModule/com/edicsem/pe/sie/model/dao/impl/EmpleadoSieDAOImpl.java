@@ -106,36 +106,21 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 		return lista;
 	}
 
+	
+	public List listarEmpleadoxEmpresas(int parametroObtenido) {
+		List lista = null;
+		log.info("por entrar al QUERY  "+ parametroObtenido);
+		try {
+			Query q = em.createQuery("SELECT e FROM EmpleadoSie e inner join e.tbDetEmpresaEmpleados f  " +
+					"inner join f.tbEmpresa g  where g.idempresa = " + parametroObtenido);
+			lista = q.getResultList();
+			log.info("despues del QUERY tamaño lista Empleados X  parametroObtenido--> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+
 //	Lista de Empleados por Empresa
-	public List listarEmpleadoxEmpresas(int idCargo) {
-		log.info("DENTRO DEL DAO IMPL idcargo"+idCargo);
-		List lista = null;
-		try {
-			Query q = em.createQuery("select p from EmpleadoSie p inner join p.tbDetEmpresaEmpleados q  " +
-					"inner join  q.tbEmpresa r where r.idempresa = "+idCargo);
-			lista = q.getResultList();
-			log.info("tamaño lista Empleados X Cargo --> " + lista.size());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return lista;
-	}
-//	select p from DetEmpresaEmpleadoSie p where p.tbEmpresa.idempresa = "+ idcargo);
-	
-	
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.EmpleadoSieDAO#listarEmpleadosXEmpresa(int)
-	 */
-	public List listarEmpleadosXEmpresa(int idEmpresa) {
-		List lista = null;
-		try {
-			Query q = em.createQuery("select e from EmpleadoSie e inner join e.tbDetEmpresaEmpleados f  " +
-					" inner join f.tbEmpresa g where g.idempresa = " + idEmpresa);
-			lista = q.getResultList();
-			log.info("tamaño lista listarEmpleadosXEmpresa --> " + lista.size());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return lista;
-	}
+
 }
