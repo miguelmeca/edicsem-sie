@@ -13,9 +13,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.KardexSie;
+import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.model.dao.AlmacenDAO;
 import com.edicsem.pe.sie.model.dao.KardexDAO;
+import com.edicsem.pe.sie.model.dao.ProductoDAO;
 
 /**
  * @author karen
@@ -30,7 +32,8 @@ public class KardexDAOImpl implements KardexDAO {
 
 	@EJB
 	private AlmacenDAO almacenDAOService;
-
+	@EJB
+	private ProductoDAO productoDao;
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -108,7 +111,13 @@ public class KardexDAOImpl implements KardexDAO {
 			log.info("insertando.... 1 " + kardex.getIdkardex() + " cant exis "
 					+ kardex.getCantexistencia());
 			em.persist(kardex);
+			
 
+			//insertando las unidades actuales de un producto
+			ProductoSie objProducto = productoDao.findProducto(idProducto);
+			objProducto.setUnidproducto(kardex.getCantexistencia());
+			productoDao.updateProducto(objProducto);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
