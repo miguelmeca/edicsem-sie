@@ -569,6 +569,34 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	}
 
 	/**
+	 * @return the direccion
+	 */
+//	public String getDireccion() {
+//		return direccion;
+//	}
+//
+//	/**
+//	 * @param direccion the direccion to set
+//	 */
+//	public void setDireccion(String direccion) {
+//		this.direccion = direccion;
+//	}
+//
+//	/**
+//	 * @return the estado2
+//	 */
+//	public int getEstado2() {
+//		return estado2;
+//	}
+//
+//	/**
+//	 * @param estado2 the estado2 to set
+//	 */
+//	public void setEstado2(int estado2) {
+//		this.estado2 = estado2;
+//	}
+
+	/**
 	 * @return the tipo
 	 */
 	public int getTipo() {
@@ -751,6 +779,20 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	public void setUbigeoDefecto(String ubigeoDefecto) {
 		this.ubigeoDefecto = ubigeoDefecto;
 	}
+
+	/**
+	 * @return the objDetCargo
+	 */
+//	public DetCargoEmpleadoSie getObjDetCargo() {
+//		return objDetCargo;
+//	}
+//
+//	/**
+//	 * @param objDetCargo the objDetCargo to set
+//	 */
+//	public void setObjDetCargo(DetCargoEmpleadoSie objDetCargo) {
+//		this.objDetCargo = objDetCargo;
+//	}
 
 	/**
 	 * @return the objContratoEmpleado
