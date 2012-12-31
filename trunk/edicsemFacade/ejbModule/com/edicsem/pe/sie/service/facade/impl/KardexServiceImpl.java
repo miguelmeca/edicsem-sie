@@ -77,10 +77,16 @@ public class KardexServiceImpl implements KardexService {
 			objKardex2.setTbPuntoVenta(objAlmacenDao.findAlmacen(idAlmacenEntrada));
 			objKardex2.setCantentrada(obj.getCantsalida());
 			objKardex2.setCantsalida(obj.getCantentrada());
+			objKardex2.setValortotal(obj.getValortotal());
+			
 			if(idtipokardexproducto==1){
 				idtipokardexproducto=2;
+				objKardex2.setValorunitarioentrada("0.0");
+				objKardex2.setValorunitariosalida(obj.getValorunitarioentrada());
 			}else if(idtipokardexproducto==2){
 				idtipokardexproducto=1;
+				objKardex2.setValorunitariosalida("0.0");
+				objKardex2.setValorunitarioentrada(obj.getValorunitarioentrada());
 			}
 			objKardex2.setTbTipoKardexProducto(objTipoKardexDao.findTipoKardex(idtipokardexproducto));
 			objKardexDao.insertMovimiento(idproducto,objKardex2);
