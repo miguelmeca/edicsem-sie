@@ -113,11 +113,12 @@ public class KardexDAOImpl implements KardexDAO {
 					+ kardex.getCantexistencia());
 			em.persist(kardex);
 			
-
-			//insertando las unidades actuales de un producto
-			ProductoSie objProducto = productoDao.findProducto(idProducto);
-			objProducto.setUnidproducto(kardex.getCantexistencia());
-			productoDao.updateProducto(objProducto);
+			if(kardex.getTbTipoKardexProducto().getIdtipokardexproducto()!=3){
+				//insertando las unidades actuales de un producto, solo si es entrada y salida , no deposito
+				ProductoSie objProducto = productoDao.findProducto(idProducto);
+				objProducto.setUnidproducto(kardex.getCantexistencia());
+				productoDao.updateProducto(objProducto);
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -167,7 +168,7 @@ public class KardexDAOImpl implements KardexDAO {
 						+ " a.tbProducto.idproducto = " + idProducto
 						+ " and a.tbPuntoVenta.idpuntoventa = "
 						+ listaAlmacenes.get(i).getIdpuntoventa()
-						+ " ORDER BY a.idkardex ASC ");
+						+ " and a.tbTipoKardexProducto.idtipokardexproducto!=3 ORDER BY a.idkardex ASC  ");
 				listaTmp = q.getResultList();
 
 				if (listaTmp.size() - 1 != -1) {
@@ -177,15 +178,6 @@ public class KardexDAOImpl implements KardexDAO {
 				}
 				log.info(" * tamano " + lista.size());
 			}
-			// reordenar por idkardex 14,10,9,17,15
-
-			// for (int i = 0; i < lista.size() ; i++) {
-			// if(lista.get(i).getIdkardex() < lista.get(i+1).getIdkardex() ){
-			// // 10>11
-			// lista2.add( lista.get(i));
-			//
-			// }
-			// }
 
 			KardexSie temporal;
 
