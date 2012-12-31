@@ -288,11 +288,21 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 										//la cantidad existente en un almacen no puede resultar menor que 0
 										if( k.get(i).getTbPuntoVenta().getIdpuntoventa() == idAlmacen2 ){
 											//getCantidadEntrada() vendria a ser la salida del almacen2
+											log.info(k.get(i).getCantexistencia()+"   "+ objKardexSie.getCantentrada());
 											if( k.get(i).getCantexistencia()- objKardexSie.getCantentrada()<0){
 												mensaje = "La cantidad de salida de dicho producto no puede ser mayor al actual: " + k.get(i).getCantexistencia() ;
+												break;
 											}else{
+												log.info("  -->******* "+objKardexSie.getValortotal()+"   "+ objKardexSie.getCantentrada());
+												double d = Double.parseDouble(objKardexSie.getValortotal())/objKardexSie.getCantentrada();
+												objKardexSie.setValorunitarioentrada(""+d);
+												valorTotalAlmacenes = Double.parseDouble(k.get(i).getValorunitarioexistencia())+Double.parseDouble(objKardexSie.getValortotal());
+												log.info("  -->******* "+d+"   "+ objKardexSie.getValorunitarioentrada()+" "+objKardexSie.getValorunitarioexistencia());
 												validado=true;
+												break;
 											}
+										}else{
+											mensaje = "Dicho almacén/punto no cuenta con stock actual de dicho producto";
 										}
 									}	
 								}
@@ -378,7 +388,7 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 					}
 				}
 				if(mensaje !=null){
-				log.info(" *valor *" + validado + " mensaje :" + mensaje+ objKardexSie.getCantentrada());
+				log.info(" *valor *" + validado + " mensaje :" + mensaje+" cant entrada: "+ objKardexSie.getCantentrada());
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 						Constants.MESSAGE_INFO_TITULO, mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
