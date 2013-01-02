@@ -82,13 +82,10 @@ public class ProductoDAOImpl implements ProductoDAO {
 		}
 		return producto;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
+	
+	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.ProductoDAO#listarProductos()
 	 */
-
 	public List listarProductos() {
 		List lista = null;
 		try {
@@ -101,6 +98,9 @@ public class ProductoDAOImpl implements ProductoDAO {
 		return lista;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ProductoDAO#listarProductosXTipo(int)
+	 */
 	public List listarProductosXTipo(int tipoProducto) {
 		log.info(" idtipo "+ tipoProducto);
 		List lista = null;
@@ -116,6 +116,9 @@ public class ProductoDAOImpl implements ProductoDAO {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ProductoDAO#listarProductoxEmpresas(int)
+	 */
 	public List listarProductoxEmpresas(int parametroObtenido) {
 		List lista = null;
 		log.info("por entrar al QUERY PRODUCTO  "+ parametroObtenido);
@@ -128,8 +131,6 @@ public class ProductoDAOImpl implements ProductoDAO {
 			e.printStackTrace();
 		}
 		return lista;
-
 	}
-	
 	
 }
