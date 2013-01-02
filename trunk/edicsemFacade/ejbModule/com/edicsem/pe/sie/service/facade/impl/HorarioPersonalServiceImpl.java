@@ -29,6 +29,17 @@ public class HorarioPersonalServiceImpl implements HorarioPersonalService{
 	private FechaDAO objFechaDao;
 	
 	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.HorarioPersonalService#insertHorarioVenta(java.util.List)
+	 */
+	public void insertHorarioVenta(List<HorarioPersonalSie> horariopersonal) {
+		for (int i = 0; i < horariopersonal.size(); i++) {
+			log.info("insert Horario Venta ");
+			horariopersonal.get(i).setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(36));
+			objHorarioPersonalDao.insertHorarioPersonal(horariopersonal.get(i));
+		}
+	}
+	
+	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.HorarioPersonalService#insertHorarioPersonal(java.util.List, com.edicsem.pe.sie.entity.HorarioPersonalSie, int)
 	 */
 	public void insertHorarioPersonal(List<String> diaList,HorarioPersonalSie horariopersonal, int idEmpleado) {
@@ -80,6 +91,6 @@ public class HorarioPersonalServiceImpl implements HorarioPersonalService{
 	public List listarHorarioPersonalXempleado(int id) {
 		log.info("En el servicio ");
 		return objHorarioPersonalDao.listarHorarioPersonalXempleado(id);
-	}	
+	}
 		
 }
