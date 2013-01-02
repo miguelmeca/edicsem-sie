@@ -96,8 +96,8 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 	public List listarEmpleadosXCargo(int idCargo) {
 		List lista = null;
 		try {
-			Query q = em.createQuery("select p from EmpleadoSie p inner join p.tbDetCargoEmpleados q  " +
-					"inner join  q.tbCargoEmpleado r where r.idcargoempleado = "+idCargo);
+			Query q = em.createQuery("select p from EmpleadoSie p inner join p.tbContratoEmpleados1 q  " +
+					"inner join  q.tbCargoempleado r where r.idcargoempleado = "+idCargo);
 			lista = q.getResultList();
 			log.info("tamaño lista Empleados X Cargo --> " + lista.size());
 		} catch (Exception e) {
