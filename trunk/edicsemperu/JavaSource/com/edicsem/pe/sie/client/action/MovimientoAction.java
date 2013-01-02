@@ -88,6 +88,8 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 		boolean validado = false;
 		mensaje=null;
 		valorTotalAlmacenes=0.0;
+		double valoruniex= 0.0;
+		
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()' :D  " + objKardexSie.getCantentrada()
@@ -131,7 +133,16 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 					double valorExistenteTotalAlmacenes=0.0;
 					log.info("   despues de la consulta  :)");
 					for (int i = 0; i < k.size(); i++) {
-						
+						log.info("en el for 1  "+ k.get(i).getTbPuntoVenta().getIdpuntoventa()+ " * "+  idAlmacen);
+						if (k.get(i).getTbPuntoVenta().getIdpuntoventa() == idAlmacen) {
+							log.info("en el for 2  "+ k.get(i).getTbPuntoVenta().getIdpuntoventa()+ " * "+  idAlmacen);
+
+							if( k.get(i).getValorunitarioexistencia()!=null){
+								log.info(" uni exist "+k.get(i).getValorunitarioexistencia());
+							valoruniex=  Double.parseDouble(k.get(i).getValorunitarioexistencia());
+							}
+							log.info(" v "+ valoruniex);
+						}
 						if(k.get(i).getCantexistencia()==null)
 							cantExistenteTotalAlmacenes+=0.0;
 						else
@@ -139,14 +150,15 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 						
 						if(k.get(i).getValorunitarioexistencia()==null)
 							valorExistenteTotalAlmacenes+=0.0;
-						else
+						else{
 						valorExistenteTotalAlmacenes +=  Double.parseDouble(k.get(i).getValorunitarioexistencia());
+						}
 						
 						stkmaximo = k.get(i).getTbProducto().getStkmaximo();
 						stkminimo = k.get(i).getTbProducto().getStkminimoproducto();
 					}
 					
-					log.info(" **  " + cantExistenteTotalAlmacenes + " "  + valorExistenteTotalAlmacenes + stkminimo + " " + stkmaximo + " " + validado);
+					log.info(" **  " + cantExistenteTotalAlmacenes + " "  + valorExistenteTotalAlmacenes +" stk minimo "+ stkminimo + " " + stkmaximo + " " + validado);
 					 
 					if (objKardexSie.getCantsalida() > 0) {
 						log.info(" cantexist "+ cantExistenteTotalAlmacenes + " cant Sal "+objKardexSie.getCantsalida() +" stk min " +stkminimo+ " almacen 2 " + idAlmacen2);
@@ -168,10 +180,10 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 							for (int j = 0; j< k.size(); j++) {
 								log.info("en el for 1 2 "+idAlmacen2);
 							if (objKardexSie.getCantsalida() > 0) {
-								log.info(" a ");
+								log.info(" a "+ k.get(j).getCantexistencia()+"   "+ objKardexSie.getCantsalida() );
 								if (k.get(j).getCantexistencia()- objKardexSie.getCantsalida() < 0) {
 									log.info(" b ");
-									mensaje = "La cantidad existente del producto es " + k.get(j).getCantexistencia();
+									mensaje = "La cantidad existente del producto es " + objKardexSie.getCantexistencia();
 								}
 								else if(idAlmacen2==0 ){
 									log.info(" c ");
@@ -186,6 +198,7 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 											objKardexSie.setValortotal(valorT+"");
 											objKardexSie.setValorunitarioexistencia(objKardexSie.getValorunitarioexistencia());
 											log.info(" "+valorExistenteTotalAlmacenes+"   - " +k.get(i).getValorunitarioexistencia() +" - "+objKardexSie.getValortotal());
+											valoruniex = Double.parseDouble(k.get(i).getValorunitarioexistencia()) - Double.parseDouble(objKardexSie.getValortotal());
 											valorTotalAlmacenes= Double.parseDouble(k.get(i).getValorunitarioexistencia()) - Double.parseDouble(objKardexSie.getValortotal());
 											log.info(" valor total almacenadoS "+ valorTotalAlmacenes +"  "+ objKardexSie.getValorunitarioexistencia());
 											log.info(" "+k.get(i).getCantexistencia()+"   "+ objKardexSie.getCantsalida());
@@ -200,7 +213,6 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 											}
 										}else{
 											log.info(" f ");
-											mensaje = "La cantidad de dicho producto es 0 ";
 										}
 										
 									}
@@ -213,9 +225,10 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 					}
 						 
 					} else if (objKardexSie.getCantentrada() > 0) {
+						log.info("es entrada  ");
 						// solo entrada principal de depovent a un almacen jhorgy
 						if (idAlmacen2==0 ) {
-							
+							log.info("idAlmacen2  0  "+objKardexSie.getValortotal());
 							if(objKardexSie.getValortotal() != null){
 								BigDecimal d = new BigDecimal(Double.parseDouble(objKardexSie.getValortotal())/ objKardexSie.getCantentrada());
 								d=d.setScale(2, RoundingMode.HALF_UP);
@@ -230,31 +243,19 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 								objDetComprobante.setDescripcion(objKardexSie.getDetallekardex());
 								objDetComprobante.setCantproducto(objKardexSie.getCantentrada());
 								
-								double valorexistencia=0;
-								double valoruniex= 0;
-								
-								for (int m = 0; m< k.size(); m++) {
-									 
-									log.info("en el for de entrada 2 "+ k.get(m).getTbPuntoVenta().getIdpuntoventa()+ " * "+  idAlmacen);
-									if (k.get(m).getTbPuntoVenta().getIdpuntoventa() == idAlmacen) {
-										
-										if( k.get(m).getValorunitarioexistencia()!=null)
-										valoruniex=  Double.parseDouble(k.get(m).getValorunitarioexistencia());
-										log.info(" v "+ valoruniex);
-									}
-									
+							
 									//si la cantidad existente es de otro almacen , se registraria por primera vez en el almacen seleccionado
-									log.info(" v3 "+ valoruniex+  "  - " +objKardexSie.getValortotal());
-									valorexistencia =valoruniex  + Double.parseDouble(objKardexSie.getValortotal());
-									objKardexSie.setValorunitarioexistencia(valorexistencia+"");
+									log.info(" v3 "+ valoruniex+  "  + " +objKardexSie.getValortotal());
+									valoruniex =valoruniex  + Double.parseDouble(objKardexSie.getValortotal());
+									objKardexSie.setValorunitarioexistencia(valoruniex+"");
 									
 									log.info("** "+valorTotalAlmacenes+ " "+ valorExistenteTotalAlmacenes+"  "+ Double.parseDouble(objKardexSie.getValortotal()));
 									valorTotalAlmacenes= valorExistenteTotalAlmacenes+ Double.parseDouble(objKardexSie.getValortotal());
 									log.info("** "+valorTotalAlmacenes);
 									stockTotalAlmacenado= cantExistenteTotalAlmacenes + objKardexSie.getCantentrada();
 									
-									log.info(" vex "+ valorexistencia+ "");
-								}
+									log.info(" vex "+ valoruniex+ "");
+							
 								
 							if(idproveedor!=0){
 								log.info("  idproveed ");
@@ -297,6 +298,8 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 												double d = Double.parseDouble(objKardexSie.getValortotal())/objKardexSie.getCantentrada();
 												objKardexSie.setValorunitarioentrada(""+d);
 												valorTotalAlmacenes = Double.parseDouble(k.get(i).getValorunitarioexistencia())+Double.parseDouble(objKardexSie.getValortotal());
+												valoruniex = Double.parseDouble(k.get(i).getValorunitarioexistencia())+Double.parseDouble(objKardexSie.getValortotal());
+												
 												log.info("  -->******* "+d+"   "+ objKardexSie.getValorunitarioentrada()+" "+objKardexSie.getValorunitarioexistencia());
 												validado=true;
 												break;
@@ -343,16 +346,17 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 								objKardexSie.setValorunitarioentrada(valorunitario+"");
 								BigDecimal p= new BigDecimal(objKardexSie.getValorunitarioentrada());
 								objDetComprobante.setPreciounitario(p);
-								double valorexistencia=0, valoruniex= 0;
+								double valorexistencia=0;
 								log.info(" v "+ valoruniex);
+								valoruniex += Double.parseDouble(objKardexSie.getValortotal());
 								valorexistencia =valoruniex  + Double.parseDouble(objKardexSie.getValortotal());
 								log.info(" v "+ valorexistencia);
-								objKardexSie.setValorunitarioexistencia(valorexistencia+"");
+								//objKardexSie.setValorunitarioexistencia(valorexistencia+"");
 								log.info(" vex "+ valorexistencia);
 								stockTotalAlmacenado = objKardexSie.getCantentrada();
 								valorTotalAlmacenes=Double.parseDouble(objKardexSie.getValortotal());
 								log.info(" vex "+ valorexistencia);
-								objKardexSie.setValorunitarioexistencia(objKardexSie.getValortotal()+"");
+							//	objKardexSie.setValorunitarioexistencia(objKardexSie.getValortotal()+"");
 								}
 							}
 							
@@ -376,7 +380,7 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 					}
 					log.info("stockTotalAlmacenado --> "+ stockTotalAlmacenado );
 					log.info("valorTotalAlmacenes --> "+valorTotalAlmacenes);
-					objKardexSie.setValorunitarioexistencia(""+ valorTotalAlmacenes );
+					objKardexSie.setValorunitarioexistencia(""+ valoruniex );
 					
 						log.info(" *************** INSERTAR *********"  );
 						objKardexService.insertMovimiento(

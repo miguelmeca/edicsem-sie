@@ -1,7 +1,6 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
 import java.sql.Time;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,6 +32,7 @@ import com.edicsem.pe.sie.entity.HorarioPersonalSie;
 import com.edicsem.pe.sie.entity.HorarioPuntoVentaSie;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.FiltroHorarioVentaService;
+import com.edicsem.pe.sie.service.facade.HorarioPersonalService;
 import com.edicsem.pe.sie.service.facade.HorarioPuntoVentaService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
@@ -61,6 +61,8 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 	private FiltroHorarioVentaService objFiltroHorarioService;
 	@EJB
 	private EmpleadoSieService objVendedoresService;
+	@EJB
+	private HorarioPersonalService objHorarioService;
 	
 	@ManagedProperty(value = "#{comboAction}")
 	private ComboAction comboManager;
@@ -243,8 +245,10 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 								objHorario.setHoraSalida(horariopv.get(i).getHoraSalida());
 								hora2=objHorario.getHoraSalida();
 								log.info("hora 2 "+hora2);
-								log.info(arreglo);
+								log.info(arreglo.size());
 								int rho2 =(int) (Math.random() * ((arreglo.size()-1)-0+1));
+								log.info("rho2  "+rho2);
+								log.info(" arreglo    "+arreglo.get(rho2));
 								objHorario.setTbEmpleado(objVendedoresService.buscarEmpleado(arreglo.get(rho2)));
 								horarioPersonalList.add(objHorario);
 								log.info("h  "+hora2+" h sal  "+horariopv.get(i).getHoraSalida());
@@ -381,14 +385,31 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 							}
 						}
 					}
+					log.info("vendedores " +vendedor+"  "+hora1 +" - "+ hora2+ "  "+fecha1+" "+fecha2);
 					eventModel.addEvent(new DefaultScheduleEvent(hora1 +" - "+ hora2 +vendedor , fecha1, fecha2));					
 				}
 				else{
 					//modificar
 					
+					for (int i = 0; i < vendedorList.size(); i++) {
+						log.info(vendedorList.get(i).toString()+" --> ");
+					
+						Iterator it = comboManager.getEmpleadoxcargo().entrySet().iterator();
+						while (it.hasNext()) {
+							Map.Entry e = (Map.Entry) it.next();
+							log.info("key " + e.getKey() + " value " + e.getValue());
+							if (e.getValue().toString().equals(vendedorList.get(i))) {
+								vendedor +=" , "+(String) e.getKey();
+								log.info("vendedor " + vendedor);
+								break;
+							}
+						}
+					}
+					log.info("vendedores " +vendedor+"  "+event.getStartDate());
 				    eventModel.updateEvent(event);
 				}
-				        
+				objHorarioService.insertHorarioVenta(horarioPersonalList);
+				
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
