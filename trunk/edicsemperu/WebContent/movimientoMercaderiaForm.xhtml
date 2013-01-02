@@ -113,7 +113,11 @@
 						value="Grabar Mercadería" ajax="false"
 						update="formMovMerc:listaMovim, message">
 					</p:commandButton>
-				<p:dataTable id="listaMovim" var="d" value="#{movimientoMercaderia.data}"   rowStyleClass="#{d.idkardex == movimientoMercaderia.idMAxKardex ? 'verdeLimon' : null}">
+				<p:dataTable id="listaMovim" var="d" value="#{movimientoMercaderia.data}"   rowStyleClass="#{d.idkardex == movimientoMercaderia.idMAxKardex ? 'verdeLimon' : null}"
+				paginator="true" rows="10"
+       paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	   rowsPerPageTemplate="5,10,15" widgetVar="table"
+	   emptyMessage="No se encontro registros">
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Id Kardex" />
@@ -128,7 +132,7 @@
 					</p:column>
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Tipo de Kardex" />
+							<h:outputText value="Tipo Kardex" />
 						</f:facet>
 						<h:outputText value="#{d.tbTipoKardexProducto.descripcion}" />
 					</p:column>
@@ -164,7 +168,7 @@
 					</p:column>
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Cantidad Existente" />
+							<h:outputText value="Cant. Existente" />
 						</f:facet>
 						<h:outputText value="#{d.cantexistencia}" />
 					</p:column>
