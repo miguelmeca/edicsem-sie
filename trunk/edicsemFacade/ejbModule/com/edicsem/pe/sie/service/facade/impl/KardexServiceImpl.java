@@ -59,26 +59,30 @@ public class KardexServiceImpl implements KardexService {
 			int idproducto, int idtipokardexproducto, int idAlmacenSalida, int idAlmacenEntrada) {
 		
 		KardexSie objKardex =obj; 
+		log.info(" "+ obj.getCantexistencia());
 		objKardex.setTbProducto(objProductoDao.findProducto(idproducto));
 		objKardex.setTbPuntoVenta(objAlmacenDao.findAlmacen(idAlmacenSalida));
 		objKardex.setTbTipoKardexProducto(objTipoKardexDao.findTipoKardex(idtipokardexproducto));
 		objKardex.setCantentrada(obj.getCantentrada());
 		objKardex.setCantsalida(obj.getCantsalida());
-		objKardex.setDetallekardex(obj.getDetallekardex());
+		objKardex.setCantexistencia(0);
 		objKardexDao.insertMovimiento(idproducto,objKardex);
-		
+		log.info("entrad "+objKardex.getValorunitarioentrada()+" sali "+objKardex.getValorunitariosalida());
 		/**Si hubiese otro id de almacen 
 		 * */
 		
 		if(idAlmacenEntrada!=0){
+			log.info(" almacen 2 ");
 			KardexSie objKardex2 = new KardexSie();
 			objKardex2.setTbProducto(objProductoDao.findProducto(idproducto));
 			objKardex2.setDetallekardex(obj.getDetallekardex());
 			objKardex2.setTbPuntoVenta(objAlmacenDao.findAlmacen(idAlmacenEntrada));
 			objKardex2.setCantentrada(obj.getCantsalida());
 			objKardex2.setCantsalida(obj.getCantentrada());
+			objKardex2.setValorunitarioentrada(obj.getValorunitariosalida());
+			objKardex2.setValorunitariosalida(obj.getValorunitarioentrada());
 			objKardex2.setValortotal(obj.getValortotal());
-			
+			log.info(" almacen 2 "+objKardex2.getValorunitarioentrada()+" sali "+objKardex2.getValorunitariosalida());
 			if(idtipokardexproducto==1){
 				idtipokardexproducto=2;
 				objKardex2.setValorunitarioentrada("0.0");
