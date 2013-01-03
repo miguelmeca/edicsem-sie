@@ -70,6 +70,7 @@ public class KardexDAOImpl implements KardexDAO {
 
 		KardexSie kardextmp = null;
 		int cantiExist = 0;
+		double valorExist=0.0;
 		try {
 
 			if (log.isInfoEnabled()) {
@@ -82,32 +83,48 @@ public class KardexDAOImpl implements KardexDAO {
 						+ " - "
 						+ kardex.getTbProducto().getDescripcionproducto());
 			}
+			Query q = null;
+			String consulta;
 			// Salida o entrada al almacen
-			Query q = em
-					.createQuery(" select p from KardexSie p where p.tbProducto.idproducto =:x1  "
-							+ "and p.tbPuntoVenta.idpuntoventa  =:x2 "
-							+ " order by idKardex desc limit 1  ");
+			if(kardex.getTbTipoKardexProducto().getIdtipokardexproducto()<3){
+				log.info(" menor 3 " );
+				consulta=" select p from KardexSie p  inner join p.tbTipoKardexProducto q where p.tbProducto.idproducto =:x1  "
+						+ "and p.tbPuntoVenta.idpuntoventa  =:x2 and q.idtipokardexproducto < 3"
+						+ " order by idKardex desc limit 1  ";
+			}else{
+				log.info("   3 " );
+				consulta=" select p from KardexSie p  inner join p.tbTipoKardexProducto q where p.tbProducto.idproducto =:x1  "
+							+ "and p.tbPuntoVenta.idpuntoventa  =:x2 and q.idtipokardexproducto= 3"
+							+ " order by idKardex desc limit 1  ";
+			}
+			q = em.createQuery(consulta);
 			q.setParameter("x1", idProducto);
 			q.setParameter("x2", kardex.getTbPuntoVenta().getIdpuntoventa());
-			if (q.getResultList().size() > 0) {
-				kardextmp = (KardexSie) q.getResultList().get(0);
-			}
-
+				if (q.getResultList().size() > 0) {
+					kardextmp = (KardexSie) q.getResultList().get(0);
+				}
 			/*
 			 * Si No existe ningun kardex de dicho producto empieza en 0 su
 			 * cantidad existente Si existe kardex se pasa la info, y a
 			 * continuación se editará la cantidad existente*
 			 */
-			if (kardextmp == null)
+			if (kardextmp == null){
 				cantiExist = 0;
-			else
+				valorExist = 0.0;
+			}else{
 				cantiExist = kardextmp.getCantexistencia();
+				valorExist = Double.parseDouble(kardextmp.getValorunitarioexistencia());
+			}
 			log.info("cantiExist --> " + cantiExist);
-
+			double p =0.0;
 			if (kardex.getCantsalida() != 0) {
 				kardex.setCantexistencia(cantiExist - kardex.getCantsalida());
+				p =valorExist - Double.parseDouble(kardex.getValorunitariosalida());
+				kardex.setValorunitarioexistencia(""+p);
 			} else {
 				kardex.setCantexistencia(cantiExist + kardex.getCantentrada());
+				p =valorExist + Double.parseDouble(kardex.getValorunitarioentrada());
+				kardex.setValorunitarioexistencia(""+p);
 			}
 			log.info("insertando.... 1 " + kardex.getIdkardex() + " cant exis "
 					+ kardex.getCantexistencia());
@@ -164,11 +181,11 @@ public class KardexDAOImpl implements KardexDAO {
 
 			for (int i = 0; i < listaAlmacenes.size(); i++) {
 
-				Query q = em.createQuery(" select  a  from  KardexSie a where "
+				Query q = em.createQuery(" select  a  from  KardexSie a inner join a.tbTipoKardexProducto b where "
 						+ " a.tbProducto.idproducto = " + idProducto
 						+ " and a.tbPuntoVenta.idpuntoventa = "
 						+ listaAlmacenes.get(i).getIdpuntoventa()
-						+ " and a.tbTipoKardexProducto.idtipokardexproducto!=3 ORDER BY a.idkardex ASC  ");
+						+ " and b.idtipokardexproducto< 3 ORDER BY a.idkardex ASC  ");
 				listaTmp = q.getResultList();
 
 				if (listaTmp.size() - 1 != -1) {
