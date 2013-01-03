@@ -18,6 +18,7 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.DateSelectEvent;
 import org.primefaces.event.ScheduleEntrySelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
@@ -321,6 +322,7 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 		 cHasta= new GregorianCalendar();
 		 vendedorList= new ArrayList<String>();
 		 newRecord=false;
+		 RequestContext context = RequestContext.getCurrentInstance();
 		 try {
 			 	Calendar diaActual = DateUtil.getToday(), daux = new GregorianCalendar();
 				int dia =nextMonday(diaActual.get(Calendar.DAY_OF_WEEK));
@@ -338,12 +340,14 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 						if(daux.get(Calendar.DAY_OF_WEEK) == horariopv.get(i).getTbFecha().getIdFecha() ){
 							log.info(" entro  ");
 							event = new DefaultScheduleEvent("", selectEvent.getDate(), selectEvent.getDate());
+							context.execute("horarioVendedorDialog.show()");
 							newRecord=true;
 							break;
 						}
 					}
 					if(newRecord==false){
 							log.info("error en hor punto ");
+							context.execute("horarioVendedorDialog.hide()");
 					mensaje = "Debe seleccionar una fecha disponible en el horario del punto de venta";
 					msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 					FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -363,7 +367,11 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 				if (log.isInfoEnabled()) {
 					log.info("Entering my method 'insertar'");
 				}
-				
+				if(vendedorList.size()==0){
+					mensaje="Debe seleccionar un vendedor a cargo";
+					msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+				}
+				else{
 				//insertar
 				if(isNewRecord()){ 
 					//validar las fechas y horas
@@ -408,7 +416,10 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 					log.info("vendedores " +vendedor+"  "+event.getStartDate());
 				    eventModel.updateEvent(event);
 				}
-				objHorarioService.insertHorarioVenta(horarioPersonalList);
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+				//objHorarioService.insertHorarioVenta(horarioPersonalList);
+				}
+				FacesContext.getCurrentInstance().addMessage(null, msg);
 				
 		} catch (Exception e) {
 			e.printStackTrace();

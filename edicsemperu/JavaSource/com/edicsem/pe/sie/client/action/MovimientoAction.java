@@ -33,6 +33,7 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 	private int idproducto,idMAxKardex, idtipokardexproducto,idempresa,idproveedor, idAlmacen, idAlmacen2,stockTotalAlmacenado;
 	private double valorTotalAlmacenes;
 	private KardexSie objKardexSie = new KardexSie();
+	private String tipoMovimiento, tipomovimientoOpcional;
 	private ComprobanteSie objcomprobante;
 	private List<KardexSie> data;
 	private boolean editMode;
@@ -131,7 +132,7 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 
 					int cantExistenteTotalAlmacenes = 0, stkmaximo = 0, stkminimo = 0;
 					double valorExistenteTotalAlmacenes=0.0;
-					log.info("   despues de la consulta  :)");
+					log.info("   despues de la consulta  :) "+k.size());
 					for (int i = 0; i < k.size(); i++) {
 						log.info("en el for 1  "+ k.get(i).getTbPuntoVenta().getIdpuntoventa()+ " * "+  idAlmacen);
 						if (k.get(i).getTbPuntoVenta().getIdpuntoventa() == idAlmacen) {
@@ -162,14 +163,6 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 					 
 					if (objKardexSie.getCantsalida() > 0) {
 						log.info(" cantexist "+ cantExistenteTotalAlmacenes + " cant Sal "+objKardexSie.getCantsalida() +" stk min " +stkminimo+ " almacen 2 " + idAlmacen2);
-//						if (cantExistenteTotalAlmacenes - objKardexSie.getCantsalida() < stkminimo && 
-//							cantExistenteTotalAlmacenes - objKardexSie.getCantsalida() >= 0 && idAlmacen2==0 ){
-//							stockTotalAlmacenado = cantExistenteTotalAlmacenes - objKardexSie.getCantsalida();
-//							mensaje = "  Se registro correctamente, el stock actual de dicho producto es  " + stockTotalAlmacenado+ " debe realizar una solicitud de dicho producto";
-//							validado = true;
-//							log.info(mensaje);
-//							//Mandar correo
-//						}
 						if (cantExistenteTotalAlmacenes - objKardexSie.getCantsalida() < 0) {
 							mensaje = " No puede exceder la cantidad de salida al stock actual del producto, el cual es " + cantExistenteTotalAlmacenes;
 							log.info(mensaje);
@@ -177,21 +170,33 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 						
 						else {
 							log.info("en el for 1 ");
-							for (int j = 0; j< k.size(); j++) {
+							for (int i = 0; i< k.size(); i++) {
 								log.info("en el for 1 2 "+idAlmacen2);
-							if (objKardexSie.getCantsalida() > 0) {
-								log.info(" a "+ k.get(j).getCantexistencia()+"   "+ objKardexSie.getCantsalida() );
-								if (k.get(j).getCantexistencia()- objKardexSie.getCantsalida() < 0) {
-									log.info(" b ");
-									mensaje = "La cantidad existente del producto es " + objKardexSie.getCantexistencia();
-								}
-								else if(idAlmacen2==0 ){
-									log.info(" c ");
-									for (int i = 0; i < k.size(); i++) {
+								
+								if( k.get(i).getTbPuntoVenta().getIdpuntoventa() == idAlmacen ){
+									
+									log.info(" a "+ k.get(i).getCantexistencia()+"   "+ objKardexSie.getCantsalida() );
+								
+									if (k.get(i).getCantexistencia()- objKardexSie.getCantsalida() < 0) {
+										log.info(" b ");
+										mensaje = "La cantidad existente del producto es " + objKardexSie.getCantexistencia();
+										break;
+									}
+									else if (k.get(i).getCantexistencia()- objKardexSie.getCantsalida() == 0) {
+										log.info(" bb ");
+										mensaje = "Se registro correctamente, el stock actual de dicho producto es 0";
+										objKardexSie.setValorunitariosalida(valoruniex+"");
+										objKardexSie.setValortotal(""+(valoruniex*objKardexSie.getCantsalida() ));
+										log.info(" g "+valoruniex);
+										validado=true;
+										break;
+									}
+									else if(idAlmacen2==0 ){
+										log.info(" c ");
 										//la cantidad existente en un almacen no puede resultar menor que 0
 										
 										log.info("  .... "+ k.get(i).getTbPuntoVenta().getIdpuntoventa() +"    "+ idAlmacen);
-										if( k.get(i).getTbPuntoVenta().getIdpuntoventa() == idAlmacen ){
+										
 											log.info(" aki karencita!  *** "+k.get(i).getValorunitarioentrada());
 											objKardexSie.setValorunitariosalida(k.get(i).getValorunitarioentrada());
 											double valorT = Double.parseDouble(k.get(i).getValorunitarioentrada()) * objKardexSie.getCantsalida();
@@ -211,20 +216,24 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 												log.info(" e ");
 												validado=true;
 											}
-										}else{
-											log.info(" f ");
-										}
-										
+									}else{
+										log.info(" f se registra solo salida valida ");
 									}
 								}else{
-									log.info(" g ");
+									log.info(" g se registra y no se encontro "+valoruniex);
+									objKardexSie.setValorunitariosalida(valoruniex+"");
+									objKardexSie.setValortotal(""+(valoruniex*objKardexSie.getCantsalida() ));
+									log.info(" g "+valoruniex);
 									validado=true;
 								}
 							}
+							if(validado==false){
+								log.info("aa no se encontro ");
+								mensaje = "No se encontro stock en dicho almacen ";
+							}
 						}
-					}
-						 
-					} else if (objKardexSie.getCantentrada() > 0) {
+					 
+					} else if (objKardexSie.getCantentrada() > 0 && idtipokardexproducto!=3 ) {
 						log.info("es entrada  ");
 						// solo entrada principal de depovent a un almacen jhorgy
 						if (idAlmacen2==0 ) {
@@ -268,7 +277,7 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 							}
 						 
 						if (cantExistenteTotalAlmacenes + objKardexSie.getCantentrada() < stkmaximo && idAlmacen2==0 ) {
-							mensaje = " Se registro correctamente,  el stock actual de dicho producto es  " + stockTotalAlmacenado;
+							mensaje = " Se registro correctamente,  el stock actual total de dicho producto es  " + stockTotalAlmacenado;
 							validado=true;
 						}
 						if (cantExistenteTotalAlmacenes + objKardexSie.getCantentrada() > stkmaximo && idAlmacen2==0 ) {
@@ -331,7 +340,7 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 						if(objKardexSie.getCantentrada() >  prod.getStkmaximo() ){
 							validado = true;
 							stockTotalAlmacenado =objKardexSie.getCantentrada();
-							mensaje="Se registro correctamente, el stock actual es " + stockTotalAlmacenado +" se excedio el stock actual";
+							mensaje="Se registro correctamente, el stock actual Total es " + stockTotalAlmacenado +" se excedio el stock actual";
 						}
 						else{
 							
@@ -346,17 +355,10 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 								objKardexSie.setValorunitarioentrada(valorunitario+"");
 								BigDecimal p= new BigDecimal(objKardexSie.getValorunitarioentrada());
 								objDetComprobante.setPreciounitario(p);
-								double valorexistencia=0;
 								log.info(" v "+ valoruniex);
 								valoruniex += Double.parseDouble(objKardexSie.getValortotal());
-								valorexistencia =valoruniex  + Double.parseDouble(objKardexSie.getValortotal());
-								log.info(" v "+ valorexistencia);
-								//objKardexSie.setValorunitarioexistencia(valorexistencia+"");
-								log.info(" vex "+ valorexistencia);
 								stockTotalAlmacenado = objKardexSie.getCantentrada();
 								valorTotalAlmacenes=Double.parseDouble(objKardexSie.getValortotal());
-								log.info(" vex "+ valorexistencia);
-							//	objKardexSie.setValorunitarioexistencia(objKardexSie.getValortotal()+"");
 								}
 							}
 							
@@ -378,10 +380,16 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 					if(idproveedor!=0){
 					objcomprobante.setTbProveedor(objProveedorService.findProveedor(idproveedor));
 					}
-					log.info("stockTotalAlmacenado --> "+ stockTotalAlmacenado );
-					log.info("valorTotalAlmacenes --> "+valorTotalAlmacenes);
+					log.info("stockTotalAlmacenado --> "+ stockTotalAlmacenado+""+ objKardexSie.getCantexistencia());
+					log.info("valorTotalAlmacenes --> "+valorTotalAlmacenes+" "+idtipokardexproducto);
 					objKardexSie.setValorunitarioexistencia(""+ valoruniex );
-					
+					if(idtipokardexproducto==3){
+						objKardexSie.setValortotal("0.0");
+						objKardexSie.setValorunitarioentrada("0");
+						objKardexSie.setValorunitariosalida("0");
+						objKardexSie.setValorunitarioexistencia("0.0");
+						objKardexSie.setCantsalida(0);
+					}
 						log.info(" *************** INSERTAR *********"  );
 						objKardexService.insertMovimiento(
 								objKardexSie, objcomprobante,objDetComprobante,idproducto,
@@ -413,8 +421,8 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 		objKardexSie = new KardexSie();
 		objcomprobante = new ComprobanteSie();
 		objDetComprobante = new DetalleComprobanteSie();
-		 idproducto=0;
-		idtipokardexproducto=0; idAlmacen=0; idAlmacen2=0;
+		idproducto=0;
+		idAlmacen=0; idAlmacen2=0;
 	}
 
 	/**
@@ -429,6 +437,15 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 	 *            the idtipokardexproducto to set
 	 */
 	public void setIdtipokardexproducto(int idtipokardexproducto) {
+		if(idtipokardexproducto==1){
+			tipoMovimiento="Entrada";
+			tipomovimientoOpcional="Salida";
+		}else if(idtipokardexproducto==2){
+			tipoMovimiento="Salida";
+			tipomovimientoOpcional="Entrada";
+		}else{
+			tipoMovimiento="Deposito";
+		}
 		this.idtipokardexproducto = idtipokardexproducto;
 	}
 
@@ -649,6 +666,34 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 	 */
 	public void setIdMAxKardex(int idMAxKardex) {
 		this.idMAxKardex = idMAxKardex;
+	}
+
+	/**
+	 * @return the tipoMovimiento
+	 */
+	public String getTipoMovimiento() {
+		return tipoMovimiento;
+	}
+
+	/**
+	 * @param tipoMovimiento the tipoMovimiento to set
+	 */
+	public void setTipoMovimiento(String tipoMovimiento) {
+		this.tipoMovimiento = tipoMovimiento;
+	}
+
+	/**
+	 * @return the tipomovimientoOpcional
+	 */
+	public String getTipomovimientoOpcional() {
+		return tipomovimientoOpcional;
+	}
+
+	/**
+	 * @param tipomovimientoOpcional the tipomovimientoOpcional to set
+	 */
+	public void setTipomovimientoOpcional(String tipomovimientoOpcional) {
+		this.tipomovimientoOpcional = tipomovimientoOpcional;
 	}
 
 }
