@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -48,6 +50,11 @@ public class PaqueteSie implements Serializable {
 	//bi-directional many-to-one association to DetPaqueteSie
 	@OneToMany(mappedBy="tbPaquete")
 	private Set<DetPaqueteSie> tbDetPaquetes;
+	
+	//bi-directional many-to-one association to EstadoGeneralSie
+    @ManyToOne
+	@JoinColumn(name="idestadogeneral")
+	private EstadoGeneralSie tbEstadoGeneral;
 
     public PaqueteSie() {
     }
@@ -115,19 +122,21 @@ public class PaqueteSie implements Serializable {
 	public void setTbDetPaquetes(Set<DetPaqueteSie> tbDetPaquetes) {
 		this.tbDetPaquetes = tbDetPaquetes;
 	}
-
-	/**
-	 * @return the codpaquete
-	 */
+	
 	public String getCodpaquete() {
 		return codpaquete;
 	}
-
-	/**
-	 * @param codpaquete the codpaquete to set
-	 */
+	
 	public void setCodpaquete(String codpaquete) {
 		this.codpaquete = codpaquete;
+	}
+	
+	public EstadoGeneralSie getTbEstadoGeneral() {
+		return tbEstadoGeneral;
+	}
+	
+	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
+		this.tbEstadoGeneral = tbEstadoGeneral;
 	}
 	
 }
