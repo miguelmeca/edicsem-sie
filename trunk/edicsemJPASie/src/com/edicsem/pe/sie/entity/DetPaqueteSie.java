@@ -52,6 +52,11 @@ public class DetPaqueteSie implements Serializable {
 	@JoinColumn(name="idproducto")
 	private ProductoSie tbProducto;
     
+    //bi-directional many-to-one association to EstadoGeneralSie
+    @ManyToOne
+	@JoinColumn(name="idestadogeneral")
+	private EstadoGeneralSie tbEstadoGeneral;
+    
     @Transient
     private int item;
     
@@ -168,6 +173,14 @@ public class DetPaqueteSie implements Serializable {
 	 */
 	public void setItem(int item) {
 		this.item = item;
+	}
+
+	public EstadoGeneralSie getTbEstadoGeneral() {
+		return tbEstadoGeneral;
+	}
+
+	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
+		this.tbEstadoGeneral = tbEstadoGeneral;
 	}
 
 }
