@@ -50,7 +50,7 @@
             </h:panelGroup>
                           
             <p:outputLabel value="#{message['empleado.fechanac']}" for="fechanac" />
-			<p:calendar pagedate="-8380" value="#{mantenimientoEmpleadoFormAction.objEmpleado.fechanacimiento}" id="fechanac" showButtonPanel="true" required="true"  pattern="dd/mm/yyyy"
+			<p:calendar pagedate="-8380" maxdate="today" value="#{mantenimientoEmpleadoFormAction.objEmpleado.fechanacimiento}" id="fechanac" showButtonPanel="true" required="true"  pattern="dd/mm/yyyy"
 			label="Fecha de nacimiento" requiredMessage="#{message['empleado.fechanac.validation']}"/>                  
             
 			</h:panelGrid>

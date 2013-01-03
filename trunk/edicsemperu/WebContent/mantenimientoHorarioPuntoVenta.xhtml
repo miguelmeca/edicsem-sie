@@ -36,15 +36,14 @@
 		
 		<p:column headerText="Mostrar"  id="mostrar" >
 		<p:commandButton value="Mostrar" ajax="false" action="#{MantenimientoHorarioPuntoVentaSearchAction.mostrar}" update="panelMostrarHorario" >
-			<f:setPropertyActionListener value="#{c}"
-			target="#{MantenimientoHorarioPuntoVentaSearchAction.objPuntoVentaSie}" />
+			<f:setPropertyActionListener value="#{c}" target="#{MantenimientoHorarioPuntoVentaSearchAction.objPuntoVentaSie}" />
 		</p:commandButton>
 		</p:column>			
 </p:dataTable>
 <p:spacer/>
 <p:outputPanel id="panelMostrarHorario" rendered="#{MantenimientoHorarioPuntoVentaSearchAction.objPuntoVentaSie.idpuntoventa!=null}" >
 
-<p:fieldset legend="Detalle de Punto de Venta" style="margin-top:20px" >
+<p:fieldset legend="Horario:  #{MantenimientoHorarioPuntoVentaSearchAction.objPuntoVentaSie.descripcion}" style="margin-top:20px" >
 
 <p:commandButton  value="Nuevo Horario" action="#{MantenimientoHorarioPuntoVentaSearchAction.agregar}" 
 oncomplete="horariopvDialog.show()"  update="horarioPuntoVenta12,message, :formManteHorarioPV:display" >
@@ -54,7 +53,7 @@ oncomplete="horariopvDialog.show()"  update="horarioPuntoVenta12,message, :formM
 <p:dataTable var="h" value="#{MantenimientoHorarioPuntoVentaSearchAction.listaHorario}" id="horarioPuntoVentaList"  
  rowStyleClass="#{h.diainicio le horarioPuntoVenta.dhoy ? null: 'colorPlomo' }"  >
 		<f:facet name="header">
-            Horario Punto de Venta
+            Horario #{MantenimientoHorarioPuntoVentaSearchAction.objPuntoVentaSie.descripcion}
         </f:facet>
 			<p:column headerText="Dia">
 				<h:outputText value="#{h.tbFecha.dia}" />

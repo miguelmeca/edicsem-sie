@@ -395,17 +395,17 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			<h:panelGrid id="display" columns="2" cellpadding="2">
 			
 			<h:outputLabel value="Vendedor " />  
-            <p:selectCheckboxMenu value="#{horarioVendedorForm.vendedorList}" filter="true" filterText="Filter" filterMatchMode="startsWith">
+            <p:selectCheckboxMenu value="#{horarioVendedorForm.vendedorList}" required="true" filter="true" filterText="Filter" filterMatchMode="startsWith">
             <f:selectItems value="#{comboAction.empleadoxcargo}" />
             </p:selectCheckboxMenu>
             
 			<h:outputLabel value="Desde " />
-            <p:inputMask value="#{horarioVendedorForm.event.startDate}" mask="99/99/9999 99:99">  
+            <p:inputMask value="#{horarioVendedorForm.event.startDate}" required="true" mask="99/99/9999 99:99">  
                 <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />  
             </p:inputMask>
             
             <h:outputLabel value="Hasta " />  
-            <p:inputMask value="#{horarioVendedorForm.event.endDate}" mask="99/99/9999  99:99">  
+            <p:inputMask value="#{horarioVendedorForm.event.endDate}" required="true" mask="99/99/9999  99:99">  
                 <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />  
             </p:inputMask>
             
