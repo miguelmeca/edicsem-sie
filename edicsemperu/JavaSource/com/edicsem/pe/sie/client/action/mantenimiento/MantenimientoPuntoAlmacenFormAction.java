@@ -16,6 +16,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
+import com.edicsem.pe.sie.entity.TipoPuntoVentaSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.service.facade.AlmacenService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
@@ -34,9 +35,10 @@ public class MantenimientoPuntoAlmacenFormAction extends
 	public String mensaje,ubigeoDefecto,idUbigeo;
 	private String idProvincia, idDepartamento, idDistrito;
 	private int ide;
-	private boolean puntoVenta,defectoUbigeo;
+	private boolean defectoUbigeo;
 	private boolean newRecord = false;
 	private PuntoVentaSie objAlmacenSie;
+	private TipoPuntoVentaSie objTipoPv;
 
 	@ManagedProperty(value = "#{comboAction}")
 	private ComboAction comboManagerPunto;
@@ -67,7 +69,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 	public void init() {
 		log.info("Inicializando el Constructor de 'MantenimientoPuntoAlmacenFormAction'");
 		objAlmacenSie = new PuntoVentaSie();
-		puntoVenta = false;
+		objTipoPv = new TipoPuntoVentaSie();
 		defectoUbigeo=true;
 	}
 
@@ -84,7 +86,6 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		idUbigeo="0";
 		ubigeoDefecto="";
 		comboManagerPunto.setUbigeoDistriItems(null);
-		puntoVenta = false;
 		setNewRecord(true);
 		objAlmacenSie = new PuntoVentaSie();
 		return getViewList();
@@ -121,9 +122,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 
 		setIdalmacen(objAlmacenSie.getIdpuntoventa());
 		setIdUbigeo(objAlmacenSie.getTbUbigeo().getIdubigeo()+"");
-		if(objAlmacenSie.getAlmacen().equals("P"))
-			puntoVenta=true;
-		else puntoVenta=false;
+		objTipoPv.setIdtipopuntoventa(objAlmacenSie.getTbTipoPuntoVenta().getIdtipopuntoventa());
 		
 		UbigeoSie ubigeo = objUbigeoService.findUbigeo(Integer.parseInt(getIdUbigeo()));
 		setIdDepartamento(ubigeo.getCoddepartamento());
@@ -174,14 +173,11 @@ public class MantenimientoPuntoAlmacenFormAction extends
 	public String insertar() {
 
 		log.info("insertar() sv " + isNewRecord() + " desc "
-				+ objAlmacenSie.getDescripcion() +"  "+ "almacen"
-				+ objAlmacenSie.getAlmacen() +" direc " + objAlmacenSie.getDireccion() );
+				+ objAlmacenSie.getDescripcion() +"  "+ "almacen"+" direc " + objAlmacenSie.getDireccion() );
 		int error = 0;
 		String paginaRetorno="";
 		try {
-			if(puntoVenta) 
-				objAlmacenSie.setAlmacen("P");
-			else objAlmacenSie.setAlmacen("A");
+			objAlmacenSie.setTbTipoPuntoVenta(objTipoPv);
 			objAlmacenSie.setTbUbigeo(objUbigeoService.findUbigeo(Integer.parseInt(idUbigeo)));
 			paginaRetorno =mantenimientoPuntoAlmacenSearch.getViewList();
 			if (isNewRecord()) {
@@ -427,20 +423,6 @@ public class MantenimientoPuntoAlmacenFormAction extends
 	}
 
 	/**
-	 * @return the puntoVenta
-	 */
-	public boolean isPuntoVenta() {
-		return puntoVenta;
-	}
-
-	/**
-	 * @param puntoVenta the puntoVenta to set
-	 */
-	public void setPuntoVenta(boolean puntoVenta) {
-		this.puntoVenta = puntoVenta;
-	}
-
-	/**
 	 * @return the ubigeoDefecto
 	 */
 	public String getUbigeoDefecto() {
@@ -536,6 +518,20 @@ public class MantenimientoPuntoAlmacenFormAction extends
 	 */
 	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
+	}
+
+	/**
+	 * @return the objTipoPv
+	 */
+	public TipoPuntoVentaSie getObjTipoPv() {
+		return objTipoPv;
+	}
+
+	/**
+	 * @param objTipoPv the objTipoPv to set
+	 */
+	public void setObjTipoPv(TipoPuntoVentaSie objTipoPv) {
+		this.objTipoPv = objTipoPv;
 	}
 
 }
