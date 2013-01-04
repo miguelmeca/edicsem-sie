@@ -111,7 +111,7 @@ public class ContratoServiceImpl implements ContratoService {
 			if(i==0)d.setIdCargoContrato(1);
 			if(i==1)d.setIdCargoContrato(2);
 			if(i>1)d.setIdCargoContrato(3);
-			d.setTbContrato(objContratoDao.findContrato(contrato.getIdcontrato()));
+			d.setTbContrato(contrato);
 			d.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(31));
 			objDetContratoEmpleadoDao.insertDetContratoEmpleado(d);
 		}
