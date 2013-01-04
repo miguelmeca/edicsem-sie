@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.edicsem.pe.sie.util.constants.Constants;
 
@@ -33,8 +32,6 @@ public class PuntoVentaSie implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_PUNTO_VENTA_IDPUNTOVENTA_GENERATOR")
 	private Integer idpuntoventa;
 
-	private String almacen;
-
 	private String descripcion;
 
 	private String direccion;
@@ -47,6 +44,11 @@ public class PuntoVentaSie implements Serializable {
 	private String usuariocreacion;
 
 	private String usuariomodifica;
+	
+	//bi-directional many-to-one association to TipoPuntoVentaSie
+    @ManyToOne
+	@JoinColumn(name="idtipopuntoventa")
+	private TipoPuntoVentaSie tbTipoPuntoVenta;
 	
 	//bi-directional many-to-one association to EstadoGeneralSie
     @ManyToOne
@@ -70,8 +72,6 @@ public class PuntoVentaSie implements Serializable {
 	@OneToMany(mappedBy="tbPuntoVenta")
 	private Set<HorarioPuntoVentaSie> tbHorarioPuntoVentas;
   	
-    @Transient
-	private String descTipoAlmacen;
 
     public PuntoVentaSie() {
     }
@@ -82,14 +82,6 @@ public class PuntoVentaSie implements Serializable {
 
 	public void setIdpuntoventa(Integer idpuntoventa) {
 		this.idpuntoventa = idpuntoventa;
-	}
-
-	public String getAlmacen() {
-		return this.almacen;
-	}
-
-	public void setAlmacen(String almacen) {
-		this.almacen = almacen;
 	}
 
 	public String getDescripcion() {
@@ -164,18 +156,6 @@ public class PuntoVentaSie implements Serializable {
 		this.tbEstadoGeneral = tbEstadoGeneral;
 	}
 
-	public String getDescTipoAlmacen() {
-		if(almacen.equals("A"))
-			descTipoAlmacen="Almacén";
-		else
-			descTipoAlmacen="Punto de Venta";
-		return descTipoAlmacen;
-	}
-
-	public void setDescTipoAlmacen(String descTipoAlmacen) {
-		this.descTipoAlmacen = descTipoAlmacen;
-	}
-
 	public Set<FiltroHorarioVentaSie> getTbFiltroHorarioVentas() {
 		return tbFiltroHorarioVentas;
 	}
@@ -192,6 +172,14 @@ public class PuntoVentaSie implements Serializable {
 	public void setTbHorarioPuntoVentas(
 			Set<HorarioPuntoVentaSie> tbHorarioPuntoVentas) {
 		this.tbHorarioPuntoVentas = tbHorarioPuntoVentas;
+	}
+
+	public TipoPuntoVentaSie getTbTipoPuntoVenta() {
+		return tbTipoPuntoVenta;
+	}
+
+	public void setTbTipoPuntoVenta(TipoPuntoVentaSie tbTipoPuntoVenta) {
+		this.tbTipoPuntoVenta = tbTipoPuntoVenta;
 	}
 	
 }

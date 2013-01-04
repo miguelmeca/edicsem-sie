@@ -60,6 +60,8 @@ public class EmpleadoSie implements Serializable {
 
 	private String usuariomodifica;
 	
+	private String correo;
+	
 	@Transient
 	private String nombresCompletos;
 	
@@ -360,6 +362,14 @@ public class EmpleadoSie implements Serializable {
 
 	public void setTbDetpago(Set<DetpagoSie> tbDetpago) {
 		this.tbDetpago = tbDetpago;
+	}
+
+	public String getCorreo() {
+		return correo;
+	}
+
+	public void setCorreo(String correo) {
+		this.correo = correo;
 	}
 
 }

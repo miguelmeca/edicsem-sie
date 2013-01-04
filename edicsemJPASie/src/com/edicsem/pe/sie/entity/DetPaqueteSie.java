@@ -61,6 +61,9 @@ public class DetPaqueteSie implements Serializable {
     private int item;
     
     @Transient
+    private int isnew; //1 jalado d la bd, agregue 2 nuevos
+    //grabe 
+    @Transient
     private String observacion;
     
     private int cantidad;

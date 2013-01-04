@@ -109,7 +109,7 @@ public class EstadoGeneralSie implements Serializable {
 	@OneToMany(mappedBy="tbEstadoGeneral")
 	private Set<ProveedorSie> tbProveedor;
 	
-	//bi-directional many-to-one association to EmpresaSie
+	//bi-directional many-to-one association to PuntoVentaSie
 	@OneToMany(mappedBy="tbEstadoGeneral")
 	private Set<PuntoVentaSie> tbPuntoVentas;
 
