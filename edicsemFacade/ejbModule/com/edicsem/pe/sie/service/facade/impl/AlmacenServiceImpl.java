@@ -46,14 +46,14 @@ public class AlmacenServiceImpl implements AlmacenService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.AlmacenService#listarAlmacenes()
 	 */
-	
 	public List listarAlmacenes() {
-		 
 		return objAlmacenDao.listarAlmacenes();
 	}
 	
-	public List listarAlmacenXtipo(String tipo) {
-		 
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.AlmacenService#listarAlmacenXtipo(int)
+	 */
+	public List listarAlmacenXtipo(int tipo) {
 		return objAlmacenDao.listarPuntoVenta(tipo);
 	}
 }
