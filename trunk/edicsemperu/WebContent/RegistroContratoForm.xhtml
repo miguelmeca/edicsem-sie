@@ -10,7 +10,9 @@
 			Contrato</h1>
 		<h:form id="formManteContrato3">
 			<p:growl id="message" showDetail="true" />
-			<p:panel header="#{message['panel.contrato.cliente']}" >
+			<p:wizard id="wiz" widgetVar="wiz" flowListener="#{contratoForm.onFlowProcess}">
+			  <p:tab title="#{message['cliente.tabpersonal']}">
+			  <p:panel header="#{message['panel.contrato.cliente']}" >
 				<h:panelGrid columns="6" id="panelCliente"  >
 
 					<h:outputText value="#{message['contrato.nombre']}" />
@@ -29,29 +31,35 @@
 					<p:message for="apPatCliente" />
 
 					<h:outputText value="#{message['contrato.tipo.documento']}" />
-					<p:selectOneMenu id="tipoDoc" size="1" style="width:165px"
-						required="true" requiredMessage="#{message['contrato.tipo.documento.validation']}"
-						value="#{contratoForm.idtipodoc}">
-						<f:selectItem itemLabel="Seleccione tipo documento"
-							itemValue="#{null}" />
+					<p:selectOneMenu id="tipoDoc" style="width:165px" value="#{contratoForm.idtipodoc}" required="true" 
+					requiredMessage="#{message['contrato.tipo.documento.validation']}" >
+				 
 						<f:selectItems value="#{comboAction.tipoDocumentoitems}" />
+						<p:ajax update="nrodoc"/>
 					</p:selectOneMenu>
-					<p:message for="tipoDoc" />
+					<p:spacer/>
 					
 					<h:outputText value="#{message['contrato.numero.documento']}" />
-					<p:inputMask mask="99999999"  value="#{contratoForm.objClienteSie.numdocumento}"  id="numDoc" required="true"
-						requiredMessage="#{message['contrato.numero.documento.validation']}" />
-					<p:message for="numDoc" />
+					<h:panelGroup id="nrodoc" >
+					<p:inputMask value="#{contratoForm.objClienteSie.numdocumento}" mask="99999999"
+					rendered="#{contratoForm.idtipodoc==1}" required="true" requiredMessage="#{message['contrato.numero.documento.validation']}"/>
 					
+					<p:inputMask value="#{contratoForm.objClienteSie.numdocumento}" mask="99999999999"
+					rendered="#{contratoForm.idtipodoc==2}" required="true" requiredMessage="#{message['contrato.numero.documento.validation']}"/>
+					</h:panelGroup>
+					<p:spacer />
+            
 					<h:outputText value="#{message['contrato.cliente.email']}" />
-				<p:inputText value="#{contratoForm.objClienteSie.correo}" label="Email"  required="true" validator="#{validators.validateEmail}" />
-				<p:spacer />
+					<p:inputText value="#{contratoForm.objClienteSie.correo}" id="email" validatorMessage="Email incorrecto" maxlength="45" >
+					 <f:validateRegex pattern="#{message['pattern.email.norequired']}" />
+					</p:inputText>
+					<p:message for="email" />
 					
-				<h:outputText value="#{message['contrato.fechanac']}" />
-				<p:calendar value="#{contratoForm.objClienteSie.fecnacimiento}" />
-				<p:spacer />
-				
-				<h:outputText value="Lima (defecto)" />
+					<h:outputText value="#{message['contrato.fechanac']}" />
+					<p:calendar  id="fecnac" value="#{contratoForm.objClienteSie.fecnacimiento}" pattern="dd/mm/yyyy" pagedate="01/01/1990" />
+					<p:spacer />
+					
+					<h:outputText value="Lima (defecto)"  />
 					<p:selectBooleanCheckbox id="sel" value="#{contratoForm.defectoUbigeo}">
 					<p:ajax update="panelCliente" listener="#{contratoForm.cambioUbigeoDefecto}"
 							oncomplete="if(#{contratoForm.defectoUbigeo}) UbigeoDialog.show()"></p:ajax>
@@ -110,13 +118,19 @@
 				<h:outputText value="#{message['contrato.empresa.labora.telefono']}" />
 				<p:inputMask id="numTelefTraba" mask="999-9999" value="#{contratoForm.objClienteSie.telftrabajo}" />
 				<p:message for="numTelefTraba" />
+				</h:panelGrid>
+				</p:panel>
+				</p:tab>
+				<p:tab title="#{message['cliente.contrato.telefono.referencia']}">
+			  <p:panel header="#{message['cliente.contrato.telefono.referencia']}" >
+				<h:panelGrid columns="6"  id="panelTlf" >
 				
 				<h:outputText value="#{message['contrato.tipo.telefono']}" />
 				<p:selectOneMenu  value="#{contratoForm.tipoTelef}"
 						style="width:165px"  >
 						<f:selectItem itemLabel="Fijo" itemValue="1" />
 						<f:selectItem itemLabel="Celular" itemValue="2" />
-						<p:ajax update="panelCliente" listener="#{contratoForm.limpiarDatosTelefono}" ></p:ajax>
+						<p:ajax update="panelTlf" listener="#{contratoForm.limpiarDatosTelefono}" ></p:ajax>
 				</p:selectOneMenu>
 				<p:spacer />
 					
@@ -153,10 +167,11 @@
 						<p:spacer />
 						
 						<p:commandButton value="Agregar Telefono Referencia"  icon="ui-icon ui-icon-check" 
-						update="mytable, message" actionListener="#{contratoForm.telefonoAgregar}" immediate="true" >
+						actionListener="#{contratoForm.telefonoAgregar}" update="mytable, message" > 
 						</p:commandButton>
 						
-						<p:dataTable value="#{contratoForm.telefonoList}" id="mytable" var="t"   
+				</h:panelGrid>
+						<p:dataTable value="#{contratoForm.telefonoList}" id="mytable" var="t" style="width:400px"
 							 rowStyleClass="#{t.operadorTelefonico eq 'Claro' ? 'color1': (t.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }"   >
 	
 							<f:facet name="header">
@@ -167,21 +182,21 @@
 								<f:setPropertyActionListener value="#{t.telefono}" target="#{contratoForm.selectTelef}" />
 							</p:commandButton>
 							
-						<p:column headerText="Observación" style="width:125px">
-	                    <h:outputText value="#{t.tipoTelef}, #{t.operadorTelefonico}, #{t.telefono}" />
-	                    </p:column>
+							<p:column headerText="Observación" style="width:125px">
+		                    	<h:outputText value="#{t.tipoTelef}, #{t.operadorTelefonico}, #{t.telefono}" />
+		                    </p:column>
 	 
 						</p:dataTable>
 					
-				</h:panelGrid>
 				</p:panel>
+				</p:tab>
 				<!-- productos -->
+				<p:tab title="#{message['cliente.tabpaquete']}">
 				<p:panel header="#{message['panel.seleccion.producto']}" >
 				<h:panelGrid columns="7" id="panelProd">
 				
 					<h:outputText value="Paquete Definido" />
-					<p:selectBooleanCheckbox 
-						value="#{contratoForm.defectopaquete}">
+					<p:selectBooleanCheckbox  value="#{contratoForm.defectopaquete}">
 						<p:ajax update="panelProd" listener="#{contratoForm.cambiopaqueteDefecto}" />
 					</p:selectBooleanCheckbox>
 					
@@ -203,20 +218,20 @@
 					<p:message for="tipoProd2" />
 					
 					<h:outputText value="Producto" />
-					<p:selectOneMenu filter="true" filterMatchMode="startsWith" id="produc2" required="true" 
-						value="#{contratoForm.objProductoSie.idproducto}" style="width:210px"  effect="fade" >
+					<p:selectOneMenu filter="true" filterMatchMode="startsWith" id="produc2" required="true" style="width:200px"
+						value="#{contratoForm.objProductoSie.idproducto}" >
 						<f:selectItem itemLabel="Seleccione Producto" itemValue="#{null}"  />
 						<f:selectItems value="#{comboAction.productositems}" />
 					</p:selectOneMenu>
 					
 					<h:outputText value="Observación" />
-					<h:inputText  value="#{contratoForm.objProductoSie.observacionContrato}" style="width:100%" />
+					<p:inputText  value="#{contratoForm.objProductoSie.observacionContrato}"  />
 					
 					<h:outputText value="Cantidad" />
 					<p:spinner required="true" value="#{contratoForm.objProductoSie.cantidadContrato}" min="1" requiredMessage="#{message['contrato.cantidad.producto']}"  />
 					 
-					<p:commandButton value="Agregars" icon="ui-icon ui-icon-check" update="detPaqueteList" 
-					actionListener="#{contratoForm.agregarProducto}" immediate="true" />
+					<p:commandButton value="Agregar" icon="ui-icon ui-icon-check" update="detPaqueteList, message" 
+					action="#{contratoForm.agregarProducto}" />
     </h:panelGrid>
    
     <p:dataTable id="detPaqueteList" var="c" value="#{contratoForm.detPaqueteList}" editable="true" style=" width:50% " >
@@ -281,20 +296,24 @@
 					<f:setPropertyActionListener value="#{c.item}" target="#{contratoForm.idCobranza}" />
 			</p:commandButton>
 		</p:column>
-    </p:dataTable>
-    				
-				<h:panelGrid columns="9" id="panel2" title="a"  >
-				
+    	</p:dataTable>
+    	</p:panel>
+    	</p:tab>
+    	
+    	<p:tab title="#{message['cliente.tabcobranza']}">
+    	<p:panel header="#{message['cliente.cobranza']}">
+			<h:panelGrid columns="3" id="panel2" >
 				<h:outputText value="#{message['contrato.tipoPago']}" />
-				<p:selectOneMenu   size="1"  value="#{contratoForm.tipopago}"
-						style="width:165px"  >
+				<p:selectOneMenu  size="1"  value="#{contratoForm.tipopago}" >
 						<f:selectItem itemLabel="Crédito" itemValue="1" />
 						<f:selectItem itemLabel="Contado" itemValue="2" />
+						<p:ajax update="panel2"/>
 				</p:selectOneMenu>
 				<p:spacer/>
 				
+				<h:panelGrid columns="6" rendered="#{contratoForm.tipopago==1}" >
 				<h:outputText value="#{message['contrato.pagosubinicial']}" />
-				<p:inputText value="#{contratoForm.objContratoSie.pagosubinicial}" required="true"  />
+				<p:inputText value="#{contratoForm.objContratoSie.pagosubinicial}" />
 				<p:spacer/>
 				
 				<h:outputText value="#{message['contrato.Fecha.pago.inicial']}" />
@@ -303,26 +322,38 @@
 				<p:message  for="fechPagoInicial"  />
 						
 				<h:outputText value="#{message['contrato.producto.precio']}" />
-				<p:inputText id="precioProd" value="#{contratoForm.precioProducto}" required="true"  />
+				<p:spinner id="precioProd" value="#{contratoForm.precioProducto}" required="true" min="1"  />
 				<p:message  for="precioProd"  />
-						
+				
 				<h:outputText value="#{message['contrato.cuotaInicial']}" />
 				<p:inputText value="#{contratoForm.objContratoSie.cuotainicial}" readonly="true" />
 				<p:spacer/>
 				
 				<h:outputText value="#{message['contrato.cantCuotas']}" />
-				<p:spinner id="spinnerE" size="2" min="1" required="true"
-						requiredMessage="#{message['movimiento.cantEntrada.validation']}"
-						value="#{contratoForm.objContratoSie.numcuotas}" />
-			
-			</h:panelGrid>
-						</p:panel>
-				<p:commandButton value="Registrar"
-				actionListener="#{contratoForm.insertarCobranza}" update="listaCobranzas"
-				icon="ui-icon ui-icon-check" immediate="true" >
+				<p:spinner id="spinnerE" size="2" min="1" required="true" requiredMessage="#{message['movimiento.cantEntrada.validation']}"
+				value="#{contratoForm.objContratoSie.numcuotas}" />
+				
+				</h:panelGrid>
+				<h:panelGrid columns="6"  rendered="#{contratoForm.tipopago==2}" >
+				
+				<h:outputText value="#{message['contrato.Fecha.pago.inicial']}" />
+				<p:calendar id="fechPagoInicial2" value="#{contratoForm.objContratoSie.fechacuotainicial}" 
+				requiredMessage="#{message['contrato.fechacuotainicial.validation']}" pattern="dd/MM/yyyy" required="true"  />
+				<p:message  for="fechPagoInicial2"  />
+						
+				<h:outputText value="#{message['contrato.producto.precio']}" />
+				<p:spinner id="precioProd2" value="#{contratoForm.precioProducto}" required="true" min="1"  />
+				<p:message  for="precioProd2"  />
+				
+				</h:panelGrid>
+				
+				<p:commandButton value="Registrar Pago(s)" actionListener="#{contratoForm.insertarCobranza}" update="listaCobranzas"
+				icon="ui-icon ui-icon-check">
 				</p:commandButton>
-			
-			<p:dataTable id="listaCobranzas" var="c" value="#{contratoForm.cobranzaList}" editable="true" style=" width:50% ">
+
+        </h:panelGrid>
+        			
+		<p:dataTable id="listaCobranzas" var="c" value="#{contratoForm.cobranzaList}" editable="true" style=" width:50% ">
 
         <f:facet name="header">
             Editar Cobranzas
@@ -363,12 +394,15 @@
                 </f:facet>
             </p:cellEditor>
         </p:column>
-
         <p:column headerText="Options" style="width:50px">
             <p:rowEditor />
         </p:column>
-        
         </p:dataTable>
+        
+		</p:panel>
+		</p:tab>
+		
+		<p:tab title="#{message['cliente.tabVentas']}">
 			<p:panel header="#{message['panel.contrato.producto']}">
 			<h:panelGrid columns="4" id="panelVenta" >
 				<h:outputText value="#{message['contrato.empresa']}" />
@@ -388,46 +422,44 @@
 						<p:ajax update="panelVenta" />
 				</p:selectOneMenu>
 				<h:outputText value="#{message['contrato.puntoVenta']}" rendered="#{contratoForm.tipoVenta==1}" />
-				<p:selectOneMenu  size="1" required="true"
-					style="width:165px" rendered="#{contratoForm.tipoVenta==1}" 
+				<p:selectOneMenu  size="1" required="true" rendered="#{contratoForm.tipoVenta==1}" 
 					requiredMessage="#{message['contrato.puntoVenta.validation']}">
 					<f:selectItem itemLabel="Seleccione almacen" itemValue="#{null}" />
-					<f:selectItems value="#{comboAction.almacenItems}" />
+					<f:selectItems value="#{comboAction.almacenItemsXTipo}" />
 				</p:selectOneMenu>
 				
-				<h:outputText rendered="#{contratoForm.tipoVenta==2}" 
-						value="lugar" />
+				<h:outputText rendered="#{contratoForm.tipoVenta==2}" value="lugar" />
 					<p:inputText value="#{contratoForm.objContratoSie.lugarentrega}"
 						required="true" rendered="#{contratoForm.tipoVenta==2}" 
 						requiredMessage="#{message['contrato.apematerno.validation']}" />
 						
 				<h:outputText value="#{message['contrato.expositor']}" />
 				<p:selectOneMenu value="#{contratoForm.idempleadoExpositor}" required="true" filter="true" filterMatchMode="startsWith"  style="width:165px">
-					<f:selectItem itemLabel="Seleccione empleado" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.empleadoItems}" />
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['contrato.vendedor']}" />
 				<p:selectOneMenu value="#{contratoForm.idempleadoVendedor}" required="true" filter="true" filterMatchMode="startsWith"  style="width:165px">
-					<f:selectItem itemLabel="Seleccione empleado" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.empleadoItems}" />
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['contrato.colaborador']}" />
 				<p:selectCheckboxMenu value="#{contratoForm.colaboradorList}" filter="true" filterMatchMode="startsWith"  style="width:165px">
-					<f:selectItem itemLabel="Seleccione empleado" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.empleadoItems}" />
 				</p:selectCheckboxMenu>
 				
 				<h:outputText value="#{message['contrato.fechEntrega']}" />
-				<p:calendar id="fechaentrega" value="#{contratoForm.objContratoSie.fechaentrega}" />
+				<p:calendar id="fechaentrega" value="#{contratoForm.objContratoSie.fechaentrega}" pattern="dd/mm/yyyy" />
 				<p:message for="fechaentrega"  />
 				</h:panelGrid>
-			</p:panel>
-    	
-			<p:commandButton value="Registrar2" action="#{contratoForm.insertar}" update="message"
+				
+			<p:commandButton value="Registrar" action="#{contratoForm.insertar}" update="message"
 				icon="ui-icon ui-icon-check" ajax="false">
 			</p:commandButton>
-</h:form>
-</ui:define>
+				
+			</p:panel>
+		</p:tab>
+		</p:wizard>
+	</h:form>
+	</ui:define>
 </ui:composition>

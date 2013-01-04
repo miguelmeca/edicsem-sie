@@ -9,7 +9,7 @@
 		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Punto Almacen</h1>
 		<h:form id="frmAlmacenForm">
 			<p:growl id="message" showDetail="true" />
-			
+			<p:panel  header="#{message['panel.mantenimiento.punto']}">
 			<h:panelGrid id="display" columns="2" >
 				<h:outputText value="#{message['almacen.descripcion']}" />
 				<p:inputText  value="#{almacenForm.objAlmacenSie.descripcion}" required="true"
@@ -25,7 +25,7 @@
 
 				<h:outputText value="#{message['contrato.ubigeo.distrito']}" rendered="#{almacenForm.defectoUbigeo}" />
 				<p:selectOneMenu value="#{almacenForm.idUbigeo}" rendered="#{almacenForm.defectoUbigeo}" required="true" filter="true" filterMatchMode="startsWith"
-					style="width:200px" requiredMessage="#{message['puntoVenta.distrito.validation']}">
+					style="width:220px" requiredMessage="#{message['puntoVenta.distrito.validation']}">
 					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
 					<p:ajax update="panel" listener="#{almacenForm.cambioUbica}"></p:ajax>
@@ -39,7 +39,7 @@
 				
 				<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
 				<p:selectOneMenu size="1" value="#{almacenForm.idDepartamento}" filter="true" filterMatchMode="startsWith"
-					required="true" style="width:180px"
+					required="true" style="width:200px"
 					requiredMessage="#{message['puntoVenta.ubigeo.departamento.validation']}" >
 					<f:selectItem itemLabel="Seleccione Departamento"
 						itemValue="#{null}" />
@@ -49,7 +49,7 @@
 
 				<h:outputText value="#{message['contrato.ubigeo.provincia']}" />
 				<p:selectOneMenu id="prov" value="#{almacenForm.idProvincia}" filter="true" filterMatchMode="startsWith"
-					required="true" style="width:200px"
+					required="true" style="width:220px"
 					requiredMessage="#{message['puntoVenta.ubigeo.provincia.validation']}" >
 					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
@@ -58,7 +58,7 @@
 
 				<h:outputText value="#{message['contrato.ubigeo.distrito']}" />
 				<p:selectOneMenu id="dist" value="#{almacenForm.idUbigeo}" filter="true" filterMatchMode="startsWith"
-					required="true" style="width:200px"
+					required="true" style="width:220px"
 					requiredMessage="#{message['puntoVenta.ubigeo.distrito.validation']}" >
 					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
@@ -75,17 +75,18 @@
 				<p:inputText value="#{almacenForm.objAlmacenSie.direccion}" required="true" 
 					requiredMessage="#{message['puntoVenta.direccion.validation']}" />
 
-				<h:outputText value="#{message['almacen.PuntoVenta']}" />
-				<p:selectBooleanCheckbox value="#{almacenForm.puntoVenta}"/>
+				<h:outputText value="#{message['almacen.tipo']}" />
+				<p:selectOneMenu value="#{almacenForm.objTipoPv.idtipopuntoventa}">
+					<f:selectItems value="#{comboAction.tipoalmacenitems}" />
+				</p:selectOneMenu>
+				
+				<p:commandButton value="Guardar" action="#{almacenForm.insertar}" ajax="false" icon="ui-icon ui-icon-disk" />
+						
+				<p:commandButton value="Regresar" action="#{almacenSearch.listar}" immediate="true" ajax = "false" 
+				update="panel" icon="ui-icon ui-icon-close"  />
 
 			</h:panelGrid>
-			
-					<p:commandButton value="Guardar"
-						action="#{almacenForm.insertar}" ajax="false"
-						icon="ui-icon ui-icon-disk" />
-						
-					<p:commandButton value="Regresar" action="#{almacenSearch.listar}" 
-						immediate="true" ajax = "false" update="panel" icon="ui-icon ui-icon-close"  />
+			</p:panel>
 		 </h:form>
 	</ui:define>
 </ui:composition>

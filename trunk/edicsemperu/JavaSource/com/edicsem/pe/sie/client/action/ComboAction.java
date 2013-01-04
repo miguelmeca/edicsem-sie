@@ -36,6 +36,7 @@ import com.edicsem.pe.sie.entity.TipoKardexProductoSie;
 import com.edicsem.pe.sie.entity.TipoLlamadaSie;
 import com.edicsem.pe.sie.entity.TipoPagoSie;
 import com.edicsem.pe.sie.entity.TipoProductoSie;
+import com.edicsem.pe.sie.entity.TipoPuntoVentaSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.service.facade.AlmacenService;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
@@ -59,6 +60,7 @@ import com.edicsem.pe.sie.service.facade.TipoKardexService;
 import com.edicsem.pe.sie.service.facade.TipoLLamadaService;
 import com.edicsem.pe.sie.service.facade.TipoPagoService;
 import com.edicsem.pe.sie.service.facade.TipoProductoService;
+import com.edicsem.pe.sie.service.facade.TipoPuntoVentaService;
 import com.edicsem.pe.sie.service.facade.UbigeoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 
@@ -70,15 +72,16 @@ public class ComboAction {
 	private static FacesMessage msg = null;
 	private String mensaje;
 	private String codigoEstado;
-	private String idProvincia, idDepartamento,tipoAlmacen;
+	private String idProvincia, idDepartamento;
 	private int idCargo, idFactor, tipoImporte,idEmpresa;
 	private Map<String, Integer> tipoitems = new HashMap<String, Integer>();
 	private Map<String, Integer> productositems = new HashMap<String, Integer>();
+	private Map<String, Integer> tipoalmacenitems = new HashMap<String, Integer>();
 	private Map<String, Integer> almacenItems = new HashMap<String, Integer>();
 	private Map<String, Integer> almacenItemsXTipo = new HashMap<String, Integer>();
 	private Map<String, Integer> tipoDocumentoItems = new HashMap<String, Integer>();
 	private Map<String, Integer> cargoEmpleadoItems = new HashMap<String, Integer>();
-	private int tipoProducto;
+	private int tipoProducto,tipoAlmacen;
 	private int cargoEmpleado;
 	private Map<String, Map<String, Integer>> dataProducto = new HashMap<String, Map<String, Integer>>();
 	private Map<String, Map<String, Integer>> dataEmpleado = new HashMap<String, Map<String, Integer>>();
@@ -104,6 +107,8 @@ public class ComboAction {
 	private Map<String, Integer> importeItems = new HashMap<String, Integer>();
 	private Map<String, Integer> tipoPagoItems = new HashMap<String, Integer>();
 	
+	@EJB
+	private TipoPuntoVentaService objTipoPuntoVentaService;
 	@EJB
 	private AlmacenService objAlmacenService;
 	@EJB
@@ -165,6 +170,7 @@ public class ComboAction {
 		MetaMesItems = new HashMap<String, Integer>();
 		tipollamada = new HashMap<String, Integer>();
 		empleadoxcargo = new HashMap<String, Integer>();
+		tipoalmacenitems = new HashMap<String, Integer>();
 	}
 
 	public void cambiar() {
@@ -819,7 +825,7 @@ public class ComboAction {
 			for (int i = 0; i < lista.size(); i++) {
 				PaqueteSie entidad = new PaqueteSie();
 				entidad = (PaqueteSie) lista.get(i);
-				PaqueteItems.put(entidad.getDescripcionpaquete(),
+				PaqueteItems.put(entidad.getCodpaquete(),
 						entidad.getIdpaquete());
 			}
 
@@ -863,15 +869,9 @@ public class ComboAction {
 		empleadoItems = new HashMap<String, Integer>();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'getEmpleadoItems()' "+getIdCargo());
+				log.info("Entering my method 'getEmpleadoItems()' ");
 			}
-			if(getIdCargo()>0){
-				lista = objEmpleadoService.listarEmpleadosXCargo(getIdCargo());
-			}
-			else
-			{
-				lista = objEmpleadoService.listarEmpleados();
-			}
+			lista = objEmpleadoService.listarEmpleados();
 
 			for (int i = 0; i < lista.size(); i++) {
 				EmpleadoSie entidad = new EmpleadoSie();
@@ -1280,16 +1280,53 @@ public class ComboAction {
 	}
 
 	/**
+	 * @return the tipoalmacenitems
+	 */
+	public Map<String, Integer> getTipoalmacenitems() {
+		tipoalmacenitems = new HashMap<String, Integer>();
+		List lista = new ArrayList<TipoPuntoVentaSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getTipoitems()'");
+			}
+			lista = objTipoPuntoVentaService.listarTipoPuntoVenta();
+
+			for (int i = 0; i < lista.size(); i++) {
+				TipoPuntoVentaSie tipo = new TipoPuntoVentaSie();
+				tipo = (TipoPuntoVentaSie) lista.get(i);
+				tipoalmacenitems.put(tipo.getDescripcion(),
+						tipo.getIdtipopuntoventa());
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return tipoalmacenitems;
+	}
+
+	/**
+	 * @param tipoalmacenitems the tipoalmacenitems to set
+	 */
+	public void setTipoalmacenitems(Map<String, Integer> tipoalmacenitems) {
+		this.tipoalmacenitems = tipoalmacenitems;
+	}
+
+	/**
 	 * @return the tipoAlmacen
 	 */
-	public String getTipoAlmacen() {
+	public int getTipoAlmacen() {
 		return tipoAlmacen;
 	}
 
 	/**
 	 * @param tipoAlmacen the tipoAlmacen to set
 	 */
-	public void setTipoAlmacen(String tipoAlmacen) {
+	public void setTipoAlmacen(int tipoAlmacen) {
 		this.tipoAlmacen = tipoAlmacen;
 	}
 	

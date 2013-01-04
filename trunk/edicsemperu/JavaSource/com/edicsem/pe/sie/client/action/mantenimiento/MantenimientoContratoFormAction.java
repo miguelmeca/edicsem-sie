@@ -16,10 +16,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.primefaces.event.FlowEvent;
 import org.primefaces.event.RowEditEvent;
 
 import com.edicsem.pe.sie.client.action.ComboAction;
@@ -63,9 +63,10 @@ public class MantenimientoContratoFormAction extends
 	private double precioProducto;
 	private boolean defectoUbigeo,defectopaquete;
 	private boolean newRecord = false;
+	private boolean skip;
 	private PaqueteSie objPaquete;
 	private DetPaqueteSie objDetPaquete;
-	private List<Integer> colaboradorList;
+	private List<String> colaboradorList;
 	@EJB
 	private ProductoService objProductoService;
 	@EJB
@@ -104,11 +105,15 @@ public class MantenimientoContratoFormAction extends
 		idCobranza=0;
 		TipoTelef=1;
 		tipoVenta=1;
-		colaboradorList = new ArrayList<Integer>();
+		colaboradorList = new ArrayList<String>();
 		idempleadoExpositor=0;
 		idempleadoVendedor=0;
 		cobranzaList= new ArrayList<CobranzaSie>() ;
 		detPaqueteList = new ArrayList<DetPaqueteSie>() ;
+		skip = false;
+		idUbigeo=0;
+		idtipodoc=1;
+		tipopago=1;
 	}
 
 	/*
@@ -221,10 +226,10 @@ public class MantenimientoContratoFormAction extends
 	
 	/**
 	 * Agregar Teléfono a la lista*/
-	public void  telefonoAgregar(ActionEvent f){
+	public void  telefonoAgregar(){
 		log.info("telefono agregar " );
 		
-		if( nuevoTelef.getTelefono()==null){
+		if( nuevoTelef.getTelefono()==null||nuevoTelef.getTelefono().equals("")){
 			mensaje= "Debe ingresar un número telefónico";
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
 					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
@@ -307,33 +312,39 @@ public class MantenimientoContratoFormAction extends
 		}
 	}
 
-	public void agregarProducto(ActionEvent f){
+	public void agregarProducto(){
 		mensaje=null;
-		log.info("agregarProducto ");
+		log.info("agregarProducto "+ detPaqueteList.size());
 		int cantidad= detPaqueteList.size();
 		DetPaqueteSie det = new DetPaqueteSie();
 		det.setTbProducto(objProductoService.findProducto(objProductoSie.getIdproducto()));
 		det.setCantidad(objProductoSie.getCantidadContrato());
 		det.setObservacion(objProductoSie.getObservacionContrato());
+		if(objProductoSie.getCantidadContrato()<1){
+			mensaje="Cantidad debe ser mayor que 0 ";
+		}
 		if(cantidad==0){
 			det.setItem(1);
 			detPaqueteList.add(det);
-			log.info("tamaño lista de paq "+ detPaqueteList.size());
+			log.info("tamaño lista de paqu "+ detPaqueteList.size());
 		}else{
 			for (int i = 0; i < detPaqueteList.size(); i++) {
 				if(detPaqueteList.get(i).getTbProducto().getIdproducto()==det.getTbProducto().getIdproducto()){
-					mensaje="Dicho producto ya se encuentra registrado en la lista ";
+					mensaje="Dicho producto ya se encuentra registrado en la lista, usted puede editarlo ";
 				}
 			det.setItem(cantidad+1);
 			}
 			if(mensaje==null){
+				log.info(" se agrega cuando lista esta llena");
 				detPaqueteList.add(det);
-			}else{
-				msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-						Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-				FacesContext.getCurrentInstance().addMessage(null, msg);
 			}
-			log.info("tamaño lista de paq "+ detPaqueteList.size());
+			objProductoSie= new ProductoSie();
+			log.info("tamaño lista de paq "+ detPaqueteList.size()+" "+mensaje);
+		}
+		if(mensaje!=null){
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 	}
 	  
@@ -357,46 +368,63 @@ public class MantenimientoContratoFormAction extends
 		nuevoTelef = new TelefonoPersonaSie();
 	}
 	
-	public void insertarCobranza(ActionEvent f) throws Exception{
-		log.info(" insertarCobranza  :d "+objContratoSie.getNumcuotas()+" precio "+ getPrecioProducto()+"  fec ven  "+ objContratoSie.getFechacuotainicial());
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		 
-		cobranzaList= new ArrayList<CobranzaSie>() ;
-		BigDecimal d = new BigDecimal(getPrecioProducto() /objContratoSie.getNumcuotas().doubleValue());
-		d=d.setScale(2, RoundingMode.HALF_UP);
-		objContratoSie.setPagomensual(d);
-		log.info(" d "+ d+"  Pagomensual "+objContratoSie.getPagomensual());
+	public void insertarCobranza() throws Exception{
+		log.info(" insertarCobranza  :d "+objContratoSie.getNumcuotas()+" precio "+ precioProducto +"  fec ven  "+ objContratoSie.getFechacuotainicial());
+		BigDecimal d;
 		
-		if(objContratoSie.getPagosubinicial()!=new BigDecimal(0.0)){
-			BigDecimal d2= new BigDecimal(d.doubleValue()-objContratoSie.getPagosubinicial().doubleValue());
-			d2=d2.setScale(2, RoundingMode.HALF_UP);
-			objContratoSie.setCuotainicial(d2);
-		}
-		Date fechaVencimiento = null ;
-		sdf.format(objContratoSie.getFechacuotainicial());
-		String fecha3 =sdf.format(objContratoSie.getFechacuotainicial());
-		fechaVencimiento =sdf.parse(fecha3);
-		for (int i = 1; i <= objContratoSie.getNumcuotas(); i++) {
-			objCobranzaSie.setNumletra(i+"");
-			if(i==1 && objContratoSie.getCuotainicial()!=new BigDecimal(0.0)){
-				objCobranzaSie.setImpinicial(objContratoSie.getCuotainicial());
-				fechaVencimiento=objContratoSie.getFechacuotainicial();
-			}else{
-				
-			objCobranzaSie.setImpinicial(objContratoSie.getPagomensual());
-			
-			if(i==1){
-				fechaVencimiento = DateUtil.addToDate(objContratoSie.getFechacuotainicial(), Calendar.MONTH, 1);
-			}else{
-				fechaVencimiento = DateUtil.addToDate(objContratoSie.getFechacuotainicial(), Calendar.MONTH, Integer.parseInt(objCobranzaSie.getNumletra())-1);
-			}
-			}
-			log.info("fec venc  "+i +" "+ fechaVencimiento +" conv "+ DateUtil.formatoString(fechaVencimiento, "dd/MM/yyyy") +" Numcuotas "+objContratoSie.getNumcuotas()+" mensualito "+ objContratoSie.getPagomensual()
-					+"  pagar  "+objCobranzaSie.getImpinicial() );
-			objCobranzaSie.setFecvencimiento(fechaVencimiento);
-			
+		if(tipopago==2){
+			//contado
+			cobranzaList= new ArrayList<CobranzaSie>();
+			d= new BigDecimal(getPrecioProducto());
+			d=d.setScale(2, RoundingMode.HALF_UP);
+			objCobranzaSie.setCantcuotas("1");
+			objCobranzaSie.setNumletra("1");
+			objCobranzaSie.setFecvencimiento(objContratoSie.getFechacuotainicial());
+			objCobranzaSie.setImpinicial(new BigDecimal(precioProducto));
 			cobranzaList.add(objCobranzaSie);
 			objCobranzaSie= new CobranzaSie();
+			
+		}else{
+			//crédito
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			 
+			cobranzaList= new ArrayList<CobranzaSie>() ;
+			 d = new BigDecimal(getPrecioProducto() /objContratoSie.getNumcuotas().doubleValue());
+			d=d.setScale(2, RoundingMode.HALF_UP);
+			objContratoSie.setPagomensual(d);
+			log.info(" d "+ d+"  Pagomensual "+objContratoSie.getPagomensual());
+			
+			if(objContratoSie.getPagosubinicial()!=new BigDecimal(0.0)){
+				BigDecimal d2= new BigDecimal(d.doubleValue()-objContratoSie.getPagosubinicial().doubleValue());
+				d2=d2.setScale(2, RoundingMode.HALF_UP);
+				objContratoSie.setCuotainicial(d2);
+			}
+			Date fechaVencimiento = null ;
+			sdf.format(objContratoSie.getFechacuotainicial());
+			String fecha3 =sdf.format(objContratoSie.getFechacuotainicial());
+			fechaVencimiento =sdf.parse(fecha3);
+			for (int i = 1; i <= objContratoSie.getNumcuotas(); i++) {
+				objCobranzaSie.setNumletra(i+"");
+				if(i==1 && objContratoSie.getCuotainicial()!=new BigDecimal(0.0)){
+					objCobranzaSie.setImpinicial(objContratoSie.getCuotainicial());
+					fechaVencimiento=objContratoSie.getFechacuotainicial();
+				}else{
+					
+				objCobranzaSie.setImpinicial(objContratoSie.getPagomensual());
+				
+				if(i==1){
+					fechaVencimiento = DateUtil.addToDate(objContratoSie.getFechacuotainicial(), Calendar.MONTH, 1);
+				}else{
+					fechaVencimiento = DateUtil.addToDate(objContratoSie.getFechacuotainicial(), Calendar.MONTH, Integer.parseInt(objCobranzaSie.getNumletra())-1);
+				}
+				}
+				log.info("fec venc  "+i +" "+ fechaVencimiento +" conv "+ DateUtil.formatoString(fechaVencimiento, "dd/MM/yyyy") +" Numcuotas "+objContratoSie.getNumcuotas()+" mensualito "+ objContratoSie.getPagomensual()
+						+"  pagar  "+objCobranzaSie.getImpinicial() );
+				objCobranzaSie.setFecvencimiento(fechaVencimiento);
+				
+				cobranzaList.add(objCobranzaSie);
+				objCobranzaSie= new CobranzaSie();
+			}
 		}
 	}
 	
@@ -479,7 +507,10 @@ public class MantenimientoContratoFormAction extends
 					detidEmpleadosList.add(getIdempleadoVendedor());
 				if(getColaboradorList().size()>0){
 					for (int i = 0; i < colaboradorList.size(); i++) {
-						detidEmpleadosList.add(colaboradorList.get(i));
+						log.info("colaborador "+colaboradorList.get(i));
+						int q= Integer.parseInt(colaboradorList.get(i));
+						log.info("colaborador 2 "+q);
+						detidEmpleadosList.add(q);
 					}
 				}
 				
@@ -506,7 +537,19 @@ public class MantenimientoContratoFormAction extends
 		}
 		return getViewList();
 	}
- 
+	
+	public String onFlowProcess(FlowEvent event) {  
+	    log.info("Current wizard step:" + event.getOldStep());  
+	    log.info("Next step:" + event.getNewStep());  
+	    log.info("skip :"+skip);	
+	     if(skip) {  
+	            skip = true;   //reset in case user goes back  
+	            return "confirm";  
+	        }  
+	     else {  
+	            return event.getNewStep();  
+	      }
+	}
 	public void limpiarCampos() {
 
 	}
@@ -804,6 +847,7 @@ public class MantenimientoContratoFormAction extends
 	 * @param tipoVenta the tipoVenta to set
 	 */
 	public void setTipoVenta(int tipoVenta) {
+		comboManager.setTipoAlmacen(tipoVenta);
 		this.tipoVenta = tipoVenta;
 	}
 
@@ -1006,14 +1050,14 @@ public class MantenimientoContratoFormAction extends
 	/**
 	 * @return the colaboradorList
 	 */
-	public List<Integer> getColaboradorList() {
+	public List<String> getColaboradorList() {
 		return colaboradorList;
 	}
 
 	/**
 	 * @param colaboradorList the colaboradorList to set
 	 */
-	public void setColaboradorList(List<Integer> colaboradorList) {
+	public void setColaboradorList(List<String> colaboradorList) {
 		this.colaboradorList = colaboradorList;
 	}
 

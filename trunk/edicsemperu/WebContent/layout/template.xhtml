@@ -462,10 +462,10 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				<p:inputText value="#{almacenForm.objAlmacenSie.direccion}"
 					required="true" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
 					style="font-weight:bold"  />
-
-				<h:outputText value="#{message['almacen.PuntoVenta']}" />
-				<p:selectBooleanCheckbox value="#{almacenForm.puntoVenta}">
-				</p:selectBooleanCheckbox>
+<h:outputText value="#{message['almacen.tipo']}" />
+				<p:selectOneMenu value="#{almacenForm.objTipoPv.idtipopuntoventa}">
+					<f:selectItems value="#{comboAction.tipoalmacenitems}" />
+				</p:selectOneMenu>
 				
 				<h:panelGroup>
 					<p:commandButton id="btn" value="Guardar" update="panel"

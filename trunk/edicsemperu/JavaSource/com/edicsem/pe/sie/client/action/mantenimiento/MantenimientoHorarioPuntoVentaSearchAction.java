@@ -216,8 +216,8 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends
 		listaHorario = new ArrayList<HorarioPuntoVentaSie>();
 		eventModel = new DefaultScheduleModel();
 		/* LISTA LOS ALMACENES */
-		PuntoVentaList = objAlmacenService.listarAlmacenXtipo("P");
-
+		PuntoVentaList = objAlmacenService.listarAlmacenXtipo(2);
+		
 		if (PuntoVentaList == null) {
 			PuntoVentaList = new ArrayList<PuntoVentaSie>();
 		}
