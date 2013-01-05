@@ -7,11 +7,17 @@
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
 		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Paquete Biblico</h1>
-		<h:form id="frmSancionList">
+		<h:form id="frmPaqueBibliList">
 			<p:growl id="message" showDetail="true" />
 			
-			<p:dataTable value="#{MantenimientoPaqueteBiblicoSearchAction.detPaqueteList}" var="pb">
-				
+			
+			<p:dataTable id="pack" value="#{mantenimientoPaqueteBiblicoSearchAction.detPaqueteList}" var="pb" paginator="true" rows="10"
+       paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	   rowsPerPageTemplate="5,10,15" widgetVar="table"
+	   emptyMessage="No se encontro registros">	
+	   
+	   
+	   
 				<p:column headerText="Codigo" >
 					<h:outputText value="#{pb.codpaquete}" />
 				</p:column>
@@ -22,32 +28,61 @@
 				
 				
 				<p:column headerText="Ver detalles del paquete">
-					<p:commandButton value="detalles"  
-						action="#{MantenimientoDetallePaqueteBiblicoSearchAction.listar}"	icon="ui-icon ui-icon-pencil">
+					<p:commandButton value="ver detalles"  
+						action="#{mantenimientoDetallePaqueteBiblicoSearchAction.listar}"	icon="ui-icon ui-icon-pencil">
 						<f:setPropertyActionListener value="#{pb.idpaquete}"
-							target="#{MantenimientoDetallePaqueteBiblicoSearchAction.paquete}" />
+							target="#{mantenimientoDetallePaqueteBiblicoSearchAction.paquete}" />
 					</p:commandButton>
 				</p:column>
 				
+													
 				
 				
-				
-				<p:column headerText="Editar">
-					<p:commandButton value="Editar "  oncomplete="PaqueteBiblico.show()" action="#{MantenimientoPaqueteBiblicoSearchAction.update}" 
-					update=":formPaqueteBiblico:display" icon="ui-icon ui-icon-pencil" >
-						<f:setPropertyActionListener value="#{pb}" target="#{MantenimientoPaqueteBiblicoSearchAction.objPaqueteSie}" />
+<p:column headerText="Editar">
+<p:commandButton value="Editar "  oncomplete="PaqueteBiblico.show()"
+								  action="#{mantenimientoPaqueteBiblicoFormAction.update}" 
+								  update=":formPaqueteBiblico:display"
+								  icon="ui-icon ui-icon-pencil" >
+					<f:setPropertyActionListener value="#{pb}"
+												 target="#{mantenimientoPaqueteBiblicoFormAction.objPaqueteSie}" />
 					</p:commandButton>
 				</p:column>
 				
+<!--**********INICIO 	DESACTIVAR**********-->
+
+<p:column headerText="Deshabilitar Paquete Biblico">
+
+<p:commandButton id="showConfirmDeshabilitar1"
+				 value="Deshabilitar"
+				 icon="ui-icon ui-icon-close"	 			
+	 			 onclick="confirmationPaquete.show()">
+	 			  
+<f:setPropertyActionListener
+		 value="#{pb.idpaquete}"
+		 target="#{mantenimientoPaqueteBiblicoFormAction.idc}" 
+/>							
+
+</p:commandButton>
 				
-				<f:facet name="footer">
-				<div align="left">
-				<p:commandLink value="Nuevo Paquete Biblico"  oncomplete="PaqueteBiblico.show()"  
-				update=":formPaqueteBiblico:display" action="#{MantenimientoPaqueteBiblicoSearchAction.agregar}"/>
-				</div>
-				</f:facet>
-				
-			</p:dataTable>
+		</p:column>
+
+
+
+
+
+
+
+<f:facet name="footer">
+<div align="left">
+<p:commandLink value="Nuevo Paquete Biblico"
+update=":formPaqueteBiblico:display"
+action="#{mantenimientoPaqueteBiblicoFormAction.agregar}"
+oncomplete="PaqueteBiblico.show()"  
+title="Ingresar Nuevo Paquete Biblico"/>
+</div>
+</f:facet>
+
+		</p:dataTable>
 			
 		</h:form>
 	 </ui:define>
