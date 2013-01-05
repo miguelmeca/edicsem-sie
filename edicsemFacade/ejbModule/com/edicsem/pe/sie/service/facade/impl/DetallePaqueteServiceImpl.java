@@ -5,20 +5,28 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.edicsem.pe.sie.entity.DetPaqueteSie;
 import com.edicsem.pe.sie.model.dao.DetPaqueteDAO;
 import com.edicsem.pe.sie.service.facade.DetallePaqueteService;
 
 @Stateless
 public class DetallePaqueteServiceImpl implements DetallePaqueteService {
-
+	private Log log = LogFactory.getLog(DetallePaqueteServiceImpl.class);
+	
 	@EJB
 	private  DetPaqueteDAO objDetPaqueteDao;
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.DetallePaqueteService#insertDetPaquete(com.edicsem.pe.sie.entity.DetPaqueteSie)
 	 */
+	
+	
 	public void insertDetPaquete(DetPaqueteSie p) {
+		
+		
 		objDetPaqueteDao.insertDetPaquete(p);
 	}
 
@@ -40,6 +48,7 @@ public class DetallePaqueteServiceImpl implements DetallePaqueteService {
 	 * @see com.edicsem.pe.sie.service.facade.DetallePaqueteService#listarDetPaquetes(int)
 	 */
 	public List listarDetPaquetes(int paquete){
+		log.info("en el servicio" + paquete);
 		return objDetPaqueteDao.listarDetPaquetes(paquete);
 	}
 }
