@@ -4,7 +4,6 @@
  */
 package com.edicsem.pe.sie.client.action;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -31,7 +30,7 @@ public class MantenimientoCargoEmpleadoSearchAction extends	BaseMantenimientoAbs
 	private List<CargoEmpleadoSie> CargoEmpleadomodel;
 	private CargoEmpleadoSie selectedCargoEmpleado;
 	private boolean editMode;
-	private CargoEmpleadoSie nuevo;
+
 	private int idEstadoGeneral;
 
 	@EJB
@@ -44,10 +43,10 @@ public class MantenimientoCargoEmpleadoSearchAction extends	BaseMantenimientoAbs
 	public void init() {
 		log.info("init()");
 		// Colocar valores inicializados
-		estadosItems = new ArrayList<SelectItem>();
+		
 		objCargoEmpleadoSie = new CargoEmpleadoSie();
 		objCargoEmpleadoSie.setDescripcion("");
-		nuevo = new CargoEmpleadoSie();
+
 	}
 
 	/* (non-Javadoc)
@@ -147,16 +146,7 @@ public class MantenimientoCargoEmpleadoSearchAction extends	BaseMantenimientoAbs
 	/**
 	 * @param nuevo
 	 */
-	public void setNuevo(CargoEmpleadoSie nuevo) {
-		this.nuevo = nuevo;
-	}
 
-	/**
-	 * @return
-	 */
-	public CargoEmpleadoSie getNuevo() {
-		return nuevo;
-	}
 
 	/**
 	 * @return
