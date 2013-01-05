@@ -50,7 +50,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	
 	
 	public void insertarEmpleado(EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, TelefonoPersonaSie objTelefono, int codigoTipoDocumento, int codigoCargoEmpleado,
-		int idUbigeo, int tipo, int CargoEmpleado, int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado, List<ContratoEmpleadoSie> contratoEmpleadoList){
+		int idUbigeo, int tipo, int CargoEmpleado, int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado, List<ContratoEmpleadoSie> contratoEmpleadoList, List<TelefonoPersonaSie> TelefonoPersonaList){
 		//si tengo que insertar a mas de 1 tabla todo lo hago aqui, llamando a todas las entidades que
 		//mi interfaz DAO tiene y si algo falla, el EJB hace un rollback de todo  lo que se hizo, 
 		//para eso sirve el Service
@@ -90,6 +90,22 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 			objContratoEmpleadoDao.insertContratoEmpleado(c);
 			}
 			
+			/**Inserta la lista de teléfonos**/
+			for (int i = 0; i < TelefonoPersonaList.size(); i++) {
+				if (TelefonoPersonaList.get(i).getNuevoT()==1) {
+					//insertar
+				TelefonoPersonaSie telefono=new TelefonoPersonaSie();
+				telefono =	TelefonoPersonaList.get(i);
+				telefono.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
+				telefono.setIdempleado(objEmpleado);
+				objTelefonoDao.insertarTelefonoEmpleado(telefono);	
+				log.info("");
+				}else{
+					//actualizar	
+					objTelefonoDao.actualizarTelefonoEmpleado(TelefonoPersonaList.get(i));
+				}
+				}
+			
 			log.info("insertando..... ");
 	}
 	
@@ -97,8 +113,8 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#actualizarEmpleado(com.edicsem.pe.sie.entity.EmpleadoSie, com.edicsem.pe.sie.entity.DomicilioPersonaSie, com.edicsem.pe.sie.entity.TelefonoPersonaSie, int, int, java.lang.String, java.lang.String, int, java.lang.String, java.lang.String, int, int, java.lang.String, int, int, int, int, int, int)
 	 */
 	public void actualizarEmpleado(EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, TelefonoPersonaSie objTelefono, int codigoTipoDocumento, int codigoCargoEmpleado, 
-			String fijo, int estado, int idUbigeo, int tipo, int CargoEmpleado, 
-			int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado,  List<ContratoEmpleadoSie> contratoEmpleadoList) {			
+		    int estado, int idUbigeo, int tipo, int CargoEmpleado, 
+			int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int codigoEmpleado,  List<ContratoEmpleadoSie> contratoEmpleadoList, List<TelefonoPersonaSie> TelefonoPersonaList) {			
 			try {
 				if (log.isInfoEnabled()) {
 					log.info("Entering my method 'actualizar()'"+ objDomicilio.getIddomiciliopersona());
@@ -126,7 +142,6 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 				objTelefono.setIdtelefonopersona(objTelefono.getIdtelefonopersona());
 				objTelefono.setIdempleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
 				objTelefono.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
-				objTelefono.setTelefono(fijo);
 				objTelefonoDao.actualizarTelefonoEmpleado(objTelefono);
 				
 				/**Actualiza el detallecargo**/
@@ -135,6 +150,23 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 				log.info("YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 				}
 				log.info("actualizando..... ");
+				
+				/**Actualiza la lista de teléfonos**/
+				for (int i = 0; i < TelefonoPersonaList.size(); i++) {
+					if (TelefonoPersonaList.get(i).getNuevoT()==1) {
+						//insertar
+					TelefonoPersonaSie telefono=new TelefonoPersonaSie();
+					telefono =	TelefonoPersonaList.get(i);
+					telefono.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
+					telefono.setIdempleado(objEmpleado);
+					objTelefonoDao.insertarTelefonoEmpleado(telefono);	
+					log.info("");
+					}else{
+						//actualizar	
+						objTelefonoDao.actualizarTelefonoEmpleado(TelefonoPersonaList.get(i));
+					}
+					}
+				
 				//Agregen esto a tus redirecciones parece que esta referenciando a otra cosa verifiquen a donde estan 
 				//llenando los datos 
 				//Redirections.redirectionsPage(Constants.PAGE_MODULE, Constants.LISTA_CARGO_PAGE);
