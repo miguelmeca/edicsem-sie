@@ -58,13 +58,47 @@
         </p:tab>
         <p:tab title="#{message['empleado.tabnumeros']}">
         <p:panel header="Números Telefónicos">
-        <h:messages errorClass="error"/>  
-        <h:panelGrid columns="2" cellpadding="5">
-            <p:outputLabel value="#{message['empleado.fijo']}" for="fijo" />
-			<p:inputMask mask="999-9999" id="fijo" value="#{mantenimientoEmpleadoFormAction.fijo}" required="true" label="Fijo"
-			requiredMessage="#{message['empleado.fijo.validation']}"/>                        
-            
-        </h:panelGrid>
+                
+        <p:dataTable value="#{mantenimientoEmpleadoFormAction.telefonoPersonaList}" var="o"
+				id="listarTelefonos" paginator="true" rows="10"
+				 rowStyleClass="#{o.operadorTelefonico eq 'Claro' ? 'color1': (o.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }" >
+				<f:facet name="header">
+					<h:outputLabel
+						value="Lista de Teléfonos del Empleado" />
+				</f:facet>
+				<p:column headerText="telefonos" >
+					<h:outputText value="#{o.telefono}" />
+				</p:column>
+				<p:column headerText="Tipo de Telefono" >
+					<h:outputText value="#{o.tipotelefono}" />
+				</p:column>				
+				<p:column headerText="Operador Telefonico" >
+					<h:outputText value="#{o.operadorTelefonico}" />
+				</p:column>
+					<p:column headerText="Estado" >
+					<h:outputText value="#{o.tbEstadoGeneral.descripcion}" />
+				</p:column>	
+<p:column headerText="Deshabilitar">
+<p:commandButton
+	 			 id="showconfirmDeshabilitarTelEmp"
+	 			 value="Deshabilitar"  icon="ui-icon ui-icon-close" 	
+	 onclick="confirmationTelEmp.show()"> 
+	 				<f:setPropertyActionListener value="#{o.item}" target="#{mantenimientoEmpleadoFormAction.idc}" />			
+				</p:commandButton>	
+</p:column>
+				<f:facet name="footer">
+					<div align="left">
+<p:commandLink
+ value="Agregar Telefono " 
+			update=":NuevoTelefono2:display23"			
+			action="#{mantenimientoEmpleadoFormAction.agregar}"
+			oncomplete="carDialogNuevoTelefonoEmp.show()"
+			title="Ingresar Nuevo Telefono"				
+>
+</p:commandLink>
+					</div>
+				</f:facet>
+			</p:dataTable>
         </p:panel>
         </p:tab>
         <p:tab title="#{message['empleado.tabdireccion']}">
