@@ -16,7 +16,6 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.primefaces.model.StreamedContent;
 
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
@@ -32,9 +31,9 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		BaseMantenimientoAbstractAction {
 
 	public String idcargoempleado;
-	public String descripcion;
+	
 	private int idEstadoGeneral, idc;
-	private StreamedContent image;
+	
 	private String mensaje;
 	private CargoEmpleadoSie nuevo;
 	private CargoEmpleadoSie objCargoEmpleadoSie;
@@ -66,17 +65,18 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		log.info("agregar()");
 		editMode = true;
 		objCargoEmpleadoSie = new CargoEmpleadoSie();
+		
 		setNewRecord(true);
 		return getViewList();
 	}
 
 	public String update() throws Exception {
 		log.info("update()" + objCargoEmpleadoSie.getIdcargoempleado());
-		CargoEmpleadoSie c = objCargoEmpleadoService.buscarCargoEmpleado(objCargoEmpleadoSie.getIdcargoempleado());
-		log.info(" id cargo " + c.getIdcargoempleado() + " des "+ c.getDescripcion());		
-		setIdcargoempleado(c.getIdcargoempleado().toString());
-		setDescripcion(c.getDescripcion());
-		setIdEstadoGeneral(c.getTbEstadoGeneral().getIdestadogeneral());
+		objCargoEmpleadoSie = objCargoEmpleadoService.buscarCargoEmpleado(objCargoEmpleadoSie.getIdcargoempleado());
+		log.info(" id cargo " +objCargoEmpleadoSie.getIdcargoempleado() + " des "+ objCargoEmpleadoSie.getDescripcion());		
+		setIdcargoempleado(objCargoEmpleadoSie.getIdcargoempleado().toString());
+
+		setIdEstadoGeneral(objCargoEmpleadoSie.getTbEstadoGeneral().getIdestadogeneral());
 		setNewRecord(false);
 		editMode = false;
 		return getViewList();
@@ -86,12 +86,13 @@ public class MantenimientoCargoEmpleadoFormAction extends
 	public String insertar() {
 		mensaje =null;
 		log.info("insertar() " + isNewRecord() + " desc "
-				+ objCargoEmpleadoSie.getDescripcion());
-		/* ---> */objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(1));
+				+ objCargoEmpleadoSie.getDescripcion());	
+		
+/* ---> */objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(1));
 		/* Esto se setea cuando pertenece a una segunda tabla (--->) */
 		try {
 
-			log.info("aqui validadndo si existe o no");
+			log.info("aqui validadndo si existe o no" + objCargoEmpleadoSie.getDescripcion());
 			int error = 0;
 			List<CargoEmpleadoSie> lista = mantenimientoCargoEmpleadoSearch.getCargoEmpleadomodel();
 			for (int i = 0; i < lista.size(); i++) {
@@ -106,20 +107,21 @@ public class MantenimientoCargoEmpleadoFormAction extends
 			if (error == 0) {
 			if (isNewRecord()) {
 					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-							Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-					objCargoEmpleadoService.insertarCargoEmpleado(objCargoEmpleadoSie);
-			} else {
+							Constants.MESSAGE_REGISTRO_TITULO, mensaje);
+				objCargoEmpleadoService.insertarCargoEmpleado(objCargoEmpleadoSie);
+			}
+			else {
 
 				objCargoEmpleadoSie.setIdcargoempleado(Integer.parseInt(getIdcargoempleado()));
 
-				objCargoEmpleadoSie.setDescripcion(getDescripcion());
+				objCargoEmpleadoSie.setDescripcion(objCargoEmpleadoSie.getDescripcion());
 				objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(getIdEstadoGeneral()));
-
+				
 				log.info("----->>>"
 						+ objCargoEmpleadoSie.getTbEstadoGeneral().getIdestadogeneral()+ objCargoEmpleadoSie.getDescripcion());
 				log.info("actualizando..... ");
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-						Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+						Constants.MESSAGE_REGISTRO_TITULO, mensaje);
 				objCargoEmpleadoService.actualizarCargoEmpleado(objCargoEmpleadoSie);				
 				log.info("actualizando..... ");				
 				log.info("objCargoEmpleadoSie.isNewRecord() : ");	
@@ -149,11 +151,19 @@ public class MantenimientoCargoEmpleadoFormAction extends
 	 */
 
 	/**
+	 * @return the objCargoEmpleadoSie
+	 */
+	public CargoEmpleadoSie getObjCargoEmpleadoSie() {
+		return objCargoEmpleadoSie;
+	}
+
+	/**
 	 * @param ae
 	 * @return
 	 * @throws Exception
 	 */
 	public String updateDeshabilitar() throws Exception {
+		mensaje =null;
 
 		objCargoEmpleadoSie = new CargoEmpleadoSie();
 		int parametroObtenido;
@@ -181,18 +191,22 @@ public class MantenimientoCargoEmpleadoFormAction extends
 
 					objCargoEmpleadoService.actualizarCargoEmpleado(objCargoEmpleadoSie);
 					log.info("actualizando..... ");	
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+							Constants.MESSAGE_DESHABILITAR_TITULO, mensaje);
+					mensaje ="Se deshabilito correctamente";
 				}	
 				
 				else {
 					
 					FaceMessage.FaceMessageError("ALERTA", "El cargo no se puede elminar ya que se encontraron usuarios con ese cargo");
 				}	
+				FacesContext.getCurrentInstance().addMessage(null, msg);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			descripcion = e.getMessage();
+			mensaje = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, descripcion);
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
@@ -263,23 +277,6 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		this.idEstadoGeneral = idEstadoGeneral;
 	}
 
-	/**
-	 * @return
-	 */
-	public StreamedContent getImage() {
-		return image;
-	}
-
-	/**
-	 * @param image
-	 */
-	public void setImage(StreamedContent image) {
-		this.image = image;
-	}
-
-	public CargoEmpleadoSie getObjCargoEmpleadoSie() {
-		return objCargoEmpleadoSie;
-	}
 
 	/**
 	 * @return the idEstadoGeneral
@@ -339,20 +336,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		MantenimientoCargoEmpleadoSearchAction.log = log;
 	}
 
-	/**
-	 * @return
-	 */
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	/**
-	 * @param descripcion
-	 */
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
+	
 	/**
 	 * @return
 	 */
