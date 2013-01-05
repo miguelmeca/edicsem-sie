@@ -11,40 +11,29 @@
 		<p:growl id="message" showDetail="true" />		
 		
 		<p:dataTable value="#{mantenimientoCargoEmpleadoSearchAction.cargoEmpleadomodel}"  var="m"
-					id="listaPersonas" paginator="true" rows="5"
+					id="listaPersonas" paginator="true" rows="10"
        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	   rowsPerPageTemplate="5,10,15" widgetVar="table"
 	   emptyMessage="No se encontro registros">
 	  
-					<f:facet name="header">  </f:facet>
-                
-	
-					
-					
-			<p:column headerText="Descripcion"  id="descripcion" sortBy="#{m.descripcion}" filterBy="#{m.descripcion}">
-				  
-						<h:outputText value="#{m.descripcion}" />
-											 
-			</p:column>
+	<f:facet name="header">  </f:facet>
+	<p:column headerText="Descripcion"  id="descripcion" sortBy="#{m.descripcion}" filterBy="#{m.descripcion}">				  
+	<h:outputText value="#{m.descripcion}" />
+	</p:column>
 						
-						
-						
-							
 						
 <!--********** BOTON EDITAR **********-->
 		
-	<p:column headerText="Editar">
-	
-			<p:commandButton value="Editar"  oncomplete="carDialogNuevo.show()"
-								action="#{mantenimientoCargoEmpleadoFormAction.update}"
-			                    update=":NuevoModificaCargoEmpleado:display"
-			                    icon="ui-icon ui-icon-pencil"
-			  >
-			                    
-			<f:setPropertyActionListener value="#{m}" 
-			 target="#{mantenimientoCargoEmpleadoFormAction.objCargoEmpleadoSie}" />
-			 
-			</p:commandButton>
+<p:column headerText="Editar">
+<p:commandButton value="Editar"  oncomplete="carDialogNuevo.show()"
+   								 action="#{mantenimientoCargoEmpleadoFormAction.update}"
+			                     update=":NuevoModificaCargoEmpleado:display"
+			                     icon="ui-icon ui-icon-pencil"
+>
+<f:setPropertyActionListener value="#{m}" 
+							 target="#{mantenimientoCargoEmpleadoFormAction.objCargoEmpleadoSie}"
+/>
+</p:commandButton>
 					
 	</p:column>
  
@@ -55,10 +44,10 @@
 
 <!--**********INICIO 	DESACTIVAR**********-->
 
-<p:column headerText="Deshabilitar">
+<p:column headerText="Deshabilitar Cargo">
 
 <p:commandButton id="showConfirmDeshabilitar1"
-				 value="Eliminar"
+				 value="Deshabilitar"
 				 icon="ui-icon ui-icon-close"	 			
 	 			 onclick="confirmation24.show()">
 	 			  
@@ -76,10 +65,11 @@
 	
 <!--********** BOTON NUEVO **********-->
 
-<p:commandLink value="Nuevo Cargo Empleado"  update=":NuevoModificaCargoEmpleado:display" 
-				
-				action="#{mantenimientoCargoEmpleadoFormAction.agregar}"
-				oncomplete="carDialogNuevo.show()" 	title="Ingresar Cargo Empleado"
+<p:commandLink value="Nuevo Cargo Empleado"
+ update=":NuevoModificaCargoEmpleado:display"
+ action="#{mantenimientoCargoEmpleadoFormAction.agregar}"
+ oncomplete="carDialogNuevo.show()" 
+ title="Ingresar Cargo Empleado"
 				
 >
 </p:commandLink>
