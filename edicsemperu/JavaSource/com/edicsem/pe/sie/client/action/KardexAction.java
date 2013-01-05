@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
@@ -28,13 +29,31 @@ public class KardexAction extends BaseMantenimientoAbstractAction {
 	private List<KardexSie> kardexList;
 	private KardexSie objKardexSie;
 	private String mensaje,idtipoAlmacen;
-	private int tipoProducto, stockActual;
+	private int tipoProducto, stockActual,idtipopuntoventa;
+	/**
+	 * @return the idtipopuntoventa
+	 */
+	public int getIdtipopuntoventa() {
+		return idtipopuntoventa;
+	}
+
+	/**
+	 * @param idtipopuntoventa the idtipopuntoventa to set
+	 */
+	public void setIdtipopuntoventa(int idtipopuntoventa) {
+		comboManagerPunto.setTipoAlmacen(idtipopuntoventa);
+		this.idtipopuntoventa = idtipopuntoventa;
+	}
+
 	private String valorActual;
 	private int idproducto, idalmacen, idempresa=0;
 	private Date fechaDesde, fechaHasta;
 	private List<KardexSie> listadoKardex;
 	private boolean editMode, newRecord;
-
+	
+	@ManagedProperty(value = "#{comboAction}")
+	private ComboAction comboManagerPunto;
+	
 	@EJB
 	private KardexService objKardexService;
 	@EJB
@@ -52,6 +71,7 @@ public class KardexAction extends BaseMantenimientoAbstractAction {
 		valorActual ="";
 		idempresa=0;
 		kardexList = new ArrayList<KardexSie>();
+		idtipopuntoventa=0;
 	}
 	/*
 	 * (non-Javadoc)
@@ -388,5 +408,13 @@ public class KardexAction extends BaseMantenimientoAbstractAction {
 	public void setValorActual(String valorActual) {
 		this.valorActual = valorActual;
 	}
-	
+
+	public ComboAction getComboManagerPunto() {
+		return comboManagerPunto;
+	}
+
+	public void setComboManagerPunto(ComboAction comboManagerPunto) {
+		this.comboManagerPunto = comboManagerPunto;
+	}
+
 }
