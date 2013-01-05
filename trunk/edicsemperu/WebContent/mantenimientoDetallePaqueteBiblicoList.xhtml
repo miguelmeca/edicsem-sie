@@ -6,11 +6,11 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
-		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento detalle Paquete Biblico</h1>
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento detalle Paquete Biblico JK</h1>
 		<h:form id="frmSancionList">
 			<p:growl id="message" showDetail="true" />
 			
-			<p:dataTable value="#{MantenimientoDetallePaqueteBiblicoSearchAction.detPaqueteBiblicoList}" var="c">
+			<p:dataTable value="#{mantenimientoDetallePaqueteBiblicoSearchAction.detPaqueteBiblicoList}" var="c">
 				
 				
 				
@@ -29,21 +29,21 @@
 				
 				
 				<p:column headerText="Editar">
-					<p:commandButton value="Editar" action="#{MantenimientoDetallePaqueteBiblicoFormAction.update}" 
+					<p:commandButton value="Editar" action="#{mantenimientoDetallePaqueteBiblicoFormAction.update}" 
 					 icon="ui-icon ui-icon-pencil" >
-						<f:setPropertyActionListener value="#{c}" target="#{MantenimientoDetallePaqueteBiblicoFormAction.objDetPaqueteSie}" />
+						<f:setPropertyActionListener value="#{c}" target="#{mantenimientoDetallePaqueteBiblicoFormAction.objDetPaqueteSie}" />
 					</p:commandButton>
 				</p:column>
 				
 				<f:facet name="footer">
 				<div align="left">
-				<p:commandLink value="Agregar productos al paquete biblico"  action="#{MantenimientoDetallePaqueteBiblicoFormAction.agregar}"  />
+				<p:commandLink value="Agregar"  action="#{mantenimientoDetallePaqueteBiblicoFormAction.agregar}"  />
 				</div>
 				</f:facet>
 				
 			</p:dataTable>
 			<center><p:commandButton value="Regresar"
- action="#{MantenimientoPaqueteBiblicoSearchAction.listar}"
+ action="#{mantenimientoPaqueteBiblicoSearchAction.listar}"
   immediate="true" ajax = "false" icon="ui-icon ui-icon-close" /></center>
 			
 		</h:form>
