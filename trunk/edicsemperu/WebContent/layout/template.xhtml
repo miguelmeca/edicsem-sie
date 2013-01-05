@@ -1687,14 +1687,24 @@ message="La Empresa no se puede elminar ya que se encontraron
 						required="true" label="email"
 						requiredMessage="#{message['mantenimiento.email.validation']}"
 						style="font-weight:bold" rendered="#{empresaForm.editMode}" 
-						title="para el @ presione: la tecla Alt + 64 y en laptop Alt Gr + Q"/>
+						title="para el @ presione: la tecla Alt + 64 y en laptop Alt Gr + Q"
+						validatorMessage="Email incorrecto" maxlength="45">
+						<f:validateRegex pattern="#{message['pattern.email.norequired']}" />
+						
+						</p:inputText>
+						<p:message for="email1" />
 
 					<p:inputText id="email2" value="#{empresaForm.email}"
 						required="true" label="email"
 						requiredMessage="#{message['mantenimiento.email.validation']}"
 						style="font-weight:bold" rendered="#{!empresaForm.editMode}" 
-						title="para el @ presione: la tecla Alt + 64 y en laptop Alt Gr + Q"/>
-					<p:message for="email1" />
+						title="para el @ presione: la tecla Alt + 64 y en laptop Alt Gr + Q"
+						validatorMessage="Email incorrecto" maxlength="45">
+						<f:validateRegex pattern="#{message['pattern.email.norequired']}"/>
+				
+					
+					</p:inputText>
+					<p:message for="email2" />
 				</h:panelGroup>
 
 				<!-- BOTON GUARDAR -->
