@@ -33,7 +33,9 @@ public class MetaMesFormAction extends
 	
 	private MetaMesSie nuevo;
 	
-	private Date date2, date1; 
+	private Date date2, date1;
+	
+	private String mensaje;
 	
 
 //	@ManagedProperty(value = "#{metaMesSearchAction}")
@@ -51,6 +53,7 @@ public class MetaMesFormAction extends
 	public void init() {
 		log.info("Inicializando el Constructor de 'MantenimientoEmpresaFormAction'");
 		objMetaMesSietmp = new MetaMesSie();
+		objMetaMesSie= new MetaMesSie();
 		nuevo = new MetaMesSie();
 		ide = 0;
 	}
@@ -62,17 +65,23 @@ public class MetaMesFormAction extends
 		log.info(" id mes  "+getIde());
 		
 		objMetaMesSietmp = metaMesService.findMetaMes(getIde());
-		log.info(" id"+objMetaMesSietmp.getIdmetames());
+		if (objMetaMesSietmp.getIdmetames()==null || objMetaMesSietmp.getIdmetames() == 0) {
+			mensaje = "debe seleccionar un mes";
+			
+		}else{
 
-		setNewRecord(true);
-		editMode = true;
+			log.info(" id"+objMetaMesSietmp.getIdmetames());
+			
+			setNewRecord(true);
+			editMode = true;
+		}
 		return getViewList();
 
 	}
 
 	
 	public String insertar() {
-
+	
 		log.info("actualizar() mes");
 		try {
 
@@ -98,26 +107,32 @@ public class MetaMesFormAction extends
 				log.info("actualizando..... ");
 				log.info("objCargoEmpleadoSie.isNewRecord() : ");
 				
-			} else {
+				
+				
+			} else if (objMetaMesSietmp== null){
 
 				
 				log.info("elseeeeee..... ");
 
 				
+				return getViewList();
 			}
+			
+			return getViewList();
 		} catch (Exception e) {
 
 			e.printStackTrace();
-			fechafin = e.getMessage();
+			mensaje = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, fechafin);
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
+			mensaje ="3";
 		}
 
 			
 
-objMetaMesSietmp = new MetaMesSie();
+		objMetaMesSie = new MetaMesSie();
 
 	
 
@@ -329,6 +344,22 @@ objMetaMesSietmp = new MetaMesSie();
 	 */
 	public void setDate1(Date date1) {
 		this.date1 = date1;
+	}
+
+
+	/**
+	 * @return the mensaje
+	 */
+	public String getMensaje() {
+		return mensaje;
+	}
+
+
+	/**
+	 * @param mensaje the mensaje to set
+	 */
+	public void setMensaje(String mensaje) {
+		this.mensaje = mensaje;
 	}
 
 	
