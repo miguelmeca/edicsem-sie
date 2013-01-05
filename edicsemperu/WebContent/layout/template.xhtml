@@ -148,8 +148,8 @@ function validarEspaciosLetrasNumeros(e) { // 1
 						<p:menuitem value="Mantenimiento Empresa" ajax="false" action="#{empresaSearch.listar}" />
 						<p:menuitem value="Mantenimiento de Sanciones" ajax="false" action="#{factorSancionSearch.listar}" />
 						
-						<p:menuitem value="Mantenimiento de Paquete biblico " ajax="false" action="#{MantenimientoPaqueteBiblicoSearchAction.listar}" />
-						<p:menuitem value="Mantenimiento Detalle Paquete biblico " ajax="false" action="#{MantenimientoDetallePaqueteBiblicoSearchAction.listar}" />
+						<p:menuitem value="Mantenimiento de Paquete biblico " ajax="false" action="#{mantenimientoPaqueteBiblicoSearchAction.listar}" />
+						
 						
 						<p:menuitem value="Mantenimiento Cliente" update="messages" ajax="false" action="#{MantenimientoClienteSearchAction.listar}" />
 						<p:menuitem value="Mantenimiento Parámetros del sistema" ajax="false" action="#{mantenimientoParametroSearchAction.listar}" />
@@ -640,25 +640,54 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	<h:form id="formPaqueteBiblico">
 		<p:dialog header="Registro/Modificacion Paquete Biblico" widgetVar="PaqueteBiblico" showEffect="fade"
 			hideEffect="explode" modal="true" position="center">
-			<p:fieldset legend="Paquete Biblico" >
-			<h:panelGrid id="display" columns="4"  >
+			<p:fieldset legend="Paquete Biblico"  >
+			<h:panelGrid id="display" columns="6"  >
 			
 			
-				<h:outputText value="Codigo de Paquete :" />			
-				<p:inputText value="#{MantenimientoPaqueteBiblicoSearchAction.objPaqueteSie.codpaquete}" />
+				<h:outputText 
+				value="#{message['Paquetebiblico.codigopaquete']}"
+				for="codigo" />
+							
+				<p:inputText value="#{mantenimientoPaqueteBiblicoFormAction.objPaqueteSie.codpaquete}"				
+				onkeypress="return validarEspaciosLetrasNumeros(event)"
+				id="codigo"
+				maxlength="7"
+				title="el codigo debe ser entre 3 a 7 digitos" 
+				required="true"
+				requiredMessage="#{message['Paquetebiblico.codigo.validation']}" />
+				<p:message for="codigo" />
+							
 				
-				<h:outputText value="Descripcion de Paquete :" />				
-				<p:inputText value="#{MantenimientoPaqueteBiblicoSearchAction.objPaqueteSie.descripcionpaquete}" />
+				<h:outputText
+				 value="#{message['Paquetebiblico.descripciondePaquete']}"
+				 for="descripciondePaquete"/>
+									
+				<p:inputTextarea
 				
-				<p:commandButton value="Grabar" action="#{MantenimientoPaqueteBiblicoSearchAction.insertar}" oncomplete="PaqueteBiblico.hide()" 
-				icon="ui-icon ui-icon-pencil" ajax="false" update="panel" />
+				value="#{mantenimientoPaqueteBiblicoFormAction.objPaqueteSie.descripcionpaquete}"
+				onkeypress="return validarEspaciosLetrasNumeros(event)"
+				id="descripciondePaquete" 
+				required="true"
+				requiredMessage="#{message['Paquetebiblico.descripcion.validation']}" />
+				<p:message for="descripciondePaquete" />
+				
+			
+			
+				
+				<p:commandButton
+				id="savepaquete" 
+				value="Grabar" 
+				action="#{mantenimientoPaqueteBiblicoFormAction.insertar}" 
+				icon="ui-icon ui-icon-pencil"
+				ajax="false"
+				update="panel" />
 				</h:panelGrid>
 			</p:fieldset>
 		</p:dialog>
 	</h:form>
 				
 	<!--  Mantenimiento Det Sancion Cargo -->
-	<h:form id="formDetSancionCargo">
+	<h:form id="formDetPaqBiblico">
 		<p:dialog header="Modificacion Sancion por Cargo" widgetVar="sancionCargoDialog" showEffect="fade"
 			hideEffect="explode" modal="true" position="center">
 			<p:fieldset legend="Sancion por cargo" >
@@ -678,6 +707,31 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:dialog>
 	</h:form>
 	
+	<!--  Mantenimiento Det Paquete Biblico-->
+	<h:form id="formDetProBibli">
+		<p:dialog header="Modificacion Producto de Paquete Biblico" widgetVar="detPaqBliblicoDialog" showEffect="fade"
+			hideEffect="explode" modal="true" position="center">
+			
+				 <h:panelGrid id="display" columns="2"  >
+					<h:outputText value="Producto :" />
+					<p:selectOneMenu
+						value="#{mantenimientoDetallePaqueteBiblicoFormAction.idproducto}">
+						<f:selectItems value="#{comboAction.productoPaqueteItems}" />
+					</p:selectOneMenu>
+					
+					<h:outputText value="Cantidad :" />
+					<p:spinner value="#{mantenimientoDetallePaqueteBiblicoFormAction.objAuxiDetPaqueteSie.cantidad}" />
+				</h:panelGrid>
+			
+			<p:commandButton
+			 value="Grabar"
+			 action="#{mantenimientoDetallePaqueteBiblicoFormAction.updateDetPaqueBiblico}"
+			 oncomplete="detPaqBliblicoDialog.hide()"
+			 icon="ui-icon ui-icon-pencil" ajax="false" update="@all" />
+		</p:dialog>
+	</h:form>
+	
+	
 	<!--  Confirmation deshabilita Det Sancion Cargo -->
 	<h:form id="detSancionCargoDeshabilita" >
 		<p:confirmDialog message="Esta seguro de deshabilitar la sanción para dicho cargo?" width="325"
@@ -693,6 +747,23 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				type="button" />
 		</p:confirmDialog>
 	</h:form>
+	
+		<!--  Confirmation deshabilita Det Paquete Biblico-->
+	<h:form id="detPaqBibliDeshabilita" >
+		<p:confirmDialog message="Esta seguro de deshabilitar este producto?" width="325"
+			height="100" showEffect="explode" hideEffect="explode"
+			header="Confirm" severity="alert" widgetVar="confirmDeshabDetPaqueBibli"
+			position="center">
+			<p:commandButton type="submit" value="Si"
+				action="#{mantenimientoDetallePaqueteBiblicoFormAction.updateDeshabilitarDetPaqueBiblico}"
+				update="@all"
+				oncomplete="confirmDeshabDetPaqueBibli.hide()" >
+			</p:commandButton>
+			<p:commandButton value="No" onclick="confirmDeshabDetPaqueBibli.hide()"
+				type="button" />
+		</p:confirmDialog>
+	</h:form>
+	
 	
 	<h:form id="horarioDeshabilita" >
 
@@ -816,10 +887,10 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 
 	<h:form id="NuevoModificaCargoEmpleado">
-		<p:dialog header="Ingrese Nuevo Cargo" widgetVar="carDialogNuevo"
-			showEffect="fade" hideEffect="explode" modal="true" width="300"
+		<p:dialog header="Registro / Modificacion de Cargo Empleado" widgetVar="carDialogNuevo"
+			showEffect="fade" hideEffect="explode" modal="true" width="500"
 			position="center">
-
+<p:fieldset legend="Cargo de Empleado" >
 			<h:panelGrid id="display" columns="2" cellpadding="2"
 				style="margin:0 auto;">
 
@@ -828,7 +899,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 				<h:panelGroup>
 
-					<h:inputText id="descripcion1"
+					<p:inputText id="descripcion1"
 						value="#{mantenimientoCargoEmpleadoFormAction.objCargoEmpleadoSie.descripcion}"
 						required="true" label="descripcion"
 						requiredMessage="#{message['Cargoempleado.descripcion.validation']}"
@@ -838,40 +909,32 @@ function validarEspaciosLetrasNumeros(e) { // 1
 						 title="nombre del cargo de empleado"/>
 
 					<p:inputText id="descripcion2"
-						value="#{mantenimientoCargoEmpleadoFormAction.descripcion}"
+						value="#{mantenimientoCargoEmpleadoFormAction.objCargoEmpleadoSie.descripcion}"
 						required="true" label="descripcion"
 						requiredMessage="#{message['Cargoempleado.descripcion.validation']}"
 						style="font-weight:bold"
 						rendered="#{!mantenimientoCargoEmpleadoFormAction.editMode}" 
-						onkeypress="return validarLetras(event)"
+						onkeypress="return  validarLetras(event)"
 						 title="nombre del cargo de empleado"/>
 					<p:message for="descripcion1" />
 
 				</h:panelGroup>
-				<h:outputText value="Estado de Cargo" id="EstCar"
-					rendered="#{comboAction.estadoitems}==null" />
-
+				
+<p:spacer height="30px" ></p:spacer>
 				<h:panelGroup>
-
-					<h:selectOneListbox size="1" id="est_general" disabled="true"
-						value="#{mantenimientoCargoEmpleadoFormAction.idEstadoGeneral}"
-						rendered="#{comboAction.estadoitems}==null">
-						<f:selectItems value="#{comboAction.estadoitems}" />
-
-					</h:selectOneListbox>
-
-				</h:panelGroup>
-
-				<h:panelGroup>
-					<p:message for="est_general"></p:message>
-					<p:spacer height="20px"></p:spacer>
-					<p:commandButton id="btn" value="Guardar" update="panel"
-						action="#{mantenimientoCargoEmpleadoFormAction.insertar}"
-						ajax="false" icon="ui-icon ui-icon-disk" />
+					
+					
+					<p:commandButton
+					 id="btn"
+					 value="Guardar"
+					 update="panel"
+					 action="#{mantenimientoCargoEmpleadoFormAction.insertar}"
+					 ajax="false" icon="ui-icon ui-icon-disk" />
 
 				</h:panelGroup>
 
 			</h:panelGrid>
+			</p:fieldset>
 
 		</p:dialog>
 
@@ -889,7 +952,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		<p:confirmDialog id="confirmDeshabilitar1"
 			message="Esta seguro de deshabilitar este Cargo Empleado?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
-			header="Confirm" severity="alert" widgetVar="confirmation24"
+			header="Confirmar" severity="alert" widgetVar="confirmation24"
 			position="center">
 
 			<p:commandButton type="submit" value="Si"
@@ -907,6 +970,32 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 	<!-- 	FIN DESACTICAR (ESTADOS)  -->
 	
+	
+	<!--	  INICIO DESACTIVAR	PAQUETE BIBLICO   -->
+
+	<h:form>
+
+		<p:confirmDialog id="confirmDeshabilitar1"
+			message="Esta seguro de deshabilitar este Paquete Biblico?" width="325"
+			height="100" showEffect="explode" hideEffect="explode"
+			header="Confirmar" severity="alert" widgetVar="confirmationPaquete"
+			position="center">
+
+			<p:commandButton type="submit" value="Si"
+				action="#{mantenimientoPaqueteBiblicoFormAction.updateDeshabilitarPaquete}"
+				update=":frmPaqueBibliList:pack"
+				oncomplete="confirmationPaquete.hide()" ajax="false">
+			</p:commandButton>
+
+			<p:commandButton value="No" onclick="confirmationPaquete.hide()"
+				type="button" />
+
+		</p:confirmDialog>
+
+	</h:form>
+
+	<!-- 	FIN DESACTICAR PAQUETE BIBLICO (ESTADOS)  -->
+	
 		<!--EN UN SOLO PUPAP NUEVO Y EDITAR TIPO PRODUCTO	  -->
 
 
@@ -920,6 +1009,8 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 				<h:outputText value="#{message['codigo.tipoProducto']}" />
 
+				<h:panelGroup>
+
 					<p:inputText id="codigo"
 						value="#{mantenimientoTipoProductoFormAction.objTipoProductoSie.codtipoproducto}"
 						required="true" label="codigo"
@@ -929,18 +1020,28 @@ function validarEspaciosLetrasNumeros(e) { // 1
 					 <f:validateLength maximum="3" />  	
 					</p:inputText>	
 
+				</h:panelGroup>
+				
 				<h:outputText value="#{message['nombre.tipoProducto']}" />
+
+				<h:panelGroup>
 
 					<h:inputText id="nombre"
 						value="#{mantenimientoTipoProductoFormAction.objTipoProductoSie.nombretipoproducto}"
 						required="true" label="tipoProducto"
 						requiredMessage="#{message['nombre.tipoProducto.validation']}"
-						style="font-weight:bold"/>
+						style="font-weight:bold"
+						/>
 
-					<p:spacer height="20px"/>
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<p:spacer height="20px"></p:spacer>
 					<p:commandButton id="btn" value="Guardar" update="panel"
 						action="#{mantenimientoTipoProductoFormAction.insertar}"
 						ajax="false" icon="ui-icon ui-icon-disk" />
+
+				</h:panelGroup>
 
 			</h:panelGrid>
 
@@ -979,14 +1080,15 @@ function validarEspaciosLetrasNumeros(e) { // 1
 <h:form>
 
 		<p:confirmDialog id="confirmDeshabilitar3"
-			message="Los cambios se realizaran despues de hacer clic en Guardar?" width="325"
+			message="esta seguro de eliminar este numero telefonico?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
-			header="Confirm" severity="alert" widgetVar="confirmation3"
-			position="center">
+			header="Confirmar" severity="alert" widgetVar="confirmation3"
+			position="center"
+			 >
 
 			<p:commandButton type="submit" value="Si"
 				action="#{MantenimientoClienteFormAction.updateDeshabilitar}"
-				update="@all"
+				update="frmcliente:frmTelefono"
 				oncomplete="confirmation.hide()" ajax="false">
 			</p:commandButton>
 
@@ -1525,59 +1627,46 @@ message="La Empresa no se puede elminar ya que se encontraron
 
 	</h:form>
 	<!-- FIN PUPAP NUEVO Y EDITAR EMPRESA -->
-	<!--EN UN SOLO PUPAP NUEVO Y EDITAR META -->
-
-
-	<h:form id="editarMeta">
-		<p:dialog header="Ingrese meta" widgetVar="carDialog2"
-			showEffect="fade" hideEffect="explode" modal="true" width="300"
-			position="center">
-
-			<h:panelGrid id="display" columns="2" cellpadding="2"
-				style="margin:0 auto;">
-				
-<h:outputText value="fecha inicial" />
-				
-<p:calendar id="popupCal" 
-value="#{MetaMesFormAction.date1}"
- /> 
-		
-<h:outputText value="fecha final" />
-<p:calendar id="popupCal2" 
-value="#{MetaMesFormAction.date2}"  
-/>
-</h:panelGrid>
-
-		</p:dialog>
-
-	</h:form>
+	
 	<!-- FIN PUPAP NUEVO Y EDITAR META MES -->
 	<!--EN UN SOLO PUPAP NUEVO Y EDITAR META -->
 
 
 	<h:form id="editarMeta2">
-		<p:dialog header="Ingrese meta" widgetVar="carDialog2"
-			showEffect="fade" hideEffect="explode" modal="true" width="300"
+		<p:dialog header="Ingrese nueva meta mes" widgetVar="carDialog2"
+			showEffect="fade" hideEffect="explode" modal="true" width="600"
 			position="center">
 
-			<h:panelGrid id="display" columns="2" cellpadding="2"
+			<h:panelGrid id="display" columns="3" cellpadding="2"
 				style="margin:0 auto;">
 
-				<h:outputText value="fecha Inicial"/>
-				<p:calendar value="#{MetaMesFormAction.date1}" id="popupCal"  />  
+				<h:outputText value="#{message['Metames.fechainicial']}"
+					for="fechainicial"/>
+					
+					
+				<p:calendar  value="#{MetaMesFormAction.date1}"
+							 id="fechainicial"
+							 required="true" 
+							 requiredMessage="#{message['Metames.fechainicial.validation']}" />
+							 <p:message for="fechainicial" />  
 				
 				
-					 
-				<h:outputText value="fecha Final"    />				
+					 	
+				<h:outputText value="#{message['Metames.fechafinal']}"
+					for="fechafinal"  />				
 			
-				<p:calendar value="#{MetaMesFormAction.date2}" id="popupCal2" />
+				<p:calendar value="#{MetaMesFormAction.date2}"
+							id="fechafinal"
+							required="true" 
+							 requiredMessage="#{message['Metames.fechafinal.validation']}"/>
+							 <p:message for="fechafinal" /> 
 				
 				
 				
 				<h:panelGroup>
 
 					<p:spacer height="20px"></p:spacer>
-					<p:commandButton id="btn" value="Guardar" update="panel"
+					<p:commandButton id="btn" value="Guardar" update="metames"
 						actionListener="#{MetaMesFormAction.insertar}" ajax="false"
 						icon="ui-icon ui-icon-disk" />
 
@@ -1706,7 +1795,7 @@ value="#{MetaMesFormAction.date2}"
 
 
 	<h:form id="PupudDomiCli1">
-		<p:dialog header="Ingrese Nuevo Cargo" widgetVar="carDialogDC1"
+		<p:dialog header="Ingrese" widgetVar="carDialogDC1"
 			showEffect="fade" hideEffect="explode" modal="true" width="450"
 			position="center">
 
