@@ -164,7 +164,7 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 					if (objKardexSie.getCantsalida() > 0) {
 						log.info(" cantexist "+ cantExistenteTotalAlmacenes + " cant Sal "+objKardexSie.getCantsalida() +" stk min " +stkminimo+ " almacen 2 " + idAlmacen2);
 						if (cantExistenteTotalAlmacenes - objKardexSie.getCantsalida() < 0) {
-							mensaje = " No puede exceder la cantidad de salida al stock actual del producto, el cual es " + cantExistenteTotalAlmacenes;
+							mensaje = " No puede exceder la cantidad de salida al stock actual total del producto, el cual es " + cantExistenteTotalAlmacenes;
 							log.info(mensaje);
 						}
 						
@@ -218,6 +218,9 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 											}
 									}else{
 										log.info(" f se registra solo salida valida ");
+										objKardexSie.setValortotal(""+(valoruniex*objKardexSie.getCantsalida() ));
+										log.info(" g "+valoruniex);
+										validado=true;
 									}
 								}else{
 									log.info(" g se registra y no se encontro "+valoruniex);
