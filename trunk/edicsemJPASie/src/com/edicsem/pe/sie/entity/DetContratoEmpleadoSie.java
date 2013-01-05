@@ -53,12 +53,12 @@ public class DetContratoEmpleadoSie implements Serializable {
 	
 	//bi-directional many-to-one association to ContratoSie
     @ManyToOne
-	@JoinColumn(name="idcontrato",insertable = false, updatable = false)
+   	@JoinColumn(name="idcontrato")
 	private ContratoSie tbContrato;
 
 	//bi-directional many-to-one association to EmpleadoSie
     @ManyToOne
-	@JoinColumn(name="idempleado",insertable = false, updatable = false)
+	@JoinColumn(name="idempleado")
 	private EmpleadoSie tbEmpleado;
 
     public DetContratoEmpleadoSie() {
