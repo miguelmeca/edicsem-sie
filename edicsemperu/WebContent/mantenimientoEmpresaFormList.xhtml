@@ -17,7 +17,7 @@
 				id="empresaTable" paginator="true" rows="5"
        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	   rowsPerPageTemplate="5,10,15" widgetVar="table"
-	   emptyMessage="No se encontro registros">
+	   emptyMessage="No se encontraron registros">
 
 				
 				
@@ -40,15 +40,6 @@
 				</p:column>	
         	
         		
-        		
-        		
-        		<p:column headerText="N° Telefonico"  id="numtelefono" sortBy="#{empresa.numtelefono}"  filterBy="#{empresa.numtelefono}">
-				  
-						<h:outputText value="#{empresa.numtelefono}" />
-											 
-				</p:column>	
-				
-				
 				
 				
 				<p:column headerText="Email"  id="email" sortBy="#{empresa.email}"  filterBy="#{empresa.email}">
