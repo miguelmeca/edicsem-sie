@@ -55,6 +55,7 @@ public class ProductoServiceImpl implements ProductoService {
 	 * @see com.edicsem.pe.sie.service.facade.ProductoService#listarProductos()
 	 */
 	public List listarProductos() {
+		log.info("dentro del servicio ");
 		return objProductoDao.listarProductos();
 	}
 
