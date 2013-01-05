@@ -519,15 +519,15 @@ public void cambiar2() {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			nombrecliente = e.getMessage();
+			mensaje = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, nombrecliente);
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 		objTelefonoPersonaSie = new TelefonoPersonaSie();
 
-		return getViewList();
+		return getViewMant();
 	}
 /*REGISTRAR LOS DATOS DEL CLIENTE EDITADO*/
 	
