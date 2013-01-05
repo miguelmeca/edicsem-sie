@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
@@ -20,29 +21,21 @@ import com.edicsem.pe.sie.service.facade.PaqueteService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
-@ManagedBean(name = "MantenimientoDetallePaqueteBiblicoSearchAction")
+@ManagedBean(name = "mantenimientoDetallePaqueteBiblicoSearchAction")
 @SessionScoped
 public class MantenimientoDetallePaqueteBiblicoSearchAction extends BaseMantenimientoAbstractAction {
 
 	private Log log = LogFactory.getLog(MantenimientoDetallePaqueteBiblicoSearchAction.class);
 	
-//	public String mensaje;
-//	private boolean newRecord = false;
-//	private List<SancionSie> detSancionList;
-//	private List<DetSancionCargoSie> detSancionCargoList;
-//	private int idFactor,idSancion, factor;
-//	private int idcargo;
-//	private DetSancionCargoSie objDetSancionCargo;
+
 	
 	// PAQUETE BIBLICO
 	public String mensaje;
-//	private List<PaqueteSie> detPaqueteList;
 	private List<DetPaqueteSie> detPaqueteBiblicoList;
-//	private PaqueteSie objPaqueteSie;
 	private DetPaqueteSie objDetPaqueteSie;
-//	private boolean newRecord = false;
 	private int paquete;
 	
+;
 
 	
 	@EJB
@@ -107,6 +100,9 @@ public class MantenimientoDetallePaqueteBiblicoSearchAction extends BaseMantenim
 	}
 
 
+	public String getViewMant() {
+		return Constants.MANT_DETALLEPAQUETEBIBLICO_FORM_PAGE;
+	}
 	
 
 	/**
