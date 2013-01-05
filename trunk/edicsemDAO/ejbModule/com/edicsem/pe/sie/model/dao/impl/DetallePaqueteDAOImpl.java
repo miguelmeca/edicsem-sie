@@ -47,9 +47,10 @@ public class DetallePaqueteDAOImpl implements DetPaqueteDAO {
 	public List listarDetPaquetes(int paquete) {
 		List lista = null;
 		try {
+			log.info("Antes del QUERY DAOIMPL");
 			Query q = em.createQuery("select p from DetPaqueteSie p where p.tbPaquete.idpaquete = "+ paquete);
 			lista = q.getResultList();
-			log.info("tamaño lista DetPaqueteSie --> " + lista.size());
+			log.info("dspues de la lista tamaño lista DetPaqueteSie --> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -82,6 +83,7 @@ public class DetallePaqueteDAOImpl implements DetPaqueteDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}	
 	
 }
+
