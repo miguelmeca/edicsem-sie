@@ -81,6 +81,8 @@ public class ComboAction {
 	private Map<String, Integer> almacenItemsXTipo = new HashMap<String, Integer>();
 	private Map<String, Integer> tipoDocumentoItems = new HashMap<String, Integer>();
 	private Map<String, Integer> cargoEmpleadoItems = new HashMap<String, Integer>();
+	private Map<String, Integer> productoPaqueteItems = new HashMap<String, Integer>();
+	
 	private int tipoProducto,tipoAlmacen;
 	private int cargoEmpleado;
 	private Map<String, Map<String, Integer>> dataProducto = new HashMap<String, Map<String, Integer>>();
@@ -167,6 +169,8 @@ public class ComboAction {
 		almacenItems = new HashMap<String, Integer>();
 		tipoDocumentoItems = new HashMap<String, Integer>();
 		cargoEmpleadoItems = new HashMap<String, Integer>();
+		productoPaqueteItems = new HashMap<String, Integer>();
+		
 		MetaMesItems = new HashMap<String, Integer>();
 		tipollamada = new HashMap<String, Integer>();
 		empleadoxcargo = new HashMap<String, Integer>();
@@ -485,6 +489,43 @@ public class ComboAction {
 		}
 		return cargoEmpleadoItems;
 	}
+
+	/* Combobox Listar Productos en el Formulario Detalle paquete biblico editar y agregar */
+	public Map<String, Integer> getProductoPaqueteItems() {
+		
+		productoPaqueteItems = new HashMap<String, Integer>();
+		List lista = new ArrayList<ProductoSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("entrando al HashMap producto 'getProductoPaqueteItems()'");
+			}
+			
+			lista = objProductoService.listarProductos();
+
+			for (int i = 0; i < lista.size(); i++) {
+				ProductoSie producto = new ProductoSie();
+				producto = (ProductoSie) lista.get(i);
+				productoPaqueteItems.put(producto.getDescripcionproducto(),
+						producto.getIdproducto());
+				
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		
+		return productoPaqueteItems;
+	}
+	
+	
+	
+	
+	
 
 	/**
 	 * @param estadoitems
@@ -1329,5 +1370,24 @@ public class ComboAction {
 	public void setTipoAlmacen(int tipoAlmacen) {
 		this.tipoAlmacen = tipoAlmacen;
 	}
+
+	/**
+	 * @return the productoPaqueteItems
+	 */
+	
+
+	/**
+	 * @param productoPaqueteItems the productoPaqueteItems to set
+	 */
+	public void setProductoPaqueteItems(Map<String, Integer> productoPaqueteItems) {
+		this.productoPaqueteItems = productoPaqueteItems;
+	}
+
+	/**
+	 * @return the productoOficialItems
+	 */
+	
+
+	
 	
 }
