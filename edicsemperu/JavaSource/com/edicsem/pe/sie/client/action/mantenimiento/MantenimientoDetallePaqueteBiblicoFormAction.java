@@ -6,7 +6,6 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
@@ -21,58 +20,55 @@ import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.DetSancionCargoService;
 import com.edicsem.pe.sie.service.facade.DetallePaqueteService;
 import com.edicsem.pe.sie.service.facade.PaqueteService;
+import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.service.facade.SancionService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
-@ManagedBean(name = "MantenimientoDetallePaqueteBiblicoFormAction")
+@ManagedBean(name = "mantenimientoDetallePaqueteBiblicoFormAction")
 @SessionScoped
 public class MantenimientoDetallePaqueteBiblicoFormAction extends BaseMantenimientoAbstractAction {
 
 	private Log log = LogFactory.getLog(MantenimientoDetallePaqueteBiblicoFormAction.class);
 	
-
-	
-	private SancionSie objSancionSie;
-	private List<SancionSie> detSancionList;
-	private List<DetSancionCargoSie> detSancionCargoList;
-	private int idFactor,idSancion, factor;
-	private int idcargo,itemSancionCargo;
-	private DetSancionCargoSie objDetSancionCargo, objAuxiSancionCargo;
 	
 	
 	//Tb_DETALLE PAQUETE
 	public String mensaje;
 	private boolean newRecord = false;
-	private DetPaqueteSie objDetPaqueteSie;
+	private DetPaqueteSie objDetPaqueteSie, objAuxiDetPaqueteSie;
 	private List<DetPaqueteSie> detPaqueteBiblicoList;
 	private int idpaquete, iddetpaquete; 
+	private int idproducto, itemDetPaqBibli;
 	
 	//tb_PAQUETE
 	
 	private List<PaqueteSie> detPaqueteList;
 	private PaqueteSie objPaqueteSie;
 	
+	
+	
+//	@ManagedProperty(value = "#{mantenimientoDetallePaqueteBiblicoSearchAction}")
+//	private MantenimientoDetallePaqueteBiblicoSearchAction mantenimientoDetallePaqueteBiblicoSearchAction;
+	
 	@EJB
 	private SancionService objSancionService;
 	@EJB
 	private CargoEmpleadoService objCargoService;
 	@EJB
-	private DetSancionCargoService objDetSancionCargoService;
-	
-	
+	private DetSancionCargoService objDetSancionCargoService;	
 	@EJB
 	private DetallePaqueteService objDetallePaqueteService;
 	
 	@EJB
 	private PaqueteService objPaqueteService;
 	
+	@EJB
+	private ProductoService objProductoService;
 	
-	@ManagedProperty(value = "#{SancionSearch}")
-	private MantenimientoSancionSearchAction manteSancionSearch;
 	
-	@ManagedProperty(value = "#{MantenimientoDetallePaqueteBiblicoSearchAction}")
-	private MantenimientoDetallePaqueteBiblicoSearchAction MantenimientoDetallePaqueteBiblicoSearchAction;
+	
+	
 	
 	public MantenimientoDetallePaqueteBiblicoFormAction() {
 		init();
@@ -87,12 +83,7 @@ public class MantenimientoDetallePaqueteBiblicoFormAction extends BaseMantenimie
 	 */
 	public void init() {
 		
-//		objSancionSie = new SancionSie();
-//		detSancionList = new ArrayList<SancionSie>();
-//		detSancionCargoList = new ArrayList<DetSancionCargoSie>();
-//		objDetSancionCargo = new DetSancionCargoSie();
-		idFactor=0;
-		idSancion =0;
+
 		
 		log.info("Inicializando el Constructor de 'MantenimientoDetallePaqueteBiblicoSearchAction'");
 		objDetPaqueteSie = new DetPaqueteSie();
@@ -100,6 +91,7 @@ public class MantenimientoDetallePaqueteBiblicoFormAction extends BaseMantenimie
 		//TB_PAQUETE
 		objPaqueteSie = new PaqueteSie();
 		detPaqueteList = new ArrayList<PaqueteSie>();
+		iddetpaquete=0;
 		
 		
 		
@@ -110,127 +102,141 @@ public class MantenimientoDetallePaqueteBiblicoFormAction extends BaseMantenimie
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
 	 */
 	public String agregar() {
-//	
-//		objDetSancionCargo = new DetSancionCargoSie();
-//		detSancionCargoList = new ArrayList<DetSancionCargoSie>();
-//		objSancionSie = new SancionSie();
-//		
+		
 		//DETalle paquete
-		log.info("agregar()");
-		setNewRecord(true);
+		log.info("agregar-jk()");
+//		setNewRecord(true);
 		objDetPaqueteSie = new DetPaqueteSie();
 		detPaqueteBiblicoList = new ArrayList<DetPaqueteSie>();
 		objPaqueteSie = new PaqueteSie();
 		
 		
-		return MantenimientoDetallePaqueteBiblicoSearchAction.getViewMant();
+		return getViewMant();
 	}
+//lista donde se van agregar de acuerdo
+	public String agregarProdPaquete(){
+		mensaje=null;
+		log.info("agregarProdPaquete");
+		boolean isadd = false;
+		//isadd es agregar
+		
+		log.info("antes de buscar el producto ");
+		objDetPaqueteSie.setTbProducto(objProductoService.findProducto(idproducto));
+		log.info("despues de buscar el producto"+ idproducto );
 
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
-	 */
-	public String update() throws Exception {
-		log.info("update()  " );
-		setNewRecord(false);
-//		objDetSancionCargo = new DetSancionCargoSie();
-		
-		
-//		detSancionCargoList = objDetSancionCargoService.listarDetSancionCargo(objSancionSie.getIdsancion());
-		objDetPaqueteSie = new DetPaqueteSie();
-		//OBSERVACION
-		detPaqueteBiblicoList = objDetallePaqueteService.listarDetPaquetes(objPaqueteSie.getIdpaquete());
-		
+		int cantidad= detPaqueteBiblicoList.size();
 		for (int i = 0; i < detPaqueteBiblicoList.size(); i++) {
-			DetPaqueteSie det =detPaqueteBiblicoList.get(i);
-			det.setItem(i+1);
-			detPaqueteBiblicoList.set(i, det);
+			if(detPaqueteBiblicoList.get(i).getTbProducto().getIdproducto()==idproducto){
+				isadd=true;
+				break;
+				
+			}
+			
 		}
-		
-		return MantenimientoDetallePaqueteBiblicoSearchAction.getViewMant();
+		if(isadd==true){
+				mensaje = "Dicho producto ya tiene una paquete bla bla bla bla... ";
+				msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, Constants.MESSAGE_INFO_TITULO, mensaje);
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+		}else{
+			
+			if(cantidad==0){
+				
+				objDetPaqueteSie.setItem(1);
+				objDetPaqueteSie.setIsnew("N");
+				detPaqueteBiblicoList.add(objDetPaqueteSie);
+				objDetPaqueteSie  = new DetPaqueteSie();
+				isadd=true;
+				log.info("dentro del if cantidad==0");
+				
+			}else{
+				objDetPaqueteSie.setItem(cantidad+1);
+				log.info("dentro del else cantidad+1");
+			}
+		}
+		log.info(" si me muestra esto esta mal "+" "+ mensaje);
+		return getViewMant();
 	}
 
 	
-	
-	public String getViewMant() {
-		return Constants.MANT_DETALLE_PAQUETEBIBLICO_FORM_PAGE;
-	}
-	/**
-	 * actualizar el detCargoSancion
-	 */
-	public String updateDetCargoSancion(){
+	//lista donde se van a editar de acuerdo
+	public String updateDetPaqueBiblico() {
 		boolean isadd=false;
-		log.info("updateDetCargoSancion()  "+objAuxiSancionCargo.getItem() );
-		for (int i = 0; i < detSancionCargoList.size(); i++) {
-			log.info(" **** "+ detSancionCargoList.get(i).getItem()+"  "+ detSancionCargoList.get(i).getDescuento());
-				if(detSancionCargoList.get(i).getTbCargoempleado().getIdcargoempleado()==idcargo){
+		log.info("updateDetPaqueBiblico()  "+objAuxiDetPaqueteSie.getItem() );
+		for (int i = 0; i < detPaqueteBiblicoList.size(); i++) {
+			log.info(" **** "+ detPaqueteBiblicoList.get(i).getItem()+"  "+  detPaqueteBiblicoList.get(i).getCantidad());
+				if(detPaqueteBiblicoList.get(i).getTbProducto().getIdproducto()==idproducto){
 					isadd=true;
 					break;
 				}
 			}
 		
 		if(isadd==false){
-			for (int i = 0; i < detSancionCargoList.size(); i++) {
+			for (int i = 0; i < detPaqueteBiblicoList.size(); i++) {
 			
-				if(detSancionCargoList.get(i).getItem()==(objAuxiSancionCargo.getItem())){
-				log.info("item ********* "+ objAuxiSancionCargo.getItem());
-				detSancionCargoList.get(i).setDescuento(objAuxiSancionCargo.getDescuento());
-				detSancionCargoList.get(i).setTbCargoempleado(objCargoService.buscarCargoEmpleado(idcargo));
-				detSancionCargoList.get(i).setCantdiaSuspension(objAuxiSancionCargo.getCantdiaSuspension());
-				log.info("descr   "+detSancionCargoList.get(i).getTbCargoempleado().getDescripcion());
+				if(detPaqueteBiblicoList.get(i).getItem()==(objAuxiDetPaqueteSie.getItem())){
+				log.info("item ********* "+ objAuxiDetPaqueteSie.getItem());
+				
+							
+				detPaqueteBiblicoList.get(i).setTbProducto(objProductoService.findProducto(idproducto));
+				detPaqueteBiblicoList.get(i).setCantidad(objAuxiDetPaqueteSie.getCantidad());	
+				
+				log.info("descripcion de producto   "+detPaqueteBiblicoList.get(i).getTbProducto().getDescripcionproducto());
 				}
 			}
 		}else{
-			mensaje = "ya existe una sanción para dicho cargo";
+			mensaje = "ya existe un producto para dicho cargo";
 			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 		
 		log.info("actualizo  ********* " );
 		setNewRecord(false);
-		return manteSancionSearch.getViewMant();
+		return getViewMant();
 	}
-	
-	public String updateDeshabilitar() throws Exception{
+    
+	public String updateDeshabilitarDetPaqueBiblico() throws Exception{
 		 
 		if (log.isInfoEnabled()) {
-			log.info("updateDeshabilitar()' " +itemSancionCargo);
+			log.info("updateDeshabilitar()' " +itemDetPaqBibli);
 		}
-		for (int i = 0; i < detSancionCargoList.size(); i++) {
-			if(detSancionCargoList.get(i).getItem()==(itemSancionCargo)){
-				detSancionCargoList.remove(i);
+		for (int i = 0; i < detPaqueteBiblicoList.size(); i++) {
+			if(detPaqueteBiblicoList.get(i).getItem()==(itemDetPaqBibli)){
+				detPaqueteBiblicoList.remove(i);
 			
-				for (int j = i; j < detSancionCargoList.size(); j++) {
+				for (int j = i; j < detPaqueteBiblicoList.size(); j++) {
 					log.info(" i " +i+"  j "+ j);
 					i=i+1;
-					detSancionCargoList.get(j).setItem(i);
-					detSancionCargoList.set(j, detSancionCargoList.get(j));
+					detPaqueteBiblicoList.get(j).setItem(i);
+					detPaqueteBiblicoList.set(j, detPaqueteBiblicoList.get(j));
 				}
 			}
 		}
 		log.info("actualizando..... ");
-		return manteSancionSearch.getViewMant();
+		return getViewMant();
 	}
-    
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
-	 */
+	
+	//Insertar el la tabla temporal
 	public String insertar() {
 		
 		log.info("insertar()" + isNewRecord()  );
 		try {
 			if(isNewRecord()){
-				log.info("tañano lista "+ detSancionCargoList.size() );	
-				if(detSancionCargoList.size()==0){
-					mensaje="Debe registrar la sanción para el tipo de cargo que corresponda";
+				log.info("tañano lista "+ detPaqueteBiblicoList.size() );	
+				if(detPaqueteBiblicoList.size()==0){
+					mensaje="Debe registrar el producto para el tipo de paquete biblico que corresponda";
 				}else{
 					mensaje =Constants.MESSAGE_REGISTRO_TITULO;
-					objSancionService.insertSancion(objSancionSie, factor, detSancionCargoList);
+
+					
+					
+					objDetallePaqueteService.insertDetPaquete(objDetPaqueteSie);
 					log.info("insertandio "  );	
 				}
 			}
 			else{
-				log.info("actualizado "+objSancionSie.getDescripcion());
-				objSancionService.updateSancion(objSancionSie,detSancionCargoList);
+				log.info("actualizado "+objDetPaqueteSie.getCantidad());
+				
+				objDetallePaqueteService.updateDetPaquete(objDetPaqueteSie);
 				log.info("actualizado");
 			}
 			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
@@ -246,56 +252,38 @@ public class MantenimientoDetallePaqueteBiblicoFormAction extends BaseMantenimie
 		}
 		log.info("mensaje -->* "+mensaje );
 		
-		objSancionSie = new SancionSie();
-		return manteSancionSearch.getViewMant();
+		objDetPaqueteSie = new DetPaqueteSie();
+		return getViewMant();
 	}
 	
-	public String agregarSancionCargo(){
-		mensaje=null;
-		log.info("agregarSancionCargo");
-		boolean isadd = false;
-		objDetSancionCargo.setTbCargoempleado(objCargoService.buscarCargoEmpleado(idcargo));
-		int cantidad= detSancionCargoList.size();
-		for (int i = 0; i < detSancionCargoList.size(); i++) {
-			if(detSancionCargoList.get(i).getTbCargoempleado().getIdcargoempleado()==idcargo){
-				isadd=true;
-				break;
-			}
-		}
-		if(isadd==true){
-				mensaje = "Dicho cargo ya tiene una sanción registrada ";
-				msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, Constants.MESSAGE_INFO_TITULO, mensaje);
-				FacesContext.getCurrentInstance().addMessage(null, msg);
-		}else{
-			
-			if(cantidad==0){
-				objDetSancionCargo.setItem(1);
-				objDetSancionCargo.setIsnew("N");
-				detSancionCargoList.add(objDetSancionCargo);
-				objDetSancionCargo = new DetSancionCargoSie();
-				isadd=true;
-			}else{
-				objDetSancionCargo.setItem(cantidad+1);
-			}
-		}
-		log.info(" "+ mensaje);
-		return manteSancionSearch.getViewMant();
-	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
-	 * #getViewList()
-	 */
-	public String getViewList() {
-		return Constants.MANT_SANCION_FORM_LIST_PAGE;
+	
+	public String update() throws Exception {
+		log.info("update()-JK  "+objDetPaqueteSie.getTbPaquete().getIdpaquete() );
+//		setNewRecord(false);
+//		objDetPaqueteSie = new DetPaqueteSie();
+		detPaqueteBiblicoList = objDetallePaqueteService.listarDetPaquetes(objDetPaqueteSie.getTbPaquete().getIdpaquete());
+//		objPaqueteSie = new PaqueteSie();
+//		
+//		for (int i = 0; i < detPaqueteBiblicoList.size(); i++) {
+//			DetPaqueteSie det =detPaqueteBiblicoList.get(i);
+//			det.setItem(i+1);
+//			detPaqueteBiblicoList.set(i, det);
+//		}
+		
+		return getViewMant();
 	}
 
-	/**
-	 * @return the newRecord
-	 */
+	
+	public String getViewMant() {
+		return Constants.MANT_DETALLEPAQUETEBIBLICO_FORM_PAGE;
+	}	
+		
+	public String getViewList() {
+		return Constants.MANT_DETALLEPAQUETEBIBLICO_FORM_LIST_PAGE;
+	}
+
+	
 	public boolean isNewRecord() {
 		return newRecord;
 	}
@@ -310,20 +298,20 @@ public class MantenimientoDetallePaqueteBiblicoFormAction extends BaseMantenimie
 	/**
 	 * @return the detSancionList
 	 */
-	public List<SancionSie> getDetSancionList() {
-		return detSancionList;
-	}
+//	public List<SancionSie> getDetSancionList() {
+//		return detSancionList;
+//	}
+//
+//	/**
+//	 * @param detSancionList the detSancionList to set
+//	 */
+//	public void setDetSancionList(List<SancionSie> detSancionList) {
+//		this.detSancionList = detSancionList;
+//	}
+//
+//	/**
+//	 * @return the mensaje
 
-	/**
-	 * @param detSancionList the detSancionList to set
-	 */
-	public void setDetSancionList(List<SancionSie> detSancionList) {
-		this.detSancionList = detSancionList;
-	}
-
-	/**
-	 * @return the mensaje
-	 */
 	public String getMensaje() {
 		return mensaje;
 	}
@@ -338,156 +326,156 @@ public class MantenimientoDetallePaqueteBiblicoFormAction extends BaseMantenimie
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#listar()
 	 */
-	public String listar() {
-		log.info("listar 'MantenimientorSancionFormAction' ");
-		detSancionList = objSancionService.listarSanciones(idFactor);
-		objSancionSie = new SancionSie();
-		if (detSancionList == null) {
-			detSancionList = new ArrayList<SancionSie>();
-		}
-		return getViewList();
-	}
-    
-	/**
-	 * @return the objSancionSie
-	 */
-	public SancionSie getObjSancionSie() {
-		return objSancionSie;
-	}
-
-	/**
-	 * @param objSancionSie the objSancionSie to set
-	 */
-	public void setObjSancionSie(SancionSie objSancionSie) {
-		this.objSancionSie = objSancionSie;
-	}
-
-	/**
-	 * @return the idFactor
-	 */
-	public int getIdFactor() {
-		return idFactor;
-	}
-
-	/**
-	 * @param idFactor the idFactor to set
-	 */
-	public void setIdFactor(int idFactor) {
-		this.idFactor = idFactor;
-	}
-
-	/**
-	 * @return the idSancion
-	 */
-	public int getIdSancion() {
-		return idSancion;
-	}
-
-	/**
-	 * @param idSancion the idSancion to set
-	 */
-	public void setIdSancion(int idSancion) {
-		this.idSancion = idSancion;
-	}
-
-	/**
-	 * @return the factor
-	 */
-	public int getFactor() {
-		return factor;
-	}
-
-	/**
-	 * @param factor the factor to set
-	 */
-	public void setFactor(int factor) {
-		this.factor = factor;
-	}
-
-	/**
-	 * @return the idcargo
-	 */
-	public int getIdcargo() {
-		return idcargo;
-	}
-
-	/**
-	 * @param idcargo the idcargo to set
-	 */
-	public void setIdcargo(int idcargo) {
-		this.idcargo = idcargo;
-	}
-
-	/**
-	 * @return the detSancionCargoList
-	 */
-	public List<DetSancionCargoSie> getDetSancionCargoList() {
-		return detSancionCargoList;
-	}
-
-	/**
-	 * @param detSancionCargoList the detSancionCargoList to set
-	 */
-	public void setDetSancionCargoList(List<DetSancionCargoSie> detSancionCargoList) {
-		this.detSancionCargoList = detSancionCargoList;
-	}
-
-	/**
-	 * @return the objDetSancionCargo
-	 */
-	public DetSancionCargoSie getObjDetSancionCargo() {
-		return objDetSancionCargo;
-	}
-
-	/**
-	 * @param objDetSancionCargo the objDetSancionCargo to set
-	 */
-	public void setObjDetSancionCargo(DetSancionCargoSie objDetSancionCargo) {
-		this.objDetSancionCargo = objDetSancionCargo;
-	}
+//	public String listar() {
+//		log.info("listar 'MantenimientorSancionFormAction' ");
+//		detSancionList = objSancionService.listarSanciones(idFactor);
+//		objSancionSie = new SancionSie();
+//		if (detSancionList == null) {
+//			detSancionList = new ArrayList<SancionSie>();
+//		}
+//		return getViewList();
+//	}
+//    
+//	/**
+//	 * @return the objSancionSie
+//	 */
+//	public SancionSie getObjSancionSie() {
+//		return objSancionSie;
+//	}
+//
+//	/**
+//	 * @param objSancionSie the objSancionSie to set
+//	 */
+//	public void setObjSancionSie(SancionSie objSancionSie) {
+//		this.objSancionSie = objSancionSie;
+//	}
+//
+//	/**
+//	 * @return the idFactor
+//	 */
+//	public int getIdFactor() {
+//		return idFactor;
+//	}
+//
+//	/**
+//	 * @param idFactor the idFactor to set
+//	 */
+//	public void setIdFactor(int idFactor) {
+//		this.idFactor = idFactor;
+//	}
+//
+//	/**
+//	 * @return the idSancion
+//	 */
+//	public int getIdSancion() {
+//		return idSancion;
+//	}
+//
+//	/**
+//	 * @param idSancion the idSancion to set
+//	 */
+//	public void setIdSancion(int idSancion) {
+//		this.idSancion = idSancion;
+//	}
+//
+//	/**
+//	 * @return the factor
+//	 */
+//	public int getFactor() {
+//		return factor;
+//	}
+//
+//	/**
+//	 * @param factor the factor to set
+//	 */
+//	public void setFactor(int factor) {
+//		this.factor = factor;
+//	}
+//
+//	/**
+//	 * @return the idcargo
+//	 */
+//	public int getIdcargo() {
+//		return idcargo;
+//	}
+//
+//	/**
+//	 * @param idcargo the idcargo to set
+//	 */
+//	public void setIdcargo(int idcargo) {
+//		this.idcargo = idcargo;
+//	}
+//
+//	/**
+//	 * @return the detSancionCargoList
+//	 */
+//	public List<DetSancionCargoSie> getDetSancionCargoList() {
+//		return detSancionCargoList;
+//	}
+//
+//	/**
+//	 * @param detSancionCargoList the detSancionCargoList to set
+//	 */
+//	public void setDetSancionCargoList(List<DetSancionCargoSie> detSancionCargoList) {
+//		this.detSancionCargoList = detSancionCargoList;
+//	}
+//
+//	/**
+//	 * @return the objDetSancionCargo
+//	 */
+//	public DetSancionCargoSie getObjDetSancionCargo() {
+//		return objDetSancionCargo;
+//	}
+//
+//	/**
+//	 * @param objDetSancionCargo the objDetSancionCargo to set
+//	 */
+//	public void setObjDetSancionCargo(DetSancionCargoSie objDetSancionCargo) {
+//		this.objDetSancionCargo = objDetSancionCargo;
+//	}
 
 	/**
 	 * @return the manteSancionSearch
 	 */
-	public MantenimientoSancionSearchAction getManteSancionSearch() {
-		return manteSancionSearch;
-	}
-
-	/**
-	 * @param manteSancionSearch the manteSancionSearch to set
-	 */
-	public void setManteSancionSearch(
-			MantenimientoSancionSearchAction manteSancionSearch) {
-		this.manteSancionSearch = manteSancionSearch;
-	}
+//	public MantenimientoSancionSearchAction getManteSancionSearch() {
+//		return manteSancionSearch;
+//	}
+//
+//	/**
+//	 * @param manteSancionSearch the manteSancionSearch to set
+//	 */
+//	public void setManteSancionSearch(
+//			MantenimientoSancionSearchAction manteSancionSearch) {
+//		this.manteSancionSearch = manteSancionSearch;
+//	}
 
 	/**
 	 * @return the objAuxiSancionCargo
 	 */
-	public DetSancionCargoSie getObjAuxiSancionCargo() {
-		return objAuxiSancionCargo;
-	}
-
-	/**
-	 * @param objAuxiSancionCargo the objAuxiSancionCargo to set
-	 */
-	public void setObjAuxiSancionCargo(DetSancionCargoSie objAuxiSancionCargo) {
-		this.objAuxiSancionCargo = objAuxiSancionCargo;
-	}
-
-	/**
-	 * @return the itemSancionCargo
-	 */
-	public int getItemSancionCargo() {
-		return itemSancionCargo;
-	}
-
-	/**
-	 * @param itemSancionCargo the itemSancionCargo to set
-	 */
-	public void setItemSancionCargo(int itemSancionCargo) {
-		this.itemSancionCargo = itemSancionCargo;
-	}
+//	public DetSancionCargoSie getObjAuxiSancionCargo() {
+//		return objAuxiSancionCargo;
+//	}
+//
+//	/**
+//	 * @param objAuxiSancionCargo the objAuxiSancionCargo to set
+//	 */
+//	public void setObjAuxiSancionCargo(DetSancionCargoSie objAuxiSancionCargo) {
+//		this.objAuxiSancionCargo = objAuxiSancionCargo;
+//	}
+//
+//	/**
+//	 * @return the itemSancionCargo
+//	 */
+//	public int getItemSancionCargo() {
+//		return itemSancionCargo;
+//	}
+//
+//	/**
+//	 * @param itemSancionCargo the itemSancionCargo to set
+//	 */
+//	public void setItemSancionCargo(int itemSancionCargo) {
+//		this.itemSancionCargo = itemSancionCargo;
+//	}
 
 	/**
 	 * @return the objDetPaqueteSie
@@ -519,18 +507,18 @@ public class MantenimientoDetallePaqueteBiblicoFormAction extends BaseMantenimie
 
 	/**
 	 * @return the mantenimientoDetallePaqueteBiblicoSearchAction
-	 */
-	public MantenimientoDetallePaqueteBiblicoSearchAction getMantenimientoDetallePaqueteBiblicoSearchAction() {
-		return MantenimientoDetallePaqueteBiblicoSearchAction;
-	}
+//	 */
+//	public MantenimientoDetallePaqueteBiblicoSearchAction getMantenimientoDetallePaqueteBiblicoSearchAction() {
+//		return MantenimientoDetallePaqueteBiblicoSearchAction;
+//	}
 
 	/**
 	 * @param mantenimientoDetallePaqueteBiblicoSearchAction the mantenimientoDetallePaqueteBiblicoSearchAction to set
 	 */
-	public void setMantenimientoDetallePaqueteBiblicoSearchAction(
-			MantenimientoDetallePaqueteBiblicoSearchAction mantenimientoDetallePaqueteBiblicoSearchAction) {
-		MantenimientoDetallePaqueteBiblicoSearchAction = mantenimientoDetallePaqueteBiblicoSearchAction;
-	}
+//	public void setMantenimientoDetallePaqueteBiblicoSearchAction(
+//			MantenimientoDetallePaqueteBiblicoSearchAction mantenimientoDetallePaqueteBiblicoSearchAction) {
+//		MantenimientoDetallePaqueteBiblicoSearchAction = mantenimientoDetallePaqueteBiblicoSearchAction;
+//	}
 
 	/**
 	 * @return the idpaquete
@@ -587,7 +575,69 @@ public class MantenimientoDetallePaqueteBiblicoFormAction extends BaseMantenimie
 	public void setObjPaqueteSie(PaqueteSie objPaqueteSie) {
 		this.objPaqueteSie = objPaqueteSie;
 	}
+
+	/**
+	 * @return the log
+	 */
+	public Log getLog() {
+		return log;
+	}
+
+	/**
+	 * @param log the log to set
+	 */
+	public void setLog(Log log) {
+		this.log = log;
+	}
+
+	/**
+	 * @return the idproducto
+	 */
+	public int getIdproducto() {
+		return idproducto;
+	}
+
+	/**
+	 * @param idproducto the idproducto to set
+	 */
+	public void setIdproducto(int idproducto) {
+		this.idproducto = idproducto;
+	}
+
+	/**
+	 * @return the objAuxiDetPaqueteSie
+	 */
+	public DetPaqueteSie getObjAuxiDetPaqueteSie() {
+		return objAuxiDetPaqueteSie;
+	}
+
+	/**
+	 * @param objAuxiDetPaqueteSie the objAuxiDetPaqueteSie to set
+	 */
+	public void setObjAuxiDetPaqueteSie(DetPaqueteSie objAuxiDetPaqueteSie) {
+		this.objAuxiDetPaqueteSie = objAuxiDetPaqueteSie;
+	}
+
+	/**
+	 * @return the itemDetPaqBibli
+	 */
+	public int getItemDetPaqBibli() {
+		return itemDetPaqBibli;
+	}
+
+	/**
+	 * @param itemDetPaqBibli the itemDetPaqBibli to set
+	 */
+	public void setItemDetPaqBibli(int itemDetPaqBibli) {
+		this.itemDetPaqBibli = itemDetPaqBibli;
+	}
+
+	/**
+	 * @return the objProducto
+	 */
+
 	
-	
+
+
 
 }
