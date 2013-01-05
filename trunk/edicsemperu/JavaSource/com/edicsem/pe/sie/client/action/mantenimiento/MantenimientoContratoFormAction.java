@@ -314,38 +314,48 @@ public class MantenimientoContratoFormAction extends
 
 	public void agregarProducto(){
 		mensaje=null;
-		log.info("agregarProducto "+ detPaqueteList.size());
-		int cantidad= detPaqueteList.size();
-		DetPaqueteSie det = new DetPaqueteSie();
-		det.setTbProducto(objProductoService.findProducto(objProductoSie.getIdproducto()));
-		det.setCantidad(objProductoSie.getCantidadContrato());
-		det.setObservacion(objProductoSie.getObservacionContrato());
-		if(objProductoSie.getCantidadContrato()<1){
-			mensaje="Cantidad debe ser mayor que 0 ";
-		}
-		if(cantidad==0){
-			det.setItem(1);
-			detPaqueteList.add(det);
-			log.info("tamaño lista de paqu "+ detPaqueteList.size());
+		log.info("agregarProducto "+ detPaqueteList.size()+"   "+objProductoSie.getIdproducto());
+		
+		if(objProductoSie.getIdproducto()==null||objProductoSie.getIdproducto()==0){
+			mensaje="Debe seleccionar un producto para agregarlo a la lista";
 		}else{
-			for (int i = 0; i < detPaqueteList.size(); i++) {
-				if(detPaqueteList.get(i).getTbProducto().getIdproducto()==det.getTbProducto().getIdproducto()){
-					mensaje="Dicho producto ya se encuentra registrado en la lista, usted puede editarlo ";
-				}
-			det.setItem(cantidad+1);
+			int cantidad= detPaqueteList.size();
+			DetPaqueteSie det = new DetPaqueteSie();
+			det.setTbProducto(objProductoService.findProducto(objProductoSie.getIdproducto()));
+			det.setCantidad(objProductoSie.getCantidadContrato());
+			det.setObservacion(objProductoSie.getObservacionContrato());
+			if(objProductoSie.getCantidadContrato()<1){
+				mensaje="Cantidad debe ser mayor que 0 ";
 			}
-			if(mensaje==null){
-				log.info(" se agrega cuando lista esta llena");
+			if(cantidad==0){
+				det.setItem(1);
 				detPaqueteList.add(det);
+				log.info("tamaño lista de paqu "+ detPaqueteList.size());
+			}else{
+				for (int i = 0; i < detPaqueteList.size(); i++) {
+					if(detPaqueteList.get(i).getTbProducto().getIdproducto()==det.getTbProducto().getIdproducto()){
+						mensaje="Dicho producto ya se encuentra registrado en la lista, usted puede editarlo ";
+					}
+				det.setItem(cantidad+1);
+				}
+				if(mensaje==null){
+					log.info(" se agrega cuando lista esta llena");
+					detPaqueteList.add(det);
+					mensaje="Se agregó correctamente ";
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+							Constants.MESSAGE_INFO_TITULO, mensaje);
+					mensaje=null;
+				}
+				objProductoSie= new ProductoSie();
+				log.info("tamaño lista de paq "+ detPaqueteList.size()+" "+mensaje);
+				
 			}
-			objProductoSie= new ProductoSie();
-			log.info("tamaño lista de paq "+ detPaqueteList.size()+" "+mensaje);
 		}
 		if(mensaje!=null){
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
 					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 	  
     public void eliminarProducto(){
@@ -474,20 +484,35 @@ public class MantenimientoContratoFormAction extends
 	 * #insertar()
 	 */
 	public String insertar() {
+		mensaje=null;
 		List<DetProductoContratoSie> detProductoContratoList = new ArrayList<DetProductoContratoSie>();
 		List<Integer> detidEmpleadosList = new ArrayList<Integer>();
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()' ");
 			}
+			
+			if( telefonoList.size()==0){
+				mensaje= "Debe ingresar telefonos de referencia";
+				msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+						Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+			}
+			else if( detPaqueteList.size()==0){
+				mensaje= "Debe ingresar un producto como mínimo ";
+				msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+						Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+			}
+			else if( cobranzaList.size()==0){
+				mensaje= "Debe ingresar el detalle de cobranza";
+				msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+						Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+			}
+			if(mensaje ==null){
 			if (isNewRecord()) {
-				log.info("a insertar ");
-				if( detPaqueteList.size()==0){
-					mensaje= "Debe ingresar un producto como mínimo ";
-					msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-							Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-					FacesContext.getCurrentInstance().addMessage(null, msg);
-				} else{
+				
 				for (int i = 0; i < detPaqueteList.size(); i++) {
 					DetProductoContratoSie det=new DetProductoContratoSie();
 					log.info(" q "+detPaqueteList.get(i).getTbProducto().getIdproducto());
@@ -517,15 +542,16 @@ public class MantenimientoContratoFormAction extends
 				log.info("a insertar contratito");
 				objContratoService.insertContrato(idtipodoc,Tipocasa,idUbigeo, idempresa, objClienteSie, telefonoList, objDomicilioSie,  objContratoSie,detProductoContratoList, cobranzaList, detidEmpleadosList);
 				log.info(" despues de  insertar ");
-				mensaje = Constants.MESSAGE_INFO_TITULO;
-				msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+				mensaje = "Se inserto correctamente";
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 						Constants.MESSAGE_INFO_TITULO, mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 				objProductoSie = new ProductoSie();
-				}
+				
 			} else {
 				log.info("a actualizar  ");
 				limpiarCampos();
+			}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
