@@ -91,13 +91,15 @@ public class ProductoDAOImpl implements ProductoDAO {
 		try {
 			Query q = em.createQuery("select p from ProductoSie p");
 			lista = q.getResultList();
-			log.info("tamaño lista Productos --> " + lista.size());
+			log.info("tamaño lista Productos en el DAOIMPL--> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return lista;
 	}
 
+	
+	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.ProductoDAO#listarProductosXTipo(int)
 	 */
