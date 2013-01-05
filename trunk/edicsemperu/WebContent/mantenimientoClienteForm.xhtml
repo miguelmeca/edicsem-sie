@@ -144,7 +144,7 @@
 
 				<f:facet name="header">
 					<h:outputLabel
-						value="#{message['lista.mantenimiento.cliente.titulo']}" />
+						value="#{message['lista.mantenimiento.cliente.domicilio']}" />
 				</f:facet>
 
 				<p:column headerText="Domicilio" >
@@ -234,7 +234,7 @@
 
 
 		<h:form id="frmTelefono" prependId="false">
-			<p:growl id="message1" showDetail="true" />
+		
 			<p:dataTable value="#{MantenimientoClienteFormAction.telefonoPersonaList}" var="o"
 				id="listarTelefonos" paginator="true" rows="10"
 				 rowStyleClass="#{o.operadorTelefonico eq 'Claro' ? 'color1': (o.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }" >
@@ -265,10 +265,13 @@
 <p:column headerText="Deshabilitar">
 <p:commandButton
 	 			 id="showConfirmDeshabilitar3"
-	 			 value="Deshabilitar"  icon="ui-icon ui-icon-close" 
-	 			
-	 onclick="confirmation3.show()"> 
-	 				<f:setPropertyActionListener value="#{o.idtelefonopersona}" target="#{MantenimientoClienteFormAction.idc}" />			
+	 			 value="Deshabilitar" 
+	 			 icon="ui-icon ui-icon-close" 		
+	 			 onclick="confirmation3.show()"> 
+<f:setPropertyActionListener
+	 				 value="#{o.idtelefonopersona}"
+	 				 target="#{MantenimientoClienteFormAction.idc}" />
+ 				 			
 				</p:commandButton>	
 </p:column>
 						
