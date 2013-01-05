@@ -87,8 +87,9 @@ public class ContratoServiceImpl implements ContratoService {
 		contrato.setTbEmpresa(objEmpresaDao.findEmpresa(idempresa));
 		log.info(" INSER CLIENTE" );
 		objContratoDao.insertContrato(contrato);
+		log.info("contrato insertado!  "+contrato.getIdcontrato());
 		for (DetProductoContratoSie detprodcontrato : detprodcont) {
-			detprodcontrato.setTbContrato(contrato);
+			detprodcontrato.setTbContrato(objContratoDao.findContrato(contrato.getIdcontrato()));
 			objDetProductoContratoDao.insertDetProductoContrato(detprodcontrato);
 		}
 		log.info(" terminado tamaño cobranza " + cobranza.size());
@@ -97,7 +98,7 @@ public class ContratoServiceImpl implements ContratoService {
 			objcobranza.setIdcliente(cliente.getIdcliente());
 			objcobranza.setIdcontrato(contrato.getIdcontrato());
 			objcobranza.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(27));
-			objcobranza.setTbContrato(contrato);
+			objcobranza.setTbContrato(objContratoDao.findContrato(contrato.getIdcontrato()));
 			objcobranza.setTbCliente(cliente);
 			objCobranzaDao.insertCobranza(objcobranza);
 			log.info(" terminado cobranza " );
@@ -108,10 +109,17 @@ public class ContratoServiceImpl implements ContratoService {
 		for (int i = 0; i < detidEmpleadosList.size() ; i++) {
 			d = new DetContratoEmpleadoSie();
 			d.setTbEmpleado(objEmpleadoDao.buscarEmpleado(detidEmpleadosList.get(i)));
-			if(i==0)d.setIdCargoContrato(1);
-			if(i==1)d.setIdCargoContrato(2);
-			if(i>1)d.setIdCargoContrato(3);
-			d.setTbContrato(contrato);
+			if(i==0){
+				d.setIdCargoContrato(1);
+			}
+			else if(i==1){
+				d.setIdCargoContrato(2);
+			}
+			else if(i>1){
+				d.setIdCargoContrato(3);
+			}
+			log.info("contrato ************************** ---> !  "+contrato.getIdcontrato());
+			d.setTbContrato(objContratoDao.findContrato(contrato.getIdcontrato()));
 			d.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(31));
 			objDetContratoEmpleadoDao.insertDetContratoEmpleado(d);
 		}
