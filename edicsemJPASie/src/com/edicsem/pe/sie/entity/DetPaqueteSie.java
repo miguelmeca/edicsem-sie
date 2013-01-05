@@ -60,9 +60,13 @@ public class DetPaqueteSie implements Serializable {
     @Transient
     private int item;
     
-    @Transient
-    private int isnew; //1 jalado d la bd, agregue 2 nuevos
-    //grabe 
+	@Transient
+  	private String isnew;
+  	
+    
+   
+    
+    
     @Transient
     private String observacion;
     
@@ -185,5 +189,20 @@ public class DetPaqueteSie implements Serializable {
 	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
 		this.tbEstadoGeneral = tbEstadoGeneral;
 	}
+
+	/**
+	 * @return the isnew
+	 */
+	public String getIsnew() {
+		return isnew;
+	}
+
+	/**
+	 * @param isnew the isnew to set
+	 */
+	public void setIsnew(String isnew) {
+		this.isnew = isnew;
+	}
+	
 
 }
