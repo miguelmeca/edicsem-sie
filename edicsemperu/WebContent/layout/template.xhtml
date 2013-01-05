@@ -584,13 +584,14 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				
 				<h:outputText value="#{message['horario.personal.fechaDesde']}" />
 				<h:panelGroup >
-					<p:calendar id="desdecl" required="true" requiredMessage="#{message['horario.personal.fechaDesde.validation']}" value="#{horarioPersonal.objHorarioPersonal.diainicio}" mindate="today" />
+					<p:calendar id="desdecl" value="#{horarioPersonal.objHorarioPersonal.diainicio}" required="true" requiredMessage="#{message['horario.personal.fechaDesde.validation']}" mindate="today" />
 					<p:message for="desdecl" />
 				</h:panelGroup>
 				
 				<h:outputText value="#{message['horario.personal.fechaHasta']}" />
 				<h:panelGroup>
-					<p:calendar value="#{horarioPersonal.objHorarioPersonal.diafin}" requiredMessage="#{message['horario.personal.fechaHasta.validation']}" mindate="today" />
+					<p:calendar id="fechasta" value="#{horarioPersonal.objHorarioPersonal.diafin}" required="true" requiredMessage="#{message['horario.personal.fechaHasta.validation']}" mindate="today" />
+					<p:message for="fechasta" />
 				</h:panelGroup>
 				
 				<h:outputText value="#{message['horario.personal.horaEntrada']}"  />
