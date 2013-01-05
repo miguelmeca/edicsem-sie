@@ -12,7 +12,10 @@ public class Constants {
 	
 	public static final String MESSAGE_INFO_TITULO = "Mensaje";
 	public static final String MESSAGE_REGISTRO_TITULO = "Se registro correctamente";
+	public static final String MESSAGE_DESHABILITAR_TITULO = "Se deshabilito correctamente";
 	public static final String MESSAGE_ERROR_FATAL_TITULO = "Mensaje de Error";
+	public static final String MESSAGE_ERROR_FATAL_TITULO2 = "Mensaje de Error2";
+	public static final String MESSAGE_ERROR_META_MES_FATAL_TITULO = "debe Seleccionar un Mes para poder ingresar la meta";
 	public static final String MESSAGE_ERROR_ID_NOT_FOUND = "No se encuentra el Id";
 	public static final String MESSAGE_ERROR_TITULO = "Mensaje de Error";
 	public static final String ESQUEMA_SIE_POSTGRE = "sie";
@@ -69,9 +72,9 @@ public class Constants {
 	public static final String MANT_SANCION_FORM_PAGE  = "mantenimientoSancionForm";
 	
 	public static final String MANT_PAQUETEBIBLICO_FORM_LIST_PAGE = "mantenimientoPaqueteBiblicoList";
-	public static final String MANT_DETALLEPAQUETEBIBLICO_FORM_LIST_PAGE = "mantenimientoDetallePaqueteBiblicoList.xhtml";
-	public static final String MANT_DETALLE_PAQUETEBIBLICO_FORM_PAGE  = "mantenimientoDetallePaqueteBiblicoForm";
-	
+	public static final String MANT_DETALLEPAQUETEBIBLICO_FORM_LIST_PAGE = "mantenimientoDetallePaqueteBiblicoList";
+	public static final String MANT_DETALLEPAQUETEBIBLICO_FORM_PAGE  = "mantenimientoDetallePaqueteBiblicoForm";
+																		 
 	public static final String MANT_PAGO_VENDEDOR_FORM_PAGE = "mantenimientoPagoVentaForm";
 	public static final String MANT_PAGO_VENDEDOR_LIST_PAGE = "mantenimientoPagoVentaList";
 	
