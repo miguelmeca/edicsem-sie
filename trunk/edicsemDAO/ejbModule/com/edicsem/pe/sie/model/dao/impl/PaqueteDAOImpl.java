@@ -43,13 +43,14 @@ public class PaqueteDAOImpl implements PaqueteDAO {
 	 * @see com.edicsem.pe.sie.model.dao.PaqueteDAO#findPaquete(int)
 	 */
 	public PaqueteSie findPaquete(int id) {
-
+		log.info("buscar Paquetebiblico " +id);
 		PaqueteSie p = new PaqueteSie();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("buscar Paquete");
+				log.info("buscar Paquete" +id);
 			}
 			p = em.find(PaqueteSie.class, id);
+			log.info(" PaqueteBiblico " + p.getDescripcionpaquete());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -60,11 +61,12 @@ public class PaqueteDAOImpl implements PaqueteDAO {
 	 * @see com.edicsem.pe.sie.model.dao.PaqueteDAO#listarPaquetes()
 	 */
 	public List listarPaquetes() {
+		log.info("***************** antes del QUERY listar Paquete biblico");
 		List lista = null;
 		try {
-			Query q = em.createQuery("select p from PaqueteSie p");
-			lista = q.getResultList();
-			log.info("tamaño lista Paquetes --> " + lista.size());
+			Query q = em.createQuery("select p from PaqueteSie p where p.tbEstadoGeneral.idestadogeneral = "+ 60);
+			lista = q.getResultList();									
+			log.info("tamaño lista DAOIMPL Paquetes --> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -79,6 +81,8 @@ public class PaqueteDAOImpl implements PaqueteDAO {
 			if (log.isInfoEnabled()) {
 				log.info("modificar Paquete");
 			}
+			
+			log.info("DAOIMPL bean" + p.getIdpaquete() + " " + p.getCodpaquete()+ " " + p.getDescripcionpaquete() );
 			em.merge(p);
 		} catch (Exception e) {
 			e.printStackTrace();
