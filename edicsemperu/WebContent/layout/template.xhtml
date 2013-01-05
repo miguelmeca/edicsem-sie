@@ -1597,14 +1597,14 @@ message="La Empresa no se puede elminar ya que se encontraron
 						requiredMessage="#{message['mantenimiento.razonSocial.validation']}"
 						style="font-weight:bold" rendered="#{empresaForm.editMode}"
 						onkeypress="return validarLetras(event)" 
-						 title="Ejm: EDICSEM "/>
+						 />
 
 					<p:inputText id="razonSocial2" value="#{empresaForm.razonsocial}"
 						required="true" label="razonsocial"
 						requiredMessage="#{message['mantenimiento.razonSocial.validation']}"
 						style="font-weight:bold" rendered="#{!empresaForm.editMode}" 
 						onkeypress="return validarLetras(event)"
-						title="Ejm: EDICSEM "/>
+						/>
 					<p:message for="razonSocial1" />
 
 				</h:panelGroup>
@@ -1622,14 +1622,14 @@ message="La Empresa no se puede elminar ya que se encontraron
 						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
 						style="font-weight:bold" rendered="#{empresaForm.editMode}"
 						onkeypress="return validarEspaciosLetrasNumeros(event)" 
-						title="Ejm: Ediciones Sembrando "  />
+						 />
 
 					<p:inputText id="descripcion2" value="#{empresaForm.descripcion}"
 						required="true" label="descripcion"
 						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
 						style="font-weight:bold" rendered="#{!empresaForm.editMode}" 
 						onkeypress="return validarEspaciosLetrasNumeros(event)"
-						title="Ejm: Ediciones Sembrando "/>
+					/>
 					<p:message for="descripcion1" />
 				</h:panelGroup>
 
@@ -1666,13 +1666,13 @@ message="La Empresa no se puede elminar ya que se encontraron
 						required="true" label="telefono"
 						requiredMessage="#{message['mantenimiento.numtel.validation']}"
 						style="font-weight:bold" rendered="#{empresaForm.editMode}" 
-						title="no ingrese el codigo de la ciudad ejemplo: 01" />
+						 />
 
 					<p:inputMask id="telefono2" value="#{empresaForm.numtel}"
 						required="true" label="telefono" mask="999-9999"
 						requiredMessage="#{message['mantenimiento.numtel.validation']}"
 						style="font-weight:bold" rendered="#{!empresaForm.editMode}"
-						title="no ingrese el codigo de la ciudad ejemplo: 01" />
+						 />
 					<p:message for="telefono1" />
 
 				</h:panelGroup>
