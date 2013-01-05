@@ -1100,6 +1100,32 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	</h:form>
 
 	<!-- 	FIN DESACTICAR (TELEFONO DE CLIENTE)  -->
+	
+		<!--	  INICIO DESACTIVAR	 TELEFONO DE EMPLEADO  -->
+
+<h:form>
+
+		<p:confirmDialog id="confirmDeshabilitarTelEmp"
+			message="Los cambios se realizaran despues de hacer clic en Guardar?" width="325"
+			height="100" showEffect="explode" hideEffect="explode"
+			header="Confirm" severity="alert" widgetVar="confirmationTelEmp"
+			position="center">
+
+			<p:commandButton type="submit" value="Si"
+				action="#{mantenimientoEmpleadoFormAction.updateDeshabilitar}"
+				update="@all"
+				oncomplete="confirmation.hide()" ajax="false">
+			</p:commandButton>
+
+			<p:commandButton value="No" onclick="confirmation3.hide()"
+				type="button" />
+
+		</p:confirmDialog>
+
+	</h:form>
+
+	<!-- 	FIN DESACTICAR (TELEFONO DE EMPLEADO)  -->
+	
 	<!--	  INICIO DESACTIVAR	 DOMICLIO DE CLIENTE  -->
 
 <h:form>
@@ -1397,17 +1423,79 @@ message="La Empresa no se puede elminar ya que se encontraron
 	</h:form>
 	<!-- 	FIN DESACTICAR EMPRESA (ESTADOS)  222-->
 	
+<!--NUEVO TELEFONO DE EMPLEADO -->
+
+
+	<h:form id="NuevoTelefono2">
+		<p:dialog header="Ingrese Nuevo Telefono"
+			widgetVar="carDialogNuevoTelefonoEmp" showEffect="fade"
+			hideEffect="explode" modal="true" width="700" position="center">
+
+			<h:panelGrid id="display23" columns="4" cellpadding="0"
+				style="margin:0 auto;">
+
+<!-- TIPO DE TELEFONO-->			
+ 				<h:outputText value="#{message['contrato.tipo.telefono']}" />
+					<p:selectOneMenu  value="#{mantenimientoEmpleadoFormAction.tipoTelef}"
+						style="width:165px"  >
+						<f:selectItem itemLabel="Fijo" itemValue="1" />
+						<f:selectItem itemLabel="Celular" itemValue="2" />
+						<p:ajax update="display23" listener="#{mantenimientoEmpleadoFormAction.limpiarDatosTelefono}" ></p:ajax>
+					</p:selectOneMenu>
+					
+<!--OPERADOR-->					
+					
+					<h:outputText value="#{message['contrato.operadorTelefonico']}" />
+					<p:selectOneMenu id="operadorTelefonico1" required="true" value="#{mantenimientoEmpleadoFormAction.operadorTelefonico}" rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==1}"
+						style="width:165px" requiredMessage="#{message['contrato.operadorTelefonico.validation']}" >
+						<f:selectItem itemLabel="Seleccione Operador" itemValue="#{null}" />
+						<f:selectItem itemLabel="Claro" itemValue="1" />
+						<f:selectItem itemLabel="Telefónica" itemValue="2" />
+					</p:selectOneMenu>
+					<p:message for="operadorTelefonico1" rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==1}" /> 
+					
+					<p:selectOneMenu id="operadorCelular1" required="true" value="#{mantenimientoEmpleadoFormAction.operadorTelefonico}" rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==2}"
+						style="width:165px" requiredMessage="#{message['contrato.operadorTelefonico.validation']}" >
+						<f:selectItem itemLabel="Seleccione Operador" itemValue="#{null}" />
+						<f:selectItem itemLabel="Claro" itemValue="1" />
+						<f:selectItem itemLabel="Movistar" itemValue="2" />
+						<f:selectItem itemLabel="Nextel" itemValue="3" />
+					</p:selectOneMenu>
+					<p:message for="operadorCelular1" rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==2}" />
+					
+	<!-- N TELEFONICO-->
+					
+					<h:outputText value="#{message['contrato.telefono']}" rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==1}" />
+					<p:inputMask id="numTelef1" mask="999-9999" value="#{mantenimientoEmpleadoFormAction.nuevoTelef.telefono}"
+						requiredMessage="#{message['contrato.telefono.casa.validation']}"  rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==1}"/>
+					<p:message for="numTelef1" rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==1}"/>
+					
+					<h:outputText value="#{message['contrato.celular']}"  rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==2}"/>
+					<p:inputMask mask="999-999999" value="#{mantenimientoEmpleadoFormAction.nuevoTelef.telefono}" id="numCelular1"
+						requiredMessage="#{message['contrato.celular.validation']}"  rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==2}"/>
+					<p:message for="numCelular1"  rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==2}"/>
+				
+
+				<!-- BOTON GUARDAR -->
+				<h:panelGroup>
+
+					<p:spacer height="80px" width="80"></p:spacer>
+					<p:commandButton 
+						id="btn2" value="Guardar" 
+						update="display23"
+						action="#{mantenimientoEmpleadoFormAction.telefonoAgregar}"
+						ajax="false"
+						icon="ui-icon ui-icon-disk" />	
+
+				</h:panelGroup>
+
+			</h:panelGrid>
+
+		</p:dialog>
+
+	</h:form>
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	<!-- FIN TELEFONO DE EMPLEADO -->		
 	
 <!--NUEVO TELEFONO DE CLIENTE -->
 
