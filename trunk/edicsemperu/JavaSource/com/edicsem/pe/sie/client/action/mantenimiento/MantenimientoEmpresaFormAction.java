@@ -8,15 +8,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.ArrayDataModel;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.primefaces.context.RequestContext;
 
 import com.edicsem.pe.sie.client.action.ComboAction;
+import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
@@ -26,6 +24,7 @@ import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.KardexService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
+import com.edicsem.pe.sie.util.FaceMessage.FaceMessage;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
@@ -57,7 +56,7 @@ public class MantenimientoEmpresaFormAction extends
 	
 	//PRODUCTO
 	private ProductoSie objProductoSie;
-	private DataModel<ProductoSie> productoList;
+	private List<ProductoSie> productoList;
    private ProductoSie[] selectedCars;  
 	  
 	  //DATA MODEL
@@ -129,6 +128,12 @@ public class MantenimientoEmpresaFormAction extends
 	public List<EmpleadoSie> getEmpleadoList() {
 		return empleadoList;
 	}
+	
+	//PRODUCTO x EMPLEADO
+	public List<ProductoSie> getProductoList() {
+		return productoList;
+	}
+	
 
 	public String agregar() {
 		log.info("agregar()");
@@ -164,7 +169,7 @@ public class MantenimientoEmpresaFormAction extends
 		objEmpresaSie = new EmpresaSie();
 		int parametroObtenido;
 		EmpresaSie em = new EmpresaSie();
-		  RequestContext context = RequestContext.getCurrentInstance();
+		 
 
 		try {
 			if (log.isInfoEnabled()) {
@@ -194,9 +199,16 @@ if((verificarEmpleadoConEmpresa(parametroObtenido)) == (verificarProductoConEmpr
 			log.info("-----Android1>>>"+ objEmpresaSie.getTbEstadoGeneral().getIdestadogeneral());
 			log.info("actualizando ESTADO..... ");
 
+			
+			
+			
 			empresaService.updateEmpresa(objEmpresaSie);
+			
+			msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					Constants.MESSAGE_DESHABILITAR_TITULO, mensaje);
+			mensaje ="Se deshabilito correctamente";
 			log.info("actualizando..... ");
-			return mantenimientoEmpresaSearch.listar();
+//			return mantenimientoEmpresaSearch.listar();
 			
 			
 			
@@ -214,29 +226,31 @@ else {
 	  if (verificarEmpleadoConEmpresa(parametroObtenido) == false || verificarProductoConEmpresa(parametroObtenido) == false) {
 		  listarEmpleadosXempresa(parametroObtenido);
 		  listarProductoXempresa(parametroObtenido);
+		  FaceMessage.FaceMessageError("ALERTA", "El cargo no se puede elminar ya que se encontraron usuarios con ese cargo");
 		return Constants.MANT_EMPRESA_EMPLEADO_PRODUCTO_FORM_LIST_PAGE;
 	}
 	  else if(verificarProductoConEmpresa(parametroObtenido) == false && verificarEmpleadoConEmpresa(parametroObtenido) == false) {
 		  listarEmpleadosXempresa(parametroObtenido);
 		  listarProductoXempresa(parametroObtenido);
+		  FaceMessage.FaceMessageError("ALERTA", "El cargo no se puede elminar ya que se encontraron usuarios con ese cargo");
 		return Constants.MANT_EMPRESA_EMPLEADO_PRODUCTO_FORM_LIST_PAGE;
 	}
 	
 //	context.execute("someDialog.show()");
-	
+	  FaceMessage.FaceMessageError("ALERTA", "El cargo no se puede elminar ya que se encontraron usuarios con ese cargo");
 	
 //	mensaje = "tiene relacion : ";
 //	RequestContext.getCurrentInstance().addCallbackParam("showDialog", false);
 //    FaceMessage.FaceMessageError("ALERTA", "La Empresa no se puede elminar ya que se encontraron empleados con esta empresa");
 //	FaceMessage.FaceMessageInfo("ALERTA", "La Empresa no se puede elminar ya que se encontraron productos con esta empresa");
 }
-
+FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (Exception e) {
 			e.printStackTrace();
 
-			descripcion = e.getMessage();
+			mensaje = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, descripcion);
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
@@ -249,10 +263,7 @@ else {
 	private void listarProductoXempresa(int parametroObtenido) {
 		// TODO Auto-generated method stub
 		log.info("captura idParametro para poder listar PRODUCTO X EMPRESA en el Bean dentro del metodo Eliminar "+parametroObtenido);
-
-		productoList =  new ListDataModel<ProductoSie>(objProductoService.listarProductoxEmpresas(parametroObtenido));
-		
-		log.info("capt");
+		productoList = objProductoService.listarProductoxEmpresas(parametroObtenido);
 	}
 	private void listarEmpleadosXempresa(int parametroObtenido) {
 		log.info("captura idParametro para poder listar EMPLEADOS X EMPRESA en el Bean dentro del metodo Eliminar  "+parametroObtenido);
@@ -275,6 +286,8 @@ else {
 	
 	public String insertar() {
 
+		
+		mensaje =null;
 		log.info("insertar() " + isNewRecord() + " desc "
 				+ objEmpresaSie.getDescripcion() +"  "+ " razon social" +"  "+ "ruc" + objEmpresaSie.getNumruc()
 				+ objEmpresaSie.getRazonsocial() +"  "+ "EMail"
@@ -285,45 +298,41 @@ else {
 		/* Esto se setea cuando pertenece a una segunda tabla (--->) */
 		try {
 
-			if (isNewRecord()) {
+			
 
-				objEmpresaSie.getRazonsocial();
-				objEmpresaSie.getDescripcion();
-				objEmpresaSie.getNumruc();
-				objEmpresaSie.getNumtelefono();
-				objEmpresaSie.getEmail();
+//				objEmpresaSie.getRazonsocial();
+//				objEmpresaSie.getDescripcion();
+//				objEmpresaSie.getNumruc();
+//				objEmpresaSie.getNumtelefono();
+//				objEmpresaSie.getEmail();
 				
 				int error = 0;
 				List<EmpresaSie> lista = mantenimientoEmpresaSearch.getEmpresaList();
 				
-
-				for (int i = 0; i < lista.size(); i++) {
-					 EmpresaSie s = lista.get(i);
-					if ( 		s.getRazonsocial().equalsIgnoreCase(objEmpresaSie.getRazonsocial())
-							 && s.getDescripcion().equalsIgnoreCase(objEmpresaSie.getDescripcion())							
-							 && s.getNumruc().equalsIgnoreCase(objEmpresaSie.getNumruc())
-							 && s.getNumtelefono().equalsIgnoreCase(objEmpresaSie.getNumtelefono())
-							 && s.getEmail().equalsIgnoreCase(objEmpresaSie.getEmail()))  {
-					log.info("Error ... Ya se encuentra una empresa igual");
-						error = 1;
-						break;
+						
+						for (int i = 0; i < lista.size(); i++) {
+							EmpresaSie s = lista.get(i);
+							if (s.getRazonsocial().equalsIgnoreCase(objEmpresaSie.getRazonsocial())
+							 || s.getDescripcion().equalsIgnoreCase(objEmpresaSie.getDescripcion())
+							 || s.getEmail().equalsIgnoreCase(objEmpresaSie.getEmail()))
+									{
+								log.info("Error ... Ya se encuentra una EMPRESA igual");
+								mensaje ="Ya se encuentra unA EMPRESA con el mismo nombre";
+								error = 1;
+								break;
 					}
 				}
 
 				if (error == 0) {
-
+				if (isNewRecord()) {
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+							Constants.MESSAGE_REGISTRO_TITULO, mensaje);
+					
 					empresaService.insertEmpresa(objEmpresaSie);
-
+					
 				} else {
-					// Mostrar Validacion
-					log.info("mensaje de error");
-				}
-				log.info("aqui validando si existe o no");
-
-			} else {
-
+					
 				objEmpresaSie.setIdempresa(getIdempresa());
-
 				objEmpresaSie.setDescripcion(getDescripcion());
 				objEmpresaSie.setRazonsocial(getRazonsocial());
 				objEmpresaSie.setNumruc(getNumruc());
@@ -331,24 +340,33 @@ else {
 				objEmpresaSie.setEmail(getEmail());
 				objEmpresaSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(7));
 
-				log.info("----->>>>"
-						+ objEmpresaSie.getDescripcion()+ "  " + objEmpresaSie.getNumruc()
-						+ objEmpresaSie.getDescripcion() + objEmpresaSie.getEmail());
+				log.info("----->>>>"+ objEmpresaSie.getDescripcion());
 				log.info("actualizando EMPRESA..... ");
 
-	
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+						Constants.MESSAGE_REGISTRO_TITULO, mensaje);
 				
 				empresaService.updateEmpresa(objEmpresaSie);
 
 				log.info("actualizando..... ");
-				log.info("objEmpresaSie.isNewRecord() : ");
+				}
+				log.info("aqui validando si existe o no");
+
+			} else {
+
+				// Mostrar Validacion
+				log.info("mensaje de error");
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+						Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			
 			}
+				FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (Exception e) {
 
 			e.printStackTrace();
-			descripcion = e.getMessage();
+			mensaje = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, descripcion);
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
@@ -674,15 +692,9 @@ else {
 		this.objProductoSie = objProductoSie;
 	}
 	/**
-	 * @return the productoList
-	 */
-	public DataModel<ProductoSie> getProductoList() {
-		return productoList;
-	}
-	/**
 	 * @param productoList the productoList to set
 	 */
-	public void setProductoList(DataModel<ProductoSie> productoList) {
+	public void setProductoList(List<ProductoSie> productoList) {
 		this.productoList = productoList;
 	}
 
