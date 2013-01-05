@@ -27,11 +27,9 @@
 				</p:selectOneMenu>
 				 <p:message for="product" />
 				
-				<h:outputText value="#{message['mantenimiento.kardex.almacen']}" />
-				<p:selectOneMenu id="tipoAlmacen"  value="#{comboAction.tipoAlmacen}"  required="true"
-				requiredMessage="#{message['kardex.almacen.validation']}" >
-					<f:selectItem itemLabel="Punto de Venta" itemValue="P" />
-					<f:selectItem itemLabel="Almacen" itemValue="A" />
+				<p:selectOneMenu  id="tipoAlmacen"  value="#{kardexAction.idtipopuntoventa}" required="true">
+				<f:selectItem itemLabel="Seleccione tipo" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.tipoalmacenitems}" />
 					<p:ajax update="almacen"  />
 				</p:selectOneMenu>
 				<p:message for="tipoAlmacen" />
