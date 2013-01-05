@@ -6,68 +6,75 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
-		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Detalle Paquete Biblico RALPH EL DEMOLEDOR</h1>
-		<h:form id="frmSancionForm">
-		<p:growl id="message" showDetail="true" />
-			 
-				<p:fieldset legend="Detalles del Paquete Biblico" >
-				 <h:panelGrid  columns="4"  >
-					<h:outputText value="nombre de Producto:" />
-					<p:inputText value="#{MantenimientoDetallePaqueteBiblicoFormAction.objDetPaqueteSie.tbProducto.descripcionproducto}" />
-					<h:outputText value="Cantidad de producto :" />
-					<p:inputText value="#{MantenimientoDetallePaqueteBiblicoFormAction.objDetPaqueteSie.cantidad}" />
-					
-				  </h:panelGrid>
-				 </p:fieldset>
-				
-				<p:fieldset legend="Ingreso de productos">
-				<h:panelGrid  columns="4"  >
-					<h:outputText value="Producto:" />
-					<p:selectOneMenu value="#{SancionForm.idcargo}" >
-						<f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
+			Detalle Paquete Biblico</h1>
+		<h:form id="frmDetallepaqueteForm">
+			<p:growl id="message" showDetail="true" />
+
+			<p:fieldset legend="Agregar / Editar productos al paquete Biblico">
+				<h:panelGrid columns="4">
+
+
+					<h:outputText value="Producto :" />
+					<p:selectOneMenu
+						value="#{mantenimientoDetallePaqueteBiblicoFormAction.idproducto}">
+						<f:selectItems value="#{comboAction.productoPaqueteItems}" />
 					</p:selectOneMenu>
-					
-					<h:outputText value="Días suspension :" />
-					<p:spinner value="#{SancionForm.objDetSancionCargo.cantdiaSuspension}" />
-					
-					<p:commandButton value="Agregar" action="#{SancionForm.agregarSancionCargo}" update="frmSancionForm" />
+
+
+					<h:outputText value="Cantidad  :" />
+					<p:spinner
+						value="#{mantenimientoDetallePaqueteBiblicoFormAction.objDetPaqueteSie.cantidad}" 
+					/>
+
+					<p:commandButton
+					    value="Agregar"
+						action="#{mantenimientoDetallePaqueteBiblicoFormAction.agregarProdPaquete}"
+						update="frmDetallepaqueteForm" 
+					/>
+
 				</h:panelGrid>
-				
-				</p:fieldset>
-					  <p:dataTable value="#{SancionForm.detSancionCargoList}" var="p" id="listaCargo">
+			</p:fieldset>
+
+  <p:dataTable value="#{mantenimientoDetallePaqueteBiblicoFormAction.detPaqueteBiblicoList}" var="p" id="listaPaquete">
 					  <f:facet name="header">
-					  	Paquete Biblico
+					  	Productos del paquete biblico
 					  </f:facet>
 					  
 					  <p:column  headerText="Producto" style="width:125px" >
-	                    	<h:outputText value="#{p.tbCargoempleado.descripcion}" />
+	                    	<h:outputText value="#{p.tbProducto.descripcionproducto}" />
 					 </p:column>
 					  
-					 
-
+					
 					  
 					 <p:column  headerText="Cantidad" >
-					    	<h:outputText value="#{p.cantdiaSuspension}" />
+					    	<h:outputText value="#{p.cantidad}" />
 					  </p:column>
 					  
-					  <p:column headerText="Editar">
-					  <p:commandButton value="Editar" oncomplete="sancionCargoDialog.show()" update=":formDetSancionCargo:display" >
-					  <f:setPropertyActionListener value="#{p}"  target="#{SancionForm.objAuxiSancionCargo}" />
-					  <f:setPropertyActionListener value="#{p.tbCargoempleado.idcargoempleado}"  target="#{SancionForm.idcargo}" />
+					
+					<p:column headerText="Editar">
+					  <p:commandButton value="Editar" oncomplete="detPaqBliblicoDialog.show()" update=":formDetProBibli:display" >
+					  <f:setPropertyActionListener value="#{p}"  target="#{mantenimientoDetallePaqueteBiblicoFormAction.objAuxiDetPaqueteSie}" />
+					  <f:setPropertyActionListener value="#{p.tbProducto.idproducto}"  target="#{mantenimientoDetallePaqueteBiblicoFormAction.idproducto}" />
 					  </p:commandButton>
 					  </p:column>
-					  
-					  <p:column headerText="Deshabilitar">
+					
+					
+					<p:column headerText="Eliminar">
 					  <p:commandButton value="Deshabilitar" icon="ui-icon ui-icon-close" 
-					  onclick="confirmDeshabSancionCargo.show()">
-					  <f:setPropertyActionListener value="#{p.item}" target="#{SancionForm.itemSancionCargo}" />	
+					  onclick="confirmDeshabDetPaqueBibli.show()">
+					  <f:setPropertyActionListener value="#{p.item}" target="#{mantenimientoDetallePaqueteBiblicoFormAction.itemDetPaqBibli}" />	
 					  </p:commandButton>
 					  </p:column>
-					</p:dataTable>
+					  
+</p:dataTable>
 				
-				<p:commandButton value="Grabar" action="#{SancionForm.insertar}" 
-				icon="ui-icon ui-icon-pencil" ajax="false" update="frmSancionForm:message" />
-			 
+<p:commandButton value="Grabar"
+ action="#{mantenimientoDetallePaqueteBiblicoFormAction.insertar}"
+ icon="ui-icon ui-icon-pencil"
+ ajax="false"
+ update="frmDetallepaqueteForm:message" />
+
 		</h:form>
-	 </ui:define>
+	</ui:define>
 </ui:composition>
