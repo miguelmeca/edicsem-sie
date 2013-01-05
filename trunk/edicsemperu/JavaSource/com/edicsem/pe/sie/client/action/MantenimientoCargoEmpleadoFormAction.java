@@ -121,7 +121,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 						+ objCargoEmpleadoSie.getTbEstadoGeneral().getIdestadogeneral()+ objCargoEmpleadoSie.getDescripcion());
 				log.info("actualizando..... ");
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-						Constants.MESSAGE_REGISTRO_TITULO, mensaje);
+						Constants.MESSAGE_REGISTRO_TITULO, mensaje);			
 				objCargoEmpleadoService.actualizarCargoEmpleado(objCargoEmpleadoSie);				
 				log.info("actualizando..... ");				
 				log.info("objCargoEmpleadoSie.isNewRecord() : ");	
