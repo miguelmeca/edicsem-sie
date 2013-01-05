@@ -50,7 +50,7 @@
             </h:panelGroup>
                           
             <p:outputLabel value="#{message['empleado.fechanac']}" for="fechanac" />
-			<p:calendar pagedate="-8380" maxdate="today" value="#{mantenimientoEmpleadoFormAction.objEmpleado.fechanacimiento}" id="fechanac" showButtonPanel="true" required="true"  pattern="dd/mm/yyyy"
+			<p:calendar pagedate="-8380" maxdate="today" value="#{mantenimientoEmpleadoFormAction.objEmpleado.fechanacimiento}" id="fechanac" showButtonPanel="true" required="true"  pattern="dd/MM/yyyy"
 			label="Fecha de nacimiento" requiredMessage="#{message['empleado.fechanac.validation']}"/>                  
             
 			</h:panelGrid>
@@ -107,7 +107,7 @@
         <h:messages errorClass="error"/>  
            <h:panelGrid columns="2"  >
             <h:outputText value="#{message['empleado.fecInicio']}" />
-            <p:calendar value="#{mantenimientoEmpleadoFormAction.fechaInicioContrato}" pattern="dd/mm/yyyy" />
+            <p:calendar value="#{mantenimientoEmpleadoFormAction.fechaInicioContrato}" pattern="dd/MM/yyyy" />
             <h:outputText value="#{message['empleado.cargo']}" />
             <p:selectOneMenu value="#{mantenimientoEmpleadoFormAction.idCargo}" label="Seleccione" filter="true" filterText="Filter" filterMatchMode="startsWith" panelStyle="width:300px">  
             <f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
