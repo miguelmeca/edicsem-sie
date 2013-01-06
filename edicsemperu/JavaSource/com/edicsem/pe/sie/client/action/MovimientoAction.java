@@ -140,7 +140,7 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 
 							if( k.get(i).getValorunitarioexistencia()!=null){
 								log.info(" uni exist "+k.get(i).getValorunitarioexistencia());
-							valoruniex=  Double.parseDouble(k.get(i).getValorunitarioexistencia());
+							valoruniex=  Double.parseDouble(k.get(i).getValorunitarioexistencia())/k.get(i).getCantexistencia();
 							}
 							log.info(" v "+ valoruniex);
 						}
