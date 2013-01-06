@@ -119,11 +119,13 @@ public class KardexDAOImpl implements KardexDAO {
 			double p =0.0;
 			if (kardex.getCantsalida() != 0) {
 				kardex.setCantexistencia(cantiExist - kardex.getCantsalida());
-				p =valorExist - Double.parseDouble(kardex.getValorunitariosalida());
+				p =valorExist - Double.parseDouble(kardex.getValortotal());
+				log.info("****** "+valorExist +" "+kardex.getValortotal()+" "+p);
 				kardex.setValorunitarioexistencia(""+p);
 			} else {
 				kardex.setCantexistencia(cantiExist + kardex.getCantentrada());
-				p =valorExist + Double.parseDouble(kardex.getValorunitarioentrada());
+				p =valorExist + Double.parseDouble(kardex.getValortotal());
+				log.info("****** "+valorExist +" "+kardex.getValortotal()+" "+p);
 				kardex.setValorunitarioexistencia(""+p);
 			}
 			log.info("insertando.... 1 " + kardex.getIdkardex() + " cant exis "
