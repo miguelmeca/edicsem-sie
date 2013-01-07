@@ -197,14 +197,10 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 										
 										log.info("  .... "+ k.get(i).getTbPuntoVenta().getIdpuntoventa() +"    "+ idAlmacen);
 										
-											log.info(" aki karencita!  *** "+k.get(i).getValorunitarioentrada());
-											objKardexSie.setValorunitariosalida(k.get(i).getValorunitarioentrada());
-											double valorT = Double.parseDouble(k.get(i).getValorunitarioentrada()) * objKardexSie.getCantsalida();
-											objKardexSie.setValortotal(valorT+"");
-											objKardexSie.setValorunitarioexistencia(objKardexSie.getValorunitarioexistencia());
-											log.info(" "+valorExistenteTotalAlmacenes+"   - " +k.get(i).getValorunitarioexistencia() +" - "+objKardexSie.getValortotal());
-											valoruniex = Double.parseDouble(k.get(i).getValorunitarioexistencia()) - Double.parseDouble(objKardexSie.getValortotal());
-											valorTotalAlmacenes= Double.parseDouble(k.get(i).getValorunitarioexistencia()) - Double.parseDouble(objKardexSie.getValortotal());
+										objKardexSie.setValorunitariosalida(valoruniex+"");
+										objKardexSie.setValortotal(""+(valoruniex*objKardexSie.getCantsalida() ));
+										log.info(" g "+valoruniex);
+										valorTotalAlmacenes= Double.parseDouble(k.get(i).getValorunitarioexistencia()) - Double.parseDouble(objKardexSie.getValortotal());
 											log.info(" valor total almacenadoS "+ valorTotalAlmacenes +"  "+ objKardexSie.getValorunitarioexistencia());
 											log.info(" "+k.get(i).getCantexistencia()+"   "+ objKardexSie.getCantsalida());
 											if( k.get(i).getCantexistencia()- objKardexSie.getCantsalida()<0){
