@@ -67,7 +67,7 @@ public class KardexServiceImpl implements KardexService {
 		objKardex.setCantsalida(obj.getCantsalida());
 		objKardex.setCantexistencia(0);
 		objKardexDao.insertMovimiento(idproducto,objKardex);
-		log.info("entrad "+objKardex.getValorunitarioentrada()+" sali "+objKardex.getValorunitariosalida());
+		log.info("entrad "+obj.getValorunitarioentrada()+" sali "+obj.getValorunitariosalida());
 		/**Si hubiese otro id de almacen 
 		 * */
 		
