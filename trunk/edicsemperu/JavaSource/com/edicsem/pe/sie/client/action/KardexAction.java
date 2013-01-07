@@ -71,7 +71,6 @@ public class KardexAction extends BaseMantenimientoAbstractAction {
 		valorActual ="";
 		idempresa=0;
 		kardexList = new ArrayList<KardexSie>();
-		idtipopuntoventa=0;
 	}
 	/*
 	 * (non-Javadoc)
