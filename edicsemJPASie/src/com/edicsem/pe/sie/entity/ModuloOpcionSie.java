@@ -32,8 +32,6 @@ public class ModuloOpcionSie  implements Serializable {
 
 	private String descripcion;
 
-	private String metodoactionlistener;
-
 	private String nombremodulo;
 
 	//bi-directional many-to-one association to TipoModuloSie
@@ -62,14 +60,6 @@ public class ModuloOpcionSie  implements Serializable {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
-	}
-
-	public String getMetodoactionlistener() {
-		return this.metodoactionlistener;
-	}
-
-	public void setMetodoactionlistener(String metodoactionlistener) {
-		this.metodoactionlistener = metodoactionlistener;
 	}
 
 	public String getNombremodulo() {
