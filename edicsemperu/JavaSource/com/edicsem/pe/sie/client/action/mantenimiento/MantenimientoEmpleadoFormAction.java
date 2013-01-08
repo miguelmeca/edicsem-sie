@@ -74,6 +74,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	private boolean newRecord =false;
 	/*variables*/
 	private int idCargo;
+	private int idEmpresa;
 	private boolean defectoUbigeo;
 	private boolean skip;
 	private Date fechaInicioContrato;
@@ -179,6 +180,11 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 			verifica = true;
 		}
 		if (verifica) {
+		  
+			int cantidad=TelefonoPersonaList.size();
+			
+			nuevoTelef.setItem(cantidad+1);	
+			
 			TelefonoPersonaList.add(nuevoTelef);
 			log.info("se agrego " + nuevoTelef.getTelefono());
 		}
@@ -1166,7 +1172,22 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	 */
 	public String getIdUbigeo() {
 		return idUbigeo;
+	}
+
+	/**
+	 * @return the idEmpresa
+	 */
+	public int getIdEmpresa() {
+		return idEmpresa;
+	}
+
+	/**
+	 * @param idEmpresa the idEmpresa to set
+	 */
+	public void setIdEmpresa(int idEmpresa) {
+		this.idEmpresa = idEmpresa;
 	}  
-	
+
 }
+
 
