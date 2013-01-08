@@ -12,6 +12,6 @@ public interface ModuloOpcionDAO {
 	public abstract void insertModuloOpcion(ModuloOpcionSie p);
 	public abstract void updateModuloOpcion(ModuloOpcionSie p);
 	public abstract ModuloOpcionSie findModuloOpcion (int id);
-	public abstract List  listarModuloOpcion();
+	public abstract List<String>  listarModuloOpcion();
 	
 }

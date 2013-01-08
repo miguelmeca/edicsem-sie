@@ -85,14 +85,16 @@ public class DetPermisoEmpleadoDAOImpl implements DetPermisoEmpleadoDAO{
 		   miMenu = new ArrayList<MenuDTO>();
 		   
 			for (DetPermisoEmpleadoSie p : lista) {
+				log.info(" "+p.getTbPermisos().getTbModuloOpcion().getNombremodulo());
 				objMenu = new MenuDTO();
-				objMenu.setTipodeMenu(p.getTbPermisos().getTbModuloOpcion().getTbTipoModulo().getDescripcion());
-				objMenu.setNombreMenu(p.getTbPermisos().getTbModuloOpcion().getNombremodulo());
-				objMenu.setUrlMenu(p.getTbPermisos().getTbModuloOpcion().getDescripcion());
+				objMenu.setTipodeMenu(p.getTbPermisos().getTbModuloOpcion().getNombremodulo());
+				objMenu.setNombreMenu(p.getTbPermisos().getNombrePermiso());
+				objMenu.setUrlMenu(p.getTbPermisos().getDescripcion());
 				if (p.getTbPermisos().getMetodoactionlistener()!=null &&
 						p.getTbPermisos().getMetodoactionlistener().isEmpty() == false) {
 					objMenu.setNombreActionListener(p.getTbPermisos().getMetodoactionlistener());
 				}
+				log.info("  ** "+objMenu.getNombreActionListener());
 				miMenu.add(objMenu);
 			}
 			 log.info("tamaño lista  DAOIMPL --> " + miMenu.size()+"  ");
