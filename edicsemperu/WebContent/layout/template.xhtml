@@ -127,11 +127,10 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				</div>
 			</div>
 		</p:layoutUnit>
-		<p:layoutUnit position="west" width="250" resizable="true"
-			header="Options" minSize="180">
-			<h:form>
-				<p:menu model="#{login.mimenu}" position="center"
-					styleClass="menuIzquiera" style="margin: auto;" />
+		<p:layoutUnit position="west"  resizable="true" collapsible="true"
+			header="#{login.objEmpleado.nombresCompletos}"  >
+			<h:form  >
+				<p:menu model="#{login.mimenu}" position="center"  style="width:100%"/>
 			</h:form>
 		</p:layoutUnit>
 
@@ -1133,7 +1132,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		<p:confirmDialog id="confirmDeshabilitarEmp"
 			message="Esta seguro de deshabilitar dicho empleado?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
-			header="Confirm" severity="alert" widgetVar="desactivarEmp"
+			header="Confirm" severity="alert" widgetVar="confirmation"
 			position="center">
 
 			<p:commandButton type="submit" value="Si"

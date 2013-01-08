@@ -50,7 +50,7 @@
 						<p:outputLabel value="#{message['login.password']}" for="txtPasswordL" style="width: 30px;"/> 
 						</th>
 						<td align="left">
-						<h:inputSecret id="txtPasswordL" value="#{login.contrasenia}" style="width: 160px; "
+						<p:password  id="txtPasswordL" value="#{login.contrasenia}" style="width: 160px; "
 								required="true" requiredMessage="#{message['login.password.validation']}" /></td>
 						<td><p:message for="txtPasswordL" /></td>
 					</tr>
@@ -60,9 +60,9 @@
 			<br/>
 			<div align="center">
 				<h:panelGrid columns="3">
-					<h:commandButton image="images/user_log.png"
-						title="Ingresar al sistema" action="#{login.ingresarUsuario}" 
-						onclick="statusDialog.show();" style="width: 80px; height: 20px;" />
+					<p:commandButton icon="images/user_log.png" value="Ingresar"
+						title="Ingresar al sistema" action="#{login.ingresarUsuario}" ajax="false"
+						onclick="statusDialog.show();"  />
 					<p:spacer width="20" />
 					
 				</h:panelGrid>

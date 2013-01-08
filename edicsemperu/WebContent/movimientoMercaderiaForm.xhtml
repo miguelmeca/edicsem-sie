@@ -196,16 +196,8 @@
 						<h:outputText value="#{d.valorunitarioexistencia}" />
 					</p:column>
 				</p:dataTable>
-				<p:commandButton value="Listar" action="#{movimientoMercaderia.listar}" ajax="false" />
 			</p:panel>
-			<h:panelGrid columns="6"    >
-					
-					<h:outputText value="#{message['movimiento.stockTotal.almacenes']}" />
-					<p:inputText  value ="#{movimientoMercaderia.stockTotalAlmacenado}" readonly="true" />
-					<p:spacer/>
-					<h:outputText value="#{message['movimiento.valorTotal.almacenes']}" />
-					<p:inputText  value ="#{movimientoMercaderia.valorTotalAlmacenes}" readonly="true" />
-			</h:panelGrid>
+			
 		</h:form>
 	</ui:define>
 </ui:composition>

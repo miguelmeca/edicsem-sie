@@ -500,7 +500,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	public String insertar(ActionEvent actionEvent) throws Exception {
 		if(StringUtils.equals(objEmpleado.getContrasena(), confcontra)){ /*probar compararcontra*/
 			/*encripta la contraseña*/
-		    objEmpleado.setContrasena(getMD5(objEmpleado.getContrasena()));
+		    objEmpleado.setContrasena(SecurityLogin.getMD5(objEmpleado.getContrasena()));
 			log.info("probando MD5..."+objEmpleado.getContrasena());
 			try {
 				if (log.isInfoEnabled()) {
