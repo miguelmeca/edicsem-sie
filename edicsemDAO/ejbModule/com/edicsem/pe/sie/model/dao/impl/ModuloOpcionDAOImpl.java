@@ -71,10 +71,10 @@ public class ModuloOpcionDAOImpl implements ModuloOpcionDAO{
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.ModuloOpcionDAO#listarModuloOpcion()
 	 */
-	public List listarModuloOpcion() {
-		List  lista = null;
+	public List<String> listarModuloOpcion() {
+		List<String>  lista = null;
 		try {
-			Query q = em.createQuery("select p from ModuloOpcionSie p ");
+			Query q = em.createQuery("select DISTINCT(p.nombremodulo) from ModuloOpcionSie p ");
 			lista =  q.getResultList(); 						
 		   log.info("tamaño lista ModuloOpcion DAOIMPL --> " + lista.size()+"  ");
 		} catch (Exception e) {
