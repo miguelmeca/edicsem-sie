@@ -472,6 +472,25 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	</h:form>
 	
 	<h:form>
+		<p:confirmDialog id="confirmationTelefonoelimina2"
+			message="Esta seguro de eliminar dicho teléfono ?"
+			width="325" height="100" showEffect="explode" hideEffect="explode"
+			header="Confirm" severity="alert" widgetVar="confirmationTelEmp"
+			position="center">
+
+			<p:commandButton type="submit" value="Si"
+				action="#{mantenimientoEmpleadoFormAction.telefonoElimina}"
+				update=":form:panelTlf:o"
+				oncomplete="confirmation.hide()" ajax="false">
+			</p:commandButton>
+
+			<p:commandButton value="No" onclick="confirmation.hide()"
+				type="button" />
+
+		</p:confirmDialog>
+	</h:form>
+	
+	<h:form>
 		<p:confirmDialog id="confirmEliminarProductoLista"
 			message="Esta seguro de eliminar dicho Producto de la lista?"
 			width="325" height="100" showEffect="explode" hideEffect="explode"
@@ -1114,16 +1133,16 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		<p:confirmDialog id="confirmDeshabilitarEmp"
 			message="Esta seguro de deshabilitar dicho empleado?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
-			header="Confirm" severity="alert" widgetVar="confirmation"
+			header="Confirm" severity="alert" widgetVar="desactivarEmp"
 			position="center">
 
 			<p:commandButton type="submit" value="Si"
 				action="#{mantenimientoEmpleadoFormAction.deshabilitar}"
 				update=":formManteEmpList:listaPersonas"
-				oncomplete="confirmation.hide()" ajax="false">
+				oncomplete="desactivarEmp.hide()" ajax="false">
 			</p:commandButton>
 
-			<p:commandButton value="No" onclick="confirmation.hide()"
+			<p:commandButton value="No" onclick="desactivarEmp.hide()"
 				type="button" />
 
 		</p:confirmDialog>
