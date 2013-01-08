@@ -2,7 +2,6 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -19,20 +17,20 @@ import com.edicsem.pe.sie.util.constants.Constants;
 
 
 /**
- * The persistent class for the tb_permisos database table.
+ * The persistent class for the tb_det_Permiso_Empleado database table.
  * 
  */
 @Entity
-@Table(name="tb_permiso", schema = Constants.ESQUEMA_SIE_POSTGRE)
-public class PermisoSie implements Serializable {
+@Table(name="tb_det_Permiso_Empleado", schema = Constants.ESQUEMA_SIE_POSTGRE)
+public class DetPermisoEmpleadoSie implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
-	@SequenceGenerator(name="TB_PERMISOS_IDPERMISOS_GENERATOR", sequenceName="SIE.TB_PERMISOS_IDPERMISOS_SEQ", initialValue=1, allocationSize =1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_PERMISOS_IDPERMISOS_GENERATOR")
-	private Integer idpermiso;
-
-	private String metodoactionlistener;
+	@SequenceGenerator(name="TB_DET_PERMISO_EMPLEADO_IDDETPERMISOEMPL_GENERATOR", sequenceName="SIE.TB_DET_PERMISO_EMPLEADO_IDDETPERMISOEMPL_SEQ", initialValue=1, allocationSize =1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_DET_PERMISO_EMPLEADO_IDDETPERMISOEMPL_GENERATOR")
+	private Integer idDetPermisoEmpl;
+	
+	private Integer orden;
 	
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
@@ -42,24 +40,25 @@ public class PermisoSie implements Serializable {
 	private String usuariocreacion;
 
 	private String usuariomodifica;
-	
+
+	//bi-directional many-to-one association to EmpleadoSie
+    @ManyToOne
+	@JoinColumn(name="idempleado")
+	private EmpleadoSie tbEmpleado;
+
+	//bi-directional many-to-one association to PermisoSie
+    @ManyToOne
+	@JoinColumn(name="idpermiso")
+	private PermisoSie tbPermisos;
+    
 	//bi-directional many-to-one association to EstadoGeneralSie
     @ManyToOne
 	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
-    
-	//bi-directional many-to-one association to ModuloOpcionSie
-    @ManyToOne
-	@JoinColumn(name="idmoduloopcion")
-	private ModuloOpcionSie tbModuloOpcion;
-    
-    //bi-directional many-to-one association to DetPermisoEmpleadoSie
-  	@OneToMany(mappedBy="tbPermisos")
-  	private Set<DetPermisoEmpleadoSie> tbDetEmpleadoEmpleados;
-  	
-    public PermisoSie() {
-    }
 
+    public DetPermisoEmpleadoSie() {
+    }
+    
 	public Timestamp getFechacreacion() {
 		return this.fechacreacion;
 	}
@@ -91,6 +90,14 @@ public class PermisoSie implements Serializable {
 	public void setUsuariomodifica(String usuariomodifica) {
 		this.usuariomodifica = usuariomodifica;
 	}
+
+	public EmpleadoSie getTbEmpleado() {
+		return this.tbEmpleado;
+	}
+
+	public void setTbEmpleado(EmpleadoSie tbEmpleado) {
+		this.tbEmpleado = tbEmpleado;
+	}
 	
 	public EstadoGeneralSie getTbEstadoGeneral() {
 		return this.tbEstadoGeneral;
@@ -99,38 +106,29 @@ public class PermisoSie implements Serializable {
 	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
 		this.tbEstadoGeneral = tbEstadoGeneral;
 	}
-	
-	public ModuloOpcionSie getTbModuloOpcion() {
-		return this.tbModuloOpcion;
+
+	public Integer getIdDetPermisoEmpl() {
+		return idDetPermisoEmpl;
 	}
 
-	public void setTbModuloOpcion(ModuloOpcionSie tbModuloOpcion) {
-		this.tbModuloOpcion = tbModuloOpcion;
+	public void setIdDetPermisoEmpl(Integer idDetPermisoEmpl) {
+		this.idDetPermisoEmpl = idDetPermisoEmpl;
 	}
 
-	public Integer getIdpermiso() {
-		return idpermiso;
+	public Integer getOrden() {
+		return orden;
 	}
 
-	public void setIdpermiso(Integer idpermiso) {
-		this.idpermiso = idpermiso;
+	public void setOrden(Integer orden) {
+		this.orden = orden;
 	}
 
-	public String getMetodoactionlistener() {
-		return metodoactionlistener;
+	public PermisoSie getTbPermisos() {
+		return tbPermisos;
 	}
 
-	public void setMetodoactionlistener(String metodoactionlistener) {
-		this.metodoactionlistener = metodoactionlistener;
-	}
-
-	public Set<DetPermisoEmpleadoSie> getTbDetEmpleadoEmpleados() {
-		return tbDetEmpleadoEmpleados;
-	}
-
-	public void setTbDetEmpleadoEmpleados(
-			Set<DetPermisoEmpleadoSie> tbDetEmpleadoEmpleados) {
-		this.tbDetEmpleadoEmpleados = tbDetEmpleadoEmpleados;
+	public void setTbPermisos(PermisoSie tbPermisos) {
+		this.tbPermisos = tbPermisos;
 	}
 	
 }

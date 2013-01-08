@@ -47,11 +47,7 @@ public class CargoEmpleadoSie  implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
-
-	//bi-directional many-to-one association to PermisoSie
-	@OneToMany(mappedBy="tbCargoEmpleado")
-	private Set<PermisoSie> tbPermisos;
-	
+    
 	//bi-directional many-to-one association to DetSancionCargoSie
 	@OneToMany(mappedBy="tbCargoempleado")
 	private Set<DetSancionCargoSie> tbDetSancionCargo;
@@ -117,14 +113,6 @@ public class CargoEmpleadoSie  implements Serializable {
 
 	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
 		this.tbEstadoGeneral = tbEstadoGeneral;
-	}
-	
-	public Set<PermisoSie> getTbPermisos() {
-		return this.tbPermisos;
-	}
-
-	public void setTbPermisos(Set<PermisoSie> tbPermisos) {
-		this.tbPermisos = tbPermisos;
 	}
 
 	public Set<DetSancionCargoSie> getTbDetSancionCargo() {
