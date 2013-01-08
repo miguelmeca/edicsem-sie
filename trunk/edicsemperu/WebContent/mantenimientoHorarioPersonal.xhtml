@@ -10,13 +10,13 @@
 <p:growl id="messages" showDetail="true" />
 <p:fieldset legend="Buscar Personal" style="margin-top:20px">
 <h:panelGrid columns="2"  >
-<h:outputText value="Cargo :" />
-<p:selectOneMenu id="cargo" value="#{comboAction.cargoEmpleado}" styleClass="required" title="El tipo es obligatorio!" >
+<p:outputLabel value="Cargo :" for="cargo" />
+<p:selectOneMenu id="cargo" value="#{comboAction.cargoEmpleado}">
 <f:selectItems  value="#{comboAction.cargoEmpleadoItems}" />
  <p:ajax update="empleado"  listener="#{comboAction.cambiar2}" />  
 </p:selectOneMenu>
-<h:outputText value="Empleado :" />
-<p:selectOneMenu id="empleado" value="#{horarioPersonal.idempleado}" styleClass="required" title="El tipo es obligatorio!" >
+<p:outputLabel value="Empleado :" for="empleado" />
+<p:selectOneMenu id="empleado" value="#{horarioPersonal.idempleado}">
 <f:selectItems  value="#{comboAction.empleadoxcargo}" />
 </p:selectOneMenu>
 <p:commandButton value="Buscar" ajax="false" action="#{horarioPersonal.mostrar}" />

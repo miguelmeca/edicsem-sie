@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.ejb.EJB;
+import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -25,7 +26,7 @@ import com.edicsem.pe.sie.beans.MenuDTO;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.service.facade.DetPermisoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.LoginService;
-import com.edicsem.pe.sie.service.facade.TipoModuloService;
+import com.edicsem.pe.sie.service.facade.ModuloOpcionService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 import com.edicsem.pe.sie.util.property.PropertyFile;
@@ -49,7 +50,7 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 	@EJB
 	private DetPermisoEmpleadoService detPermisoEmplService;
 	@EJB
-	private TipoModuloService tipoModuloService;
+	private ModuloOpcionService moduloService;
 	
 	public LoginAction() {
 		log.info("Entrando al Login...");
@@ -86,24 +87,33 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 					lstMenu = detPermisoEmplService.listarPermisoXUsuario(objEmpleado.getUsuario());
 					
 					// Listar Tipos de Modulo
-					lstTipo = tipoModuloService.listarTipoModulo();
+					lstTipo = moduloService.listarModuloOpcion();
 					
 					mimenu = new DefaultMenuModel();
 					MenuItem item = new MenuItem();
 					for (String q : lstTipo) {
-						log.info("NOMBRE DE MI SUBMENU ----- ****************** " + q.toString().trim());
 						Submenu submenu= new Submenu();
 						submenu.setLabel(q.toString().trim());
 						for (MenuDTO a : lstMenu) {
 							if (a.getTipodeMenu().equals(q.substring(0))) {
 								item = new MenuItem();
+								
 								item.setValue(a.getNombreMenu());
-								item.setUrl(a.getUrlMenu());
-								item.setAjax(false);
+								log.info(" action: "+a.getNombreActionListener());
+								
+								log.info(" action: "+a.getUrlMenu());
+								
+								item.setAjax(false); 
 								if (a.getNombreActionListener() != null && a.getNombreActionListener().isEmpty() == false) {
-									item.addActionListener(getActionListenerExp(a.getNombreActionListener()));
+									log.info(" --- ");
+									item.setActionExpression(getMethod(a.getNombreActionListener()));
 									item.setUrl(null);
+								}else if(a.getUrlMenu()!= null && a.getUrlMenu().isEmpty() == false){
+									log.info(" --url  - ");
+									item.setUrl(a.getUrlMenu());
 								}
+								log.info(" action: "+a.getNombreActionListener());
+								log.info("nomb menu: "+a.getNombreMenu()+" url: "+a.getUrlMenu());
 								submenu.getChildren().add(item);
 							}
 						}
@@ -112,14 +122,18 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 						}
 					}
 				
-				
 			}else {
 				log.info("usuario incorrecto!! ...  ");
 				FacesContext.getCurrentInstance().addMessage(
-						null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-								property.getProperty("titulo.mensaje.error"),
-								property.getProperty("login.usuario.noExiste")));
+						null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"error",
+								"usuario incorrecto"));
 				redireccion = Constants.LOGIN_PAGE;
+				
+//				FacesContext.getCurrentInstance().addMessage(
+//						null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+//								property.getProperty("titulo.mensaje.error"),
+//								property.getProperty("login.usuario.noExiste")));
+//				redireccion = Constants.LOGIN_PAGE;
 			}
 			
 		} catch (Exception e) {
@@ -130,16 +144,23 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 		return redireccion;
 	}
 	
-	public MethodExpressionActionListener getActionListenerExp(String actionListenerName) {
-		FacesContext context = FacesContext.getCurrentInstance();
-		MethodExpression mExp = context
-				.getApplication()
-				.getExpressionFactory()
-				.createMethodExpression(context.getELContext(),
-						actionListenerName, null,
-						new Class[] { ActionEvent.class });
-		return new MethodExpressionActionListener(mExp);
+	
+	public MethodExpression getMethod(String actionListenerName) {
+		ExpressionFactory context = FacesContext.getCurrentInstance().getApplication().getExpressionFactory();
+		MethodExpression mExp = context.createMethodExpression(FacesContext.getCurrentInstance().getELContext(), actionListenerName, String.class, new Class[]{});
+		return mExp;
 	}
+//	
+//	public MethodExpressionActionListener getActionListenerExp(String actionListenerName) {
+//		FacesContext context = FacesContext.getCurrentInstance();
+//		MethodExpression mExp = context
+//				.getApplication()
+//				.getExpressionFactory()
+//				.createMethodExpression(context.getELContext(),
+//						actionListenerName, null,
+//						new Class[] { ActionEvent.class });
+//		return new MethodExpressionActionListener(mExp);
+//	}
 	
 	/**
 	 * @return the objLogin

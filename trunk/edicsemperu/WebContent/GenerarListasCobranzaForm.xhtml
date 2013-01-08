@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Generar Listas Cobranzas</h1>
+		<h:form id="formGenerarCobranza">
+			<p:growl id="message" showDetail="true" />
+			<p:panel header="#{message['panel.generar.cobranza']}">
+				<h:panelGrid columns="6">
+					<p:outputLabel value="#{message['permiso.personal.cargo']}" for="cargo"/>
+					<p:selectOneMenu id="cargo" value="#{comboAction.cargoEmpleado}" >
+					<f:selectItems  value="#{comboAction.cargoEmpleadoItems}" />
+					<p:ajax update="empleado"  listener="#{comboAction.cambiar2}" />
+					</p:selectOneMenu>
+					
+					<p:outputLabel  value="#{message['cobranza.cant.operadora']}" for="empleado"/>
+					<p:spinner value="" />
+					
+				</h:panelGrid>
+				
+				<p:commandButton actionListener="#{permiso.agregar}"
+					value="Ver roles" ajax="false" update="message"/>
+			</p:panel>
+			
+	<!-- 		<p:pickList id="pojoPickList" value="#{permiso.permisos}" var="p" effect="bounce"  
+                    itemValue="#{p}" itemLabel="#{p.source}" converter="p"  
+                    showSourceControls="true" showTargetControls="true"   
+                    showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" >  
+                    
+		        <f:facet name="sourceCaption">Otros Roles</f:facet>
+		        <f:facet name="targetCaption">Roles Asignados</f:facet>  
+		  
+		        <p:ajax event="transfer" listener="#{permiso.onTransfer}" update="msg" />  
+		        <p:column style="width:75%;">
+		            #{p.}  
+		        </p:column>  
+		  
+		    </p:pickList>    -->
+		</h:form>
+	</ui:define>
+</ui:composition>
