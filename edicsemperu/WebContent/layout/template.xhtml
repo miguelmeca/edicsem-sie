@@ -130,52 +130,8 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		<p:layoutUnit position="west" width="250" resizable="true"
 			header="Options" minSize="180">
 			<h:form>
-				<p:menu style="width:100%">
-					<p:submenu label="Ejemplo Mantenimiento">
-						<p:menuitem value="Subir Archivos " update="messages" ajax="false"
-							action="ModuloSubirArchivob.jsf" />
-							<p:menuitem value="Modulo de Migracion" ajax="false" action="ModuloSubirArchivo.jsf" />
-					</p:submenu>
-					<p:submenu label="Mantenimientos">
-						<p:menuitem value="Mantenimiento de Productos" update="messages" ajax="false" action="#{productoSearch.listar}" />
-						<p:menuitem value="Mantenimiento de Punto de Venta/Almacen" ajax="false" action="#{almacenSearch.listar}" />
-						<p:menuitem value="Mantenimiento Horario Punto de Venta"  ajax="false" action="#{MantenimientoHorarioPuntoVentaSearchAction.listar}" />
-						<p:menuitem value="Mantenimiento de Empleados por Empresa" ajax="false" action="#{detEmpresaEmpleadoSearch.listar}" />
-						<p:menuitem value="Mantenimiento de Empleados" ajax="false" action="#{mantenimientoEmpleadoSearchAction.listar}" />
-						<p:menuitem value="Mantenimiento de Proveedores" ajax="false" action="#{mantenimientoProveedorSearchAction.listar}" />
-						<p:menuitem value="Mantenimiento Incidencias" ajax="false" action="#{mantenimientoIncidenciaSearch.listar}" />
-						<p:menuitem value="Mantenimiento Cargo Empleado" ajax="false" action="#{mantenimientoCargoEmpleadoSearchAction.listar}" />
-						<p:menuitem value="Mantenimiento Empresa" ajax="false" action="#{empresaSearch.listar}" />
-						<p:menuitem value="Mantenimiento de Sanciones" ajax="false" action="#{factorSancionSearch.listar}" />
-						
-						<p:menuitem value="Mantenimiento de Paquete biblico " ajax="false" action="#{mantenimientoPaqueteBiblicoSearchAction.listar}" />
-						
-						
-						<p:menuitem value="Mantenimiento Cliente" update="messages" ajax="false" action="#{MantenimientoClienteSearchAction.listar}" />
-						<p:menuitem value="Mantenimiento Parámetros del sistema" ajax="false" action="#{mantenimientoParametroSearchAction.listar}" />
-						<p:menuitem value="Mantenimiento Meta Mes" ajax="false" action="metaMes.jsf" />
-						<p:menuitem value="Mantenimiento Meta Empleado" ajax="false" action="#{metaEmpleadoSearch.listar}" />
-						<p:menuitem value="Mantenimiento Comprobante" ajax="false" action="#{comprobanteSearch.listar}" />
-						<p:menuitem value="Mantenimiento TipoProducto" ajax="false" action="#{tipoProductoSearch.listar}" />
-					</p:submenu>
-					<p:submenu label="Opciones Avanzadas">
-						<p:menuitem value="Movimiento Mercader&iacute;a" ajax="false" action="#{movimientoMercaderia.listar}" />
-						<p:menuitem value="Kardex" update="messages" ajax="false" action="#{kardexAction.listar}" />
-						
-						<p:menuitem value="Registro de horario Ventas" update="messages" ajax="false" action="#{horarioVendedorForm.agregar}" />
-						<p:menuitem value="Horario del Personal" ajax="false" action="mantenimientoHorarioPersonal.jsf" />
-						<p:menuitem value="Registro de Filtros de horario Ventas" update="messages" ajax="false" action="#{filtroHorarioVendedorForm.agregar}" />
-						<p:menuitem value="Horario de Asistencia" ajax="false" action="horarioAsistencia.jsf" />
-						
-						<p:menuitem value="Registro Contrato" update="messages" ajax="false" action="#{contratoForm.agregar}" />
-						
-						<p:menuitem value="Seguimiento de Cobranzas" ajax="false" action="#{mantenimientoCobranzaOperaSearchAction.listar}" />
-						
-						<p:menuitem value="Pago a vendedores" update="messages" ajax="false" action="#{PagoVentaSearch.listar}" />
-						<p:menuitem value="Modulo de Migracion" ajax="false" action="ModuloMigracion.jsf" />
-						
-					</p:submenu>
-				</p:menu>
+				<p:menu model="#{login.mimenu}" position="center"
+					styleClass="menuIzquiera" style="margin: auto;" />
 			</h:form>
 		</p:layoutUnit>
 

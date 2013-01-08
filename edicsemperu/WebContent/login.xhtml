@@ -41,17 +41,17 @@
 						<td align="left">
 						<p:inputText id="txtUsuario"
 								value="#{login.usuario}" style="width: 160px; "
-								required="true" requiredMessage="#{message['login.password.validation']}" /></td>
+								required="true" requiredMessage="#{message['login.usuario.validation']}" /></td>
 						<td><p:message for="txtUsuario" /></td>
 					</tr>
 					<tr><td><br /></td></tr>
 					<tr>
 						<th align="right">
-						<p:outputLabel value="#{message['login.usuario']}" for="txtPasswordL" style="width: 30px;"/> 
+						<p:outputLabel value="#{message['login.password']}" for="txtPasswordL" style="width: 30px;"/> 
 						</th>
 						<td align="left">
 						<h:inputSecret id="txtPasswordL" value="#{login.contrasenia}" style="width: 160px; "
-								required="true" requiredMessage="#{message['login.usuario.validation']}" /></td>
+								required="true" requiredMessage="#{message['login.password.validation']}" /></td>
 						<td><p:message for="txtPasswordL" /></td>
 					</tr>
 				</table>

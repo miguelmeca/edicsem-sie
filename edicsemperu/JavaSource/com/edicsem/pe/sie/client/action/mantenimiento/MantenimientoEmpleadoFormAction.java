@@ -33,6 +33,7 @@ import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.TipoPagoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
+import com.edicsem.pe.sie.util.security.SecurityLogin;
 
 @ManagedBean(name="mantenimientoEmpleadoFormAction")
 @SessionScoped
@@ -370,23 +371,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		return mantenimientoEmpleadoSearch.listar();
 	}
 	
-	/*método que sirve para encriptar en MD5*/
-	public String getMD5(String cadena) throws Exception {
-		MessageDigest md = MessageDigest.getInstance("MD5");
-		byte[] b = md.digest(cadena.getBytes());
-		int size = b.length;
-		StringBuilder h = new StringBuilder(size);
-		for (int i = 0; i < size; i++) {
-		int u = b[i] & 255;          
-	    if (u < 16){
-		h.append("0").append(Integer.toHexString(u));
-		}
-		else{
-		h.append(Integer.toHexString(u));
-		}
-		}
-		return h.toString();
-	}
 			 	
 	/*método que se ejecuta haciendo click en el link NUEVO de la lista*/
 	public String agregar() {
@@ -446,7 +430,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	public String insertar(ActionEvent actionEvent) throws Exception {
 		if(StringUtils.equals(objEmpleado.getContrasena(), confcontra)){ /*probar compararcontra*/
 			/*encripta la contraseña*/
-		    objEmpleado.setContrasena(getMD5(objEmpleado.getContrasena()));
+		    objEmpleado.setContrasena(SecurityLogin.getMD5(objEmpleado.getContrasena()));
 			log.info("probando MD5..."+objEmpleado.getContrasena());
 			try {
 				if (log.isInfoEnabled()) {
