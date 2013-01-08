@@ -42,7 +42,7 @@ public class ModuloOpcionServiceImpl implements ModuloOpcionService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ModuloOpcionService#listarModuloOpcion()
 	 */
-	public List listarModuloOpcion() {
+	public List<String> listarModuloOpcion() {
 		return objModuloDao.listarModuloOpcion();
 	}
 	
