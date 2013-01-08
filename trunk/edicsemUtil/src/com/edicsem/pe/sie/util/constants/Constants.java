@@ -81,6 +81,8 @@ public class Constants {
 	public static final String MANT_META_EMPLEADO_FORM_PAGE = "mantenimientoMetaEmpleadoForm";
 	public static final String MANT_META_EMPLEADO_LIST_PAGE = "mantenimientoMetaEmpleadoFormList";
 	
+	public static final String ASIGNAR_PERMISOS_FORM_PAGE = "AsignarPermisosForm";
+	
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
 	public static final String COD_ESTADO_TB_CARGO_EMPLEADO = "CE";
@@ -97,4 +99,5 @@ public class Constants {
 	public static final String INDEX_PAGE = "index";
 	public static final String LOGIN_PAGE = "login";
 	public static final String USER_KEY = "loginUserSession";
+	
 	}
