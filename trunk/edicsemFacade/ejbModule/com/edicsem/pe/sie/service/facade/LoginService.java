@@ -1,13 +1,10 @@
 package com.edicsem.pe.sie.service.facade;
 
-
-
 import javax.ejb.Local;
-
-
+import com.edicsem.pe.sie.entity.EmpleadoSie;
 
 @Local
 public interface LoginService {
 	
-	public abstract boolean validacionLogin (String usuario, String contrasena);
+	public abstract EmpleadoSie validacionLogin (String usuario, String contrasena);
 }
