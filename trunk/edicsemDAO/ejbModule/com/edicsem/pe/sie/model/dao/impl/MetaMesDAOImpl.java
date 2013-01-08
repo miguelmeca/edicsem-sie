@@ -85,9 +85,12 @@ public  class MetaMesDAOImpl implements MetaMesDAO {
 	public List<MetaMesSie> listarMetaMeses() {
 		List<MetaMesSie> lista = null;
 		try {
-			Query q = em.createQuery("select m from MetaMesSie m");
+			Query q = em.createQuery("select m from MetaMesSie m order by m.idmetames ASC ");
 			lista = q.getResultList();
 			log.info("tamaño de lista de Metames--->" + lista.size());
+			for (int i = 0; i < lista.size(); i++) {
+				log.info(" Metames--->" + i+""+lista.get(i).getMes());
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
