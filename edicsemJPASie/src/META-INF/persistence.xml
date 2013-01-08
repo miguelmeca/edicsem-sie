@@ -34,7 +34,6 @@
 		<class>com.edicsem.pe.sie.entity.TipoDocumentoIdentidadSie</class>
 		<class>com.edicsem.pe.sie.entity.TipoKardexProductoSie</class>
 		<class>com.edicsem.pe.sie.entity.TipoLlamadaSie</class>
-		<class>com.edicsem.pe.sie.entity.TipoModuloSie</class>
 		<class>com.edicsem.pe.sie.entity.TipoProductoSie</class>
 		<class>com.edicsem.pe.sie.entity.UbigeoSie</class>
 		<class>com.edicsem.pe.sie.entity.DetProductoContratoSie</class>
