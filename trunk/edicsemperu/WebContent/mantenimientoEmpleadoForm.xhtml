@@ -118,8 +118,25 @@
 								<f:setPropertyActionListener value="#{o.telefono}" target="#{mantenimientoEmpleadoFormAction.selectTelef}" />
 							</p:commandButton>
 							
+							<p:column headerText="Item" style="width:125px">
+		                    <h:outputText value="#{o.item}" />
+		                    </p:column>
+							
 							<p:column headerText="Observación" style="width:125px">
 		                    	<h:outputText value="#{o.tipoTelef}, #{o.operadorTelefonico}, #{o.telefono}" />
+		                    </p:column>
+	 
+	                        <p:column headerText="Eliminar" style="width:125px">
+		                    <p:commandButton id="showConfirmDeshabilitarTelEmp" 
+				            value="Eliminar"  
+				            icon="ui-icon ui-icon-close"
+				            onclick="confirmationTelEmp.show()"> 
+	 							
+                            <f:setPropertyActionListener
+		                    value="#{o.item}"
+		                    target="#{mantenimientoEmpleadoFormAction.ide}"     />
+
+                            </p:commandButton>
 		                    </p:column>
 	 
 						</p:dataTable>
@@ -179,6 +196,11 @@
          
         <h:messages errorClass="error"/>  
            <h:panelGrid columns="2"  >
+            <h:outputText value="#{message['mantenimiento.empresa.descripcion']}" />
+            <p:selectOneMenu id="empresa" value="#{mantenimientoEmpleadoFormAction.idEmpresa}">
+            <f:selectItems value="#{comboAction.empresaitems}"/>
+            </p:selectOneMenu>
+            
             <h:outputText value="#{message['empleado.fecInicio']}" />
             <p:calendar value="#{mantenimientoEmpleadoFormAction.fechaInicioContrato}" pattern="dd/MM/yyyy" />
             <h:outputText value="#{message['empleado.cargo']}" />
@@ -189,10 +211,10 @@
             <p:selectOneMenu id="tipopago" value="#{mantenimientoEmpleadoFormAction.idTipoPago}">
             <f:selectItems value="#{comboAction.tipoPagoItems}"/>
             </p:selectOneMenu>
-            <h:outputText value="#{message['empleado.basico']}}" />
-            <p:inputText value="#{mantenimientoEmpleadoFormAction.objContratoEmpleado.basico}"/> 
+            <h:outputText value="#{message['empleado.basico']}" />
+            <p:spinner value="#{mantenimientoEmpleadoFormAction.objContratoEmpleado.basico}" /> 
             <h:outputText value="#{message['empleado.periodoPrueba']}" />
-            <p:inputText value="#{mantenimientoEmpleadoFormAction.objContratoEmpleado.periodoPrueba}"/> 
+            <p:inputText title="x mes" value="#{mantenimientoEmpleadoFormAction.objContratoEmpleado.periodoPrueba}"/> 
             <p:commandButton value="Agregar" update="panelPagos" action="#{mantenimientoEmpleadoFormAction.agregarPago}" icon="ui-icon-check"/>
            
             	<p:dataTable id="panelPagos" value="#{mantenimientoEmpleadoFormAction.contratoEmpleadoList}" var="c"  >
