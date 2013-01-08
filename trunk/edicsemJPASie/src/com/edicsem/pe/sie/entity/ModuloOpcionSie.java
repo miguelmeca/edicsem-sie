@@ -7,8 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -33,11 +31,6 @@ public class ModuloOpcionSie  implements Serializable {
 	private String descripcion;
 
 	private String nombremodulo;
-
-	//bi-directional many-to-one association to TipoModuloSie
-    @ManyToOne
-	@JoinColumn(name="idtipo_modulo")
-	private TipoModuloSie tbTipoModulo;
 
 	//bi-directional many-to-one association to PermisoSie
 	@OneToMany(mappedBy="tbModuloOpcion")
@@ -68,14 +61,6 @@ public class ModuloOpcionSie  implements Serializable {
 
 	public void setNombremodulo(String nombremodulo) {
 		this.nombremodulo = nombremodulo;
-	}
-
-	public TipoModuloSie getTbTipoModulo() {
-		return this.tbTipoModulo;
-	}
-
-	public void setTbTipoModulo(TipoModuloSie tbTipoModulo) {
-		this.tbTipoModulo = tbTipoModulo;
 	}
 	
 	public Set<PermisoSie> getTbPermisos() {

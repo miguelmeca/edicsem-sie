@@ -31,7 +31,11 @@ public class PermisoSie implements Serializable {
 	@SequenceGenerator(name="TB_PERMISOS_IDPERMISOS_GENERATOR", sequenceName="SIE.TB_PERMISOS_IDPERMISOS_SEQ", initialValue=1, allocationSize =1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_PERMISOS_IDPERMISOS_GENERATOR")
 	private Integer idpermiso;
-
+	
+	private String nombrePermiso;
+	
+	private String descripcion;
+	
 	private String metodoactionlistener;
 	
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
@@ -131,6 +135,22 @@ public class PermisoSie implements Serializable {
 	public void setTbDetEmpleadoEmpleados(
 			Set<DetPermisoEmpleadoSie> tbDetEmpleadoEmpleados) {
 		this.tbDetEmpleadoEmpleados = tbDetEmpleadoEmpleados;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public String getNombrePermiso() {
+		return nombrePermiso;
+	}
+
+	public void setNombrePermiso(String nombrePermiso) {
+		this.nombrePermiso = nombrePermiso;
 	}
 	
 }
