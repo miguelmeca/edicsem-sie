@@ -53,6 +53,11 @@
 			<p:calendar pagedate="-8380" maxdate="today" value="#{mantenimientoEmpleadoFormAction.objEmpleado.fechanacimiento}" id="fechanac" showButtonPanel="true" required="true"  pattern="dd/MM/yyyy"
 			label="Fecha de nacimiento" requiredMessage="#{message['empleado.fechanac.validation']}"/>                  
             
+            <h:outputText value="#{message['contrato.cliente.email']}" />
+					<p:inputText value="#{mantenimientoEmpleadoFormAction.objEmpleado.correo}" id="email" validatorMessage="Email incorrecto" maxlength="45" >
+					 <f:validateRegex pattern="#{message['pattern.email.norequired']}" />
+					</p:inputText>
+            
 			</h:panelGrid>
 			</p:panel>
         </p:tab>
