@@ -41,6 +41,9 @@ public class ContratoEmpleadoSie implements Serializable {
 	
 	private Integer  periodoPrueba;
 	
+    @Transient
+    private int item;
+	
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
 	
@@ -212,6 +215,20 @@ public class ContratoEmpleadoSie implements Serializable {
 
 	public void setTbCargoempleado(CargoEmpleadoSie tbCargoempleado) {
 		this.tbCargoempleado = tbCargoempleado;
+	}
+
+	/**
+	 * @return the item
+	 */
+	public int getItem() {
+		return item;
+	}
+
+	/**
+	 * @param item the item to set
+	 */
+	public void setItem(int item) {
+		this.item = item;
 	}
 	
 }
