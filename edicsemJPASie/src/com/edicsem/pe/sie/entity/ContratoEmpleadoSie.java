@@ -81,6 +81,11 @@ public class ContratoEmpleadoSie implements Serializable {
 	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
     
+    //bi-directional many-to-one association to DetEmpresaEmpleadoSie
+    @ManyToOne
+	@JoinColumn(name="idDetEmpresaEmpl")
+	private DetEmpresaEmpleadoSie tbDetEmpresaEmpleado;
+    
 	@Transient
 	private Integer cantContratoXPatrocinado;
 	
@@ -229,6 +234,14 @@ public class ContratoEmpleadoSie implements Serializable {
 	 */
 	public void setItem(int item) {
 		this.item = item;
+	}
+
+	public DetEmpresaEmpleadoSie getTbDetEmpresaEmpleado() {
+		return tbDetEmpresaEmpleado;
+	}
+
+	public void setTbDetEmpresaEmpleado(DetEmpresaEmpleadoSie tbDetEmpresaEmpleado) {
+		this.tbDetEmpresaEmpleado = tbDetEmpresaEmpleado;
 	}
 	
 }
