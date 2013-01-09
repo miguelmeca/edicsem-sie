@@ -479,15 +479,15 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	public String update() throws Exception {
 	    log.info("actualizar");
 		log.info("update()" + objEmpleado.getIdempleado());
-		setIdUbigeo(objDomicilio.getTbUbigeo().getIdubigeo()+"");
-		UbigeoSie ubigeo = objUbigeoService.findUbigeo(Integer.parseInt(getIdUbigeo()));
-		setIdDepartamento(ubigeo.getCoddepartamento());
-		comboManager.setIdDepartamento(idDepartamento);
-		setIdProvincia(ubigeo.getCodprovincia());
-		comboManager.setIdProvincia(idProvincia);
-		setIdDistrito(ubigeo.getCoddistrito());
-		ubigeoDefecto="";
-		log.info("busquedaUbigeo "+ getIdDepartamento()+" - "+getIdProvincia()+" - "+getIdDistrito()+" - "+getIdUbigeo());
+		//setIdUbigeo(objDomicilio.getTbUbigeo().getIdubigeo()+"");
+		//UbigeoSie ubigeo = objUbigeoService.findUbigeo(Integer.parseInt(getIdUbigeo()));
+		//setIdDepartamento(ubigeo.getCoddepartamento());
+		//comboManager.setIdDepartamento(idDepartamento);
+		//setIdProvincia(ubigeo.getCodprovincia());
+		//comboManager.setIdProvincia(idProvincia);
+		//setIdDistrito(ubigeo.getCoddistrito());
+		//ubigeoDefecto="";
+		//log.info("busquedaUbigeo "+ getIdDepartamento()+" - "+getIdProvincia()+" - "+getIdDistrito()+" - "+getIdUbigeo());
 	
 		/*busca el empleado, domicilio y teléfono*/
 		EmpleadoSie c = objEmpleadoService.buscarEmpleado(objEmpleado.getIdempleado());
