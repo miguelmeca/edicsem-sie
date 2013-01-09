@@ -114,10 +114,6 @@
 								<h:outputLabel value="Telefonos de Referencia" />
 							</f:facet>
 							
-							<p:commandButton icon="ui-icon-close" oncomplete="confirmationTelEmp.show()" title="eliminar">
-								<f:setPropertyActionListener value="#{o.telefono}" target="#{mantenimientoEmpleadoFormAction.selectTelef}" />
-							</p:commandButton>
-							
 							<p:column headerText="Item" style="width:125px">
 		                    <h:outputText value="#{o.item}" />
 		                    </p:column>
@@ -215,9 +211,18 @@
             <p:spinner value="#{mantenimientoEmpleadoFormAction.objContratoEmpleado.basico}" /> 
             <h:outputText value="#{message['empleado.periodoPrueba']}" />
             <p:inputText title="x mes" value="#{mantenimientoEmpleadoFormAction.objContratoEmpleado.periodoPrueba}"/> 
-            <p:commandButton value="Agregar" update="panelPagos" action="#{mantenimientoEmpleadoFormAction.agregarPago}" icon="ui-icon-check"/>
+            <p:commandButton value="Agregar" update="panelPagos, message" actionListener="#{mantenimientoEmpleadoFormAction.agregarPago}" icon="ui-icon-check"/>
            
             	<p:dataTable id="panelPagos" value="#{mantenimientoEmpleadoFormAction.contratoEmpleadoList}" var="c"  >
+						
+						<p:column headerText="item" >
+							<h:outputText value="#{c.item}" />
+						</p:column>
+						
+						<p:column headerText="#{message['empleado.tabla.cargo']}" >
+							<h:outputText value="#{c.tbCargoempleado.descripcion}" />
+						</p:column>
+						
 						<p:column headerText="#{message['empleado.tabla.cargo']}" >
 							<h:outputText value="#{c.tbCargoempleado.descripcion}" />
 						</p:column>
@@ -227,6 +232,20 @@
 						<p:column headerText="#{message['empleado.tabla.sueldo']}" >
 							<h:outputText value="#{c.basico}" />
 						</p:column>
+
+						     <p:column headerText="Eliminar" style="width:125px">
+		                    <p:commandButton id="showconfirmDeshabilitarConEmp" 
+				            value="Eliminar"  
+				            icon="ui-icon ui-icon-close"
+				            onclick="confirmationConEmp.show()"> 
+	 							
+                            <f:setPropertyActionListener
+		                    value="#{c.item}"
+		                    target="#{mantenimientoEmpleadoFormAction.idContrato}"     />
+
+                            </p:commandButton>
+		                    </p:column>
+		                    
 				</p:dataTable>
 			</h:panelGrid> 
             <p:commandButton id="btngu" value="Guardar" update="panel" actionListener="#{mantenimientoEmpleadoFormAction.insertar}" ajax="false" icon="ui-icon-check">
