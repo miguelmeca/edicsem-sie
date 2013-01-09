@@ -3,6 +3,7 @@ package com.edicsem.pe.sie.entity;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -64,6 +66,10 @@ public class DetEmpresaEmpleadoSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
+    
+    //bi-directional many-to-one association to ContratoEmpleadoSie
+  	@OneToMany(mappedBy="tbDetEmpresaEmpleado")
+  	private Set<ContratoEmpleadoSie> tbContratoEmpleados;
 
     public DetEmpresaEmpleadoSie() {
     }
@@ -154,6 +160,14 @@ public class DetEmpresaEmpleadoSie implements Serializable {
 
 	public void setIdDetEmpresaEmpl(Integer idDetEmpresaEmpl) {
 		this.idDetEmpresaEmpl = idDetEmpresaEmpl;
+	}
+
+	public Set<ContratoEmpleadoSie> getTbContratoEmpleados() {
+		return tbContratoEmpleados;
+	}
+
+	public void setTbContratoEmpleados(Set<ContratoEmpleadoSie> tbContratoEmpleados) {
+		this.tbContratoEmpleados = tbContratoEmpleados;
 	}
 	
 }
