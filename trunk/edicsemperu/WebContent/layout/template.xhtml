@@ -1086,7 +1086,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			position="center">
 
 			<p:commandButton type="submit" value="Si"
-				action="#{mantenimientoEmpleadoFormAction.updateDeshabilitar}"
+				action="#{mantenimientoEmpleadoFormAction.telefonoElimina}"
 				update="@all"
 				oncomplete="confirmation.hide()" ajax="false">
 			</p:commandButton>
@@ -1100,6 +1100,32 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 	<!-- 	FIN DESACTIVAR (TELEFONO DE EMPLEADO)  -->
 	
+		<!--	  INICIO DESACTIVAR	 CONTRATO DE EMPLEADO  -->
+
+<h:form>
+
+		<p:confirmDialog id="confirmDeshabilitarConEmp"
+			message="Los cambios se realizaran despues de hacer clic en Guardar?" width="325"
+			height="100" showEffect="explode" hideEffect="explode"
+			header="Confirm" severity="alert" widgetVar="confirmationConEmp"
+			position="center">
+
+			<p:commandButton type="submit" value="Si"
+				action="#{mantenimientoEmpleadoFormAction.contratoElimina}"
+				update="@all"
+				oncomplete="confirmation.hide()" ajax="false">
+			</p:commandButton>
+
+			<p:commandButton value="No" onclick="confirmation3.hide()"
+				type="button" />
+
+		</p:confirmDialog>
+
+	</h:form>
+
+	<!-- 	FIN DESACTIVAR (CONTRATO DE EMPLEADO)  -->
+
+
 	<!--	  INICIO DESACTIVAR	 DOMICLIO DE CLIENTE  -->
 
 <h:form>
