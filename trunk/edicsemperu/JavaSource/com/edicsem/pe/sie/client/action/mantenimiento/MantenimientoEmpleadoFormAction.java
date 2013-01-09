@@ -78,6 +78,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	private boolean defectoUbigeo;
 	private boolean skip;
 	private Date fechaInicioContrato;
+	private int idContrato;
 	 
 	private List<ContratoEmpleadoSie> contratoEmpleadoList;
 	
@@ -133,17 +134,39 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	
 	/**
 	 * Eliminar Teléfono de la lista*/
-	public void  telefonoElimina(){
-		log.info("telefono telefonoElimina " + selectTelef);
-		for (int i = 0; i < TelefonoPersonaList.size(); i++) {
-			log.info("t"+ TelefonoPersonaList.get(i)+"-"+selectTelef);
-			log.info("t"+ TelefonoPersonaList.get(i).getTelefono()+"-"+selectTelef);
-			if(TelefonoPersonaList.get(i).getTelefono().equals(selectTelef)){
-				TelefonoPersonaList.remove(i);
-				log.info("se elimino ");
+	 public void telefonoElimina(){
+	    	log.info("en eliminarProducto()");
+			for (int i = 0; i < TelefonoPersonaList.size(); i++) {
+				if(TelefonoPersonaList.get(i).getItem()==(ide)){
+					TelefonoPersonaList.remove(i);
+					for (int j = i; j < TelefonoPersonaList.size(); j++) {
+						log.info(" i " +i+"  j "+ j);
+						i=i+1;
+						TelefonoPersonaList.get(j).setItem(i);
+						TelefonoPersonaList.set(j, TelefonoPersonaList.get(j));
+					}
+				}
 			}
-		}
-	}
+			ide=0;
+	    }
+	 
+		/**
+		 * Eliminar Contrato de la lista*/
+		 public void contratoElimina(){
+		    	log.info("en eliminarContrato()");
+				for (int i = 0; i < contratoEmpleadoList.size(); i++) {
+					if(contratoEmpleadoList.get(i).getItem()==(idContrato)){
+						contratoEmpleadoList.remove(i);
+						for (int j = i; j < contratoEmpleadoList.size(); j++) {
+							log.info(" i " +i+"  j "+ j);
+							i=i+1;
+							contratoEmpleadoList.get(j).setItem(i);
+							contratoEmpleadoList.set(j, contratoEmpleadoList.get(j));
+						}
+					}
+				}
+				idContrato=0;
+		    }
 	
 	/* METODO AGREGAR TELEFONO */
 
@@ -541,15 +564,18 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		}
 	}
 	
-	public String agregarPago(){
+	public void agregarPago(){
 		log.info("agregarPago()" );
 		objContratoEmpleado.setTbCargoempleado(objCargoEmpleadoService.buscarCargoEmpleado(idCargo));
 		objContratoEmpleado.setFechaInicioContrato(fechaInicioContrato);
 		objContratoEmpleado.setTbTipoPago(objTipoPagoService.findTipoPago(idTipoPago));
+
+		int cantidad2=contratoEmpleadoList.size();
+		objContratoEmpleado.setItem(cantidad2+1);	
+		
 		contratoEmpleadoList.add(objContratoEmpleado);
 		log.info("agregado ooo " );
 		objContratoEmpleado= new ContratoEmpleadoSie();
-		return getViewMant();
 	}
 
 	public String onFlowProcess(FlowEvent event) {  
@@ -1186,6 +1212,20 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	 */
 	public void setIdEmpresa(int idEmpresa) {
 		this.idEmpresa = idEmpresa;
+	}
+
+	/**
+	 * @return the idContrato
+	 */
+	public int getIdContrato() {
+		return idContrato;
+	}
+
+	/**
+	 * @param idContrato the idContrato to set
+	 */
+	public void setIdContrato(int idContrato) {
+		this.idContrato = idContrato;
 	}  
 
 }
