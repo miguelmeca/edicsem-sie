@@ -99,18 +99,16 @@ public class MantenimientoProductoFormAction extends
 		log.info("cargarImagenInsertar** " + event.getFile().getFileName() );
 		String photo = event.getFile().getFileName();
 		FileImageOutputStream imageOutput;
-		String newFileName = "C:\\proyecto-sie\\ws-sie\\edicsemperu\\WebContent"
+		String newFileName = "C:\\ws-sie\\edicsemperu\\WebContent"
 				+ File.separator + "images" + File.separator + photo;
 		try {
 			setImage(new DefaultStreamedContent(event.getFile().getInputstream()));
 			
 			log.info("ruta " + newFileName + " - " + event.getFile().getFileName());
 			imageOutput = new FileImageOutputStream(new File(newFileName));
-			if(objProductoSie.getRutaimagenproducto()==null){
+			
 			objProductoSie.setRutaimagenproducto(newFileName);
 			log.info(" Ruta " + objProductoSie.getRutaimagenproducto()   );
-			
-			}
 			
 			foto = event.getFile().getContents();
 			imageOutput.write(foto, 0, foto.length);
@@ -144,7 +142,7 @@ public class MantenimientoProductoFormAction extends
 			else if (isNewRecord()) {
 				if (image == null) {
 					log.info("imagen nula");
-					String rutaDefecto ="C:\\proyecto-sie\\ws-sie\\edicsemperu\\WebContent\\images\\bibliaXDefecto.png";
+					String rutaDefecto ="C:\\ws-sie\\edicsemperu\\WebContent\\images\\bibliaXDefecto.png";
 					log.info("ruta" + rutaDefecto);
 					objProductoSie.setRutaimagenproducto(rutaDefecto);
 				}

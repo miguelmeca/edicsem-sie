@@ -381,14 +381,14 @@ public class MantenimientoContratoFormAction extends
 	public void insertarCobranza() throws Exception{
 		log.info(" insertarCobranza  :d "+objContratoSie.getNumcuotas()+" precio "+ precioProducto +"  fec ven  "+ objContratoSie.getFechacuotainicial());
 		BigDecimal d;
-		
+		boolean isadd=true;
 		if(tipopago==2){
 			//contado
 			cobranzaList= new ArrayList<CobranzaSie>();
 			d= new BigDecimal(getPrecioProducto());
 			d=d.setScale(2, RoundingMode.HALF_UP);
 			objCobranzaSie.setCantcuotas("1");
-			objCobranzaSie.setNumletra("1");
+			objCobranzaSie.setNumletra("0");
 			objCobranzaSie.setFecvencimiento(objContratoSie.getFechacuotainicial());
 			objCobranzaSie.setImpinicial(new BigDecimal(precioProducto));
 			cobranzaList.add(objCobranzaSie);
@@ -397,14 +397,14 @@ public class MantenimientoContratoFormAction extends
 		}else{
 			//crédito
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			 
+			log.info("  Pago Subinicial "+objContratoSie.getPagosubinicial());
 			cobranzaList= new ArrayList<CobranzaSie>() ;
 			 d = new BigDecimal(getPrecioProducto() /objContratoSie.getNumcuotas().doubleValue());
 			d=d.setScale(2, RoundingMode.HALF_UP);
 			objContratoSie.setPagomensual(d);
 			log.info(" d "+ d+"  Pagomensual "+objContratoSie.getPagomensual());
 			
-			if(objContratoSie.getPagosubinicial()!=new BigDecimal(0.0)){
+			if(objContratoSie.getPagosubinicial()!=new BigDecimal(0)){
 				BigDecimal d2= new BigDecimal(d.doubleValue()-objContratoSie.getPagosubinicial().doubleValue());
 				d2=d2.setScale(2, RoundingMode.HALF_UP);
 				objContratoSie.setCuotainicial(d2);
@@ -413,27 +413,52 @@ public class MantenimientoContratoFormAction extends
 			sdf.format(objContratoSie.getFechacuotainicial());
 			String fecha3 =sdf.format(objContratoSie.getFechacuotainicial());
 			fechaVencimiento =sdf.parse(fecha3);
-			for (int i = 1; i <= objContratoSie.getNumcuotas(); i++) {
+			for (int i = 0; i < objContratoSie.getNumcuotas(); i++) {
 				objCobranzaSie.setNumletra(i+"");
-				if(i==1 && objContratoSie.getCuotainicial()!=new BigDecimal(0.0)){
+				isadd=true;
+				log.info("  Pago Subinicial "+objContratoSie.getPagosubinicial()+"  "+new BigDecimal(0));
+				//si el cliente entrega una parte de la cuota inicial , letra 0
+				if(i==0 && objContratoSie.getPagosubinicial().doubleValue()>0){
+					log.info(" cuota inicial ");
+					objCobranzaSie.setImpinicial(objContratoSie.getPagosubinicial());
+					objCobranzaSie.setFecvencimiento(objContratoSie.getFechaentrega());
+					cobranzaList.add(objCobranzaSie);
+					objCobranzaSie= new CobranzaSie();
+					//lo que queda por pagar de la cuota inicial , letra -1
+					objCobranzaSie.setNumletra("-1");
 					objCobranzaSie.setImpinicial(objContratoSie.getCuotainicial());
-					fechaVencimiento=objContratoSie.getFechacuotainicial();
-				}else{
-					
-				objCobranzaSie.setImpinicial(objContratoSie.getPagomensual());
-				
-				if(i==1){
-					fechaVencimiento = DateUtil.addToDate(objContratoSie.getFechacuotainicial(), Calendar.MONTH, 1);
-				}else{
-					fechaVencimiento = DateUtil.addToDate(objContratoSie.getFechacuotainicial(), Calendar.MONTH, Integer.parseInt(objCobranzaSie.getNumletra())-1);
+					objCobranzaSie.setFecvencimiento(objContratoSie.getFechacuotainicial());
+					cobranzaList.add(objCobranzaSie);
+					objCobranzaSie= new CobranzaSie();
+					isadd=false;
+					log.info(DateUtil.formatoString(objCobranzaSie.getFecvencimiento(), "dd/MM/yyyy") +" Numcuotas "+objContratoSie.getNumcuotas()+" mensualito "+ objContratoSie.getPagomensual()
+							+"  pagar  "+objCobranzaSie.getImpinicial() +"num let "+objCobranzaSie.getNumletra());
+				//si el cliente no entrega cuota inicial
+				}else if(i==0 && objContratoSie.getPagosubinicial().doubleValue()<=0){
+					log.info(" no entrega cuota inicial ");
+					objCobranzaSie.setImpinicial(objContratoSie.getPagomensual());
+					fechaVencimiento = objContratoSie.getFechacuotainicial();
 				}
+				else{
+					log.info(" else  ");
+					objCobranzaSie.setImpinicial(objContratoSie.getPagomensual());
+				
+					if(i==0){
+						log.info(" i==0  ");
+						fechaVencimiento = DateUtil.addToDate(objContratoSie.getFechacuotainicial(), Calendar.MONTH, 1);
+					}else{
+						log.info(" i!=0  ");
+						fechaVencimiento = DateUtil.addToDate(objContratoSie.getFechacuotainicial(), Calendar.MONTH, Integer.parseInt(objCobranzaSie.getNumletra()));
+					}
 				}
 				log.info("fec venc  "+i +" "+ fechaVencimiento +" conv "+ DateUtil.formatoString(fechaVencimiento, "dd/MM/yyyy") +" Numcuotas "+objContratoSie.getNumcuotas()+" mensualito "+ objContratoSie.getPagomensual()
 						+"  pagar  "+objCobranzaSie.getImpinicial() );
+				if(isadd ){
+					log.info(" agregar ");
 				objCobranzaSie.setFecvencimiento(fechaVencimiento);
-				
 				cobranzaList.add(objCobranzaSie);
 				objCobranzaSie= new CobranzaSie();
+				}
 			}
 		}
 	}
@@ -540,6 +565,9 @@ public class MantenimientoContratoFormAction extends
 				}
 				
 				log.info("a insertar contratito");
+				if(tipopago==1){
+				objContratoSie.setNumcuotas(objContratoSie.getNumcuotas()-1);
+				}
 				objContratoService.insertContrato(idtipodoc,Tipocasa,idUbigeo, idempresa, objClienteSie, telefonoList, objDomicilioSie,  objContratoSie,detProductoContratoList, cobranzaList, detidEmpleadosList);
 				log.info(" despues de  insertar ");
 				mensaje = "Se inserto correctamente";
