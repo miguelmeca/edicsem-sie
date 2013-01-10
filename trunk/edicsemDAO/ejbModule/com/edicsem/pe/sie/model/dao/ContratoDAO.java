@@ -14,4 +14,5 @@ public interface ContratoDAO {
 	public abstract void updateContrato(ContratoSie contrato);
 	public abstract ContratoSie findContrato (int id);
 	public abstract List  listarContratos();
+	public abstract List listarContratosDeudores();
 }
