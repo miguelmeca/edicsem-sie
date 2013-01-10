@@ -83,6 +83,8 @@ public class Constants {
 	
 	public static final String ASIGNAR_PERMISOS_FORM_PAGE = "AsignarPermisosForm";
 	
+	public static final String GENERAR_LISTAS_COBRANZA_FORM_PAGE = "GenerarListasCobranzaForm";
+	
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
 	public static final String COD_ESTADO_TB_CARGO_EMPLEADO = "CE";
