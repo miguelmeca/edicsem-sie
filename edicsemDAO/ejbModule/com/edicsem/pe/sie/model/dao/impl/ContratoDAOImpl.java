@@ -12,6 +12,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.ContratoSie;
 import com.edicsem.pe.sie.model.dao.ContratoDAO;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 
 /**
  * @author karen
@@ -85,6 +86,21 @@ public class ContratoDAOImpl implements ContratoDAO{
 			e.printStackTrace();
 		}
 		return lista;
-	}	
+	}
 	
+	public List listarContratosDeudores() {
+		List  lista = null;
+		try {
+			//cobranzas que estan vencidas o por vencer en dos días (como recordatorio)
+			Query q = em.createQuery("select c from ContratoSie c inner join  c.tbCobranzas p where p.fecpago IS null and p.diasretraso > 0  or  " +
+			"  DATE(p.fecvencimiento) - DATE('"+ DateUtil.getDate(DateUtil.getToday().getTime())  + "')  <= 2 and p.fecpago IS null ");
+			
+			lista =  q.getResultList();
+			log.info("tamaño lista Cobranza --> " + lista.size()+"  ");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 }

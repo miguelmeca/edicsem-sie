@@ -15,6 +15,7 @@ import com.edicsem.pe.sie.entity.CobranzaSie;
 import com.edicsem.pe.sie.entity.MetaMesSie;
 import com.edicsem.pe.sie.model.dao.CobranzaDAO;
 import com.edicsem.pe.sie.model.dao.MetaMesDAO;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 
 /**
  * @author karen
@@ -81,10 +82,11 @@ public class CobranzaDAOImpl implements CobranzaDAO{
 		List  lista = null;
 		try {
 			//cobranzas que estan vencidas o por vencer en dos días (como recordatorio)
+			log.info("tamaño lista Cobranza --> "+ DateUtil.getDate(DateUtil.getToday().getTime()));
+			Query q = em.createQuery("select p from CobranzaSie p " +
+					"inner join p.tbCliente q where p.fecpago IS null and p.diasretraso > 0  or  " +
+			" DATE(p.fecvencimiento) - DATE('"+ DateUtil.getDate(DateUtil.getToday().getTime())  + "')  <= 2 and p.fecpago IS null ");
 			
-			Query q = em.createQuery("select p from CobranzaSie p where p.diasretraso > 0  ");
-//			or " +
-//			"  DATE(p.fecvencimiento) - DATE('"+ DateUtil.getDatePattern() + "')  <= 2 
 			lista =  q.getResultList();
 			log.info("tamaño lista Cobranza --> " + lista.size()+"  ");
 			
