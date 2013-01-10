@@ -84,7 +84,7 @@ public class ClienteSie implements Serializable {
 	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
 
-	//bi-directional many-to-one association to CobranzaSie
+	//bi-directional many-to-one association to CobranzaDTO
 	@OneToMany(mappedBy="tbCliente")
 	private Set<CobranzaSie> tbCobranzas;
 

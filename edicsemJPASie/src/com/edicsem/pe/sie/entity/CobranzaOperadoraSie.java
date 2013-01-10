@@ -25,13 +25,13 @@ public class CobranzaOperadoraSie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_COBRANZA_OPERADORA_IDCOBRANZAOPERADORA_GENERATOR" , sequenceName="SIE.TB_COBRANZA_OPERADORA_IDCOBRANZA_SEQ", initialValue=1, allocationSize =1)
+	@SequenceGenerator(name="TB_COBRANZA_OPERADORA_IDCOBRANZAOPERADORA_GENERATOR" , sequenceName="SIE.TB_COBRANZA_OPERADORA_IDCOBRANZAOPERADORA_SEQ", initialValue=1, allocationSize =1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_COBRANZA_OPERADORA_IDCOBRANZAOPERADORA_GENERATOR")
 	private Integer idCobranzaOperadora;
 
 	private String observaciones;
 
-	//bi-directional many-to-one association to CobranzaSie
+	//bi-directional many-to-one association to CobranzaDTO
     @ManyToOne
 	@JoinColumns({
 		@JoinColumn(name="idcliente", referencedColumnName="idcontrato"),
