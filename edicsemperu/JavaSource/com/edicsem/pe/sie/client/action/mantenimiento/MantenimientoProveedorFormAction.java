@@ -1,5 +1,7 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -8,6 +10,9 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.arjuna.ats.internal.jdbc.drivers.modifiers.list;
+import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.ProveedorSie;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.ProveedorService;
@@ -21,6 +26,7 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
     /*Se crean los objetos de las entidades proveedor*/	
 	private ProveedorSie objProveedor;
 	/*variables*/
+	private String mensaje;
 	private String nombre;
 	private int TipoDocumento;
 	private int estado;
@@ -140,21 +146,47 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 				objProveedor.setTbTipoDocumentoIdentidad(objTipoDocService.buscarTipoDocumento(TipoDocumento));
 				/*Estado del Proveedor: habilitado(9)*/
 				objProveedor.setTbEstadoGeneral(objEstadoService.findEstadogeneral(9));
+				
+				log.info("inicio validar codigo de proveedor");
+				int error = 0;
+				List<ProveedorSie> lista = mantenimientoProveedorSearch.getProveedorList();
+				for (int i = 0; i < lista.size(); i++) {
+					ProveedorSie p = lista.get(i);
+					if (p.getCodproveedor().equalsIgnoreCase(objProveedor.getCodproveedor())) {
+						log.info("Error ... Ya se encuentra un código igual");
+						mensaje ="Ya se encuentra asignado el código por otro proveedor";
+						error = 1;
+						break;
+					}
+				}
+				if (error == 0) {
 				if (isNewRecord()) {
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+							Constants.MESSAGE_REGISTRO_TITULO, mensaje);
 					log.info("insertando..... ");
 					objProveedorService.insertarProveedor(objProveedor);
 					log.info("insertando..... ");
 					setNewRecord(false);
 				} else {
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+							Constants.MESSAGE_REGISTRO_TITULO, mensaje);
 					log.info("actualizando..... ");
 					objProveedorService.actualizarProveedor(objProveedor);
 					log.info("insertando..... ");
 				}
-		} catch (Exception e) {
+		}else{
+			// Mostrar Validacion
+			log.info("mensaje de error");
+			msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+		}
+		FacesContext.getCurrentInstance().addMessage(null, msg);			
+		}
+		 catch (Exception e) {
 			e.printStackTrace();
 			nombre = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, nombre);
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
@@ -284,5 +316,19 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 	public void setEstado(int estado) {
 		this.estado = estado;
 	}
-	   	
+
+	/**
+	 * @return the mensaje
+	 */
+	public String getMensaje() {
+		return mensaje;
+	}
+
+	/**
+	 * @param mensaje the mensaje to set
+	 */
+	public void setMensaje(String mensaje) {
+		this.mensaje = mensaje;
+	}
+	
 }
