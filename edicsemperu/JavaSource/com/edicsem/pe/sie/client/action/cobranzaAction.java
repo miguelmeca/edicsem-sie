@@ -26,7 +26,6 @@ public class cobranzaAction extends BaseMantenimientoAbstractAction {
 	
 	private String mensaje;
 	private boolean editMode;
-    private int cantOperadora;
     private List<CobranzaSie> cobranzaList;
     private List<String> empleadoList;
     
@@ -121,20 +120,6 @@ public class cobranzaAction extends BaseMantenimientoAbstractAction {
 	 */
 	public void setEditMode(boolean editMode) {
 		this.editMode = editMode;
-	}
-
-	/**
-	 * @return the cantOperadora
-	 */
-	public int getCantOperadora() {
-		return cantOperadora;
-	}
-
-	/**
-	 * @param cantOperadora the cantOperadora to set
-	 */
-	public void setCantOperadora(int cantOperadora) {
-		this.cantOperadora = cantOperadora;
 	}
 
 	/**

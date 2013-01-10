@@ -16,9 +16,6 @@
 					<f:selectItems  value="#{comboAction.empleadoxcargo}" />
 					</p:selectCheckboxMenu>
 					
-					<p:outputLabel value="#{message['cobranza.cant.operadora']}" for="cantidad"/>
-					<p:spinner id="cantidad" value="#{cobranza.cantOperadora}" />
-					
 				</h:panelGrid>
 				
 				<p:commandButton action="#{cobranza.insertar}"
