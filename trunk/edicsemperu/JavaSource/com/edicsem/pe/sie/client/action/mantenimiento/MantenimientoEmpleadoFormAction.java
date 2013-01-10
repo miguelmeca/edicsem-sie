@@ -27,8 +27,10 @@ import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
+import com.edicsem.pe.sie.service.facade.DetContratoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.DomicilioEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
+import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.TipoPagoService;
@@ -87,6 +89,8 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	@ManagedProperty(value = "#{mantenimientoEmpleadoSearchAction}")
 	private MantenimientoEmpleadoSearchAction mantenimientoEmpleadoSearch;
 	
+	@EJB
+	private EmpresaService objEmpresaService;
 	@EJB
 	private UbigeoService objUbigeoService;
 	@EJB 
@@ -429,8 +433,8 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	        /*Estado del teléfono: deshabilitado(18)*/
 	        objTelefono.setTbEstadoGeneral(objEstadoService.findEstadogeneral(18));
 			log.info("actualizando ESTADO..... ");
-			objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, objTelefono, codigoTipoDocumento,  codigoCargoEmpleado, 
-					estado, idUbigeo,  tipo, CargoEmpleado, DomicilioPersona,  TelefonoPersona, TipoDocumento, codigoEmpleado, contratoEmpleadoList, TelefonoPersonaList);
+			objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, codigoTipoDocumento,  codigoCargoEmpleado,  
+			idUbigeo, tipo,  idCargo, DomicilioPersona, TelefonoPersona,TipoDocumento, idEmpresa, idTipoPago, codigoEmpleado, contratoEmpleadoList, TelefonoPersonaList);
 			log.info("actualizando..... ");
 			log.info("deshabilitando..... ");
 		} catch (Exception e2) {
@@ -535,15 +539,14 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 				if (isNewRecord()) {
 					log.info("insertando..... ");
 					log.info("insertar empleado  ");
-					objEmpleadoService.insertarEmpleado(objEmpleado,objDomicilio,objTelefono, codigoTipoDocumento,  codigoCargoEmpleado,  
-					idUbigeo, tipo,  CargoEmpleado, DomicilioPersona, TelefonoPersona,TipoDocumento, codigoEmpleado, contratoEmpleadoList, TelefonoPersonaList);
+					objEmpleadoService.insertarEmpleado(objEmpleado,objDomicilio, codigoTipoDocumento,  codigoCargoEmpleado,  
+					idUbigeo, tipo,  idCargo, DomicilioPersona, TelefonoPersona,TipoDocumento, idEmpresa, idTipoPago, codigoEmpleado, contratoEmpleadoList, TelefonoPersonaList);
 					log.info("insertando..... ");
 					setNewRecord(false);
 				} else {
 					log.info("actualizando..... ");
-					objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, objTelefono, codigoTipoDocumento,  codigoCargoEmpleado,   
-							estado,  idUbigeo,  tipo,  CargoEmpleado, DomicilioPersona,  TelefonoPersona,
-							TipoDocumento, codigoEmpleado,  contratoEmpleadoList, TelefonoPersonaList);
+					objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, codigoTipoDocumento,  codigoCargoEmpleado,  
+					idUbigeo, tipo,  idCargo, DomicilioPersona, TelefonoPersona,TipoDocumento, idEmpresa, idTipoPago, codigoEmpleado, contratoEmpleadoList, TelefonoPersonaList);
 					log.info("insertando..... ");
 				}
 		} catch (Exception e) {
@@ -572,7 +575,8 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 
 		int cantidad2=contratoEmpleadoList.size();
 		objContratoEmpleado.setItem(cantidad2+1);	
-		
+		objContratoEmpleado.setEmpresa(idEmpresa);
+		objContratoEmpleado.setDescEmpresa(objEmpresaService.findEmpresa(idEmpresa).getRazonsocial());
 		contratoEmpleadoList.add(objContratoEmpleado);
 		log.info("agregado ooo " );
 		objContratoEmpleado= new ContratoEmpleadoSie();
