@@ -44,7 +44,13 @@ public class ContratoEmpleadoSie implements Serializable {
     @Transient
     private int item;
 	
-	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
+    @Transient
+    private int empresa;
+ 
+    @Transient
+    private String descEmpresa;
+    
+    @Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
 	
 	@Temporal( TemporalType.DATE)
@@ -242,6 +248,34 @@ public class ContratoEmpleadoSie implements Serializable {
 
 	public void setTbDetEmpresaEmpleado(DetEmpresaEmpleadoSie tbDetEmpresaEmpleado) {
 		this.tbDetEmpresaEmpleado = tbDetEmpresaEmpleado;
+	}
+
+	/**
+	 * @return the empresa
+	 */
+	public int getEmpresa() {
+		return empresa;
+	}
+
+	/**
+	 * @param empresa the empresa to set
+	 */
+	public void setEmpresa(int empresa) {
+		this.empresa = empresa;
+	}
+
+	/**
+	 * @return the descEmpresa
+	 */
+	public String getDescEmpresa() {
+		return descEmpresa;
+	}
+
+	/**
+	 * @param descEmpresa the descEmpresa to set
+	 */
+	public void setDescEmpresa(String descEmpresa) {
+		this.descEmpresa = descEmpresa;
 	}
 	
 }
