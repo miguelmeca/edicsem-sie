@@ -65,7 +65,7 @@ public class ContratoSie implements Serializable {
 
 	private String usuariomodifica;
 
-	//bi-directional many-to-one association to CobranzaSie
+	//bi-directional many-to-one association to CobranzaDTO
 	@OneToMany(mappedBy="tbContrato")
 	private Set<CobranzaSie> tbCobranzas;
 
