@@ -11,10 +11,8 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.primefaces.context.RequestContext;
 
 import com.edicsem.pe.sie.client.action.ComboAction;
-import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
@@ -312,9 +310,9 @@ FacesContext.getCurrentInstance().addMessage(null, msg);
 						
 						for (int i = 0; i < lista.size(); i++) {
 							EmpresaSie s = lista.get(i);
-							if (s.getRazonsocial().equalsIgnoreCase(objEmpresaSie.getRazonsocial())
-							 || s.getDescripcion().equalsIgnoreCase(objEmpresaSie.getDescripcion())
-							 || s.getEmail().equalsIgnoreCase(objEmpresaSie.getEmail()))
+							if (s.getRazonsocial().equalsIgnoreCase(objEmpresaSie.getRazonsocial().trim())
+							 || s.getDescripcion().equalsIgnoreCase(objEmpresaSie.getDescripcion().trim())
+							 || s.getEmail().equalsIgnoreCase(objEmpresaSie.getEmail().trim()))
 									{
 								log.info("Error ... Ya se encuentra una EMPRESA igual");
 								mensaje ="Ya se encuentra unA EMPRESA con el mismo nombre";
