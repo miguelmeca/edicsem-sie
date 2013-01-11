@@ -12,7 +12,7 @@
 	    <p:wizard id="wiz" widgetVar="wiz" flowListener="#{mantenimientoEmpleadoFormAction.onFlowProcess}">
 	    <p:tab title="#{message['empleado.tabpersonal']}">
 	    <p:panel header="Datos Personales"> 
-	    <h:messages errorClass="error"/>  
+	     <p:messages showDetail="true"/> 	  
         <h:panelGrid columns="2" cellpadding="5">						
 			<p:outputLabel value="#{message['empleado.nombre']}" for="nombre" />
 			<p:inputText id="nombre" value="#{mantenimientoEmpleadoFormAction.objEmpleado.nombreemp}" required="true" label="Nombre" 
@@ -53,10 +53,11 @@
 			<p:calendar pagedate="-8380" maxdate="today" value="#{mantenimientoEmpleadoFormAction.objEmpleado.fechanacimiento}" id="fechanac" showButtonPanel="true" required="true"  pattern="dd/MM/yyyy"
 			label="Fecha de nacimiento" requiredMessage="#{message['empleado.fechanac.validation']}"/>                  
             
-            <h:outputText value="#{message['contrato.cliente.email']}" />
-					<p:inputText value="#{mantenimientoEmpleadoFormAction.objEmpleado.correo}" id="email" validatorMessage="Email incorrecto" maxlength="45" >
+            <h:outputText value="#{message['contrato.cliente.correo']}" />
+					<p:inputText value="#{mantenimientoEmpleadoFormAction.objEmpleado.correo}" required="true" requiredMessage="#{message['contrato.cliente.email.validation']}" id="email" validatorMessage="Email incorrecto" maxlength="45" >
 					 <f:validateRegex pattern="#{message['pattern.email.norequired']}" />
 					</p:inputText>
+            <p:watermark for="email" value="ejm@edicsem.com" /> 
             
 			</h:panelGrid>
 			</p:panel>
