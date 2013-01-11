@@ -73,6 +73,10 @@ public class MantenimientoParametroFormAction extends BaseMantenimientoAbstractA
 					log.info("actualizando..... ");
 					objParametroService.actualizarParametro(objParametro);
 					log.info("insertando..... ");
+					nombre ="";
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+							Constants.MESSAGE_REGISTRO_TITULO, nombre);
+					FacesContext.getCurrentInstance().addMessage(null, msg);	
 		} catch (Exception e) {
 			e.printStackTrace();
 			nombre = e.getMessage();
