@@ -13,9 +13,11 @@ import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.model.dao.ClienteDAO;
 import com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO;
+import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
 import com.edicsem.pe.sie.model.dao.TelefonoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.TipoCasaDAO;
+import com.edicsem.pe.sie.model.dao.UbigeoDAO;
 import com.edicsem.pe.sie.service.facade.ClienteService;
 
 
@@ -26,10 +28,13 @@ public class ClienteServiceImpl implements ClienteService {
 	
 	@EJB
 	private  ClienteDAO objClienteDao;
-	
+	@EJB
+	private UbigeoDAO objUbigeoDao;
 	
 	@EJB
 	private EstadoGeneralDAO objEstadoGeneralDao;
+	
+	
 	
 	@EJB
 	private TelefonoEmpleadoDAO objTelefonoDao;
@@ -52,7 +57,7 @@ public class ClienteServiceImpl implements ClienteService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ClienteService#updateCliente(com.edicsem.pe.sie.entity.ClienteSie, java.util.List)
 	 */
-	public void updateCliente(ClienteSie Cliente, List<TelefonoPersonaSie> TelefonoPersonaList, List<DomicilioPersonaSie> DomicilioPersonaList  ) {
+	public void updateCliente(ClienteSie Cliente, List<TelefonoPersonaSie> TelefonoPersonaList,int tipo,DomicilioPersonaSie objDomicilio,String idUbigeo  ) {
 		log.info("ClienteServiceImpl ");
 		objClienteDao.updateCliente(Cliente);
 		
@@ -61,8 +66,10 @@ public class ClienteServiceImpl implements ClienteService {
 				//insertar
 			TelefonoPersonaSie telefono=new TelefonoPersonaSie();
 			telefono =	TelefonoPersonaList.get(i);
+			 
 			telefono.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(17));
 			telefono.setIdcliente(Cliente);
+			
 			objTelefonoDao.insertarTelefonoEmpleado(telefono);	
 			log.info("");
 			}else{
@@ -70,32 +77,50 @@ public class ClienteServiceImpl implements ClienteService {
 				objTelefonoDao.actualizarTelefonoEmpleado(TelefonoPersonaList.get(i));
 			}
 			}
-	
-		for (int j = 0; j < DomicilioPersonaList.size(); j++) {
-			if (DomicilioPersonaList.get(j).getNuevoD()==1) {
-				log.info("insertar el nuevo domicilio");
-				//insertar
-				DomicilioPersonaSie domicilioJ=new DomicilioPersonaSie();
-				domicilioJ =	DomicilioPersonaList.get(j);
-				domicilioJ.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(15));
-
-				log.info("ID CLiente SERVICE"+ Cliente.getIdcliente());
-				
-				domicilioJ.setIdcliente(Cliente);
-
-				
-			objDomicilioEmpleadoDao.insertarDomicilioEmpleado(domicilioJ);
-			
-			log.info("objDomicilioEmpleadoDao "+ domicilioJ);
-			
-			}else{
-				log.info(" actualizar domicilio ");
-				objDomicilioEmpleadoDao.actualizarDomicilioEmpleado(DomicilioPersonaList.get(j));
-				
-			}
 		
-	
-		}
+		
+		 /**Inserta el domicilio**/
+		
+		
+		
+		objDomicilio.setIdcliente(objClienteDao.findCliente(Cliente.getIdcliente()));
+		objDomicilio.setTbUbigeo(objUbigeoDao.findUbigeo(Integer.parseInt(idUbigeo)));		
+		objDomicilio.setTbTipoCasa(objTipoCasaDao.findTipoCasa(tipo));		
+		/**Estado del domicilio: habilitado(15)**/		
+		objDomicilio.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(15));
+		
+		
+		objDomicilioEmpleadoDao.insertarDomicilioEmpleado(objDomicilio);
+//	
+//		for (int j = 0; j < DomicilioPersonaList.size(); j++) {
+//			if (DomicilioPersonaList.get(j).getNuevoD()==1) {
+//				log.info("insertar el nuevo domicilio");
+//				//insertar
+//				DomicilioPersonaSie domicilioJ=new DomicilioPersonaSie();
+//				domicilioJ =	DomicilioPersonaList.get(j);
+//				domicilioJ.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(15));
+//
+//				log.info("ID CLiente SERVICE"+ Cliente.getIdcliente());
+//				
+//				domicilioJ.setIdcliente(Cliente);
+//
+//				
+//			objDomicilioEmpleadoDao.insertarDomicilioEmpleado(domicilioJ);
+//			
+//			log.info("objDomicilioEmpleadoDao "+ domicilioJ);
+//			
+//			}else{
+//				log.info(" actualizar domicilio ");
+//				objDomicilioEmpleadoDao.actualizarDomicilioEmpleado(DomicilioPersonaList.get(j));
+//				
+//			}
+//		
+//	
+//		}
+		
+		
+		
+		
 	}
 
 	/* (non-Javadoc)
