@@ -94,6 +94,9 @@ public class ClienteSie implements Serializable {
 	
 	@Transient
 	private String nombresCompletos;
+	
+	  @Transient
+	  private int item;
 
     public ClienteSie() {
     }
@@ -293,5 +296,19 @@ public class ClienteSie implements Serializable {
 	 */
 	public void setTipocliente(Integer tipocliente) {
 		this.tipocliente = tipocliente;
+	}
+
+	/**
+	 * @return the item
+	 */
+	public int getItem() {
+		return item;
+	}
+
+	/**
+	 * @param item the item to set
+	 */
+	public void setItem(int item) {
+		this.item = item;
 	}
 }
