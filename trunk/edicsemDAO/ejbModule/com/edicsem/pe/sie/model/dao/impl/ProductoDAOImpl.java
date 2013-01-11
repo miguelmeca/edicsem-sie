@@ -35,7 +35,7 @@ public class ProductoDAOImpl implements ProductoDAO {
 
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("insertar Producto "+ producto.getCodproducto());
+				log.info("insertar Producto "+ producto.getIdproducto());
 			}
 			em.persist(producto);
 		} catch (Exception e) {
@@ -74,11 +74,12 @@ public class ProductoDAOImpl implements ProductoDAO {
 		ProductoSie producto = new ProductoSie();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("buscar Producto");
+				log.info("buscar Producto"+id);
 			}
 			producto = em.find(ProductoSie.class, id);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println("findProducto DENTRO DEL CATCH");
 		}
 		return producto;
 	}
