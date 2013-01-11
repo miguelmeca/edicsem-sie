@@ -60,7 +60,8 @@ public class EstadogeneralDAOImpl implements EstadoGeneralDAO {
 			} 
 		e=	em.find(EstadoGeneralSie.class, id);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+//			ex.printStackTrace();
+			System.out.println("findEstadoGeneral");
 		}
 		return e;
 	}
