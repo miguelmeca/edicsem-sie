@@ -7,6 +7,7 @@
    <ui:define name="body">
     <h1 class="title ui-widget-header ui-corner-all">MantenimientoEmpleados</h1>
      <h:form id="formManteEmpList" prependId="false">
+	 <p:messages showDetail="true"/> 	  
 	  <p:dataTable value="#{mantenimientoEmpleadoSearchAction.empleadoList}" var="p"
 	   id="listaPersonas" paginator="true" rows="5"
        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
