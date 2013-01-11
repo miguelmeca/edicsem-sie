@@ -8,7 +8,7 @@
 		<h1 class="title ui-widget-header ui-corner-all"> Mantenimiento Cargo de Empleado</h1>
 		
 		<h:form id="manteCargoEmpleado" prependId="false">
-		<p:growl id="message" showDetail="true" />		
+		  <p:messages showDetail="true"/> 	
 		
 		<p:dataTable value="#{mantenimientoCargoEmpleadoSearchAction.cargoEmpleadomodel}"  var="m"
 					id="listaPersonas" paginator="true" rows="10"
