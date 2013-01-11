@@ -72,7 +72,7 @@ public class Constants {
 	public static final String MANT_SANCION_FORM_PAGE  = "mantenimientoSancionForm";
 	
 	public static final String MANT_PAQUETEBIBLICO_FORM_LIST_PAGE = "mantenimientoPaqueteBiblicoList";
-	public static final String MANT_DETALLEPAQUETEBIBLICO_FORM_LIST_PAGE = "mantenimientoDetallePaqueteBiblicoList";
+//	public static final String MANT_DETALLEPAQUETEBIBLICO_FORM_LIST_PAGE = "mantenimientoDetallePaqueteBiblicoList";
 	public static final String MANT_DETALLEPAQUETEBIBLICO_FORM_PAGE  = "mantenimientoDetallePaqueteBiblicoForm";
 																		 
 	public static final String MANT_PAGO_VENDEDOR_FORM_PAGE = "mantenimientoPagoVentaForm";
