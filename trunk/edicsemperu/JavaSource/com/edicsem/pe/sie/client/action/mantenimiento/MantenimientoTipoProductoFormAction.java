@@ -88,6 +88,11 @@ public class MantenimientoTipoProductoFormAction extends
 				objTipoProductoService.updateTipoProducto(objTipoProductoSie);				
 				log.info("actualizando..... ");					
 			}
+			//mensaje
+			mensaje ="";
+			msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					Constants.MESSAGE_REGISTRO_TITULO, mensaje);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (Exception e) {
 
 			e.printStackTrace();
