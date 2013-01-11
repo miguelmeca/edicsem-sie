@@ -139,7 +139,11 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 					log.info("actualizando..... ");
 					objCobranzaOperaService.updateCobranzaOpera(objCobranzaOpera);
 					log.info("insertando..... ");
-			 
+					//mensaje
+					nombre ="";
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+							Constants.MESSAGE_REGISTRO_TITULO, nombre);
+					FacesContext.getCurrentInstance().addMessage(null, msg);
 			 }else{
 			   nombre = "";
 			   msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
