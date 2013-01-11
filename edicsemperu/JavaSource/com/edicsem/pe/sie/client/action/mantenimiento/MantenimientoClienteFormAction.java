@@ -621,23 +621,24 @@ objClienteService.updateCliente(objClienteSie, TelefonoPersonaList,
 		log.info("updateGeneral()");
  
 		log.info(" id cliente " + objClienteSie.getIdcliente() + " nombre "	+ objClienteSie.getNombrecliente());
-
-//		TelefonoPersonaList = objTelefonoService.listarTelefonoCliente(objClienteSie.getIdcliente());		
-//		DomicilioPersonaList = objDomicilioPersonaService.listarDomicilioCliente(objClienteSie.getIdcliente());
-
-//		ingresarUbigeoLista();
-
-//		log.info("antes de telefono 2");
-//		if (TelefonoPersonaList == null)
-//			TelefonoPersonaList = new ArrayList<TelefonoPersonaSie>();
-
-//		TipoDocumento = objClienteSie.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad();
-
-//		if (DomicilioPersonaList == null)
-//			DomicilioPersonaList = new ArrayList<DomicilioPersonaSie>();
 		
 		
-//		setTipoDocumento(objClienteSie.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad());
+
+		TelefonoPersonaList = objTelefonoService.listarTelefonoCliente(objClienteSie.getIdcliente());		
+	DomicilioPersonaList = objDomicilioService.listarDomicilioCliente(objClienteSie.getIdcliente());
+
+
+		
+		if (TelefonoPersonaList == null)
+			TelefonoPersonaList = new ArrayList<TelefonoPersonaSie>();
+
+		TipoDocumento = objClienteSie.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad();
+
+		if (DomicilioPersonaList == null)
+			DomicilioPersonaList = new ArrayList<DomicilioPersonaSie>();
+		
+		
+	setTipoDocumento(objClienteSie.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad());
  
 	
 	
