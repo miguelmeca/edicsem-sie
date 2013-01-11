@@ -909,6 +909,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 						rendered="#{mantenimientoCargoEmpleadoFormAction.editMode}" 
 						onkeypress="return validarLetras(event)"
 						 title="nombre del cargo de empleado"/>
+						 <p:watermark for="descripcion1" value="marco" />  
 
 					<p:inputText id="descripcion2"
 						value="#{mantenimientoCargoEmpleadoFormAction.objCargoEmpleadoSie.descripcion}"
@@ -918,7 +919,8 @@ function validarEspaciosLetrasNumeros(e) { // 1
 						rendered="#{!mantenimientoCargoEmpleadoFormAction.editMode}" 
 						onkeypress="return  validarLetras(event)"
 						 title="nombre del cargo de empleado"/>
-					<p:message for="descripcion1" />
+
+					
 
 				</h:panelGroup>
 				
