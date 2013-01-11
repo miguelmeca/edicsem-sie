@@ -18,7 +18,7 @@
 				<h:panelGrid columns="2" id="panel"   >
 					<h:panelGroup>
 					<h:outputText value="#{message['movimiento.tipo']}" />
-					<p:selectOneMenu id="idtipokardex" required="true" requiredMessage="#{message['movimiento.tipokardex.validation']}" 
+					<p:selectOneMenu id="idtipokardex" required="true"   
 						value="#{movimientoMercaderia.idtipokardexproducto}"  style="width:165px" >
 						<f:selectItem itemLabel="Seleccione tipo kardex" itemValue="#{null}" />
 						<f:selectItems id="tipokardex" value="#{comboAction.tipoKardexItems}"  />
@@ -26,7 +26,6 @@
 					</p:selectOneMenu>
 					</h:panelGroup>
 					<p:message for="idtipokardex" />
-					
 					
 					<p:fieldset legend="Datos Producto">
 					<h:panelGrid columns="6">
@@ -45,7 +44,7 @@
 					 </h:panelGroup>
 					 
 					<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
-					<p:selectOneMenu id="tipoProd" value="#{comboAction.tipoProducto}" requiredMessage="#{message['movimiento.tipoProducto.validation']}"
+					<p:selectOneMenu id="tipoProd" value="#{comboAction.tipoProducto}" 
 						required="true"  style="width:165px" >
 						<f:selectItem itemLabel="Seleccionar tipo" itemValue="#{null}" />
 						<f:selectItems value="#{comboAction.tipoitems}" />
@@ -54,7 +53,7 @@
 					<p:message for="tipoProd" />
 					
 					<h:outputText value="#{message['mantenimiento.producto']}" />
-					<p:selectOneMenu id="produc" requiredMessage="#{message['movimiento.producto.validation']} "
+					<p:selectOneMenu id="produc"  
 						value="#{movimientoMercaderia.idproducto}" required="true"  style="width:165px" >
 						<f:selectItem itemLabel="Seleccione Producto" itemValue="#{null}"  />
 						<f:selectItems value="#{comboAction.productositems}" />
@@ -67,7 +66,7 @@
 					<h:panelGrid columns="6" >
 					<h:outputText value="Almacen" />
 					<p:selectOneMenu id="idAlmacen" size="1" required="true"  style="width:165px" 
-						value="#{movimientoMercaderia.idAlmacen}" requiredMessage="#{message['movimiento.almacen.validation']}" >
+						value="#{movimientoMercaderia.idAlmacen}"  >
 						<f:selectItem itemLabel="Seleccione almacen" itemValue="#{null}" />
 						<f:selectItems value="#{comboAction.almacenItems}" />
 					</p:selectOneMenu>
