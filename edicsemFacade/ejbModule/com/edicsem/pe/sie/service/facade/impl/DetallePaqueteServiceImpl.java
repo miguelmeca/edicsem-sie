@@ -48,7 +48,7 @@ public class DetallePaqueteServiceImpl implements DetallePaqueteService {
 	 * @see com.edicsem.pe.sie.service.facade.DetallePaqueteService#listarDetPaquetes(int)
 	 */
 	public List listarDetPaquetes(int paquete){
-		log.info("en el servicio" + paquete);
+		log.info("en el servicio");
 		return objDetPaqueteDao.listarDetPaquetes(paquete);
 	}
 }
