@@ -66,6 +66,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		editMode = true;
 		objCargoEmpleadoSie = new CargoEmpleadoSie();
 		
+		
 		setNewRecord(true);
 		return getViewList();
 	}
@@ -75,6 +76,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		objCargoEmpleadoSie = objCargoEmpleadoService.buscarCargoEmpleado(objCargoEmpleadoSie.getIdcargoempleado());
 		log.info(" id cargo " +objCargoEmpleadoSie.getIdcargoempleado() + " des "+ objCargoEmpleadoSie.getDescripcion());		
 		setIdcargoempleado(objCargoEmpleadoSie.getIdcargoempleado().toString());
+	
 
 		setIdEstadoGeneral(objCargoEmpleadoSie.getTbEstadoGeneral().getIdestadogeneral());
 		setNewRecord(false);
@@ -97,7 +99,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 			List<CargoEmpleadoSie> lista = mantenimientoCargoEmpleadoSearch.getCargoEmpleadomodel();
 			for (int i = 0; i < lista.size(); i++) {
 				CargoEmpleadoSie a = lista.get(i);
-				if (a.getDescripcion().equalsIgnoreCase(objCargoEmpleadoSie.getDescripcion())) {
+				if (a.getDescripcion().equalsIgnoreCase(objCargoEmpleadoSie.getDescripcion().trim())) {
 					log.info("Error ... Ya se encuentra un cargo igual");
 					mensaje ="Ya se encuentra un cargo con el mismo nombre";
 					error = 1;
@@ -108,13 +110,14 @@ public class MantenimientoCargoEmpleadoFormAction extends
 			if (isNewRecord()) {
 					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 							Constants.MESSAGE_REGISTRO_TITULO, mensaje);
+					objCargoEmpleadoSie.setDescripcion(	objCargoEmpleadoSie.getDescripcion().trim());
 				objCargoEmpleadoService.insertarCargoEmpleado(objCargoEmpleadoSie);
 			}
 			else {
 
 				objCargoEmpleadoSie.setIdcargoempleado(Integer.parseInt(getIdcargoempleado()));
 
-				objCargoEmpleadoSie.setDescripcion(objCargoEmpleadoSie.getDescripcion());
+				objCargoEmpleadoSie.setDescripcion(objCargoEmpleadoSie.getDescripcion().trim());
 				objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(getIdEstadoGeneral()));
 				
 				log.info("----->>>"
