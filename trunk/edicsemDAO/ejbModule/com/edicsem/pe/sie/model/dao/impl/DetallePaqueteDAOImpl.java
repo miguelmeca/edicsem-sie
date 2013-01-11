@@ -38,7 +38,7 @@ public class DetallePaqueteDAOImpl implements DetPaqueteDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return p;
+		return p;	
 	}
 	
 	/* (non-Javadoc)
@@ -48,7 +48,7 @@ public class DetallePaqueteDAOImpl implements DetPaqueteDAO {
 		List lista = null;
 		try {
 			log.info("Antes del QUERY DAOIMPL");
-			Query q = em.createQuery("select p from DetPaqueteSie p where p.tbPaquete.idpaquete = "+ paquete);
+			Query q = em.createQuery("select p from DetPaqueteSie p where p.tbEstadoGeneral.idestadogeneral =  62  AND p.tbPaquete.idpaquete = "+ paquete);
 			lista = q.getResultList();
 			log.info("dspues de la lista tamaño lista DetPaqueteSie --> " + lista.size());
 		} catch (Exception e) {
@@ -63,11 +63,12 @@ public class DetallePaqueteDAOImpl implements DetPaqueteDAO {
 	public void insertDetPaquete(DetPaqueteSie p) {
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("insertar DetPaquete "+ p.getIdDetPaquete());
+				log.info("insertar DetPaquete "+ p.getCantidad() );
 			}
 			em.persist(p);
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("DAOIMPL" +e.getMessage());
 		}
 	}
 
