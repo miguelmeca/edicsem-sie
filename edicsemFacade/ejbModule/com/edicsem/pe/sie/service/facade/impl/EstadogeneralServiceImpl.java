@@ -3,8 +3,13 @@ package com.edicsem.pe.sie.service.facade.impl;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.edicsem.pe.sie.entity.EstadoGeneralSie;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO; 
+import com.edicsem.pe.sie.model.dao.impl.EstadogeneralDAOImpl;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 
 /**
@@ -16,6 +21,8 @@ public class EstadogeneralServiceImpl implements EstadogeneralService{
 	
 	@EJB
 	private EstadoGeneralDAO objEstadogeneralDao;
+	
+	private static Log log = LogFactory.getLog(EstadogeneralServiceImpl.class);
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.EstadogeneralService#insertEstadogeneral(com.edicsem.pe.sie.entity.EstadoGeneralSie)
@@ -45,6 +52,8 @@ public class EstadogeneralServiceImpl implements EstadogeneralService{
 	 */
 
 	public EstadoGeneralSie findEstadogeneral(int id) {
+		log.info("en el servicio");
+	
 		return objEstadogeneralDao.findEstadoGeneral(id); 
 	}
 
