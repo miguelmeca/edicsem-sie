@@ -8,6 +8,7 @@
 	<ui:define name="body">
 	<h1 class="title ui-widget-header ui-corner-all">Incidencias</h1>
 	<h:form id="editarIncidencia">
+			 <p:messages showDetail="true" />
 			 <p:fieldset legend="Observación de Incidencia">     
              <p:dataTable var="oi" value="#{mantenimientoIncidenciaForm.listaObsIncidencia}" paginator="true" rows="5"
        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
