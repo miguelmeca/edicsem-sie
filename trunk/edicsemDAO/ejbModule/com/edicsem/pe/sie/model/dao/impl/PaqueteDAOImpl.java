@@ -50,9 +50,11 @@ public class PaqueteDAOImpl implements PaqueteDAO {
 				log.info("buscar Paquete" +id);
 			}
 			p = em.find(PaqueteSie.class, id);
-			log.info(" PaqueteBiblico " + p.getDescripcionpaquete());
+			log.info(" PaqueteBiblico " + id);
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("DENTRO DEL CATCH"+ e.getMessage());
+			log.info("findPaquete" );
 		}
 		return p;
 	}
