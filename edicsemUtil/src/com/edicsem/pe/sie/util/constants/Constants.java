@@ -11,7 +11,7 @@ package com.edicsem.pe.sie.util.constants;
 public class Constants {
 	
 	public static final String MESSAGE_INFO_TITULO = "Mensaje";
-	public static final String MESSAGE_REGISTRO_TITULO = "Se registro correctamente";
+	public static final String MESSAGE_REGISTRO_TITULO = "Se registró correctamente";
 	public static final String MESSAGE_DESHABILITAR_TITULO = "Se deshabilito correctamente";
 	public static final String MESSAGE_ERROR_FATAL_TITULO = "Mensaje de Error";
 	public static final String MESSAGE_ERROR_FATAL_TITULO2 = "Mensaje de Error2";
