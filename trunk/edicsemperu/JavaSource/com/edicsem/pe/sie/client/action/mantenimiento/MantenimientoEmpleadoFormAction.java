@@ -549,6 +549,10 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 					idUbigeo, tipo,  idCargo, DomicilioPersona, TelefonoPersona,TipoDocumento, idEmpresa, idTipoPago, codigoEmpleado, contratoEmpleadoList, TelefonoPersonaList);
 					log.info("insertando..... ");
 				}
+				mensaje ="";
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+						Constants.MESSAGE_REGISTRO_TITULO, mensaje);
+				FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
