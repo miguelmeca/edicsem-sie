@@ -1,330 +1,241 @@
-	
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:p="http://primefaces.org/ui"
-	template="/layout/template.xhtml">
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
-		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
-			Cliente</h1>
-	
-		<h:form id="frmcliente">
-<center>
-<p:commandButton value="Regresar"
- action="#{MantenimientoClienteSearchAction.listar}"
-  immediate="true" ajax = "false" icon="ui-icon ui-icon-close" />
-</center>	<br></br>		 
-<p:panel id="panel" >
-<p:growl  />
-			<h:panelGrid id="display" columns="6">	
+	<h:form id="frmcliente">
+		<p:growl id="message" showDetail="true" />
+<p:wizard id="wiz" widgetVar="wiz"
+				flowListener="#{MantenimientoClienteFormAction.onFlowProcess}">
+<p:tab title="#{message['cliente.tabcliente']}">
+ <p:panel header="Datos Personales"> 
+ <h:messages errorClass="error"/>  
 
 
-				<h:outputText value="#{message['cliente.nombre']}" for="nombre" />
-
-				<p:inputText id="nombre"
-					value="#{MantenimientoClienteFormAction.objClienteSie.nombrecliente}"
-					required="true" label="nombre"
-					requiredMessage="#{message['cliente.nombre.validation']}"
-					onkeypress="return validar(event)" />
+<h:panelGrid id="display" columns="6">	
 
 
-				<h:outputText value="#{message['cliente.apellidopaterno']}"	for="apellidopaterno" />
+<h:outputText value="#{message['cliente.nombre']}" for="nombre" />
+<p:inputText id="nombre"
+			 value="#{MantenimientoClienteFormAction.objClienteSie.nombrecliente}"
+			 required="true" label="nombre"
+			 requiredMessage="#{message['cliente.nombre.validation']}"
+			 onkeypress="return validar(event)" />
 
-				<p:inputText id="apellidopaterno"
-					value="#{MantenimientoClienteFormAction.objClienteSie.apepatcliente}"
-					required="true" label="apellidopaterno"
-					requiredMessage="#{message['cliente.apellidopaterno.validation']}" 
-					onkeypress="return validar(event)"/>
+<h:outputText value="#{message['cliente.apellidopaterno']}"	for="apellidopaterno" />
 
+<p:inputText id="apellidopaterno"
+			 value="#{MantenimientoClienteFormAction.objClienteSie.apepatcliente}"
+			 required="true" label="apellidopaterno"
+			 requiredMessage="#{message['cliente.apellidopaterno.validation']}" 
+			 onkeypress="return validar(event)"/>
 
-				<h:outputText value="#{message['cliente.apellidomaterno']}"
-					for="apellidomaterno" />
+<h:outputText value="#{message['cliente.apellidomaterno']}"
+ 	 		  for="apellidomaterno" />
 					
-				<p:inputText id="apellidomaterno"
-					value="#{MantenimientoClienteFormAction.objClienteSie.apematcliente}"
-					required="true" label="apellidomaterno"
-					requiredMessage="#{message['cliente.apellidomaterno.validation']}" 
-					onkeypress="return validar(event)"/>
+<p:inputText id="apellidomaterno"
+			 value="#{MantenimientoClienteFormAction.objClienteSie.apematcliente}"
+			 required="true" label="apellidomaterno"
+			 requiredMessage="#{message['cliente.apellidomaterno.validation']}" 
+			 onkeypress="return validar(event)"/>
 					 
-
-				<h:outputText  value="#{message['cliente.empresatrabajo']}"
-					for="empresatrabajo" />
+<h:outputText  value="#{message['cliente.empresatrabajo']}"
+			   for="empresatrabajo" />
 					
-				<p:inputText id="empresatrabajo"
-					value="#{MantenimientoClienteFormAction.objClienteSie.empresatrabajo}"
-					required="true" label="empresatrabajo"
-					requiredMessage="#{message['cliente.empresatrabajo.validation']}" 
-					/>
+<p:inputText id="empresatrabajo"
+			 value="#{MantenimientoClienteFormAction.objClienteSie.empresatrabajo}"
+			 required="true" label="empresatrabajo"
+			 requiredMessage="#{message['cliente.empresatrabajo.validation']}"	/>
 					  
+<h:outputText  value="#{message['cliente.cargotrabajo']}"  for="cargotrabajo" />
+					
+<p:inputText id="cargotrabajo"
+			 value="#{MantenimientoClienteFormAction.objClienteSie.cargotrabajo}" 
+			 label="cargotrabajo"
+			 onkeypress="return validarLetras(event)" />
 
-				<h:outputText  value="#{message['cliente.cargotrabajo']}"
-					for="cargotrabajo" />
+<h:outputText value="#{message['cliente.direcciontrabajo']}" for="direcciontrabajo" />
 					
-				<p:inputText id="cargotrabajo"
-					value="#{MantenimientoClienteFormAction.objClienteSie.cargotrabajo}" 
-					 label="cargotrabajo"
-					  onkeypress="return validarLetras(event)"
-					 />
+<p:inputText id="direcciontrabajo"
+			 value="#{MantenimientoClienteFormAction.objClienteSie.directrabajo}"
+			 onkeypress="return validarLetrasyNumeros(event)" />
+					
+<h:outputText value="#{message['cliente.correo']}"	for="correo" />
 
-				<h:outputText value="#{message['cliente.direcciontrabajo']}"
-					for="direcciontrabajo" />
-					
-				<p:inputText id="direcciontrabajo"
-					value="#{MantenimientoClienteFormAction.objClienteSie.directrabajo}"
-					onkeypress="return validarLetrasyNumeros(event)"
-					 />
-					
-					
-				<h:outputText value="#{message['cliente.correo']}"
-					for="correo" />
-				<p:inputText id="correo"
-					value="#{MantenimientoClienteFormAction.objClienteSie.correo}"
-						required="true" label="correo"
-					requiredMessage="#{message['cliente.correo.validation']}" />
+<p:inputText id="correo"
+		     value="#{MantenimientoClienteFormAction.objClienteSie.correo}"
+			 required="true" label="correo"
+			 requiredMessage="#{message['cliente.correo.validation']}" />
 
 
-				<h:outputText value="#{message['cliente.fechanacimiento']}"
-					for="fechanacimiento" />
-				<p:calendar id="fechanacimiento"
-					value="#{MantenimientoClienteFormAction.objClienteSie.fecnacimiento}"
-							required="true" label="fechanacimiento"
-					requiredMessage="#{message['cliente.fechanacimiento.validation']}" />
+<h:outputText value="#{message['cliente.fechanacimiento']}"	for="fechanacimiento" />
+
+<p:calendar pagedate="-8380" maxdate="today" 
+value="#{MantenimientoClienteFormAction.objClienteSie.fecnacimiento}"
+id="fechanacimiento" showButtonPanel="true" 			
+required="true"   pattern="dd/MM/yyyy" label="fechanacimiento"
+requiredMessage="#{message['cliente.fechanacimiento.validation']}" />
 
 
-				<p:outputLabel for="tipo" value="Tipo de Doc. :"
-					styleClass="textoAzulFuerteGrande" id="tipoL" />
-				<p:selectOneMenu id="tipo"
-					value="#{MantenimientoClienteFormAction.tipoDocumento}"
-					styleClass="required" title="El tipo es obligatorio!">
+<p:outputLabel for="tipo" value="Tipo de Doc. :"
+   			   styleClass="textoAzulFuerteGrande" id="tipoL" />
+   			   
+<p:selectOneMenu id="tipo"
+				 value="#{MantenimientoClienteFormAction.tipoDocumento}"
+         	 	 styleClass="required" title="El tipo es obligatorio!">
 					
+<f:selectItems value="#{comboAction.tipoDocumentoitems}" />
+<p:ajax update="nrodoc2"></p:ajax>
+</p:selectOneMenu>
+
+<p:outputLabel value="#{message['cliente.nrodoc']}"		for="nrodoc"/>
+
+<p:inputMask id="nrodoc"
+             value="#{MantenimientoClienteFormAction.objClienteSie.numdocumento}" 
+             mask="99999999"
+			 rendered="#{MantenimientoClienteFormAction.tipoDocumento==1}"
+			 required="true" label="nrodoc"
+			 requiredMessage="#{message['cliente.nrodoc.validation']}" />
 					
-					<f:selectItems value="#{comboAction.tipoDocumentoitems}" 
-					/> 
-					<p:ajax update="panel"></p:ajax>
+<p:inputMask id="nrodoc2"
+     		 value="#{MantenimientoClienteFormAction.objClienteSie.numdocumento}" mask="99999999999"
+			 rendered="#{MantenimientoClienteFormAction.tipoDocumento==2}"	 />
+					
+<h:outputText value="#{message['cliente.telftrabajo']}"	  for="telftrabajo" />
+
+<p:inputMask  id="telftrabajo"
+			  value="#{MantenimientoClienteFormAction.objClienteSie.telftrabajo}" mask="999-9999"
+			  required="true" label="telftrabajo"
+			  requiredMessage="#{message['cliente.telftrabajo.validation']}" />
+
+</h:panelGrid>
+</p:panel>
+</p:tab>
+ -->
+<!-- TELEFONO LISTA SOLO MOSTRARTA EL ACTUAL -->
+<!-- 
+<p:tab title="#{message['cliente.tabnumeros']}">
+<p:panel header="Números Telefónicos" >
+
+
+
+<h:panelGrid columns="6"  id="panelTlf" >
+				
+				<h:outputText value="#{message['contrato.tipo.telefono']}" />
+				<p:selectOneMenu  value="#{MantenimientoClienteFormAction.tipoTelef}"
+						style="width:165px"  >
+						<f:selectItem itemLabel="Fijo" itemValue="1" />
+						<f:selectItem itemLabel="Celular" itemValue="2" />
+						<p:ajax update="panelTlf" listener="#{MantenimientoClienteFormAction.limpiarDatosTelefono}" ></p:ajax>
 				</p:selectOneMenu>
-
-
-				<p:outputLabel value="#{message['cliente.nrodoc']}" 
-				for="nrodoc"/>
-				<p:inputMask id="nrodoc"
-					value="#{MantenimientoClienteFormAction.objClienteSie.numdocumento}" mask="99999999"
-					rendered="#{MantenimientoClienteFormAction.tipoDocumento==1}"
-					required="true" label="nrodoc"
-					requiredMessage="#{message['cliente.nrodoc.validation']}" />
+				<p:spacer />
 					
-					<p:inputMask id="nrodoc2"
-					value="#{MantenimientoClienteFormAction.objClienteSie.numdocumento}" mask="99999999999"
-					rendered="#{MantenimientoClienteFormAction.tipoDocumento==2}"
-					 />
+					<h:outputText value="#{message['contrato.operadorTelefonico']}" />
+					<p:selectOneMenu id="operadorTelefonico" required="true" value="#{MantenimientoClienteFormAction.operadorTelefonico}" rendered="#{MantenimientoClienteFormAction.tipoTelef==1}"
+						style="width:165px" requiredMessage="#{message['contrato.operadorTelefonico.validation']}" >
+						<f:selectItem itemLabel="Seleccione Operador" itemValue="#{null}" />
+						<f:selectItem itemLabel="Claro" itemValue="1" />
+						<f:selectItem itemLabel="Telefónica" itemValue="2" />
+					</p:selectOneMenu>
+					<p:message for="operadorTelefonico" rendered="#{MantenimientoClienteFormAction.tipoTelef==1}" />
 					
+					<p:selectOneMenu id="operadorCelular" required="true" value="#{MantenimientoClienteFormAction.operadorTelefonico}" rendered="#{MantenimientoClienteFormAction.tipoTelef==2}"
+						style="width:165px" requiredMessage="#{message['contrato.operadorTelefonico.validation']}" >
+						<f:selectItem itemLabel="Seleccione Operador" itemValue="#{null}" />
+						<f:selectItem itemLabel="Claro" itemValue="1" />
+						<f:selectItem itemLabel="Movistar" itemValue="2" />
+						<f:selectItem itemLabel="Nextel" itemValue="3" />
+					</p:selectOneMenu>
+					<p:message for="operadorCelular" rendered="#{MantenimientoClienteFormAction.tipoTelef==2}" />
 					
+					<h:outputText value="#{message['contrato.telefono']}" rendered="#{MantenimientoClienteFormAction.tipoTelef==1}" />
+					<p:inputMask id="numTelef" mask="999-9999" value="#{MantenimientoClienteFormAction.nuevoTelef.telefono}"
+						requiredMessage="#{message['contrato.telefono.casa.validation']}"  rendered="#{MantenimientoClienteFormAction.tipoTelef==1}"/>
+					<p:message for="numTelef" rendered="#{MantenimientoClienteFormAction.tipoTelef==1}"/>
+					
+						<h:outputText value="#{message['contrato.celular']}"  rendered="#{MantenimientoClienteFormAction.tipoTelef==2}"/>
+						<p:inputMask mask="999-999999" value="#{mantenimientoEmpleadoFormAction.nuevoTelef.telefono}" id="numCelular"
+							requiredMessage="#{message['contrato.celular.validation']}"  rendered="#{MantenimientoClienteFormAction.tipoTelef==2}"/>
+						<p:message for="numCelular"  rendered="#{MantenimientoClienteFormAction.tipoTelef==2}"/>
+						
+						<h:outputText value="#{message['contrato.telefono.descripcion']}" />
+						<p:inputText value="#{MantenimientoClienteFormAction.nuevoTelef.descTelefono}" />
+						<p:spacer />
+						
+						<p:commandButton value="Agregar Telefono Referencia"  icon="ui-icon ui-icon-check" 
+						actionListener="#{MantenimientoClienteFormAction.telefonoAgregar}" update="listarTelefonos, message" > 
+						</p:commandButton>
+						
+				</h:panelGrid>
 
-				<h:outputText value="#{message['cliente.telftrabajo']}"
-					for="telftrabajo" />
-
-				<p:inputMask  id="telftrabajo"
-					value="#{MantenimientoClienteFormAction.objClienteSie.telftrabajo}" mask="999-9999"
-					required="true" label="telftrabajo"
-					requiredMessage="#{message['cliente.telftrabajo.validation']}" />
-
-			</h:panelGrid>
-		
-<!-- FIN DE  MANTENIMIENTO CLIENTE -->
-
-<br></br>
-<br></br>
-
-		<h:form id="frmAlmacenFormList" prependId="false">
-			<p:growl id="message" showDetail="true" />
-			<p:dataTable value="#{MantenimientoClienteFormAction.domicilioPersonaList}" var="d"
-				id="listarDomocilio" paginator="true" rows="10">
-
-				<f:facet name="header">
-					<h:outputLabel
-						value="#{message['lista.mantenimiento.cliente.domicilio']}" />
-				</f:facet>
-
-				<p:column headerText="Domicilio" >
-					<h:outputText value="#{d.domicilio}" />
-				</p:column>
-
-				<p:column headerText="Departamento-Provincia-Distrito" >
-					<h:outputText value="#{d.desUbigeo}" />
-				</p:column>
-				
-				<p:column headerText="Referencia" >
-					<h:outputText value="#{d.referencia}" />
-				</p:column>
-				
-				
-					<p:column headerText="Tipo de Casa" >
-					<h:outputText value="#{d.tbTipoCasa.descripcion}" />
-				</p:column>
-				
-				
-				<p:column headerText="Estado" >
-					<h:outputText value="#{d.tbEstadoGeneral.descripcion}" />
-				</p:column>
-				
-				
-				<!--********** BOTON EDITAR **********-->
-		
-	<p:column headerText="Editar">
+<p:dataTable value="#{MantenimientoClienteFormAction.telefonoPersonaList}" id="listarTelefonos" var="o" style="width:400px"
+							 rowStyleClass="#{o.operadorTelefonico eq 'Claro' ? 'color1': (o.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }"   >
 	
-			<p:commandButton value="Editar"  oncomplete="carDialogDC.show()"
-								action="#{MantenimientoClienteFormAction.update}"
-			                    update=":PupudDomiCli:display"
-			                    icon="ui-icon ui-icon-pencil"
-			  >
-			                    
-			<f:setPropertyActionListener value="#{d}" 
-			 target="#{MantenimientoClienteFormAction.objDomicilioPersonaSie}" />
-			 
-			</p:commandButton>
-					
-	</p:column>
- 
- <!--**********FIN EDITAR**********-->					
+							<f:facet name="header">
+								<h:outputLabel value="Telefonos de Referencia" />
+							</f:facet>
+							
+							<p:commandButton icon="ui-icon-close" oncomplete="confirmationTelEmp.show()" title="eliminar">
+								<f:setPropertyActionListener value="#{o.telefono}" target="#{MantenimientoClienteFormAction.selectTelef}" />
+							</p:commandButton>
+							
+							<p:column headerText="Item" style="width:125px">
+		                    <h:outputText value="#{o.item}" />
+		                    </p:column>
+							
+							<p:column headerText="Observación" style="width:125px">
+		                    	<h:outputText value="#{o.tipoTelef}, #{o.operadorTelefonico}, #{o.telefono}" />
+		                    </p:column>
+	 
+	                        <p:column headerText="Eliminar" style="width:125px">
+		                    <p:commandButton id="showConfirmDeshabilitarTelCli" 
+				            value="Eliminar"  
+				            icon="ui-icon ui-icon-close"
+				            onclick="confirmationTelCli.show()"> 
+	 							
+                            <f:setPropertyActionListener
+		                    value="#{o.item}"
+		                    target="#{MantenimientoClienteFormAction.ide}"     />
 
-					<!-- DESHABILITAR DOMICILIO --> 
-					
-<p:column headerText="Deshabilitar">
-<p:commandButton id="showConfirmDeshabilitar4"
-	 			 value="Deshabilitar"
-	 			 icon="ui-icon ui-icon-close" 			
-	 			onclick="confirmation4.show()"> 
-<f:setPropertyActionListener value="#{d.iddomiciliopersona}"
- target="#{MantenimientoClienteFormAction.iddom}" />			
-</p:commandButton>	
-</p:column>
-						
-				
-				
-		<f:facet name="footer">
-<div align="left">
-	
-<!--********** BOTON NUEVO **********-->
-
-<p:commandLink value="Nuevo Domicilio" 
-			 update=":PupudDomiCli:display"				
-				action="#{MantenimientoClienteFormAction.agregar}"
-				oncomplete="carDialogDC.show()" 	title="Ingresar Cargo Empleado"
-				
->
-</p:commandLink>
-						
-<!--**********FIN NUEVO**********-->
-
-</div>
+                            </p:commandButton>
+		                    </p:column>
+	 
+</p:dataTable>
+</p:panel>
+</p:tab>
 
 
-</f:facet>
+<p:tab title="#{message['cliente.tabdireccion']}">
+<p:panel header="Dirección">
+<h:messages errorClass="error"/> 
 
-		</p:dataTable>
-<!--**********fin de la lista**********-->
-
-
-</h:form>
-
-<br></br>
-<br></br>
+           
+</p:panel>
+</p:tab>
 
 
-		<h:form id="frmTelefono" prependId="false">
-		
-			<p:dataTable value="#{MantenimientoClienteFormAction.telefonoPersonaList}" var="o"
-				id="listarTelefonos" paginator="true" rows="10"
-				 rowStyleClass="#{o.operadorTelefonico eq 'Claro' ? 'color1': (o.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }" >
-
-				<f:facet name="header">
-					<h:outputLabel
-						value="#{message['lista.telefono.cliente.titulo']}" />
-				</f:facet>
-
-				<p:column headerText="telefonos" >
-					<h:outputText value="#{o.telefono}" />
-				</p:column>
-
-				<p:column headerText="Tipo de Telefono" >
-					<h:outputText value="#{o.tipotelefono}" />
-				</p:column>
-				
-				<p:column headerText="Operador Telefonico" >
-					<h:outputText value="#{o.operadorTelefonico}" />
-				</p:column>
-				
-				
-					<p:column headerText="Estado" >
-					<h:outputText value="#{o.tbEstadoGeneral.descripcion}" />
-				</p:column>
-					<!-- DESHABILITAR TELEFONO -->
-					
-<p:column headerText="Deshabilitar">
-<p:commandButton
-	 			 id="showConfirmDeshabilitar3"
-	 			 value="Deshabilitar" 
-	 			 icon="ui-icon ui-icon-close" 		
-	 			 onclick="confirmation3.show()"> 
-<f:setPropertyActionListener
-	 				 value="#{o.idtelefonopersona}"
-	 				 target="#{MantenimientoClienteFormAction.idc}" />
- 				 			
-				</p:commandButton>	
-</p:column>
-						
-					<!--FIN DESHABILITAR TELEFONO -->	
-						
-					
-					
-				<f:facet name="footer">
-					<div align="left">
-						<!--********** BOTON NUEVO DOMICILIO**********-->
-
-<p:commandLink
- value="Agregar Telefono " 
-			update=":NuevoTelefono:display22"			
-			action="#{MantenimientoClienteFormAction.telefonoAgregar}"
-			oncomplete="carDialogNuevoTelefono.show()"
-			title="Ingresar Nuevo Telefono"
-				
->
-</p:commandLink>
-						
-<!--**********FIN NUEVO DOMICILIO**********-->
-					</div>
-				</f:facet>
-				
-				
-			</p:dataTable>
-		</h:form>
 
 
-		
-		
 
-<br></br>
-<br></br>		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
 			
-						
-		
-		
-		
-<center><p:commandButton value="Guardar" id="Guardar" update="panel"
-						action="#{MantenimientoClienteFormAction.insertarOficial}"
-						ajax="false" icon="ui-icon ui-icon-disk"
-						 /></center>
+</p:wizard>	
 
 
-
-				</p:panel>
-		</h:form>
+		
+	</h:form>
 	</ui:define>
 </ui:composition>
+
+ -->
