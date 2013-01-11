@@ -15,7 +15,7 @@
 				<h:outputText value="Meta Mes: " />
 
 				<p:selectOneMenu id="metaempresa" value="#{metaMesSearchAction.codmes}"   >
-					<f:selectItem itemLabel="Seleccione una opción" />
+				
 					<f:selectItems value="#{comboAction.metaMesItems}" />
 					<p:ajax update="meta"  listener="#{metaMesSearchAction.mostrarfecha}" 
 					 />
