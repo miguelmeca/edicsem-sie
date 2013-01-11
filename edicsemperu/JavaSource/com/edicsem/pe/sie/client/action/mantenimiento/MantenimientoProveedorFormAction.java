@@ -8,11 +8,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.arjuna.ats.internal.jdbc.drivers.modifiers.list;
-import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.ProveedorSie;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.ProveedorService;
@@ -81,24 +80,18 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 		ProveedorSie p = objProveedorService.findProveedor(objProveedor.getIdproveedor());
 		log.info(" id " + p.getIdproveedor()+ " nombre " + p.getCodproveedor()); 
 		/*Seteo para mostrar los datos en el form*/
-		objProveedor.setIdproveedor(p.getIdproveedor());
-		objProveedor.setCodproveedor(p.getCodproveedor());
-        objProveedor.setNombreempresa(p.getNombreempresa());
-        objProveedor.setPersonacontacto(p.getPersonacontacto());
         setTipoDocumento(p.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad()); 
-        objProveedor.setNumdocumentoproveedor(p.getNumdocumentoproveedor());
-        objProveedor.setDireccion(p.getDireccion());
         setEstado(9);
         /*método bolean necesario para actualizar que retorna al form */  
 		setNewRecord(false);
-		
-		lista = mantenimientoProveedorSearch.getProveedorList();
-		
-		for (int i = 0; i < lista.size(); i++) {
-			ProveedorSie c = lista.get(i);
-			log.info(c.getCodproveedor());
-		}		
-		
+//		
+//		lista = mantenimientoProveedorSearch.getProveedorList();
+//		
+//		for (int i = 0; i < lista.size(); i++) {
+//			ProveedorSie c = lista.get(i);
+//			log.info(c.getCodproveedor());
+//		}		
+//		
 		return getViewMant();
 	}
 	
@@ -148,6 +141,7 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 
 	/*método del botón GUARDAR(inserta o actualiza el proveedor)*/
 	public String insertar() throws Exception {
+		String paginaRetorno="";
 		mensaje=null;
 		objProveedor.setTbTipoDocumentoIdentidad(objTipoDocService.buscarTipoDocumento(TipoDocumento));
 		/*Estado del Proveedor: habilitado(9)*/
@@ -155,40 +149,40 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 		try {
 				
 			log.info("inicio validar codigo de proveedor");
-				
+			lista = mantenimientoProveedorSearch.getProveedorList();
 			int error = 0;
-			//List<ProveedorSie> lista = mantenimientoProveedorSearch.getProveedorList();
+			if (isNewRecord()) {
 			for (int i = 0; i < lista.size(); i++) {
-				ProveedorSie c = lista.get(i);
-				log.info(c.getCodproveedor());
-			}
-			for (int i = 0; i < lista.size(); i++) {
-				ProveedorSie p = lista.get(i);
-				if (p.getCodproveedor().equalsIgnoreCase(objProveedor.getCodproveedor())) {
-					log.info(p.getCodproveedor()+" y "+objProveedor.getCodproveedor());
+				log.info(lista.get(i).getCodproveedor()+" y "+objProveedor.getCodproveedor());
+				if (lista.get(i).getCodproveedor().equalsIgnoreCase(objProveedor.getCodproveedor())) { 
+					log.info(lista.get(i).getCodproveedor()+" y "+objProveedor.getCodproveedor());
 					log.info("Error ... Ya se encuentra un código igual");
-					mensaje ="Ya se encuentra asignado el código por otro proveedor";
+					mensaje ="El código se encuentra asignado con otro proveedor";
+					paginaRetorno =mantenimientoProveedorSearch.getViewMant();
 					error = 1;
 					break;
 				}
 			}
+			}
 				if (error == 0) {
-				if (isNewRecord()) {
+				if (isNewRecord()) {					
 					log.info("insertando..... ");
 					objProveedorService.insertarProveedor(objProveedor);
 					log.info("insertando..... ");
 					setNewRecord(false);
 					mensaje ="Se registró el proveedor correctamente";
 					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-							Constants.MESSAGE_REGISTRO_TITULO, mensaje);
+							Constants.MESSAGE_INFO_TITULO, mensaje);
 				} else {
 					log.info("actualizando..... ");
 					objProveedorService.actualizarProveedor(objProveedor);
 					log.info("insertando..... ");
 					mensaje ="Se atualizó el proveedor correctamente";
 					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-							Constants.MESSAGE_REGISTRO_TITULO, mensaje);
+							Constants.MESSAGE_INFO_TITULO, mensaje);
 				}
+				objProveedor = new ProveedorSie();
+				paginaRetorno =mantenimientoProveedorSearch.listar();
 		}else{
 			// Mostrar Validacion
 			log.info("mensaje de error");
@@ -205,8 +199,7 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		objProveedor = new ProveedorSie();
-		return mantenimientoProveedorSearch.listar();
+		return paginaRetorno;
 	}
 
 	/*métodos GET y SET*/

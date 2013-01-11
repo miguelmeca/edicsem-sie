@@ -33,7 +33,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 	public String idcargoempleado;
 	
 	private int idEstadoGeneral, idc;
-	
+	private String descripcionUpdate;
 	private String mensaje;
 	private CargoEmpleadoSie nuevo;
 	private CargoEmpleadoSie objCargoEmpleadoSie;
@@ -65,7 +65,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		log.info("agregar()");
 		editMode = true;
 		objCargoEmpleadoSie = new CargoEmpleadoSie();
-		
+		descripcionUpdate=null;
 		
 		setNewRecord(true);
 		return getViewList();
@@ -76,7 +76,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		objCargoEmpleadoSie = objCargoEmpleadoService.buscarCargoEmpleado(objCargoEmpleadoSie.getIdcargoempleado());
 		log.info(" id cargo " +objCargoEmpleadoSie.getIdcargoempleado() + " des "+ objCargoEmpleadoSie.getDescripcion());		
 		setIdcargoempleado(objCargoEmpleadoSie.getIdcargoempleado().toString());
-	
+		descripcionUpdate = objCargoEmpleadoSie.getDescripcion();
 
 		setIdEstadoGeneral(objCargoEmpleadoSie.getTbEstadoGeneral().getIdestadogeneral());
 		setNewRecord(false);
@@ -89,22 +89,31 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		mensaje =null;
 		log.info("insertar() " + isNewRecord() + " desc "
 				+ objCargoEmpleadoSie.getDescripcion());	
-		
-/* ---> */objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(1));
+		objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(1));
 		/* Esto se setea cuando pertenece a una segunda tabla (--->) */
 		try {
 
 			log.info("aqui validadndo si existe o no" + objCargoEmpleadoSie.getDescripcion());
 			int error = 0;
 			List<CargoEmpleadoSie> lista = mantenimientoCargoEmpleadoSearch.getCargoEmpleadomodel();
+			
 			for (int i = 0; i < lista.size(); i++) {
-				CargoEmpleadoSie a = lista.get(i);
-				if (a.getDescripcion().equalsIgnoreCase(objCargoEmpleadoSie.getDescripcion().trim())) {
-					log.info("Error ... Ya se encuentra un cargo igual");
-					mensaje ="Ya se encuentra un cargo con el mismo nombre";
-					error = 1;
-					break;
+				log.info("2  "+ lista.get(i).getDescripcion()+"  "+objCargoEmpleadoSie.getDescripcion());
+				if(descripcionUpdate!=null){
+					if ( lista.get(i).getDescripcion().equalsIgnoreCase(objCargoEmpleadoSie.getDescripcion().trim())&&
+						(!descripcionUpdate.equalsIgnoreCase(objCargoEmpleadoSie.getDescripcion().trim()))) {
+						log.info("Error ... Ya se encuentra un cargo igual");
+						mensaje ="Ya se encuentra un cargo con el mismo nombre";
+						error = 1;
+						break;
+					}
 				}
+				else if ( lista.get(i).getDescripcion().equalsIgnoreCase(objCargoEmpleadoSie.getDescripcion().trim())) {
+						log.info("Error ... Ya se encuentra un cargo igual");
+						mensaje ="Ya se encuentra un cargo con el mismo nombre";
+						error = 1;
+						break;
+					}
 			}
 			if (error == 0) {
 			if (isNewRecord()) {
