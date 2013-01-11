@@ -10,6 +10,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox;
 
 import com.edicsem.pe.sie.client.action.SMTPConfig;
 import com.edicsem.pe.sie.entity.ClienteSie;
@@ -38,9 +39,11 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private Date fecPagoNull;
 	private int tipollamada; 
 	private boolean editMode;
+	private boolean enviarMensaje;
 	private String nombre;
 	private boolean newRecord =false;
 	private int ide;
+	private int idcontrato;
 	
 	@EJB 
 	private CobranzaOperaService objCobranzaOperaService;
@@ -69,6 +72,8 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 		objcliente = new ClienteSie();
 		objtelefono = new TelefonoPersonaSie();
 		fecPagoNull=null;
+		enviarMensaje=false;
+		idcontrato=0;
 		log.info("despues de inicializar  ");
 	}
 	
@@ -86,7 +91,7 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	}
 	
 	public String mostrar() throws Exception {
-		int idcontrato;
+		//int idcontrato;
 		log.info("mostrar detalle de pagos");
 		idcontrato = objCobranzaOpera.getTbCobranza().getTbContrato().getIdcontrato();
 		// comenzamos a mostrar el detalles
@@ -114,7 +119,11 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	
 	public String insertar() throws Exception {
 		try {
-			  if(SMTPConfig.sendMail("Seguimiento del cliente",objCobranzaOpera.getObservaciones(),"geraldine8513@gmail.com")){
+			 if(idcontrato!=0){ 
+			
+			if(enviarMensaje==true){
+			
+			if(SMTPConfig.sendMail("Seguimiento del cliente",objCobranzaOpera.getObservaciones(),"geraldine8513@gmail.com")){
 				   
 				   log.info("envío Correcto");
 				    
@@ -124,13 +133,19 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 				 
 				 }
 			
-				if (log.isInfoEnabled()) {
-				}
+			}	
 				objCobranzaOpera.setObservaciones(objCobranzaOpera.getObservaciones());
 				objCobranzaOpera.setTbTipoLlamada(objTipoLLamadaService.findTipoLLamada(tipollamada));
 					log.info("actualizando..... ");
 					objCobranzaOperaService.updateCobranzaOpera(objCobranzaOpera);
 					log.info("insertando..... ");
+			 
+			 }else{
+			   nombre = "";
+			   msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+						Constants.MESSAGE_ERROR_ID_COBRANZA, nombre);
+			   FacesContext.getCurrentInstance().addMessage(null, msg);  
+			 }
 		} catch (Exception e) {
 			e.printStackTrace();
 			nombre = e.getMessage();
@@ -327,6 +342,34 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	 */
 	public void setTipollamada(int tipollamada) {
 		this.tipollamada = tipollamada;
+	}
+
+	/**
+	 * @return the enviarMensaje
+	 */
+	public boolean isEnviarMensaje() {
+		return enviarMensaje;
+	}
+
+	/**
+	 * @param enviarMensaje the enviarMensaje to set
+	 */
+	public void setEnviarMensaje(boolean enviarMensaje) {
+		this.enviarMensaje = enviarMensaje;
+	}
+
+	/**
+	 * @return the idcontrato
+	 */
+	public int getIdcontrato() {
+		return idcontrato;
+	}
+
+	/**
+	 * @param idcontrato the idcontrato to set
+	 */
+	public void setIdcontrato(int idcontrato) {
+		this.idcontrato = idcontrato;
 	}
 		
 }
