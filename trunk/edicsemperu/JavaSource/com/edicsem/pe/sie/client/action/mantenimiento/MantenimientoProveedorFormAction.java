@@ -34,6 +34,7 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 	private boolean newRecord =false;
 	/*variable que capta el id del proveedor*/
 	private int ide;
+	private  List<ProveedorSie> lista;
 		
 	@ManagedProperty(value = "#{mantenimientoProveedorSearchAction}")
 	private MantenimientoProveedorSearchAction mantenimientoProveedorSearch;
@@ -90,6 +91,14 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
         setEstado(9);
         /*método bolean necesario para actualizar que retorna al form */  
 		setNewRecord(false);
+		
+		lista = mantenimientoProveedorSearch.getProveedorList();
+		
+		for (int i = 0; i < lista.size(); i++) {
+			ProveedorSie c = lista.get(i);
+			log.info(c.getCodproveedor());
+		}		
+		
 		return getViewMant();
 	}
 	
@@ -139,40 +148,46 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 
 	/*método del botón GUARDAR(inserta o actualiza el proveedor)*/
 	public String insertar() throws Exception {
+		mensaje=null;
+		objProveedor.setTbTipoDocumentoIdentidad(objTipoDocService.buscarTipoDocumento(TipoDocumento));
+		/*Estado del Proveedor: habilitado(9)*/
+		objProveedor.setTbEstadoGeneral(objEstadoService.findEstadogeneral(9));
 		try {
-				if (log.isInfoEnabled()) {
-					log.info("Entering my method 'insertar(registrar, actualizar)'"+ objProveedor.getCodproveedor());
-				}
-				objProveedor.setTbTipoDocumentoIdentidad(objTipoDocService.buscarTipoDocumento(TipoDocumento));
-				/*Estado del Proveedor: habilitado(9)*/
-				objProveedor.setTbEstadoGeneral(objEstadoService.findEstadogeneral(9));
 				
-				log.info("inicio validar codigo de proveedor");
-				int error = 0;
-				List<ProveedorSie> lista = mantenimientoProveedorSearch.getProveedorList();
-				for (int i = 0; i < lista.size(); i++) {
-					ProveedorSie p = lista.get(i);
-					if (p.getCodproveedor().equalsIgnoreCase(objProveedor.getCodproveedor())) {
-						log.info("Error ... Ya se encuentra un código igual");
-						mensaje ="Ya se encuentra asignado el código por otro proveedor";
-						error = 1;
-						break;
-					}
+			log.info("inicio validar codigo de proveedor");
+				
+			int error = 0;
+			//List<ProveedorSie> lista = mantenimientoProveedorSearch.getProveedorList();
+			for (int i = 0; i < lista.size(); i++) {
+				ProveedorSie c = lista.get(i);
+				log.info(c.getCodproveedor());
+			}
+			for (int i = 0; i < lista.size(); i++) {
+				ProveedorSie p = lista.get(i);
+				if (p.getCodproveedor().equalsIgnoreCase(objProveedor.getCodproveedor())) {
+					log.info(p.getCodproveedor()+" y "+objProveedor.getCodproveedor());
+					log.info("Error ... Ya se encuentra un código igual");
+					mensaje ="Ya se encuentra asignado el código por otro proveedor";
+					error = 1;
+					break;
 				}
+			}
 				if (error == 0) {
 				if (isNewRecord()) {
-					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-							Constants.MESSAGE_REGISTRO_TITULO, mensaje);
 					log.info("insertando..... ");
 					objProveedorService.insertarProveedor(objProveedor);
 					log.info("insertando..... ");
 					setNewRecord(false);
-				} else {
+					mensaje ="Se registró el proveedor correctamente";
 					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 							Constants.MESSAGE_REGISTRO_TITULO, mensaje);
+				} else {
 					log.info("actualizando..... ");
 					objProveedorService.actualizarProveedor(objProveedor);
 					log.info("insertando..... ");
+					mensaje ="Se atualizó el proveedor correctamente";
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+							Constants.MESSAGE_REGISTRO_TITULO, mensaje);
 				}
 		}else{
 			// Mostrar Validacion
@@ -330,5 +345,21 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
 	}
+
+	/**
+	 * @return the lista
+	 */
+	public List<ProveedorSie> getLista() {
+		return lista;
+	}
+
+	/**
+	 * @param lista the lista to set
+	 */
+	public void setLista(List<ProveedorSie> lista) {
+		this.lista = lista;
+	}
+	
+	
 	
 }
