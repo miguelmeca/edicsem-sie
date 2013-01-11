@@ -609,8 +609,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:dialog>
 	</h:form>
 				
-				
-				<!--  Mantenimiento Paquete Biblico -->
+		<!--  Mantenimiento Paquete Biblico -->
 	<h:form id="formPaqueteBiblico">
 		<p:dialog header="Registro/Modificacion Paquete Biblico" widgetVar="PaqueteBiblico" showEffect="fade"
 			hideEffect="explode" modal="true" position="center">
@@ -641,6 +640,8 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				value="#{mantenimientoPaqueteBiblicoFormAction.objPaqueteSie.descripcionpaquete}"
 				onkeypress="return validarEspaciosLetrasNumeros(event)"
 				id="descripciondePaquete" 
+				maxlength="50"
+				title="defina una descripcion breve"
 				required="true"
 				requiredMessage="#{message['Paquetebiblico.descripcion.validation']}" />
 				<p:message for="descripciondePaquete" />
@@ -652,7 +653,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				id="savepaquete" 
 				value="Grabar" 
 				action="#{mantenimientoPaqueteBiblicoFormAction.insertar}" 
-				icon="ui-icon ui-icon-pencil"
+				icon="ui-icon-disk"
 				ajax="false"
 				update="panel" />
 				</h:panelGrid>
@@ -681,27 +682,46 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:dialog>
 	</h:form>
 	
-	<!--  Mantenimiento Det Paquete Biblico-->
-	<h:form id="formDetProBibli">
-		<p:dialog header="Modificacion Producto de Paquete Biblico" widgetVar="detPaqBliblicoDialog" showEffect="fade"
+	<!--  Mantenimiento Detalle Paquete Biblico -->
+	<h:form id="formDetPaqueteBiblico">
+		<p:dialog header="Registro/Modificacion Detalle Paquete Biblico" widgetVar="DetPaqueteBiblico" showEffect="fade"
 			hideEffect="explode" modal="true" position="center">
+			<p:fieldset legend="producto Paquete Biblico"  >
+			<h:panelGrid id="display" columns="2"  >
 			
-				 <h:panelGrid id="display" columns="2"  >
-					<h:outputText value="Producto :" />
-					<p:selectOneMenu
-						value="#{mantenimientoDetallePaqueteBiblicoFormAction.idproducto}">
+			 
+			 
+			 
+			 
+			<h:outputText value="producto" />
+							
+				<p:selectOneMenu
+						value="#{mantenimientoDetallePaqueteBiblicoSearchAction.idproducto}">
 						<f:selectItems value="#{comboAction.productoPaqueteItems}" />
 					</p:selectOneMenu>
-					
-					<h:outputText value="Cantidad :" />
-					<p:spinner value="#{mantenimientoDetallePaqueteBiblicoFormAction.objAuxiDetPaqueteSie.cantidad}" />
-				</h:panelGrid>
+							
+				
+				<h:outputText value="#{message['Detallepaquetebiblico.cantidad']}"
+				 for="cantidad"		
+				/>
+									
 			
-			<p:commandButton
-			 value="Grabar"
-			 action="#{mantenimientoDetallePaqueteBiblicoFormAction.updateDetPaqueBiblico}"
-			 oncomplete="detPaqBliblicoDialog.hide()"
-			 icon="ui-icon ui-icon-pencil" ajax="false" update="@all" />
+			
+			<p:spinner value="#{mantenimientoDetallePaqueteBiblicoSearchAction.objDetPaqueteSie.cantidad}" 
+			  min="0"  />	
+				
+				<p:commandButton
+				id="savedetpaquete" 
+				value="Grabar" 
+				icon="ui-icon-disk"
+				action="#{mantenimientoDetallePaqueteBiblicoSearchAction.insertar}" 
+				
+				ajax="false"
+				update="panel" />
+				
+			
+				</h:panelGrid>
+			</p:fieldset>
 		</p:dialog>
 	</h:form>
 	
@@ -722,22 +742,30 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:confirmDialog>
 	</h:form>
 	
-		<!--  Confirmation deshabilita Det Paquete Biblico-->
-	<h:form id="detPaqBibliDeshabilita" >
-		<p:confirmDialog message="Esta seguro de deshabilitar este producto?" width="325"
+	<!--	  INICIO DESACTIVAR PRUDCTO DEL DETALLE PAQUETE BIBLICO   -->
+
+	<h:form>
+
+		<p:confirmDialog id="confirmDeshabilitarProDetPACK"
+			message="Los Cambios se efectuaran despues de hacer clic nuevamente en el paquete?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
-			header="Confirm" severity="alert" widgetVar="confirmDeshabDetPaqueBibli"
+			header="Confirmar" severity="alert" widgetVar="confirmationPaqueteProDetPACK"
 			position="center">
+
 			<p:commandButton type="submit" value="Si"
-				action="#{mantenimientoDetallePaqueteBiblicoFormAction.updateDeshabilitarDetPaqueBiblico}"
-				update="@all"
-				oncomplete="confirmDeshabDetPaqueBibli.hide()" >
+				action="#{mantenimientoDetallePaqueteBiblicoSearchAction.updateDeshabilitarDetProdPaquete}"
+				update=":@all"
+				oncomplete="confirmationPaqueteProDetPACK.hide()" ajax="false">
 			</p:commandButton>
-			<p:commandButton value="No" onclick="confirmDeshabDetPaqueBibli.hide()"
+
+			<p:commandButton value="No" onclick="confirmationPaqueteProDetPACK.hide()"
 				type="button" />
+
 		</p:confirmDialog>
+
 	</h:form>
-	
+
+	<!-- 	FIN DESACTICAR PRUDCTO DEL DETALLE PAQUETE BIBLICO (ESTADOS)  -->
 	
 	<h:form id="horarioDeshabilita" >
 
