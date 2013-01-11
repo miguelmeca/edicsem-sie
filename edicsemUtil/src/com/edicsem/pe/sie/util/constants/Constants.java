@@ -16,6 +16,7 @@ public class Constants {
 	public static final String MESSAGE_ERROR_FATAL_TITULO = "Mensaje de Error";
 	public static final String MESSAGE_ERROR_FATAL_TITULO2 = "Mensaje de Error2";
 	public static final String MESSAGE_ERROR_META_MES_FATAL_TITULO = "debe Seleccionar un Mes para poder ingresar la meta";
+	public static final String MESSAGE_ERROR_ID_COBRANZA = "Seleccione una Cobranza para continuar";
 	public static final String MESSAGE_ERROR_ID_NOT_FOUND = "No se encuentra el Id";
 	public static final String MESSAGE_ERROR_TITULO = "Mensaje de Error";
 	public static final String ESQUEMA_SIE_POSTGRE = "sie";
