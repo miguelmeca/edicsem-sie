@@ -38,7 +38,7 @@ public class PaqueteServiceImpl implements PaqueteService {
 	 * @see com.edicsem.pe.sie.service.facade.PaqueteService#findPaquete(int)
 	 */
 	public PaqueteSie findPaquete(int id) {
-		log.info("buscar id Paquete biblico service" +id);
+		log.info("en el  service" +id);
 		return objDetPaqueteDao.findPaquete(id);
 	}
 
