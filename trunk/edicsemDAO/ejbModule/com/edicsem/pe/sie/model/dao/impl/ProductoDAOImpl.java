@@ -78,8 +78,7 @@ public class ProductoDAOImpl implements ProductoDAO {
 			}
 			producto = em.find(ProductoSie.class, id);
 		} catch (Exception e) {
-//			e.printStackTrace();
-			System.out.println("findProducto DENTRO DEL CATCH");
+			e.printStackTrace();
 		}
 		return producto;
 	}
