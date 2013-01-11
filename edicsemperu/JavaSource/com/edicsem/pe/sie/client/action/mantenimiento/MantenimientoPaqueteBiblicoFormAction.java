@@ -148,8 +148,8 @@ setIdEstadoGeneral(objPaqueteSie.getTbEstadoGeneral().getIdestadogeneral());
 				
 
 objPaqueteSie.setIdpaquete(Integer.parseInt(getIdpaquete()));
-objPaqueteSie.setCodpaquete(objPaqueteSie.getCodpaquete());
-objPaqueteSie.setDescripcionpaquete(objPaqueteSie.getDescripcionpaquete());
+objPaqueteSie.setCodpaquete(objPaqueteSie.getCodpaquete().trim());
+objPaqueteSie.setDescripcionpaquete(objPaqueteSie.getDescripcionpaquete().trim());
 objPaqueteSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(getIdEstadoGeneral()));
 log.info("actualizando..... ");	
 msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
