@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.model.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -78,16 +79,17 @@ public class CobranzaDAOImpl implements CobranzaDAO{
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.CobranzaDAO#listarCobranzas()
 	 */
-	public List listarCobranzas() {
-		List  lista = null;
+	public List<CobranzaSie> listarCobranzas() {
+		List<CobranzaSie>  lista = null;
 		try {
+			
 			//cobranzas que estan vencidas o por vencer en dos días (como recordatorio)
 			log.info("tamaño lista Cobranza --> "+ DateUtil.getDate(DateUtil.getToday().getTime()));
-			Query q = em.createQuery("select p from CobranzaSie p " +
-					"inner join p.tbCliente q where p.fecpago IS null and p.diasretraso > 0  or  " +
+			Query q = em.createQuery("select p  " +
+					" from CobranzaSie p  where p.fecpago IS null and p.diasretraso > 0  or  " +
 			" DATE(p.fecvencimiento) - DATE('"+ DateUtil.getDate(DateUtil.getToday().getTime())  + "')  <= 2 and p.fecpago IS null ");
 			
-			lista =  q.getResultList();
+			lista = new ArrayList<CobranzaSie>(q.getResultList());
 			log.info("tamaño lista Cobranza --> " + lista.size()+"  ");
 			
 		} catch (Exception e) {
