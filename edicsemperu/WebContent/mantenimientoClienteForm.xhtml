@@ -1,6 +1,6 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<!-- 
+
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -63,7 +63,7 @@
 					
 <p:inputText id="direcciontrabajo"
 			 value="#{MantenimientoClienteFormAction.objClienteSie.directrabajo}"
-			 onkeypress="return validarLetrasyNumeros(event)" />
+			  />
 					
 <h:outputText value="#{message['cliente.correo']}"	for="correo" />
 
@@ -81,31 +81,37 @@ id="fechanacimiento" showButtonPanel="true"
 required="true"   pattern="dd/MM/yyyy" label="fechanacimiento"
 requiredMessage="#{message['cliente.fechanacimiento.validation']}" />
 
-
 <p:outputLabel for="tipo" value="Tipo de Doc. :"
-   			   styleClass="textoAzulFuerteGrande" id="tipoL" />
-   			   
-<p:selectOneMenu id="tipo"
-				 value="#{MantenimientoClienteFormAction.tipoDocumento}"
-         	 	 styleClass="required" title="El tipo es obligatorio!">
+					styleClass="textoAzulFuerteGrande" id="tipoL" />
+				<p:selectOneMenu id="tipo"
+					value="#{MantenimientoClienteFormAction.tipoDocumento}"
+					styleClass="required" title="El tipo es obligatorio!">
 					
-<f:selectItems value="#{comboAction.tipoDocumentoitems}" />
-<p:ajax update="nrodoc2"></p:ajax>
-</p:selectOneMenu>
+					
+					<f:selectItems value="#{comboAction.tipoDocumentoitems}" 
+					/> 
+					<p:ajax update="nrodoc"></p:ajax>
+				</p:selectOneMenu>
 
-<p:outputLabel value="#{message['cliente.nrodoc']}"		for="nrodoc"/>
 
-<p:inputMask id="nrodoc"
-             value="#{MantenimientoClienteFormAction.objClienteSie.numdocumento}" 
-             mask="99999999"
-			 rendered="#{MantenimientoClienteFormAction.tipoDocumento==1}"
-			 required="true" label="nrodoc"
-			 requiredMessage="#{message['cliente.nrodoc.validation']}" />
+				<h:outputText  value="#{message['cliente.nrodoc']}" />
+				
+				
+				<h:panelGroup id="nrodoc">
+				<p:inputMask id="nrodoc1"
+					value="#{MantenimientoClienteFormAction.objClienteSie.numdocumento}" mask="99999999"
+					rendered="#{MantenimientoClienteFormAction.tipoDocumento==1}"
+					required="true" label="nrodoc"
+					requiredMessage="#{message['cliente.nrodoc.validation']}" />
 					
-<p:inputMask id="nrodoc2"
-     		 value="#{MantenimientoClienteFormAction.objClienteSie.numdocumento}" mask="99999999999"
-			 rendered="#{MantenimientoClienteFormAction.tipoDocumento==2}"	 />
-					
+					<p:inputMask id="nrodoc2"
+					value="#{MantenimientoClienteFormAction.objClienteSie.numdocumento}" mask="99999999999"
+					rendered="#{MantenimientoClienteFormAction.tipoDocumento==2}"
+					required="true" label="nrodoc2"
+					requiredMessage="#{message['cliente.nrodoc.validation']}"
+					 />
+					 
+					</h:panelGroup> 			
 <h:outputText value="#{message['cliente.telftrabajo']}"	  for="telftrabajo" />
 
 <p:inputMask  id="telftrabajo"
@@ -116,9 +122,9 @@ requiredMessage="#{message['cliente.fechanacimiento.validation']}" />
 </h:panelGrid>
 </p:panel>
 </p:tab>
- -->
+ 
 <!-- TELEFONO LISTA SOLO MOSTRARTA EL ACTUAL -->
-<!-- 
+
 <p:tab title="#{message['cliente.tabnumeros']}">
 <p:panel header="Números Telefónicos" >
 
@@ -205,21 +211,66 @@ requiredMessage="#{message['cliente.fechanacimiento.validation']}" />
                             </p:commandButton>
 		                    </p:column>
 	 
-</p:dataTable>
+</p:dataTable> 
 </p:panel>
 </p:tab>
 
 
-<p:tab title="#{message['cliente.tabdireccion']}">
-<p:panel header="Dirección">
-<h:messages errorClass="error"/> 
 
+
+ <p:tab title="#{message['cliente.tabdireccion']}">
+        <p:panel header="Dirección">
+        <h:messages errorClass="error"/>  
+        <h:panelGrid columns="2" id="panel3">
+         <p:outputLabel value="#{message['domicilio.direccion']}" for="domicilio" />
+			<p:inputText id="domicilio" value="#{MantenimientoClienteFormAction.objDomicilio.domicilio}" required="true" label="Domicilio"
+			requiredMessage="#{message['domicilio.direccion.validation']}"/>  			    
+				
+				<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
+				<p:selectOneMenu size="1" value="#{MantenimientoClienteFormAction.idDepartamento}" filter="true" filterMatchMode="startsWith"
+					required="true" style="width:200px"
+					requiredMessage="#{message['puntoVenta.ubigeo.departamento.validation']}" >
+					<f:selectItem itemLabel="Seleccione Departamento"
+						itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
+					<p:ajax update="prov,dist" listener="#{MantenimientoClienteFormAction.cambiar}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="#{message['contrato.ubigeo.provincia']}" />
+				<p:selectOneMenu id="prov" value="#{MantenimientoClienteFormAction.idProvincia}" filter="true" filterMatchMode="startsWith"
+					required="true" style="width:220px"
+					requiredMessage="#{message['puntoVenta.ubigeo.provincia.validation']}" >
+					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
+					<p:ajax update="dist" listener="#{MantenimientoClienteFormAction.cambiar2}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="#{message['contrato.ubigeo.distrito']}" />
+				<p:selectOneMenu id="dist" value="#{MantenimientoClienteFormAction.idUbigeo}" filter="true" filterMatchMode="startsWith"
+					required="true" style="width:220px"
+					requiredMessage="#{message['puntoVenta.ubigeo.distrito.validation']}" >
+					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+					<p:ajax update="ubigeoDefecto2" listener="#{MantenimientoClienteFormAction.busquedaUbigeo}" ></p:ajax>
+				</p:selectOneMenu>
+				
+				<h:outputText value="Ubigeo " />
+				<h:outputText id="ubigeoDefecto2" value="#{MantenimientoClienteFormAction.ubigeoDefecto}" />
+			
+			<p:outputLabel for="tipocasa" value="#{message['empleado.tipoCasa']}" styleClass="textoAzulFuerteGrande" id="tipocasaL"/>
+            <p:selectOneMenu id="tipocasa" value="#{MantenimientoClienteFormAction.tipo}" styleClass="required" title="El tipo de casa es obligatorio!" >
+            <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
+            <f:selectItems value="#{comboAction.tipocasaItems}" />
+            </p:selectOneMenu>
+            
+           </h:panelGrid>
            
-</p:panel>
-</p:tab>
-
-
-
+           <center><p:commandButton value="Guardar" id="Guardar" update="panel"
+						action="#{MantenimientoClienteFormAction.insertarOficial}"
+						ajax="false" icon="ui-icon ui-icon-disk"
+						 /></center>
+            </p:panel>
+        </p:tab>
 
 
 
@@ -238,4 +289,4 @@ requiredMessage="#{message['cliente.fechanacimiento.validation']}" />
 	</ui:define>
 </ui:composition>
 
- -->
+ 
