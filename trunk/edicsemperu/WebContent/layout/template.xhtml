@@ -1285,17 +1285,18 @@ function validarEspaciosLetrasNumeros(e) { // 1
 <!-- NUEVA INCIDENCIA	   -->
 
 	<h:form id="nuevaobsinc">
+		<p:growl/>	
 		<p:dialog header="Ingrese Observación" widgetVar="ObsIncDialog"
 			showEffect="fade" hideEffect="explode" modal="true" width="300"
-			position="center">
+			position="center">	
 			<h:panelGrid id="display" columns="2" cellpadding="2"
 				style="margin:0 auto;">
             
-            <h:outputText value="Estado" />	
-            <h:inputTextarea value="#{mantenimientoIncidenciaForm.objObsIncidencia.observacion}" /> 
-            <h:outputText value="Fecha final" />				
+            <h:outputText value="#{message['incidencia.observacion']}" />	
+            <h:inputTextarea  required="true" value="#{mantenimientoIncidenciaForm.objObsIncidencia.observacion}" requiredMessage="#{message['incidencia.observacion.validation']}" /> 
+            <h:outputText value="#{message['incidencia.fecha']}" />				
             <p:calendar id="fechafin" 
-            value="#{mantenimientoIncidenciaForm.fechafin}"  />
+            value="#{mantenimientoIncidenciaForm.fechafin}" requiredMessage="#{message['incidencia.fecha.validation']}" required="true" />
             <p:commandButton 
 					    value="Guardar" 
 						update="display"
