@@ -163,7 +163,7 @@ public class MantenimientoIncidenciaFormAction extends BaseMantenimientoAbstract
 		return getViewList();
 	}
 
-	/*método del botón GUARDAR(inserta o actualiza el proveedor)*/
+	/*método del botón GUARDAR(inserta o actualiza la incidencia)*/
 	public String insertar() throws Exception {
 		try {
 				if (log.isInfoEnabled()) {
@@ -173,7 +173,11 @@ public class MantenimientoIncidenciaFormAction extends BaseMantenimientoAbstract
 				objIncidencia.setTbEstadoGeneral(objEstadoService.findEstadogeneral(estado));
 					log.info("actualizando..... ");
 					objIncidenciaService.updateIncidencia(objIncidencia);
-					log.info("insertando..... ");	
+					log.info("insertando..... ");
+					nombre ="";
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+							Constants.MESSAGE_REGISTRO_TITULO, nombre);
+					FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (Exception e) {
 			e.printStackTrace();
 			nombre = e.getMessage();
@@ -200,6 +204,10 @@ public class MantenimientoIncidenciaFormAction extends BaseMantenimientoAbstract
 					log.info("actualizando..... ");
 					objObsIncidenciaService.insertObsIncidencia(objObsIncidencia);
 					log.info("insertando..... ");	
+					nombre ="";
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+							Constants.MESSAGE_REGISTRO_TITULO, nombre);
+					FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (Exception e) {
 			e.printStackTrace();
 			nombre = e.getMessage();
