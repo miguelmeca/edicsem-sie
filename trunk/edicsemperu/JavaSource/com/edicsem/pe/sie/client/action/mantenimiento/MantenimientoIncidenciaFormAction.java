@@ -209,7 +209,7 @@ public class MantenimientoIncidenciaFormAction extends BaseMantenimientoAbstract
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 		objObsIncidencia = new ObservacionIncidenciaSie();
-		return getViewMant();
+		return update();
 	}
 	
 	/*métodos GET y SET*/
