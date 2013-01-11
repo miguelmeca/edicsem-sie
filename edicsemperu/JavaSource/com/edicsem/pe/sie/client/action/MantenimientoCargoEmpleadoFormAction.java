@@ -149,7 +149,21 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		return mantenimientoCargoEmpleadoSearch.listar();
 	}
 
-	/**
+	public class WatermarkBean { 
+	 private String keyword;  
+	  
+	    public String getKeyword() {  
+	        return keyword;  
+	    }  
+	  
+	    public void setKeyword(String keyword) {  
+	        this.keyword = keyword;  
+	    }  
+	  
+	    public void search() {  
+	        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"No results found with ", "'" + keyword + "'"));  
+	    }  }
+	/**}
 	 * @return the mayuscula
 	 */
 
