@@ -35,11 +35,11 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 	 */
 	public void insertCobranzaOpera(List<String> empleadoList) {
 		
-		List<CobranzaSie> cobranzaList  = objCobranzaDao.listarCobranzas();
+		List<CobranzaSie> cobranzaList  =  new ArrayList<CobranzaSie>(objCobranzaDao.listarCobranzas());
 		for (int i = 0; i < cobranzaList.size(); i++) {
-			log.info(""+cobranzaList.get(i).getTbCliente().getNombresCompletos()+" "+cobranzaList.get(i).getFechaVencimientoString());
+			log.info(" ***2  "+cobranzaList.get(i).getIdcontrato());
 		}
-		
+		boolean isvalidate=true;
 		List<CobranzaSie> puntualtmp = new ArrayList<CobranzaSie>(),regulartmp= new ArrayList<CobranzaSie>(),morosotmp= new ArrayList<CobranzaSie>(), extremotmp= new ArrayList<CobranzaSie>();
 		
 			/** Lógica para dividir la lista de deudores divididas por tipo de cliente
@@ -49,11 +49,19 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 			
 			if(cobranzaList.get(i).getTbCliente().getTipocliente()==1){
 				// Puntual
-				if(!(puntualtmp.contains(cobranzaList.get(i)))){
-					log.info("se agrega  "+cobranzaList.get(i).getIdcobranza()+"   "+puntualtmp.contains(cobranzaList.get(i).getIdcobranza()));
-					puntualtmp.add(cobranzaList.get(i));
+				if(puntualtmp.size()>0){
+					log.info(" >0 ");
+					for (int j = 0; j < puntualtmp.size(); j++) {
+						log.info("ver   "+puntualtmp.get(j).getIdcontrato()+"  c "+cobranzaList.get(i).getIdcontrato());
+						if(puntualtmp.get(j).getIdcontrato()==cobranzaList.get(i).getIdcontrato()){
+							isvalidate=false;
+						}
+						if(isvalidate && j==puntualtmp.size()-1){
+							log.info(" primera ");
+							puntualtmp.add(cobranzaList.get(i));
+						}
+					}
 				}
-				
 			}else if(cobranzaList.get(i).getTbCliente().getTipocliente()==2){
 				// Regular
 				if(!(regulartmp.contains(cobranzaList.get(i)))){
@@ -68,7 +76,9 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 				extremotmp.add(cobranzaList.get(i));}
 			}
 		}
-		
+		for (int i = 0; i < puntualtmp.size(); i++) {
+			log.info("contrato  "+puntualtmp.get(i).getIdcontrato()+""+puntualtmp.get(i).getTbCliente().getNombresCompletos()+" "+puntualtmp.get(i).getFechaVencimientoString());
+		}
 		log.info("tamano " +  puntualtmp.size()+" - "+regulartmp.size()+" - "+morosotmp.size()+" - "+extremotmp.size());
 		BigDecimal p = new BigDecimal(puntualtmp.size()/empleadoList.size());
 		p.setScale(0);
@@ -86,6 +96,7 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 		for (int j = 0; j < empleadoList.size(); j++) {
 			log.info(" -- empleado -- "+ empleadoList.get(j));
 			for (int i = 0; i < puntualtmp.size(); i++) {
+				log.info(" * -- "+ i+1+"  "+p.intValue());
 				if((i+1)<=p.intValue()){
 					log.info(" -- puntuales -- "+ puntualtmp.get(i));
 					CobranzaOperadoraSie cobranzaopera= new CobranzaOperadoraSie();

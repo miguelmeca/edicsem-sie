@@ -39,7 +39,7 @@ public class CobranzaServiceImpl implements CobranzaService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.CobranzaService#listarCobranzas()
 	 */
-	public List listarCobranzas() {
+	public List<CobranzaSie> listarCobranzas() {
 		return objCobranzaDao.listarCobranzas();
 	}
 	
