@@ -6,32 +6,49 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
-		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Paquete Biblico</h1>
+		<h1 class="title ui-widget-header ui-corner-all " ><center>Mantenimiento Paquete Biblico</center></h1>
 		<h:form id="frmPaqueBibliList">
 			<p:growl id="message" showDetail="true" />
 			
 			
-			<p:dataTable id="pack" value="#{mantenimientoPaqueteBiblicoSearchAction.detPaqueteList}" var="pb" paginator="true" rows="10"
+
+		
+<p:commandButton value="Nuevo Paquete Biblico"
+			   update=":formPaqueteBiblico:display"
+               action="#{mantenimientoPaqueteBiblicoFormAction.agregar}"
+               oncomplete="PaqueteBiblico.show()"  
+               title="Crear Nuevo Paquete Biblico"
+               icon="ui-icon-check"/>
+               
+               
+               	
+			<p:dataTable id="pack" value="#{mantenimientoPaqueteBiblicoSearchAction.detPaqueteList}" var="pb" paginator="true" rows="5"
        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	   rowsPerPageTemplate="5,10,15" widgetVar="table"
 	   emptyMessage="No se encontro registros">	
+	  
+
+			
 	   
 	   
-	   
-				<p:column headerText="Codigo" >
+				<p:column headerText="Codigo"  sortBy="#{pb.codpaquete}" filterBy="#{pb.codpaquete}">
 					<h:outputText value="#{pb.codpaquete}" />
 				</p:column>
 				
-				<p:column headerText="Descripcion" >
+				<p:column headerText="Descripcion"  sortBy="#{pb.descripcionpaquete}" filterBy="#{pb.descripcionpaquete}">
 					<h:outputText value="#{pb.descripcionpaquete}" />
 				</p:column>
 				
 				
-				<p:column headerText="Ver detalles del paquete">
-					<p:commandButton value="ver detalles"  
-						action="#{mantenimientoDetallePaqueteBiblicoSearchAction.listar}"	icon="ui-icon ui-icon-pencil">
+				<p:column headerText="Mostrar detalles">
+					<p:commandButton value="Mostrar los productos"  
+						action="#{mantenimientoDetallePaqueteBiblicoSearchAction.listar}"	
+						update="formdetalleform" 
+						icon="ui-icon-search"
+						 ajax="false"
+						 title="Muestra los productos que tiene este paquete" >
 						<f:setPropertyActionListener value="#{pb.idpaquete}"
-							target="#{mantenimientoDetallePaqueteBiblicoSearchAction.paquete}" />
+							target="#{mantenimientoDetallePaqueteBiblicoSearchAction.idpaquete}" />
 					</p:commandButton>
 				</p:column>
 				
@@ -66,23 +83,89 @@
 				
 		</p:column>
 
+		</p:dataTable>	
+		
+		
+		
+		<!-- DETALLE DEL PAQUETE -->
+<p:panel header="Productos del Paquete Biblico">
+		<p:dataTable value="#{mantenimientoDetallePaqueteBiblicoSearchAction.detPaqueteBiblicoList}" 
+					var="c"
+						id="formdetalleform">
+				
+				
+				<p:column headerText="Codigo de Paquete" >
+					<h:outputText value="#{c.tbPaquete.codpaquete}" />
+				</p:column>
+				
+				<p:column headerText="Nombre de Producto" >
+					<h:outputText value="#{c.tbProducto.descripcionproducto}" />
+				</p:column>
+				
+				<p:column headerText="Cantidad" >
+					<h:outputText value="#{c.cantidad}" />
+				</p:column>
+				
+				
+				
+				
+				
+				
+								
+<p:column headerText="Editar">
+<p:commandButton value="Editar"	 oncomplete="DetPaqueteBiblico.show()"
+				 action="#{mantenimientoDetallePaqueteBiblicoSearchAction.update}" 
+				 update=":formDetPaqueteBiblico:display"
+				 icon="ui-icon ui-icon-pencil" >
+<f:setPropertyActionListener value="#{c}"
+							 target="#{mantenimientoDetallePaqueteBiblicoSearchAction.objDetPaqueteSie}" />
+</p:commandButton>
+</p:column>
+				
+				
+		<!--**********INICIO DESACTIVAR PRODUCTO**********-->
 
+<p:column headerText="Eliminar Producto">
 
+<p:commandButton id="showConfirmDeshabilitarProDetPACK"
+				 value="Eliminar"
+				 icon="ui-icon ui-icon-close"	 			
+	 			 onclick="confirmationPaqueteProDetPACK.show()">
+	 			  
+<f:setPropertyActionListener
+		 value="#{c.idDetPaquete}"
+		 target="#{mantenimientoDetallePaqueteBiblicoSearchAction.idc}" 
+/>							
 
-
-
-
+</p:commandButton>
+				
+		</p:column>
+				
+				
+			
+				
+				
+				
 <f:facet name="footer">
 <div align="left">
-<p:commandLink value="Nuevo Paquete Biblico"
-update=":formPaqueteBiblico:display"
-action="#{mantenimientoPaqueteBiblicoFormAction.agregar}"
-oncomplete="PaqueteBiblico.show()"  
+<p:commandButton value="Nuevo producto Paquete Biblico"
+update=":formDetPaqueteBiblico:display"
+action="#{mantenimientoDetallePaqueteBiblicoSearchAction.agregar}"
+oncomplete="DetPaqueteBiblico.show()"  
 title="Ingresar Nuevo Paquete Biblico"/>
 </div>
 </f:facet>
 
-		</p:dataTable>
+
+				
+				
+				
+				
+				
+				
+			</p:dataTable>
+			</p:panel>
+			
 			
 		</h:form>
 	 </ui:define>
