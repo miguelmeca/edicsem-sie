@@ -8,7 +8,7 @@
 	<ui:define name="body">
 		<h:form id="form">
 	<p:panel header="Registrar Proveedor"  id="panel">
-	        <p:growl/>	
+	        <p:messages showDetail="true"/>	
 			<p:panelGrid columns="2" cellpadding="5">						
 			<p:outputLabel value="#{message['proveedor.codigo']}" for="codigo" />
 			<p:inputText id="codigo" value="#{mantenimientoProveedorFormAction.objProveedor.codproveedor}" required="true" label="Codigo" 
