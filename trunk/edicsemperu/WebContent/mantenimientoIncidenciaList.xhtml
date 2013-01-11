@@ -7,6 +7,7 @@
    <ui:define name="body">
     <h1 class="title ui-widget-header ui-corner-all">Mantenimiento Incidencias</h1>
      <h:form id="IncidenciaList" prependId="false">
+	   <p:messages showDetail="true" />
 	  <p:dataTable value="#{mantenimientoIncidenciaSearch.listaIncidencia}" var="p"
 	   id="listaIncidencias" paginator="true" rows="5"
        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
