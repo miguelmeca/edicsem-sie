@@ -7,6 +7,7 @@
    <ui:define name="body">
     <h1 class="title ui-widget-header ui-corner-all">Seguimiento de Cobranzas</h1>
      <h:form id="parametrosList" prependId="false">
+	 <p:growl/>	
 	  <p:fieldset legend="Lista de Cobranzas">  
 	  <p:dataTable value="#{mantenimientoCobranzaOperaSearchAction.cobranzaOperaList}" var="p"
 	   id="listaPersonas" paginator="true" rows="5"
@@ -136,16 +137,16 @@
 </p:fieldset>
 <p:fieldset legend="Registro del Seguimiento" style="margin-top:20px">   
 <h:panelGrid columns="2" >
-<p:outputLabel value="Tipo de LLamada :" for="tipo" />
- <p:selectOneMenu id="tipo" value="#{mantenimientoCobranzaOperaSearchAction.tipollamada}" styleClass="required" title="El tipo es obligatorio!" >
+<p:outputLabel value="#{message['operadora.tipollamada']}" for="tipo" />
+ <p:selectOneMenu id="tipo" filter="true" required="true" value="#{mantenimientoCobranzaOperaSearchAction.tipollamada}" requiredMessage="#{message['operadora.tipollamada.validation']}" styleClass="required" title="El tipo es obligatorio!" >
  <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
  <f:selectItems  value="#{comboAction.tipollamada}" />
  </p:selectOneMenu>
-<p:outputLabel value="Observación :" for="observacion" />
-<p:inputTextarea id="observacion" value="#{mantenimientoCobranzaOperaSearchAction.objCobranzaOpera.observaciones}" 
-rows="3" cols="60" maxlength="100" required="false"  label="Correo" autoResize="false"/>
+<p:outputLabel value="#{message['operadora.observacion']}" for="observacion" />
+<p:inputTextarea id="observacion"  value="#{mantenimientoCobranzaOperaSearchAction.objCobranzaOpera.observaciones}" requiredMessage="#{message['operadora.observacion.validation']}" 
+rows="3" cols="60" maxlength="100" required="true" label="Correo" autoResize="false"/>
 <h:outputText value="Enviar al sistema :" />
-<p:selectBooleanCheckbox></p:selectBooleanCheckbox>
+<p:selectBooleanCheckbox value="#{mantenimientoCobranzaOperaSearchAction.enviarMensaje}" ></p:selectBooleanCheckbox>
 <p:commandButton id="btn" value="Guardar" update="panel" action="#{mantenimientoCobranzaOperaSearchAction.insertar}" ajax="false" icon="ui-icon-check"/>
 </h:panelGrid>
 </p:fieldset>
