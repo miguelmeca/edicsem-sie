@@ -9,12 +9,12 @@
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
 	<h:form id="frmcliente">
-		<p:growl id="message" showDetail="true" />
+		
 <p:wizard id="wiz" widgetVar="wiz"
 				flowListener="#{MantenimientoClienteFormAction.onFlowProcess}">
 <p:tab title="#{message['cliente.tabcliente']}">
  <p:panel header="Datos Personales"> 
- <h:messages errorClass="error"/>  
+ <p:messages showDetail="true"/>   
 
 
 <h:panelGrid id="display" columns="6">	
