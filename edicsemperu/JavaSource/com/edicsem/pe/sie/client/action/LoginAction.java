@@ -23,7 +23,9 @@ import org.primefaces.model.DefaultMenuModel;
 import org.primefaces.model.MenuModel;
 
 import com.edicsem.pe.sie.beans.MenuDTO;
+import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
+import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.DetPermisoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.LoginService;
 import com.edicsem.pe.sie.service.facade.ModuloOpcionService;
@@ -44,6 +46,7 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 	private String usuario;
 	private String contrasenia;
 	private MenuModel mimenu;
+	private List<CargoEmpleadoSie> cargo;
 	
 	@EJB
 	private LoginService loginService;
@@ -51,6 +54,8 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 	private DetPermisoEmpleadoService detPermisoEmplService;
 	@EJB
 	private ModuloOpcionService moduloService;
+	@EJB
+	private CargoEmpleadoService cargoService;
 	
 	public LoginAction() {
 		log.info("Entrando al Login...");
@@ -63,6 +68,7 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 		log.info("init ...");
 		mimenu = new DefaultMenuModel();
 		property = new PropertyFile().getProperties();
+		cargo=new ArrayList<CargoEmpleadoSie>();
 	}
 	
 	public String ingresarUsuario() {
@@ -105,11 +111,9 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 								
 								item.setAjax(false); 
 								if (a.getNombreActionListener() != null && a.getNombreActionListener().isEmpty() == false) {
-									log.info(" --- ");
 									item.setActionExpression(getMethod(a.getNombreActionListener()));
 									item.setUrl(null);
 								}else if(a.getUrlMenu()!= null && a.getUrlMenu().isEmpty() == false){
-									log.info(" --url  - ");
 									item.setUrl(a.getUrlMenu());
 								}
 								log.info(" action: "+a.getNombreActionListener());
@@ -121,7 +125,12 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 							mimenu.addSubmenu(submenu);
 						}
 					}
-				
+					cargo = cargoService.listarCargosXEmpleado(objEmpleado.getIdempleado());
+					for (int i = 0; i < cargo.size(); i++) {
+						log.info(": "+cargo.get(i).getDescripcion());
+					}
+					SessionsSie.putObjectInSession(Constants.CARGO_USER, cargo);
+					
 			}else {
 				log.info("usuario incorrecto!! ...  ");
 				FacesContext.getCurrentInstance().addMessage(

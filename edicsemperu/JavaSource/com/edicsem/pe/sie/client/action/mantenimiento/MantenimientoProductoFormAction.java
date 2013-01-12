@@ -12,6 +12,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.imageio.stream.FileImageOutputStream;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,6 +21,7 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
 import com.edicsem.pe.sie.client.action.ComboAction;
+import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -99,8 +101,7 @@ public class MantenimientoProductoFormAction extends
 		log.info("cargarImagenInsertar** " + event.getFile().getFileName() );
 		String photo = event.getFile().getFileName();
 		FileImageOutputStream imageOutput;
-		String newFileName = "C:\\ws-sie\\edicsemperu\\WebContent"
-				+ File.separator + "images" + File.separator + photo;
+		String newFileName = "C:\\Images" + File.separator + photo;
 		try {
 			setImage(new DefaultStreamedContent(event.getFile().getInputstream()));
 			
@@ -130,10 +131,15 @@ public class MantenimientoProductoFormAction extends
 	public String insertar() {
 		mensaje=null;
 		String paginaRetorno="";
+		//Capturando el empleado en session
+		HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+		EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
+		log.info(" "+sessionUsuario.getNombresCompletos());
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()' " );
 			}
+			objProductoSie.setUsuariocreacion(sessionUsuario.getUsuario());
 			if(objProductoSie.getStkmaximo()<= objProductoSie.getStkminimoproducto()){
 				mensaje ="El stock minimo no puede ser mayor o igual al máximo";
 				paginaRetorno = productoSearch.getViewMant();
@@ -142,7 +148,7 @@ public class MantenimientoProductoFormAction extends
 			else if (isNewRecord()) {
 				if (image == null) {
 					log.info("imagen nula");
-					String rutaDefecto ="C:\\ws-sie\\edicsemperu\\WebContent\\images\\bibliaXDefecto.png";
+					String rutaDefecto ="C:\\Images\\bibliaXDefecto.png";
 					log.info("ruta" + rutaDefecto);
 					objProductoSie.setRutaimagenproducto(rutaDefecto);
 				}
