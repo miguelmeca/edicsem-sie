@@ -11,7 +11,7 @@
 	    <p:wizard id="wiz" widgetVar="wiz" flowListener="#{mantenimientoEmpleadoFormAction.onFlowProcess}">
 	    <p:tab title="#{message['empleado.tabpersonal']}">
 	    <p:panel header="Datos Personales"> 
-	     <p:messages showDetail="true"/> 	  
+	     <p:messages id="message" showDetail="true"/> 	  
         <h:panelGrid columns="2" cellpadding="5">						
 			<p:outputLabel value="#{message['empleado.nombre']}" for="nombre" />
 			<p:inputText id="nombre" value="#{mantenimientoEmpleadoFormAction.objEmpleado.nombreemp}" required="true" label="Nombre" 
