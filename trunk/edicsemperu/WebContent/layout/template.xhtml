@@ -128,7 +128,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			</div>
 		</p:layoutUnit>
 		<p:layoutUnit position="west"  resizable="true" collapsible="true"
-			header="#{login.objEmpleado.nombresCompletos}"  >
+			header="${sessionScope.loginUserSession.nombresCompletos}" >
 			<h:form  >
 				<p:menu model="#{login.mimenu}" position="center"  style="width:100%"/>
 			</h:form>
