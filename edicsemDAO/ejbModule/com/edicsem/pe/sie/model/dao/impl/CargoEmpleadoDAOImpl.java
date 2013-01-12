@@ -20,13 +20,9 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 	private EntityManager em;
 
 	private static Log log = LogFactory.getLog(CargoEmpleadoDAOImpl.class);
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.edicsem.pe.sie.model.dao.DemoDAO#insertDemo(com.edicsem.pe.sie.entity
-	 * .Usuario)
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO#insertarCargoEmpleado(com.edicsem.pe.sie.entity.CargoEmpleadoSie)
 	 */
 	public void insertarCargoEmpleado(CargoEmpleadoSie cargoempleado) {
 		log.info("apunto de insertar cargo empleado Empleado"+ cargoempleado.getDescripcion()+
@@ -43,6 +39,9 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO#actualizarCargoEmpleado(com.edicsem.pe.sie.entity.CargoEmpleadoSie)
+	 */
 	public void actualizarCargoEmpleado(CargoEmpleadoSie cargoempleado) {
 		
 		try {
@@ -58,11 +57,9 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 			e.printStackTrace();
 		}
 	}
-
-	/**
-	 * (non-Javadoc)
-	 * 
-	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#deleteDemo(java.lang.String)
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO#eliminarCargoEmpleado(int)
 	 */
 	public void eliminarCargoEmpleado(int id) {
 		try {
@@ -73,7 +70,6 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 			e.printStackTrace();
 		}
 	}
-
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO#buscarCargoEmpleado(int)
@@ -92,14 +88,9 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 		}
 		return cargoempleado;
 	}
-
-	/**
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.edicsem.pe.sie.model.dao.DemoDAO#listarUsuarios(com.edicsem.pe.sie
-	 * .entity.Usuario)
-	 * 
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO#listarCargoEmpleado()
 	 */
 	public List listarCargoEmpleado() {
 		log.info("***************** listar cargoEmpleado");
@@ -113,5 +104,22 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 		}
 		return lista;
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO#listarCargosXEmpleado(int)
+	 */
+	public List listarCargosXEmpleado(int idEmpleado){
+		log.info("listar cargos X empleado");
+		List lista = null;
+		try {
+			Query q = em.createQuery("select c from CargoEmpleadoSie c inner join c.tbContratoEmpleado d inner join " +
+					" d.tbEmpleado1 where d.idempleado= "+ idEmpleado +" and c.tbEstadoGeneral.idestadogeneral = "+ 1);
+			lista = q.getResultList();
+			log.info(" tamaño de lista de cargo X empleado--->" + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
 }
