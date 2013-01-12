@@ -11,7 +11,7 @@
 	        <p:messages showDetail="true"/>	
 			<p:panelGrid columns="2" cellpadding="5">						
 			<h:outputText value="#{message['proveedor.codigo']}"  />
-			<p:inputText   value="#{mantenimientoProveedorFormAction.objProveedor.codproveedor}" required="true" label="Codigo" 
+			<p:inputMask mask="aaa999" value="#{mantenimientoProveedorFormAction.objProveedor.codproveedor}" required="true" label="Codigo" 
 			requiredMessage="#{message['proveedor.codigo.validation']}" readonly="true" rendered="#{!mantenimientoProveedorFormAction.newRecord}"/>
 			<p:inputText id="codigo" value="#{mantenimientoProveedorFormAction.objProveedor.codproveedor}" required="true" label="Codigo" 
 			requiredMessage="#{message['proveedor.codigo.validation']}" rendered="#{mantenimientoProveedorFormAction.newRecord}"/>
