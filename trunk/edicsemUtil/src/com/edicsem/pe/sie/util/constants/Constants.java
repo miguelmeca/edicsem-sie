@@ -102,5 +102,6 @@ public class Constants {
 	public static final String INDEX_PAGE = "index";
 	public static final String LOGIN_PAGE = "login";
 	public static final String USER_KEY = "loginUserSession";
+	public static final String CARGO_USER = "cargoSession";
 	
 	}
