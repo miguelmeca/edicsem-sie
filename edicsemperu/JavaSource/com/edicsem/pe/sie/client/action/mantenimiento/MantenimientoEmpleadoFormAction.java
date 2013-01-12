@@ -483,23 +483,15 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	public String update() throws Exception {
 	    log.info("actualizar");
 		log.info("update()" + objEmpleado.getIdempleado());
-		//setIdUbigeo(objDomicilio.getTbUbigeo().getIdubigeo()+"");
-		//UbigeoSie ubigeo = objUbigeoService.findUbigeo(Integer.parseInt(getIdUbigeo()));
-		//setIdDepartamento(ubigeo.getCoddepartamento());
-		//comboManager.setIdDepartamento(idDepartamento);
-		//setIdProvincia(ubigeo.getCodprovincia());
-		//comboManager.setIdProvincia(idProvincia);
-		//setIdDistrito(ubigeo.getCoddistrito());
-		//ubigeoDefecto="";
-		//log.info("busquedaUbigeo "+ getIdDepartamento()+" - "+getIdProvincia()+" - "+getIdDistrito()+" - "+getIdUbigeo());
-	
-		/*busca el empleado, domicilio y teléfono*/
+		/*busca el empleado, lista de teléfonos, domicilio, detalle de empresa de empleado y contrato de empleado*/
 		EmpleadoSie c = objEmpleadoService.buscarEmpleado(objEmpleado.getIdempleado());
-		DomicilioPersonaSie d = objDomicilioService.buscarDomicilioXIdempleado(objEmpleado.getIdempleado());
 		TelefonoPersonaSie t = objTelefonoService.buscarTelefonoXIdempleado(objEmpleado.getIdempleado());
+		DomicilioPersonaSie d = objDomicilioService.buscarDomicilioXIdempleado(objEmpleado.getIdempleado());
+		
 		log.info(" id " + c.getIdempleado()+ " nombre " + c.getNombreemp() ); 
-		log.info(" id " + d.getIddomiciliopersona()+ " nombre " + d.getDomicilio() );
 		log.info(" id " + t.getIdtelefonopersona()+ " nombre " + t.getTelefono() );
+		log.info(" id " + d.getIddomiciliopersona()+ " nombre " + d.getDomicilio() );
+		
 		/*Seteo para mostrar los datos en el form*/
 		objEmpleado.setIdempleado(c.getIdempleado());
 		objEmpleado.setNombreemp(c.getNombreemp());
@@ -510,7 +502,10 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
         setTipoDocumento(c.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad());
         objEmpleado.setNumdocumento(c.getNumdocumento());
         objEmpleado.setFechanacimiento(c.getFechanacimiento());
+        objEmpleado.setCorreo(c.getCorreo());
         objEmpleado.setTbEstadoGeneral(c.getTbEstadoGeneral());
+    
+                
         objDomicilio.setIddomiciliopersona(d.getIddomiciliopersona());
         objDomicilio.setDomicilio(d.getDomicilio());
         setTipo(d.getTbTipoCasa().getIdtipocasa());
