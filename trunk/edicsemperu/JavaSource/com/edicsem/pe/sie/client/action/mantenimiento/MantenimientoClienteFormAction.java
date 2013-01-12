@@ -600,7 +600,10 @@ objClienteService.updateCliente(objClienteSie, TelefonoPersonaList,
 		tipo, objDomicilio,idUbigeo);//aqui eh puesto Ubigeo
 			
 			
-		
+mensaje ="";
+msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+		Constants.MESSAGE_REGISTRO_TITULO, mensaje);
+FacesContext.getCurrentInstance().addMessage(null, msg);
 			log.info("depues de haber insertado bean");
 		} catch (Exception e) {
 
