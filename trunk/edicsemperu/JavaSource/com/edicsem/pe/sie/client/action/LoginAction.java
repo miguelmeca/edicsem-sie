@@ -125,9 +125,10 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 							mimenu.addSubmenu(submenu);
 						}
 					}
+					log.info(" listando cargos " +objEmpleado.getIdempleado()   );
 					cargo = cargoService.listarCargosXEmpleado(objEmpleado.getIdempleado());
 					for (int i = 0; i < cargo.size(); i++) {
-						log.info(": "+cargo.get(i).getDescripcion());
+						log.info("::::: CARGO :::: "+cargo.get(i).getIdcargoempleado()  +"   "+cargo.get(i).getDescripcion());
 					}
 					SessionsSie.putObjectInSession(Constants.CARGO_USER, cargo);
 					

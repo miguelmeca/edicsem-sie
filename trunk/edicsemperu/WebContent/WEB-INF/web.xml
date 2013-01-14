@@ -51,4 +51,8 @@
   <welcome-file-list>
     <welcome-file>inicio.jsp</welcome-file>
   </welcome-file-list>
+  <error-page>
+    <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+    <location>/sessionexpired.jsf</location>
+  </error-page>
 </web-app>

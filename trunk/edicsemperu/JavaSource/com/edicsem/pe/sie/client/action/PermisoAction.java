@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.primefaces.event.TransferEvent;
@@ -42,15 +43,18 @@ public class PermisoAction extends BaseMantenimientoAbstractAction {
 	public void init() {
 		log.info("init()");
 		source = new ArrayList<PermisoSie>();
-		target = new ArrayList<PermisoSie>();  
+		target = new ArrayList<PermisoSie>();
+		permisos = new DualListModel<PermisoSie>(source, target);
 	}
 	
-	public void onTransfer(TransferEvent event) {  
+	public void onTransfer(TransferEvent event) {
+		log.info(" onTransfer() ");
 	    StringBuilder builder = new StringBuilder();
 	    for(Object item : event.getItems()) {  
 	         builder.append(((PermisoSie) item).getNombrePermiso()).append("<br />");  
 	    }
-	          
+	    source = permisos.getSource();
+		target = permisos.getTarget();
 	    FacesMessage msg = new FacesMessage();  
 	    msg.setSeverity(FacesMessage.SEVERITY_INFO);
 	    msg.setSummary("Items Transferred");
@@ -62,9 +66,13 @@ public class PermisoAction extends BaseMantenimientoAbstractAction {
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
 	 */
 	public String agregar() {
+		log.info("agregar()");
+		permisos = new DualListModel<PermisoSie>(new ArrayList<PermisoSie>(), new ArrayList<PermisoSie>());
+		log.info("listarPermisosXEmpleado()");
+		target= objPermisoService.listarPermisosXEmpleado(idempleado);
 		source= objPermisoService.listarPermiso();
 		permisos = new DualListModel<PermisoSie>(source, target);
-		return super.agregar();
+		return getViewList();
 	}
 	
 	/* (non-Javadoc)
@@ -96,14 +104,6 @@ public class PermisoAction extends BaseMantenimientoAbstractAction {
 	public String getViewList() {
 		return Constants.ASIGNAR_PERMISOS_FORM_PAGE;
 	}
-	
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewMant()
-	 */
-	public String getViewMant() {
-		// TODO Auto-generated method stub
-		return super.getViewMant();
-	}
 
 	/**
 	 * @return the mensaje
@@ -131,20 +131,6 @@ public class PermisoAction extends BaseMantenimientoAbstractAction {
 	 */
 	public void setEditMode(boolean editMode) {
 		this.editMode = editMode;
-	}
-
-	/**
-	 * @return the permisos
-	 */
-	public DualListModel<PermisoSie> getPermisos() {
-		return permisos;
-	}
-
-	/**
-	 * @param permisos the permisos to set
-	 */
-	public void setPermisos(DualListModel<PermisoSie> permisos) {
-		this.permisos = permisos;
 	}
 
 	/**
@@ -187,6 +173,20 @@ public class PermisoAction extends BaseMantenimientoAbstractAction {
 	 */
 	public void setIdempleado(int idempleado) {
 		this.idempleado = idempleado;
+	}
+
+	/**
+	 * @return the permisos
+	 */
+	public DualListModel<PermisoSie> getPermisos() {
+		return permisos;
+	}
+
+	/**
+	 * @param permisos the permisos to set
+	 */
+	public void setPermisos(DualListModel<PermisoSie> permisos) {
+		this.permisos = permisos;
 	}
 
 }
