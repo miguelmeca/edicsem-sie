@@ -34,6 +34,7 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private ClienteSie objcliente;
 	private TelefonoPersonaSie objtelefono;
 	private List<CobranzaOperadoraSie> cobranzaOperaList;
+	private List<CobranzaOperadoraSie> filtrarCobranza;
 	private List<CobranzaSie> detallePagos;
 	private List<TelefonoPersonaSie> listatelefono;
 	private Date fecPagoNull;
@@ -374,6 +375,20 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	 */
 	public void setIdcontrato(int idcontrato) {
 		this.idcontrato = idcontrato;
+	}
+
+	/**
+	 * @return the filtrarCobranza
+	 */
+	public List<CobranzaOperadoraSie> getFiltrarCobranza() {
+		return filtrarCobranza;
+	}
+
+	/**
+	 * @param filtrarCobranza the filtrarCobranza to set
+	 */
+	public void setFiltrarCobranza(List<CobranzaOperadoraSie> filtrarCobranza) {
+		this.filtrarCobranza = filtrarCobranza;
 	}
 		
 }
