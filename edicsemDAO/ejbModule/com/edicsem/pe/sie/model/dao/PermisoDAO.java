@@ -10,5 +10,7 @@ public interface PermisoDAO {
 	public abstract void insertPermiso(PermisoSie p);
 	public abstract void updatePermiso(PermisoSie p);
 	public abstract PermisoSie findPermiso (int id);
+	public abstract PermisoSie findPermiso(String permiso);
 	public abstract List  listarPermiso();
+	public abstract List  listarPermisosXEmpleado(int idEmpleado);
 }

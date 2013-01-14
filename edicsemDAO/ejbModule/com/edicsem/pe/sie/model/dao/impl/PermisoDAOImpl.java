@@ -67,14 +67,28 @@ public class PermisoDAOImpl implements PermisoDAO{
 		}
 		return p;
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.PermisoDAO#findPermiso(java.lang.String)
+	 */
+	public PermisoSie findPermiso(String permiso) {
+		PermisoSie p = null;
+		try {
+			Query q = em.createQuery("select p from PermisoSie p where  p.tbEstadoGeneral.idestadogeneral = "+ 13 +" and p.nombrePermiso ='"+permiso+"'");
+			p =  (PermisoSie) q.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return p;
+	}
+	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.PermisoDAO#listarPermiso()
 	 */
 	public List listarPermiso() {
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from PermisoSie p where  p.tbEstadoGeneral.idestadogeneral = "+ 13 );
+			Query q = em.createQuery("select p from PermisoSie p where  p.tbEstadoGeneral.idestadogeneral = "+ 1 );
 			lista =  q.getResultList(); 						
 		   log.info("tamaño lista Permiso DAOIMPL --> " + lista.size()+"  ");
 		} catch (Exception e) {
@@ -83,4 +97,20 @@ public class PermisoDAOImpl implements PermisoDAO{
 		return lista;
 	}
 	
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.DetPermisoEmpleadoDAO#listarPermisosXEmpleado(int)
+	 */
+	public List listarPermisosXEmpleado(int idEmpleado) {
+		List lista = null;
+		log.info("  idEmpleado "+idEmpleado );
+		try {
+			Query q = em.createQuery("select p from PermisoSie p inner join p.tbDetEmpleadoEmpleados q inner join q.tbEmpleado r where r.idempleado  = "+ idEmpleado);
+			lista =  q.getResultList();
+		   log.info("tamaño lista listarPermisosXEmpleado --> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 }
