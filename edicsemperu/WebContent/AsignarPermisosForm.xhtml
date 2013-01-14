@@ -9,7 +9,7 @@
 		<h1 class="title ui-widget-header ui-corner-all">Asignar Permisos a los Empleados</h1>
 		<h:form id="formPermisos">
 			<p:growl id="message" showDetail="true" />
-			<p:panel header="#{message['panel.ingreso.mercaderia']}">
+			<p:panel>
 					<p:fieldset legend="Busqueda de Empleado">
 					<h:panelGrid columns="6">
 					
@@ -24,27 +24,24 @@
 					<f:selectItems  value="#{comboAction.empleadoxcargo}" />
 					</p:selectOneMenu>
 					
+					<p:commandButton action="#{permiso.agregar}" value="Ver Permisos" update="pojoPickList"/>
+					
 					</h:panelGrid>
-					</p:fieldset>
-				
-				<p:commandButton actionListener="#{permiso.agregar}"
-					value="Ver roles" ajax="false" update="formMovMerc:listaMovim, message"/>
+					
+				<p:spacer width="40px" />
+				<p:pickList id="pojoPickList" value="#{permiso.permisos}" var="p" addLabel="Ańadir" addAllLabel="Ańadir todos"
+        removeLabel="Quitar" removeAllLabel="Quitar todos"
+	                    converter="permisoConverter" itemLabel="#{p.nombrePermiso}" itemValue="#{p}" showSourceControls="true" 
+	                    showTargetControls="true" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">  
+	                    
+			        <f:facet  name="sourceCaption"><h:outputLabel value="Otros Roles"/></f:facet>
+			        <f:facet name="targetCaption"><h:outputLabel value="Roles Asignados"/></f:facet>
+			        
+			        <p:ajax  event="transfer" listener="#{permiso.onTransfer}" update="message" />
+			  
+			    </p:pickList>
+		   </p:fieldset>
 			</p:panel>
-			
-	<!-- 		<p:pickList id="pojoPickList" value="#{permiso.permisos}" var="p" effect="bounce"  
-                    itemValue="#{p}" itemLabel="#{p.source}" converter="p"  
-                    showSourceControls="true" showTargetControls="true"   
-                    showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" >  
-                    
-		        <f:facet name="sourceCaption">Otros Roles</f:facet>
-		        <f:facet name="targetCaption">Roles Asignados</f:facet>  
-		  
-		        <p:ajax event="transfer" listener="#{permiso.onTransfer}" update="msg" />  
-		        <p:column style="width:75%;">
-		            #{p.}  
-		        </p:column>  
-		  
-		    </p:pickList>    -->
 		</h:form>
 	</ui:define>
 </ui:composition>

@@ -180,7 +180,7 @@ requiredMessage="#{message['cliente.fechanacimiento.validation']}" />
 				</h:panelGrid>
 
 <p:dataTable value="#{MantenimientoClienteFormAction.telefonoPersonaList}" id="listarTelefonos" var="o" style="width:400px"
-							 rowStyleClass="#{o.operadorTelefonico eq 'Claro' ? 'color1': (o.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }"   >
+							 rowStyleClass="#{o.operadorTelefonico eq 'Claro' ? 'colorRojo': (o.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }"   >
 	
 							<f:facet name="header">
 								<h:outputLabel value="Telefonos de Referencia" />

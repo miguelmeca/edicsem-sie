@@ -6,7 +6,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui">
-<f:view contentType="text/html">
+<f:view >
 	<h:head>
 
 
@@ -34,9 +34,6 @@ body {
 }
 .verdeLimon{
         background: #D0FA58;
-}
-.color1{
-        background: #FF0000;
 }
 .color2{
         background: #81DAF5;
@@ -450,25 +447,6 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 		</p:confirmDialog>
 	</h:form>
-
-	<h:form>
-		<p:confirmDialog id="confirmationTelefonoelimina"
-			message="Esta seguro de eliminar dicho teléfono ?"
-			width="325" height="100" showEffect="explode" hideEffect="explode"
-			header="Confirm" severity="alert" widgetVar="confirmationTelefono"
-			position="center">
-
-			<p:commandButton type="submit" value="Si"
-				action="#{contratoForm.telefonoElimina}"
-				update=":formManteContrato:panelCliente:t"
-				oncomplete="confirmation.hide()" ajax="false">
-			</p:commandButton>
-
-			<p:commandButton value="No" onclick="confirmation.hide()"
-				type="button" />
-
-		</p:confirmDialog>
-	</h:form>
 	
 	<h:form>
 		<p:confirmDialog id="confirmationTelefonoelimina2"
@@ -489,6 +467,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:confirmDialog>
 	</h:form>
 	
+	<!-- Registro Contrato  -->
 	<h:form>
 		<p:confirmDialog id="confirmEliminarProductoLista"
 			message="Esta seguro de eliminar dicho Producto de la lista?"
@@ -499,10 +478,29 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			<p:commandButton type="submit" value="Si"
 				action="#{contratoForm.eliminarProducto}"
 				update=":detPaqueteList"
-				oncomplete="confirmation.hide()" ajax="false">
+				oncomplete="confirmationProductoContrato.hide()" ajax="false">
 			</p:commandButton>
 
-			<p:commandButton value="No" onclick="confirmation.hide()"
+			<p:commandButton value="No" onclick="confirmationProductoContrato.hide()"
+				type="button" />
+
+		</p:confirmDialog>
+	</h:form>
+	
+	
+	<h:form>
+		<p:confirmDialog message="Esta seguro de eliminar dicho Producto de la lista?"
+			width="325" height="100" showEffect="explode" hideEffect="explode"
+			header="Confirm" severity="alert" widgetVar="confirmationTelefonoContrato"
+			position="center">
+
+			<p:commandButton type="submit" value="Si"
+				action="#{contratoForm.eliminaTelefono}"
+				update=":telefonoList"
+				oncomplete="confirmationTelefonoContrato.hide()" ajax="false">
+			</p:commandButton>
+
+			<p:commandButton value="No" onclick="confirmationTelefonoContrato.hide()"
 				type="button" />
 
 		</p:confirmDialog>
@@ -777,10 +775,9 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			<p:commandButton type="submit" value="Si"
 				action="#{horarioPersonal.updateDeshabilitar}"
 				update="@all"
-				oncomplete="confirmation.hide()" >
+				oncomplete="confirmDeshabilitarHorario.hide()" >
 			</p:commandButton>
-			<p:commandButton value="No" onclick="confirmation.hide()"
-				type="button" />
+			<p:commandButton value="No" onclick="confirmDeshabilitarHorario.hide()" />
 		</p:confirmDialog>
 
 	</h:form>

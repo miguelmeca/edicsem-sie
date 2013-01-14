@@ -47,7 +47,7 @@ public class MantenimientoContratoFormAction extends
 
 	private String mensaje;
 	public static Log log = LogFactory.getLog(MantenimientoContratoFormAction.class);
-	private int Tipocasa,idtipodoc,idUbigeo, idempresa,tipoVenta,tipopago, idpaquete, idProducto, idempleadoExpositor, idempleadoVendedor;
+	private int Tipocasa,idtipodoc,idUbigeo, idempresa,tipoVenta,tipopago, idpaquete, idProducto, idempleadoExpositor, idempleadoVendedor,idTelefono;
 	private String idProvincia, idDepartamento,  ubigeoDefecto,selectTelef;
 	private ProductoSie objProductoSie;
 	private ClienteSie objClienteSie;
@@ -275,9 +275,10 @@ public class MantenimientoContratoFormAction extends
 		nuevoTelef = new TelefonoPersonaSie();
 		}
 	}
+	
 	/**
 	 * Eliminar Teléfono de la lista*/
-	public void  telefonoElimina(){
+	public void  eliminaTelefono(){
 		log.info("telefono telefonoElimina " + selectTelef);
 		for (int i = 0; i < telefonoList.size(); i++) {
 			log.info("t"+ telefonoList.get(i)+"-"+selectTelef);
@@ -357,6 +358,7 @@ public class MantenimientoContratoFormAction extends
 		}
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
+	
 	  
     public void eliminarProducto(){
     	log.info("en eliminarProducto()");
@@ -1113,6 +1115,20 @@ public class MantenimientoContratoFormAction extends
 	 */
 	public void setColaboradorList(List<String> colaboradorList) {
 		this.colaboradorList = colaboradorList;
+	}
+
+	/**
+	 * @return the idTelefono
+	 */
+	public int getIdTelefono() {
+		return idTelefono;
+	}
+
+	/**
+	 * @param idTelefono the idTelefono to set
+	 */
+	public void setIdTelefono(int idTelefono) {
+		this.idTelefono = idTelefono;
 	}
 
 	

@@ -115,7 +115,8 @@
 				</p:panel>
 				</p:tab>
 				<p:tab title="#{message['cliente.contrato.telefono.referencia']}">
-			  	<p:panel header="#{message['cliente.contrato.telefono.referencia']}" >
+			  	<p:panel >
+			  	<p:fieldset   legend="#{message['cliente.contrato.telefono.referencia']}" >
 				<h:panelGrid columns="6"  id="panelTlf" >
 				
 				<h:outputText value="#{message['contrato.tipo.telefono']}" />
@@ -159,32 +160,36 @@
 						<p:inputText value="#{contratoForm.nuevoTelef.descTelefono}" />
 						<p:spacer />
 						
-						<p:commandButton value="Agregar Telefono Referencia"  icon="ui-icon ui-icon-check" 
-						actionListener="#{contratoForm.telefonoAgregar}" update="mytable, message" > 
+						<p:commandButton value="Agregar Telefono"  icon="ui-icon ui-icon-check" 
+						actionListener="#{contratoForm.telefonoAgregar}" update="telefonoList, message" > 
 						</p:commandButton>
 						
 				</h:panelGrid>
-						<p:dataTable value="#{contratoForm.telefonoList}" id="mytable" var="t" style="width:400px"
-							 rowStyleClass="#{t.operadorTelefonico eq 'Claro' ? 'color1': (t.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }"   >
+				</p:fieldset>
+					<p:spacer height="30px" />
+						
+						<p:dataTable value="#{contratoForm.telefonoList}" id="telefonoList" var="t" style="width:400px"
+							 rowStyleClass="#{t.operadorTelefonico eq 'Claro' ? 'colorRojo': (t.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }"   >
 	
 							<f:facet name="header">
 								<h:outputLabel value="Telefonos de Referencia" />
 							</f:facet>
 							
-							<p:commandButton icon="ui-icon-close" oncomplete="confirmationTelefono.show()" title="eliminar">
-								<f:setPropertyActionListener value="#{t.telefono}" target="#{contratoForm.selectTelef}" />
-							</p:commandButton>
-							
-							<p:column headerText="Observación" style="width:125px">
+							<p:column headerText="Telefono"  >
 		                    	<h:outputText value="#{t.tipoTelef}, #{t.operadorTelefonico}, #{t.telefono}" />
 		                    </p:column>
-	 
+		                    <p:column headerText="Eliminar" >
+			                    <p:commandButton icon="ui-icon-close" oncomplete="confirmationTelefonoContrato.show()" title="eliminar">
+								<f:setPropertyActionListener value="#{t.telefono}" target="#{contratoForm.selectTelef}" />
+								</p:commandButton>
+							</p:column>
 						</p:dataTable>
-					
 				</p:panel>
 				</p:tab>
+				
 				<p:tab title="#{message['cliente.tabpaquete']}">
-				<p:panel header="#{message['panel.seleccion.producto']}" >
+				<p:panel>
+				<p:fieldset  legend="#{message['panel.seleccion.producto']}" >
 				<h:panelGrid columns="7" id="panelProd">
 				
 					<h:outputText value="Paquete Definido" />
@@ -223,9 +228,10 @@
 					 
 					<p:commandButton value="Agregar" icon="ui-icon ui-icon-check" update="detPaqueteList, message" 
 					action="#{contratoForm.agregarProducto}" />
-    </h:panelGrid>
-   
-    <p:dataTable id="detPaqueteList" var="c" value="#{contratoForm.detPaqueteList}" editable="true" style=" width:50% " >
+				</h:panelGrid>
+	   </p:fieldset>
+	   <p:spacer  height="35px"/>
+    <p:dataTable id="detPaqueteList" var="c" value="#{contratoForm.detPaqueteList}" editable="true" style="width:60%" >
 
         <f:facet name="header">
             Editar Paquete
@@ -234,7 +240,7 @@
         <p:ajax event="rowEdit" listener="#{contratoForm.onEditDetPaquete}"  update="@this" />
         <p:ajax event="rowEditCancel" listener="#{contratoForm.onCancelDetPaquete}" update="detPaqueteList" />
 		
-        <p:column headerText="Item" style="width:125px">
+        <p:column headerText="Item" style="width:90px">
             <p:cellEditor>
                 <f:facet name="output">
                     <h:outputText value="#{c.item}" />
@@ -261,18 +267,18 @@
                     <h:outputText value="#{c.observacion}" />
                 </f:facet>
                 <f:facet name="input">
-                    <h:inputText  value="#{c.observacion}" style="width:100%"  />
+                    <p:inputText  value="#{c.observacion}" />
                 </f:facet>
             </p:cellEditor>
         </p:column>
 
-        <p:column headerText="Cantidad" style="width:125px">
+        <p:column headerText="Cantidad" style="width:110px">
             <p:cellEditor>
                 <f:facet name="output">
                     <h:outputText value="#{c.cantidad}"  />
                 </f:facet>
                 <f:facet name="input">
-                  <h:inputText value="#{c.cantidad}" />
+                  <p:spinner value="#{c.cantidad}" min="1" />
                 </f:facet>
             </p:cellEditor>
         </p:column>
@@ -292,15 +298,17 @@
     	</p:tab>
     	
     	<p:tab title="#{message['cliente.tabcobranza']}">
-    	<p:panel header="#{message['cliente.cobranza']}" id="panel2" >
+    	<p:panel  id="panel2" >
+				
+				<p:fieldset legend="#{message['cliente.cobranza']}" >
+				 
 				<h:outputText value="#{message['contrato.tipoPago']}" />
 				<p:selectOneMenu  size="1"  value="#{contratoForm.tipopago}" >
 						<f:selectItem itemLabel="Crédito" itemValue="1" />
 						<f:selectItem itemLabel="Contado" itemValue="2" />
 						<p:ajax update="panel2"/>
 				</p:selectOneMenu>
-				<p:spacer/>
-				
+				<p:spacer/> 
 				<h:panelGrid columns="6" rendered="#{contratoForm.tipopago==1}" >
 				<h:outputText value="#{message['contrato.pagosubinicial']}" />
 				<p:spinner id="subinicial" value="#{contratoForm.objContratoSie.pagosubinicial}" min="0" >
@@ -329,11 +337,6 @@
 				</h:panelGrid>
 				<h:panelGrid columns="6"  rendered="#{contratoForm.tipopago==2}" >
 				
-				<h:outputText value="#{message['contrato.Fecha.pago.inicial']}" />
-				<p:calendar id="fechPagoInicial2" value="#{contratoForm.objContratoSie.fechacuotainicial}" required="true"  
-				pattern="dd/MM/yyyy" />
-				<p:message  for="fechPagoInicial2"  />
-				
 				<h:outputText value="#{message['contrato.producto.precio']}" />
 				<p:spinner id="precioProd2" value="#{contratoForm.precioProducto}" required="true" min="1"  />
 				<p:message  for="precioProd2"  />
@@ -342,11 +345,13 @@
 				<p:calendar id="fechaentrega" value="#{contratoForm.objContratoSie.fechaentrega}" pattern="dd/MM/yyyy" maxdate="today" label="fecha entrega"  required="true" />
 				<p:message for="fechaentrega"  />
 				</h:panelGrid>
+				</p:fieldset>
 				
 				<p:commandButton value="Registrar Pago(s)" actionListener="#{contratoForm.insertarCobranza}" update="listaCobranzas, message"
-				icon="ui-icon ui-icon-check">
-				</p:commandButton>
-        		
+				icon="ui-icon ui-icon-check"/>
+				
+        		 <p:spacer  height="35px"/>
+        		 
 		<p:dataTable id="listaCobranzas" var="c" value="#{contratoForm.cobranzaList}" editable="true" style=" width:50% ">
 
         <f:facet name="header">
