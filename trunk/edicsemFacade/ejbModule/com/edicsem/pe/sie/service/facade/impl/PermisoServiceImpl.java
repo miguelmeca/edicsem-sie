@@ -46,5 +46,19 @@ public class PermisoServiceImpl implements PermisoService {
 	public List listarPermiso() {
 		return objPermisoDao.listarPermiso();
 	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.PermisoService#findPermiso(java.lang.String)
+	 */
+	public PermisoSie findPermiso(String permiso) {
+		return objPermisoDao.findPermiso(permiso);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.PermisoService#listarPermisosXEmpleado(int)
+	 */
+	public List listarPermisosXEmpleado(int idEmpleado) {
+		return objPermisoDao.listarPermisosXEmpleado(idEmpleado);
+	}
 	
 }
