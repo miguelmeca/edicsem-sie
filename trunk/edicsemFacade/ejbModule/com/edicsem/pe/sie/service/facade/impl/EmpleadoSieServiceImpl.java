@@ -86,6 +86,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 		/**Inserta Contrato(s)**/
 		for (ContratoEmpleadoSie objContrato : contratoEmpleadoList) {
 			objContrato.setIdempleado(objEmpleado.getIdempleado());
+			/**Insertar Detalle empresa del empleado**/
 			DetEmpresaEmpleadoSie detempemp=new DetEmpresaEmpleadoSie();
 			detempemp.setTbEmpresa(objEmpresaDao.findEmpresa(objContrato.getEmpresa()));
 			detempemp.setTbEmpleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
@@ -96,7 +97,8 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 			objContrato.setTbTipoPago(objTipoPagoDao.findTipoPago(idTipoPago));
 			objContrato.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
 			objContratoEmpleadoDao.insertContratoEmpleado(objContrato);
-		}	
+		}
+		/**fin Inseta Contrato(s)**/
 		log.info("insertando..... ");
 	}
 	
@@ -133,7 +135,13 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 				for (ContratoEmpleadoSie objContrato : contratoEmpleadoList) {
 					objContrato.setIdContratoEmpl(objContrato.getIdContratoEmpl());
 					objContrato.setIdempleado(objEmpleado.getIdempleado());
-					objContrato.setTbDetEmpresaEmpleado(objDetEmpresaEmpDao.findDetEmpresaEmpleadoSie(idEmpresa));
+					DetEmpresaEmpleadoSie detempemp=new DetEmpresaEmpleadoSie();
+					detempemp.setIdDetEmpresaEmpl(detempemp.getIdDetEmpresaEmpl());
+					detempemp.setTbEmpresa(objEmpresaDao.findEmpresa(objContrato.getEmpresa()));
+					detempemp.setTbEmpleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
+					detempemp.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(64));
+					objDetEmpresaEmpDao.insertDetEmpresaEmpleadoSie(detempemp);
+					objContrato.setTbDetEmpresaEmpleado(objDetEmpresaEmpDao.findDetEmpresaEmpleadoSie(detempemp.getIdDetEmpresaEmpl()));
 					objContrato.setTbCargoempleado(objCargoEmpDao.buscarCargoEmpleado(idCargo));
 					objContrato.setTbTipoPago(objTipoPagoDao.findTipoPago(idTipoPago));
 					objContrato.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
@@ -149,6 +157,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 			objEmpleado = new EmpleadoSie();
 			TelefonoPersonaList = new ArrayList<TelefonoPersonaSie>();
 			objDomicilio = new DomicilioPersonaSie();
+			contratoEmpleadoList = new ArrayList<ContratoEmpleadoSie>();
 	}
 	
 	/* (non-Javadoc)
