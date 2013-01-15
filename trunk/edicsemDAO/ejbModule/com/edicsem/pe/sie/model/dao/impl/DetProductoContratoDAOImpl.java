@@ -81,5 +81,20 @@ public class DetProductoContratoDAOImpl implements DetProductoContratoDAO{
 			e.printStackTrace();
 		}
 		return lista;
-	}	
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.DetProductoContratoDAO#listarDetProductoContratoXContrato(int)
+	 */
+	public List listarDetProductoContratoXContrato(int idContrato) {
+		List  lista = null;
+		try {
+			Query q = em.createQuery("select p from DetProductoContratoSie p where p.tbContrato = "+idContrato);
+			lista =  q.getResultList(); 
+			log.info("tamaño listarDetProductoContratoXContrato --> " + lista.size()+"  ");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 }

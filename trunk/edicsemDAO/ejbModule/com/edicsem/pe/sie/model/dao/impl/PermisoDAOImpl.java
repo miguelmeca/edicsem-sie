@@ -74,7 +74,7 @@ public class PermisoDAOImpl implements PermisoDAO{
 	public PermisoSie findPermiso(String permiso) {
 		PermisoSie p = null;
 		try {
-			Query q = em.createQuery("select p from PermisoSie p where  p.tbEstadoGeneral.idestadogeneral = "+ 13 +" and p.nombrePermiso ='"+permiso+"'");
+			Query q = em.createQuery("select p from PermisoSie p where  p.tbEstadoGeneral.idestadogeneral = "+ 68 +" and p.nombrePermiso ='"+permiso+"'");
 			p =  (PermisoSie) q.getSingleResult();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -88,7 +88,7 @@ public class PermisoDAOImpl implements PermisoDAO{
 	public List listarPermiso() {
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from PermisoSie p where  p.tbEstadoGeneral.idestadogeneral = "+ 1 );
+			Query q = em.createQuery("select p from PermisoSie p where  p.tbEstadoGeneral.idestadogeneral = "+ 68 );
 			lista =  q.getResultList(); 						
 		   log.info("tamaño lista Permiso DAOIMPL --> " + lista.size()+"  ");
 		} catch (Exception e) {
@@ -97,7 +97,6 @@ public class PermisoDAOImpl implements PermisoDAO{
 		return lista;
 	}
 	
-
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.DetPermisoEmpleadoDAO#listarPermisosXEmpleado(int)
 	 */
