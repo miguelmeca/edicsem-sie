@@ -88,6 +88,9 @@ public class ContratoDAOImpl implements ContratoDAO{
 		return lista;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ContratoDAO#listarContratosDeudores()
+	 */
 	public List listarContratosDeudores() {
 		List  lista = null;
 		try {
@@ -97,6 +100,35 @@ public class ContratoDAOImpl implements ContratoDAO{
 			
 			lista =  q.getResultList();
 			log.info("tamaño lista Cobranza --> " + lista.size()+"  ");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ContratoDAO#listarClientePorParametro(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public List listarClientePorParametro(String numDocumento,String codigoContrato,String nombreCliente, String apePat,String apeMat ){
+		List  lista = null;
+		try {
+			String sql = "select c from ContratoSie c inner join  c.tbCliente p  where  " ;
+					if(!numDocumento.equals(""))
+						sql+= " p.numdocumento like '"+ numDocumento +"'";
+					else if(!codigoContrato.equals("")){
+						sql+= "  c.codcontrato like '"+ codigoContrato +"'";
+					}else{
+						if(!nombreCliente.equals(""))
+							sql+= "  p.nombrecliente like '"+ nombreCliente +"'";
+						if(!apePat.equals(""))
+							sql+= " and  p.apepatcliente like '"+ apePat +"'";
+						if(!apeMat.equals(""))
+							sql+= " and  p.apematcliente like '"+ apeMat +"'";
+					}
+			Query q = em.createQuery(sql);
+			lista =  q.getResultList();
+			log.info("tamaño lista contrato --> " + lista.size()+"  ");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

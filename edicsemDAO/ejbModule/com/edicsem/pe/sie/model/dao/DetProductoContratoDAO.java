@@ -14,4 +14,5 @@ public interface DetProductoContratoDAO {
 	public abstract void updateDetProductoContrato(DetProductoContratoSie det);
 	public abstract DetProductoContratoSie findDetProductoContrato (int id);
 	public abstract List  listarDetProductoContrato();
+	public abstract List listarDetProductoContratoXContrato(int idContrato);
 }
