@@ -37,6 +37,8 @@ public class DomicilioPersonaSie implements Serializable {
 	private Timestamp fechacreacion;
 
 	private String referencia;
+	
+	private String principal;
  
 	//bi-directional many-to-one association to ClienteSie
     @ManyToOne
@@ -188,6 +190,20 @@ public class DomicilioPersonaSie implements Serializable {
 	 */
 	public void setItem(int item) {
 		this.item = item;
+	}
+
+	/**
+	 * @return the principal
+	 */
+	public String getPrincipal() {
+		return principal;
+	}
+
+	/**
+	 * @param principal the principal to set
+	 */
+	public void setPrincipal(String principal) {
+		this.principal = principal;
 	}
 	
 	
