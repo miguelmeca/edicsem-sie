@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.primefaces.context.RequestContext;
 
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DetPaqueteSie;
@@ -40,6 +41,7 @@ public class MantenimientoPaqueteBiblicoFormAction extends
 	private boolean editMode;
 	private int idc, idEstadoGeneral;
 	public String idpaquete, codpaquete;
+	private List<PaqueteSie> lista;
 	
 	
 	@ManagedProperty(value = "#{mantenimientoPaqueteBiblicoSearchAction}")
@@ -116,6 +118,7 @@ setIdEstadoGeneral(objPaqueteSie.getTbEstadoGeneral().getIdestadogeneral());
 	
 	//insertar nuevo Paquete Biblico
 	public String insertar() {
+		String paginaRetorno="";
 		mensaje =null;
 		log.info("insertar()");
 		
@@ -123,26 +126,32 @@ setIdEstadoGeneral(objPaqueteSie.getTbEstadoGeneral().getIdestadogeneral());
 		try {
 			
 			log.info("aqui validadndo si existe o no" + objPaqueteSie.getCodpaquete());
+			
+			lista = mantenimientoPaqueteBiblicoSearchAction.getDetPaqueteList();
 			int error = 0;
-			List<PaqueteSie> lista = mantenimientoPaqueteBiblicoSearchAction.getDetPaqueteList();
+			if(isNewRecord()){
 			for (int i = 0; i < lista.size(); i++) {
-				PaqueteSie a = lista.get(i);
-				if (a.getCodpaquete().equalsIgnoreCase(objPaqueteSie.getCodpaquete()) && a.getDescripcionpaquete().equalsIgnoreCase(objPaqueteSie.getDescripcionpaquete())) {
+//				PaqueteSie a = lista.get(i).getCodpaquete();
+				
+				if (lista.get(i).getCodpaquete().equalsIgnoreCase(objPaqueteSie.getCodpaquete()) ) {
 					log.info("Error ... Ya se encuentra un paquete biblico");
 					mensaje ="Ya se encuentra un paquete biblico con el mismo nombre";
+					paginaRetorno =mantenimientoPaqueteBiblicoSearchAction.listar();
 					error = 1;
 					break;
 				}
 				
-			}
+			}}
 			if (error == 0) {
 						
 			if(isNewRecord()){
-				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-						Constants.MESSAGE_REGISTRO_TITULO, mensaje);
+				log.info("insertando... "  );
 			
 				objPaqueteService.insertPaquete(objPaqueteSie);
-				log.info("insertando "  );
+				setNewRecord(false);
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+						Constants.MESSAGE_REGISTRO_TITULO, mensaje);
+				mensaje ="Se registró el paquete correctamente";
 			}
 			else{
 				
@@ -202,7 +211,7 @@ msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 			parametroObtenido = getIdc();
 			log.info(" ------>>>>>>aqui cactura el parametro ID "+ parametroObtenido);
 			
-			
+			if(verificarPaquetesicontieneProductos(parametroObtenido)){
 					
 					c = objPaqueteService.findPaquete(parametroObtenido);
 					log.info(" ------Android>" + c.getCodpaquete() + " "+ c.getDescripcionpaquete());
@@ -225,10 +234,17 @@ msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 		Constants.MESSAGE_DESHABILITAR_TITULO, mensaje);
 					mensaje ="Se deshabilito correctamente";
-//				}	
+			}	
 		
-					FacesContext.getCurrentInstance().addMessage(null, msg);
-
+			else {
+				
+	
+				
+				FaceMessage.FaceMessageError("ALERTA", "Primero Elimine los productos de este paquete y luego prosiga eliminar dicho paquete");
+					
+			}	
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -246,6 +262,13 @@ msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 	
 	
 	
+
+	
+
+	private boolean verificarPaquetesicontieneProductos(int parametroObtenido) {
+		// TODO Auto-generated method stub
+		return objDetallePaqueteService.verificarPaquetesicontieneProductos(parametroObtenido);
+	}
 
 	/**
 	 * @return the mensaje
