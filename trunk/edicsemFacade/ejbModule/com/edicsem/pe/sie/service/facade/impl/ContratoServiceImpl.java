@@ -62,7 +62,6 @@ public class ContratoServiceImpl implements ContratoService {
 	
 	public static Log log = LogFactory.getLog(ContratoServiceImpl.class);
 
-
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ContratoService#insertContrato(int, int, int, int, com.edicsem.pe.sie.entity.ClienteSie, java.util.List, com.edicsem.pe.sie.entity.DomicilioPersonaSie, com.edicsem.pe.sie.entity.ContratoSie, java.util.List, java.util.List, java.util.List)
 	 */
@@ -145,5 +144,12 @@ public class ContratoServiceImpl implements ContratoService {
 	 */
 	public List listarContratos() {
 		return objContratoDao.listarContratos();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ContratoService#listarClientePorParametro(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public List listarClientePorParametro(String numDocumento, String codigoContrato, String nombreCliente, String apePat, String apeMat) {
+		return objContratoDao.listarClientePorParametro(numDocumento, codigoContrato, nombreCliente, apePat, apeMat);
 	}
 }

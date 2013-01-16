@@ -42,4 +42,11 @@ public class DetProductoContratoImpl implements DetProductoContratoService {
 	public List listarDetProductoContrato() {
 		return objDetProductoContratoDao.listarDetProductoContrato();
 	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.DetProductoContratoService#listarDetProductoContratoXContrato(int)
+	 */
+	public List listarDetProductoContratoXContrato(int idContrato) {
+		return objDetProductoContratoDao.listarDetProductoContratoXContrato(idContrato);
+	}
 }
