@@ -81,7 +81,10 @@ public class TelefonoEmpleadoServiceImpl implements TelefonoEmpleadoService{
 		
 		return objTelefonoEmpleadoDao.buscarTelefonoXIdcliente(id); 
 	}
-	
+    
+    public List listarTelefonoEmpleadosXidempleado(int idempleado) {
+		return objTelefonoEmpleadoDao.listarTelefonoEmpleadosXidempleado(idempleado);
+	}	
     
     public TelefonoPersonaSie buscarTelefonoCliente(int id) {
 		return objTelefonoEmpleadoDao.buscarTelefonoCliente(id);
