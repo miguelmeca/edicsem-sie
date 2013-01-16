@@ -15,30 +15,30 @@
 					emptyMessage="No se encontro registros" >
 
 	
-		<p:column headerText="idpuntoventa"  id="idpuntoventa" >
-		<h:outputText value="#{c.idpuntoventa}" />
-		</p:column>	
-		
+	
 				
-		<p:column headerText="Punto de Venta"  id="PuntodeVenta" >
-		<h:outputText value="#{c.descripcion}" />
-		</p:column>		
+<p:column headerText="Punto de Venta"  id="PuntodeVenta" >
+<h:outputText value="#{c.descripcion}" />
+</p:column>		
 			
+<p:column headerText="Direccón"  id="Direccion" >
+<h:outputText value="#{c.direccion}" />
+</p:column>			
 		
-		<p:column headerText="Ubicacíon"  id="Ubigeo" >
-		<h:outputText value="#{c.tbUbigeo.nombre}" />
-		</p:column>
+<p:column headerText="Distrito"  id="Ubigeo" >
+
+<h:outputText value="#{c.tbUbigeo.nombre}" />
+</p:column>
 		
-		<p:column headerText="Direccón"  id="Direccion" >
-		<h:outputText value="#{c.direccion}" />
-		</p:column>			
-		
-		
-		<p:column headerText="Mostrar"  id="mostrar" >
-		<p:commandButton value="Mostrar" ajax="false" action="#{MantenimientoHorarioPuntoVentaSearchAction.mostrar}" update="panelMostrarHorario" >
-			<f:setPropertyActionListener value="#{c}" target="#{MantenimientoHorarioPuntoVentaSearchAction.objPuntoVentaSie}" />
-		</p:commandButton>
-		</p:column>			
+<p:column headerText="Mostrar"  id="mostrar" >
+<center>
+<p:commandButton  icon="ui-icon-search" ajax="false" action="#{MantenimientoHorarioPuntoVentaSearchAction.mostrar}" update="panelMostrarHorario" >
+<f:setPropertyActionListener value="#{c}" target="#{MantenimientoHorarioPuntoVentaSearchAction.objPuntoVentaSie}" />
+</p:commandButton>
+</center>
+
+</p:column>
+			
 </p:dataTable>
 <p:spacer/>
 <p:outputPanel id="panelMostrarHorario" rendered="#{MantenimientoHorarioPuntoVentaSearchAction.objPuntoVentaSie.idpuntoventa!=null}" >
