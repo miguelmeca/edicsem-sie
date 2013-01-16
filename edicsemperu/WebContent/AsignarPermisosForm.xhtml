@@ -10,7 +10,7 @@
 		<h:form id="formPermisos">
 			<p:growl id="message" showDetail="true" />
 			<p:panel>
-					<p:fieldset legend="Busqueda de Empleado">
+				<p:fieldset legend="Busqueda de Empleado">
 					<h:panelGrid columns="6">
 					
 					<p:outputLabel value="#{message['permiso.personal.cargo']}" for="cargo"/>
@@ -29,16 +29,13 @@
 					</h:panelGrid>
 					
 				<p:spacer width="40px" />
-				<p:pickList id="pojoPickList" value="#{permiso.permisos}" var="p" addLabel="Ańadir" addAllLabel="Ańadir todos"
-        removeLabel="Quitar" removeAllLabel="Quitar todos"
-	                    converter="permisoConverter" itemLabel="#{p.nombrePermiso}" itemValue="#{p}" showSourceControls="true" 
+				<p:pickList id="pojoPickList" value="#{permiso.permisos}" var="p" converter="permisoConverter" 
+				itemLabel="#{p.nombrePermiso}" itemValue="#{p}" showSourceControls="true" 
 	                    showTargetControls="true" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">  
 	                    
 			        <f:facet  name="sourceCaption"><h:outputLabel value="Otros Roles"/></f:facet>
 			        <f:facet name="targetCaption"><h:outputLabel value="Roles Asignados"/></f:facet>
 			        
-			        <p:ajax  event="transfer" listener="#{permiso.onTransfer}" update="message" />
-			  
 			    </p:pickList>
 		   </p:fieldset>
 			</p:panel>
