@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DetPaqueteSie;
 import com.edicsem.pe.sie.model.dao.DetPaqueteDAO;
 
@@ -48,7 +49,7 @@ public class DetallePaqueteDAOImpl implements DetPaqueteDAO {
 		List lista = null;
 		try {
 			log.info("Antes del QUERY DAOIMPL");
-			Query q = em.createQuery("select p from DetPaqueteSie p where p.tbEstadoGeneral.idestadogeneral =  62  AND p.tbPaquete.idpaquete = "+ paquete);
+			Query q = em.createQuery("select p from DetPaqueteSie p where p.tbEstadoGeneral.idestadogeneral = " + 62 + " AND p.tbPaquete.idpaquete = "+ paquete);
 			lista = q.getResultList();
 			log.info("dspues de la lista tamaño lista DetPaqueteSie --> " + lista.size());
 		} catch (Exception e) {
@@ -84,6 +85,43 @@ public class DetallePaqueteDAOImpl implements DetPaqueteDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+
+	public boolean verificarPaquetesicontieneProductos(int parametroObtenido) {
+		boolean bandera = true;
+		
+		List lista = null;
+		try {
+			Query q = em.createQuery("select p from DetPaqueteSie p where p.tbEstadoGeneral.idestadogeneral =  62 AND p.tbPaquete.idpaquete = "+ parametroObtenido);
+			lista = q.getResultList();
+			log.info("tamaño lista de productos que tiene este paquete --> " + lista.size());
+			if(lista.size()>0){ //hay uno o mas productos el paquete retornados.
+				bandera=false;
+			}else{//no hay paquetes con producto, entonces puede proseguir
+				bandera=true;
+			}
+			
+		} catch (Exception e) {
+			bandera=false;
+			e.printStackTrace();
+		}
+		
+		
+		return bandera;
+	}
+
+
+	public void eliminarDetPaquete(int id) {
+		try {
+			log.info("DAOIMPL ELIMINAR ");
+			DetPaqueteSie bean= findDetPaquete(id);
+			em.remove(bean);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}	
 	
 }
