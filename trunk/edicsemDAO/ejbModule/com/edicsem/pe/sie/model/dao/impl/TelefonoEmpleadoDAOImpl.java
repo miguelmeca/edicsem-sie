@@ -160,6 +160,18 @@ public class TelefonoEmpleadoDAOImpl implements TelefonoEmpleadoDAO{
 		return lista;
 	}
 	
+	public List listarTelefonoEmpleadosXidempleado (int idempleado) {
+		List lista = null;
+		try {
+			Query q = em.createQuery("select p from TelefonoPersonaSie p where p.idempleado = "+idempleado);
+			lista = q.getResultList();
+			log.info("tamaño lista telefonos x empleado --> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
 	public TelefonoPersonaSie buscarTelefonoXIdcliente(int id) {
 		log.info(" idcliente "+ id);
 		TelefonoPersonaSie telefono =new TelefonoPersonaSie();
