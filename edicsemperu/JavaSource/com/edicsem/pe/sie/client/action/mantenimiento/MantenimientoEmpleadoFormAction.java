@@ -493,26 +493,33 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		log.info(" id " + d.getIddomiciliopersona()+ " nombre " + d.getDomicilio() );
 		
 		/*Seteo para mostrar los datos en el form*/
+		/*seteo empleado*/
 		objEmpleado.setIdempleado(c.getIdempleado());
 		objEmpleado.setNombreemp(c.getNombreemp());
         objEmpleado.setApepatemp(c.getApepatemp());
         objEmpleado.setApematemp(c.getApematemp());
         objEmpleado.setUsuario(c.getUsuario());
         objEmpleado.setContrasena(c.getContrasena());
+        setConfcontra(c.getContrasena());
         setTipoDocumento(c.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad());
         objEmpleado.setNumdocumento(c.getNumdocumento());
         objEmpleado.setFechanacimiento(c.getFechanacimiento());
         objEmpleado.setCorreo(c.getCorreo());
         objEmpleado.setTbEstadoGeneral(c.getTbEstadoGeneral());
-    
-                
+        /*seteo teléfono*/
+        TelefonoPersonaList = objTelefonoService.listarTelefonoEmpleadosXidempleado(c.getIdempleado());		
+        /*seteo domicilio*/                                               
         objDomicilio.setIddomiciliopersona(d.getIddomiciliopersona());
         objDomicilio.setDomicilio(d.getDomicilio());
+        setIdDepartamento(d.getTbUbigeo().getCoddepartamento());
+        comboManager.setIdDepartamento(idDepartamento);
+        setIdProvincia(d.getTbUbigeo().getCodprovincia());
+        comboManager.setIdDepartamento(idDepartamento);
+        setIdDistrito(d.getTbUbigeo().getCoddistrito());
         setTipo(d.getTbTipoCasa().getIdtipocasa());
-        setIdDistrito(getIdDistrito());
         objDomicilio.setTbEstadoGeneral(d.getTbEstadoGeneral());
-        objTelefono.setIdtelefonopersona(t.getIdtelefonopersona());
-        objTelefono.setTbEstadoGeneral(t.getTbEstadoGeneral());
+        /*seteo contrato*/
+        contratoEmpleadoList = objcon
         /*método bolean necesario para actualizar que retorna al form */  
 		setNewRecord(false);
 		return getViewMant();
