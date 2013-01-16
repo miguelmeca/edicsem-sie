@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Lista de
+			Derivacion de Cargos</h1>
+
+		<h:form id="cargoEmpleFormList" prependId="false">
+			  <p:messages showDetail="true"/>
+
+
+			<p:dataTable
+				value="#{mantenimientoCargoEmpleadoFormAction.cargoempleadoList}"
+				var="cargo"
+				id="multiCars" paginator="true" rows="5"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" widgetVar="table"
+				
+								
+				emptyMessage="No se encontro empleados registrados con dicha Empresa">
+	
+
+
+
+<p:column headerText="Codigo de Empleado">
+					<h:outputText value="#{cargo.idempleado}" />
+				</p:column>
+
+ 
+ 
+				<p:column headerText="Nombre">
+					<h:outputText value="#{cargo.nombresCompletos}" />
+				</p:column>
+
+				<p:column headerText="Documento de Identidad">
+					<h:outputText value="#{cargo.numdocumento}" />
+				</p:column>
+
+				
+				
+
+
+
+			</p:dataTable>
+
+
+		</h:form>
+	</ui:define>
+</ui:composition>
