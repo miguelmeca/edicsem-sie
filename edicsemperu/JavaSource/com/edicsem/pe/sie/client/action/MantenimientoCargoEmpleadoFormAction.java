@@ -18,8 +18,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
+import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.ContratoEmpleadoService;
+import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.util.FaceMessage.FaceMessage;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -41,6 +43,8 @@ public class MantenimientoCargoEmpleadoFormAction extends
 	private boolean newRecord = false;
 	private boolean editMode;
 	
+	private List<EmpleadoSie> cargoempleadoList;
+	
 	@ManagedProperty(value = "#{mantenimientoCargoEmpleadoSearchAction}")
 	private MantenimientoCargoEmpleadoSearchAction mantenimientoCargoEmpleadoSearch;
 
@@ -48,7 +52,8 @@ public class MantenimientoCargoEmpleadoFormAction extends
 
 	@EJB
 	private CargoEmpleadoService objCargoEmpleadoService;
-
+	@EJB
+	private EmpleadoSieService objEmpleadoSieService;
 	@EJB
 	private EstadogeneralService objEstadoGeneralService;
 	@EJB
@@ -203,7 +208,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 			parametroObtenido = getIdc();
 			log.info(" ------>>>>>>aqui cactura el parametro ID "+ parametroObtenido);
 			
-				if(verificarEmpleadoConCargo(parametroObtenido)){//true - no hay empleado con cargo, tonce procede
+				if(verificarEmpleadoConCargo(parametroObtenido)){
 					
 					c = objCargoEmpleadoService.buscarCargoEmpleado(parametroObtenido);
 					log.info(" ------Android>" + c.getDescripcion() + " "+ c.getIdcargoempleado());
@@ -219,12 +224,19 @@ public class MantenimientoCargoEmpleadoFormAction extends
 					log.info("actualizando..... ");	
 					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 							Constants.MESSAGE_DESHABILITAR_TITULO, mensaje);
-					mensaje ="Se deshabilito correctamente";
+					mensaje ="WDF";
 				}	
 				
 				else {
+					if (verificarEmpleadoConCargo(parametroObtenido)== false) {
+//						  listarEmpleadosXempresa(parametroObtenido);
+//						  listarProductoXempresa(parametroObtenido);
+						listarEmpleadosXcargo(parametroObtenido);
+						  FaceMessage.FaceMessageError("ALERTA", "FUCK1");
+						return Constants.MANT_CARGOEMPLEADO_FORM_LIST_PAGE;
+					}
 					
-					FaceMessage.FaceMessageError("ALERTA", "El cargo no se puede elminar ya que se encontraron usuarios con ese cargo");
+					FaceMessage.FaceMessageError("ALERTA", "FUCK2");
 				}	
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 
@@ -242,15 +254,21 @@ public class MantenimientoCargoEmpleadoFormAction extends
 
 	
 	
-	private boolean verificarEmpleadoConCargo(int idcargo) {
-		  return objContratoEmpleadoService.verificarEmpleadoConCargo(idcargo) ;
+	
+
+	private void listarEmpleadosXcargo(int parametroObtenido) {
+	
+		log.info("entrando en el bean listarEmpleadosXcargo  "+parametroObtenido);	
+		cargoempleadoList = objEmpleadoSieService.listarEmpleadoxCargo(parametroObtenido);		
 	}
 
-	/*
-	 * @see
-	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
-	 * #getViewList()
-	 */
+	private boolean verificarEmpleadoConCargo(int idcargo) {
+		// TODO Auto-generated method stub
+		return objContratoEmpleadoService.verificarEmpleadoConCargo(idcargo);
+	}
+	
+
+
 
 
 	public String getMensaje() {
@@ -406,6 +424,34 @@ public class MantenimientoCargoEmpleadoFormAction extends
 	public void setMantenimientoCargoEmpleadoSearch(
 			MantenimientoCargoEmpleadoSearchAction mantenimientoCargoEmpleadoSearch) {
 		this.mantenimientoCargoEmpleadoSearch = mantenimientoCargoEmpleadoSearch;
+	}
+
+	/**
+	 * @return the descripcionUpdate
+	 */
+	public String getDescripcionUpdate() {
+		return descripcionUpdate;
+	}
+
+	/**
+	 * @param descripcionUpdate the descripcionUpdate to set
+	 */
+	public void setDescripcionUpdate(String descripcionUpdate) {
+		this.descripcionUpdate = descripcionUpdate;
+	}
+
+	/**
+	 * @return the cargoempleadoList
+	 */
+	public List<EmpleadoSie> getCargoempleadoList() {
+		return cargoempleadoList;
+	}
+
+	/**
+	 * @param cargoempleadoList the cargoempleadoList to set
+	 */
+	public void setCargoempleadoList(List<EmpleadoSie> cargoempleadoList) {
+		this.cargoempleadoList = cargoempleadoList;
 	}
 
 }
