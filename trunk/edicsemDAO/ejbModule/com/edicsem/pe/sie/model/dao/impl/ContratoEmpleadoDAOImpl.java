@@ -151,8 +151,8 @@ public class ContratoEmpleadoDAOImpl implements ContratoEmpleadoDAO{
 		List lista = null;
 		try {
 			Query q = em.createQuery("select p from ContratoEmpleadoSie p where p.tbCargoempleado.idcargoempleado = "+ idcargo);
-			lista = q.getResultList();
-			log.info("tamaño lista detalleCargo --> " + lista.size());
+			lista = q.getResultList();											
+			log.info("tamaño lista detalleCargoJK --> " + lista.size());
 			if(lista.size()>0){ //hay uno o mas empleados retornados.
 				bandera=false;
 			}else{//no hay empleados, entonces puede proseguir
@@ -197,4 +197,6 @@ public class ContratoEmpleadoDAOImpl implements ContratoEmpleadoDAO{
 		}
 		return lista;
 	}
+
+
 }
