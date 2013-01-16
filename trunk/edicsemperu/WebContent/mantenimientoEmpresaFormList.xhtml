@@ -10,43 +10,32 @@
 			Empresas</h1>
 			
 		<h:form id="frmEmpresaFormList" prependId="false">
-		<p:growl id="message" showDetail="true" />	
+	<p:messages showDetail="true"/>
 		
 			
-			<p:dataTable value="#{empresaSearch.empresaList}" var="empresa"
-				id="empresaTable" paginator="true" rows="5"
-       paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-	   rowsPerPageTemplate="5,10,15" widgetVar="table"
-	   emptyMessage="No se encontraron registros">
+<p:dataTable value="#{empresaSearch.empresaList}" var="empresa"
+id="empresaTable" paginator="true" rows="5"
+paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+rowsPerPageTemplate="5,10,15" widgetVar="table"
+emptyMessage="No se encontraron registros">
 
 				
+<p:column headerText="razonsocial"  id="razonsocial" sortBy="#{empresa.razonsocial}" filterBy="#{empresa.razonsocial}">
+<h:outputText value="#{empresa.razonsocial}" />
+</p:column>
+								
+<p:column headerText="descripcion"  id="descripcion" sortBy="#{empresa.descripcion}" filterBy="#{empresa.descripcion}">
+<h:outputText value="#{empresa.descripcion}" />
+</p:column>		
 				
-				<p:column headerText="razonsocial"  id="razonsocial" sortBy="#{empresa.razonsocial}" filterBy="#{empresa.razonsocial}">
-				  
-						<h:outputText value="#{empresa.razonsocial}" />
-											 
-				</p:column>								
-        		<p:column headerText="descripcion"  id="descripcion" sortBy="#{empresa.descripcion}" filterBy="#{empresa.descripcion}">
-				  
-						<h:outputText value="#{empresa.descripcion}" />
-											 
-				</p:column>		
-				
-			
-        		<p:column headerText="N° de RUC"  id="numruc" sortBy="#{empresa.numruc}" filterBy="#{empresa.numruc}">
-				  
-						<h:outputText value="#{empresa.numruc}" />
-											 
-				</p:column>	
+<p:column headerText="N° de RUC"  id="numruc" sortBy="#{empresa.numruc}" filterBy="#{empresa.numruc}">
+<h:outputText value="#{empresa.numruc}" />
+</p:column>	
         	
         		
-				
-				
-				<p:column headerText="Email"  id="email" sortBy="#{empresa.email}"  filterBy="#{empresa.email}">
-				  
-						<h:outputText value="#{empresa.email}" />
-											 
-				</p:column>	
+<p:column headerText="Email"  id="email" sortBy="#{empresa.email}"  filterBy="#{empresa.email}">
+<h:outputText value="#{empresa.email}" />	 
+</p:column>	
 				
         		
         		<!--********** BOTON EDITAR **********-->
