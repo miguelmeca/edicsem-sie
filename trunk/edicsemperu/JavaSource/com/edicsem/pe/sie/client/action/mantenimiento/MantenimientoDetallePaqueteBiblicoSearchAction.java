@@ -16,6 +16,7 @@ import org.apache.commons.logging.LogFactory;
 import com.edicsem.pe.sie.entity.DetPaqueteSie;
 import com.edicsem.pe.sie.entity.FactorSancionSie;
 import com.edicsem.pe.sie.entity.PaqueteSie;
+import com.edicsem.pe.sie.entity.ProveedorSie;
 import com.edicsem.pe.sie.service.facade.DetallePaqueteService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.PaqueteService;
@@ -38,7 +39,7 @@ public class MantenimientoDetallePaqueteBiblicoSearchAction extends BaseMantenim
 	private int idpaquete;
 	private PaqueteSie objPaqueteSie;
 	
-
+	private List<DetPaqueteSie> lista;
 	private DetPaqueteSie nuevo;
 	private int idc;
 	
@@ -56,6 +57,10 @@ public class MantenimientoDetallePaqueteBiblicoSearchAction extends BaseMantenim
 	private boolean newRecord = false;
 	private boolean editMode;
 
+//	
+//	@ManagedProperty(value = "#{mantenimientoDetallePaqueteBiblicoSearchAction}")
+//	private MantenimientoDetallePaqueteBiblicoSearchAction mantenimientoDetallePaqueteBiblicoSearchAction;
+	
 	
 	@EJB
 	private DetallePaqueteService objDetallePaqueteService;
@@ -92,7 +97,8 @@ public class MantenimientoDetallePaqueteBiblicoSearchAction extends BaseMantenim
 		
 		objDetPaqueteSie = new DetPaqueteSie();
 		objPaqueteSie = new PaqueteSie();
-		
+//		cantidad=1;
+//		objDetPaqueteSie.setCantidad(1);
 
 		nuevo = new DetPaqueteSie();
 		
@@ -129,8 +135,9 @@ public String agregar() {
 		
 			editMode = true;
 			objDetPaqueteSie = new DetPaqueteSie();
+		
 			
-
+			objDetPaqueteSie.setCantidad(1);
 			
 			setNewRecord(true);
 			return getViewList();
@@ -165,7 +172,8 @@ public String insertar() {
 	mensaje =null;
 //	log.info("insertar()");
 //	
-	
+	String paginaRetorno="";
+
 	
 	objDetPaqueteSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(62));
 	objDetPaqueteSie.setTbProducto(objProductoService.findProducto(idproducto));
@@ -175,40 +183,42 @@ public String insertar() {
 	
 	try {
 		
-//		log.info("aqui validadndo si existe o no" + idproducto + " "+ objDetPaqueteSie.getCantidad());
-//		int error = 0;
-//		List<DetPaqueteSie> lista = mantenimientoDetallePaqueteBiblicoSearchAction.getDetPaqueteBiblicoList();
-				
-//		for (int i = 0; i < lista.size(); i++) {
+		log.info("aqui validadndo si existe o no" + idproducto + " "+ objDetPaqueteSie.getCantidad());
+		int error = 0;
+//		List<DetPaqueteSie> 
+		lista = getDetPaqueteBiblicoList();
+		if (error == 0) ;	
+		if (isNewRecord()) {
+		for (int i = 0; i < lista.size(); i++) {
 //			DetPaqueteSie a = lista.get(i);
-//			if (a.getTbProducto().getIdproducto().equals(objDetPaqueteSie.getTbProducto().getIdproducto())) {
-//				log.info("Error ... Ya se encuentra un Delllate Paquete Biblico");
-//				mensaje ="Ya se encuentra un Producto en el paquete biblico con el mismo nombre";
-//				error = 1;
-//				break;
-//			}
-//			
-//		}
-//		if (error == 0) {
-					
+			if (lista.get(i).getTbProducto().getIdproducto().equals(objDetPaqueteSie.getTbProducto().getIdproducto())) {
+				log.info("Error ... Ya se encuentra un producto igual");
+				mensaje ="Ya se encuentra un Producto con el mismo nombre en el Paquete";
+				paginaRetorno =getViewMant();
+				error = 1;
+				break;
+			}
+			
+		}
+		}
+		
+		if (error == 0) {		
 		if(isNewRecord()){
-			msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-					Constants.MESSAGE_REGISTRO_TITULO, mensaje);
 			
-			
-//			objDetPaqueteSie.setIdDetPaquete(objDetPaqueteSie.getIdDetPaquete());
-			objDetPaqueteSie.setCantidad(objDetPaqueteSie.getCantidad());
-			
+//			objDetPaqueteSie.setIdDetPaquete(objDetPaqueteSie.getIdDetPaquete());			
 //			objDetPaqueteSie.setTbProducto(setIdproducto(objDetPaqueteSie.getTbProducto().getIdproducto()));
 			
-			
+		objDetPaqueteSie.setCantidad(objDetPaqueteSie.getCantidad());	
 		objDetPaqueteSie.setTbProducto(objProductoService.findProducto(idproducto));
 
-						
-		
-			
 			objDetallePaqueteService.insertDetPaquete(objDetPaqueteSie);
-			log.info("insertando "  );
+					
+			log.info("insertando..... ");
+			setNewRecord(false);
+			
+			msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					Constants.MESSAGE_INFO_TITULO, mensaje);
+			mensaje ="Se registró el proveedor correctamente";
 		}
 		else{
 			
@@ -220,22 +230,25 @@ objDetPaqueteSie.setTbPaquete(objPaqueteService.findPaquete(getIdpaquete()));
 objDetPaqueteSie.setTbProducto(objProductoService.findProducto(getIdproducto()));
 objDetPaqueteSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(getIdEstadoGeneral()));
 
+objDetallePaqueteService.updateDetPaquete(objDetPaqueteSie);
+
 log.info("actualizando..... ");	
 msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 	Constants.MESSAGE_REGISTRO_TITULO, mensaje);
-
-
-objDetallePaqueteService.updateDetPaquete(objDetPaqueteSie);
 			mensaje="Se actualizó el Producto";
 			log.info("actualizado");
 		}
-//	}
-//		else {
-//			log.info("mensaje de error");
-//			msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
-//					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-//	
-//	} 
+		
+		objDetPaqueteSie = new DetPaqueteSie();
+		paginaRetorno =getViewMant();
+		
+	}
+		else {
+			log.info("mensaje de error");
+			msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+	
+	} 
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 
 }
@@ -248,8 +261,8 @@ objDetallePaqueteService.updateDetPaquete(objDetPaqueteSie);
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
-	objDetPaqueteSie = new  DetPaqueteSie();
-	return  getViewMant() ;
+//	objDetPaqueteSie = new  DetPaqueteSie();
+	return  paginaRetorno ;
 }
 
 
@@ -260,7 +273,7 @@ public String updateDeshabilitarDetProdPaquete() throws Exception {
 
 //	objCargoEmpleadoSie = new CargoEmpleadoSie();
 	objDetPaqueteSie = new DetPaqueteSie();
-	int parametroObtenido;
+	int id;
 	DetPaqueteSie c = new DetPaqueteSie();
 //	CargoEmpleadoSie c = new CargoEmpleadoSie();
 
@@ -269,13 +282,13 @@ public String updateDeshabilitarDetProdPaquete() throws Exception {
 			log.info("Entering my method 'updateDESHABILITAR()'");
 		
 		}	
-		parametroObtenido = getIdc();
-		log.info(" ------>>>>>>aqui cactura el parametro ID "+ parametroObtenido);
+		id = getIdc();
+		log.info(" ------>>>>>>aqui cactura el parametro ID "+ id);
 		
 		
 				
 				
-				c = objDetallePaqueteService.findDetPaquete(parametroObtenido);
+				c = objDetallePaqueteService.findDetPaquete(id);
 				log.info(" ------Android>" + c.getIdDetPaquete());
 				
 //				
@@ -293,7 +306,7 @@ public String updateDeshabilitarDetProdPaquete() throws Exception {
 				log.info("-----ID estado general>>>"	+ objDetPaqueteSie.getTbEstadoGeneral().getIdestadogeneral());
 				log.info("actualizando ESTADO..... ");
 
-				objDetallePaqueteService.updateDetPaquete(objDetPaqueteSie);
+				objDetallePaqueteService.eliminarDetPaquete(id);
 
 				
 				log.info("actualizando..... ");	
@@ -532,10 +545,20 @@ public String updateDeshabilitarDetProdPaquete() throws Exception {
 	}
 
 	/**
-	 * @return the newRecord
+	 * @return the lista
 	 */
+	public List<DetPaqueteSie> getLista() {
+		return lista;
+	}
 
-	
+	/**
+	 * @param lista the lista to set
+	 */
+	public void setLista(List<DetPaqueteSie> lista) {
+		this.lista = lista;
+	}
+
+
 
 	
 }
