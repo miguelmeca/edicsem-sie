@@ -51,4 +51,16 @@ public class DetallePaqueteServiceImpl implements DetallePaqueteService {
 		log.info("en el servicio");
 		return objDetPaqueteDao.listarDetPaquetes(paquete);
 	}
+
+
+	public boolean verificarPaquetesicontieneProductos(int parametroObtenido) {
+		log.info("en el servicio verificarPaquetesicontieneProductos");
+		return objDetPaqueteDao.verificarPaquetesicontieneProductos(parametroObtenido);
+	}
+
+	
+	public void eliminarDetPaquete(int id) {
+		
+		 objDetPaqueteDao.eliminarDetPaquete(id);	
+	}
 }
