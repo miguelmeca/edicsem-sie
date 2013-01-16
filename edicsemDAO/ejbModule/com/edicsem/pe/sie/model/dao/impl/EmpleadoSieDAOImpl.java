@@ -121,6 +121,21 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 		return lista;
 	}
 
+	
+	public List listarEmpleadoxCargo(int parametroObtenido) {
+		List lista = null;
+		log.info("por entrar al QUERY listarEmpleadoxCargo "+ parametroObtenido);
+		try {
+			Query q = em.createQuery("SELECT e FROM EmpleadoSie e inner join e.tbContratoEmpleados1 f  " +
+					"inner join f.tbCargoempleado g  where g.idcargoempleado = " + parametroObtenido);
+			lista = q.getResultList();
+			log.info("despues del QUERY tamaño lista cargo X  parametroObtenido--> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 //	Lista de Empleados por Empresa
 
 }
