@@ -235,26 +235,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:dialog>
 	</h:form>
 
-	<!--  Subir Archivo-->
-	<h:form id="formInsertArchivo">
-		<p:dialog header="Imagen Producto" widgetVar="archivoDialog"
-			showEffect="fade" hideEffect="explode" modal="true" width="450"
-			position="center">
-			<h:panelGrid id="display" columns="2" cellpadding="2"
-				style="margin:0 auto;">
 
-				<h:outputText value="#{message['mantenimiento.migracion.archivo']}"
-					id="idarchivo" />
-
-				<p:fileUpload
-					fileUploadListener="#{productoForm.cargarImagenInsertar}"
-					label="Cargar Archivo" allowTypes="/(\.|\/)(xls|xlsx)$/"	
-					description="Images" multiple="false" customUI="true"
-					required="true" />
-					
-			</h:panelGrid>			
-		</p:dialog>
-	</h:form>
 	
 	
 	<!--  Mantenimiento ALMACEN -->
@@ -609,29 +590,39 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				
 		<!--  Mantenimiento Paquete Biblico -->
 	<h:form id="formPaqueteBiblico">
+	  <p:messages id="msgs"/>
 		<p:dialog header="Registro/Modificacion Paquete Biblico" widgetVar="PaqueteBiblico" showEffect="fade"
-			hideEffect="explode" modal="true" position="center">
+			hideEffect="explode" modal="true" position="center" width="500">
 			<p:fieldset legend="Paquete Biblico"  >
-			<h:panelGrid id="display" columns="6"  >
+			<h:panelGrid id="display" columns="3"  >
 			
 			
-				<h:outputText 
-				value="#{message['Paquetebiblico.codigopaquete']}"
-				for="codigo" />
+<h:outputText 	value="#{message['Paquetebiblico.codigopaquete']}"  ></h:outputText>
 							
-				<p:inputText value="#{mantenimientoPaqueteBiblicoFormAction.objPaqueteSie.codpaquete}"				
-				onkeypress="return validarEspaciosLetrasNumeros(event)"
-				id="codigo"
-				maxlength="7"
-				title="el codigo debe ser entre 3 a 7 digitos" 
-				required="true"
-				requiredMessage="#{message['Paquetebiblico.codigo.validation']}" />
-				<p:message for="codigo" />
-							
+<p:inputText value="#{mantenimientoPaqueteBiblicoFormAction.objPaqueteSie.codpaquete}"				
+onkeypress="return validarEspaciosLetrasNumeros(event)"
+id="codigo"	title="el codigo debe ser entre 3 a 7 digitos" 
+required="true"
+requiredMessage="#{message['Paquetebiblico.codigo.validation']}"
+maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRecord}" >
+<f:validateLength minimum="3" maximum="7"></f:validateLength>
+<p:ajax update="msgCodigo" event="keyup" ></p:ajax>
+</p:inputText>
+ <p:message  for="codigo" id="msgCodigo" display="icon"></p:message>
+ 
+
+ <p:inputText  value="#{mantenimientoPaqueteBiblicoFormAction.objPaqueteSie.codpaquete}" 
+ required="true"
+ requiredMessage="#{message['Paquetebiblico.codigo.validation']}"
+ rendered="#{!mantenimientoPaqueteBiblicoFormAction.newRecord}"
+ readonly="true" ></p:inputText>
+			
 				
+							
+		 	
 				<h:outputText
 				 value="#{message['Paquetebiblico.descripciondePaquete']}"
-				 for="descripciondePaquete"/>
+				 for="descripciondePaquete"></h:outputText>
 									
 				<p:inputTextarea
 				
@@ -641,11 +632,13 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				maxlength="50"
 				title="defina una descripcion breve"
 				required="true"
-				requiredMessage="#{message['Paquetebiblico.descripcion.validation']}" />
-				<p:message for="descripciondePaquete" />
+				requiredMessage="#{message['Paquetebiblico.descripcion.validation']}"
+				style="width:95%"
+				></p:inputTextarea>
+				 <p:message for="descripciondePaquete" display="icon"></p:message>
 				
 			
-			
+	
 				
 				<p:commandButton
 				id="savepaquete" 
@@ -680,12 +673,18 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:dialog>
 	</h:form>
 	
+	
+	
 	<!--  Mantenimiento Detalle Paquete Biblico -->
+	
+	
+	
 	<h:form id="formDetPaqueteBiblico">
+	  <p:messages id="msgs"/>
 		<p:dialog header="Registro/Modificacion Detalle Paquete Biblico" widgetVar="DetPaqueteBiblico" showEffect="fade"
-			hideEffect="explode" modal="true" position="center">
+			hideEffect="explode" modal="true" position="center" width="450">
 			<p:fieldset legend="producto Paquete Biblico"  >
-			<h:panelGrid id="display" columns="2"  >
+			<h:panelGrid id="display" columns="3"  >
 			
 			 
 			 
@@ -694,10 +693,13 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			<h:outputText value="producto" />
 							
 				<p:selectOneMenu
-						value="#{mantenimientoDetallePaqueteBiblicoSearchAction.idproducto}">
+						value="#{mantenimientoDetallePaqueteBiblicoSearchAction.idproducto}"
+						>
 						<f:selectItems value="#{comboAction.productoPaqueteItems}" />
 					</p:selectOneMenu>
 							
+				
+				<p:spacer></p:spacer>
 				
 				<h:outputText value="#{message['Detallepaquetebiblico.cantidad']}"
 				 for="cantidad"		
@@ -706,9 +708,22 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			
 			
 			<p:spinner value="#{mantenimientoDetallePaqueteBiblicoSearchAction.objDetPaqueteSie.cantidad}" 
-			  min="0"  />	
+		min="1" style="width:75%" id="cantidad" 
+		 required="true" requiredMessage="#{message['Detalleaquetebiblico.cantidad.validation']}" 
+		 >
+		
+				<p:ajax update="msgCantidad" event="keyup" />
+		 
+		 	     
+		 </p:spinner>	
+				 <p:message  for="cantidad" id="msgCantidad" display="icon"/>
+				 
+				 
 				
-				<p:commandButton
+			
+				</h:panelGrid>
+			</p:fieldset>
+			<p:commandButton
 				id="savedetpaquete" 
 				value="Grabar" 
 				icon="ui-icon-disk"
@@ -717,9 +732,6 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				ajax="false"
 				update="panel" />
 				
-			
-				</h:panelGrid>
-			</p:fieldset>
 		</p:dialog>
 	</h:form>
 	
@@ -752,7 +764,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 			<p:commandButton type="submit" value="Si"
 				action="#{mantenimientoDetallePaqueteBiblicoSearchAction.updateDeshabilitarDetProdPaquete}"
-				update=":@all"
+				update="panel"
 				oncomplete="confirmationPaqueteProDetPACK.hide()" ajax="false">
 			</p:commandButton>
 
@@ -764,6 +776,8 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	</h:form>
 
 	<!-- 	FIN DESACTICAR PRUDCTO DEL DETALLE PAQUETE BIBLICO (ESTADOS)  -->
+	
+	
 	
 	<h:form id="horarioDeshabilita" >
 
@@ -785,11 +799,13 @@ function validarEspaciosLetrasNumeros(e) { // 1
 <!--  Mantenimiento Horario Punto Venta-->
 	<h:form id="formManteHorarioPV">
 		<p:dialog widgetVar="horariopvDialog" showEffect="fade"
-			hideEffect="explode" modal="true" width="450" position="center">
+			hideEffect="explode" modal="true" width="450" position="center"
+			header="Horario Punto de Venta">
 			<h:panelGrid id="display" columns="2" cellpadding="2"
-				style="margin:0 auto;" title="Horario ">
+				style="margin:0 auto;" >
 
 				<h:outputText value="#{message['horario.pv.dia']}"  />
+				
 				<h:panelGroup rendered="#{MantenimientoHorarioPuntoVentaSearchAction.newRecord==true}"  >
 				<p:selectCheckboxMenu id="pvchk" required="true" value="#{MantenimientoHorarioPuntoVentaSearchAction.diaList}" 
 				filter="true" filterMatchMode="startsWith" requiredMessage="#{message['horario.pv.dia.validation']}"
@@ -958,8 +974,8 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 			<p:commandButton type="submit" value="Si"
 				action="#{mantenimientoCargoEmpleadoFormAction.updateDeshabilitar}"
-				update=":manteCargoEmpleado:listaPersonas"
-				oncomplete="confirmation24.hide()" ajax="false">
+				oncomplete="confirmation24.hide()" ajax="false"
+				update=":manteCargoEmpleado:listaPersonas">
 			</p:commandButton>
 
 			<p:commandButton value="No" onclick="confirmation24.hide()"
@@ -1348,7 +1364,8 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				 value="Si"
 				 action="#{empresaForm.Eliminarempresa}" 
 				 oncomplete="confirmationEmpresa.hide()"
-				 update=":frmfrmEmpresaFormListpresaTable" 				
+				 update=":frmEmpresaEmpleFormList" 		
+				 		
 	             ajax="false"
 />
 
@@ -1362,67 +1379,6 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	<!-- 	FIN DESACTICAR EMPRESA (ESTADOS)  -->
 	
 	
-	<!--	  INICIO DESACTIVAR	 EMPRESA 22 message="#{empresaForm.mensaje}" -->
-<h:form>
-
-		<p:confirmDialog id="confirmDeshabilitarEmpresa22"
-			message="La Empresa no se puede elminar ya que se encontraron 
-			empleados con esta empresa, desea derivar estos empleados
-			 a otra empresa ?" 
-			 width="325"
-			height="100" showEffect="explode" hideEffect="explode"
-			header="Confirm" severity="alert" widgetVar="someDialog"
-			position="center">
-			
-<p:commandButton type="submit" value="Si"
-action="mantenimientoEmpresaEmpleadoFormList.jsf"
-
-> 
-</p:commandButton>
-
-		<p:commandButton value="No" onclick="confirmationEmpresa.hide()" 
-		immediate="true" ajax = "false"
-				type="button" />
-
-		</p:confirmDialog>
-
-	</h:form>
-	<!-- 	FIN DESACTICAR EMPRESA (ESTADOS)  22-->
-	
-	
-	
-	
-	
-<!--	  INICIO DESACTIVAR	 EMPRESA 222 message="#{empresaForm.mensaje}" -->
-<h:form>
-
-		<p:confirmDialog id="confirmDeshabilitarEmpresa222"
-message="La Empresa no se puede elminar ya que se encontraron
- productos con esta empresa, desea derivar estos empleados a otra empresa ?" 
-			 width="325"
-			height="100" showEffect="explode" hideEffect="explode"
-			header="Confirm" severity="alert" widgetVar="someDialog2"
-			position="center">
-			
-			<p:commandButton type="submit" value="Si"
-			
-			action="#{empresaEmpleProducSearchAction.listarEmpleadosXempresa}"
-			
-			
-			><f:setPropertyActionListener
-		 value="#{empresa.idempresa}"
-		 target="#{empresaEmpleProducSearchAction.idCargo}" 
-/>
-			</p:commandButton>
-
-		<p:commandButton value="No" onclick="confirmationEmpresa.hide()" 
-		immediate="true" ajax = "false"
-				type="button" />
-
-		</p:confirmDialog>
-
-	</h:form>
-	<!-- 	FIN DESACTICAR EMPRESA (ESTADOS)  222-->
 	
 <!--NUEVO TELEFONO DE EMPLEADO -->
 
@@ -1498,81 +1454,6 @@ message="La Empresa no se puede elminar ya que se encontraron
 	
 	<!-- FIN TELEFONO DE EMPLEADO -->		
 	
-<!--NUEVO TELEFONO DE CLIENTE -->
-
-
-	<h:form id="NuevoTelefono">
-		<p:dialog header="Ingrese Nuevo Telefono"
-			widgetVar="carDialogNuevoTelefono" showEffect="fade"
-			hideEffect="explode" modal="true" width="700" position="center">
-
-			<h:panelGrid id="display22" columns="4" cellpadding="0"
-				style="margin:0 auto;">
-
-<!-- TIPO DE TELEFONO-->			
- 				<h:outputText value="#{message['contrato.tipo.telefono']}" />
-					<p:selectOneMenu  value="#{MantenimientoClienteFormAction.tipoTelef}"
-						style="width:165px"  >
-						<f:selectItem itemLabel="Fijo" itemValue="1" />
-						<f:selectItem itemLabel="Celular" itemValue="2" />
-						<p:ajax update="display22" listener="#{MantenimientoClienteFormAction.limpiarDatosTelefono}" ></p:ajax>
-					</p:selectOneMenu>
-					
-<!--OPERADOR-->					
-					
-					<h:outputText value="#{message['contrato.operadorTelefonico']}" />
-					<p:selectOneMenu id="operadorTelefonico1" required="true" value="#{MantenimientoClienteFormAction.operadorTelefonico}" rendered="#{MantenimientoClienteFormAction.tipoTelef==1}"
-						style="width:165px" requiredMessage="#{message['contrato.operadorTelefonico.validation']}" >
-						<f:selectItem itemLabel="Seleccione Operador" itemValue="#{null}" />
-						<f:selectItem itemLabel="Claro" itemValue="1" />
-						<f:selectItem itemLabel="Telefónica" itemValue="2" />
-					</p:selectOneMenu>
-					<p:message for="operadorTelefonico1" rendered="#{contratoForm.tipoTelef==1}" />
-					
-					<p:selectOneMenu id="operadorCelular1" required="true" value="#{MantenimientoClienteFormAction.operadorTelefonico}" rendered="#{MantenimientoClienteFormAction.tipoTelef==2}"
-						style="width:165px" requiredMessage="#{message['contrato.operadorTelefonico.validation']}" >
-						<f:selectItem itemLabel="Seleccione Operador" itemValue="#{null}" />
-						<f:selectItem itemLabel="Claro" itemValue="1" />
-						<f:selectItem itemLabel="Movistar" itemValue="2" />
-						<f:selectItem itemLabel="Nextel" itemValue="3" />
-					</p:selectOneMenu>
-					<p:message for="operadorCelular1" rendered="#{MantenimientoClienteFormAction.tipoTelef==2}" />
-					
-	<!-- N TELEFONICO-->
-					
-					<h:outputText value="#{message['contrato.telefono']}" rendered="#{MantenimientoClienteFormAction.tipoTelef==1}" />
-					<p:inputMask id="numTelef1" mask="999-9999" value="#{MantenimientoClienteFormAction.nuevoTelef.telefono}"
-						requiredMessage="#{message['contrato.telefono.casa.validation']}"  rendered="#{MantenimientoClienteFormAction.tipoTelef==1}"/>
-					<p:message for="numTelef1" rendered="#{MantenimientoClienteFormAction.tipoTelef==1}"/>
-					
-					<h:outputText value="#{message['contrato.celular']}"  rendered="#{MantenimientoClienteFormAction.tipoTelef==2}"/>
-					<p:inputMask mask="999-999999" value="#{MantenimientoClienteFormAction.nuevoTelef.telefono}" id="numCelular1"
-						requiredMessage="#{message['contrato.celular.validation']}"  rendered="#{MantenimientoClienteFormAction.tipoTelef==2}"/>
-					<p:message for="numCelular1"  rendered="#{MantenimientoClienteFormAction.tipoTelef==2}"/>
-				
-
-				<!-- BOTON GUARDAR -->
-				<h:panelGroup>
-
-					<p:spacer height="80px" width="80"></p:spacer>
-					<p:commandButton 
-						id="btn" value="Guardar" 
-						update="display2"
-						action="#{MantenimientoClienteFormAction.telefonoAgregar}"
-						ajax="false"
-						icon="ui-icon ui-icon-disk" />	
-
-				</h:panelGroup>
-
-			</h:panelGrid>
-
-		</p:dialog>
-
-	</h:form>
-	
-	<!-- FIN TLEFONO DE CLIENTE -->
-	
-
 	
 	<!--EN UN SOLO PUPAP NUEVO Y EDITAR EMPRESA -->
 
@@ -1682,9 +1563,9 @@ message="La Empresa no se puede elminar ya que se encontraron
 
 				<h:outputText value="#{message['mantenimiento.email']}" for="email" />
 
-				<h:panelGroup>
+				<h:panelGroup id="email">
 
-					<p:inputText id="email1" value="#{empresaForm.objEmpresaSie.email}"
+					<p:inputText  value="#{empresaForm.objEmpresaSie.email}"
 						required="true" label="email"
 						requiredMessage="#{message['mantenimiento.email.validation']}"
 						style="font-weight:bold" rendered="#{empresaForm.editMode}" 
@@ -1693,9 +1574,9 @@ message="La Empresa no se puede elminar ya que se encontraron
 						<f:validateRegex pattern="#{message['pattern.email.norequired']}" />
 						
 						</p:inputText>
-						<p:message for="email1" />
+						
 
-					<p:inputText id="email2" value="#{empresaForm.email}"
+					<p:inputText  value="#{empresaForm.email}"
 						required="true" label="email"
 						requiredMessage="#{message['mantenimiento.email.validation']}"
 						style="font-weight:bold" rendered="#{!empresaForm.editMode}" 
@@ -1705,14 +1586,14 @@ message="La Empresa no se puede elminar ya que se encontraron
 				
 					
 					</p:inputText>
-					<p:message for="email2" />
+					<p:message for="email" />
 				</h:panelGroup>
 
 				<!-- BOTON GUARDAR -->
 				<h:panelGroup>
 
 					<p:spacer height="20px" width="80"></p:spacer>
-					<p:commandButton id="btn" value="Guardar" update="panel"
+					<p:commandButton id="btn" value="Guardar" update="empresaTable"
 						action="#{empresaForm.insertar}" ajax="false"
 						icon="ui-icon ui-icon-disk"
 						title="verifique bien los datos, antes de hacer clic en Guardar" />
@@ -1784,28 +1665,7 @@ message="La Empresa no se puede elminar ya que se encontraron
 
 
 
-<!--  Modulo Migracion - Excel-->
-	<h:form id="formInsertExcelProduc">
-		<p:dialog header="Imagen Producto" widgetVar="excelProducDialog"
-			showEffect="fade" hideEffect="explode" modal="true" width="450"
-			position="center">
-			<h:panelGrid id="display" columns="2" cellpadding="2"
-				style="margin:0 auto;">
 
-				<h:outputText value="#{message['mantenimiento.producto.imagen']}"
-					id="idimagen" />
-
-				<p:fileUpload
-					fileUploadListener="#{productoForm.cargarImagenInsertar}"
-					label="Cargar Imagen" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-					description="Images" multiple="false" customUI="true"
-					required="true" />
-
-			</h:panelGrid>
-		</p:dialog>
-	</h:form>
-
-	<!-- Modulo Migracion - Excel -->
 
  
 </f:view>
