@@ -5,12 +5,18 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO;
+import com.edicsem.pe.sie.model.dao.impl.DomicilioEmpleadoDAOImpl;
 import com.edicsem.pe.sie.service.facade.DomicilioEmpleadoService;
 @Stateless
 public class DomicilioEmpleadoServiceImpl implements DomicilioEmpleadoService{
 	//llamo a mi EJB y redirecciono todo al DAO
+	
+	private static Log log = LogFactory.getLog(DomicilioEmpleadoServiceImpl.class);
 	@EJB
 	private DomicilioEmpleadoDAO objDomicilioEmpleadoDao;
 	
@@ -45,6 +51,7 @@ public class DomicilioEmpleadoServiceImpl implements DomicilioEmpleadoService{
 	 * @see com.edicsem.pe.sie.service.facade.DemoService#findDemo(java.lang.String)
 	 */
 	public DomicilioPersonaSie buscarDomicilioEmpleado(int id) {
+		log.info("en el servicio"+id);
 		return objDomicilioEmpleadoDao.buscarDomicilioEmpleado(id);
 	}
 
@@ -62,6 +69,13 @@ public class DomicilioEmpleadoServiceImpl implements DomicilioEmpleadoService{
     
     public List listarDomicilioCliente(int id) {
 		return objDomicilioEmpleadoDao.listarDomicilioCliente(id);
+	}
+    
+    
+    
+    public DomicilioPersonaSie buscarDomicilioXIdcliente(int id) {
+	
+    	return objDomicilioEmpleadoDao.buscarDomicilioXIdcliente(id); 
 	}
    
 }
