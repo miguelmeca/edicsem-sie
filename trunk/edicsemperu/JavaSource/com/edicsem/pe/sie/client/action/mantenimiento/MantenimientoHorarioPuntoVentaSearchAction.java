@@ -114,7 +114,9 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
 	 */
 	public String insertar() throws Exception {
-		mensaje = "";
+
+		mensaje =null;
+		log.info("entrando a insertar");
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar' "+objHorarioPuntoVentaSie.getDiainicio());
@@ -188,9 +190,13 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends
 					objHorarioPuntoVentaSie.setHoraIngreso(hora1);
 					objHorarioPuntoVentaSie.setHoraSalida(hora2);
 
-					objHorarioPuntoVentaService
-							.updateHorarioPunto(objHorarioPuntoVentaSie);
+					objHorarioPuntoVentaService.updateHorarioPunto(objHorarioPuntoVentaSie);
+					mensaje="Se actualizó el factor";
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+							Constants.MESSAGE_REGISTRO_TITULO, mensaje);
+			
 				}
+				FacesContext.getCurrentInstance().addMessage(null, msg);
 				log.info("dia 2 "+objHorarioPuntoVentaSie.getDiainicio());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -229,10 +235,10 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends
 		eventModel = new DefaultScheduleModel();
 		log.info("mostrar horario de PUNTO DE VENTA   "+ objHorarioPuntoVentaSie.getDiainicio());
 		log.info("listarHorario del personal");
-		listaHorario = objHorarioPuntoVentaService
-				.listarHorarioPuntoVentaXidPV(objPuntoVentaSie
-						.getIdpuntoventa());
-		if (listaHorario == null) {
+		listaHorario = objHorarioPuntoVentaService.listarHorarioPuntoVentaXidPV(objPuntoVentaSie.getIdpuntoventa());
+				
+				
+		if (listaHorario == null) {	
 			listaHorario = new ArrayList<HorarioPuntoVentaSie>();
 		}
 		for (int i = 0; i < listaHorario.size(); i++) {
