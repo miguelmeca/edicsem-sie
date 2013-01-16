@@ -24,8 +24,8 @@
 				</p:column>
 				
 				<p:column headerText="Editar">
-					<p:commandButton value="Editar" ajax="false"
-					 action="#{MantenimientoClienteFormAction.updateGeneral}"
+					<p:commandButton  ajax="false"
+					 action="#{MantenimientoClienteFormAction.update}"
 						icon="ui-icon ui-icon-pencil">
 						<f:setPropertyActionListener value="#{c}"
 							target="#{MantenimientoClienteFormAction.objClienteSie}" />
