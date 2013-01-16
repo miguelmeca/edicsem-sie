@@ -69,7 +69,7 @@ public class DomicilioEmpleadoDAOImpl implements DomicilioEmpleadoDAO{
 				DomicilioPersonaSie domiciliopersona= new DomicilioPersonaSie();
 				try {
 				if (log.isInfoEnabled()) {
-				log.info("buscar DomicilioPersona");
+				log.info("buscar DomicilioPersona"+id);
 				} 
 				domiciliopersona=	em.find(DomicilioPersonaSie.class, id);
 				log.info(" DomicilioPersona " +domiciliopersona);
@@ -121,6 +121,20 @@ public class DomicilioEmpleadoDAOImpl implements DomicilioEmpleadoDAO{
 	public List listarDomicilioEmpleados() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	public DomicilioPersonaSie buscarDomicilioXIdcliente(int id) {
+		log.info(" buscarDomicilioXIdcliente "+ id);
+		DomicilioPersonaSie domicilio =new DomicilioPersonaSie();
+		try {
+			Query q = em.createQuery("select d from DomicilioPersonaSie d where d.idcliente.idcliente = "+ id);
+			domicilio = (DomicilioPersonaSie) q.getResultList().get(0);
+			//log.info("Domicilio x idempleado  --> " + domicilio.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return domicilio;
 	}
 	
 	
