@@ -9,7 +9,7 @@
 		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
 			Contrato </h1>
 		<h:form id="formManteContrato3">
-			  <p:growl id="message" showDetail="true" />
+			<p:growl id="message" showDetail="true" />
 			 
 			<p:wizard id="wiz" widgetVar="wiz" flowListener="#{contratoForm.onFlowProcess}">
 			  <p:tab title="#{message['cliente.tabpersonal']}">
@@ -20,14 +20,14 @@
 					<p:inputText id="nombreCliente" value="#{contratoForm.objClienteSie.nombrecliente}" required="true" />
 					<p:message for="nombreCliente" />
 					
-					<h:outputText value="#{message['contrato.apematerno']}" />
-					<p:inputText  id="apMatCliente" value="#{contratoForm.objClienteSie.apematcliente}" required="true" />
-					<p:message for="apMatCliente" />
-
 					<h:outputText value="#{message['contrato.apepaterno']}" />
 					<p:inputText id="apPatCliente" value="#{contratoForm.objClienteSie.apepatcliente}" required="true" />
 					<p:message for="apPatCliente" />
-
+					
+					<h:outputText value="#{message['contrato.apematerno']}" />
+					<p:inputText  id="apMatCliente" value="#{contratoForm.objClienteSie.apematcliente}" required="true" />
+					<p:message for="apMatCliente" />
+					
 					<h:outputText value="#{message['contrato.tipo.documento']}" />
 					<p:selectOneMenu id="tipoDoc" style="width:165px" value="#{contratoForm.idtipodoc}" required="true" 
 					requiredMessage="#{message['contrato.tipo.documento.validation']}" >
@@ -178,6 +178,9 @@
 							<p:column headerText="Telefono"  >
 		                    	<h:outputText value="#{t.tipoTelef}, #{t.operadorTelefonico}, #{t.telefono}" />
 		                    </p:column>
+		                    <p:column headerText="Descripción"  >
+		                    	<h:outputText value="#{t.descTelefono}" />
+		                    </p:column>
 		                    <p:column headerText="Eliminar" >
 			                    <p:commandButton icon="ui-icon-close" oncomplete="confirmationTelefonoContrato.show()" title="eliminar">
 								<f:setPropertyActionListener value="#{t.telefono}" target="#{contratoForm.selectTelef}" />
@@ -225,13 +228,19 @@
 					
 					<h:outputText value="Cantidad" />
 					<p:spinner value="#{contratoForm.objProductoSie.cantidadContrato}" min="1" requiredMessage="#{message['contrato.cantidad.producto']}"  />
+					
+					<h:outputText value="Estado" />
+					<p:selectOneMenu size="1"  required="true"
+					style="width:165px" value="#{contratoForm.idestadoProducto}">
+						<f:selectItems value="#{comboAction.estadoitems}" />
+					</p:selectOneMenu>
 					 
 					<p:commandButton value="Agregar" icon="ui-icon ui-icon-check" update="detPaqueteList, message" 
 					action="#{contratoForm.agregarProducto}" />
 				</h:panelGrid>
 	   </p:fieldset>
 	   <p:spacer  height="35px"/>
-    <p:dataTable id="detPaqueteList" var="c" value="#{contratoForm.detPaqueteList}" editable="true" style="width:60%" >
+    <p:dataTable id="detPaqueteList" var="g" value="#{contratoForm.detPaqueteList}" editable="true" style="width:60%; align:center" >
 
         <f:facet name="header">
             Editar Paquete
@@ -243,20 +252,20 @@
         <p:column headerText="Item" style="width:90px">
             <p:cellEditor>
                 <f:facet name="output">
-                    <h:outputText value="#{c.item}" />
+                    <h:outputText value="#{g.item}" />
                 </f:facet>
                 <f:facet name="input">
-                    <h:outputText value="#{c.item}" style="width:100%"  />
+                    <h:outputText value="#{g.item}" style="width:100%"  />
                 </f:facet>
             </p:cellEditor>
         </p:column>
         <p:column headerText="Producto" style="width:125px">
             <p:cellEditor>
                 <f:facet name="output">
-                    <h:outputText value="#{c.tbProducto.descripcionproducto}" />
+                    <h:outputText value="#{g.tbProducto.descripcionproducto}" />
                 </f:facet>
                 <f:facet name="input">
-                     <h:outputText value="#{c.tbProducto.descripcionproducto}" />
+                     <h:outputText value="#{g.tbProducto.descripcionproducto}" />
                 </f:facet>
             </p:cellEditor>
         </p:column>
@@ -264,25 +273,36 @@
         <p:column headerText="Observación" style="width:125px">
             <p:cellEditor>
                 <f:facet name="output">
-                    <h:outputText value="#{c.observacion}" />
+                    <h:outputText value="#{g.observacion}" />
                 </f:facet>
                 <f:facet name="input">
-                    <p:inputText  value="#{c.observacion}" />
+                    <p:inputText  value="#{g.observacion}" />
                 </f:facet>
             </p:cellEditor>
         </p:column>
 
-        <p:column headerText="Cantidad" style="width:110px">
+        <p:column headerText="Cantidad" style="width:80px">
             <p:cellEditor>
                 <f:facet name="output">
-                    <h:outputText value="#{c.cantidad}"  />
+                    <h:outputText value="#{g.cantidad}"  />
                 </f:facet>
                 <f:facet name="input">
-                  <p:spinner value="#{c.cantidad}" min="1" />
+                  <p:spinner value="#{g.cantidad}" min="1" />
                 </f:facet>
             </p:cellEditor>
         </p:column>
-
+        
+        <p:column headerText="Estados" style="width:110px">
+            <p:cellEditor>
+                <f:facet name="output">
+                   <h:outputText value="#{g.tbEstadoGeneral.descripcion}"  />
+                </f:facet>
+                 <f:facet name="input">
+                   <h:outputText value="#{g.tbEstadoGeneral.descripcion}"  />
+                </f:facet>
+            </p:cellEditor>
+        </p:column>
+        
         <p:column headerText="Editar" style="width:50px">
             <p:rowEditor />
         </p:column>
@@ -290,7 +310,7 @@
         <p:column headerText="Eliminar" >
            <p:commandButton icon="ui-icon-close"
 							oncomplete="confirmationProductoContrato.show()" title="eliminar">
-					<f:setPropertyActionListener value="#{c.item}" target="#{contratoForm.idCobranza}" />
+					<f:setPropertyActionListener value="#{g.item}" target="#{contratoForm.idCobranza}" />
 			</p:commandButton>
 		</p:column>
     	</p:dataTable>
@@ -445,9 +465,8 @@
 				
 				</h:panelGrid>
 				
-			<p:commandButton value="Registrar" action="#{contratoForm.insertar}" update="message"
-				icon="ui-icon ui-icon-check">
-			</p:commandButton>
+			<p:commandButton value="Registrar" action="#{contratoForm.insertar}" update="message" ajax="false"
+				icon="ui-icon ui-icon-check"/>
 				
 			</p:panel>
 		</p:tab>
