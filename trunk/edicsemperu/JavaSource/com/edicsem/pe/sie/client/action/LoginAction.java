@@ -78,12 +78,9 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 		try {
 			log.info("usuario  ...  "+usuario+" contraseña "+contrasenia);
 			//Captura del Usuario y contraseña, Validando el Usuario
-			//objEmpleado = loginService.getValidarUsuario(objLogin);
 			objEmpleado= loginService.validacionLogin(usuario,SecurityLogin.getMD5(contrasenia));
 			if (objEmpleado!=null) {
 				//Se valida si la contraseña del usuario encontrado esta en lo cierto.
-				if (StringUtils.equals(usuario.trim(), contrasenia.trim())) {
-				}
 					log.info("usuario correcto...");
 					log.info("Nombres completos : "+ objEmpleado.getNombresCompletos());
 					log.info("contraseña: "+ objEmpleado.getContrasena());

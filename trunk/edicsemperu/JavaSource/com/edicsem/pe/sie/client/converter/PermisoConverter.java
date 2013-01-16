@@ -26,17 +26,9 @@ public class PermisoConverter implements Converter {
 	
 	public String getAsString(FacesContext fc, UIComponent uic, Object o) {
 		log.info("getAsString");
-		if (o == null) {
-			log.info(" es null ");
-            return null;
-        }
-		else{
-		log.info(" no es null "+o);
 		PermisoSie p = new PermisoSie();
 		p = (PermisoSie) o;
 		log.info(" nombre "+p.getNombrePermiso());
 		return p.getNombrePermiso();
-		}
 	}
-	
 }

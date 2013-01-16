@@ -2,6 +2,7 @@ package com.edicsem.pe.sie.client.action.mantenimiento;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,10 +33,17 @@ import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.PaqueteSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
+import com.edicsem.pe.sie.service.facade.ClienteService;
+import com.edicsem.pe.sie.service.facade.CobranzaService;
 import com.edicsem.pe.sie.service.facade.ContratoService;
+import com.edicsem.pe.sie.service.facade.DetProductoContratoService;
 import com.edicsem.pe.sie.service.facade.DetallePaqueteService;
+import com.edicsem.pe.sie.service.facade.DomicilioEmpleadoService;
+import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.PaqueteService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
+import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
+import com.edicsem.pe.sie.service.facade.UbigeoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
@@ -58,8 +66,9 @@ public class MantenimientoContratoFormAction extends
 	private List<TelefonoPersonaSie> telefonoList;
 	private List<CobranzaSie> cobranzaList;
 	private List<DetPaqueteSie> detPaqueteList;
+	private List<DetProductoContratoSie> detProductoContrato;
 	private TelefonoPersonaSie nuevoTelef;
-	private int TipoTelef, operadorTelefonico, idCobranza;
+	private int TipoTelef, operadorTelefonico, idCobranza,idestadoProducto;
 	private double precioProducto;
 	private boolean defectoUbigeo,defectopaquete;
 	private boolean newRecord = false;
@@ -67,15 +76,36 @@ public class MantenimientoContratoFormAction extends
 	private PaqueteSie objPaquete;
 	private DetPaqueteSie objDetPaquete;
 	private List<String> colaboradorList;
+	private List<ContratoSie> contratoXClienteList;
+	private Date dhoy;
+	
+	//Consultar
+	private String numDniCliente,codigoContrato,apePatCliente,apeMatCliente,nombreCliente;
+	private int tamanoLista,idcontrato,idcliente, radio;
+	private List<DomicilioPersonaSie> domicilioList;
+	
 	@EJB
 	private ProductoService objProductoService;
 	@EJB
 	private DetallePaqueteService objDetPaqueteService;
 	@EJB
 	private PaqueteService objPaqueteService;
-
 	@EJB
 	private ContratoService objContratoService;
+	@EJB
+	private ClienteService objClienteService;
+	@EJB
+	private DomicilioEmpleadoService objDomicilioService;
+	@EJB
+	private TelefonoEmpleadoService objTelefonoService;
+	@EJB
+	private DetProductoContratoService objDetProductoService;
+	@EJB
+	private CobranzaService objCobranzaService;
+	@EJB
+	private UbigeoService objUbigeoService;
+	@EJB
+	private EstadogeneralService objEstadoService;
 	
 	@ManagedProperty(value = "#{comboAction}")
 	private ComboAction comboManager;
@@ -87,33 +117,7 @@ public class MantenimientoContratoFormAction extends
 	
 	public void init() {
 		log.info("init()");
-		objProductoSie = new ProductoSie();
-		objDomicilioSie = new DomicilioPersonaSie();
-		objClienteSie = new ClienteSie();
-		objContratoSie = new ContratoSie();
-		objCobranzaSie = new CobranzaSie();
-		objPaquete = new PaqueteSie();
-		objDetPaquete = new DetPaqueteSie();
-		defectoUbigeo = true;
-		defectopaquete= true;
-		ubigeoDefecto = "";
-		nuevoTelef = new TelefonoPersonaSie();
-		nuevoTelef.setTipoTelef("");
-		 selectTelef="";
-		telefonoList = new ArrayList<TelefonoPersonaSie>();
-		operadorTelefonico=1;
-		idCobranza=0;
-		TipoTelef=1;
-		tipoVenta=1;
-		colaboradorList = new ArrayList<String>();
-		idempleadoExpositor=0;
-		idempleadoVendedor=0;
-		cobranzaList= new ArrayList<CobranzaSie>() ;
-		detPaqueteList = new ArrayList<DetPaqueteSie>() ;
-		skip = false;
-		idUbigeo=0;
-		idtipodoc=1;
-		tipopago=1;
+		
 	}
 
 	/*
@@ -127,11 +131,28 @@ public class MantenimientoContratoFormAction extends
 		selectTelef= "";
 		log.info("agregar()");
 		limpiarCampos();
-		objProductoSie = new ProductoSie();
 		setNewRecord(true);
 		comboManager.setIdDepartamento("15");
 		comboManager.setIdProvincia("01");
 		comboManager.setIdCargo(2);
+		comboManager.setCodigoEstado(Constants.COD_ESTADO_TB_DET_CONTRATO_PRODUCTO);
+		operadorTelefonico=1;
+		idCobranza=0;
+		TipoTelef=1;
+		tipoVenta=1;
+		skip = false;
+		idUbigeo=0;
+		idtipodoc=1;
+		tipopago=1;
+		radio=1;
+		objProductoSie.setCantidadContrato(1);
+		defectoUbigeo = true;
+		defectopaquete= true;
+		ubigeoDefecto = "";
+		nuevoTelef.setTipoTelef("");
+		selectTelef="";
+		idempleadoExpositor=0;
+		idempleadoVendedor=0;
 		return getViewMant();
 	}
 
@@ -330,6 +351,7 @@ public class MantenimientoContratoFormAction extends
 			}
 			if(cantidad==0){
 				det.setItem(1);
+				det.setTbEstadoGeneral(objEstadoService.findEstadogeneral(idestadoProducto));
 				detPaqueteList.add(det);
 				log.info("tamaño lista de paqu "+ detPaqueteList.size());
 			}else{
@@ -341,6 +363,7 @@ public class MantenimientoContratoFormAction extends
 				}
 				if(mensaje==null){
 					log.info(" se agrega cuando lista esta llena");
+					det.setTbEstadoGeneral(objEstadoService.findEstadogeneral(idestadoProducto));
 					detPaqueteList.add(det);
 					mensaje="Se agregó correctamente ";
 					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
@@ -424,6 +447,7 @@ public class MantenimientoContratoFormAction extends
 					log.info(" cuota inicial ");
 					objCobranzaSie.setImpinicial(objContratoSie.getPagosubinicial());
 					objCobranzaSie.setFecvencimiento(objContratoSie.getFechaentrega());
+					objCobranzaSie.setFecpago(objContratoSie.getFechaentrega());
 					cobranzaList.add(objCobranzaSie);
 					objCobranzaSie= new CobranzaSie();
 					//lo que queda por pagar de la cuota inicial , letra -1
@@ -478,9 +502,6 @@ public class MantenimientoContratoFormAction extends
     
     public void onEditDetPaquete(RowEditEvent event) {
 		log.info("en onEditDetPaquete() ");
-
-		log.info("en onEditDetPaquete()sss " + idProducto );
-		log.info("en onEditDetPaquete()sss2 "  );
 		for (int i = 0; i < detPaqueteList.size(); i++) {
 			log.info("en onEditDetPaquete() 1 ------- "+i+"   "+ detPaqueteList.get(i).getCantidad()+" descr "+ detPaqueteList.get(i).getTbProducto().getDescripcionproducto());
 		}
@@ -546,6 +567,7 @@ public class MantenimientoContratoFormAction extends
 					det.setTbProducto(detPaqueteList.get(i).getTbProducto());
 					det.setCantidad(detPaqueteList.get(i).getCantidad());
 					det.setObservacion(detPaqueteList.get(i).getObservacion());
+					det.setTbEstadoGeneral(detPaqueteList.get(i).getTbEstadoGeneral());
 					detProductoContratoList.add(det);
 				}
 				if(tipoVenta==1)
@@ -576,11 +598,8 @@ public class MantenimientoContratoFormAction extends
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 						Constants.MESSAGE_INFO_TITULO, mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
-				objProductoSie = new ProductoSie();
-				
 			} else {
 				log.info("a actualizar  ");
-				limpiarCampos();
 			}
 			}
 		} catch (Exception e) {
@@ -591,7 +610,65 @@ public class MantenimientoContratoFormAction extends
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		return getViewList();
+		return Constants.CONSULTA_CONTRATO_FORM_PAGE;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#consultar()
+	 */
+	public String consultar() throws Exception {
+		log.info("consultar() ");
+		limpiarCampos();
+		contratoXClienteList = objContratoService.listarClientePorParametro(numDniCliente, codigoContrato, nombreCliente, apePatCliente, apeMatCliente);
+		
+		if(contratoXClienteList.size()==1){
+			log.info("consultar() == 1 ");
+			objClienteSie = objClienteService.findCliente(contratoXClienteList.get(0).getTbCliente().getIdcliente());
+			log.info("  " + objClienteSie.getIdcliente()+"  "+objClienteSie.getNombresCompletos());
+			domicilioList = objDomicilioService.listarDomicilioCliente(objClienteSie.getIdcliente());
+			objDomicilioSie = (DomicilioPersonaSie) objDomicilioService.listarDomicilioCliente(objClienteSie.getIdcliente()).get(0);
+			// objUbigeoService.findUbigeo(objDomicilioSie.getTbUbigeo().getIdubigeo());
+			telefonoList = objTelefonoService.listarTelefonoEmpleadosXidcliente(objClienteSie.getIdcliente());
+			detProductoContrato = objDetProductoService.listarDetProductoContratoXContrato(contratoXClienteList.get(0).getIdcontrato());
+			cobranzaList =objCobranzaService.listarCobranzasXidcontrato(contratoXClienteList.get(0).getIdcontrato());
+		}
+		log.info(" lista x consulta "+contratoXClienteList.size());
+		
+		return Constants.CONSULTA_CONTRATO_FORM_PAGE;
+	}
+	
+	public String cargar(){
+		log.info(" cargar() ");
+		
+			objClienteSie = objClienteService.findCliente(idcliente);
+			log.info("  " + objClienteSie.getIdcliente()+"  "+objClienteSie.getNombresCompletos());
+			domicilioList = objDomicilioService.listarDomicilioCliente(idcliente);
+			objDomicilioSie = (DomicilioPersonaSie) objDomicilioService.listarDomicilioCliente(idcliente).get(0);
+			
+			telefonoList = objTelefonoService.listarTelefonoEmpleadosXidcliente(objClienteSie.getIdcliente());
+			detProductoContrato = objDetProductoService.listarDetProductoContratoXContrato(idcontrato);
+			cobranzaList =objCobranzaService.listarCobranzasXidcontrato(idcontrato);
+		return Constants.CONSULTA_CONTRATO_FORM_PAGE;
+	}
+	
+	public void limpiarCampos(){
+		objProductoSie = new ProductoSie();
+		idtipodoc=0;Tipocasa=0;idUbigeo=0;
+		idempresa = 0;
+		objClienteSie = new ClienteSie() ;
+		telefonoList = new ArrayList<TelefonoPersonaSie>();
+		objDomicilioSie= new DomicilioPersonaSie();
+		objContratoSie= new ContratoSie();
+		cobranzaList= new ArrayList<CobranzaSie>();
+		detPaqueteList = new ArrayList<DetPaqueteSie>();
+		detProductoContrato = new ArrayList<DetProductoContratoSie>();
+		objCobranzaSie = new CobranzaSie();
+		objPaquete = new PaqueteSie();
+		objDetPaquete = new DetPaqueteSie();
+		nuevoTelef = new TelefonoPersonaSie();
+		contratoXClienteList= new ArrayList<ContratoSie>();
+		colaboradorList = new ArrayList<String>();
+		domicilioList = new ArrayList<DomicilioPersonaSie>();
 	}
 	
 	public String onFlowProcess(FlowEvent event) {  
@@ -606,10 +683,6 @@ public class MantenimientoContratoFormAction extends
 	            return event.getNewStep();  
 	      }
 	}
-	public void limpiarCampos() {
-
-	}
-
 	public ProductoSie getSelectedProducto() {
 		return selectedProducto;
 	}
@@ -1131,5 +1204,221 @@ public class MantenimientoContratoFormAction extends
 		this.idTelefono = idTelefono;
 	}
 
+	/**
+	 * @return the numDniCliente
+	 */
+	public String getNumDniCliente() {
+		return numDniCliente;
+	}
+
+	/**
+	 * @param numDniCliente the numDniCliente to set
+	 */
+	public void setNumDniCliente(String numDniCliente) {
+		this.numDniCliente = numDniCliente;
+	}
+
+	/**
+	 * @return the codigoContrato
+	 */
+	public String getCodigoContrato() {
+		return codigoContrato;
+	}
+
+	/**
+	 * @param codigoContrato the codigoContrato to set
+	 */
+	public void setCodigoContrato(String codigoContrato) {
+		this.codigoContrato = codigoContrato;
+	}
+
+	/**
+	 * @return the nombreCliente
+	 */
+	public String getNombreCliente() {
+		return nombreCliente;
+	}
+
+	/**
+	 * @param nombreCliente the nombreCliente to set
+	 */
+	public void setNombreCliente(String nombreCliente) {
+		this.nombreCliente = nombreCliente;
+	}
+
+	/**
+	 * @return the apePatCliente
+	 */
+	public String getApePatCliente() {
+		return apePatCliente;
+	}
+
+	/**
+	 * @param apePatCliente the apePatCliente to set
+	 */
+	public void setApePatCliente(String apePatCliente) {
+		this.apePatCliente = apePatCliente;
+	}
+
+	/**
+	 * @return the apeMatCliente
+	 */
+	public String getApeMatCliente() {
+		return apeMatCliente;
+	}
+
+	/**
+	 * @param apeMatCliente the apeMatCliente to set
+	 */
+	public void setApeMatCliente(String apeMatCliente) {
+		this.apeMatCliente = apeMatCliente;
+	}
+
+	/**
+	 * @return the contratoXClienteList
+	 */
+	public List<ContratoSie> getContratoXClienteList() {
+		return contratoXClienteList;
+	}
+
+	/**
+	 * @param contratoXClienteList the contratoXClienteList to set
+	 */
+	public void setContratoXClienteList(List<ContratoSie> contratoXClienteList) {
+		this.contratoXClienteList = contratoXClienteList;
+	}
+
+	/**
+	 * @return the tamanoLista
+	 */
+	public int getTamanoLista() {
+		tamanoLista = contratoXClienteList.size();
+		return tamanoLista;
+	}
+
+	/**
+	 * @param tamanoLista the tamanoLista to set
+	 */
+	public void setTamanoLista(int tamanoLista) {
+		this.tamanoLista = tamanoLista;
+	}
+
+	/**
+	 * @return the domicilioList
+	 */
+	public List<DomicilioPersonaSie> getDomicilioList() {
+		return domicilioList;
+	}
+
+	/**
+	 * @param domicilioList the domicilioList to set
+	 */
+	public void setDomicilioList(List<DomicilioPersonaSie> domicilioList) {
+		this.domicilioList = domicilioList;
+	}
+
+	/**
+	 * @return the idcontrato
+	 */
+	public int getIdcontrato() {
+		return idcontrato;
+	}
+
+	/**
+	 * @param idcontrato the idcontrato to set
+	 */
+	public void setIdcontrato(int idcontrato) {
+		this.idcontrato = idcontrato;
+	}
+
+	/**
+	 * @return the idcliente
+	 */
+	public int getIdcliente() {
+		return idcliente;
+	}
+
+	/**
+	 * @param idcliente the idcliente to set
+	 */
+	public void setIdcliente(int idcliente) {
+		this.idcliente = idcliente;
+	}
+
+	/**
+	 * @return the radio
+	 */
+	public int getRadio() {
+		return radio;
+	}
+
+	/**
+	 * @param radio the radio to set
+	 */
+	public void setRadio(int radio) {
+		this.radio = radio;
+	}
+
+	/**
+	 * @return the objCobranzaService
+	 */
+	public CobranzaService getObjCobranzaService() {
+		return objCobranzaService;
+	}
+
+	/**
+	 * @param objCobranzaService the objCobranzaService to set
+	 */
+	public void setObjCobranzaService(CobranzaService objCobranzaService) {
+		this.objCobranzaService = objCobranzaService;
+	}
+
+	/**
+	 * @return the idestadoProducto
+	 */
+	public int getIdestadoProducto() {
+		return idestadoProducto;
+	}
+
+	/**
+	 * @param idestadoProducto the idestadoProducto to set
+	 */
+	public void setIdestadoProducto(int idestadoProducto) {
+		this.idestadoProducto = idestadoProducto;
+	}
+
+	/**
+	 * @return the detProductoContrato
+	 */
+	public List<DetProductoContratoSie> getDetProductoContrato() {
+		return detProductoContrato;
+	}
+
+	/**
+	 * @param detProductoContrato the detProductoContrato to set
+	 */
+	public void setDetProductoContrato(
+			List<DetProductoContratoSie> detProductoContrato) {
+		this.detProductoContrato = detProductoContrato;
+	}
+
+	/**
+	 * @return the dhoy
+	 */
+	public Date getDhoy() {
+		try {
+			dhoy = DateUtil.getToday().getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return dhoy;
+	}
+
+	/**
+	 * @param dhoy the dhoy to set
+	 */
+	public void setDhoy(Date dhoy) {
+		this.dhoy = dhoy;
+	}
 	
 }
