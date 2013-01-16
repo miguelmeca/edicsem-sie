@@ -57,11 +57,12 @@ public class ClienteServiceImpl implements ClienteService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ClienteService#updateCliente(com.edicsem.pe.sie.entity.ClienteSie, java.util.List)
 	 */
-	public void updateCliente(ClienteSie Cliente, List<TelefonoPersonaSie> TelefonoPersonaList,int tipo,DomicilioPersonaSie objDomicilio,String idUbigeo  ) {
+	public void updateCliente(ClienteSie Cliente) {
+//		, List<TelefonoPersonaSie> TelefonoPersonaList,int tipo,DomicilioPersonaSie objDomicilio,String idUbigeo 
 		log.info("ClienteServiceImpl ");
 		objClienteDao.updateCliente(Cliente);
-		
-		for (int i = 0; i < TelefonoPersonaList.size(); i++) {
+	}
+	/************	for (int i = 0; i < TelefonoPersonaList.size(); i++) {
 			if (TelefonoPersonaList.get(i).getNuevoT()==1) {
 				//insertar
 			TelefonoPersonaSie telefono=new TelefonoPersonaSie();
@@ -78,19 +79,22 @@ public class ClienteServiceImpl implements ClienteService {
 			}
 			}
 		
-		
+		***********/
 		 /**Inserta el domicilio**/
 		
 		
-		
+		/***********************************
 		objDomicilio.setIdcliente(objClienteDao.findCliente(Cliente.getIdcliente()));
 		objDomicilio.setTbUbigeo(objUbigeoDao.findUbigeo(Integer.parseInt(idUbigeo)));		
 		objDomicilio.setTbTipoCasa(objTipoCasaDao.findTipoCasa(tipo));		
 		/**Estado del domicilio: habilitado(15)**/		
-		objDomicilio.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(15));
+//		objDomicilio.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(15));
+//		
+//		
+//		objDomicilioEmpleadoDao.insertarDomicilioEmpleado(objDomicilio);
 		
 		
-		objDomicilioEmpleadoDao.insertarDomicilioEmpleado(objDomicilio);
+		/*************************************
 //	
 //		for (int j = 0; j < DomicilioPersonaList.size(); j++) {
 //			if (DomicilioPersonaList.get(j).getNuevoD()==1) {
