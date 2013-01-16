@@ -9,10 +9,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import org.apache.commons.collections.ListUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
 
 import com.edicsem.pe.sie.entity.PermisoSie;
@@ -47,30 +45,30 @@ public class PermisoAction extends BaseMantenimientoAbstractAction {
 		permisos = new DualListModel<PermisoSie>(source, target);
 	}
 	
-	public void onTransfer(TransferEvent event) {
-		log.info(" onTransfer() ");
-	    StringBuilder builder = new StringBuilder();
-	    for(Object item : event.getItems()) {  
-	         builder.append(((PermisoSie) item).getNombrePermiso()).append("<br />");  
-	    }
-	    source = permisos.getSource();
-		target = permisos.getTarget();
-	    FacesMessage msg = new FacesMessage();  
-	    msg.setSeverity(FacesMessage.SEVERITY_INFO);
-	    msg.setSummary("Items Transferred");
-	    msg.setDetail(builder.toString());
-	    FacesContext.getCurrentInstance().addMessage(null, msg);  
-	}
-	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
 	 */
+	@SuppressWarnings("unchecked")
 	public String agregar() {
 		log.info("agregar()");
 		permisos = new DualListModel<PermisoSie>(new ArrayList<PermisoSie>(), new ArrayList<PermisoSie>());
 		log.info("listarPermisosXEmpleado()");
 		target= objPermisoService.listarPermisosXEmpleado(idempleado);
+		log.info("target()"+target.size());
 		source= objPermisoService.listarPermiso();
+		log.info("source()"+source.size());
+		
+		for (int i = 0; i < target.size(); i++) {
+				for (int j = 0; j < source.size(); j++) {
+				log.info("aqui   "+target.get(i).getIdpermiso()+" -  "+source.get(j).getIdpermiso());
+				if(target.get(i).getIdpermiso()==source.get(j).getIdpermiso()){
+					log.info("* desc * "+target.get(i).getNombrePermiso());
+					source.remove(j);
+					log.info(source.size()+"  source())   " ); 
+				}
+			}
+		}
+		log.info("source())   "+source.size()); 
 		permisos = new DualListModel<PermisoSie>(source, target);
 		return getViewList();
 	}
