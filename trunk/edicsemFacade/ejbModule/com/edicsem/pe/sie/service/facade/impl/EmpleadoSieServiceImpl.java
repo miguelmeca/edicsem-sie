@@ -86,7 +86,6 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 		/**Inserta Contrato(s)**/
 		for (ContratoEmpleadoSie objContrato : contratoEmpleadoList) {
 			objContrato.setIdempleado(objEmpleado.getIdempleado());
-			/**Insertar Detalle empresa del empleado**/
 			DetEmpresaEmpleadoSie detempemp=new DetEmpresaEmpleadoSie();
 			detempemp.setTbEmpresa(objEmpresaDao.findEmpresa(objContrato.getEmpresa()));
 			detempemp.setTbEmpleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
@@ -193,4 +192,9 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 		return objEmpleadoDao.listarEmpleadoxEmpresas(parametroObtenido);
 	}
 	
+	public List listarEmpleadoxCargo(int parametroObtenido) {
+		log.info("dentro del servicio listar Empleado x Cargo ");
+		
+		return objEmpleadoDao.listarEmpleadoxCargo(parametroObtenido);
+	}
 }
