@@ -35,6 +35,7 @@ public class ContratoEmpleadoServiceImpl implements ContratoEmpleadoService {
 	 * @see com.edicsem.pe.sie.service.facade.ContratoEmpleadoService#updateContratoEmpleado(com.edicsem.pe.sie.entity.ContratoEmpleadoSie)
 	 */
 	public void updateContratoEmpleado(ContratoEmpleadoSie contrato) {
+		log.info("en el servicio");
 		objContratoEmpleadoDao.updateContratoEmpleado(contrato);
 	}
 
@@ -42,6 +43,7 @@ public class ContratoEmpleadoServiceImpl implements ContratoEmpleadoService {
 	 * @see com.edicsem.pe.sie.service.facade.ContratoEmpleadoService#findContratoEmpleado(int)
 	 */
 	public ContratoEmpleadoSie findContratoEmpleado(int id) {
+		log.info("en el servicio"+ id);
 		return objContratoEmpleadoDao.findContratoEmpleado(id);
 	}
 
