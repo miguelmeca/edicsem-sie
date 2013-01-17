@@ -5,6 +5,7 @@
 
 package com.edicsem.pe.sie.client.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -18,7 +19,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
+import com.edicsem.pe.sie.entity.ContratoEmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
+import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.ContratoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
@@ -42,6 +45,9 @@ public class MantenimientoCargoEmpleadoFormAction extends
 	private CargoEmpleadoSie selectedCargoEmpleado;
 	private boolean newRecord = false;
 	private boolean editMode;
+	private ContratoEmpleadoSie objContratoEmpleadoSie;
+	
+	private int ide;
 	
 	private List<EmpleadoSie> cargoempleadoList;
 	
@@ -58,6 +64,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 	private EstadogeneralService objEstadoGeneralService;
 	@EJB
 	private ContratoEmpleadoService objContratoEmpleadoService;
+	
 
 	public void init() {
 		log.info("init()");
@@ -75,6 +82,97 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		setNewRecord(true);
 		return getViewList();
 	}
+	
+	
+	
+	public List<EmpleadoSie> getCargoempleadoList() {
+		return cargoempleadoList;
+	}
+	
+	
+public String derivarEmpleado() throws Exception {	
+		
+	
+	
+	ContratoEmpleadoSie em = new ContratoEmpleadoSie();
+	int parametroObtenido;
+		try {
+			if (log.isInfoEnabled()) {
+			
+			}
+							
+			parametroObtenido = getIde();
+em = objContratoEmpleadoService.findContratoEmpleado(parametroObtenido);
+			
+
+
+
+
+
+
+for (EmpleadoSie miempleado : cargoempleadoList ) {
+	log.info("entre al forech");
+	
+	List<ContratoEmpleadoSie> lista  = objContratoEmpleadoService.listarCargoXEmp(miempleado.getIdempleado());
+	for (ContratoEmpleadoSie contratoEmpleadoSie : lista) {
+		
+	contratoEmpleadoSie.setTbCargoempleado(objCargoEmpleadoService.buscarCargoEmpleado(191));
+	log.info("cerca al updateContratoEmpleado");
+	objContratoEmpleadoService.updateContratoEmpleado(contratoEmpleadoSie);
+	 FaceMessage.FaceMessageError("Se Derivo correctamente","prosiga ah eliminar dicho Cargo Empleado");
+	}
+   }
+
+	
+	
+
+
+			
+			 
+			 
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		
+		return Constants.MANT_CARGO_EMPLEADO_FORM_LIST_PAGE;
+	
+}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	public String update() throws Exception {
 		log.info("update()" + objCargoEmpleadoSie.getIdcargoempleado());
@@ -162,6 +260,13 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		objCargoEmpleadoSie = new CargoEmpleadoSie();
 		return mantenimientoCargoEmpleadoSearch.listar();
 	}
+	
+	
+	
+	
+	
+	
+	
 
 	public class WatermarkBean { 
 	 private String keyword;  
@@ -176,7 +281,9 @@ public class MantenimientoCargoEmpleadoFormAction extends
 	  
 	    public void search() {  
 	        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"No results found with ", "'" + keyword + "'"));  
-	    }  }
+	    }  
+	    
+	}
 	/**}
 	 * @return the mayuscula
 	 */
@@ -188,7 +295,7 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		return objCargoEmpleadoSie;
 	}
 
-	/**
+	/**DerivarEmpleado
 	 * @param ae
 	 * @return
 	 * @throws Exception
@@ -229,10 +336,11 @@ public class MantenimientoCargoEmpleadoFormAction extends
 				
 				else {
 					if (verificarEmpleadoConCargo(parametroObtenido)== false) {
-//						  listarEmpleadosXempresa(parametroObtenido);
-//						  listarProductoXempresa(parametroObtenido);
+
 						listarEmpleadosXcargo(parametroObtenido);
-						  FaceMessage.FaceMessageError("ALERTA", "FUCK1");
+						
+						  
+						  FaceMessage.FaceMessageError("Primero Derive los empleados de la lista haciendo clic en el boton 'DERIVAR' y luego prosiga eliminar el cargo","");
 						return Constants.MANT_CARGOEMPLEADO_FORM_LIST_PAGE;
 					}
 					
@@ -443,15 +551,28 @@ public class MantenimientoCargoEmpleadoFormAction extends
 	/**
 	 * @return the cargoempleadoList
 	 */
-	public List<EmpleadoSie> getCargoempleadoList() {
-		return cargoempleadoList;
-	}
+
 
 	/**
 	 * @param cargoempleadoList the cargoempleadoList to set
 	 */
 	public void setCargoempleadoList(List<EmpleadoSie> cargoempleadoList) {
 		this.cargoempleadoList = cargoempleadoList;
+	}
+
+	/**
+	 * @return the ide
+	 */
+	public int getIde() {
+		log.info("id -->"+ ide);
+		return ide;
+	}
+
+	/**
+	 * @param ide the ide to set
+	 */
+	public void setIde(int ide) {
+		this.ide = ide;
 	}
 
 }
