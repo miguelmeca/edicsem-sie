@@ -15,7 +15,7 @@
 
 			<p:dataTable
 				value="#{mantenimientoCargoEmpleadoFormAction.cargoempleadoList}"
-				var="cargo"
+				var="ed"
 				id="multiCars" paginator="true" rows="5"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				rowsPerPageTemplate="5,10,15" widgetVar="table"
@@ -26,19 +26,21 @@
 
 
 
-<p:column headerText="Codigo de Empleado">
-					<h:outputText value="#{cargo.idempleado}" />
-				</p:column>
 
+<p:column headerText="Codigo de Empleado">
+					<h:outputText value="#{ed.idempleado}" />
+				</p:column>
  
  
-				<p:column headerText="Nombre">
-					<h:outputText value="#{cargo.nombresCompletos}" />
+				<p:column headerText="Nombre y apellidos ">
+					<h:outputText value="#{ed.nombresCompletos}" />
 				</p:column>
 
 				<p:column headerText="Documento de Identidad">
-					<h:outputText value="#{cargo.numdocumento}" />
+					<h:outputText value="#{ed.numdocumento}" />
 				</p:column>
+				
+				
 
 				
 				
@@ -46,6 +48,26 @@
 
 
 			</p:dataTable>
+			
+			
+<p:commandButton id="showConfirmDeshabilitarCargo"
+				 value="DERIVAR"
+				 icon="ui-icon ui-icon-close"	 			
+	 			 onclick="confirmationCargo.show()">
+	 			  
+<f:setPropertyActionListener
+		 value="#{ed.idempleado}"
+		 target="#{mantenimientoCargoEmpleadoFormAction.ide}" 
+/>
+
+
+</p:commandButton>
+
+
+
+ <p:commandButton value="Regresar" action="#{mantenimientoCargoEmpleadoSearchAction.listar()}" immediate="true" ajax = "false" 
+ icon="ui-icon ui-icon-close" />
+			
 
 
 		</h:form>
