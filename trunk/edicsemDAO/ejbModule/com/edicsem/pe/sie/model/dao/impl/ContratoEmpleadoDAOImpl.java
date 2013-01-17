@@ -72,7 +72,7 @@ public class ContratoEmpleadoDAOImpl implements ContratoEmpleadoDAO{
 		ContratoEmpleadoSie contrato= new ContratoEmpleadoSie();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("buscar ContratoEmpleado");
+				log.info("buscar ContratoEmpleado"+id);
 			} 
 		contrato=	em.find(ContratoEmpleadoSie.class, id);
 		} catch (Exception e) {
