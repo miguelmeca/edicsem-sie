@@ -162,7 +162,7 @@ public class MantenimientoEmpresaFormAction extends
 		return getViewList();
 
 	}
-
+	
 	public String Eliminarempresa() throws Exception {
 		mensaje = null;
 		objEmpresaSie = new EmpresaSie();
