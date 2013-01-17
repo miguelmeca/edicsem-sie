@@ -18,9 +18,9 @@
 	    position: absolute;
 	    left: 50%;
 	    top: 50%;
-	    height: 317px;
+	    height: 300px;
 	    margin-top: -162px;
-	    width: 482px;
+	    width: 505px;
 	    margin-left: -241px;
 	}
 </style>
@@ -31,7 +31,8 @@
 	</p:dialog>
 <f:loadBundle var="message" basename="com.edicsem.pe.sie.client.properties.ApplicationResources"/>
 	<h:form>
-		<div id="midiv" style="background-image: url(images/log_intra.png); width: 482px; height: 317px;">
+	<div></div>
+		<div id="midiv" style="background-image: url(images/intranet_login.jpg); width: 505px; height: 300px;">
 			<br /> <br /> <br /> <br /> <br /> <br /><br />
 			<div align="center">
 				<table>
@@ -42,7 +43,9 @@
 						<p:inputText id="txtUsuario"
 								value="#{login.usuario}" style="width: 160px; "
 								required="true" requiredMessage="#{message['login.usuario.validation']}" /></td>
-						<td><p:message for="txtUsuario" /></td>
+						<td>
+						<p:watermark for="txtUsuario" value="kgil" />
+						<p:message for="txtUsuario" /></td>
 					</tr>
 					<tr><td><br /></td></tr>
 					<tr>
@@ -52,7 +55,9 @@
 						<td align="left">
 						<p:password  id="txtPasswordL" value="#{login.contrasenia}" style="width: 160px; "
 								required="true" requiredMessage="#{message['login.password.validation']}" /></td>
-						<td><p:message for="txtPasswordL" /></td>
+						<td>
+						<p:watermark for="txtPasswordL" value="*****" /> 
+						<p:message for="txtPasswordL" /></td>
 					</tr>
 				</table>
 			</div>

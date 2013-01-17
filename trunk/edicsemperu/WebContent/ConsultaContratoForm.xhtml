@@ -8,7 +8,7 @@
 	<ui:define name="body">
 		<h1 class="title ui-widget-header ui-corner-all">Consulta Contrato</h1>
 		<h:form id="formConsultaContrato">
-			<p:growl id="message" showDetail="true" />
+			<p:messages showDetail="true"/>
 			<p:panel>
 			<p:fieldset id="fi" legend="Consutar Contrato">
 				
@@ -22,15 +22,24 @@
         </p:selectOneRadio>
         <h:panelGrid columns="3" rendered="#{contratoForm.radio==1}" >
         <h:outputText value="#{message['contrato.tipo.documento']}" />
-					<p:selectOneMenu id="tipoDoc" style="width:165px" value="#{contratoForm.idtipodoc}" required="true" 
-					requiredMessage="#{message['contrato.tipo.documento.validation']}" >
-						<f:selectItems value="#{comboAction.tipoDocumentoitems}" />
-						<p:ajax update="nrodoc"/>
-					</p:selectOneMenu>
-					<p:spacer/>
-    		<h:outputText value="Número de DNI: " />
-			<p:inputText id="nrodoc" value="#{contratoForm.numDniCliente}" required="true"/>
-			<p:message for="nrodoc"  />
+			<p:selectOneMenu id="tipoDoc" style="width:165px" value="#{contratoForm.idtipodoc}" required="true" 
+				requiredMessage="#{message['contrato.tipo.documento.validation']}" >
+				<f:selectItems value="#{comboAction.tipoDocumentoitems}" />
+				<p:ajax update="nrodoc"/>
+			</p:selectOneMenu>
+			<p:spacer/>
+					
+			<h:outputText value="#{message['contrato.numero.documento']}" />
+			<h:panelGroup id="nrodoc" >
+				<p:inputMask id="numdoc1" value="#{contratoForm.numDniCliente}" mask="99999999"
+					rendered="#{contratoForm.idtipodoc==1}" required="true" />
+				<p:message for="numdoc1"  />
+					
+				<p:inputMask id="numdoc2" value="#{contratoForm.numDniCliente}" mask="99999999999"
+					rendered="#{contratoForm.idtipodoc==2}" required="true"/>
+				<p:message for="numdoc2"  />
+			</h:panelGroup>
+			
 			</h:panelGrid>
 			<h:panelGrid columns="3" rendered="#{contratoForm.radio==2}"  >
 			<h:outputText value="Código Contrato: " />
