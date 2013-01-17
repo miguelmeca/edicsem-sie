@@ -34,9 +34,9 @@ public class CobranzaOperadoraSie implements Serializable {
 	//bi-directional many-to-one association to CobranzaDTO
     @ManyToOne
 	@JoinColumns({
-		@JoinColumn(name="idcliente", referencedColumnName="idcontrato"),
+		@JoinColumn(name="idcliente", referencedColumnName="idcliente"),
 		@JoinColumn(name="idcobranza", referencedColumnName="idcobranza"),
-		@JoinColumn(name="idcontrato", referencedColumnName="idcliente")
+		@JoinColumn(name="idcontrato", referencedColumnName="idcontrato")
 		})
 	private CobranzaSie tbCobranza;
 

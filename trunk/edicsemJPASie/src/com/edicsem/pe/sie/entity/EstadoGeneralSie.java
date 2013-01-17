@@ -161,6 +161,10 @@ public class EstadoGeneralSie implements Serializable {
 	@OneToMany(mappedBy="tbEstadoGeneral")
 	private Set<DetPaqueteSie> tbDetPaquetes;
 	
+	//bi-directional many-to-one association to DetProductoContratoSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<DetProductoContratoSie> tbDetProductoContrato;
+	
     public Set<DetSancionEmpleadoSie> getTbDetSancionEmpleado() {
 		return tbDetSancionEmpleado;
 	}
@@ -453,6 +457,21 @@ public class EstadoGeneralSie implements Serializable {
 	
 	public void setTbDetPaquetes(Set<DetPaqueteSie> tbDetPaquetes) {
 		this.tbDetPaquetes = tbDetPaquetes;
+	}
+
+	/**
+	 * @return the tbDetProductoContrato
+	 */
+	public Set<DetProductoContratoSie> getTbDetProductoContrato() {
+		return tbDetProductoContrato;
+	}
+
+	/**
+	 * @param tbDetProductoContrato the tbDetProductoContrato to set
+	 */
+	public void setTbDetProductoContrato(
+			Set<DetProductoContratoSie> tbDetProductoContrato) {
+		this.tbDetProductoContrato = tbDetProductoContrato;
 	}
 
 	

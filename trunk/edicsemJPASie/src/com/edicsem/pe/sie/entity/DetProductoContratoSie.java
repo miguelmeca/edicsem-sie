@@ -42,6 +42,11 @@ public class DetProductoContratoSie implements Serializable {
 	private ProductoSie tbProducto;
     
     private String observacion;
+    
+    //bi-directional many-to-one association to EstadoGeneralSie
+    @ManyToOne
+	@JoinColumn(name="idestadogeneral")
+	private EstadoGeneralSie tbEstadoGeneral;
 
     public DetProductoContratoSie() {
     }
@@ -92,6 +97,20 @@ public class DetProductoContratoSie implements Serializable {
 	 */
 	public void setObservacion(String observacion) {
 		this.observacion = observacion;
+	}
+
+	/**
+	 * @return the tbEstadoGeneral
+	 */
+	public EstadoGeneralSie getTbEstadoGeneral() {
+		return tbEstadoGeneral;
+	}
+
+	/**
+	 * @param tbEstadoGeneral the tbEstadoGeneral to set
+	 */
+	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
+		this.tbEstadoGeneral = tbEstadoGeneral;
 	}
 	
 }
