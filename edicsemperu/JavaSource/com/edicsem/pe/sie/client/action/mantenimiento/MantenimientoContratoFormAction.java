@@ -117,7 +117,25 @@ public class MantenimientoContratoFormAction extends
 	
 	public void init() {
 		log.info("init()");
-		
+		tamanoLista=0;
+		limpiarCampos();
+		radio=1;
+		operadorTelefonico=1;
+		idCobranza=0;
+		TipoTelef=1;
+		tipoVenta=1;
+		skip = false;
+		idUbigeo=0;
+		idtipodoc=1;
+		tipopago=1;
+		defectoUbigeo = true;
+		defectopaquete= true;
+		ubigeoDefecto = "";
+		selectTelef="";
+		idempleadoExpositor=0;
+		idempleadoVendedor=0;
+		Tipocasa=0;idUbigeo=0;
+		idempresa = 0;
 	}
 
 	/*
@@ -128,7 +146,6 @@ public class MantenimientoContratoFormAction extends
 	 * #agregar()
 	 */
 	public String agregar() {
-		selectTelef= "";
 		log.info("agregar()");
 		limpiarCampos();
 		setNewRecord(true);
@@ -136,23 +153,9 @@ public class MantenimientoContratoFormAction extends
 		comboManager.setIdProvincia("01");
 		comboManager.setIdCargo(2);
 		comboManager.setCodigoEstado(Constants.COD_ESTADO_TB_DET_CONTRATO_PRODUCTO);
-		operadorTelefonico=1;
-		idCobranza=0;
-		TipoTelef=1;
-		tipoVenta=1;
-		skip = false;
-		idUbigeo=0;
-		idtipodoc=1;
-		tipopago=1;
-		radio=1;
 		objProductoSie.setCantidadContrato(1);
-		defectoUbigeo = true;
-		defectopaquete= true;
-		ubigeoDefecto = "";
 		nuevoTelef.setTipoTelef("");
-		selectTelef="";
-		idempleadoExpositor=0;
-		idempleadoVendedor=0;
+		selectTelef= "";
 		return getViewMant();
 	}
 
@@ -653,8 +656,6 @@ public class MantenimientoContratoFormAction extends
 	
 	public void limpiarCampos(){
 		objProductoSie = new ProductoSie();
-		idtipodoc=0;Tipocasa=0;idUbigeo=0;
-		idempresa = 0;
 		objClienteSie = new ClienteSie() ;
 		telefonoList = new ArrayList<TelefonoPersonaSie>();
 		objDomicilioSie= new DomicilioPersonaSie();
