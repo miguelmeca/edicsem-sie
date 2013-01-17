@@ -1377,6 +1377,34 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 	</h:form>
 
 	<!-- 	FIN DESACTICAR EMPRESA (ESTADOS)  -->
+		<!--	  INICIO DESACTIVAR	 Lista de CARGO EMPLEADOS  -->
+
+	<h:form>
+
+<p:confirmDialog id="confirmDeshabilitarCargo"
+			     message="esta seguro de DERIVAR estos Cargos?" 
+			     width="325"
+				 height="100" showEffect="explode" hideEffect="explode"
+			     header="Confirmar" severity="alert" widgetVar="confirmationCargo"
+				 position="center">
+
+<p:commandButton type="submit"
+				 value="Si"
+				 action="#{mantenimientoCargoEmpleadoFormAction.derivarEmpleado}" 
+				 oncomplete="confirmationCargo.hide()"
+				 update=":cargoEmpleFormList" 		
+				 		
+	             ajax="false"
+/>
+
+<p:commandButton value="No" onclick="confirmationCargo.hide()"
+					type="button" />
+
+		</p:confirmDialog>
+
+	</h:form>
+
+	<!-- 	FIN DESACTICAR Lista de CARGO EMPLEADOS  -->
 	
 	
 	
