@@ -131,9 +131,9 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 					
 			}else {
 				log.info("usuario incorrecto!! ...  ");
-				FacesContext.getCurrentInstance().addMessage(
-						null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"error",
-								"usuario incorrecto"));
+				msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+						Constants.MESSAGE_ERROR_TITULO, "usuario incorrecto");
+				FacesContext.getCurrentInstance().addMessage(null, msg);
 				redireccion = Constants.LOGIN_PAGE;
 				
 //				FacesContext.getCurrentInstance().addMessage(
