@@ -131,9 +131,11 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 			lista = q.getResultList();
 			log.info("despues del QUERY tamaño lista cargo X  parametroObtenido--> " + lista.size());
 		} catch (Exception e) {
+			
 			e.printStackTrace();
+			
 		}
-		return null;
+		return lista;
 	}
 
 //	Lista de Empleados por Empresa
