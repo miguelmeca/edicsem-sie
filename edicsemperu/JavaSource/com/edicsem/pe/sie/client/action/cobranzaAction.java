@@ -41,7 +41,7 @@ public class cobranzaAction extends BaseMantenimientoAbstractAction {
 	}
 	
 	public void init() {
-		log.info("init()  -->");
+		log.info("init() ");
 		empleadoList = new ArrayList<String>();
 	}
 
