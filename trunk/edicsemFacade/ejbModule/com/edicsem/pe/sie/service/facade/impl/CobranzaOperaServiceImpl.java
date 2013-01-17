@@ -35,7 +35,7 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 	 */
 	public void insertCobranzaOpera(List<String> empleadoList) {
 		
-		List<CobranzaSie> cobranzaList  =  new ArrayList<CobranzaSie>(objCobranzaDao.listarCobranzas());
+		List<CobranzaSie> cobranzaList  = objCobranzaDao.listarCobranzas();
 		for (int i = 0; i < cobranzaList.size(); i++) {
 			log.info(" ***2  "+cobranzaList.get(i).getIdcontrato());
 		}
@@ -44,6 +44,10 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 		
 			/** Lógica para dividir la lista de deudores divididas por tipo de cliente
 			 *  entre la cantidad de teleoperadoras */
+		//Listas nuevas: lunes, miércoles y viernes
+		//Extremos lo trabajamos 15 días porque se refinancian(quincena, fin de mes)
+		//moroso una vez cada semana
+		
 		
 		for (int i = 0; i < cobranzaList.size(); i++) {
 			
@@ -59,8 +63,14 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 						if(isvalidate && j==puntualtmp.size()-1){
 							log.info(" primera ");
 							puntualtmp.add(cobranzaList.get(i));
+							break;
+						}
+						else if(isvalidate){
+							puntualtmp.add(cobranzaList.get(i));
 						}
 					}
+				}else if(isvalidate){
+					puntualtmp.add(cobranzaList.get(i));
 				}
 			}else if(cobranzaList.get(i).getTbCliente().getTipocliente()==2){
 				// Regular
