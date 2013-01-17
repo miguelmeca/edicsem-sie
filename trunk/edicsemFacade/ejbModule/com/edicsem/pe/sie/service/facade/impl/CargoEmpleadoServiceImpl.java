@@ -43,7 +43,7 @@ public class CargoEmpleadoServiceImpl implements CargoEmpleadoService{
 	 * @see com.edicsem.pe.sie.service.facade.CargoEmpleadoService#buscarCargoEmpleado(int)
 	 */
 	public CargoEmpleadoSie buscarCargoEmpleado(int id) {
-		log.info("buscar CargoEmpleado service" +id);
+		log.info("buscar CargoEmpleado en el servicio" +id);
 		return objCargoEmpleadoDao.buscarCargoEmpleado(id);
 	}
 
