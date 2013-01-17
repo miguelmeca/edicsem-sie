@@ -79,10 +79,10 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 		CargoEmpleadoSie cargoempleado = new CargoEmpleadoSie();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("buscar CargoEmpleado " +id);
+				log.info("buscar CargoEmpleado en el DAOIMPL" +id);
 			}
 			cargoempleado = em.find(CargoEmpleadoSie.class, id);
-			log.info(" CargoEmpleado " + cargoempleado.getDescripcion());
+			log.info(" CargoEmpleado descripcion " + cargoempleado.getDescripcion());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
