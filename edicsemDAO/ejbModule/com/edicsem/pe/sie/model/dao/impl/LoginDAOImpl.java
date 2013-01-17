@@ -27,10 +27,11 @@ public class LoginDAOImpl implements LoginDAO{
 			Query q = em.createQuery("SELECT u FROM EmpleadoSie u WHERE u.usuario = :username AND u.contrasena = :password " );
 			q.setParameter("username",usuario);
 			q.setParameter("password",contrasena);
-			if(q.getSingleResult()!=null){
+			log.info(" tamano  "+q.getResultList().size());
+			if(q.getResultList().size()>0){
 				log.info(" positivo!!  ");
 				objEmpleado = (EmpleadoSie) q.getSingleResult();
-			}				
+			}
 		}
 		catch(Exception e){
 			log.info(" exception !!  ");

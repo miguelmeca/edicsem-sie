@@ -105,12 +105,12 @@ public class CobranzaDAOImpl implements CobranzaDAO{
 		List  lista = null;
 		List<CobranzaSie> cob= new ArrayList<CobranzaSie>();
 		try {
-			Query q = em.createQuery("select p from CobranzaSie p where p.tbContrato.idcontrato = "+ idcontrato+" order by p.fechacreacion ");
+			Query q = em.createQuery("select p from CobranzaSie p where p.tbContrato.idcontrato = "+ idcontrato+" order by p.fecvencimiento ");
 			lista =  q.getResultList(); 
 			log.info("tamaño lista Cobranza --> " + lista.size()+"  ");
 			cob=lista;
 			for (int i = 0; i < lista.size(); i++) {
-				log.info(" fecha :   "+cob.get(i).getFechacreacion());
+				log.info(" fecha :   "+cob.get(i).getFechacreacion()+" fec ven: "+cob.get(i).getFecvencimiento());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
