@@ -12,7 +12,7 @@
 			<p:panel header="#{message['panel.generar.cobranza']}">
 				<h:panelGrid columns="6">
 					<p:outputLabel value="Empleados" for="cargo"/>
-					 <p:selectCheckboxMenu  id="cargo" value="#{cobranza.empleadoList}" filter="true" filterText="Filter" filterMatchMode="startsWith" >
+					 <p:selectCheckboxMenu  id="cargo" value="#{cobranza.empleadoList}" filter="true" filterText="Filter" filterMatchMode="contains" >
 					<f:selectItems  value="#{comboAction.empleadoxcargo}" />
 					</p:selectCheckboxMenu>
 					
