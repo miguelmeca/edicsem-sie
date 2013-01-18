@@ -18,5 +18,4 @@ public interface ContratoEmpleadoService {
 	public abstract List listarCargoXEmp(int idEmpleado);
 	public abstract boolean verificarEmpleadoConCargo(int idcargo);
 	
-	
 }
