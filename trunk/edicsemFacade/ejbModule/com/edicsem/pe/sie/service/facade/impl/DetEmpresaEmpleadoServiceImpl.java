@@ -86,6 +86,11 @@ public class DetEmpresaEmpleadoServiceImpl implements DetEmpresaEmpleadoService 
 		log.info("En el servicio verificarEmpleadoConEmpresa ");
 		return objDetEmpresaEmpleadoDao.verificarEmpleadoConEmpresa(idcargo);
 	}
-	
+
+	public List listarDetEmpresaEmpleadoXidempleado(int idempleado) {
+		
+		log.info("En el servicio listarDetEmpresaEmpleadoXidempleado");
+		return objDetEmpresaEmpleadoDao.listarDetEmpresaEmpleadoXidempleado(idempleado);
+	}
 	
 }
