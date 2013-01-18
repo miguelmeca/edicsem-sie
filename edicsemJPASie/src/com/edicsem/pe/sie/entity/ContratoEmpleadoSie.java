@@ -43,6 +43,9 @@ public class ContratoEmpleadoSie implements Serializable {
 	
     @Transient
     private int item;
+    
+    @Transient
+    private String tipo;
 	
     @Transient
     private int empresa;
@@ -276,6 +279,20 @@ public class ContratoEmpleadoSie implements Serializable {
 	 */
 	public void setDescEmpresa(String descEmpresa) {
 		this.descEmpresa = descEmpresa;
+	}
+
+	/**
+	 * @return the tipo
+	 */
+	public String getTipo() {
+		return tipo;
+	}
+
+	/**
+	 * @param tipo the tipo to set
+	 */
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 	
 }
