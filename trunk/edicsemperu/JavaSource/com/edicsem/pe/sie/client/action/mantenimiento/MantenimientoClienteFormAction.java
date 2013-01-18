@@ -56,16 +56,24 @@ public class MantenimientoClienteFormAction extends
 	
 	/*****************Domicilio;*************************/
 	private DomicilioPersonaSie objDomicilio;
-	private String idProvincia, idDepartamento, ubigeoDefecto, selectTelef, idUbigeo;
+	private String idProvincia, idDepartamento, ubigeoDefecto,  idUbigeo;
 	private int tipo;
 	private String idDistrito;
 	private boolean defectoUbigeo;
 
+    /************************TELEFONO**************************************/
+	private int TipoTelef, operadorTelefonico;
+	private String  selectTelef;
+	private TelefonoPersonaSie nuevoTelef;	
+	private List<TelefonoPersonaSie> TelefonoPersonaList,TelefonoDeshabilitado;
+	private String idt;
+	private TelefonoPersonaSie objTelefono;
+	private int TelefonoPersona;
 	
-
+	
+	
+	
 	private Log log = LogFactory.getLog(MantenimientoClienteFormAction.class);
-
-
 
 	@ManagedProperty(value = "#{comboAction}")
 	private ComboAction comboManager;
@@ -94,6 +102,23 @@ public class MantenimientoClienteFormAction extends
 		objClienteSie = new ClienteSie();
 		TipoDocumento = 1;
 		objDomicilio = new DomicilioPersonaSie();
+		
+		/***********telefono*************/
+		
+		objTelefono = new TelefonoPersonaSie();
+		nuevoTelef = new TelefonoPersonaSie();
+		nuevoTelef.setTipoTelef("");
+		selectTelef="";
+		TipoTelef=1;
+		TelefonoDeshabilitado = new ArrayList<TelefonoPersonaSie>();
+		TelefonoPersonaList = new ArrayList<TelefonoPersonaSie>();
+		operadorTelefonico=1;
+		
+		
+		
+		
+		
+		
 	}
 
 	public String agregar() {
@@ -101,13 +126,113 @@ public class MantenimientoClienteFormAction extends
 
 		objClienteSie = new ClienteSie();
 		setTipoDocumento(0);
+		
+		
+		
+		/****************tELEFONO*****************/
+		selectTelef= "";
+		operadorTelefonico=1;
+		TipoTelef=1;
+		//para inicializar los campos de nuevo telefono
+		nuevoTelef.setTelefono("");
+		//fin para inicializar los campos de nuevo telefono
+		objTelefono = new TelefonoPersonaSie();
+		setTipo(0);
+		
+		
 		editMode = true;
 		setNewRecord(true);
 		return getViewMant();
 
 	}
+	/*********************TELEFONO***********************************/
+	public void limpiarDatosTelefono() {
+		nuevoTelef = new TelefonoPersonaSie();
+	}
 	
+	/**
+	 * Eliminar Teléfono de la lista*/
+	 public void telefonoElimina(){
+	    	log.info("en eliminarProducto()");
+			
+	    	for (int i = 0; i < TelefonoPersonaList.size(); i++) {
+         	log.info(""+TelefonoPersonaList.get(i).getItem()+"  "+idt +"  "+TelefonoPersonaList.get(i).getTelefono());
+				if(TelefonoPersonaList.get(i).getTelefono()==idt && TelefonoPersonaList.get(i).getItem()=="Por Agregar"){
+					TelefonoPersonaList.remove(i);
+					for (int j = i; j < TelefonoPersonaList.size(); j++) {
+						log.info(" i " +i+"  j "+ j);
+						i=i+1;
+						//TelefonoPersonaList.get(j).setItem(i);
+						TelefonoPersonaList.set(j, TelefonoPersonaList.get(j));
+						
+					}break;
+				}
+				else if(TelefonoPersonaList.get(i).getTelefono()==(idt) && TelefonoPersonaList.get(i).getItem()=="Agregado"){
+					TelefonoPersonaList.get(i).setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(18));
+					TelefonoDeshabilitado.add(TelefonoPersonaList.get(i));
+					TelefonoPersonaList.remove(i);
+					for (int j = i; j < TelefonoPersonaList.size(); j++) {
+						log.info(" i " +i+"  j "+ j);
+						i=i+1;
+						//TelefonoPersonaList.get(j).setItem(i);
+						TelefonoPersonaList.set(j, TelefonoPersonaList.get(j));
+					}
+					break;
+				}
+			}
+			idt="";
+	    }
 	
+	/* METODO AGREGAR TELEFONO */
+
+	public void telefonoAgregar() {
+		log.info("telefono agregar " + nuevoTelef.getTelefono());
+		boolean verifica = false;
+		mensaje = null;
+		if (TipoTelef == 1)
+			nuevoTelef.setTipotelefono("F");
+		else
+			nuevoTelef.setTipotelefono("C");
+		// claro
+		if (operadorTelefonico == 1)
+			nuevoTelef.setOperadorTelefonico("Claro");
+		else if (operadorTelefonico == 2)
+			nuevoTelef.setOperadorTelefonico("Movistar");
+		else if (operadorTelefonico == 3)
+			nuevoTelef.setOperadorTelefonico("Nextel");
+		nuevoTelef.setNuevoT(1);
+		nuevoTelef.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(17));
+
+		for (int i = 0; i < TelefonoPersonaList.size(); i++) {
+			log.info("  " + TelefonoPersonaList.get(i).getTelefono() + " "
+					+ nuevoTelef.getTelefono());
+			if (TelefonoPersonaList.get(i).getTelefono().equals(nuevoTelef.getTelefono())) {
+				verifica = false;
+				mensaje = "el telefono ya se encuentra registrado en la lista de referencias";
+				break;
+			} else {
+				verifica = true;
+			}
+		}
+		if (TelefonoPersonaList.size() == 0) {
+			verifica = true;
+		}
+		if (verifica) {
+		  
+			//int cantidad=TelefonoPersonaList.size();
+			
+			nuevoTelef.setItem("Por Agregar");	
+			
+			TelefonoPersonaList.add(nuevoTelef);
+			log.info("se agrego " + nuevoTelef.getTelefono());
+		}
+		if (mensaje != null) {
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		nuevoTelef = new TelefonoPersonaSie();
+	}
 	/**********************DOMICILIO**************************/
 	public void cambiar() {
 		comboManager.setIdDepartamento(getIdDepartamento());
@@ -250,7 +375,7 @@ public class MantenimientoClienteFormAction extends
 		log.info(" id cliente " + objClienteSie.getIdcliente() + " nombre "	+ objClienteSie.getNombrecliente());
 
 		setTipoDocumento(objClienteSie.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad());
-
+		/*******DOMICILIO***********************/
 		DomicilioPersonaSie d = objDomicilioService.buscarDomicilioXIdcliente(objClienteSie.getIdcliente());
 		log.info(" id " + d.getIddomiciliopersona()+ " nombre " + d.getDomicilio() );
 		 /*seteo domicilio*/                                               
@@ -263,6 +388,18 @@ public class MantenimientoClienteFormAction extends
         setIdDistrito(d.getTbUbigeo().getIdubigeo().toString());
         setTipo(d.getTbTipoCasa().getIdtipocasa());
         objDomicilio.setTbEstadoGeneral(d.getTbEstadoGeneral());
+       
+        /*****************TELEFONO************************/
+        
+		TelefonoPersonaSie t = objTelefonoService.buscarTelefonoXIdcliente(objClienteSie.getIdcliente());
+		log.info(" id " + t.getIdtelefonopersona()+ " nombre " + t.getTelefono() );
+		 /***seteo teléfono***/
+        TelefonoPersonaList = objTelefonoService.listarTelefonoEmpleadosXidcliente(objClienteSie.getIdcliente());
+        
+		  for (int i = 0; i < TelefonoPersonaList.size(); i++) {
+	        	TelefonoPersonaList.get(i).setItem("Agregado");
+	        }
+		
 		
 		setNewRecord(false);
 	
@@ -294,7 +431,7 @@ public class MantenimientoClienteFormAction extends
 			
 			
 			
-			objClienteService.updateCliente(objClienteSie,objDomicilio,idUbigeo,tipo);
+			objClienteService.updateCliente(objClienteSie,objDomicilio,idUbigeo,tipo,TelefonoPersona,TelefonoPersonaList, TelefonoDeshabilitado);
 
 			mensaje = "";
 			msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
@@ -548,6 +685,135 @@ public class MantenimientoClienteFormAction extends
 		this.idDistrito = idDistrito;
 	}
 
+	/**
+	 * @return the defectoUbigeo
+	 */
+	public boolean isDefectoUbigeo() {
+		return defectoUbigeo;
+	}
+
+	/**
+	 * @param defectoUbigeo the defectoUbigeo to set
+	 */
+	public void setDefectoUbigeo(boolean defectoUbigeo) {
+		this.defectoUbigeo = defectoUbigeo;
+	}
+
+	/**
+	 * @return the tipoTelef
+	 */
+	public int getTipoTelef() {
+		return TipoTelef;
+	}
+
+	/**
+	 * @param tipoTelef the tipoTelef to set
+	 */
+	public void setTipoTelef(int tipoTelef) {
+		TipoTelef = tipoTelef;
+	}
+
+	/**
+	 * @return the operadorTelefonico
+	 */
+	public int getOperadorTelefonico() {
+		return operadorTelefonico;
+	}
+
+	/**
+	 * @param operadorTelefonico the operadorTelefonico to set
+	 */
+	public void setOperadorTelefonico(int operadorTelefonico) {
+		this.operadorTelefonico = operadorTelefonico;
+	}
+
+	/**
+	 * @return the nuevoTelef
+	 */
+	public TelefonoPersonaSie getNuevoTelef() {
+		return nuevoTelef;
+	}
+
+	/**
+	 * @param nuevoTelef the nuevoTelef to set
+	 */
+	public void setNuevoTelef(TelefonoPersonaSie nuevoTelef) {
+		this.nuevoTelef = nuevoTelef;
+	}
+
+	/**
+	 * @return the telefonoPersonaList
+	 */
+	public List<TelefonoPersonaSie> getTelefonoPersonaList() {
+		return TelefonoPersonaList;
+	}
+
+	/**
+	 * @param telefonoPersonaList the telefonoPersonaList to set
+	 */
+	public void setTelefonoPersonaList(List<TelefonoPersonaSie> telefonoPersonaList) {
+		TelefonoPersonaList = telefonoPersonaList;
+	}
+
+	/**
+	 * @return the telefonoDeshabilitado
+	 */
+	public List<TelefonoPersonaSie> getTelefonoDeshabilitado() {
+		return TelefonoDeshabilitado;
+	}
+
+	/**
+	 * @param telefonoDeshabilitado the telefonoDeshabilitado to set
+	 */
+	public void setTelefonoDeshabilitado(
+			List<TelefonoPersonaSie> telefonoDeshabilitado) {
+		TelefonoDeshabilitado = telefonoDeshabilitado;
+	}
+
+	/**
+	 * @return the idt
+	 */
+	public String getIdt() {
+		return idt;
+	}
+
+	/**
+	 * @param idt the idt to set
+	 */
+	public void setIdt(String idt) {
+		this.idt = idt;
+	}
+
+	/**
+	 * @return the objTelefono
+	 */
+	public TelefonoPersonaSie getObjTelefono() {
+		return objTelefono;
+	}
+
+	/**
+	 * @param objTelefono the objTelefono to set
+	 */
+	public void setObjTelefono(TelefonoPersonaSie objTelefono) {
+		this.objTelefono = objTelefono;
+	}
+
+	/**
+	 * @return the telefonoPersona
+	 */
+	public int getTelefonoPersona() {
+		return TelefonoPersona;
+	}
+
+	/**
+	 * @param telefonoPersona the telefonoPersona to set
+	 */
+	public void setTelefonoPersona(int telefonoPersona) {
+		TelefonoPersona = telefonoPersona;
+	}
+
+	/****************telefonos***************************/
+	
 	
 
 }
