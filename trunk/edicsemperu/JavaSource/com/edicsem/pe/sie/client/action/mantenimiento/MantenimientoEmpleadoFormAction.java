@@ -1,6 +1,5 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -20,14 +19,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.primefaces.event.FlowEvent;
 
+import com.arjuna.ats.internal.jdbc.drivers.modifiers.list;
 import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.entity.ContratoEmpleadoSie;
+import com.edicsem.pe.sie.entity.DetEmpresaEmpleadoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
-import com.edicsem.pe.sie.service.facade.DetContratoEmpleadoService;
+import com.edicsem.pe.sie.service.facade.ContratoEmpleadoService;
+import com.edicsem.pe.sie.service.facade.DetEmpresaEmpleadoService;
 import com.edicsem.pe.sie.service.facade.DomicilioEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
@@ -49,7 +51,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	private DomicilioPersonaSie objDomicilio;
 	private ContratoEmpleadoSie objContratoEmpleado;
 	/*variables para telefono*/
-	private List<TelefonoPersonaSie> TelefonoPersonaList;
+	private List<TelefonoPersonaSie> TelefonoPersonaList,TelefonoDeshabilitado;
 	private TelefonoPersonaSie nuevoTelef;	
 	private int TipoTelef, operadorTelefonico;
 	private int idc,iddom, iddomicilio;
@@ -81,8 +83,10 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	private boolean skip;
 	private Date fechaInicioContrato;
 	private int idContrato;
+	private String idt;
 	 
-	private List<ContratoEmpleadoSie> contratoEmpleadoList;
+	private List<ContratoEmpleadoSie> contratoEmpleadoList, ContratoDeshabilitado;
+	private List<DetEmpresaEmpleadoSie> detEmpresaEmpList;
 	
 	@ManagedProperty(value="#{comboAction}") 
 	private ComboAction comboManager;
@@ -105,6 +109,10 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	private CargoEmpleadoService objCargoEmpleadoService;
 	@EJB 
 	private TipoPagoService objTipoPagoService;
+	@EJB 
+	private ContratoEmpleadoService objContratoEmpleadoService;
+	@EJB 
+	private DetEmpresaEmpleadoService objDetEmpresaEmpService;
 	
 	public static Log log = LogFactory.getLog(MantenimientoEmpleadoFormAction.class);
 	
@@ -128,6 +136,8 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		nuevoTelef.setTipoTelef("");
 		selectTelef="";
 		TipoTelef=1;
+		TelefonoDeshabilitado = new ArrayList<TelefonoPersonaSie>();
+		ContratoDeshabilitado =  new ArrayList<ContratoEmpleadoSie>();
 		TelefonoPersonaList = new ArrayList<TelefonoPersonaSie>();
 		operadorTelefonico=1;
 	}
@@ -140,18 +150,33 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	 * Eliminar Teléfono de la lista*/
 	 public void telefonoElimina(){
 	    	log.info("en eliminarProducto()");
-			for (int i = 0; i < TelefonoPersonaList.size(); i++) {
-				if(TelefonoPersonaList.get(i).getItem()==(ide)){
+			
+	    	for (int i = 0; i < TelefonoPersonaList.size(); i++) {
+         	log.info(""+TelefonoPersonaList.get(i).getItem()+"  "+idt +"  "+TelefonoPersonaList.get(i).getTelefono());
+				if(TelefonoPersonaList.get(i).getTelefono()==idt && TelefonoPersonaList.get(i).getItem()=="Por Agregar"){
 					TelefonoPersonaList.remove(i);
 					for (int j = i; j < TelefonoPersonaList.size(); j++) {
 						log.info(" i " +i+"  j "+ j);
 						i=i+1;
-						TelefonoPersonaList.get(j).setItem(i);
+						//TelefonoPersonaList.get(j).setItem(i);
+						TelefonoPersonaList.set(j, TelefonoPersonaList.get(j));
+						
+					}break;
+				}
+				else if(TelefonoPersonaList.get(i).getTelefono()==(idt) && TelefonoPersonaList.get(i).getItem()=="Agregado"){
+					TelefonoPersonaList.get(i).setTbEstadoGeneral(objEstadoService.findEstadogeneral(18));
+					TelefonoDeshabilitado.add(TelefonoPersonaList.get(i));
+					TelefonoPersonaList.remove(i);
+					for (int j = i; j < TelefonoPersonaList.size(); j++) {
+						log.info(" i " +i+"  j "+ j);
+						i=i+1;
+						//TelefonoPersonaList.get(j).setItem(i);
 						TelefonoPersonaList.set(j, TelefonoPersonaList.get(j));
 					}
+					break;
 				}
 			}
-			ide=0;
+			idt="";
 	    }
 	 
 		/**
@@ -159,14 +184,26 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		 public void contratoElimina(){
 		    	log.info("en eliminarContrato()");
 				for (int i = 0; i < contratoEmpleadoList.size(); i++) {
-					if(contratoEmpleadoList.get(i).getItem()==(idContrato)){
+					if(contratoEmpleadoList.get(i).getItem()==(idContrato) && contratoEmpleadoList.get(i).getTipo()=="Por Agregar"){
 						contratoEmpleadoList.remove(i);
 						for (int j = i; j < contratoEmpleadoList.size(); j++) {
 							log.info(" i " +i+"  j "+ j);
 							i=i+1;
-							contratoEmpleadoList.get(j).setItem(i);
+							//contratoEmpleadoList.get(j).setItem(i);
+							contratoEmpleadoList.set(j, contratoEmpleadoList.get(j));
+						}break;
+					}
+					else if(contratoEmpleadoList.get(i).getItem()==(idContrato) && contratoEmpleadoList.get(i).getTipo()=="Agregado"){
+						contratoEmpleadoList.get(i).setTbEstadoGeneral(objEstadoService.findEstadogeneral(18));
+						ContratoDeshabilitado.add(contratoEmpleadoList.get(i));
+						contratoEmpleadoList.remove(i);
+						for (int j = i; j < contratoEmpleadoList.size(); j++) {
+							log.info(" i " +i+"  j "+ j);
+							i=i+1;
+							//TelefonoPersonaList.get(j).setItem(i);
 							contratoEmpleadoList.set(j, contratoEmpleadoList.get(j));
 						}
+						break;
 					}
 				}
 				idContrato=0;
@@ -208,9 +245,9 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		}
 		if (verifica) {
 		  
-			int cantidad=TelefonoPersonaList.size();
+			//int cantidad=TelefonoPersonaList.size();
 			
-			nuevoTelef.setItem(cantidad+1);	
+			nuevoTelef.setItem("Por Agregar");	
 			
 			TelefonoPersonaList.add(nuevoTelef);
 			log.info("se agrego " + nuevoTelef.getTelefono());
@@ -434,7 +471,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	        objTelefono.setTbEstadoGeneral(objEstadoService.findEstadogeneral(18));
 			log.info("actualizando ESTADO..... ");
 			objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, codigoTipoDocumento,  codigoCargoEmpleado,  
-			idUbigeo, tipo,  idCargo, DomicilioPersona, TelefonoPersona,TipoDocumento, idEmpresa, idTipoPago, codigoEmpleado, contratoEmpleadoList, TelefonoPersonaList);
+			idUbigeo, tipo,  idCargo, DomicilioPersona, TelefonoPersona,TipoDocumento, idEmpresa, idTipoPago, codigoEmpleado, contratoEmpleadoList, TelefonoPersonaList, TelefonoDeshabilitado, ContratoDeshabilitado, detEmpresaEmpList);
 			log.info("actualizando..... ");
 			log.info("deshabilitando..... ");
 		} catch (Exception e2) {
@@ -514,12 +551,22 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
         setIdDepartamento(d.getTbUbigeo().getCoddepartamento());
         comboManager.setIdDepartamento(idDepartamento);
         setIdProvincia(d.getTbUbigeo().getCodprovincia());
-        comboManager.setIdDepartamento(idDepartamento);
-        setIdDistrito(d.getTbUbigeo().getCoddistrito());
+        comboManager.setIdProvincia(idProvincia);
+        setIdDistrito(d.getTbUbigeo().getIdubigeo().toString());
         setTipo(d.getTbTipoCasa().getIdtipocasa());
         objDomicilio.setTbEstadoGeneral(d.getTbEstadoGeneral());
         /*seteo contrato*/
-        contratoEmpleadoList = objcon
+        contratoEmpleadoList = objContratoEmpleadoService.listarCargoXEmp(c.getIdempleado());
+        /*seteo detalle contrato*/
+        detEmpresaEmpList = objDetEmpresaEmpService.listarDetEmpresaEmpleadoXidempleado(c.getIdempleado());
+        /**/
+        for (int i = 0; i < TelefonoPersonaList.size(); i++) {
+        	TelefonoPersonaList.get(i).setItem("Agregado");
+        }
+        for (int i = 0; i < contratoEmpleadoList.size(); i++) {
+        	contratoEmpleadoList.get(i).setTipo("Agregado");
+        	contratoEmpleadoList.get(i).setItem(i+1);
+        }
         /*método bolean necesario para actualizar que retorna al form */  
 		setNewRecord(false);
 		return getViewMant();
@@ -548,7 +595,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 				} else {
 					log.info("actualizando..... ");
 					objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, codigoTipoDocumento,  codigoCargoEmpleado,  
-					idUbigeo, tipo,  idCargo, DomicilioPersona, TelefonoPersona,TipoDocumento, idEmpresa, idTipoPago, codigoEmpleado, contratoEmpleadoList, TelefonoPersonaList);
+					idUbigeo, tipo,  idCargo, DomicilioPersona, TelefonoPersona,TipoDocumento, idEmpresa, idTipoPago, codigoEmpleado, contratoEmpleadoList, TelefonoPersonaList, TelefonoDeshabilitado, ContratoDeshabilitado, detEmpresaEmpList);
 					log.info("insertando..... ");
 				}
 				mensaje ="";
@@ -580,7 +627,8 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		objContratoEmpleado.setTbTipoPago(objTipoPagoService.findTipoPago(idTipoPago));
 
 		int cantidad2=contratoEmpleadoList.size();
-		objContratoEmpleado.setItem(cantidad2+1);	
+		objContratoEmpleado.setItem(cantidad2+1);
+		objContratoEmpleado.setTipo("Por Agregar");
 		objContratoEmpleado.setEmpresa(idEmpresa);
 		objContratoEmpleado.setDescEmpresa(objEmpresaService.findEmpresa(idEmpresa).getRazonsocial());
 		contratoEmpleadoList.add(objContratoEmpleado);
@@ -1236,8 +1284,50 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	 */
 	public void setIdContrato(int idContrato) {
 		this.idContrato = idContrato;
-	}  
+	}
 
+	/**
+	 * @return the idt
+	 */
+	public String getIdt() {
+		return idt;
+	}
+
+	/**
+	 * @param idt the idt to set
+	 */
+	public void setIdt(String idt) {
+		this.idt = idt;
+	}
+
+	/**
+	 * @return the contratoDeshabilitado
+	 */
+	public List<ContratoEmpleadoSie> getContratoDeshabilitado() {
+		return ContratoDeshabilitado;
+	}
+
+	/**
+	 * @param contratoDeshabilitado the contratoDeshabilitado to set
+	 */
+	public void setContratoDeshabilitado(
+			List<ContratoEmpleadoSie> contratoDeshabilitado) {
+		ContratoDeshabilitado = contratoDeshabilitado;
+	}
+
+	/**
+	 * @return the detEmpresaEmpList
+	 */
+	public List<DetEmpresaEmpleadoSie> getDetEmpresaEmpList() {
+		return detEmpresaEmpList;
+	}
+
+	/**
+	 * @param detEmpresaEmpList the detEmpresaEmpList to set
+	 */
+	public void setDetEmpresaEmpList(List<DetEmpresaEmpleadoSie> detEmpresaEmpList) {
+		this.detEmpresaEmpList = detEmpresaEmpList;
+	}  
 }
 
 
