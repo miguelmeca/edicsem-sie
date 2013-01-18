@@ -84,7 +84,47 @@ public class DetallePaqueteDAOImpl implements DetPaqueteDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+
+	
+	
+	public boolean verificarPaquetesicontieneProductos(int parametroObtenido) {
+		boolean bandera = true;
+		
+		List lista = null;
+		try {
+			Query q = em.createQuery("select p from DetPaqueteSie p where p.tbEstadoGeneral.idestadogeneral =  71 AND p.tbPaquete.idpaquete = "+ parametroObtenido);
+			lista = q.getResultList();
+			log.info("tamaño lista de productos que tiene este paquete --> " + lista.size());
+			if(lista.size()>0){ //hay uno o mas productos el paquete retornados.
+				bandera=false;
+			}else{//no hay paquetes con producto, entonces puede proseguir
+				bandera=true;
+			}
+			
+		} catch (Exception e) {
+			bandera=false;
+			e.printStackTrace();
+		}
+		
+		
+		return bandera;
+	}
+
+
+	public void eliminarDetPaquete(int id) {
+		try {
+			log.info("DAOIMPL ELIMINAR ");
+			DetPaqueteSie bean= findDetPaquete(id);
+			em.remove(bean);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}	
+	
 	
 }
 
