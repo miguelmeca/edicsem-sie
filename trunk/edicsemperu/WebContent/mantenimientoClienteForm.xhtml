@@ -128,14 +128,63 @@ requiredMessage="#{message['cliente.fechanacimiento.validation']}" />
 
 
 </h:panelGrid>
-<center><p:commandButton value="Guardar" id="Guardar" update="panel"
-						action="#{MantenimientoClienteFormAction.insertarOficial}"
-						ajax="false" icon="ui-icon ui-icon-disk"
-						 /></center>
+
 </p:panel>
 </p:tab>
 
+        <p:tab title="#{message['cliente.tabdireccion']}">
+        <p:panel header="Dirección">
+        <h:messages errorClass="error"/>  
+        <h:panelGrid columns="2" id="panel3">
+         <p:outputLabel value="#{message['domicilio.direccion']}" for="domicilio" />
+			<p:inputText id="domicilio" value="#{MantenimientoClienteFormAction.objDomicilio.domicilio}" required="true" label="Domicilio"
+			requiredMessage="#{message['domicilio.direccion.validation']}" style="width:200%"/>  			    
+				
+				<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
+				<p:selectOneMenu size="1" value="#{MantenimientoClienteFormAction.idDepartamento}" filter="true" filterMatchMode="startsWith"
+					required="true" style="width:200px"
+					requiredMessage="#{message['puntoVenta.ubigeo.departamento.validation']}" >
+					<f:selectItem itemLabel="Seleccione Departamento"
+						itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
+					<p:ajax update="prov,dist" listener="#{MantenimientoClienteFormAction.cambiar}" />
+				</p:selectOneMenu>
 
+				<h:outputText value="#{message['contrato.ubigeo.provincia']}" />
+				<p:selectOneMenu id="prov" value="#{MantenimientoClienteFormAction.idProvincia}" filter="true" filterMatchMode="startsWith"
+					required="true" style="width:220px"
+					requiredMessage="#{message['puntoVenta.ubigeo.provincia.validation']}" >
+					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
+					<p:ajax update="dist" listener="#{MantenimientoClienteFormAction.cambiar2}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="#{message['contrato.ubigeo.distrito']}" />
+				<p:selectOneMenu id="dist" value="#{MantenimientoClienteFormAction.idUbigeo}" filter="true" filterMatchMode="startsWith"
+					required="true" style="width:220px"
+					requiredMessage="#{message['puntoVenta.ubigeo.distrito.validation']}" >
+					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+					<p:ajax update="ubigeoDefecto2" listener="#{MantenimientoClienteFormAction.busquedaUbigeo}" ></p:ajax>
+				</p:selectOneMenu>
+				
+				<h:outputText value="Ubigeo " />
+				<h:outputText id="ubigeoDefecto2" value="#{MantenimientoClienteFormAction.ubigeoDefecto}" />
+			
+			<p:outputLabel for="tipocasa" value="#{message['empleado.tipoCasa']}" styleClass="textoAzulFuerteGrande" id="tipocasaL"/>
+            <p:selectOneMenu id="tipocasa" value="#{MantenimientoClienteFormAction.tipo}" styleClass="required" title="El tipo de casa es obligatorio!" >
+            <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
+            <f:selectItems value="#{comboAction.tipocasaItems}" />
+            </p:selectOneMenu>
+           </h:panelGrid>
+           
+           
+           <center><p:commandButton value="Guardar" id="Guardar" update="panel"
+						action="#{MantenimientoClienteFormAction.insertarOficial}"
+						ajax="false" icon="ui-icon ui-icon-disk"
+						 /></center>
+            </p:panel>
+        </p:tab>
 
 
 
