@@ -1,12 +1,10 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
@@ -14,9 +12,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.DetPaqueteSie;
-import com.edicsem.pe.sie.entity.FactorSancionSie;
 import com.edicsem.pe.sie.entity.PaqueteSie;
-import com.edicsem.pe.sie.entity.ProveedorSie;
 import com.edicsem.pe.sie.service.facade.DetallePaqueteService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.PaqueteService;
@@ -170,12 +166,11 @@ public String update() throws Exception {
 
 public String insertar() {
 	mensaje =null;
-//	log.info("insertar()");
-//	
+	
 	String paginaRetorno="";
 
 	
-	objDetPaqueteSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(62));
+	objDetPaqueteSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(71));
 	objDetPaqueteSie.setTbProducto(objProductoService.findProducto(idproducto));
 	objDetPaqueteSie.setTbPaquete(objPaqueteService.findPaquete(idpaquete));
 	
@@ -185,12 +180,12 @@ public String insertar() {
 		
 		log.info("aqui validadndo si existe o no" + idproducto + " "+ objDetPaqueteSie.getCantidad());
 		int error = 0;
-//		List<DetPaqueteSie> 
+
 		lista = getDetPaqueteBiblicoList();
 		if (error == 0) ;	
 		if (isNewRecord()) {
 		for (int i = 0; i < lista.size(); i++) {
-//			DetPaqueteSie a = lista.get(i);
+
 			if (lista.get(i).getTbProducto().getIdproducto().equals(objDetPaqueteSie.getTbProducto().getIdproducto())) {
 				log.info("Error ... Ya se encuentra un producto igual");
 				mensaje ="Ya se encuentra un Producto con el mismo nombre en el Paquete";
@@ -205,21 +200,21 @@ public String insertar() {
 		if (error == 0) {		
 		if(isNewRecord()){
 			
-//			objDetPaqueteSie.setIdDetPaquete(objDetPaqueteSie.getIdDetPaquete());			
-//			objDetPaqueteSie.setTbProducto(setIdproducto(objDetPaqueteSie.getTbProducto().getIdproducto()));
+
 			
 		objDetPaqueteSie.setCantidad(objDetPaqueteSie.getCantidad());	
 		objDetPaqueteSie.setTbProducto(objProductoService.findProducto(idproducto));
 
-			objDetallePaqueteService.insertDetPaquete(objDetPaqueteSie);
+		objDetallePaqueteService.insertDetPaquete(objDetPaqueteSie);
 					
 			log.info("insertando..... ");
 			setNewRecord(false);
 			
 			msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 					Constants.MESSAGE_INFO_TITULO, mensaje);
-			mensaje ="Se registró el proveedor correctamente";
+			mensaje ="Se registró el producto correctamente";
 		}
+		
 		else{
 			
 
@@ -238,7 +233,9 @@ msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 			mensaje="Se actualizó el Producto";
 			log.info("actualizado");
 		}
-		
+		msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				Constants.MESSAGE_INFO_TITULO, mensaje);
+		mensaje ="Se registró el producto correctamente";
 		objDetPaqueteSie = new DetPaqueteSie();
 		paginaRetorno =getViewMant();
 		
@@ -294,7 +291,7 @@ public String updateDeshabilitarDetProdPaquete() throws Exception {
 //				
 				
 			
-				objDetPaqueteSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(63));
+				objDetPaqueteSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(70));
 				objDetPaqueteSie.setIdDetPaquete(c.getIdDetPaquete());
 				objDetPaqueteSie.setCantidad(c.getCantidad());
 				objDetPaqueteSie.setTbProducto(objProductoService.findProducto(c.getTbProducto().getIdproducto()));
@@ -318,7 +315,7 @@ public String updateDeshabilitarDetProdPaquete() throws Exception {
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 
 	} catch (Exception e) {
-		e.printStackTrace();
+		e.printStackTrace();	
 		mensaje = e.getMessage();
 		msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
 				Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
