@@ -112,16 +112,12 @@
 						</p:commandButton>
 						
 				</h:panelGrid>
-						<p:dataTable value="#{mantenimientoEmpleadoFormAction.telefonoPersonaList}" id="listarTelefonos" var="o" style="width:400px"
+						<p:dataTable value="#{mantenimientoEmpleadoFormAction.telefonoPersonaList}" id="listarTelefonos" var="o" style="width:400px" 
 							 rowStyleClass="#{o.operadorTelefonico eq 'Claro' ? 'colorRojo': (o.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }"   >
 	
 							<f:facet name="header">
 								<h:outputLabel value="Telefonos de Referencia" />
 							</f:facet>
-							
-							<p:column headerText="Item" style="width:125px">
-		                    <h:outputText value="#{o.item}" />
-		                    </p:column>
 							
 							<p:column headerText="Observación" style="width:125px">
 		                    	<h:outputText value="#{o.tipoTelef}, #{o.operadorTelefonico}, #{o.telefono}" />
@@ -134,8 +130,8 @@
 				            onclick="confirmationTelEmp.show()"> 
 	 							
                             <f:setPropertyActionListener
-		                    value="#{o.item}"
-		                    target="#{mantenimientoEmpleadoFormAction.ide}"     />
+		                    value="#{o.telefono}"
+		                    target="#{mantenimientoEmpleadoFormAction.idt}"     />
 
                             </p:commandButton>
 		                    </p:column>
@@ -223,8 +219,8 @@
 						<p:column headerText="item" >
 							<h:outputText value="#{c.item}" />
 						</p:column>
-						<p:column headerText="" >
-							<h:outputText value="#{c.tbDetEmpresaEmpleado.tbEmpresa.razonsocial}" />
+						<p:column headerText="tipo" >
+							<h:outputText value="#{c.tipo}" />
 						</p:column>
 						<p:column headerText="#{message['empleado.tabla.cargo']}" >
 							<h:outputText value="#{c.tbCargoempleado.descripcion}" />
