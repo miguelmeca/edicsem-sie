@@ -13,7 +13,7 @@ import com.edicsem.pe.sie.entity.UbigeoSie;
 public interface ClienteService {
 	
 	public abstract void insertCliente(ClienteSie Cliente);
-	public abstract void updateCliente(ClienteSie Cliente );
+	public abstract void updateCliente(ClienteSie Cliente, DomicilioPersonaSie objDomicilio,String idUbigeo, int tipo);
 	public abstract ClienteSie findCliente (int id);
 	public abstract List  listarClientes();
 }
