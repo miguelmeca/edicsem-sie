@@ -34,7 +34,7 @@ public class MantenimientoEmpresaFormAction extends
 	public int idempresa;
 	public String descripcion;
 	private int ide, idEstadoGeneral;
-	public String razonsocial;
+
 	public String razonsocialUpdate;
 	public String numruc;
 	public String numtel;
@@ -138,6 +138,7 @@ public class MantenimientoEmpresaFormAction extends
 		log.info("agregar()");
 		editMode = true;
 		objEmpresaSie = new EmpresaSie();
+		razonsocialUpdate=null;
 		setNewRecord(true);
 		
 		return getViewList();
@@ -152,7 +153,8 @@ public class MantenimientoEmpresaFormAction extends
 
 		setIdempresa(s.getIdempresa());
 		setDescripcion(s.getDescripcion());
-		setRazonsocial(s.getRazonsocial());
+//		setRazonsocial(s.getRazonsocial());
+		razonsocialUpdate = s.getRazonsocial();
 		setNumruc(s.getNumruc());
 		setNumtel(s.getNumtelefono());		
 		setEmail(s.getEmail());
@@ -162,7 +164,7 @@ public class MantenimientoEmpresaFormAction extends
 		return getViewList();
 
 	}
-	
+
 	public String Eliminarempresa() throws Exception {
 		mensaje = null;
 		objEmpresaSie = new EmpresaSie();
@@ -225,18 +227,18 @@ else {
 	  if (verificarEmpleadoConEmpresa(parametroObtenido) == false || verificarProductoConEmpresa(parametroObtenido) == false) {
 		  listarEmpleadosXempresa(parametroObtenido);
 		  listarProductoXempresa(parametroObtenido);
-		  FaceMessage.FaceMessageError("ALERTA", "La Empresa no se puede elminar ya que se encontraron empleados con esta empresa que desea eliminar");
+		  FaceMessage.FaceMessageError("ALERTA", "El cargo no se puede elminar ya que se encontraron usuarios con ese cargo");
 		return Constants.MANT_EMPRESA_EMPLEADO_PRODUCTO_FORM_LIST_PAGE;
 	}
-	   if(verificarProductoConEmpresa(parametroObtenido) == false && verificarEmpleadoConEmpresa(parametroObtenido) == false) {
+	  else if(verificarProductoConEmpresa(parametroObtenido) == false && verificarEmpleadoConEmpresa(parametroObtenido) == false) {
 		  listarEmpleadosXempresa(parametroObtenido);
 		  listarProductoXempresa(parametroObtenido);
-		  FaceMessage.FaceMessageError("ALERTA", "La empresa no se puede elminar ya que se encontraron productos con esta empresa");
+		  FaceMessage.FaceMessageError("ALERTA", "El cargo no se puede elminar ya que se encontraron usuarios con ese cargo");
 		return Constants.MANT_EMPRESA_EMPLEADO_PRODUCTO_FORM_LIST_PAGE;
 	}
 	
 //	context.execute("someDialog.show()");
-	  FaceMessage.FaceMessageError("ALERTA", "WDF");
+	  FaceMessage.FaceMessageError("ALERTA", "El cargo no se puede elminar ya que se encontraron usuarios con ese cargo");
 	
 //	mensaje = "tiene relacion : ";
 //	RequestContext.getCurrentInstance().addCallbackParam("showDialog", false);
@@ -308,7 +310,7 @@ FacesContext.getCurrentInstance().addMessage(null, msg);
 				if(razonsocialUpdate!=null){
 								
 				if (lista.get(i).getRazonsocial().equalsIgnoreCase(objEmpresaSie.getRazonsocial().trim())
-			&& razonsocialUpdate.equalsIgnoreCase(objEmpresaSie.getRazonsocial().trim()) )
+			&& (!razonsocialUpdate.equalsIgnoreCase(objEmpresaSie.getRazonsocial().trim()) ))
 				{
 								log.info("Error ... Ya se encuentra una EMPRESA igual");
 								mensaje ="Ya se encuentra una EMPRESA con el mismo nombre";
@@ -316,7 +318,7 @@ FacesContext.getCurrentInstance().addMessage(null, msg);
 								error = 1;
 								break;
 					}
-				}else if(lista.get(i).getRazonsocial().equalsIgnoreCase(objEmpresaSie.getRazonsocial().trim())){
+				}else if (lista.get(i).getRazonsocial().equalsIgnoreCase(objEmpresaSie.getRazonsocial().trim())){
 					log.info("Error ... Ya se encuentra una EMPRESA igual");
 					mensaje ="Ya se encuentra una EMPRESA con el mismo nombre";
 //					paginaRetorno =mantenimientoEmpresaSearch.getViewMant();
@@ -346,11 +348,11 @@ FacesContext.getCurrentInstance().addMessage(null, msg);
 				
 				log.info("actualizando EMPRESA..... ");
 				objEmpresaSie.setIdempresa(getIdempresa());
-				objEmpresaSie.setDescripcion(getDescripcion().trim());
-				objEmpresaSie.setRazonsocial(getRazonsocial().trim());
-				objEmpresaSie.setNumruc(getNumruc());
-				objEmpresaSie.setNumtelefono(getNumtel());
-				objEmpresaSie.setEmail(getEmail().trim());
+				objEmpresaSie.setDescripcion(objEmpresaSie.getDescripcion().trim());
+				objEmpresaSie.setRazonsocial (objEmpresaSie.getRazonsocial().trim());
+				objEmpresaSie.setNumruc(objEmpresaSie.getNumruc());
+				objEmpresaSie.setNumtelefono(objEmpresaSie.getNumtelefono());
+				objEmpresaSie.setEmail(objEmpresaSie.getEmail().trim());
 				objEmpresaSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(7));
 
 				empresaService.updateEmpresa(objEmpresaSie);
@@ -520,20 +522,7 @@ FacesContext.getCurrentInstance().addMessage(null, msg);
 		this.editMode = editMode;
 	}
 
-	/**
-	 * @return the razonsocial
-	 */
-	public String getRazonsocial() {
-		return razonsocial;
-	}
 
-	/**
-	 * @param razonsocial
-	 *            the razonsocial to set
-	 */
-	public void setRazonsocial(String razonsocial) {
-		this.razonsocial = razonsocial;
-	}
 
 	/**
 	 * @return the numruc
