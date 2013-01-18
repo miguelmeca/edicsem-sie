@@ -1602,6 +1602,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 						<f:validateRegex pattern="#{message['pattern.email.norequired']}" />
 						
 						</p:inputText>
+						     <p:watermark for="email" value="ejm@edicsem.com" /> 
 						
 
 					<p:inputText  value="#{empresaForm.email}"
@@ -1614,6 +1615,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 				
 					
 					</p:inputText>
+					     <p:watermark for="email" value="ejm@edicsem.com" /> 
 					<p:message for="email" />
 				</h:panelGroup>
 
