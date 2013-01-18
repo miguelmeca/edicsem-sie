@@ -74,6 +74,7 @@ public class DomicilioEmpleadoServiceImpl implements DomicilioEmpleadoService{
     
     
     public DomicilioPersonaSie buscarDomicilioXIdcliente(int id) {
+    	log.info("Dentro del Servicio DomicilioPersonaSie");
 	
     	return objDomicilioEmpleadoDao.buscarDomicilioXIdcliente(id); 
 	}
