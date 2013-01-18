@@ -1509,7 +1509,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 						onkeypress="return validarLetras(event)" 
 						 />
 
-					<p:inputText id="razonSocial2" value="#{empresaForm.razonsocial}"
+					<p:inputText id="razonSocial2" value="#{empresaForm.objEmpresaSie.razonsocial}"
 						required="true" label="razonsocial"
 						requiredMessage="#{message['mantenimiento.razonSocial.validation']}"
 						style="font-weight:bold" rendered="#{!empresaForm.editMode}" 
