@@ -59,7 +59,7 @@ public class TelefonoPersonaSie implements Serializable {
     private int NuevoT;
     
     @Transient
-    private int item;
+    private String item;
 
     /**
 	 * @return the nuevoT
@@ -177,7 +177,7 @@ public class TelefonoPersonaSie implements Serializable {
 	/**
 	 * @return the item
 	 */
-	public int getItem() {
+	public String getItem() {
 		return item;
 	}
 
@@ -185,7 +185,7 @@ public class TelefonoPersonaSie implements Serializable {
 	/**
 	 * @param item the item to set
 	 */
-	public void setItem(int item) {
+	public void setItem(String item) {
 		this.item = item;
 	}
 	
