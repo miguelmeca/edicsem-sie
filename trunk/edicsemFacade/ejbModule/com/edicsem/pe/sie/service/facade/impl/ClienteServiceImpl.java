@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.service.facade.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -57,7 +58,7 @@ public class ClienteServiceImpl implements ClienteService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ClienteService#updateCliente(com.edicsem.pe.sie.entity.ClienteSie, java.util.List)
 	 */
-	public void updateCliente(ClienteSie Cliente, DomicilioPersonaSie objDomicilio,String idUbigeo, int tipo) {
+	public void updateCliente(ClienteSie Cliente, DomicilioPersonaSie objDomicilio,String idUbigeo, int tipo, int TelefonoPersona, List<TelefonoPersonaSie> TelefonoPersonaList, List<TelefonoPersonaSie> TelefonoDeshabilitado) {
 //		, List<TelefonoPersonaSie> TelefonoPersonaList,int tipo,DomicilioPersonaSie objDomicilio,String idUbigeo 
 		
 	try {
@@ -78,7 +79,18 @@ public class ClienteServiceImpl implements ClienteService {
 		objDomicilio.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(15));
 		objDomicilioEmpleadoDao.actualizarDomicilioEmpleado(objDomicilio);
 		
-		
+		/**Actualiza telefono(s)**/
+		for (TelefonoPersonaSie objTelefono : TelefonoPersonaList) {
+			objTelefono.setIdcliente(Cliente); 
+			objTelefono.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(17));
+			objTelefonoDao.insertarTelefonoEmpleado(objTelefono);
+		}
+		for(TelefonoPersonaSie objTelefono2 : TelefonoDeshabilitado){
+			objTelefono2.setIdtelefonopersona(objTelefono2.getIdtelefonopersona());
+			objTelefono2.setIdcliente(Cliente); 
+			objTelefono2.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(18));
+			objTelefonoDao.actualizarTelefonoEmpleado(objTelefono2);					
+		}
 		
 		
 		
@@ -88,7 +100,8 @@ public class ClienteServiceImpl implements ClienteService {
 		
 		
 	Cliente = new ClienteSie();	
-	objDomicilio = new DomicilioPersonaSie();	
+	objDomicilio = new DomicilioPersonaSie();
+	TelefonoPersonaList = new ArrayList<TelefonoPersonaSie>();
 		
 		
 		
