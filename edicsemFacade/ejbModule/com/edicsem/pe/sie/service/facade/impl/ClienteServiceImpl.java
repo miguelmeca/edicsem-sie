@@ -57,10 +57,42 @@ public class ClienteServiceImpl implements ClienteService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ClienteService#updateCliente(com.edicsem.pe.sie.entity.ClienteSie, java.util.List)
 	 */
-	public void updateCliente(ClienteSie Cliente) {
+	public void updateCliente(ClienteSie Cliente, DomicilioPersonaSie objDomicilio,String idUbigeo, int tipo) {
 //		, List<TelefonoPersonaSie> TelefonoPersonaList,int tipo,DomicilioPersonaSie objDomicilio,String idUbigeo 
-		log.info("ClienteServiceImpl ");
+		
+	try {
+		if (log.isInfoEnabled()) {
+			log.info("inicio del método insertar cliente en el SERVICIO");
+		}
+		
 		objClienteDao.updateCliente(Cliente);
+		
+		
+		
+		/**Actualiza el domicilio**/
+		objDomicilio.setIddomiciliopersona(objDomicilio.getIddomiciliopersona());
+		objDomicilio.setIdcliente(objClienteDao.findCliente(Cliente.getIdcliente()));
+		objDomicilio.setTbUbigeo(objUbigeoDao.findUbigeo(Integer.parseInt(idUbigeo)));
+		objDomicilio.setTbTipoCasa(objTipoCasaDao.findTipoCasa(tipo));
+		/*Estado del domicilio: habilitado(15)*/
+		objDomicilio.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(15));
+		objDomicilioEmpleadoDao.actualizarDomicilioEmpleado(objDomicilio);
+		
+		
+		
+		
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+	}	
+		
+		
+	Cliente = new ClienteSie();	
+	objDomicilio = new DomicilioPersonaSie();	
+		
+		
+		
+		
 	}
 	/************	for (int i = 0; i < TelefonoPersonaList.size(); i++) {
 			if (TelefonoPersonaList.get(i).getNuevoT()==1) {
