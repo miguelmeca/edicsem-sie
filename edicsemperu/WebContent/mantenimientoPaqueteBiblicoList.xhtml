@@ -50,19 +50,20 @@
 				
 				
 <p:column headerText="Editar">
+<center>
 <p:commandButton value="Editar "  oncomplete="PaqueteBiblico.show()"
 								  action="#{mantenimientoPaqueteBiblicoFormAction.update}" 
 								  update=":formPaqueteBiblico:display"
 								  icon="ui-icon ui-icon-pencil" >
 					<f:setPropertyActionListener value="#{pb}"
 												 target="#{mantenimientoPaqueteBiblicoFormAction.objPaqueteSie}" />
-					</p:commandButton>
+					</p:commandButton></center>
 				</p:column>
 				
 <!--**********INICIO 	DESACTIVAR**********-->
 
 <p:column headerText="Deshabilitar Paquete Biblico">
-
+<center>
 <p:commandButton id="showConfirmDeshabilitar1"
 				 value="Deshabilitar"
 				 icon="ui-icon ui-icon-close"	 			
@@ -74,6 +75,7 @@
 />							
 
 </p:commandButton>
+</center>
 				
 		</p:column>
 
@@ -119,22 +121,23 @@
 				
 								
 <p:column headerText="Editar">
-<p:commandButton value="Editar"	 oncomplete="DetPaqueteBiblico.show()"
+<center>
+<p:commandButton  oncomplete="DetPaqueteBiblico.show()"
 				 action="#{mantenimientoDetallePaqueteBiblicoSearchAction.update}" 
 				 update=":formDetPaqueteBiblico:display"
 				 icon="ui-icon ui-icon-pencil" >
 <f:setPropertyActionListener value="#{c}"
 							 target="#{mantenimientoDetallePaqueteBiblicoSearchAction.objDetPaqueteSie}" />
-</p:commandButton>
+</p:commandButton></center>
 </p:column>
 				
 				
 		<!--**********INICIO DESACTIVAR PRODUCTO**********-->
 
 <p:column headerText="Eliminar Producto">
-
+<center>
 <p:commandButton id="showConfirmDeshabilitarProDetPACK"
-				 value="Eliminar"
+				
 				 icon="ui-icon ui-icon-close"	 			
 	 			 onclick="confirmationPaqueteProDetPACK.show()">
 	 			  
@@ -144,7 +147,7 @@
 />							
 
 </p:commandButton>
-				
+</center>				
 		</p:column>
 			</p:dataTable>
 	<p:commandButton value="Agregar un nuevo producto al paquete"
