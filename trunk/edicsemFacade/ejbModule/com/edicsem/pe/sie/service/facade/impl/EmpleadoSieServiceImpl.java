@@ -105,7 +105,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#actualizarEmpleado(com.edicsem.pe.sie.entity.EmpleadoSie, com.edicsem.pe.sie.entity.DomicilioPersonaSie, com.edicsem.pe.sie.entity.TelefonoPersonaSie, int, int, java.lang.String, java.lang.String, int, java.lang.String, java.lang.String, int, int, java.lang.String, int, int, int, int, int, int)
 	 */
 	public void actualizarEmpleado(EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, int codigoTipoDocumento, int codigoCargoEmpleado,
-	String idUbigeo, int tipo, int idCargo, int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int idEmpresa, int idTipoPago, int codigoEmpleado, List<ContratoEmpleadoSie> contratoEmpleadoList, List<TelefonoPersonaSie> TelefonoPersonaList) {			
+	String idUbigeo, int tipo, int idCargo, int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int idEmpresa, int idTipoPago, int codigoEmpleado, List<ContratoEmpleadoSie> contratoEmpleadoList, List<TelefonoPersonaSie> TelefonoPersonaList, List<TelefonoPersonaSie> TelefonoDeshabilitado, List<ContratoEmpleadoSie> ContratoDeshabilitado, List<DetEmpresaEmpleadoSie> detEmpresaEmpList) {			
 			try {
 				if (log.isInfoEnabled()) {
 					log.info("inicio del método insertar empleado");
@@ -117,10 +117,15 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 				objEmpleadoDao.actualizarEmpleado(objEmpleado);
 				/**Actualiza telefono(s)**/
 				for (TelefonoPersonaSie objTelefono : TelefonoPersonaList) {
-					objTelefono.setIdtelefonopersona(objTelefono.getIdtelefonopersona());
 					objTelefono.setIdempleado(objEmpleado);
 					objTelefono.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
 					objTelefonoDao.insertarTelefonoEmpleado(objTelefono);
+				}
+				for(TelefonoPersonaSie objTelefono2 : TelefonoDeshabilitado){
+					objTelefono2.setIdtelefonopersona(objTelefono2.getIdtelefonopersona());
+					objTelefono2.setIdempleado(objEmpleado);
+					objTelefono2.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(18));
+					objTelefonoDao.actualizarTelefonoEmpleado(objTelefono2);					
 				}
 				/**Actualiza el domicilio**/
 				objDomicilio.setIddomiciliopersona(objDomicilio.getIddomiciliopersona());
@@ -129,13 +134,11 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 				objDomicilio.setTbTipoCasa(objTipoCasaDao.findTipoCasa(tipo));
 				/*Estado del domicilio: habilitado(15)*/
 				objDomicilio.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(15));
-				objDomicilioDao.insertarDomicilioEmpleado(objDomicilio);
+				objDomicilioDao.actualizarDomicilioEmpleado(objDomicilio);
 				/**Actualiza Contrato(s)**/
 				for (ContratoEmpleadoSie objContrato : contratoEmpleadoList) {
-					objContrato.setIdContratoEmpl(objContrato.getIdContratoEmpl());
 					objContrato.setIdempleado(objEmpleado.getIdempleado());
 					DetEmpresaEmpleadoSie detempemp=new DetEmpresaEmpleadoSie();
-					detempemp.setIdDetEmpresaEmpl(detempemp.getIdDetEmpresaEmpl());
 					detempemp.setTbEmpresa(objEmpresaDao.findEmpresa(objContrato.getEmpresa()));
 					detempemp.setTbEmpleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
 					detempemp.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(64));
@@ -143,9 +146,24 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 					objContrato.setTbDetEmpresaEmpleado(objDetEmpresaEmpDao.findDetEmpresaEmpleadoSie(detempemp.getIdDetEmpresaEmpl()));
 					objContrato.setTbCargoempleado(objCargoEmpDao.buscarCargoEmpleado(idCargo));
 					objContrato.setTbTipoPago(objTipoPagoDao.findTipoPago(idTipoPago));
-					objContrato.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
+					objContrato.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(66));
 					objContratoEmpleadoDao.insertContratoEmpleado(objContrato);
 				}	
+				for(ContratoEmpleadoSie objContrato : ContratoDeshabilitado){
+					objContrato.setIdContratoEmpl(objContrato.getIdContratoEmpl());
+					objContrato.setIdempleado(objEmpleado.getIdempleado());
+					DetEmpresaEmpleadoSie detempemp=new DetEmpresaEmpleadoSie();
+					//detempemp.setIdDetEmpresaEmpl()
+					detempemp.setTbEmpresa(objEmpresaDao.findEmpresa(objContrato.getEmpresa()));
+					detempemp.setTbEmpleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
+					detempemp.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(64));
+					objDetEmpresaEmpDao.insertDetEmpresaEmpleadoSie(detempemp);
+					objContrato.setTbDetEmpresaEmpleado(objDetEmpresaEmpDao.findDetEmpresaEmpleadoSie(detempemp.getIdDetEmpresaEmpl()));
+					objContrato.setTbCargoempleado(objCargoEmpDao.buscarCargoEmpleado(idCargo));
+					objContrato.setTbTipoPago(objTipoPagoDao.findTipoPago(idTipoPago));
+					objContrato.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(67));
+					objContratoEmpleadoDao.updateContratoEmpleado(objContrato);
+				}
 				log.info("actualizando..... ");				
 				//Agregen esto a tus redirecciones parece que esta referenciando a otra cosa verifiquen a donde estan 
 				//llenando los datos 
