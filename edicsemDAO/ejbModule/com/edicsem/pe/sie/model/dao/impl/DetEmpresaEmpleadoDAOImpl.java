@@ -151,4 +151,16 @@ public class DetEmpresaEmpleadoDAOImpl implements DetEmpresaEmpleadoDAO{
 			}
 			return bandera;
 		}
+		
+		public List  listarDetEmpresaEmpleadoXidempleado(int idempleado) {
+			List  lista = null;
+			try {
+				Query q = em.createQuery("select p from DetEmpresaEmpleadoSie p where p.tbEmpleado.idempleado = " + idempleado);
+				lista =  q.getResultList(); 
+				log.info("tamaño lista DetEmpresaEmpleadoSie x empresa --> " + lista.size()+"  ");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return lista;
+		}
 }
