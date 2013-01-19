@@ -94,7 +94,8 @@
 					<p:spacer  rendered="#{movimientoMercaderia.idtipokardexproducto!=3}" />
 					</p:fieldset>
 					
-					<p:panelGrid rendered="#{login.objEmpleado.cargoAsistente==1}" >
+					<c:forEach items="${sessionScope.cargoSession}" var="cargo">
+					<c:if  test="${cargo.idcargoempleado==8}">
 					<p:fieldset legend="Datos Comprobante"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}" >
 					<h:panelGrid columns="6" >
 					<h:outputText value="#{message['movimiento.proveedor.nombreempresa']}"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
@@ -117,7 +118,8 @@
 				<p:message for="num_comp" rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
 				</h:panelGrid>
 				</p:fieldset>
-				</p:panelGrid>
+				</c:if>
+				</c:forEach>
 				</h:panelGrid>
 				
 				<p:commandButton id="id"
