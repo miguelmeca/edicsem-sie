@@ -1,7 +1,9 @@
 package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,6 +32,9 @@ public class CobranzaOperadoraSie implements Serializable {
 	private Integer idCobranzaOperadora;
 
 	private String observaciones;
+	
+	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
+	private Timestamp fechacreacion;
 
 	//bi-directional many-to-one association to CobranzaDTO
     @ManyToOne
@@ -91,6 +96,20 @@ public class CobranzaOperadoraSie implements Serializable {
 
 	public void setTbTipoLlamada(TipoLlamadaSie tbTipoLlamada) {
 		this.tbTipoLlamada = tbTipoLlamada;
+	}
+
+	/**
+	 * @return the fechacreacion
+	 */
+	public Timestamp getFechacreacion() {
+		return fechacreacion;
+	}
+
+	/**
+	 * @param fechacreacion the fechacreacion to set
+	 */
+	public void setFechacreacion(Timestamp fechacreacion) {
+		this.fechacreacion = fechacreacion;
 	}
 	
 }
