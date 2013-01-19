@@ -8,11 +8,12 @@
 	<ui:define name="body">
 		<h1 class="title ui-widget-header ui-corner-all">Generar Listas Cobranzas</h1>
 		<h:form id="formGenerarCobranza">
-			<p:growl id="message" showDetail="true" />
+			<p:messages id="message" showDetail="true" />
 			<p:panel header="#{message['panel.generar.cobranza']}">
 				<h:panelGrid columns="6">
 					<p:outputLabel value="Empleados" for="cargo"/>
-					 <p:selectCheckboxMenu  id="cargo" value="#{cobranza.empleadoList}" filter="true" filterText="Filter" filterMatchMode="contains" >
+					 <p:selectCheckboxMenu  id="cargo" value="#{cobranza.empleadoList}" filter="true" filterText="Filter" filterMatchMode="contains" 
+					 style="width:300px " >
 					<f:selectItems  value="#{comboAction.empleadoxcargo}" />
 					</p:selectCheckboxMenu>
 					
