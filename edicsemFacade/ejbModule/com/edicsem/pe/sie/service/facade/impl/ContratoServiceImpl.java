@@ -69,6 +69,7 @@ public class ContratoServiceImpl implements ContratoService {
 		log.info(" * en insertar el contrato  ");
 		cliente.setTbTipoDocumentoIdentidad(objtipoDao.buscarTipoDocumento(idtipodoc));
 		cliente.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23));
+		cliente.setTipocliente(1);
 		objClienteDao.insertCliente(cliente);	
 		for (TelefonoPersonaSie telefonoPersonaSie : telefonoList) {
 			telefonoPersonaSie.setIdcliente(cliente);

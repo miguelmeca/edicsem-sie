@@ -9,7 +9,7 @@ import com.edicsem.pe.sie.entity.DetPermisoEmpleadoSie;
 @Local
 public interface DetPermisoEmpleadoService {
 	
-	public abstract void insertDetPermisoEmpleado(DetPermisoEmpleadoSie p);
+	public abstract void insertDetPermisoEmpleado(List<String> p, int idEmpleado);
 	public abstract void updateDetPermisoEmpleado(DetPermisoEmpleadoSie p);
 	public abstract DetPermisoEmpleadoSie findDetPermisoEmpleado (int id);
 	public abstract List<MenuDTO>  listarPermisoXUsuario(String usuario);
