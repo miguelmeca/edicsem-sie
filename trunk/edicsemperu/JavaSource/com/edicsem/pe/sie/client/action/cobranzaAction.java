@@ -64,11 +64,23 @@ public class cobranzaAction extends BaseMantenimientoAbstractAction {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()' :D  " );
 			}
-			log.info(" *************** INSERTAR *********"  );
-			
+			//Validar si se registro las listas en el dia
+			int cantContratos =objCobranzaOperaService.verificargeneracionDiaria();
+			if(cantContratos>0){
+				log.info(" se registro anteriormente " );
+				mensaje="Ya se registro una lista anteriormente";
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+						Constants.MESSAGE_INFO_TITULO, mensaje);
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+				
+			}else{
 			/** Insertamos las listas de cobranzas para cada teleoperadora asignada */
 			objCobranzaOperaService.insertCobranzaOpera(empleadoList);
-			
+			mensaje="Se generó la lista correctamente";
+			msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					Constants.MESSAGE_INFO_TITULO, mensaje);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();

@@ -8,7 +8,7 @@
 	<ui:define name="body">
 		<h1 class="title ui-widget-header ui-corner-all">Asignar Permisos a los Empleados</h1>
 		<h:form id="formPermisos">
-			<p:growl id="message" showDetail="true" />
+			<p:messages id="message" showDetail="true" />
 			<p:panel>
 				<p:fieldset legend="Busqueda de Empleado">
 					<h:panelGrid columns="6">
@@ -24,19 +24,16 @@
 					<f:selectItems  value="#{comboAction.empleadoxcargo}" />
 					</p:selectOneMenu>
 					
-					<p:commandButton action="#{permiso.agregar}" value="Ver Permisos" update="pojoPickList"/>
+					<p:commandButton action="#{permiso.agregarListas}" value="Ver Permisos" ajax="false" update="formPermisos"/>
 					
 					</h:panelGrid>
 					
-				<p:spacer width="40px" />
-				<p:pickList id="pojoPickList" value="#{permiso.permisos}" var="p" converter="permisoConverter" 
-				itemLabel="#{p.nombrePermiso}" itemValue="#{p}" showSourceControls="true" 
-	                    showTargetControls="true" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">  
-	                    
-			        <f:facet  name="sourceCaption"><h:outputLabel value="Otros Roles"/></f:facet>
-			        <f:facet name="targetCaption"><h:outputLabel value="Roles Asignados"/></f:facet>
-			        
-			    </p:pickList>
+				<p:spacer width="40px" /> 
+				
+				<p:pickList id="pojoPickList1" value="#{permiso.permisosString}" var="p"  
+				itemLabel="#{p}" itemValue="#{p}" />
+				 <p:commandButton action="#{permiso.insertar}" value="Insertar" ajax="false" update="formPermisos"/>
+					
 		   </p:fieldset>
 			</p:panel>
 		</h:form>

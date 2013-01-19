@@ -64,7 +64,6 @@ public class MantenimientoCargoEmpleadoFormAction extends
 	private EstadogeneralService objEstadoGeneralService;
 	@EJB
 	private ContratoEmpleadoService objContratoEmpleadoService;
-	
 
 	public void init() {
 		log.info("init()");
