@@ -109,11 +109,11 @@
 <p:fieldset legend="Detalle de Pagos" style="margin-top:20px">  
 <h:panelGrid columns="2" >
 <h:outputText value="Empresa :" />
-			<h:outputText  value="#{mantenimientoCobranzaOperaSearchAction.objcliente.nombrecliente}"  />
+			<h:outputText  value="Edicsem"  />
 <h:outputText value="Nro de Cuenta :"  />
-			<h:outputText  value="#{mantenimientoCobranzaOperaSearchAction.objcliente.correo}"  />
+			<h:outputText  value="45678"  />
 <h:outputText value="Teléfonos :"  />
-			<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.directrabajo}" />
+			<h:outputText value="#946-99234" />
 </h:panelGrid>  
 	  <p:dataTable value="#{mantenimientoCobranzaOperaSearchAction.detallePagos}" var="p" rowStyleClass="#{p.fecpago == mantenimientoCobranzaOperaSearchAction.fecPagoNull ? 'colorRojo' : 'colorVerde'}"
 	   id="DetallePagos" paginator="false" rows="10"
