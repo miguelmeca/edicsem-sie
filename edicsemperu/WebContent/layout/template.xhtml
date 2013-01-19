@@ -1309,7 +1309,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 				style="margin:0 auto;">
             
             <h:outputText value="#{message['incidencia.observacion']}" />	
-            <h:inputTextarea  required="true" value="#{mantenimientoIncidenciaForm.objObsIncidencia.observacion}" requiredMessage="#{message['incidencia.observacion.validation']}" /> 
+            <p:inputTextarea maxlength="500" required="true" value="#{mantenimientoIncidenciaForm.objObsIncidencia.observacion}" requiredMessage="#{message['incidencia.observacion.validation']}" /> 
             <h:outputText value="#{message['incidencia.fecha']}" />				
             <p:calendar id="fechafin" 
             value="#{mantenimientoIncidenciaForm.fechafin}" requiredMessage="#{message['incidencia.fecha.validation']}" required="true" />
