@@ -42,6 +42,7 @@ public class EmpleadoSie implements Serializable {
 
 	private String contrasena;
 	
+	
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
 
@@ -127,6 +128,10 @@ public class EmpleadoSie implements Serializable {
   	@OneToMany(mappedBy="idempleado")
   	private Set<DetpagoSie> tbDetpago;
 	
+  	@Transient
+	private int cargoAsistente;
+	
+  	
 	public EmpleadoSie() {
     }
 
@@ -370,6 +375,20 @@ public class EmpleadoSie implements Serializable {
 
 	public void setCorreo(String correo) {
 		this.correo = correo;
+	}
+
+	/**
+	 * @return the cargoAsistente
+	 */
+	public int getCargoAsistente() {
+		return cargoAsistente;
+	}
+
+	/**
+	 * @param cargoAsistente the cargoAsistente to set
+	 */
+	public void setCargoAsistente(int cargoAsistente) {
+		this.cargoAsistente = cargoAsistente;
 	}
 
 }
