@@ -111,28 +111,14 @@ public class DomicilioEmpleadoDAOImpl implements DomicilioEmpleadoDAO{
 		return null;
 	}
 
-	/*buscar domicilio por idempleado*/
-	public DomicilioPersonaSie buscarDomicilioXIdempleado(int id) {
-		log.info(" idempleado "+ id);
+
+	public DomicilioPersonaSie buscarDomicilioXIdcliente(int id) {
+		log.info(" buscarDomicilioXIdcliente "+ id);
 		DomicilioPersonaSie domicilio =new DomicilioPersonaSie();
 		try {
-			Query q = em.createQuery("select p from DomicilioPersonaSie p where p.idempleado = "+ id);
+			Query q = em.createQuery("select d from DomicilioPersonaSie d where d.idcliente.idcliente = "+ id);
 			domicilio = (DomicilioPersonaSie) q.getResultList().get(0);
 			//log.info("Domicilio x idempleado  --> " + domicilio.size());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return domicilio;
-	}
-	
-	/*busca por id cliente*/
-	public DomicilioPersonaSie buscarDomicilioXIdcliente(int id) {
-		log.info(" buscarDomicilioXIdcliente--> "+ id);
-		DomicilioPersonaSie domicilio =new DomicilioPersonaSie();
-		try {
-			Query q = em.createQuery("select d from DomicilioPersonaSie d where d.idcliente = "+ id);
-			domicilio = (DomicilioPersonaSie) q.getResultList().get(0);
-//			log.info("Domicilio x idcliente  --> " + domicilio.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

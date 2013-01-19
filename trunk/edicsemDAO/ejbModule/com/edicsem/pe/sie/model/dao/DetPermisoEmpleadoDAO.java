@@ -14,5 +14,5 @@ public interface DetPermisoEmpleadoDAO {
 	public abstract void updateDetPermisoEmpleado(DetPermisoEmpleadoSie p);
 	public abstract DetPermisoEmpleadoSie findDetPermisoEmpleado (int id);
 	public abstract List<MenuDTO>  listarPermisoXUsuario(String usuario);
-	
+	public abstract DetPermisoEmpleadoSie findDetPermisoEmpleado(int idEmpleado,String nombrePermiso);
 }

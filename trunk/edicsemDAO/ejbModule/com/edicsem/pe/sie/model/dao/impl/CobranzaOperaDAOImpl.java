@@ -9,6 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import com.edicsem.pe.sie.entity.CobranzaOperadoraSie;
 import com.edicsem.pe.sie.model.dao.CobranzaOperaDAO;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 
 /**
  * @author karen
@@ -78,6 +79,24 @@ public class CobranzaOperaDAOImpl implements CobranzaOperaDAO{
 			e.printStackTrace();
 		}
 		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.CobranzaOperaDAO#verificargeneracionDiaria()
+	 */
+	public int verificargeneracionDiaria() {
+		int tamano=0;
+		List  lista = null;
+		try {
+			Query q = em.createQuery("select p from CobranzaOperadoraSie p where " +
+					" DATE(p.fechacreacion) = DATE('"+DateUtil.getToday().getTime()+"')");
+			lista =  q.getResultList();
+			tamano=lista.size();
+			log.info("tamaño lista CobranzaOperadora --> " + lista.size()+"  ");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tamano;
 	}	
 
 }

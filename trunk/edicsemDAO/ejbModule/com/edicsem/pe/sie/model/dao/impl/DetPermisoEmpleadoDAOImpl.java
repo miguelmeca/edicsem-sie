@@ -69,6 +69,25 @@ public class DetPermisoEmpleadoDAOImpl implements DetPermisoEmpleadoDAO{
 		}
 		return p;
 	}
+	
+	public DetPermisoEmpleadoSie findDetPermisoEmpleado(int idEmpleado,String nombrePermiso) {
+		DetPermisoEmpleadoSie p= new DetPermisoEmpleadoSie();
+		List<DetPermisoEmpleadoSie> lista ;
+		try {
+			Query q = em.createQuery("select p from DetPermisoEmpleadoSie p   where p.tbEmpleado.idempleado = "+ idEmpleado
+					+ " and p.tbPermisos.nombrePermiso like '" +  nombrePermiso +"'" );
+			 
+				lista = q.getResultList();
+				log.info(" tamano  "+lista.size());
+				if(lista.size()>0){
+					p = lista.get(0);
+				}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return p;
+	}
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.DetPermisoEmpleadoDAO#listarPermisoXUsuario(java.lang.String)
@@ -79,7 +98,8 @@ public class DetPermisoEmpleadoDAOImpl implements DetPermisoEmpleadoDAO{
 		MenuDTO objMenu;
 		log.info("  usuar "+usuario );
 		try {
-			Query q = em.createQuery("select p from DetPermisoEmpleadoSie p inner join  p.tbEmpleado q where q.usuario = '"+ usuario+"'");
+			Query q = em.createQuery("select p from DetPermisoEmpleadoSie p inner join  p.tbEmpleado q where q.usuario = '"+ usuario+"' and " +
+					"p.tbEstadoGeneral.idestadogeneral = "+62);
 			lista =  q.getResultList(); 						
 		   log.info("tamaño lista DetPermisoEmpleado DAOIMPL --> " + lista.size()+"  ");
 		   miMenu = new ArrayList<MenuDTO>();

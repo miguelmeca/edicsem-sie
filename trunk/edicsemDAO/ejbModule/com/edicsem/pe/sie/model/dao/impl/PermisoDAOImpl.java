@@ -72,6 +72,7 @@ public class PermisoDAOImpl implements PermisoDAO{
 	 * @see com.edicsem.pe.sie.model.dao.PermisoDAO#findPermiso(java.lang.String)
 	 */
 	public PermisoSie findPermiso(String permiso) {
+		log.info(" permisooo "+ permiso );
 		PermisoSie p = null;
 		try {
 			Query q = em.createQuery("select p from PermisoSie p where  p.tbEstadoGeneral.idestadogeneral = "+ 68 +" and p.nombrePermiso ='"+permiso+"'");
@@ -88,7 +89,7 @@ public class PermisoDAOImpl implements PermisoDAO{
 	public List listarPermiso() {
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from PermisoSie p where  p.tbEstadoGeneral.idestadogeneral = "+ 68 );
+			Query q = em.createQuery("select p.nombrePermiso from PermisoSie p where  p.tbEstadoGeneral.idestadogeneral = "+ 68 );
 			lista =  q.getResultList(); 						
 		   log.info("tamaño lista Permiso DAOIMPL --> " + lista.size()+"  ");
 		} catch (Exception e) {
@@ -104,7 +105,8 @@ public class PermisoDAOImpl implements PermisoDAO{
 		List lista = null;
 		log.info("  idEmpleado "+idEmpleado );
 		try {
-			Query q = em.createQuery("select p from PermisoSie p inner join p.tbDetEmpleadoEmpleados q inner join q.tbEmpleado r where r.idempleado  = "+ idEmpleado);
+			Query q = em.createQuery("select p.nombrePermiso from PermisoSie p inner join p.tbDetEmpleadoEmpleados q " +
+					" inner join q.tbEmpleado r where r.idempleado  = "+ idEmpleado+" and q.tbEstadoGeneral.idestadogeneral = 62");
 			lista =  q.getResultList();
 		   log.info("tamaño lista listarPermisosXEmpleado --> " + lista.size());
 		} catch (Exception e) {
