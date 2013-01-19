@@ -5,15 +5,14 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
-	<script type="JavaScript">
-	function text_onkeypress() {
-	}
-	</script>
 	<ui:define name="body">
+	<script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
 		<h1 class="title ui-widget-header ui-corner-all">Movimiento
 			Mercadería</h1>
 		<h:form id="formMovMerc">
-			<p:growl id="message" showDetail="true" />
+			<p:messages id="message" showDetail="true" />
 			<p:panel header="#{message['panel.ingreso.mercaderia']}">
 				<h:panelGrid columns="2" id="panel">
 					<h:panelGroup>
