@@ -5,10 +5,13 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
+	<script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
 		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
 			Productos</h1>
 		<h:form id="formManteProdLista" >
-		<p:growl id="message" showDetail="true" />
+		<p:messages id="message" showDetail="true" />
 			<p:dataTable value="#{productoSearch.productoList}" var="p"
 					id="listaPersonas" paginator="true" rows="5"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"

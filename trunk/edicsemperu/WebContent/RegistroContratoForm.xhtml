@@ -6,6 +6,9 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
+		<script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
 		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
 			Contrato </h1>
 		<h:form id="formManteContrato3">
@@ -14,7 +17,7 @@
 			<p:wizard id="wiz" widgetVar="wiz" flowListener="#{contratoForm.onFlowProcess}">
 			  <p:tab title="#{message['cliente.tabpersonal']}">
 			  <p:panel header="#{message['panel.contrato.cliente']}" >
-				<h:panelGrid columns="6" id="panelCliente"  >
+				<h:panelGrid columns="6" id="panelCliente"  cellpadding="5" >
 
 					<h:outputText value="#{message['contrato.nombre']}" />
 					<p:inputText id="nombreCliente" value="#{contratoForm.objClienteSie.nombrecliente}" required="true" />
@@ -63,8 +66,35 @@
 					</p:selectBooleanCheckbox>
 					<p:spacer/>
 					
+					<!--  -->
+					<p:selectOneMenu size="1" value="#{contratoForm.idDepartamento}"
+					required="true" style="width:180px"
+					requiredMessage="#{message['contrato.ubigeo.departamento.validation']}">
+					<f:selectItem itemLabel="Seleccione Departamento"
+						itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
+					<p:ajax update="prov,dist" listener="#{contratoForm.cambiar}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="#{message['contrato.ubigeo.provincia']}" />
+				<p:selectOneMenu id="prov" value="#{contratoForm.idProvincia}"
+					required="true" style="width:200px"
+					requiredMessage="#{message['contrato.ubigeo.provincia.validation']}">
+					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
+					<p:ajax update="dist" listener="#{contratoForm.cambiar2}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="#{message['contrato.ubigeo.distrito']}" />
+				<p:selectOneMenu id="dist" value="#{contratoForm.idUbigeo}" filter="true" filterMatchMode="startsWith"
+					required="true" style="width:200px"
+					requiredMessage="#{message['contrato.ubigeo.distrito.validation']}">
+					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+				</p:selectOneMenu>
+					
 					<h:outputText value="#{message['contrato.ubigeo.distrito']}" rendered="#{contratoForm.defectoUbigeo}" />
-					<p:selectOneMenu value="#{contratoForm.idUbigeo}" filter="true" filterMatchMode="startsWith"
+					<p:selectOneMenu value="#{contratoForm.idUbigeo}" 
 						rendered="#{contratoForm.defectoUbigeo}" required="true"   effect="fade"
 						style="width:200px" id="idubigeoDistrito" >
 						<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
@@ -364,15 +394,16 @@
 				<h:outputText value="#{message['contrato.fechEntrega']}" />
 				<p:calendar id="fechaentrega" value="#{contratoForm.objContratoSie.fechaentrega}" pattern="dd/MM/yyyy" maxdate="today" label="fecha entrega"  required="true" />
 				<p:message for="fechaentrega"  />
+				
 				</h:panelGrid>
+				<p:commandButton value="Registrar Pago(s)" action="#{contratoForm.insertarCobranza}" update="listaCobranzas, message"
+				icon="ui-icon ui-icon-check"/> 
+				
 				</p:fieldset>
 				
-				<p:commandButton value="Registrar Pago(s)" actionListener="#{contratoForm.insertarCobranza}" update="listaCobranzas, message"
-				icon="ui-icon ui-icon-check"/>
-				
         		 <p:spacer  height="35px"/>
-        		 
-		<p:dataTable id="listaCobranzas" var="c" value="#{contratoForm.cobranzaList}" editable="true" style=" width:50% ">
+        <center>
+		<p:dataTable id="listaCobranzas" var="c" value="#{contratoForm.cobranzaList}" editable="true" style=" width:50%; align:center ">
 
         <f:facet name="header">
             Editar Cobranzas
@@ -416,7 +447,7 @@
         <p:column headerText="Options" style="width:50px">
             <p:rowEditor />
         </p:column>
-        </p:dataTable>
+        </p:dataTable></center>
         
 		</p:panel>
 		</p:tab>

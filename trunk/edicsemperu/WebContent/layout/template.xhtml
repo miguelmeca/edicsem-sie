@@ -111,7 +111,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		<p:layoutUnit position="north" size="130">
 			<div id="header" class="ui-widget ui-widget-header">
 				<div id="logo">
-					<img src="#{request.contextPath}/images/logoEdicsem.jpg" alt="Logo" />
+					<img src="#{request.contextPath}/images/logoEdicsem.jpg" alt="Logo" style="height: 58px " />
 				</div>
 				<div id="menu" class="ui-widget">
 					<ul id="main">
@@ -314,7 +314,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				</p:selectOneMenu>
 				<p:commandButton value="Insertar Ubigeo:"
 					action="#{contratoForm.ingresarUbigeo}"
-					oncomplete="UbigeoDialog.hide()" update="@all">
+					oncomplete="UbigeoDialog.hide()" >
 				</p:commandButton>
 			</h:panelGrid>
 		</p:dialog>
@@ -395,7 +395,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				<p:inputText value="#{almacenForm.objAlmacenSie.direccion}"
 					required="true" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
 					style="font-weight:bold"  />
-<h:outputText value="#{message['almacen.tipo']}" />
+				<h:outputText value="#{message['almacen.tipo']}" />
 				<p:selectOneMenu value="#{almacenForm.objTipoPv.idtipopuntoventa}">
 					<f:selectItems value="#{comboAction.tipoalmacenitems}" />
 				</p:selectOneMenu>

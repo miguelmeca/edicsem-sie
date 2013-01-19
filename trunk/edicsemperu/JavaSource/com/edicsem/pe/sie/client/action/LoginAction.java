@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.client.action;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -76,7 +77,7 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 		List<MenuDTO> lstMenu = new ArrayList<MenuDTO>();
 		List<String> lstTipo = new ArrayList<String>();
 		try {
-			log.info("usuario  ...  "+usuario+" contraseña "+contrasenia);
+			log.info("usuario  :D ...  "+usuario+" contraseña "+contrasenia);
 			//Captura del Usuario y contraseña, Validando el Usuario
 			objEmpleado= loginService.validacionLogin(usuario,SecurityLogin.getMD5(contrasenia));
 			if (objEmpleado!=null) {
@@ -151,6 +152,18 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 		return redireccion;
 	}
 	
+	public void cerrarSesion() {
+		log.info("cerrarSesion() ");
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().getSessionMap().clear();
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(Constants.USER_KEY, false);
+        try {
+            context.getExternalContext().redirect("/edicsemperu/sessionexpired.jsf");
+        } catch (IOException ex) {
+        	log.error(ex.getMessage());
+        	ex.printStackTrace();
+        }
+    }
 	
 	public MethodExpression getMethod(String actionListenerName) {
 		ExpressionFactory context = FacesContext.getCurrentInstance().getApplication().getExpressionFactory();
