@@ -83,11 +83,29 @@ public class DomicilioEmpleadoDAOImpl implements DomicilioEmpleadoDAO{
 	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#listarUsuarios(com.edicsem.pe.sie.entity.Usuario)
 	 */
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO#listarDomicilioEmpleados()
+	 */
+	
+	public List listarDomicilioEmpleados() {
+		// TODO Auto-generated method stub
+		return null;
+	}	
+	
+	public DomicilioPersonaSie buscarDomicilioXIdempleado(int id) {
+		log.info(" buscarDomicilioXIdempleado "+ id);
+		DomicilioPersonaSie domicilio =new DomicilioPersonaSie();
+		try {
+			Query q = em.createQuery("select d from DomicilioPersonaSie d where d.idempleado.idempleado = "+ id);
+			domicilio = (DomicilioPersonaSie) q.getResultList().get(0);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return domicilio;
+	}
 	
 	
-	
-	
-		
 	public List listarDomicilioCliente(int id) {
 		log.info(" idcliente "+ id);	
 	List<DomicilioPersonaSie> domiciliocliente =new ArrayList<DomicilioPersonaSie>();
@@ -102,14 +120,7 @@ public class DomicilioEmpleadoDAOImpl implements DomicilioEmpleadoDAO{
 		return domiciliocliente;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO#listarDomicilioEmpleados()
-	 */
-	
-	public List listarDomicilioEmpleados() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 
 	public DomicilioPersonaSie buscarDomicilioXIdcliente(int id) {
