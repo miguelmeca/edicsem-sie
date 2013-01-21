@@ -10,7 +10,7 @@
 			Tipo de Productos</h1>
 			
 		<h:form id="frmTipoProdFormList" prependId="false">
-		 <p:messages showDetail="true" />
+		 <p:messages  />
 		
 			
 			<p:dataTable value="#{tipoProductoSearch.tipoProdList}" var="tipoProducto"
@@ -25,7 +25,7 @@
 											 
 				</p:column>	
 				
-				<p:column headerText="Tipo de Producto"  id="tipoProducto" sortBy="#{tipoProducto.nombretipoproducto}" filterBy="#{tipoProducto.nombretipoproducto}">
+				<p:column headerText="Tipo de Producto"  id="tipoProducto" filterBy="#{tipoProducto.nombretipoproducto}">
 				  
 						<h:outputText value="#{tipoProducto.nombretipoproducto}" />
 											 
@@ -61,9 +61,7 @@ target="#{mantenimientoTipoProductoFormAction.objTipoProductoSie}" />
 		<p:commandLink value="Nuevo Tipo de Producto"  update=":NuevoModificaTipoProd:display" 
 				
 				action="#{mantenimientoTipoProductoFormAction.agregar}"
-				oncomplete="DialogTipoProd.show()" 	title="Ingresar Nuevo Tipo de Producto"
-				
->
+				oncomplete="DialogTipoProd.show()" 	title="Ingresar Nuevo Tipo de Producto"	>
 </p:commandLink>
 </div>
 </f:facet>
