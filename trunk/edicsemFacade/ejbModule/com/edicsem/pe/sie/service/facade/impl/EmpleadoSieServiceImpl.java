@@ -144,7 +144,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 					objContrato.setTbTipoPago(objTipoPagoDao.findTipoPago(idTipoPago));
 					objContrato.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
 					objContratoEmpleadoDao.insertContratoEmpleado(objContrato);
-				}	
+				}
 				log.info("actualizando..... ");				
 				//Agregen esto a tus redirecciones parece que esta referenciando a otra cosa verifiquen a donde estan 
 				//llenando los datos 
