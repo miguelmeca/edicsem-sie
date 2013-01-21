@@ -10,11 +10,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.client.action.ComboAction;
+import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.entity.TipoPuntoVentaSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
@@ -176,6 +178,8 @@ public class MantenimientoPuntoAlmacenFormAction extends
 				+ objAlmacenSie.getDescripcion() +"  "+ "almacen"+" direc " + objAlmacenSie.getDireccion() );
 		int error = 0;
 		String paginaRetorno="";
+		HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+		EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 		try {
 			objAlmacenSie.setTbTipoPuntoVenta(objTipoPv);
 			objAlmacenSie.setTbUbigeo(objUbigeoService.findUbigeo(Integer.parseInt(idUbigeo)));
@@ -193,6 +197,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 					}
 				}
 				if (error == 0) {
+					objAlmacenSie.setUsuariocreacion(sessionUsuario.getUsuario());
 					objAlmacenService.insertAlmacen(objAlmacenSie);
 					mensaje ="Se registro correctamente";
 					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
@@ -203,6 +208,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 					paginaRetorno =mantenimientoPuntoAlmacenSearch.getViewMant();
 				}
 			} else {
+				objAlmacenSie.setUsuariomodifica(sessionUsuario.getUsuario());
 				objAlmacenService.updateAlmacen(objAlmacenSie);
 				mensaje ="Se actualizó correctamente";
 				log.info("actualizado");
@@ -219,7 +225,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 		log.info("pagina  "+ paginaRetorno+" mensaj "+mensaje);
-
+		
 		return paginaRetorno;
 	}
 

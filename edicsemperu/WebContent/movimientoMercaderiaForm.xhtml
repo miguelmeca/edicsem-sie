@@ -13,7 +13,7 @@
 			Mercadería</h1>
 		<h:form id="formMovMerc">
 			<p:messages id="message" showDetail="true" />
-			<p:panel header="#{message['panel.ingreso.mercaderia']}">
+			<p:panel header="#{message['panel.movimiento.mercaderia']}">
 				<h:panelGrid columns="2" id="panel">
 					<h:panelGroup>
 					<h:outputText value="#{message['movimiento.tipo']}" />
@@ -27,21 +27,14 @@
 					<p:message for="idtipokardex" />
 					
 					<p:fieldset legend="Datos Producto">
-					<h:panelGrid columns="6">
+					<h:panelGrid columns="4">
 						<h:outputText id="ide" value="#{message['mantenimiento.producto.cantidadEnt']}"   rendered="#{!movimientoMercaderia.editMode}" />
 						<p:spinner id="spinnerE" size="2" min="1"  required="true" requiredMessage="#{message['movimiento.cantEntrada.validation']}" 
 							value="#{movimientoMercaderia.objKardexSie.cantentrada}" rendered="#{!movimientoMercaderia.editMode}"/>
-						 
 						<h:outputText id="ids"
 							value="#{message['mantenimiento.producto.cantidadSal']}" rendered="#{movimientoMercaderia.editMode}"/>
 							<p:spinner id="spinnerS" size="2" min="1"  required="true" requiredMessage="#{message['movimiento.cantSalida.validation']}" 
 							value="#{movimientoMercaderia.objKardexSie.cantsalida}" rendered="#{movimientoMercaderia.editMode}"/>
-							 		 
-					 <h:panelGroup>
-					 <p:message for="spinnerE" />
-					 <p:message for="spinnerS" />
-					 </h:panelGroup>
-					 
 					<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
 					<p:selectOneMenu id="tipoProd" value="#{comboAction.tipoProducto}" 
 						required="true"  style="width:165px" >
@@ -49,7 +42,6 @@
 						<f:selectItems value="#{comboAction.tipoitems}" />
 						<p:ajax update="produc" listener="#{comboAction.cambiar}" />
 					</p:selectOneMenu>
-					<p:message for="tipoProd" />
 					
 					<h:outputText value="#{message['mantenimiento.producto']}" />
 					<p:selectOneMenu id="produc"  
@@ -57,30 +49,26 @@
 						<f:selectItem itemLabel="Seleccione Producto" itemValue="#{null}"  />
 						<f:selectItems value="#{comboAction.productositems}" />
 					</p:selectOneMenu>
-					<p:message for="produc" />
 					</h:panelGrid>
 					</p:fieldset>
 					
 					<p:fieldset legend="Movimiento #{movimientoMercaderia.tipoMovimiento}"  >
-					<h:panelGrid columns="6" >
+					<h:panelGrid columns="4" >
 					<h:outputText value="Almacen" />
 					<p:selectOneMenu id="idAlmacen" size="1" required="true"  style="width:165px" 
 						value="#{movimientoMercaderia.idAlmacen}"  >
 						<f:selectItem itemLabel="Seleccione almacen" itemValue="#{null}" />
 						<f:selectItems value="#{comboAction.almacenItems}" />
 					</p:selectOneMenu>
-					<p:message for="idAlmacen" />
 					
 					<h:outputText value="Detalle" id="detProd" />
 					<p:inputTextarea value="#{movimientoMercaderia.objKardexSie.detallekardex}" />
-					<p:spacer />
 					
 					<h:outputText value="#{message['movimiento.empresa.descripcion']}" rendered="#{!movimientoMercaderia.editMode}"/>
 					<p:selectOneMenu size="1" 	value="#{movimientoMercaderia.idempresa}" rendered="#{!movimientoMercaderia.editMode}" style="width:165px">
 						<f:selectItem itemLabel="Seleccione Empresa" itemValue="0" />
 						<f:selectItems value="#{comboAction.empresaitems}" />
 					</p:selectOneMenu>
-					<p:spacer/>
 					</h:panelGrid>
 					</p:fieldset>
 					<p:fieldset legend="Movimiento #{movimientoMercaderia.tipomovimientoOpcional}"  rendered="#{movimientoMercaderia.idtipokardexproducto!=3}"  >
@@ -94,7 +82,7 @@
 					</p:fieldset>
 					
 					<c:forEach items="${sessionScope.cargoSession}" var="cargo">
-					<c:if  test="${cargo.idcargoempleado==8}">
+					<c:if  scope="${cargo.idcargoempleado==1}" >
 					<p:fieldset legend="Datos Comprobante"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}" >
 					<h:panelGrid columns="6" >
 					<h:outputText value="#{message['movimiento.proveedor.nombreempresa']}"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
@@ -111,8 +99,8 @@
 					<p:message for="valortotal" rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
 				
 					<h:outputText value="#{message['movimiento.comprobante.numero']}" rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
-					<p:inputMask id="num_comp" mask="9999999999" value="#{movimientoMercaderia.objcomprobante.codcomprobante}" required="true"  onkeydown="text_onkeypress();" 
-					requiredMessage="#{message['movimiento.comprobante.numero.validation']}"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
+					<p:inputMask id="num_comp" mask="9999999999" value="#{movimientoMercaderia.objcomprobante.codcomprobante}" required="true" 
+					 rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
 					
 				<p:message for="num_comp" rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
 				</h:panelGrid>

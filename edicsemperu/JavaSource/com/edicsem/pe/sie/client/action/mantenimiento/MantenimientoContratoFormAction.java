@@ -17,6 +17,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -30,6 +31,7 @@ import com.edicsem.pe.sie.entity.ContratoSie;
 import com.edicsem.pe.sie.entity.DetPaqueteSie;
 import com.edicsem.pe.sie.entity.DetProductoContratoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
+import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.PaqueteSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
@@ -77,7 +79,7 @@ public class MantenimientoContratoFormAction extends
 	private DetPaqueteSie objDetPaquete;
 	private List<String> colaboradorList;
 	private List<ContratoSie> contratoXClienteList;
-	private Date dhoy;
+	private Date dhoy, dValidoFecNac;
 	
 	//Consultar
 	private String numDniCliente,codigoContrato,apePatCliente,apeMatCliente,nombreCliente;
@@ -130,14 +132,14 @@ public class MantenimientoContratoFormAction extends
 		tipopago=1;
 		defectoUbigeo = true;
 		defectopaquete= true;
-		ubigeoDefecto = "";
 		selectTelef="";
 		idempleadoExpositor=0;
 		idempleadoVendedor=0;
 		Tipocasa=0;idUbigeo=0;
 		idempresa = 0;
+		ubigeoDefecto = "";
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -147,33 +149,23 @@ public class MantenimientoContratoFormAction extends
 	 */
 	public String agregar() {
 		log.info("agregar()");
+		ubigeoDefecto = "";
 		limpiarCampos();
 		setNewRecord(true);
+		comboManager.setUbigeoDeparItems(null);
+		comboManager.setUbigeoProvinItems(null);
+		comboManager.setUbigeoDistriItems(null);
 		comboManager.setIdDepartamento("15");
 		comboManager.setIdProvincia("01");
+		idDepartamento="15";
+		idProvincia="01";
+		idUbigeo=0;
 		comboManager.setIdCargo(2);
 		comboManager.setCodigoEstado(Constants.COD_ESTADO_TB_DET_CONTRATO_PRODUCTO);
 		objProductoSie.setCantidadContrato(1);
 		nuevoTelef.setTipoTelef("");
 		selectTelef= "";
 		return getViewMant();
-	}
-
-	public void cambioUbigeoDefecto() {
-		log.info(" defecto  " + defectoUbigeo);
-		comboManager.setUbigeoDeparItems(null);
-		comboManager.setUbigeoProvinItems(null);
-		comboManager.setUbigeoDistriItems(null);
-		if (defectoUbigeo) {
-			comboManager.setIdDepartamento("15");
-			comboManager.setIdProvincia("01");
-			log.info(" defecto lima true 1");
-			ubigeoDefecto = "";
-		} else {
-			comboManager.setIdDepartamento(null);
-			comboManager.setIdProvincia(null);
-			log.info(" cambio ubigeo   false  otro");
-		}
 	}
 
 	public void cambiar() {
@@ -278,7 +270,7 @@ public class MantenimientoContratoFormAction extends
 			log.info("  "+telefonoList.get(i).getTelefono() +" "+ nuevoTelef.getTelefono());
 			if(telefonoList.get(i).getTelefono().equals(nuevoTelef.getTelefono())){
 				 verifica= false;
-				 mensaje = "el telefono ya se encuentra registrado en la lista de referencias";
+				 mensaje = "El telefono ya se encuentra registrado en la lista de referencias";
 				 break;
 			}else{
 				 verifica= true;
@@ -289,13 +281,16 @@ public class MantenimientoContratoFormAction extends
 		}
 		if( verifica){
 			telefonoList.add(nuevoTelef);
+			mensaje="Se agregó telefono";
+			msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					Constants.MESSAGE_INFO_TITULO, mensaje);
 			log.info("se agrego " + nuevoTelef.getTelefono());
 		}
 		if( mensaje!=null){
-		msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-				Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-		FacesContext.getCurrentInstance().addMessage(null, msg);
+		msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+				Constants.MESSAGE_INFO_TITULO, mensaje);
 		}
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 		nuevoTelef = new TelefonoPersonaSie();
 		}
 	}
@@ -538,6 +533,8 @@ public class MantenimientoContratoFormAction extends
 		mensaje=null;
 		List<DetProductoContratoSie> detProductoContratoList = new ArrayList<DetProductoContratoSie>();
 		List<Integer> detidEmpleadosList = new ArrayList<Integer>();
+		HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+		EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()' ");
@@ -595,6 +592,8 @@ public class MantenimientoContratoFormAction extends
 				if(tipopago==1){
 				objContratoSie.setNumcuotas(objContratoSie.getNumcuotas()-1);
 				}
+				objContratoSie.setUsuariocreacion(sessionUsuario.getUsuario());
+				objCobranzaSie.setUsuariocreacion(sessionUsuario.getUsuario());
 				objContratoService.insertContrato(idtipodoc,Tipocasa,idUbigeo, idempresa, objClienteSie, telefonoList, objDomicilioSie,  objContratoSie,detProductoContratoList, cobranzaList, detidEmpleadosList);
 				log.info(" despues de  insertar ");
 				mensaje = "Se inserto correctamente";
@@ -672,7 +671,7 @@ public class MantenimientoContratoFormAction extends
 		domicilioList = new ArrayList<DomicilioPersonaSie>();
 	}
 	
-	public String onFlowProcess(FlowEvent event) {  
+	public String onFlowProcess(FlowEvent event) {
 	    log.info("Current wizard step:" + event.getOldStep());  
 	    log.info("Next step:" + event.getNewStep());  
 	    log.info("skip :"+skip);	
@@ -1420,6 +1419,23 @@ public class MantenimientoContratoFormAction extends
 	 */
 	public void setDhoy(Date dhoy) {
 		this.dhoy = dhoy;
+	}
+
+	/**
+	 * @return the dValidoFecNac
+	 * @throws Exception 
+	 */
+	public Date getdValidoFecNac() throws Exception {
+		dhoy = DateUtil.getToday().getTime();
+		dValidoFecNac= DateUtil.addToDate(dhoy, Calendar.YEAR, -18);
+		return dValidoFecNac;
+	}
+
+	/**
+	 * @param dValidoFecNac the dValidoFecNac to set
+	 */
+	public void setdValidoFecNac(Date dValidoFecNac) {
+		this.dValidoFecNac = dValidoFecNac;
 	}
 	
 }

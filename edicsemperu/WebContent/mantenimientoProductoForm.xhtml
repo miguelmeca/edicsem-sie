@@ -14,8 +14,8 @@
 			Productos </h1>
 		<h:form id="formManteProducto" prependId="false"
 			enctype="multipart/form-data">
-			<p:growl id="message" showDetail="true" />
-			<h:panelGrid columns="3">
+			<p:messages id="message" showDetail="true" />
+			<h:panelGrid columns="3" cellpadding="4"  >
 			
 				<h:outputText for="codigo" value="#{message['mantenimiento.producto.codigo']}" />
 				<p:inputText id="codigoProducto"

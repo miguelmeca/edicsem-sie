@@ -12,10 +12,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.MethodExpressionActionListener;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.primefaces.component.menuitem.MenuItem;
@@ -31,6 +28,7 @@ import com.edicsem.pe.sie.service.facade.DetPermisoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.LoginService;
 import com.edicsem.pe.sie.service.facade.ModuloOpcionService;
 import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 import com.edicsem.pe.sie.util.property.PropertyFile;
 import com.edicsem.pe.sie.util.security.SecurityLogin;
@@ -44,10 +42,11 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 	private EmpleadoSie objEmpleado;
 	private static Log log = LogFactory.getLog(LoginAction.class);
 	private Properties property ;
-	private String usuario;
+	private String usuario, passActual, passConfirma1, passConfirma2;
 	private String contrasenia;
 	private MenuModel mimenu;
 	private List<CargoEmpleadoSie> cargo;
+	private String fechaHoraIngreso;
 	
 	@EJB
 	private LoginService loginService;
@@ -101,13 +100,9 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 						for (MenuDTO a : lstMenu) {
 							if (a.getTipodeMenu().equals(q.substring(0))) {
 								item = new MenuItem();
-								
 								item.setValue(a.getNombreMenu());
-								log.info(" action: "+a.getNombreActionListener());
+								item.setAjax(false);
 								
-								log.info(" action: "+a.getUrlMenu());
-								
-								item.setAjax(false); 
 								if (a.getNombreActionListener() != null && a.getNombreActionListener().isEmpty() == false) {
 									item.setActionExpression(getMethod(a.getNombreActionListener()));
 									item.setUrl(null);
@@ -123,6 +118,9 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 							mimenu.addSubmenu(submenu);
 						}
 					}
+					fechaHoraIngreso = DateUtil.getDateTime("dd/MM/yyyy HH:mm:ss", DateUtil.getToday().getTime());
+					
+					
 					log.info(" listando cargos " +objEmpleado.getIdempleado()   );
 					cargo = cargoService.listarCargosXEmpleado(objEmpleado.getIdempleado());
 					for (int i = 0; i < cargo.size(); i++) {
@@ -157,6 +155,7 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
         FacesContext context = FacesContext.getCurrentInstance();
         context.getExternalContext().getSessionMap().clear();
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(Constants.USER_KEY, false);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(Constants.CARGO_USER, false);
         try {
             context.getExternalContext().redirect("/edicsemperu/sessionexpired.jsf");
         } catch (IOException ex) {
@@ -164,6 +163,10 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
         	ex.printStackTrace();
         }
     }
+	
+	public void cambiarContrasena(){
+		
+	}
 	
 	public MethodExpression getMethod(String actionListenerName) {
 		ExpressionFactory context = FacesContext.getCurrentInstance().getApplication().getExpressionFactory();
@@ -252,6 +255,62 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 	 */
 	public void setMimenu(MenuModel mimenu) {
 		this.mimenu = mimenu;
+	}
+
+	/**
+	 * @return the passActual
+	 */
+	public String getPassActual() {
+		return passActual;
+	}
+
+	/**
+	 * @param passActual the passActual to set
+	 */
+	public void setPassActual(String passActual) {
+		this.passActual = passActual;
+	}
+
+	/**
+	 * @return the passConfirma1
+	 */
+	public String getPassConfirma1() {
+		return passConfirma1;
+	}
+
+	/**
+	 * @param passConfirma1 the passConfirma1 to set
+	 */
+	public void setPassConfirma1(String passConfirma1) {
+		this.passConfirma1 = passConfirma1;
+	}
+
+	/**
+	 * @return the passConfirma2
+	 */
+	public String getPassConfirma2() {
+		return passConfirma2;
+	}
+
+	/**
+	 * @param passConfirma2 the passConfirma2 to set
+	 */
+	public void setPassConfirma2(String passConfirma2) {
+		this.passConfirma2 = passConfirma2;
+	}
+
+	/**
+	 * @return the fechaHoraIngreso
+	 */
+	public String getFechaHoraIngreso() {
+		return fechaHoraIngreso;
+	}
+
+	/**
+	 * @param fechaHoraIngreso the fechaHoraIngreso to set
+	 */
+	public void setFechaHoraIngreso(String fechaHoraIngreso) {
+		this.fechaHoraIngreso = fechaHoraIngreso;
 	}
 
 }

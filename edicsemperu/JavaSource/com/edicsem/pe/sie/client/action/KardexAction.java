@@ -117,6 +117,7 @@ public class KardexAction extends BaseMantenimientoAbstractAction {
 				log.info(" f  ");
 				mensaje ="Por favor ingresar una fecha de inicio ";
 				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
+				FacesContext.getCurrentInstance().addMessage(null, msg);
 			}else{
 			if (fechaDesde != null && fechaHasta == null){
 				//la fecha hasta será la actual
@@ -135,6 +136,9 @@ public class KardexAction extends BaseMantenimientoAbstractAction {
 			if(kardexList.size()==0){
 				kardexList = new ArrayList<KardexSie>();
 				stockActual=0;
+				setMensaje(" consulta realizada ");
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+				FacesContext.getCurrentInstance().addMessage(null, msg);
 			}else{ 
 				
 				log.info("cantidad existente :D "+ kardexList.get(kardexList.size() - 1).getCantexistencia());
@@ -143,9 +147,9 @@ public class KardexAction extends BaseMantenimientoAbstractAction {
 				log.info("nuevo stock actual " + getStockActual());
 				setMensaje(" consulta realizada ");
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+				FacesContext.getCurrentInstance().addMessage(null, msg);
 			}
 			}
-			FacesContext.getCurrentInstance().addMessage(null, msg);
 		return getViewList();
 	}
 	
@@ -172,6 +176,9 @@ public class KardexAction extends BaseMantenimientoAbstractAction {
 		}
 	
 		objKardexService.updateKardex(objKardexSie);
+		mensaje="Se actualizó correctamente el movimiento a la empresa "+ objKardexSie.getTbEmpresa().getDescripcion();
+		msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 		limpiarCampos();
 		return consultar();
 	}
