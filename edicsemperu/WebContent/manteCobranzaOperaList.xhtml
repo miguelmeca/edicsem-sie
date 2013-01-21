@@ -157,7 +157,7 @@
  </p:selectOneMenu>
 <p:outputLabel value="#{message['operadora.observacion']}" for="observacion" />
 <p:inputTextarea id="observacion"  value="#{mantenimientoCobranzaOperaSearchAction.objCobranzaOpera.observaciones}" requiredMessage="#{message['operadora.observacion.validation']}" 
-rows="3" cols="60" maxlength="100" required="true" label="Correo" autoResize="false"/>
+rows="3" cols="60" maxlength="500" required="true" label="Correo" autoResize="false"/>
 <h:outputText value="Enviar al sistema :" />
 <p:selectBooleanCheckbox value="#{mantenimientoCobranzaOperaSearchAction.enviarMensaje}" ></p:selectBooleanCheckbox>
 <p:commandButton id="btn" value="Guardar" update="panel" action="#{mantenimientoCobranzaOperaSearchAction.insertar}" ajax="false" icon="ui-icon-check"/>
