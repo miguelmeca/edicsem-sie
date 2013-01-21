@@ -8,12 +8,9 @@
 	xmlns:p="http://primefaces.org/ui">
 <f:view >
 	<h:head>
-
-
 		<ui:insert name="title">
 			<title>Men&uacute; Principal</title>
 		</ui:insert>
-
 		<f:facet name="first">
 			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
 			<title>Ediciones Sembrando</title>
@@ -108,33 +105,56 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	<f:loadBundle var="message"
 		basename="com.edicsem.pe.sie.client.properties.ApplicationResources" />
 	<p:layout fullPage="true">
-		<p:layoutUnit position="north" size="130">
+		<p:layoutUnit position="north" size="95">
 			<div id="header" class="ui-widget ui-widget-header">
 				<div id="logo">
 					<img src="#{request.contextPath}/images/logoEdicsem.jpg" alt="Logo" style="height: 58px " />
 				</div>
 				<div id="menu" class="ui-widget">
 					<ul id="main">
-						<li class="current_page_item"><a href="#">Pagina
-								principal</a></li>
-						<li><a>Cambiar Contraseña</a></li>
+						<li class="current_page_item"><a href="index.xhtml">Página Principal</a></li>
+						<li><p:commandLink  onclick="cambiarContrasenaDialog.show()" value ="Cambiar Contraseña"/></li> 
 						<li><a>Actualizar Datos</a></li>
-						<li class="current_page_item"><a>Otra opcion</a></li>
+						<li>${sessionScope.loginUserSession.nombresCompletos}
+						<br />
+						#{login.fechaHoraIngreso}
+						</li>
 					</ul>
 				</div>
 			</div>
 		</p:layoutUnit>
 		<p:layoutUnit position="west"  resizable="true" collapsible="true"
-			header="${sessionScope.loginUserSession.nombresCompletos}" >
-			<h:form  >
+			header="#{message['login.opciones.menu']}" >
+			<h:form>
 				<p:menu model="#{login.mimenu}" position="center"  style="width:100%"/>
 			</h:form>
 		</p:layoutUnit>
-
 		<p:layoutUnit id="center" position="center" scrollable="true">
 			<ui:insert name="body" />
 		</p:layoutUnit>
 	</p:layout>
+	
+	
+	<!--  CAMBIAR CONTRASENA  -->
+	<h:form id="formCambiarcontrasena">
+		<p:dialog header="#{message['Cargoempleado.descripcion']}" widgetVar="cambiarContrasenaDialog"
+			showEffect="fade" hideEffect="explode" modal="true" position="center">
+			<p:messages id="msj" />
+			
+			<h:outputText value="#{message['mensaje.cambiar.contrasena']}"   />
+			<h:panelGrid id="display" columns="2" cellpadding="5" >
+			<h:outputText value="#{message['contrasena.actual']}" />
+            <p:password value="#{login.passActual}" required="true"/>
+            <h:outputText value="#{message['contrasena.nueva']}" />
+            <p:password id="pwd1" value="#{login.passConfirma1}" feedback="true" required="true" match="pwd2" />
+            <h:outputText value="#{message['contrasena.nueva.confirma']}" />
+            <p:password id="pwd2" value="#{login.passConfirma2}" feedback="true" required="true"/>
+			<p:commandButton update="msj" value="Actualizar Contraseña" action="#{login.cambiarContrasena}" />
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+	
+	
 	<!--  Mantenimiento |x Detalle - Modificar-->
 	<h:form id="formManteKardexList">
 		<p:dialog widgetVar="kardexDialog" showEffect="fade"
@@ -234,8 +254,6 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
-
-
 	
 	
 	<!--  Mantenimiento ALMACEN -->

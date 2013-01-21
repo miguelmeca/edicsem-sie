@@ -12,8 +12,8 @@
 			Productos</h1>
 		<h:form id="formManteProdLista" >
 		<p:messages id="message" showDetail="true" />
-			<p:dataTable value="#{productoSearch.productoList}" var="p"
-					id="listaPersonas" paginator="true" rows="5"
+			<p:dataTable value="#{productoSearch.productoList}" var="p" 
+					id="listaProductos" paginator="true" rows="5"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15" widgetVar="table"
 					emptyMessage="No se encontro registros">
@@ -39,7 +39,7 @@ Mantenimiento Producto
 							<p:commandButton id="btn1" update=":formManteProdDetalle:display"
 								oncomplete="prodDialog.show()" value="ver detalle"
 								title="Vea datos del producto">
-								<f:setPropertyActionListener target="#{productoForm.selectedProducto}" value="#{p}"></f:setPropertyActionListener>
+								<f:setPropertyActionListener target="#{productoForm.selectedProducto}" value="#{p}"/>
 							</p:commandButton>
 						</p:column>
 					<p:column>
@@ -58,6 +58,8 @@ Mantenimiento Producto
 						</div>
 					</f:facet>
 				</p:dataTable>
+				<p:blockUI block="listaProductos" trigger="listaProductos">cargando<br />
+				<p:graphicImage value="/images/ajax-loader.gif"/></p:blockUI>
 		</h:form>
 	</ui:define>
 </ui:composition>

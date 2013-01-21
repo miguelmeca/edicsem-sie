@@ -616,7 +616,7 @@ public class ComboAction {
 	 */
 	public Map<String, Integer> getTipocasaItems() {
 		tipocasaItems = new HashMap<String, Integer>();
-		List lista = new ArrayList<TipoCasaSie>();
+		List<TipoCasaSie> lista = new ArrayList<TipoCasaSie>();
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'getTipocasaItems()'");
@@ -624,10 +624,8 @@ public class ComboAction {
 			lista = objTipoCasaService.listarTipoCasa();
 
 			for (int i = 0; i < lista.size(); i++) {
-				TipoCasaSie entidad = new TipoCasaSie();
-				entidad = (TipoCasaSie) lista.get(i);
-				tipocasaItems.put(entidad.getDescripcion(),
-						entidad.getIdtipocasa());
+				tipocasaItems.put(lista.get(i).getDescripcion(),
+						lista.get(i).getIdtipocasa());
 			}
 
 		} catch (Exception e) {
@@ -651,20 +649,16 @@ public class ComboAction {
 
 	public Map<String, String> getUbigeoDeparItems() {
 		ubigeoDeparItems = new HashMap<String, String>();
-		List lista = new ArrayList<UbigeoSie>();
+		List<UbigeoSie> lista = new ArrayList<UbigeoSie>();
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'getUbigeoDeparItems()'");
 			}
 			lista = objUbigeoService.listarUbigeoDepartamentos();
-
 			for (int i = 0; i < lista.size(); i++) {
-				UbigeoSie entidad = new UbigeoSie();
-				entidad = (UbigeoSie) lista.get(i);
-				ubigeoDeparItems.put(entidad.getNombre(),
-						entidad.getCoddepartamento());
+				ubigeoDeparItems.put(lista.get(i).getNombre(),
+						lista.get(i).getCoddepartamento());
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -717,24 +711,22 @@ public class ComboAction {
 	 */
 	public Map<String, String> getUbigeoProvinItems() {
 		ubigeoProvinItems = new HashMap<String, String>();
-		List lista = new ArrayList<UbigeoSie>();
+		List<UbigeoSie> lista = new ArrayList<UbigeoSie>();
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'getUbigeoProvinItems()'"
 						+ this.getIdDepartamento());
 			}
-			if (this.getIdDepartamento() != null) {
-				lista = objUbigeoService.listarUbigeoProvincias(this
-						.getIdDepartamento());
-			} else
-				lista = new ArrayList<UbigeoSie>();
+			lista = objUbigeoService.listarUbigeoProvincias(this.getIdDepartamento());
 			for (int i = 0; i < lista.size(); i++) {
-				UbigeoSie entidad = new UbigeoSie();
-				entidad = (UbigeoSie) lista.get(i);
-				ubigeoProvinItems.put(entidad.getNombre(),
-						entidad.getCodprovincia());
+				log.info(i+" "+lista.get(i).getNombre()+"  "+lista.get(i).getCoddepartamento()+"  "+lista.get(i).getCodprovincia()+"  "+lista.get(i).getCoddistrito());
+				ubigeoProvinItems.put(lista.get(i).getNombre(),
+						lista.get(i).getCodprovincia());
 			}
-
+			
+			log.info(" ubigeoProvinItems  " );
+			log.info(" ubigeoProvinItems  " +ubigeoProvinItems);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();

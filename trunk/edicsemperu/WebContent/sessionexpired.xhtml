@@ -48,28 +48,25 @@ body {
 		
 	</h:head>
 	<h:form id="formRegPer">
-		<p:dialog modal="true" widgetVar="statusDialog"
-			header="Enviando formulario del Proceso..." draggable="false"
-			closable="false" closeOnEscape="false" resizable="false">
-			<p:graphicImage value="/images/ajaxloadingbar.gif" />
-		</p:dialog>
-
-		<p:panel  header="sesion expirada" id="formulario" style="width: 970px; height: 800px; margin: auto;">
+	
+		<p:panel  header="sesion expiradaaa" id="formulario" style="width: 970px; height: 800px;">
 			<table align="center" >
 			<tr> </tr>
 			<tr></tr>
 			<tr>
-			<td colspan="2" >
-			<p:graphicImage id="i" url="/images/Avatar.jpg" /></td>
-			</tr>
-			<tr>
-			<td>
-				<h1 align="center" style="color: blue;">  Sesión Expirada  </h1>	
+			<td  >
+			<img src="images/Avatar.jpg" alt="sesión expirada" />
 			</td>
 			</tr>
 			<tr>
-			<td >
-			<h2><h:outputText value="Para iniciar sessión nuevamente ingrese "/><h:link  style="color: red;" outcome="login.jsf" value="Aquí"/> </h2></td>
+			<td>
+				<h1 align="center" style="color: blue;">  Sesión Expirada :D  </h1>	
+			</td>
+			</tr>
+			<tr>
+			<td>
+			<h2>Para iniciar sessión nuevamente ingrese <a href="login.jsf" style="color: red;"  >aquí</a> </h2>
+			</td>
 			</tr>
 			</table>
 

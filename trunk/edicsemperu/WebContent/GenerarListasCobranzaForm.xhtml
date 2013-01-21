@@ -10,19 +10,17 @@
 		<h:form id="formGenerarCobranza">
 			<p:messages id="message" showDetail="true" />
 			<p:panel header="#{message['panel.generar.cobranza']}">
-				<h:panelGrid columns="6">
+				<h:panelGrid columns="2" cellpadding="4" >
 					<p:outputLabel value="Empleados" for="cargo"/>
-					 <p:selectCheckboxMenu  id="cargo" value="#{cobranza.empleadoList}" filter="true" filterText="Filter" filterMatchMode="contains" 
-					 style="width:300px " >
-					<f:selectItems  value="#{comboAction.empleadoxcargo}" />
+					
+					<p:selectCheckboxMenu  id="cargo" value="#{cobranza.empleadoList}" filter="true" filterText="Filter" 
+						filterMatchMode="contains" style="width:300px " >
+						<f:selectItems  value="#{comboAction.empleadoxcargo}" />
 					</p:selectCheckboxMenu>
 					
+					<p:commandButton action="#{cobranza.insertar}" value="generar" ajax="false" update="message"/>
 				</h:panelGrid>
-				
-				<p:commandButton action="#{cobranza.insertar}"
-					value="generar" ajax="false" update="message"/>
 			</p:panel>
-			
 		</h:form>
 	</ui:define>
 </ui:composition>

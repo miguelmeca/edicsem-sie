@@ -10,9 +10,9 @@
 	</script>
 		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Kardex</h1>
 		<h:form  id="frmKardex" >
-			 <p:growl id="message" showDetail="true" />
-			<p:panel  header="#{message['panel.seleccion.producto']}">
-			<h:panelGrid columns="9" >
+			<p:messages id="message" showDetail="true" />
+			<p:fieldset legend="#{message['panel.seleccion.producto']}"  style="width:70% " >
+			<h:panelGrid columns="6" cellpadding="4" >
 				<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
 				<p:selectOneMenu id="tipoProd" value="#{comboAction.tipoProducto}" required="true"
 				requiredMessage="#{message['kardex.tipoProducto.validation']}">
@@ -20,7 +20,6 @@
 					<f:selectItems value="#{comboAction.tipoitems}"  />
 					<p:ajax update="product"  listener="#{comboAction.cambiar}"/>
 				</p:selectOneMenu>
-				 <p:message for="tipoProd" />
 				
 				<h:outputText value="#{message['mantenimiento.producto']}" />
 				<p:selectOneMenu id="product"  value="#{kardexAction.idproducto}" required="true"
@@ -28,14 +27,13 @@
 					<f:selectItem itemLabel="Seleccione Producto" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.productositems}" />
 				</p:selectOneMenu>
-				 <p:message for="product" />
 				
+				<h:outputText value="#{message['mantenimiento.kardex.tipo.almacen']}" />
 				<p:selectOneMenu  id="tipoAlmacen"  value="#{kardexAction.idtipopuntoventa}" required="true">
 				<f:selectItem itemLabel="Seleccione tipo" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.tipoalmacenitems}" />
 					<p:ajax update="almacen"  />
 				</p:selectOneMenu>
-				<p:message for="tipoAlmacen" />
 				 
 				<h:outputText value="#{message['mantenimiento.kardex.almacen']}" />
 				<p:selectOneMenu id="almacen"  value="#{kardexAction.idalmacen}"  required="true"
@@ -43,12 +41,10 @@
 					<f:selectItem itemLabel="Seleccione" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.almacenItemsXTipo}" />
 				</p:selectOneMenu>
-				<p:message for="almacen" />
 				 
 				<h:outputText value="#{message['kardex.desde']}" />
 				<p:calendar pattern="dd/MM/yyyy"  locale="br" effect="explode" 
 				value="#{kardexAction.fechaDesde}" maxdate="today" />
-				<p:spacer/>
 				
 				<h:outputText value="#{message['kardex.hasta']}" />
 				<p:calendar pattern="dd/MM/yyyy"  locale="br" effect="explode" maxdate="today"
@@ -58,7 +54,8 @@
 				
 				<p:commandButton  value="Consultar" action="#{kardexAction.consultar}" 
 				update=":frmKardex" />
-				</h:panelGrid> 
+				</h:panelGrid>
+				</p:fieldset>
 				<p:spacer width="40" />
 				<p:dataTable value="#{kardexAction.kardexList}" var="p" 
 					id="listakardex" paginator="true" rows="5" 
@@ -122,9 +119,6 @@
 					</p:dataTable>
 				 
 				<p:spacer width="40"></p:spacer>
-
-			 
-			</p:panel>
 		</h:form>
 	</ui:define>
 </ui:composition>
