@@ -94,7 +94,7 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 		List lista = null;
 		try {
 
-			Query q = em.createQuery("select p from UbigeoSie p where p.codprovincia ='00' and p.coddistrito ='00' ORDER BY p.nombre  ");
+			Query q = em.createQuery("select p from UbigeoSie p where p.codprovincia ='00' and p.coddistrito ='00' ORDER BY p.nombre ASC ");
 			lista = q.getResultList();
 			log.info("tamaño lista Ubigeo  --> " + lista.size()+ "  ");
 			
@@ -117,7 +117,7 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 			Query q = em
 					.createQuery("select p from UbigeoSie p where  p.coddepartamento = '" + idDepartamento + "' " +
 							"and p.codprovincia!='00' and p.coddistrito='00'" +
-							" ORDER BY  p.nombre ");
+							" ORDER BY  p.nombre ASC ");
 			lista = q.getResultList();
 			log.info("tamaño lista Ubigeo Provincias  --> " + lista.size() + "  "+idDepartamento);
 		} catch (Exception e) {
@@ -138,7 +138,7 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 		List lista = null;
 		try {
 			Query q = em.createQuery("select p from UbigeoSie p where  p.coddepartamento = '"
-							+ idDepartamento + "'  " + " and p.codprovincia = '" + idProvincia + "'  ORDER BY  p.nombre ");
+							+ idDepartamento + "'  " + " and p.codprovincia = '" + idProvincia + "'  ORDER BY  p.nombre ASC ");
 			lista = q.getResultList();
 			log.info("tamaño lista Ubigeo  Distritos --> "
 					+ lista.size() + "  "+idProvincia+"- "+ idDepartamento);
