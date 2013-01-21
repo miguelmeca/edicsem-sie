@@ -41,7 +41,7 @@ public class MantenimientoTipoProductoFormAction extends
 	@ManagedProperty(value = "#{tipoProductoSearch}")
 	private MantenimientoTipoProductoSearchAction mantenimientoTipoProductoSearch;
 
-	private static Log log = LogFactory.getLog(MantenimientoTipoProductoSearchAction.class);
+	private static Log log = LogFactory.getLog(MantenimientoTipoProductoFormAction.class);
 
 	@EJB
 	private TipoProductoService objTipoProductoService;
@@ -69,8 +69,8 @@ public class MantenimientoTipoProductoFormAction extends
 		TipoProductoSie tp = objTipoProductoService.findTipoProducto(objTipoProductoSie.getIdtipoproducto());
 		log.info(" id tipoproducto " + tp.getIdtipoproducto() + " cod "+ tp.getCodtipoproducto());		
 		setIdtipoproducto(tp.getIdtipoproducto().toString());
-		objTipoProductoSie.setNombretipoproducto(tp.getNombretipoproducto());
 		objTipoProductoSie.setCodtipoproducto(tp.getCodtipoproducto());
+		objTipoProductoSie.setNombretipoproducto(tp.getNombretipoproducto());
 		//setIdEstadoGeneral(c.getTbEstadoGeneral().getIdestadogeneral());
 		setNewRecord(false);
 		editMode = false;
@@ -288,6 +288,10 @@ public class MantenimientoTipoProductoFormAction extends
 	 */
 	public void setIdtipoproducto(String idtipoproducto) {
 		this.idtipoproducto = idtipoproducto;
+	}
+	
+	public String getViewList() {
+		return Constants.MANT_TIPO_PRODUCTO_FORM_LIST_PAGE;
 	}
 	
 }
