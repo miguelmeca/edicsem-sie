@@ -9,6 +9,6 @@ public interface CobranzaOperaDAO {
 	public abstract void insertCobranzaOpera(CobranzaOperadoraSie cobranzaopera);
 	public abstract void updateCobranzaOpera(CobranzaOperadoraSie cobranzaopera);
 	public abstract CobranzaOperadoraSie findCobranzaOpera (int id);
-	public abstract List  listarCobranzasOpera();
+	public abstract List  listarCobranzasOpera(String usuario);
 	public abstract int verificargeneracionDiaria();
 }
