@@ -32,7 +32,6 @@ public class TelefonoEmpleadoDAOImpl implements TelefonoEmpleadoDAO{
 				log.info("apunto de insertar telefono");
 			}
 			em.persist(telefonopersona);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -87,19 +86,6 @@ public class TelefonoEmpleadoDAOImpl implements TelefonoEmpleadoDAO{
 	
 
 	
-	/*buscar telefono por idempleado*/
-	public TelefonoPersonaSie buscarTelefonoXIdempleado(int id) {
-		log.info(" idempleado "+ id);
-		TelefonoPersonaSie telefono =new TelefonoPersonaSie();
-		try {
-			Query q = em.createQuery("select p from TelefonoPersonaSie p where p.idempleado = "+ id);
-			telefono = (TelefonoPersonaSie) q.getResultList().get(0);
-			//log.info("Telefono x idempleado  --> " + lista.size());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return telefono;
-	}
 
 	
 	public List listarTelefonoCliente(int id) {
@@ -170,6 +156,22 @@ public class TelefonoEmpleadoDAOImpl implements TelefonoEmpleadoDAO{
 		}
 		return lista;
 	}
+	
+
+	/*buscar telefono por idempleado*/
+	public TelefonoPersonaSie buscarTelefonoXIdempleado(int id) {
+		log.info(" idempleado "+ id);
+		TelefonoPersonaSie telefono =new TelefonoPersonaSie();
+		try {
+			Query q = em.createQuery("select p from TelefonoPersonaSie p where p.idempleado = "+ id);
+			telefono = (TelefonoPersonaSie) q.getResultList().get(0);
+			//log.info("Telefono x idempleado  --> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return telefono;
+	}
+	
 	
 	public TelefonoPersonaSie buscarTelefonoXIdcliente(int id) {
 		log.info(" idcliente "+ id);
