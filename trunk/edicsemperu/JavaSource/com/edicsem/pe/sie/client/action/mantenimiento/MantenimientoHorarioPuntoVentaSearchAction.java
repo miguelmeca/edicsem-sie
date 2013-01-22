@@ -25,10 +25,15 @@ import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
+import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
+import com.edicsem.pe.sie.entity.FechaSie;
 import com.edicsem.pe.sie.entity.HorarioPuntoVentaSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.service.facade.AlmacenService;
+import com.edicsem.pe.sie.service.facade.EstadogeneralService;
+import com.edicsem.pe.sie.service.facade.FechaService;
 import com.edicsem.pe.sie.service.facade.HorarioPuntoVentaService;
+import com.edicsem.pe.sie.util.FaceMessage.FaceMessage;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
@@ -60,12 +65,24 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends
 	private String mensaje;
 	private List<String> diaList;
 	private boolean editMode;
+	/*DIA*/
+	private FechaSie objFechaSie;
+	
+	/**Deshabilitar**/
+	
+	private int  idc;
 
 	@EJB
 	private AlmacenService objAlmacenService;
 
 	@EJB
 	private HorarioPuntoVentaService objHorarioPuntoVentaService;
+	
+	@EJB
+	private EstadogeneralService objEstadoGeneralService;
+	
+	@EJB
+	private FechaService objFechaService; 
 
 	public MantenimientoHorarioPuntoVentaSearchAction() {
 		log.info("inicializando mi constructor");
@@ -83,6 +100,7 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends
 		eventModel = new DefaultScheduleModel();
 		idpuntoventa = 0;
 		diaList= new  ArrayList<String>();
+		
 		log.info("despues de inicializar");
 	}
 
@@ -92,6 +110,9 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends
 	public String agregar() {
 		log.info("agregar()");
 		objHorarioPuntoVentaSie = new HorarioPuntoVentaSie();
+		diaList= new  ArrayList<String>();
+		horaIngreso = null;
+		horaSalida= null;
 		newRecord = true;
 		return getViewList();
 	}
@@ -117,72 +138,73 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends
 
 		mensaje =null;
 		log.info("entrando a insertar");
+	
+		
+		objHorarioPuntoVentaSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(38));
 		try {
-			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'insertar' "+objHorarioPuntoVentaSie.getDiainicio());
-			}
-				if (newRecord) {
-					log.info("fecha pp  " + getHoraIngreso());
-					Time hora1 = new Time(getHoraIngreso().getTime());
-					Time hora2 = new Time(getHoraSalida().getTime());
-					log.info(" g   " + hora1 + " g   " + hora2);
-					objHorarioPuntoVentaSie.setHoraIngreso(hora1);
-					objHorarioPuntoVentaSie.setHoraSalida(hora2);
-
-					/** Validation **/
-
-					// para que no hayan cruces de horario
-					for (int j = 0; j < diaList.size(); j++) {
-						for (int i = 0; i < listaHorario.size(); i++) {
-							log.info("  verificando ");
-							if (listaHorario.get(i).getTbFecha().getIdFecha() == Integer.parseInt(diaList.get(j))
-									&& (objHorarioPuntoVentaSie.getDiainicio().after(listaHorario.get(i).getDiainicio())
-											&& objHorarioPuntoVentaSie.getDiainicio().before(listaHorario.get(i).getDiafin())
-											|| objHorarioPuntoVentaSie.getDiafin().after(listaHorario.get(i).getDiainicio())
-											&& objHorarioPuntoVentaSie.getDiafin().before(listaHorario.get(i).getDiafin())
-											|| objHorarioPuntoVentaSie.getDiafin().equals(listaHorario.get(i).getDiafin())
-											|| objHorarioPuntoVentaSie.getDiafin().equals(listaHorario.get(i).getDiainicio())
-											|| objHorarioPuntoVentaSie.getDiainicio().equals(listaHorario.get(i).getDiafin()) || objHorarioPuntoVentaSie
-											.getDiainicio().equals(listaHorario.get(i).getDiainicio()))) {
-								log.info("fechas con horario registrado   ");
-								if (objHorarioPuntoVentaSie.getHoraIngreso().equals(listaHorario.get(i).getHoraIngreso())
-										|| objHorarioPuntoVentaSie.getHoraIngreso().after(listaHorario.get(i).getHoraIngreso())
-										&& objHorarioPuntoVentaSie.getHoraIngreso().before(listaHorario.get(i).getHoraSalida())) {
-									log.info(objHorarioPuntoVentaSie.getHoraIngreso()
-											+ " --->  getHoraIngreso "
-											+ listaHorario.get(i).getHoraIngreso());
-									mensaje = "La hora de Ingreso es errónea " ;
-									break;
-								} else if (objHorarioPuntoVentaSie.getHoraSalida().equals(
-											listaHorario.get(i).getHoraSalida())
-										|| objHorarioPuntoVentaSie.getHoraSalida().after(listaHorario.get(i).getHoraIngreso())
-										&& objHorarioPuntoVentaSie.getHoraSalida()
-												.before(listaHorario.get(i).getHoraSalida())) {
-									log.info(objHorarioPuntoVentaSie.getHoraSalida()
-											+ " --->  getHoraSalida "
-											+ listaHorario.get(i).getHoraSalida());
-									mensaje = "La hora de Salida es errónea";
-									break;
-								}
+			
+			//para que no hayan cruces de horario 
+			for (int j = 0; j < diaList.size();j++) {
+				for (int i = 0; i < listaHorario.size(); i++) {
+					log.info("  verificando ");
+					if( listaHorario.get(i).getTbFecha().getIdFecha()== Integer.parseInt(diaList.get(j))
+						 && (objHorarioPuntoVentaSie.getDiainicio().after(listaHorario.get(i).getDiainicio()) && 
+								 objHorarioPuntoVentaSie.getDiainicio().before(listaHorario.get(i).getDiafin() ) ||
+								 objHorarioPuntoVentaSie.getDiafin().after(listaHorario.get(i).getDiainicio()) && 
+								 objHorarioPuntoVentaSie.getDiafin().before(listaHorario.get(i).getDiafin() ) ||
+								 objHorarioPuntoVentaSie.getDiafin().equals(listaHorario.get(i).getDiafin()) ||
+								 objHorarioPuntoVentaSie.getDiafin().equals(listaHorario.get(i).getDiainicio())||
+								 objHorarioPuntoVentaSie.getDiainicio().equals(listaHorario.get(i).getDiafin())||
+								 objHorarioPuntoVentaSie.getDiainicio().equals(listaHorario.get(i).getDiainicio()))){
+						log.info("fechas con horario registrado   ");
+						mensaje ="--->";
+						msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+						Constants.MESSAGE_REGISTRO_TITULO, mensaje);
+						if(	objHorarioPuntoVentaSie.getHoraIngreso().equals(listaHorario.get(i).getHoraIngreso()) ||
+								objHorarioPuntoVentaSie.getHoraIngreso().after(listaHorario.get(i).getHoraIngreso())
+								&& objHorarioPuntoVentaSie.getHoraIngreso().before(listaHorario.get(i).getHoraSalida())){
+							log.info(objHorarioPuntoVentaSie.getHoraIngreso() +" --->  getHoraIngreso "+ listaHorario.get(i).getHoraIngreso());
+							mensaje = "La hora de Ingreso es errónea";
+							break;
+						}else if(objHorarioPuntoVentaSie.getHoraSalida().equals(listaHorario.get(i).getHoraSalida()) ||
+								objHorarioPuntoVentaSie.getHoraSalida().after(listaHorario.get(i).getHoraIngreso())
+								&& objHorarioPuntoVentaSie.getHoraSalida().before(listaHorario.get(i).getHoraSalida())){
+							log.info(objHorarioPuntoVentaSie.getHoraSalida()+" --->  getHoraSalida "+listaHorario.get(i).getHoraSalida());
+							mensaje = "La hora de Salida es errónea";
+							break;
 							}
 						}
 					}
-					if (mensaje.equals("")) {
-						log.info("hora ingreso  "+ objHorarioPuntoVentaSie.getHoraIngreso());
-						log.info("punto de venta  "+ objPuntoVentaSie.getIdpuntoventa()+"  diaList "+diaList.size());
-						log.info("dia 1 "+objHorarioPuntoVentaSie.getDiainicio());
-						objHorarioPuntoVentaService.insertHorarioPunto(diaList,objHorarioPuntoVentaSie,objPuntoVentaSie.getIdpuntoventa());
-						log.info("insertando..... ");
-						msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-								Constants.MESSAGE_INFO_TITULO, mensaje);
-						FacesContext.getCurrentInstance().addMessage(null, msg);
-						log.info("dia 1 "+objHorarioPuntoVentaSie.getDiainicio());
-					} else {
-						msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-								Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-						FacesContext.getCurrentInstance().addMessage(null, msg);
-					}
-				} else {
+				}
+			
+			
+			
+			if(isNewRecord()){
+				
+					Time hora1 = new Time(getHoraIngreso().getTime());
+					Time hora2 = new Time(getHoraSalida().getTime());
+					
+					objHorarioPuntoVentaSie.setHoraIngreso(hora1);
+					objHorarioPuntoVentaSie.setHoraSalida(hora2);
+					
+					
+					objHorarioPuntoVentaSie.setDiainicio(objHorarioPuntoVentaSie.getDiainicio());
+					objHorarioPuntoVentaSie.setDiafin(objHorarioPuntoVentaSie.getDiafin());
+					objHorarioPuntoVentaSie.setTbPuntoVenta(objPuntoVentaSie);
+
+					log.info("APUNTO DE INSERTAR");
+					/**********diaList se debe a q se selecciona mas de uno en el combobox y es un String que luego en el Facade se setea a entero***********************************/
+				objHorarioPuntoVentaService.insertHorarioPunto(objHorarioPuntoVentaSie,diaList);
+					log.info("despues de insertar..... ");
+					
+					mensaje ="Se Registró Correctamente";
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+							Constants.MESSAGE_INFO_TITULO, mensaje);
+					FacesContext.getCurrentInstance().addMessage(null, msg);
+				
+
+				} 
+			else {
 					log.info("actualizando " + getHoraIngreso() + "  hora salida  " + getHoraSalida());
 					Time hora1 = new Time(getHoraIngreso().getTime());
 					Time hora2 = new Time(getHoraSalida().getTime());
@@ -191,13 +213,12 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends
 					objHorarioPuntoVentaSie.setHoraSalida(hora2);
 
 					objHorarioPuntoVentaService.updateHorarioPunto(objHorarioPuntoVentaSie);
-					mensaje="Se actualizó el factor";
+					mensaje ="Se Actualizo Correctamente";
 					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-							Constants.MESSAGE_REGISTRO_TITULO, mensaje);
-			
+							Constants.MESSAGE_INFO_TITULO, mensaje);
+					FacesContext.getCurrentInstance().addMessage(null, msg);
 				}
-				FacesContext.getCurrentInstance().addMessage(null, msg);
-				log.info("dia 2 "+objHorarioPuntoVentaSie.getDiainicio());
+				
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -206,6 +227,7 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
+		
 		return mostrar();
 	}
 
@@ -230,6 +252,76 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends
 		return getViewList();
 	}
 
+	
+	
+	
+	public String updateDeshabilitar() throws Exception {
+		mensaje =null;
+
+		
+		objHorarioPuntoVentaSie = new HorarioPuntoVentaSie();
+		int id;
+		
+		HorarioPuntoVentaSie c = new HorarioPuntoVentaSie();
+
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'updateDESHABILITAR()'");
+			}
+
+			id = getIdc();
+			log.info(" ------>>>>>>aqui cactura el parametro ID "+ id);
+			
+			
+					
+					c = objHorarioPuntoVentaService.findHorarioPunto(id);
+							
+					log.info(" ------Android>" );
+					objHorarioPuntoVentaSie.setIdhorariopunto(c.getIdhorariopunto());
+					objHorarioPuntoVentaSie.setDiainicio(c.getDiainicio());
+					objHorarioPuntoVentaSie.setDiafin(c.getDiafin());
+					objHorarioPuntoVentaSie.setFechaInicio(c.getFechaInicio());
+					objHorarioPuntoVentaSie.setFechahasta(c.getFechahasta());
+					objHorarioPuntoVentaSie.setTbPuntoVenta(objAlmacenService.findAlmacen(getIdpuntoventa()));
+					objHorarioPuntoVentaSie.setTbFecha(objFechaService.findFecha(getIdpuntoventa()));
+					objHorarioPuntoVentaSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(39));
+					
+//					objHorarioPuntoVentaSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral());
+					
+				
+					log.info("actualizando ESTADO..... ");
+
+					
+					objHorarioPuntoVentaService.eliminarHorarioPunto(id);
+					
+					log.info("actualizando..... ");	
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+							Constants.MESSAGE_DESHABILITAR_TITULO, mensaje);
+					mensaje ="WDF";
+					
+				
+				
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		
+		objHorarioPuntoVentaSie = new HorarioPuntoVentaSie();
+		return mostrar();
+	}
+	
+	
+	
+	
+	
+	
+	
 	/* LISTA LOS HORARIOS DEL ALMACEN SELECCIONADO */
 	public String mostrar() throws Exception {
 		eventModel = new DefaultScheduleModel();
@@ -554,6 +646,34 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends
 	 */
 	public List<PuntoVentaSie> getPuntoVentaList() {
 		return PuntoVentaList;
+	}
+
+	/**
+	 * @return the objFechaSie
+	 */
+	public FechaSie getObjFechaSie() {
+		return objFechaSie;
+	}
+
+	/**
+	 * @param objFechaSie the objFechaSie to set
+	 */
+	public void setObjFechaSie(FechaSie objFechaSie) {
+		this.objFechaSie = objFechaSie;
+	}
+
+	/**
+	 * @return the idc
+	 */
+	public int getIdc() {
+		return idc;
+	}
+
+	/**
+	 * @param idc the idc to set
+	 */
+	public void setIdc(int idc) {
+		this.idc = idc;
 	}
 
 }
