@@ -421,16 +421,6 @@ public class MantenimientoClienteFormAction extends
 			
 			objDomicilio.setTbUbigeo(objUbigeoService.findUbigeo(Integer.parseInt(idUbigeo)));
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
 			objClienteService.updateCliente(objClienteSie,objDomicilio,idUbigeo,tipo,TelefonoPersona,TelefonoPersonaList, TelefonoDeshabilitado);
 
 			mensaje = "";
