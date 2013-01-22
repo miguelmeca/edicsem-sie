@@ -27,7 +27,8 @@
 <!--********** BOTON EDITAR **********-->
 		
 <p:column headerText="Editar">
-<p:commandButton value="Editar"  oncomplete="carDialogNuevo.show()"
+<center>	
+<p:commandButton   oncomplete="carDialogNuevo.show()"
    								 action="#{mantenimientoCargoEmpleadoFormAction.update}"
 			                     update=":NuevoModificaCargoEmpleado:display"
 			                     icon="ui-icon ui-icon-pencil"
@@ -36,6 +37,7 @@
 							 target="#{mantenimientoCargoEmpleadoFormAction.objCargoEmpleadoSie}"
 />
 </p:commandButton>
+</center>	
 					
 	</p:column>
  
@@ -46,10 +48,10 @@
 
 <!--**********INICIO 	DESACTIVAR**********-->
 
-<p:column headerText="Deshabilitar Cargo">
-
+<p:column headerText="Deshabilitar">
+<center>	
 <p:commandButton id="showConfirmDeshabilitar1"
-				 value="Deshabilitar"
+			
 				 icon="ui-icon ui-icon-close"	 			
 	 			 onclick="confirmation24.show()">
 	 			  
@@ -59,7 +61,7 @@
 />							
 
 </p:commandButton>
-				
+</center>					
 		</p:column>
 
 <f:facet name="footer">
@@ -67,14 +69,15 @@
 	
 <!--********** BOTON NUEVO **********-->
 
-<p:commandLink value="Nuevo Cargo Empleado"
+<p:commandButton value="Nuevo Cargo Empleado"
  update=":NuevoModificaCargoEmpleado:display"
+ icon="ui-icon-star"
  action="#{mantenimientoCargoEmpleadoFormAction.agregar}"
  oncomplete="carDialogNuevo.show()" 
  title="Ingresar Cargo Empleado"
 				
 >
-</p:commandLink>
+</p:commandButton>
 						
 <!--**********FIN NUEVO**********-->
 
