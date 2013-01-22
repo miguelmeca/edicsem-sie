@@ -11,7 +11,10 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
+import com.edicsem.pe.sie.entity.EstadoGeneralSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
+import com.edicsem.pe.sie.entity.TipoCasaSie;
+import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.model.dao.ClienteDAO;
 import com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
@@ -70,30 +73,42 @@ public class ClienteServiceImpl implements ClienteService {
 		
 		
 		
+		UbigeoSie ubigeo = new UbigeoSie();
+		TipoCasaSie tipoCasa = new TipoCasaSie();
+		EstadoGeneralSie estado = new EstadoGeneralSie();
+		ClienteSie cliente = new ClienteSie();
+		
+		/*Estado (15) Habilitar Docimilio*/
+		estado.setIdestadogeneral(15);
+		ubigeo.setIdubigeo(Integer.parseInt(idUbigeo));
+		tipoCasa.setIdtipocasa(tipo);
+		cliente.setIdcliente(Cliente.getIdcliente());
+		
 		/**Actualiza el domicilio**/
 		objDomicilio.setIddomiciliopersona(objDomicilio.getIddomiciliopersona());
-		objDomicilio.setIdcliente(objClienteDao.findCliente(Cliente.getIdcliente()));
-		objDomicilio.setTbUbigeo(objUbigeoDao.findUbigeo(Integer.parseInt(idUbigeo)));
-		objDomicilio.setTbTipoCasa(objTipoCasaDao.findTipoCasa(tipo));
-		/*Estado del domicilio: habilitado(15)*/
-		objDomicilio.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(15));
+		objDomicilio.setIdcliente(Cliente);
+		objDomicilio.setTbUbigeo(ubigeo);
+		objDomicilio.setTbTipoCasa(tipoCasa);
+		objDomicilio.setTbEstadoGeneral(estado);
 		objDomicilioEmpleadoDao.actualizarDomicilioEmpleado(objDomicilio);
 		
 		/**Actualiza telefono(s)**/
 		for (TelefonoPersonaSie objTelefono : TelefonoPersonaList) {
-			objTelefono.setIdcliente(Cliente); 
-			objTelefono.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(17));
+			objTelefono.setIdcliente(cliente);
+			/* Estado (17) Habilitar Telefono*/
+			estado.setIdestadogeneral(17);
+			objTelefono.setTbEstadoGeneral(estado);
+			
 			objTelefonoDao.insertarTelefonoEmpleado(objTelefono);
 		}
 		for(TelefonoPersonaSie objTelefono2 : TelefonoDeshabilitado){
 			objTelefono2.setIdtelefonopersona(objTelefono2.getIdtelefonopersona());
-			objTelefono2.setIdcliente(Cliente); 
-			objTelefono2.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(18));
+			objTelefono2.setIdcliente(Cliente);
+			/* Estado (18) Deshabilitar Telefono*/
+			estado.setIdestadogeneral(18);
+			objTelefono2.setTbEstadoGeneral(estado);
 			objTelefonoDao.actualizarTelefonoEmpleado(objTelefono2);					
-		}
-		
-		
-		
+		}		
 	} catch (Exception e) {
 		e.printStackTrace();
 	}	
