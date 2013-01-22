@@ -14,10 +14,11 @@
                
       <p:fieldset legend="Lista de Paquetes Biblicos">          
                	
-			<p:dataTable id="pack" value="#{mantenimientoPaqueteBiblicoSearchAction.detPaqueteList}" var="pb" paginator="true" rows="5"
+			<p:dataTable  value="#{mantenimientoPaqueteBiblicoSearchAction.detPaqueteList}" var="pb" paginator="true" rows="5"
        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	   rowsPerPageTemplate="5,10,15" widgetVar="table"
-	   emptyMessage="No se encontro registros">	
+	   emptyMessage="No se encontro registros"
+	    >	
 	   
 				<p:column headerText="Codigo" >
 					<h:outputText value="#{pb.codpaquete}" />
@@ -45,10 +46,11 @@
 				
 <p:column headerText="Editar">
 <center>
-<p:commandButton value="Editar "  oncomplete="PaqueteBiblico.show()"
-								  action="#{mantenimientoPaqueteBiblicoFormAction.update}" 
-								  update=":formPaqueteBiblico:display"
-								  icon="ui-icon ui-icon-pencil" >
+<p:commandButton  oncomplete="PaqueteBiblico.show()"
+				  action="#{mantenimientoPaqueteBiblicoFormAction.update}" 
+				  update=":formPaqueteBiblico:display"
+				  icon="ui-icon ui-icon-pencil" 
+				  title="Editar descripción del paquete" >
 					<f:setPropertyActionListener value="#{pb}"
 												 target="#{mantenimientoPaqueteBiblicoFormAction.objPaqueteSie}" />
 					</p:commandButton></center>
@@ -59,7 +61,7 @@
 <p:column headerText="Deshabilitar Paquete Biblico">
 <center>
 <p:commandButton id="showConfirmDeshabilitar1"
-				 value="Deshabilitar"
+			
 				 icon="ui-icon ui-icon-close"	 			
 	 			 onclick="confirmationPaquete.show()">
 	 			  
@@ -107,7 +109,7 @@
 <center>
 <p:commandButton  oncomplete="DetPaqueteBiblico.show()"
 				 action="#{mantenimientoDetallePaqueteBiblicoSearchAction.update}" 
-				 update=":formDetPaqueteBiblico:display"
+				 update=":frmPaqueBibliList, :formDetPaqueteBiblico:display"
 				 icon="ui-icon ui-icon-pencil" >
 <f:setPropertyActionListener value="#{c}"
 							 target="#{mantenimientoDetallePaqueteBiblicoSearchAction.objDetPaqueteSie}" />
@@ -130,17 +132,13 @@
 </p:commandButton>
 </center>
 		</p:column>
-		<f:facet name="footer">
-		<p:commandButton value="Agregar un nuevo producto al paquete"
-		update=":formDetPaqueteBiblico:display"
-		action="#{mantenimientoDetallePaqueteBiblicoSearchAction.agregar}"
-		oncomplete="DetPaqueteBiblico.show()" 
-		icon="ui-icon ui-icon-check" 
-		title="Ingresar Nuevo Paquete Biblico"/>
-		</f:facet>
-		
-		</p:dataTable>
-	
+			</p:dataTable>
+	<p:commandButton value="Agregar un nuevo producto al paquete"
+update=":frmPaqueBibliList, :formDetPaqueteBiblico:display"
+action="#{mantenimientoDetallePaqueteBiblicoSearchAction.agregar}"
+oncomplete="DetPaqueteBiblico.show()" 
+icon="ui-icon ui-icon-check" 
+title="Ingresar Nuevo Paquete Biblico"/>	
 	</p:fieldset> 	
 </p:outputPanel>
 			
