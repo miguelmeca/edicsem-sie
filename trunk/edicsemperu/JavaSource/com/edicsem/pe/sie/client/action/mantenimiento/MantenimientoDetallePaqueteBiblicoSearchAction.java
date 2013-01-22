@@ -189,7 +189,7 @@ public String insertar() {
 			if (lista.get(i).getTbProducto().getIdproducto().equals(objDetPaqueteSie.getTbProducto().getIdproducto())) {
 				log.info("Error ... Ya se encuentra un producto igual");
 				mensaje ="Ya se encuentra un Producto con el mismo nombre en el Paquete";
-				paginaRetorno =getViewMant();
+				paginaRetorno =listar();
 				error = 1;
 				break;
 			}
@@ -237,7 +237,7 @@ msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 				Constants.MESSAGE_INFO_TITULO, mensaje);
 		mensaje ="Se registró el producto correctamente";
 		objDetPaqueteSie = new DetPaqueteSie();
-		paginaRetorno =getViewMant();
+		paginaRetorno =listar();
 		
 	}
 		else {
@@ -324,7 +324,7 @@ public String updateDeshabilitarDetProdPaquete() throws Exception {
 	}
 //	objCargoEmpleadoSie = new CargoEmpleadoSie();
 	objDetPaqueteSie = new DetPaqueteSie();
-	return getViewMant();
+	return listar();
 }
 
 
