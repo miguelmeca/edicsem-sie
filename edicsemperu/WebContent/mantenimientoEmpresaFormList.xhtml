@@ -41,9 +41,9 @@ emptyMessage="No se encontraron registros">
         		<!--********** BOTON EDITAR **********-->
 		
 	<p:column headerText="Editar">
-	
+	<center>
 <p:commandButton
-value="Editar"
+
 oncomplete="carDialogNuevaempresa.show()"
 action="#{empresaForm.update}"
 update=":NuevoModificaempresa:display"
@@ -55,6 +55,7 @@ icon="ui-icon ui-icon-pencil"
 target="#{empresaForm.objEmpresaSie}" />
 			 
 			</p:commandButton>
+			</center>
 					
 	</p:column>
  
@@ -63,9 +64,9 @@ target="#{empresaForm.objEmpresaSie}" />
 <!--**********INICIO 	DESACTIVAR**********-->
 
 <p:column headerText="Deshabilitar">
-	
+<center>	
 <p:commandButton id="showConfirmDeshabilitarEmpresa" 
-				 value="Eliminar"  
+				  
 				 icon="ui-icon ui-icon-close"
 				 onclick="confirmationEmpresa.show()"> 
 	 							
@@ -76,7 +77,7 @@ target="#{empresaForm.objEmpresaSie}" />
 
 
 </p:commandButton>
-				
+</center>				
 		</p:column>
 		
 		<f:facet name="footer">
@@ -85,13 +86,13 @@ target="#{empresaForm.objEmpresaSie}" />
 		<!--********** BOTON NUEVO **********-->
 		
 		
-		<p:commandLink value="Nueva Empresa"  update=":NuevoModificaempresa:display" 
+		<p:commandButton value="Nueva Empresa"  update=":NuevoModificaempresa:display" 
 				
 				action="#{empresaForm.agregar}"
 				oncomplete="carDialogNuevaempresa.show()" 	title="Ingresar la Nueva Empresa"
-				
+				icon="ui-icon-star"
 >
-</p:commandLink>
+</p:commandButton>
 </div>
 
 
