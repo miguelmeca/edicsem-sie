@@ -32,19 +32,22 @@ public class HorarioPuntoVentaServiceImpl implements HorarioPuntoVentaService{
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.HorarioPuntoVentaService#insertHorarioPunto(java.util.List, com.edicsem.pe.sie.entity.HorarioPuntoVentaSie, int)
 	 */
-	public void insertHorarioPunto(List<String> diaList, HorarioPuntoVentaSie h, int idpuntoventa) {
-		log.info("  insertHorarioPunto ");
+	public void insertHorarioPunto(HorarioPuntoVentaSie h, List<String> diaList) {
+		log.info("  insertar HorarioPunto en el servicio");
 		
-		for (String d : diaList) {
+//		for (String d : diaList) {
+			for (int i = 0; i < diaList.size(); i++) {
 			HorarioPuntoVentaSie auxi = new HorarioPuntoVentaSie();	
-			auxi.setDiafin(h.getDiafin());
-			auxi.setDiainicio(h.getDiainicio());
-			auxi.setHoraIngreso(h.getHoraIngreso());
-			auxi.setHoraSalida(h.getHoraSalida());
-			auxi.setObservacion(h.getObservacion());
-			auxi.setTbFecha(objFechaDao.findFecha(Integer.parseInt(d)));
-			auxi.setTbPuntoVenta(objAlmacenDao.findAlmacen(idpuntoventa));
-			auxi.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(38));
+			auxi=h;
+//			auxi.setDiafin(h.getDiafin());
+//			auxi.setDiainicio(h.getDiainicio());
+//			auxi.setHoraIngreso(h.getHoraIngreso());
+//			auxi.setHoraSalida(h.getHoraSalida());
+//			auxi.setObservacion(h.getObservacion());
+//			h.setTbFecha(objFechaDao.findFecha(Integer.parseInt(d)));
+	auxi.setTbFecha(objFechaDao.findFecha(Integer.parseInt(diaList.get(i))));
+//			auxi.setTbPuntoVenta(objAlmacenDao.findAlmacen(idpuntoventa));
+//			auxi.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(38));
 			objHorarioPuntoDao.insertHorarioPunto(auxi);
 		}
 	}
@@ -53,6 +56,7 @@ public class HorarioPuntoVentaServiceImpl implements HorarioPuntoVentaService{
 	 * @see com.edicsem.pe.sie.service.facade.HorarioPuntoVentaService#updateHorarioPunto(com.edicsem.pe.sie.entity.HorarioPuntoVentaSie)
 	 */
 	public void updateHorarioPunto(HorarioPuntoVentaSie h) {
+		log.info("  actualizar HorarioPunto en el servicio");
 		objHorarioPuntoDao.updateHorarioPunto(h);
 	}
 
@@ -74,5 +78,12 @@ public class HorarioPuntoVentaServiceImpl implements HorarioPuntoVentaService{
 		log.info("En el servicio ");
 		return objHorarioPuntoDao.listarHorarioPuntoVentaXidPV(id);
 		
+	}
+
+
+	public void eliminarHorarioPunto(int id) {
+		objHorarioPuntoDao.eliminarHorarioPunto(id);
+		
 	}	
+	
 }
