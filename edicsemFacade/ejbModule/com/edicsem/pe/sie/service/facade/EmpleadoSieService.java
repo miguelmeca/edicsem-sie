@@ -13,7 +13,7 @@ import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 @Local
 public interface EmpleadoSieService {
 	public abstract void insertarEmpleado (EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, int codigoTipoDocumento, int codigoCargoEmpleado,
-    String idUbigeo, int tipo, int idCargo, int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int idEmpresa, int idTipoPago, int codigoEmpleado, List<ContratoEmpleadoSie> contratoEmpleadoList, List<TelefonoPersonaSie> TelefonoPersonaList);
+	String idUbigeo, int tipo, int idCargo, int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int idEmpresa, int idTipoPago, int codigoEmpleado, List<ContratoEmpleadoSie> contratoEmpleadoList, List<TelefonoPersonaSie> TelefonoPersonaList);
 	public abstract void actualizarEmpleado (EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, int codigoTipoDocumento, int codigoCargoEmpleado, 
 	String idUbigeo, int tipo, int idCargo, int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int idEmpresa, int idTipoPago, int codigoEmpleado, List<ContratoEmpleadoSie> contratoEmpleadoList, List<TelefonoPersonaSie> TelefonoPersonaList, List<TelefonoPersonaSie> TelefonoDeshabilitado, List<ContratoEmpleadoSie> ContratoDeshabilitado, List<DetEmpresaEmpleadoSie> detEmpresaEmpList);
 	public abstract void eliminarEmpleado (int id);

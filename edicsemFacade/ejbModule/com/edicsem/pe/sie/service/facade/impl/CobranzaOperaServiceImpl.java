@@ -217,10 +217,10 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.CobranzaService#listarCobranzas()
+	 * @see com.edicsem.pe.sie.service.facade.CobranzaOperaService#listarCobranzasOpera(java.lang.String)
 	 */
-	public List listarCobranzasOpera() {
-		return objCobranzaOperaDao.listarCobranzasOpera();
+	public List listarCobranzasOpera(String usuario) {
+		return objCobranzaOperaDao.listarCobranzasOpera(usuario);
 	}
 
 	/* (non-Javadoc)
