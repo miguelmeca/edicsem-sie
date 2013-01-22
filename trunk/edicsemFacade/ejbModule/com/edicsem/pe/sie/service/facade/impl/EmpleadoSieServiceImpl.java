@@ -27,8 +27,6 @@ import com.edicsem.pe.sie.model.dao.TipoDocumentoDAO;
 import com.edicsem.pe.sie.model.dao.TipoPagoDAO;
 import com.edicsem.pe.sie.model.dao.UbigeoDAO;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
-import com.edicsem.pe.sie.service.facade.EmpresaService;
-import com.edicsem.pe.sie.service.facade.ProductoService;
 
 @Stateless
 public class EmpleadoSieServiceImpl implements EmpleadoSieService{
@@ -116,11 +114,16 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 				objEmpleado.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(3));
 				objEmpleadoDao.actualizarEmpleado(objEmpleado);
 				/**Actualiza telefono(s)**/
+				log.info("bien!! :d ");
 				for (TelefonoPersonaSie objTelefono : TelefonoPersonaList) {
+					log.info("bien!! por agregar ");
+					if(objTelefono.getItem().equalsIgnoreCase("Por Agregar")){
 					objTelefono.setIdempleado(objEmpleado);
 					objTelefono.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
 					objTelefonoDao.insertarTelefonoEmpleado(objTelefono);
+					}
 				}
+				 log.info(" tipo casa "+ tipo);
 				/**Actualiza el domicilio**/
 				objDomicilio.setIddomiciliopersona(objDomicilio.getIddomiciliopersona());
 				objDomicilio.setIdempleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
@@ -128,24 +131,24 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 				objDomicilio.setTbTipoCasa(objTipoCasaDao.findTipoCasa(tipo));
 				/*Estado del domicilio: habilitado(15)*/
 				objDomicilio.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(15));
-				objDomicilioDao.insertarDomicilioEmpleado(objDomicilio);
+				objDomicilioDao.actualizarDomicilioEmpleado(objDomicilio);
 				/**Actualiza Contrato(s)**/
 				for (ContratoEmpleadoSie objContrato : contratoEmpleadoList) {
-					objContrato.setIdContratoEmpl(objContrato.getIdContratoEmpl());
-					objContrato.setIdempleado(objEmpleado.getIdempleado());
-					DetEmpresaEmpleadoSie detempemp=new DetEmpresaEmpleadoSie();
-					detempemp.setIdDetEmpresaEmpl(detempemp.getIdDetEmpresaEmpl());
-					detempemp.setTbEmpresa(objEmpresaDao.findEmpresa(objContrato.getEmpresa()));
-					detempemp.setTbEmpleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
-					detempemp.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(64));
-					objDetEmpresaEmpDao.insertDetEmpresaEmpleadoSie(detempemp);
-					objContrato.setTbDetEmpresaEmpleado(objDetEmpresaEmpDao.findDetEmpresaEmpleadoSie(detempemp.getIdDetEmpresaEmpl()));
-					objContrato.setTbCargoempleado(objCargoEmpDao.buscarCargoEmpleado(idCargo));
-					objContrato.setTbTipoPago(objTipoPagoDao.findTipoPago(idTipoPago));
-					objContrato.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
-					objContratoEmpleadoDao.insertContratoEmpleado(objContrato);
+					if(objContrato.getTipo()!=null && objContrato.getTipo().equalsIgnoreCase("Por Agregar")){
+						objContrato.setIdempleado(objEmpleado.getIdempleado());
+						DetEmpresaEmpleadoSie detempemp=new DetEmpresaEmpleadoSie();
+						detempemp.setTbEmpresa(objEmpresaDao.findEmpresa(objContrato.getEmpresa()));
+						detempemp.setTbEmpleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
+						detempemp.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(64));
+						objDetEmpresaEmpDao.insertDetEmpresaEmpleadoSie(detempemp);
+						objContrato.setTbDetEmpresaEmpleado(objDetEmpresaEmpDao.findDetEmpresaEmpleadoSie(detempemp.getIdDetEmpresaEmpl()));
+						objContrato.setTbCargoempleado(objCargoEmpDao.buscarCargoEmpleado(idCargo));
+						objContrato.setTbTipoPago(objTipoPagoDao.findTipoPago(idTipoPago));
+						objContrato.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
+						objContratoEmpleadoDao.insertContratoEmpleado(objContrato);
+					}
 				}
-				log.info("actualizando..... ");				
+				log.info("actualizando..... ");
 				//Agregen esto a tus redirecciones parece que esta referenciando a otra cosa verifiquen a donde estan 
 				//llenando los datos 
 				//Redirections.redirectionsPage(Constants.PAGE_MODULE, Constants.LISTA_CARGO_PAGE);
