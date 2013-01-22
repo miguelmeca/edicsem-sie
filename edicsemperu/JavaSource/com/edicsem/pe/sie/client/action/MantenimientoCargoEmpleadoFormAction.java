@@ -104,11 +104,6 @@ public String derivarEmpleado() throws Exception {
 em = objContratoEmpleadoService.findContratoEmpleado(parametroObtenido);
 			
 
-
-
-
-
-
 for (EmpleadoSie miempleado : cargoempleadoList ) {
 	log.info("entre al forech");
 	
@@ -121,14 +116,7 @@ for (EmpleadoSie miempleado : cargoempleadoList ) {
 	 FaceMessage.FaceMessageError("Se Derivo correctamente","prosiga ah eliminar dicho Cargo Empleado");
 	}
    }
-
-	
-	
-
-
-			
-			 
-			 
+	 
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -141,31 +129,6 @@ for (EmpleadoSie miempleado : cargoempleadoList ) {
 		return Constants.MANT_CARGO_EMPLEADO_FORM_LIST_PAGE;
 	
 }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
