@@ -2,6 +2,7 @@ package com.edicsem.pe.sie.client.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -118,13 +119,15 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 							mimenu.addSubmenu(submenu);
 						}
 					}
-					fechaHoraIngreso = DateUtil.getDateTime("dd/MM/yyyy HH:mm:ss", DateUtil.getToday().getTime());
-					
+				
+					Date n= new Date();
+					fechaHoraIngreso = DateUtil.getDateTime("dd/MM/yyyy HH:mm:ss", n);
+					log.info(" fecha hora " + fechaHoraIngreso);
 					
 					log.info(" listando cargos " +objEmpleado.getIdempleado()   );
 					cargo = cargoService.listarCargosXEmpleado(objEmpleado.getIdempleado());
 					for (int i = 0; i < cargo.size(); i++) {
-						log.info(" c " +cargo.get(i).getIdcargoempleado());
+						log.info(" ccc " +cargo.get(i).getIdcargoempleado());
 					}
 					SessionsSie.putObjectInSession(Constants.CARGO_USER, cargo);
 					

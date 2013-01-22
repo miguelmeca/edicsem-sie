@@ -19,7 +19,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.primefaces.event.FlowEvent;
 
-import com.arjuna.ats.internal.jdbc.drivers.modifiers.list;
 import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.entity.ContratoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DetEmpresaEmpleadoSie;
@@ -552,7 +551,9 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
         comboManager.setIdDepartamento(idDepartamento);
         setIdProvincia(d.getTbUbigeo().getCodprovincia());
         comboManager.setIdProvincia(idProvincia);
-        setIdDistrito(d.getTbUbigeo().getIdubigeo().toString());
+        setIdUbigeo(d.getTbUbigeo().getIdubigeo().toString());
+        setIdDistrito(d.getTbUbigeo().getCoddistrito());
+        log.info(" tipo casa "+d.getTbTipoCasa().getIdtipocasa());
         setTipo(d.getTbTipoCasa().getIdtipocasa());
         objDomicilio.setTbEstadoGeneral(d.getTbEstadoGeneral());
         /*seteo contrato*/
@@ -571,9 +572,12 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		setNewRecord(false);
 		return getViewMant();
 	}
-	
-	/*método del botón GUARDAR(inserta o actualiza el empleado, domicilio y telefono)*/
-	public String insertar(ActionEvent actionEvent) throws Exception {
+		
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
+	 */
+	public String insertar() throws Exception {
+		String paginaretorno="";
 		if(StringUtils.equals(objEmpleado.getContrasena(), confcontra)){ /*probar compararcontra*/
 			/*encripta la contraseña*/
 		    objEmpleado.setContrasena(SecurityLogin.getMD5(objEmpleado.getContrasena()));
@@ -592,15 +596,16 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 					idUbigeo, tipo,  idCargo, DomicilioPersona, TelefonoPersona,TipoDocumento, idEmpresa, idTipoPago, codigoEmpleado, contratoEmpleadoList, TelefonoPersonaList);
 					log.info("insertando..... ");
 					setNewRecord(false);
+					mensaje=Constants.MESSAGE_REGISTRO_TITULO;
 				} else {
 					log.info("actualizando..... ");
 					objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, codigoTipoDocumento,  codigoCargoEmpleado,  
 					idUbigeo, tipo,  idCargo, DomicilioPersona, TelefonoPersona,TipoDocumento, idEmpresa, idTipoPago, codigoEmpleado, contratoEmpleadoList, TelefonoPersonaList, TelefonoDeshabilitado, ContratoDeshabilitado, detEmpresaEmpList);
 					log.info("insertando..... ");
+					mensaje ="Se actualizó correctamente";
 				}
-				mensaje ="";
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-						Constants.MESSAGE_REGISTRO_TITULO, mensaje);
+						Constants.MESSAGE_INFO_TITULO, mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -611,13 +616,14 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 		objEmpleado = new EmpleadoSie();
-		return mantenimientoEmpleadoSearch.listar();
+		paginaretorno= mantenimientoEmpleadoSearch.listar();
 	   }
 		else{
-		msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_PASSWORDS_DESIGUALES, "algo");
+		msg = new FacesMessage(FacesMessage.SEVERITY_WARN,Constants.MESSAGE_INFO_TITULO , Constants.MESSAGE_PASSWORDS_DESIGUALES);
 		FacesContext.getCurrentInstance().addMessage(null, msg);
-		return getViewMant();
+		paginaretorno = getViewMant();
 		}
+		return paginaretorno;
 	}
 	
 	public void agregarPago(){
