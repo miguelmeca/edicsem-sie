@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.HorarioPuntoVentaSie;
 import com.edicsem.pe.sie.model.dao.HorarioPuntoVentaDAO;
 
@@ -27,7 +28,7 @@ public class HorarioPuntoVentaDAOImpl implements HorarioPuntoVentaDAO {
 	public void insertHorarioPunto(HorarioPuntoVentaSie h) {
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("insertar el HorarioPuntoVenta"+h.getTbFecha().getDia());
+				log.info("insertar el HorarioPuntoVenta");
 			}
 			em.persist(h);
 		} catch (Exception e) {
@@ -94,4 +95,19 @@ public class HorarioPuntoVentaDAOImpl implements HorarioPuntoVentaDAO {
 		}
 		return lista;
 	}
+
+
+	public void eliminarHorarioPunto(int id) {
+		try {
+			HorarioPuntoVentaSie bean=   findHorarioPunto(id);
+			em.remove(bean);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
 }
