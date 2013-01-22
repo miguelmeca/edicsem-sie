@@ -7,11 +7,11 @@
 	template="/layout/template.xhtml">
 	<ui:define name="body">
 		<h:form id="form">
-	<p:panel header="Registrar Empleado"  id="panel">
+		<p:messages id="message" showDetail="true"/>
+		<p:panel header="Registrar Empleado"  id="panel">
 	    <p:wizard id="wiz" widgetVar="wiz" flowListener="#{mantenimientoEmpleadoFormAction.onFlowProcess}">
 	    <p:tab title="#{message['empleado.tabpersonal']}">
 	    <p:panel header="Datos Personales"> 
-	     <p:messages id="message" showDetail="true"/> 	  
         <h:panelGrid columns="2" cellpadding="5">						
 			<p:outputLabel value="#{message['empleado.nombre']}" for="nombre" />
 			<p:inputText id="nombre" value="#{mantenimientoEmpleadoFormAction.objEmpleado.nombreemp}" required="true" label="Nombre" 
@@ -53,7 +53,7 @@
 			label="Fecha de nacimiento" requiredMessage="#{message['empleado.fechanac.validation']}"/>                  
             
             <h:outputText value="#{message['contrato.cliente.correo']}" />
-					<p:inputText value="#{mantenimientoEmpleadoFormAction.objEmpleado.correo}" required="true" requiredMessage="#{message['contrato.cliente.email.validation']}" id="email" validatorMessage="Email incorrecto" maxlength="45" >
+					<p:inputText value="#{mantenimientoEmpleadoFormAction.objEmpleado.correo}"   title="para el @ presione: la tecla Alt + 64 y en laptop Alt Gr + Q" required="true" requiredMessage="#{message['contrato.cliente.email.validation']}" id="email" validatorMessage="Email incorrecto" maxlength="45" >
 					 <f:validateRegex pattern="#{message['pattern.email.norequired']}" />
 					</p:inputText>
             <p:watermark for="email" value="ejm@edicsem.com" /> 
@@ -191,7 +191,6 @@
          <p:tab title="#{message['empleado.tabcontrato']}" id="contemp"  >
          <p:panel id="panlcont" header="Datos Contrato">
          
-        <h:messages errorClass="error"/>  
            <h:panelGrid columns="2"  >
             <h:outputText value="#{message['mantenimiento.empresa.descripcion']}" />
             <p:selectOneMenu id="empresa" value="#{mantenimientoEmpleadoFormAction.idEmpresa}">
@@ -212,7 +211,7 @@
             <p:spinner value="#{mantenimientoEmpleadoFormAction.objContratoEmpleado.basico}" /> 
             <h:outputText value="#{message['empleado.periodoPrueba']}" />
             <p:inputText title="x mes" value="#{mantenimientoEmpleadoFormAction.objContratoEmpleado.periodoPrueba}"/> 
-            <p:commandButton value="Agregar" update="panelPagos, message" actionListener="#{mantenimientoEmpleadoFormAction.agregarPago}" icon="ui-icon-check"/>
+            <p:commandButton value="Agregar" update="panelPagos, message" action="#{mantenimientoEmpleadoFormAction.agregarPago}" icon="ui-icon-check"/>
            
             	<p:dataTable id="panelPagos" value="#{mantenimientoEmpleadoFormAction.contratoEmpleadoList}" var="c"  >
 						
@@ -225,33 +224,24 @@
 						<p:column headerText="#{message['empleado.tabla.cargo']}" >
 							<h:outputText value="#{c.tbCargoempleado.descripcion}" />
 						</p:column>
-						
-						<p:column headerText="#{message['empleado.tabla.cargo']}" >
-							<h:outputText value="#{c.tbCargoempleado.descripcion}" />
-						</p:column>
 						<p:column headerText="#{message['empleado.tabla.fecIni']}" >
 							<h:outputText value="#{c.fechaInicioContrato}" />
 						</p:column>
 						<p:column headerText="#{message['empleado.tabla.sueldo']}" >
 							<h:outputText value="#{c.basico}" />
 						</p:column>
-
-						     <p:column headerText="Eliminar" style="width:125px">
+						<p:column headerText="Eliminar" style="width:125px">
 		                    <p:commandButton id="showconfirmDeshabilitarConEmp" 
-				            value="Eliminar"  
-				            icon="ui-icon ui-icon-close"
+				            value="Eliminar"  icon="ui-icon ui-icon-close"
 				            onclick="confirmationConEmp.show()"> 
 	 							
                             <f:setPropertyActionListener
-		                    value="#{c.item}"
-		                    target="#{mantenimientoEmpleadoFormAction.idContrato}"     />
-
-                            </p:commandButton>
-		                    </p:column>
-		                    
+		                    value="#{c.item}" target="#{mantenimientoEmpleadoFormAction.idContrato}"     />
+		                    </p:commandButton>
+		                 </p:column>
 				</p:dataTable>
 			</h:panelGrid> 
-            <p:commandButton id="btngu" value="Guardar" update="panel" actionListener="#{mantenimientoEmpleadoFormAction.insertar}" ajax="false" icon="ui-icon-check">
+            <p:commandButton id="btngu" value="Guardar" update="message" actionListener="#{mantenimientoEmpleadoFormAction.insertar}" ajax="false" icon="ui-icon-check">
             </p:commandButton>
             <p:commandButton id="btnreg" value="Regresar" action="#{mantenimientoEmpleadoSearchAction.listar}" immediate="true" ajax = "false" icon="ui-icon ui-icon-close"/> 
 			</p:panel>

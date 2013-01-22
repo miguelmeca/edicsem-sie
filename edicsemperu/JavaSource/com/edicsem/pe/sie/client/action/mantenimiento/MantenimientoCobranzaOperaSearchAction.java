@@ -1,28 +1,35 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
-import java.sql.Date;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox;
 
 import com.edicsem.pe.sie.client.action.SMTPConfig;
 import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.CobranzaOperadoraSie;
 import com.edicsem.pe.sie.entity.CobranzaSie;
+import com.edicsem.pe.sie.entity.ContratoSie;
+import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.service.facade.ClienteService;
 import com.edicsem.pe.sie.service.facade.CobranzaOperaService;
 import com.edicsem.pe.sie.service.facade.CobranzaService;
+import com.edicsem.pe.sie.service.facade.ContratoService;
 import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.TipoLLamadaService;
 import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name="mantenimientoCobranzaOperaSearchAction")
@@ -37,7 +44,7 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private List<CobranzaOperadoraSie> filtrarCobranza;
 	private List<CobranzaSie> detallePagos;
 	private List<TelefonoPersonaSie> listatelefono;
-	private Date fecPagoNull;
+	private Date fechoy;
 	private int tipollamada; 
 	private boolean editMode;
 	private boolean enviarMensaje;
@@ -45,7 +52,12 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private boolean newRecord =false;
 	private int ide;
 	private int idcontrato;
+	private ContratoSie objContrato;
+	HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+	EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 	
+	@EJB 
+	private ContratoService objContratoService;
 	@EJB 
 	private CobranzaOperaService objCobranzaOperaService;
 	@EJB 
@@ -72,7 +84,6 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 		objCobranzaOpera = new CobranzaOperadoraSie();
 		objcliente = new ClienteSie();
 		objtelefono = new TelefonoPersonaSie();
-		fecPagoNull=null;
 		enviarMensaje=false;
 		idcontrato=0;
 		log.info("despues de inicializar  ");
@@ -84,7 +95,8 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	/*método que lista al hacer click en el menú del template*/
 	public String listar() {
 		log.info("listarcobranzaopera 'MantenimientoCobranzaOperadoraSieSearchAction' ");
-		cobranzaOperaList = objCobranzaOperaService.listarCobranzasOpera();
+		log.info(" session  "+sessionUsuario.getUsuario());
+		cobranzaOperaList = objCobranzaOperaService.listarCobranzasOpera(sessionUsuario.getUsuario());
 		if (cobranzaOperaList == null) {
 			cobranzaOperaList = new ArrayList<CobranzaOperadoraSie>();
 		}
@@ -101,6 +113,7 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 				if (detallePagos == null) {
 					detallePagos = new ArrayList<CobranzaSie>();
 				}
+		objContrato = objContratoService.findContrato(idcontrato);
 	    // mostramos los datos del cliente
 		ClienteSie c = objClienteService.findCliente(objCobranzaOpera.getTbCobranza().getIdcliente()); 		
 		objcliente.setIdcliente(c.getIdcliente());
@@ -321,19 +334,6 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 		this.listatelefono = listatelefono;
 	}
 
-	/**
-	 * @return the fecPagoNull
-	 */
-	public Date getFecPagoNull() {
-		return fecPagoNull;
-	}
-
-	/**
-	 * @param fecPagoNull the fecPagoNull to set
-	 */
-	public void setFecPagoNull(Date fecPagoNull) {
-		this.fecPagoNull = fecPagoNull;
-	}
 
 	/**
 	 * @return the tipollamada
@@ -389,6 +389,39 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	 */
 	public void setFiltrarCobranza(List<CobranzaOperadoraSie> filtrarCobranza) {
 		this.filtrarCobranza = filtrarCobranza;
+	}
+
+	/**
+	 * @return the objContrato
+	 */
+	public ContratoSie getObjContrato() {
+		return objContrato;
+	}
+
+	/**
+	 * @param objContrato the objContrato to set
+	 */
+	public void setObjContrato(ContratoSie objContrato) {
+		this.objContrato = objContrato;
+	}
+
+	/**
+	 * @return the fechoy
+	 */
+	public Date getFechoy() {
+		try {
+			fechoy = DateUtil.getToday().getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return fechoy;
+	}
+
+	/**
+	 * @param fechoy the fechoy to set
+	 */
+	public void setFechoy(Date fechoy) {
+		this.fechoy = fechoy;
 	}
 		
 }

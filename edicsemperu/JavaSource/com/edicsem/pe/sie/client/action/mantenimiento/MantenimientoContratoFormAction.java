@@ -45,7 +45,6 @@ import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.PaqueteService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
-import com.edicsem.pe.sie.service.facade.UbigeoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
@@ -80,6 +79,7 @@ public class MantenimientoContratoFormAction extends
 	private List<String> colaboradorList;
 	private List<ContratoSie> contratoXClienteList;
 	private Date dhoy, dValidoFecNac;
+	private BigDecimal totalacumulado;
 	
 	//Consultar
 	private String numDniCliente,codigoContrato,apePatCliente,apeMatCliente,nombreCliente;
@@ -104,8 +104,6 @@ public class MantenimientoContratoFormAction extends
 	private DetProductoContratoService objDetProductoService;
 	@EJB
 	private CobranzaService objCobranzaService;
-	@EJB
-	private UbigeoService objUbigeoService;
 	@EJB
 	private EstadogeneralService objEstadoService;
 	
@@ -138,6 +136,7 @@ public class MantenimientoContratoFormAction extends
 		Tipocasa=0;idUbigeo=0;
 		idempresa = 0;
 		ubigeoDefecto = "";
+		totalacumulado= new BigDecimal(0);
 	}
 	
 	/*
@@ -165,6 +164,9 @@ public class MantenimientoContratoFormAction extends
 		objProductoSie.setCantidadContrato(1);
 		nuevoTelef.setTipoTelef("");
 		selectTelef= "";
+		idpaquete=0;
+		Tipocasa=0;
+		totalacumulado= new BigDecimal(0);
 		return getViewMant();
 	}
 
@@ -309,10 +311,6 @@ public class MantenimientoContratoFormAction extends
 		}
 	}
 	
-	public void cambiopaqueteDefecto(){
-		log.info("en el metodod cambiopaqueteDefecto() " + defectopaquete );
-	}
-	
 	public void cambioPaquete(){
 		log.info("en el metodod cambioPaquete() ");
 		detPaqueteList=new ArrayList<DetPaqueteSie>();
@@ -404,6 +402,7 @@ public class MantenimientoContratoFormAction extends
 	public void insertarCobranza() throws Exception{
 		log.info(" insertarCobranza  :d "+objContratoSie.getNumcuotas()+" precio "+ precioProducto +"  fec ven  "+ objContratoSie.getFechacuotainicial());
 		BigDecimal d;
+		totalacumulado= new BigDecimal(0);
 		boolean isadd=true;
 		if(tipopago==2){
 			//contado
@@ -446,12 +445,14 @@ public class MantenimientoContratoFormAction extends
 					objCobranzaSie.setImpinicial(objContratoSie.getPagosubinicial());
 					objCobranzaSie.setFecvencimiento(objContratoSie.getFechaentrega());
 					objCobranzaSie.setFecpago(objContratoSie.getFechaentrega());
+					totalacumulado = totalacumulado.add(objCobranzaSie.getImpinicial());
 					cobranzaList.add(objCobranzaSie);
 					objCobranzaSie= new CobranzaSie();
 					//lo que queda por pagar de la cuota inicial , letra -1
 					objCobranzaSie.setNumletra("-1");
 					objCobranzaSie.setImpinicial(objContratoSie.getCuotainicial());
 					objCobranzaSie.setFecvencimiento(objContratoSie.getFechacuotainicial());
+					totalacumulado=totalacumulado.add(objCobranzaSie.getImpinicial());
 					cobranzaList.add(objCobranzaSie);
 					objCobranzaSie= new CobranzaSie();
 					isadd=false;
@@ -480,6 +481,8 @@ public class MantenimientoContratoFormAction extends
 				if(isadd ){
 					log.info(" agregar ");
 				objCobranzaSie.setFecvencimiento(fechaVencimiento);
+				totalacumulado =totalacumulado.add(objCobranzaSie.getImpinicial());
+				log.info("totalacumulado:  "+totalacumulado);
 				cobranzaList.add(objCobranzaSie);
 				objCobranzaSie= new CobranzaSie();
 				}
@@ -489,11 +492,15 @@ public class MantenimientoContratoFormAction extends
 	
 	public void onEdit(RowEditEvent event) {
 		log.info("en onedit()");
+		totalacumulado = new BigDecimal(0);
 		for (int i = 0; i < cobranzaList.size(); i++) {
 			log.info("en onedit() ------- "+ cobranzaList.get(i).getFecvencimiento());
+			log.info("en onedit() ------- "+ cobranzaList.get(i).getImpinicial());
+			totalacumulado = totalacumulado.add(cobranzaList.get(i).getImpinicial());
+			log.info("suma bigdecimal "+	totalacumulado);
 		}
     }
-      
+    
     public void onCancel(RowEditEvent event) {
     	
     }
@@ -1436,6 +1443,20 @@ public class MantenimientoContratoFormAction extends
 	 */
 	public void setdValidoFecNac(Date dValidoFecNac) {
 		this.dValidoFecNac = dValidoFecNac;
+	}
+
+	/**
+	 * @return the totalacumulado
+	 */
+	public BigDecimal getTotalacumulado() {
+		return totalacumulado;
+	}
+
+	/**
+	 * @param totalacumulado the totalacumulado to set
+	 */
+	public void setTotalacumulado(BigDecimal totalacumulado) {
+		this.totalacumulado = totalacumulado;
 	}
 	
 }

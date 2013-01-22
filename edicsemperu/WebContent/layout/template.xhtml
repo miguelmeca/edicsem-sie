@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -114,6 +113,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 					<ul id="main">
 						<li class="current_page_item"><a href="index.xhtml">Página Principal</a></li>
 						<li><p:commandLink  onclick="cambiarContrasenaDialog.show()" value ="Cambiar Contraseña"/></li> 
+						<li><p:commandLink action="#{login.cerrarSesion}"  value="Cerrar Sesión" /></li>
 						<li><a>Actualizar Datos</a></li>
 						<li>${sessionScope.loginUserSession.nombresCompletos}
 						<br />
@@ -555,13 +555,13 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				
 				<h:outputText value="#{message['horario.personal.fechaDesde']}" />
 				<h:panelGroup >
-					<p:calendar id="desdecl" value="#{horarioPersonal.objHorarioPersonal.diainicio}" required="true" requiredMessage="#{message['horario.personal.fechaDesde.validation']}" mindate="today" />
+					<p:calendar id="desdecl" value="#{horarioPersonal.objHorarioPersonal.diainicio}" required="true" requiredMessage="#{message['horario.personal.fechaDesde.validation']}" mindate="today"  pattern="dd/MM/yyyy"  />
 					<p:message for="desdecl" />
 				</h:panelGroup>
 				
 				<h:outputText value="#{message['horario.personal.fechaHasta']}" />
 				<h:panelGroup>
-					<p:calendar id="fechasta" value="#{horarioPersonal.objHorarioPersonal.diafin}" required="true" requiredMessage="#{message['horario.personal.fechaHasta.validation']}" mindate="today" />
+					<p:calendar id="fechasta" value="#{horarioPersonal.objHorarioPersonal.diafin}" required="true" requiredMessage="#{message['horario.personal.fechaHasta.validation']}" mindate="today"  pattern="dd/MM/yyyy"   />
 					<p:message for="fechasta" />
 				</h:panelGroup>
 				
@@ -839,13 +839,13 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 				
 				<h:outputText value="#{message['horario.pv.fechaDesde']}" />
 				<h:panelGroup >
-					<p:calendar id="desdepv" required="true" requiredMessage="#{message['horario.pv.fechaDesde.validation']}" value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diainicio}" mindate="today" />
+					<p:calendar id="desdepv" required="true" requiredMessage="#{message['horario.pv.fechaDesde.validation']}" value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diainicio}" mindate="today"  pattern="dd/MM/yyyy"  />
 					<p:message for="desdepv" />
 				</h:panelGroup>
 				
 				<h:outputText value="#{message['horario.pv.fechaHasta']}" />
 				<h:panelGroup >
-					<p:calendar id="hastapv" value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diafin}" required="true"  requiredMessage="#{message['horario.pv.fechaHasta.validation']}" mindate="today" />
+					<p:calendar id="hastapv" value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diafin}" required="true"  requiredMessage="#{message['horario.pv.fechaHasta.validation']}" mindate="today"  pattern="dd/MM/yyyy"  />
 					<p:message for="hastapv" />
 				</h:panelGroup>
 			
@@ -1329,7 +1329,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
             <h:outputText value="#{message['incidencia.observacion']}" />	
             <p:inputTextarea maxlength="500" required="true" value="#{mantenimientoIncidenciaForm.objObsIncidencia.observacion}" requiredMessage="#{message['incidencia.observacion.validation']}" /> 
             <h:outputText value="#{message['incidencia.fecha']}" />				
-            <p:calendar id="fechafin" 
+            <p:calendar id="fechafin"   pattern="dd/MM/yyyy"  
             value="#{mantenimientoIncidenciaForm.fechafin}" requiredMessage="#{message['incidencia.fecha.validation']}" required="true" />
             <p:commandButton 
 					    value="Guardar" 
@@ -1674,7 +1674,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 					
 				<p:calendar  value="#{MetaMesFormAction.date1}"
 							 id="fechainicial"
-							 required="true" 
+							 required="true"  pattern="dd/MM/yyyy"  
 							 requiredMessage="#{message['Metames.fechainicial.validation']}" />
 							 <p:message for="fechainicial" />  
 				
@@ -1685,7 +1685,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 			
 				<p:calendar value="#{MetaMesFormAction.date2}"
 							id="fechafinal"
-							required="true" 
+							required="true"  pattern="dd/MM/yyyy"  
 							 requiredMessage="#{message['Metames.fechafinal.validation']}"/>
 							 <p:message for="fechafinal" /> 
 				
