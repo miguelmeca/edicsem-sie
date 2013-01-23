@@ -15,7 +15,7 @@
 		 paginator="true" rows="6"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15" widgetVar="table"
-					emptyMessage="No se encontro registros" >
+					emptyMessage="No se encontraron registros" >
 
 	
 	
@@ -55,7 +55,8 @@ oncomplete="horariopvDialog.show()"  update=":formManteHorarioPV:display" >
 <p:spacer/>
 
 <p:dataTable var="h" value="#{MantenimientoHorarioPuntoVentaSearchAction.listaHorario}" id="horarioPuntoVentaList"  
- rowStyleClass="#{h.diainicio le horarioPuntoVenta.dhoy ? null: 'colorPlomo' }"  >
+ rowStyleClass="#{h.diainicio le horarioPuntoVenta.dhoy ? null: 'colorPlomo' }" 
+emptyMessage="No se encontraron registros" >
 		<f:facet name="header">
             Horario #{MantenimientoHorarioPuntoVentaSearchAction.objPuntoVentaSie.descripcion}
         </f:facet>
