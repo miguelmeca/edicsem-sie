@@ -112,17 +112,21 @@
 						</p:commandButton>
 						
 				</h:panelGrid>
-						<p:dataTable value="#{mantenimientoEmpleadoFormAction.telefonoPersonaList}" id="listarTelefonos" var="o" style="width:400px" 
+						<p:dataTable value="#{mantenimientoEmpleadoFormAction.telefonoPersonaList}" id="listarTelefonos" var="o" style="width:600px" 
 							 rowStyleClass="#{o.operadorTelefonico eq 'Claro' ? 'colorRojo': (o.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }"   >
 	
 							<f:facet name="header">
 								<h:outputLabel value="Telefonos de Referencia" />
 							</f:facet>
 							
-							<p:column headerText="Observación" style="width:125px">
+							<p:column headerText="Observación" style="width:270px">
 		                    	<h:outputText value="#{o.tipoTelef}, #{o.operadorTelefonico}, #{o.telefono}" />
 		                    </p:column>
-	 
+		                    
+		                    <p:column headerText="Detalle" style="width:125px">
+		                    	<h:outputText value="#{o.descTelefono}" />
+		                    </p:column>
+		                    
 	                        <p:column headerText="Eliminar" style="width:125px">
 		                    <p:commandButton id="showConfirmDeshabilitarTelEmp" 
 				            value="Eliminar"  
@@ -192,7 +196,7 @@
          <p:panel id="panlcont" header="Datos Contrato">
          
            <h:panelGrid columns="2"  >
-            <h:outputText value="#{message['mantenimiento.empresa.descripcion']}" />
+            <h:outputText value="#{message['empleado.empresa.descripcion']}" />
             <p:selectOneMenu id="empresa" value="#{mantenimientoEmpleadoFormAction.idEmpresa}">
             <f:selectItems value="#{comboAction.empresaitems}"/>
             </p:selectOneMenu>
@@ -208,9 +212,9 @@
             <f:selectItems value="#{comboAction.tipoPagoItems}"/>
             </p:selectOneMenu>
             <h:outputText value="#{message['empleado.basico']}" />
-            <p:spinner value="#{mantenimientoEmpleadoFormAction.objContratoEmpleado.basico}" /> 
+            <p:spinner value="#{mantenimientoEmpleadoFormAction.objContratoEmpleado.basico}" min="1" /> 
             <h:outputText value="#{message['empleado.periodoPrueba']}" />
-            <p:inputText title="x mes" value="#{mantenimientoEmpleadoFormAction.objContratoEmpleado.periodoPrueba}"/> 
+            <p:spinner title="x mes" value="#{mantenimientoEmpleadoFormAction.objContratoEmpleado.periodoPrueba}"/> 
             <p:commandButton value="Agregar" update="panelPagos, message" action="#{mantenimientoEmpleadoFormAction.agregarPago}" icon="ui-icon-check"/>
            
             	<p:dataTable id="panelPagos" value="#{mantenimientoEmpleadoFormAction.contratoEmpleadoList}" var="c"  >
@@ -241,12 +245,13 @@
 		                 </p:column>
 				</p:dataTable>
 			</h:panelGrid> 
-            <p:commandButton id="btngu" value="Guardar" update="message" actionListener="#{mantenimientoEmpleadoFormAction.insertar}" ajax="false" icon="ui-icon-check">
+            <p:commandButton id="btngu" value="Guardar" update="message" action="#{mantenimientoEmpleadoFormAction.insertar}" ajax="false" icon="ui-icon-check">
             </p:commandButton>
-            <p:commandButton id="btnreg" value="Regresar" action="#{mantenimientoEmpleadoSearchAction.listar}" immediate="true" ajax = "false" icon="ui-icon ui-icon-close"/> 
-			</p:panel>
+           </p:panel>
         </p:tab>
         </p:wizard>
+         <p:commandButton id="btnreg" value="Regresar" action="#{mantenimientoEmpleadoSearchAction.listar}" immediate="true" ajax = "false" icon="ui-icon ui-icon-close"/> 
+			
 	</p:panel>	            
 	</h:form>
 	</ui:define>

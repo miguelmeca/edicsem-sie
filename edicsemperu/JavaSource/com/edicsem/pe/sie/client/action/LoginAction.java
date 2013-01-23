@@ -13,6 +13,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -47,7 +48,7 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 	private String contrasenia;
 	private MenuModel mimenu;
 	private List<CargoEmpleadoSie> cargo;
-	private String fechaHoraIngreso;
+	private String fechaHoraIngreso, mensaje;
 	
 	@EJB
 	private LoginService loginService;
@@ -134,7 +135,7 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 			}else {
 				log.info("usuario incorrecto!! ...  ");
 				msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-						Constants.MESSAGE_ERROR_TITULO, "usuario incorrecto");
+						Constants.MESSAGE_ERROR_TITULO, "usuario y/o contraseña incorrecta");
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 				redireccion = Constants.LOGIN_PAGE;
 				
@@ -160,7 +161,7 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(Constants.USER_KEY, false);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(Constants.CARGO_USER, false);
         try {
-            context.getExternalContext().redirect("/edicsemperu/sessionexpired.jsf");
+            context.getExternalContext().redirect("/edicsemperu/login.jsf");
         } catch (IOException ex) {
         	log.error(ex.getMessage());
         	ex.printStackTrace();
@@ -168,7 +169,34 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
     }
 	
 	public void cambiarContrasena(){
+		log.info("actual  "+passActual+" confirma nueva1  "+passConfirma1+"  confirma nueva2 "+passConfirma2);
+		HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 		
+		try {
+			String pass =SecurityLogin.getMD5(passConfirma1);
+			EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
+			//Validar la contraseña actual
+			if(sessionUsuario.getContrasena().equals(SecurityLogin.getMD5(passActual))){
+			
+			loginService.updatePassword(sessionUsuario.getIdempleado(), pass);
+			sessionUsuario.setContrasena(pass);
+			SessionsSie.putObjectInSession(Constants.USER_KEY, sessionUsuario);
+			setMensaje("Se actualizó correctamente su contraseña");
+			msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				Constants.MESSAGE_INFO_TITULO, getMensaje());
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+			}else{
+				setMensaje("Contraseña actual incorrecta");
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+					Constants.MESSAGE_INFO_TITULO, getMensaje());
+					FacesContext.getCurrentInstance().addMessage(null, msg);
+			}
+			
+		} catch (Exception e) {
+			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					Constants.MESSAGE_ERROR_TITULO, e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
 	}
 	
 	public MethodExpression getMethod(String actionListenerName) {
@@ -314,6 +342,20 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 	 */
 	public void setFechaHoraIngreso(String fechaHoraIngreso) {
 		this.fechaHoraIngreso = fechaHoraIngreso;
+	}
+
+	/**
+	 * @return the mensaje
+	 */
+	public String getMensaje() {
+		return mensaje;
+	}
+
+	/**
+	 * @param mensaje the mensaje to set
+	 */
+	public void setMensaje(String mensaje) {
+		this.mensaje = mensaje;
 	}
 
 }

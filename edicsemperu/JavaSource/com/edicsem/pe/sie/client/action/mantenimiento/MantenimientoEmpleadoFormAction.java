@@ -12,7 +12,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -78,7 +77,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	/*variables*/
 	private int idCargo;
 	private int idEmpresa;
-	private boolean defectoUbigeo;
 	private boolean skip;
 	private Date fechaInicioContrato;
 	private int idContrato;
@@ -126,7 +124,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		objEmpleado = new EmpleadoSie();
 		objTelefono = new TelefonoPersonaSie();
 		objDomicilio = new DomicilioPersonaSie();
-		defectoUbigeo=true;
 		objContratoEmpleado = new ContratoEmpleadoSie();
 		contratoEmpleadoList =  new ArrayList<ContratoEmpleadoSie>();
 		TipoDocumento=1;
@@ -233,7 +230,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 					+ nuevoTelef.getTelefono());
 			if (TelefonoPersonaList.get(i).getTelefono().equals(nuevoTelef.getTelefono())) {
 				verifica = false;
-				mensaje = "el telefono ya se encuentra registrado en la lista de referencias";
+				mensaje = "el telefono "+nuevoTelef.getTelefono()+" ya se encuentra registrado en la lista de referencias";
 				break;
 			} else {
 				verifica = true;
@@ -252,7 +249,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 			log.info("se agrego " + nuevoTelef.getTelefono());
 		}
 		if (mensaje != null) {
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+			msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
 					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
@@ -337,22 +334,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		log.info("ubigeo ------> :D   " + ubigeoDefecto);
 	} 
 	
-	public void cambioUbigeoDefecto() {
-		log.info(" defecto  " + defectoUbigeo);
-		comboManager.setUbigeoDeparItems(null);
-		comboManager.setUbigeoProvinItems(null);
-		comboManager.setUbigeoDistriItems(null);
-		if (defectoUbigeo) {
-			comboManager.setIdDepartamento("15");
-			comboManager.setIdProvincia("01");
-			log.info(" defecto lima true 1");
-			ubigeoDefecto = "";
-		} else {
-			comboManager.setIdDepartamento(null);
-			comboManager.setIdProvincia(null);
-			log.info(" cambio ubigeo   false  otro");
-		}
-	}
 	
 	public void cambiar() {
 		comboManager.setIdDepartamento(getIdDepartamento());
@@ -489,14 +470,11 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	/*método que se ejecuta haciendo click en el link NUEVO de la lista*/
 	public String agregar() {
 		log.info("agregar");
-		defectoUbigeo=true;
-		if(defectoUbigeo){
-			comboManager.setIdDepartamento("15");
-			comboManager.setIdProvincia("01");
-			}
-			idUbigeo="0";
-			ubigeoDefecto="";
-			comboManager.setUbigeoDistriItems(null);
+		TelefonoPersonaList = new ArrayList<TelefonoPersonaSie>();
+		contratoEmpleadoList = new ArrayList<ContratoEmpleadoSie>();
+		idUbigeo="0";
+		ubigeoDefecto="";
+		comboManager.setUbigeoDistriItems(null);
 		selectTelef= "";
 		operadorTelefonico=1;
 		TipoTelef=1;
@@ -509,8 +487,15 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		objTelefono = new TelefonoPersonaSie();
 		setTipo(0);
 		objDomicilio = new DomicilioPersonaSie();
+		comboManager.setUbigeoDeparItems(null);
+		comboManager.setUbigeoProvinItems(null);
+		comboManager.setUbigeoDistriItems(null);
 		comboManager.setIdDepartamento("15");
 		comboManager.setIdProvincia("01");
+		idDepartamento="15";
+		idProvincia="01";
+		ubigeoDefecto = "";
+		fechaInicioContrato=null;
 		setNewRecord(true);
 		return getViewMant();
 	}
@@ -522,11 +507,10 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		/*busca el empleado, lista de teléfonos, domicilio, detalle de empresa de empleado y contrato de empleado*/
 		EmpleadoSie c = objEmpleadoService.buscarEmpleado(objEmpleado.getIdempleado());
 		TelefonoPersonaSie t = objTelefonoService.buscarTelefonoXIdempleado(objEmpleado.getIdempleado());
-		DomicilioPersonaSie d = objDomicilioService.buscarDomicilioXIdempleado(objEmpleado.getIdempleado());
+		objDomicilio = objDomicilioService.buscarDomicilioXIdempleado(objEmpleado.getIdempleado());
 		
 		log.info(" id " + c.getIdempleado()+ " nombre " + c.getNombreemp() ); 
 		log.info(" id " + t.getIdtelefonopersona()+ " nombre " + t.getTelefono() );
-		log.info(" id " + d.getIddomiciliopersona()+ " nombre " + d.getDomicilio() );
 		
 		/*Seteo para mostrar los datos en el form*/
 		/*seteo empleado*/
@@ -544,18 +528,18 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
         objEmpleado.setTbEstadoGeneral(c.getTbEstadoGeneral());
         /*seteo teléfono*/
         TelefonoPersonaList = objTelefonoService.listarTelefonoEmpleadosXidempleado(c.getIdempleado());		
-        /*seteo domicilio*/                                               
-        objDomicilio.setIddomiciliopersona(d.getIddomiciliopersona());
-        objDomicilio.setDomicilio(d.getDomicilio());
-        setIdDepartamento(d.getTbUbigeo().getCoddepartamento());
+        /*seteo domicilio*/
+        if(objDomicilio.getIddomiciliopersona()!=null){
+        setIdDepartamento(objDomicilio.getTbUbigeo().getCoddepartamento());
         comboManager.setIdDepartamento(idDepartamento);
-        setIdProvincia(d.getTbUbigeo().getCodprovincia());
+        setIdProvincia(objDomicilio.getTbUbigeo().getCodprovincia());
         comboManager.setIdProvincia(idProvincia);
-        setIdUbigeo(d.getTbUbigeo().getIdubigeo().toString());
-        setIdDistrito(d.getTbUbigeo().getCoddistrito());
-        log.info(" tipo casa "+d.getTbTipoCasa().getIdtipocasa());
-        setTipo(d.getTbTipoCasa().getIdtipocasa());
-        objDomicilio.setTbEstadoGeneral(d.getTbEstadoGeneral());
+        setIdUbigeo(objDomicilio.getTbUbigeo().getIdubigeo().toString());
+        setIdDistrito(objDomicilio.getTbUbigeo().getCoddistrito());
+        log.info(" tipo casa "+objDomicilio.getTbTipoCasa().getIdtipocasa());
+        setTipo(objDomicilio.getTbTipoCasa().getIdtipocasa());
+        objDomicilio.setTbEstadoGeneral(objDomicilio.getTbEstadoGeneral());
+        }
         /*seteo contrato*/
         contratoEmpleadoList = objContratoEmpleadoService.listarCargoXEmp(c.getIdempleado());
         /*seteo detalle contrato*/
@@ -604,6 +588,8 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 					log.info("insertando..... ");
 					mensaje ="Se actualizó correctamente";
 				}
+				objEmpleado = new EmpleadoSie();
+				paginaretorno= mantenimientoEmpleadoSearch.listar();
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 						Constants.MESSAGE_INFO_TITULO, mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -614,9 +600,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
-		objEmpleado = new EmpleadoSie();
-		paginaretorno= mantenimientoEmpleadoSearch.listar();
+			}
 	   }
 		else{
 		msg = new FacesMessage(FacesMessage.SEVERITY_WARN,Constants.MESSAGE_INFO_TITULO , Constants.MESSAGE_PASSWORDS_DESIGUALES);
@@ -966,20 +950,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	 */
 	public void setIdDistrito(String idDistrito) {
 		this.idDistrito = idDistrito;
-	}
-	
-	/**
-	 * @return the defectoUbigeo
-	 */
-	public boolean isDefectoUbigeo() {
-		return defectoUbigeo;
-	}
-
-	/**
-	 * @param defectoUbigeo the defectoUbigeo to set
-	 */
-	public void setDefectoUbigeo(boolean defectoUbigeo) {
-		this.defectoUbigeo = defectoUbigeo;
 	}
 	
 	/**

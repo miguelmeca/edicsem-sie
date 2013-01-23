@@ -391,10 +391,16 @@ FacesContext.getCurrentInstance().addMessage(null, msg);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 		objEmpresaSie = new EmpresaSie();
-		return mantenimientoEmpresaSearch.listar();
+		return paginaRetorno;
 	}
 
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
+	 * #getViewList()
+	 */
 	public String getViewList() {
 		return Constants.MANT_EMPRESA_FORM_LIST_PAGE;
 	}

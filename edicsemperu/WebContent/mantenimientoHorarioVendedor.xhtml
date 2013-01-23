@@ -11,18 +11,20 @@
   <h1 class="title ui-widget-header ui-corner-all"> Generar Horarios de vendedores</h1>
   <h:form id="horarioVendedor">
 <p:growl id="messages" showDetail="true" />
-		<p:fieldset legend="Generar horario" style="margin-top:20px">
-			<h:panelGrid columns="2" id="panel" >
+		<p:fieldset legend="Generar horario" style="margin-top:30px; width:50%">
+			<h:panelGrid columns="2" id="panel" cellpadding="6" >
 			
 			<p:selectOneMenu value="#{horarioVendedorForm.idPunto}">
 				<f:selectItems value="#{comboAction.almacenItems}" />
 			</p:selectOneMenu>
 			
-			<p:commandButton value="ver" action="#{horarioVendedorForm.generarHorario}" update="@form" />
+			<p:commandButton value="Generar Horario" action="#{horarioVendedorForm.generarHorario}" update="@form" />
 			
 			</h:panelGrid>
 		</p:fieldset>
-	
+		<br />
+		<br />	
+		<br />
     <p:schedule value="#{horarioVendedorForm.eventModel}" draggable="false" resizable="false" locale="tr"  >
      <p:ajax event="dateSelect" listener="#{horarioVendedorForm.onDateSelect}" update=":formHorarioVendedor:display,messages" /> 
      <p:ajax event="eventSelect" listener="#{horarioVendedorForm.onEventSelect}" update=":formHorarioVendedor:display" oncomplete="horarioVendedorDialog.show()" />

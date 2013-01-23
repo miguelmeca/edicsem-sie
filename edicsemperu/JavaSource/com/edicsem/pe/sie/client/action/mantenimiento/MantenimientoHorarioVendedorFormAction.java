@@ -132,7 +132,12 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 		log.info(" fecha lunes  --> "+ 		cDesde.getTime());
 		log.info(" fecha domingo  --> "+ 	cHasta.getTime());
 		
-		
+		if(vendedores.size()==0){
+			mensaje = "No hay vendedores registrados para generar horario en punto de venta";
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		else{
 			log.info("tamaño   "+horariopv.size());
 			if(horariopv.size()>0){
 			
@@ -286,6 +291,7 @@ public class MantenimientoHorarioVendedorFormAction extends BaseMantenimientoAbs
 					horarioPersonalList.get(k).getHoraSalida() + " , "+horarioPersonalList.get(k).getTbEmpleado().getNombresCompletos() , dDate, dDate2));
 				}
 			}
+		}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
