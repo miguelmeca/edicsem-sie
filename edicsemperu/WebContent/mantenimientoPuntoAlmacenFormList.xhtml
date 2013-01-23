@@ -9,14 +9,13 @@
 			Almacenes - Puntos de Venta</h1>
 
 		<h:form id="frmAlmacenFormList" prependId="false">
-			<p:growl id="message" showDetail="true" />
+			<p:messages showDetail="true"/>
 			<p:dataTable value="#{almacenSearch.almacenList}" var="al"
-				id="almacenTable" paginator="true" rows="10">
+				id="almacenTable" paginator="true" rows="10"  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	   rowsPerPageTemplate="5,10,15" widgetVar="table"
+	   emptyMessage="No se encontraron registros">
 
-				<f:facet name="header">
-					<h:outputLabel
-						value="#{message['lista.mantenimiento.empresa.titulo']}" />
-				</f:facet>
+				
 
 				<p:column headerText="descripcion" >
 					<h:outputText value="#{al.descripcion}" />
@@ -27,19 +26,22 @@
 				</p:column>
 
 				<p:column headerText="Editar">
-					<p:commandButton value="Editar"
+				<center>
+					<p:commandButton
 						action="#{almacenForm.update}"	icon="ui-icon ui-icon-pencil">
 						<f:setPropertyActionListener value="#{al}"
 							target="#{almacenForm.objAlmacenSie}" />
 					</p:commandButton>
+					</center>
 				</p:column>
 				
 				<p:column headerText="Deshabilitar">
-					<p:commandButton id="showConfirmDeshabilitarAlmacen" value="Eliminar" icon="ui-icon ui-icon-close"
+				<center>	<p:commandButton id="showConfirmDeshabilitarAlmacen"  icon="ui-icon ui-icon-close"
 						onclick="confirmationAlmacen.show()">
 						<f:setPropertyActionListener value="#{al.idpuntoventa}"
 							target="#{almacenForm.ide}" />
 					</p:commandButton>
+					</center>
 				</p:column>
 
 				<f:facet name="footer">
