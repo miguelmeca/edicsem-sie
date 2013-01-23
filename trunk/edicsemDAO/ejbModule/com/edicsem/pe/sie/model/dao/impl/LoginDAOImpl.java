@@ -38,5 +38,19 @@ public class LoginDAOImpl implements LoginDAO{
 			log.info(e.getMessage());
 		}
 		return objEmpleado;
-	}		
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.LoginDAO#updatePassword(com.edicsem.pe.sie.entity.EmpleadoSie)
+	 */
+	public void updatePassword(EmpleadoSie empleado) {
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("modificar empleado");
+			} 
+			em.merge(empleado);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

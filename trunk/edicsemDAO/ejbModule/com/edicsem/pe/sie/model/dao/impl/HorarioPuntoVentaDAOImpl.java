@@ -95,19 +95,4 @@ public class HorarioPuntoVentaDAOImpl implements HorarioPuntoVentaDAO {
 		}
 		return lista;
 	}
-
-
-	public void eliminarHorarioPunto(int id) {
-		try {
-			HorarioPuntoVentaSie bean=   findHorarioPunto(id);
-			em.remove(bean);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
-	
-	
-	
 }
