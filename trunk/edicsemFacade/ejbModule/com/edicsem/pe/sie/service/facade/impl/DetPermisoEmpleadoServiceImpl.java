@@ -59,9 +59,10 @@ public class DetPermisoEmpleadoServiceImpl implements DetPermisoEmpleadoService 
 					}else{
 						//Desactivar los permisos 
 					log.info("Desactivar los permisos   "+listaPermisosActual.get(j));
-//					DetPermisoEmpleadoSie det = objPermisoEmpleadoDao.findDetPermisoEmpleado(idEmpleado,listaPermisosActual.get(j));
-//					det.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(63));
-//					objPermisoEmpleadoDao.updateDetPermisoEmpleado(det);
+					log.info("  "+idEmpleado+"  "+listaPermisosActual.get(j));
+					DetPermisoEmpleadoSie det = objPermisoEmpleadoDao.findDetPermisoEmpleado(idEmpleado,listaPermisosActual.get(j));
+					det.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(63));
+					objPermisoEmpleadoDao.updateDetPermisoEmpleado(det);
 					}
 			}
 		}
