@@ -86,20 +86,7 @@ public class MantenimientoEmpresaSearchAction extends BaseMantenimientoAbstractA
 		
 	}
 
-	/**
-	 * @return the empleadoList
-	 */
-	
-	/**
-	 * @param empleadoList the empleadoList to set
-	 */
-//	public void setEmpleadoList(List<EmpleadoSie> empleadoList) {
-//		this.empleadoList = empleadoList;
-//	}
 
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#listar()
-	 */
 //	Lista de Empresas
 	public String listar() {
 		log.info("listarEmpresas 'MantenimientoEmpresaSearchAction' ");
