@@ -73,7 +73,7 @@
 				
 		</p:column>
 		
-		<f:facet name="footer">
+		<f:facet name="header">
 		<p:commandButton value="Nuevo Paquete Biblico"
 			   update=":formPaqueteBiblico:display"
                action="#{mantenimientoPaqueteBiblicoFormAction.agregar}"
@@ -88,10 +88,24 @@
 		
 <p:outputPanel id="panelMostrarDetalle" rendered="#{mantenimientoPaqueteBiblicoSearchAction.objPaqueteSie.idpaquete!=0}" >
 	
-<p:fieldset legend="Detalles del Paquetes Biblicos"> 
+<p:fieldset legend="Detalles del Paquete Biblico"> 
+
+
 
 		<p:dataTable value="#{mantenimientoDetallePaqueteBiblicoSearchAction.detPaqueteBiblicoList}" 
-					var="c"		id="formdetalleform">
+					var="c"		id="formdetalleform"
+					emptyMessage="No se encontraron registros" >
+					<f:facet name="header">
+		<center>
+		<p:commandButton value="Agregar un nuevo producto al paquete"
+update=":frmPaqueBibliList, :formDetPaqueteBiblico:display"
+action="#{mantenimientoDetallePaqueteBiblicoSearchAction.agregar}"
+oncomplete="DetPaqueteBiblico.show()" 
+icon="ui-icon ui-icon-check" 
+title="Ingresar Nuevo Paquete Biblico"/>
+</center>
+</f:facet>
+							
 				
 				<p:column headerText="Codigo de Paquete" >
 					<h:outputText value="#{c.tbPaquete.codpaquete}" />
@@ -132,13 +146,9 @@
 </p:commandButton>
 </center>
 		</p:column>
+
 			</p:dataTable>
-	<p:commandButton value="Agregar un nuevo producto al paquete"
-update=":frmPaqueBibliList, :formDetPaqueteBiblico:display"
-action="#{mantenimientoDetallePaqueteBiblicoSearchAction.agregar}"
-oncomplete="DetPaqueteBiblico.show()" 
-icon="ui-icon ui-icon-check" 
-title="Ingresar Nuevo Paquete Biblico"/>	
+	
 	</p:fieldset> 	
 </p:outputPanel>
 			
