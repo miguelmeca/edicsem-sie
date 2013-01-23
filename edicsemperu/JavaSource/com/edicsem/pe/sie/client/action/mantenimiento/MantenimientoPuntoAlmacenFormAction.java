@@ -205,7 +205,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 				} else {
 					log.info("mensaje de error");
 					msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
-					paginaRetorno =mantenimientoPuntoAlmacenSearch.getViewMant();
+					paginaRetorno =mantenimientoPuntoAlmacenSearch.listar();
 				}
 			} else {
 				objAlmacenSie.setUsuariomodifica(sessionUsuario.getUsuario());
@@ -226,7 +226,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		}
 		log.info("pagina  "+ paginaRetorno+" mensaj "+mensaje);
 		
-		return paginaRetorno;
+		return paginaRetorno =mantenimientoPuntoAlmacenSearch.listar();
 	}
 
 	public void cambiar() {
