@@ -288,7 +288,7 @@ public class MantenimientoContratoFormAction extends
 					Constants.MESSAGE_INFO_TITULO, mensaje);
 			log.info("se agrego " + nuevoTelef.getTelefono());
 		}
-		if( mensaje!=null){
+		if( mensaje!=null && verifica==false){
 		msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
 				Constants.MESSAGE_INFO_TITULO, mensaje);
 		}
@@ -404,6 +404,7 @@ public class MantenimientoContratoFormAction extends
 		BigDecimal d;
 		totalacumulado= new BigDecimal(0);
 		boolean isadd=true;
+		BigDecimal d2 = new BigDecimal(0);
 		if(tipopago==2){
 			//contado
 			cobranzaList= new ArrayList<CobranzaSie>();
@@ -425,12 +426,18 @@ public class MantenimientoContratoFormAction extends
 			d=d.setScale(2, RoundingMode.HALF_UP);
 			objContratoSie.setPagomensual(d);
 			log.info(" d "+ d+"  Pagomensual "+objContratoSie.getPagomensual());
-			
+		
 			if(objContratoSie.getPagosubinicial()!=new BigDecimal(0)){
-				BigDecimal d2= new BigDecimal(d.doubleValue()-objContratoSie.getPagosubinicial().doubleValue());
+				d2 = new BigDecimal(d.doubleValue()-objContratoSie.getPagosubinicial().doubleValue());
 				d2=d2.setScale(2, RoundingMode.HALF_UP);
-				objContratoSie.setCuotainicial(d2);
+				if(d2.doubleValue() <0){
+					log.info(" menor q 0 "+d2);
+					objContratoSie.setCuotainicial(new BigDecimal(0));
+				}else{
+					objContratoSie.setCuotainicial(d2);
+				}
 			}
+			
 			Date fechaVencimiento = null ;
 			sdf.format(objContratoSie.getFechacuotainicial());
 			String fecha3 =sdf.format(objContratoSie.getFechacuotainicial());
@@ -449,6 +456,7 @@ public class MantenimientoContratoFormAction extends
 					cobranzaList.add(objCobranzaSie);
 					objCobranzaSie= new CobranzaSie();
 					//lo que queda por pagar de la cuota inicial , letra -1
+					if(d2!=null){
 					objCobranzaSie.setNumletra("-1");
 					objCobranzaSie.setImpinicial(objContratoSie.getCuotainicial());
 					objCobranzaSie.setFecvencimiento(objContratoSie.getFechacuotainicial());
@@ -458,6 +466,7 @@ public class MantenimientoContratoFormAction extends
 					isadd=false;
 					log.info(DateUtil.formatoString(objCobranzaSie.getFecvencimiento(), "dd/MM/yyyy") +" Numcuotas "+objContratoSie.getNumcuotas()+" mensualito "+ objContratoSie.getPagomensual()
 							+"  pagar  "+objCobranzaSie.getImpinicial() +"num let "+objCobranzaSie.getNumletra());
+					}
 				//si el cliente no entrega cuota inicial
 				}else if(i==0 && objContratoSie.getPagosubinicial().doubleValue()<=0){
 					log.info(" no entrega cuota inicial ");
@@ -467,12 +476,28 @@ public class MantenimientoContratoFormAction extends
 				else{
 					log.info(" else  ");
 					objCobranzaSie.setImpinicial(objContratoSie.getPagomensual());
-				
+					
 					if(i==0){
 						log.info(" i==0  ");
 						fechaVencimiento = DateUtil.addToDate(objContratoSie.getFechacuotainicial(), Calendar.MONTH, 1);
 					}else{
 						log.info(" i!=0  ");
+						log.info("d2    : :  "+d2);
+						if(d2.compareTo(new BigDecimal(0))==-1){
+							log.info("d2    : :  "+d2);
+							// returns (-1 if a < b), (0 if a == b), (1 if a > b)
+							d2= d2.multiply(new BigDecimal(-1));
+							d2 = objContratoSie.getPagomensual().subtract(d2);
+							log.info("d2    : :  "+d2);
+							if(d2.compareTo(new BigDecimal(0))==-1){
+								log.info("iffff :  "+0);
+								objCobranzaSie.setImpinicial(new BigDecimal(0));
+							}else{
+								log.info("elseeee :  "+d2);
+								objCobranzaSie.setImpinicial(d2);
+							}
+						}
+						
 						fechaVencimiento = DateUtil.addToDate(objContratoSie.getFechacuotainicial(), Calendar.MONTH, Integer.parseInt(objCobranzaSie.getNumletra()));
 					}
 				}

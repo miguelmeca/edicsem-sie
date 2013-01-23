@@ -23,7 +23,7 @@
 					</p:selectOneMenu>
 					
 					<p:outputLabel  value="#{message['permiso.personal.Empleado']}" for="empleado"/>
-					<p:selectOneMenu id="empleado" value="#{permiso.idempleado}" >
+					<p:selectOneMenu id="empleado" value="#{permiso.idempleado}" required="true">
 					<f:selectItems  value="#{comboAction.empleadoxcargo}" />
 					</p:selectOneMenu>
 					
@@ -37,7 +37,7 @@
 				itemLabel="#{p}" itemValue="#{p}" />
 				 <p:commandButton action="#{permiso.insertar}" value="Insertar" ajax="false" update="formPermisos"/>
 					
-		   </p:fieldset>
+		   	</p:fieldset>
 			</p:panel>
 		</h:form>
 	</ui:define>

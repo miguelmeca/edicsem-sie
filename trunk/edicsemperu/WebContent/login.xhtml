@@ -25,14 +25,15 @@
 	}
 </style>
 	</h:head>
+	<script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
 	<p:dialog modal="true" widgetVar="statusDialog" closeOnEscape="false"
 		header="Ingresando al sistema" draggable="false" closable="false">
 		<p:graphicImage value="/images/ajaxloadingbar.gif" />
 	</p:dialog>
-<f:loadBundle var="message" basename="com.edicsem.pe.sie.client.properties.ApplicationResources"/>
-		<script language="JavaScript" type="text/javascript">
-		window.history.forward(-1);
-	</script>
+	<f:loadBundle var="message" basename="com.edicsem.pe.sie.client.properties.ApplicationResources"/>
+	
 	<h:form>
 	<div></div>
 		<div id="midiv" style="background-image: url(images/intranet_login.jpg); width: 505px; height: 300px;">
@@ -41,7 +42,7 @@
 				<table>
 					<tr>
 						<th align="right">
-						<p:outputLabel value="#{message['login.usuario']}" for="txtUsuario" style="width: 30px; " /></th>
+						<h:outputText value="#{message['login.usuario']}" style="width: 30px; " /></th>
 						<td align="left">
 						<p:inputText id="txtUsuario"
 								value="#{login.usuario}" style="width: 160px; "
@@ -53,7 +54,7 @@
 					<tr><td><br /></td></tr>
 					<tr>
 						<th align="right">
-						<p:outputLabel value="#{message['login.password']}" for="txtPasswordL" style="width: 30px;"/> 
+						<h:outputText value="#{message['login.password']}" style="width: 30px;"/> 
 						</th>
 						<td align="left">
 						<p:password  id="txtPasswordL" value="#{login.contrasenia}" style="width: 160px; "
@@ -77,6 +78,6 @@
 			</div>
 		</div>
 	</h:form>
-<p:growl id="msg" />
+<p:growl id="msg" showDetail="true" life="10000"  />
 </f:view>
 </html>

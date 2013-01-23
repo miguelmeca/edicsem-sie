@@ -51,6 +51,7 @@
 					<h:outputText value="#{message['contrato.cliente.correo']}" />
 					<p:inputText value="#{contratoForm.objClienteSie.correo}" id="email" validatorMessage="Email incorrecto" maxlength="45" size="30"  title="para el @ presione: la tecla Alt + 64 y en laptop Alt Gr + Q">
 					 <f:validateRegex pattern="#{message['pattern.email.norequired']}" />
+					 <p:tooltip for="email"  showEffect="clip" hideEffect="explode" ></p:tooltip>
 					</p:inputText>
 					<p:message for="email" />
 					
@@ -171,7 +172,7 @@
 					<p:message for="numCelular"  rendered="#{contratoForm.tipoTelef==2}"/>
 						
 					<h:outputText value="#{message['contrato.telefono.descripcion']}" />
-					<p:inputText value="#{contratoForm.nuevoTelef.descTelefono}" />
+					<p:inputText value="#{contratoForm.nuevoTelef.descTelefono}" maxlength="40" />
 					<p:spacer />
 					
 					<p:commandButton value="Agregar Telefono"  icon="ui-icon ui-icon-check" 
@@ -233,7 +234,7 @@
 					</p:selectOneMenu>
 					
 					<h:outputText value="Observación" />
-					<p:inputText value="#{contratoForm.objProductoSie.observacionContrato}"/>
+					<p:inputText value="#{contratoForm.objProductoSie.observacionContrato}" maxlength="40"/>
 					
 					<h:outputText value="Cantidad" />
 					<p:spinner value="#{contratoForm.objProductoSie.cantidadContrato}" min="1" requiredMessage="#{message['contrato.cantidad.producto']}"  />
@@ -437,7 +438,7 @@
 		
 		<p:tab title="#{message['cliente.tabVentas']}">
 			<p:panel header="#{message['panel.contrato.producto']}">
-			<h:panelGrid columns="4" id="panelVenta" cellpadding="4" >
+			<h:panelGrid columns="4" id="panelVenta" cellpadding="3" >
 				<h:outputText value="#{message['contrato.empresa']}" />
 				<p:selectOneMenu size="1" id="idempresa" required="true"
 					style="width:165px" value="#{contratoForm.idempresa}">
@@ -476,10 +477,9 @@
 				<p:selectCheckboxMenu value="#{contratoForm.colaboradorList}" filter="true" filterMatchMode="startsWith"  style="width:220px">
 					<f:selectItems value="#{comboAction.empleadoItems}" />
 				</p:selectCheckboxMenu>
-				<p:spacer style="height: 800px"  />
 				</h:panelGrid>
 				
-			<p:commandButton value="Registrar" action="#{contratoForm.insertar}" update="message" ajax="false"
+				<p:commandButton value="Registrar" action="#{contratoForm.insertar}" update="message" ajax="false"
 				icon="ui-icon ui-icon-check"/>
 				
 			</p:panel>

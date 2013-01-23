@@ -105,15 +105,16 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	<f:loadBundle var="message"
 		basename="com.edicsem.pe.sie.client.properties.ApplicationResources" />
 	<p:layout fullPage="true">
-		<p:layoutUnit position="north" size="95">
+		<p:layoutUnit position="north" size="100">
 			<div id="header" class="ui-widget ui-widget-header">
 				<div id="logo">
-					<img src="#{request.contextPath}/images/logoEdicsem.jpg" alt="Logo" style="height: 58px " />
+					<img src="#{request.contextPath}/images/edicsem.png" alt="Logo" style="height: 95Spx " />
 				</div>
 				<div id="menu" class="ui-widget">
 					<ul id="main">
 						<li class="current_page_item"><a href="index.xhtml">Página Principal</a></li>
 						<li><p:commandLink  onclick="cambiarContrasenaDialog.show()" value ="Cambiar Contraseña"/></li> 
+						<li><p:commandLink action="#{login.cerrarSesion}"  value="Cerrar Sesión" /></li>
 						<li><a>Actualizar Datos</a></li>
 						<li>${sessionScope.loginUserSession.nombresCompletos}
 						<br />
@@ -137,27 +138,39 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	
 	<!--  CAMBIAR CONTRASENA  -->
 	<h:form id="formCambiarcontrasena">
-		<p:dialog header="#{message['Cargoempleado.descripcion']}" widgetVar="cambiarContrasenaDialog"
+		<p:dialog header="#{message['login.cambiar.contrasena']}" widgetVar="cambiarContrasenaDialog" resizable="false" 
 			showEffect="fade" hideEffect="explode" modal="true" position="center">
-			<p:messages id="msj" />
-			
+			<p:messages id="msj" showDetail="true"  />
+			<br />
 			<h:outputText value="#{message['mensaje.cambiar.contrasena']}"   />
-			<h:panelGrid id="display" columns="2" cellpadding="5" >
-			<h:outputText value="#{message['contrasena.actual']}" />
-            <p:password value="#{login.passActual}" required="true"/>
-            <h:outputText value="#{message['contrasena.nueva']}" />
-            <p:password id="pwd1" value="#{login.passConfirma1}" feedback="true" required="true" match="pwd2" />
-            <h:outputText value="#{message['contrasena.nueva.confirma']}" />
-            <p:password id="pwd2" value="#{login.passConfirma2}" feedback="true" required="true"/>
-			<p:commandButton update="msj" value="Actualizar Contraseña" action="#{login.cambiarContrasena}" />
-			</h:panelGrid>
+			<br /><br />
+			<p:fieldset legend="#{message['login.cambiar.contrasena']}"  >
+			<table>
+            <tr>
+                <td>
+				<h:panelGrid id="display" columns="2" cellpadding="5" >
+				<h:outputText value="#{message['contrasena.actual']}" />
+	            <p:password value="#{login.passActual}" required="true"/>
+	            <h:outputText value="#{message['contrasena.nueva']}" />
+	            <p:password id="pwd1" value="#{login.passConfirma1}" feedback="true" required="true" match="pwd2" />
+	            <h:outputText value="#{message['contrasena.nueva.confirma']}" />
+	            <p:password id="pwd2" value="#{login.passConfirma2}" feedback="true" required="true"/>
+				<p:commandButton update="msj,display" value="Actualizar Contraseña" action="#{login.cambiarContrasena}"  />
+				</h:panelGrid>
+                </td>
+                <td >
+                    <img alt="user" src="images/userLock.png" />
+                </td>
+			</tr>
+			</table>
+			</p:fieldset>
 		</p:dialog>
 	</h:form>
 	
 	
 	<!--  Mantenimiento |x Detalle - Modificar-->
 	<h:form id="formManteKardexList">
-		<p:dialog widgetVar="kardexDialog" showEffect="fade"
+		<p:dialog widgetVar="kardexDialog" showEffect="fade" resizable="false" 
 			hideEffect="explode" modal="true" width="450" position="center">
 			<h:panelGrid id="display" columns="2" cellpadding="2"
 				style="margin:0 auto;" title="Kardex ">
@@ -239,7 +252,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 	<!--  Mantenimiento Producto - Imagen-->
 	<h:form id="formInsertImageProduc">
-		<p:dialog header="Imagen Producto" widgetVar="imageProducDialog"
+		<p:dialog header="Imagen Producto" widgetVar="imageProducDialog" resizable="false" 
 			showEffect="fade" hideEffect="explode" modal="true" 
 			position="center">
 			<h:panelGrid id="display"  >
@@ -259,7 +272,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	<!--  Mantenimiento ALMACEN -->
 
 	<h:form id="formInsertUbigeoAlmacen">
-		<p:dialog header="Ubigeo" widgetVar="UbigeoAlmacenDialog"
+		<p:dialog header="Ubigeo" widgetVar="UbigeoAlmacenDialog" resizable="false" 
 			showEffect="fade" hideEffect="explode" modal="true" width="450"
 			position="center">
 			<h:panelGrid id="display" columns="2" cellpadding="2">
@@ -300,7 +313,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	<!--  Mantenimiento CONTRATO -->
 
 	<h:form id="formInsertUbigeoContrato">
-		<p:dialog header="Ubigeo" widgetVar="UbigeoDialog" showEffect="fade"
+		<p:dialog header="Ubigeo" widgetVar="UbigeoDialog" showEffect="fade" resizable="false" 
 			hideEffect="explode" modal="true" width="450" position="center">
 			<h:panelGrid id="display" columns="2" cellpadding="2">
 				<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
@@ -342,7 +355,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 	<h:form id="formHorarioVendedor">
 		<p:dialog header="Registro/Modificación horario Vendedor" widgetVar="horarioVendedorDialog" showEffect="fade"
-			hideEffect="explode" modal="true" width="450" position="center">
+			hideEffect="explode" modal="true" width="450" position="center" resizable="false" >
 			<h:panelGrid id="display" columns="2" cellpadding="2">
 			
 			<h:outputLabel value="Vendedor " />  
@@ -372,7 +385,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 
 	<h:form id="NuevoModificaPunto">
-		<p:dialog header="Ingrese Nuevo Punto de Venta/Almacen"
+		<p:dialog header="Ingrese Nuevo Punto de Venta/Almacen" resizable="false" 
 			widgetVar="carDialogNuevoPunto" showEffect="fade"
 			hideEffect="explode" modal="true" width="350" position="center">
 
@@ -429,7 +442,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 
 	<h:form>
-		<p:confirmDialog id="confirmDeshabilitarAlmacen"
+		<p:confirmDialog id="confirmDeshabilitarAlmacen" 
 			message="Esta seguro de deshabilitar dicho Punto de venta/Almacen?"
 			width="325" height="100" showEffect="explode" hideEffect="explode"
 			header="Confirm" severity="alert" widgetVar="confirmationAlmacen"
@@ -507,7 +520,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 	<!--  Mantenimiento Producto Detalle -->
 	<h:form id="formManteProdDetalle">
-		<p:dialog header="Detalle Producto" widgetVar="prodDialog" id="carDlg"
+		<p:dialog header="Detalle Producto" widgetVar="prodDialog" id="carDlg" resizable="false" 
 			showEffect="fade" hideEffect="explode" modal="true" width="450"
 			position="center">
 			<h:panelGrid id="display" columns="2" cellpadding="2"
@@ -539,7 +552,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	
 <!--  Mantenimiento Horario Empleado -->
 	<h:form id="formManteHorario">
-		<p:dialog widgetVar="horarioDialog" showEffect="fade"
+		<p:dialog widgetVar="horarioDialog" showEffect="fade" resizable="false" 
 			hideEffect="explode" modal="true" width="450" position="center">
 			<h:panelGrid id="display" columns="2" cellpadding="2"
 				style="margin:0 auto;" title="Horario ">
@@ -555,13 +568,13 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				
 				<h:outputText value="#{message['horario.personal.fechaDesde']}" />
 				<h:panelGroup >
-					<p:calendar id="desdecl" value="#{horarioPersonal.objHorarioPersonal.diainicio}" required="true" requiredMessage="#{message['horario.personal.fechaDesde.validation']}" mindate="today" />
+					<p:calendar id="desdecl" value="#{horarioPersonal.objHorarioPersonal.diainicio}" required="true" requiredMessage="#{message['horario.personal.fechaDesde.validation']}" mindate="today"  pattern="dd/MM/yyyy"  />
 					<p:message for="desdecl" />
 				</h:panelGroup>
 				
 				<h:outputText value="#{message['horario.personal.fechaHasta']}" />
 				<h:panelGroup>
-					<p:calendar id="fechasta" value="#{horarioPersonal.objHorarioPersonal.diafin}" required="true" requiredMessage="#{message['horario.personal.fechaHasta.validation']}" mindate="today" />
+					<p:calendar id="fechasta" value="#{horarioPersonal.objHorarioPersonal.diafin}" required="true" requiredMessage="#{message['horario.personal.fechaHasta.validation']}" mindate="today"  pattern="dd/MM/yyyy"   />
 					<p:message for="fechasta" />
 				</h:panelGroup>
 				
@@ -593,7 +606,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	<!--  Mantenimiento Factor Sancion -->
 	<h:form id="formFactorSancion">
 		<p:dialog header="Registro/Modificacion de Factor" widgetVar="FactorDialog" showEffect="fade"
-			hideEffect="explode" modal="true" position="center">
+			hideEffect="explode" modal="true" position="center" resizable="false" >
 			<p:fieldset legend="Factor de Sanción" >
 			<h:panelGrid id="display" columns="4"  >
 				<h:outputText value="Descripcion :" />
@@ -610,7 +623,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	<h:form id="formPaqueteBiblico">
 	  <p:messages id="msgs"/>
 		<p:dialog header="Registro/Modificacion Paquete Biblico" widgetVar="PaqueteBiblico" showEffect="fade"
-			hideEffect="explode" modal="true" position="center" width="500">
+			hideEffect="explode" modal="true" position="center" width="500" resizable="false" >
 			<p:fieldset legend="Paquete Biblico"  >
 			<h:panelGrid id="display" columns="3"  >
 			
@@ -673,7 +686,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 	<!--  Mantenimiento Det Sancion Cargo -->
 	<h:form id="formDetPaqBiblico">
 		<p:dialog header="Modificacion Sancion por Cargo" widgetVar="sancionCargoDialog" showEffect="fade"
-			hideEffect="explode" modal="true" position="center">
+			hideEffect="explode" modal="true" position="center" resizable="false" >
 			<p:fieldset legend="Sancion por cargo" >
 				 <h:panelGrid id="display" columns="2"  >
 					<h:outputText value="Cargo :" />
@@ -700,7 +713,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 	<h:form id="formDetPaqueteBiblico">
 	 
 		<p:dialog header="Registro/Modificacion Detalle Paquete Biblico" widgetVar="DetPaqueteBiblico" showEffect="fade"
-			hideEffect="explode" modal="true" position="center" width="450">
+			hideEffect="explode" modal="true" position="center" width="450" resizable="false" >
 			<p:fieldset legend="producto Paquete Biblico"  >
 			<h:panelGrid id="display" columns="3"  >
 			
@@ -816,7 +829,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 
 <!--  Mantenimiento Horario Punto Venta-->
 	<h:form id="formManteHorarioPV">
-		<p:dialog widgetVar="horariopvDialog" showEffect="fade"
+		<p:dialog widgetVar="horariopvDialog" showEffect="fade" resizable="false" 
 			hideEffect="explode" modal="true" width="550" position="center"
 			header="Horario Punto de Venta">
 			<h:panelGrid id="display" columns="2" cellpadding="2"
@@ -839,13 +852,13 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 				
 				<h:outputText value="#{message['horario.pv.fechaDesde']}" />
 				<h:panelGroup >
-					<p:calendar id="desdepv" required="true" requiredMessage="#{message['horario.pv.fechaDesde.validation']}" value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diainicio}" pattern="dd/MM/yyyy" />
+					<p:calendar id="desdepv" required="true" requiredMessage="#{message['horario.pv.fechaDesde.validation']}" value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diainicio}" mindate="today"  pattern="dd/MM/yyyy"  />
 					<p:message for="desdepv" />
 				</h:panelGroup>
 				
 				<h:outputText value="#{message['horario.pv.fechaHasta']}" />
 				<h:panelGroup >
-					<p:calendar id="hastapv" value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diafin}" required="true"  requiredMessage="#{message['horario.pv.fechaHasta.validation']}" pattern="dd/MM/yyyy" />
+					<p:calendar id="hastapv" value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diafin}" required="true"  requiredMessage="#{message['horario.pv.fechaHasta.validation']}" mindate="today"  pattern="dd/MM/yyyy"  />
 					<p:message for="hastapv" />
 				</h:panelGroup>
 			
@@ -877,7 +890,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 
 
 	<h:form id="formCarEmpList">
-		<p:dialog header="Detalle CargoEmpleado" widgetVar="carDialog"
+		<p:dialog header="Detalle CargoEmpleado" widgetVar="carDialog" resizable="false" 
 			showEffect="fade" hideEffect="explode" modal="true" width="450"
 			position="center">
 			<h:panelGrid id="display" columns="2" cellpadding="2"
@@ -921,7 +934,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 
 	<h:form id="NuevoModificaCargoEmpleado">
 		<p:dialog header="Registro / Modificacion de Cargo Empleado" widgetVar="carDialogNuevo"
-			showEffect="fade" hideEffect="explode" modal="true" width="500"
+			showEffect="fade" hideEffect="explode" modal="true" width="500" resizable="false" 
 			position="center">
 <p:fieldset legend="Cargo de Empleado" >
 			<h:panelGrid id="display" columns="2" cellpadding="2"
@@ -1352,7 +1365,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
             <h:outputText value="#{message['incidencia.observacion']}" />	
             <p:inputTextarea maxlength="500" required="true" value="#{mantenimientoIncidenciaForm.objObsIncidencia.observacion}" requiredMessage="#{message['incidencia.observacion.validation']}" /> 
             <h:outputText value="#{message['incidencia.fecha']}" />				
-            <p:calendar id="fechafin" 
+            <p:calendar id="fechafin"   pattern="dd/MM/yyyy"  
             value="#{mantenimientoIncidenciaForm.fechafin}" requiredMessage="#{message['incidencia.fecha.validation']}" required="true" />
             <p:commandButton 
 					    value="Guardar" 
@@ -1664,7 +1677,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 				<h:panelGroup>
 
 					<p:spacer height="20px" width="80"></p:spacer>
-					<p:commandButton id="btn" value="Guardar" update="panel"
+					<p:commandButton id="btn" value="Guardar" update="empresaTable"
 						action="#{empresaForm.insertar}" ajax="false"
 						icon="ui-icon ui-icon-disk"
 						title="verifique bien los datos, antes de hacer clic en Guardar" />
@@ -1697,7 +1710,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 					
 				<p:calendar  value="#{MetaMesFormAction.date1}"
 							 id="fechainicial"
-							 required="true" 
+							 required="true"  pattern="dd/MM/yyyy"  
 							 requiredMessage="#{message['Metames.fechainicial.validation']}" />
 							 <p:message for="fechainicial" />  
 				
@@ -1708,7 +1721,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 			
 				<p:calendar value="#{MetaMesFormAction.date2}"
 							id="fechafinal"
-							required="true" 
+							required="true"  pattern="dd/MM/yyyy"  
 							 requiredMessage="#{message['Metames.fechafinal.validation']}"/>
 							 <p:message for="fechafinal" /> 
 				
