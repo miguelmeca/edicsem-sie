@@ -11,7 +11,7 @@
 		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Kardex</h1>
 		<h:form  id="frmKardex" >
 			<p:messages id="message" showDetail="true" />
-			<p:fieldset legend="#{message['panel.seleccion.producto']}"  style="width:70% " >
+			<p:fieldset legend="#{message['panel.seleccion.producto']}"  style="width:80% " >
 			<h:panelGrid columns="6" cellpadding="4" >
 				<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
 				<p:selectOneMenu id="tipoProd" value="#{comboAction.tipoProducto}" required="true"
@@ -37,7 +37,7 @@
 				 
 				<h:outputText value="#{message['mantenimiento.kardex.almacen']}" />
 				<p:selectOneMenu id="almacen"  value="#{kardexAction.idalmacen}"  required="true"
-				requiredMessage="#{message['kardex.almacen.validation']}" >
+				requiredMessage="#{message['kardex.almacen.validation']}"  style="width:200px " >
 					<f:selectItem itemLabel="Seleccione" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.almacenItemsXTipo}" />
 				</p:selectOneMenu>
@@ -53,7 +53,7 @@
 				<p:spacer/>
 				
 				<p:commandButton  value="Consultar" action="#{kardexAction.consultar}" 
-				update=":frmKardex" />
+				update=":frmKardex" icon="ui-icon-refresh" />
 				</h:panelGrid>
 				</p:fieldset>
 				<p:spacer width="40" />

@@ -18,6 +18,7 @@
 					
 					<p:outputLabel value="#{message['permiso.personal.cargo']}" for="cargo"/>
 					<p:selectOneMenu id="cargo" value="#{comboAction.cargoEmpleado}" >
+					<f:selectItem itemLabel="Seleccione cargo" itemValue="#{null}" />
 					<f:selectItems  value="#{comboAction.cargoEmpleadoItems}" />
 					<p:ajax update="empleado"  listener="#{comboAction.cambiar2}" />
 					</p:selectOneMenu>
@@ -35,8 +36,11 @@
 				
 				<p:pickList id="pojoPickList1" value="#{permiso.permisosString}" var="p"  
 				itemLabel="#{p}" itemValue="#{p}" />
-				 <p:commandButton action="#{permiso.insertar}" value="Insertar" ajax="false" update="formPermisos"/>
-					
+				<br/> 
+				<h:panelGrid columns="3" >
+				<p:spacer/>
+				 <p:commandButton  action="#{permiso.insertar}" value="Registrar Permisos" ajax="false" update="formPermisos" icon="ui-icon ui-icon-disk" />
+					</h:panelGrid>
 		   	</p:fieldset>
 			</p:panel>
 		</h:form>

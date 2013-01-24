@@ -122,6 +122,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	public void init() {
 		log.info("init()");
 		objEmpleado = new EmpleadoSie();
+		objEmpleado.setGenero("F");
 		objTelefono = new TelefonoPersonaSie();
 		objDomicilio = new DomicilioPersonaSie();
 		objContratoEmpleado = new ContratoEmpleadoSie();
@@ -477,6 +478,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		comboManager.setUbigeoDistriItems(null);
 		selectTelef= "";
 		operadorTelefonico=1;
+		TipoDocumento=1;
 		TipoTelef=1;
 		//para inicializar los campos de nuevo telefono
 		nuevoTelef.setTelefono("");
@@ -484,6 +486,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		setTipoDocumento(0);
 		setCargoEmpleado(0);
 		objEmpleado = new EmpleadoSie();
+		objEmpleado.setGenero("F");
 		objTelefono = new TelefonoPersonaSie();
 		setTipo(0);
 		objDomicilio = new DomicilioPersonaSie();

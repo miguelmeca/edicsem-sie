@@ -13,27 +13,31 @@
 	    <p:tab title="#{message['empleado.tabpersonal']}">
 	    <p:panel header="Datos Personales"> 
         <h:panelGrid columns="2" cellpadding="5">						
-			<p:outputLabel value="#{message['empleado.nombre']}" for="nombre" />
+			<h:outputText value="#{message['empleado.nombre']}" />
 			<p:inputText id="nombre" value="#{mantenimientoEmpleadoFormAction.objEmpleado.nombreemp}" required="true" label="Nombre" 
 			requiredMessage="#{message['empleado.nombre.validation']}"/>
-			<p:outputLabel value="#{message['empleado.apepaterno']}" for="apepaterno" />
+			<h:outputText value="#{message['empleado.apepaterno']}" />
 			<p:inputText id="apepaterno" value="#{mantenimientoEmpleadoFormAction.objEmpleado.apepatemp}" required="true" label="Apellido paterno"
 			requiredMessage="#{message['empleado.apepaterno.validation']}"/>
-			<p:outputLabel value="#{message['empleado.apematerno']}" for="apematerno" />
+			<h:outputText value="#{message['empleado.apematerno']}" />
 			<p:inputText id="apematerno" value="#{mantenimientoEmpleadoFormAction.objEmpleado.apematemp}" required="true" label="Apellido materno"
-			requiredMessage="#{message['empleado.apematerno.validation']}"/>						
-			<p:outputLabel value="#{message['empleado.usuario']}" for="usuario" />
+			requiredMessage="#{message['empleado.apematerno.validation']}"/>
+			<h:outputText value="#{message['empleado.genero']}" />
+			<p:selectOneRadio  value="#{mantenimientoEmpleadoFormAction.objEmpleado.genero}" required="true" >
+	            <f:selectItem itemLabel="Femenino" itemValue="F" />
+	            <f:selectItem itemLabel="Masculino" itemValue="M" />
+            </p:selectOneRadio>
+			<h:outputText value="#{message['empleado.usuario']}" />
 			<p:inputText id="usuario" value="#{mantenimientoEmpleadoFormAction.objEmpleado.usuario}" required="true" label="Usuario" 
 			requiredMessage="#{message['empleado.usuario.validation']}"/>
-		    <p:outputLabel value="#{message['empleado.contrasena']}" for="contrasenya" />
+		    <h:outputText value="#{message['empleado.contrasena']}" />
 			<p:password id="contrasenya" value="#{mantenimientoEmpleadoFormAction.objEmpleado.contrasena}" required="true" label="Contrasenya"
 			requiredMessage="#{message['empleado.contrasenya.validation']}"/>
-			<p:outputLabel value="#{message['empleado.confcontra']}" for="confcontra" />
+			<h:outputText value="#{message['empleado.confcontra']}" />
 			<p:password id="confcontra" value="#{mantenimientoEmpleadoFormAction.confcontra}" required="true" label="Confcontra"
 			requiredMessage="#{message['empleado.confcontra.validation']}"/>
-			<p:outputLabel for="tipo" value="Tipo de Doc. :" styleClass="textoAzulFuerteGrande" id="tipoL"/>
-            <p:selectOneMenu id="tipo" value="#{mantenimientoEmpleadoFormAction.tipoDocumento}" styleClass="required" title="El tipo es obligatorio!" >
-            <f:selectItem itemLabel="Seleccione tipo Documento" itemValue="#{null}" />
+			<h:outputText value="Tipo de Doc. :" styleClass="textoAzulFuerteGrande" id="tipoL"/>
+            <p:selectOneMenu id="tipo" value="#{mantenimientoEmpleadoFormAction.tipoDocumento}" >
             <f:selectItems  value="#{comboAction.tipoDocumentoitems}" />
             <p:ajax update="nrodoc"/>
             </p:selectOneMenu>
@@ -45,10 +49,10 @@
 					requiredMessage="#{message['empleado.nrodoc.validation']}" />
 					
 			<p:inputMask value="#{mantenimientoEmpleadoFormAction.objEmpleado.numdocumento}" mask="99999999999"
-					rendered="#{mantenimientoEmpleadoFormAction.tipoDocumento==2}"/>
+					required="true"  rendered="#{mantenimientoEmpleadoFormAction.tipoDocumento==2}"/>
             </h:panelGroup>
                           
-            <p:outputLabel value="#{message['empleado.fechanac']}" for="fechanac" />
+            <h:outputText value="#{message['empleado.fechanac']}" />
 			<p:calendar pagedate="-8380" maxdate="today" value="#{mantenimientoEmpleadoFormAction.objEmpleado.fechanacimiento}" id="fechanac" showButtonPanel="true" required="true"  pattern="dd/MM/yyyy"
 			label="Fecha de nacimiento" requiredMessage="#{message['empleado.fechanac.validation']}"/>                  
             
@@ -149,7 +153,7 @@
         <p:panel header="Dirección">
         <h:messages errorClass="error"/>  
         <h:panelGrid columns="2" id="panel3">
-         <p:outputLabel value="#{message['domicilio.direccion']}" for="domicilio" />
+         <h:outputText value="#{message['domicilio.direccion']}"  />
 			<p:inputText id="domicilio" value="#{mantenimientoEmpleadoFormAction.objDomicilio.domicilio}" required="true" label="Domicilio"
 			requiredMessage="#{message['domicilio.direccion.validation']}"/>  			    
 				
@@ -195,30 +199,31 @@
          <p:tab title="#{message['empleado.tabcontrato']}" id="contemp"  >
          <p:panel id="panlcont" header="Datos Contrato">
          
-           <h:panelGrid columns="2"  >
+           <h:panelGrid columns="2" cellpadding="4" >
             <h:outputText value="#{message['empleado.empresa.descripcion']}" />
             <p:selectOneMenu id="empresa" value="#{mantenimientoEmpleadoFormAction.idEmpresa}">
             <f:selectItems value="#{comboAction.empresaitems}"/>
             </p:selectOneMenu>
             
             <h:outputText value="#{message['empleado.fecInicio']}" />
-            <p:calendar value="#{mantenimientoEmpleadoFormAction.fechaInicioContrato}" pattern="dd/MM/yyyy" />
+            <p:calendar value="#{mantenimientoEmpleadoFormAction.fechaInicioContrato}" pattern="dd/MM/yyyy" style="width:300px" />
             <h:outputText value="#{message['empleado.cargo']}" />
-            <p:selectOneMenu value="#{mantenimientoEmpleadoFormAction.idCargo}" label="Seleccione" filter="true" filterText="Filter" filterMatchMode="startsWith" panelStyle="width:300px">  
+            <p:selectOneMenu value="#{mantenimientoEmpleadoFormAction.idCargo}" label="Seleccione" filter="true" filterText="Filter" filterMatchMode="startsWith"  >  
             <f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
             </p:selectOneMenu>
             <p:outputLabel  value="#{message['empleado.tipoPago']}" for="tipopago" />
-            <p:selectOneMenu id="tipopago" value="#{mantenimientoEmpleadoFormAction.idTipoPago}">
+            <p:selectOneMenu id="tipopago" value="#{mantenimientoEmpleadoFormAction.idTipoPago}"  >
             <f:selectItems value="#{comboAction.tipoPagoItems}"/>
             </p:selectOneMenu>
             <h:outputText value="#{message['empleado.basico']}" />
-            <p:spinner value="#{mantenimientoEmpleadoFormAction.objContratoEmpleado.basico}" min="1" /> 
+            <p:spinner value="#{mantenimientoEmpleadoFormAction.objContratoEmpleado.basico}" min="1"  /> 
             <h:outputText value="#{message['empleado.periodoPrueba']}" />
-            <p:spinner title="x mes" value="#{mantenimientoEmpleadoFormAction.objContratoEmpleado.periodoPrueba}"/> 
-            <p:commandButton value="Agregar" update="panelPagos, message" action="#{mantenimientoEmpleadoFormAction.agregarPago}" icon="ui-icon-check"/>
-           
-            	<p:dataTable id="panelPagos" value="#{mantenimientoEmpleadoFormAction.contratoEmpleadoList}" var="c"  >
-						
+            <p:spinner title="x mes" value="#{mantenimientoEmpleadoFormAction.objContratoEmpleado.periodoPrueba}" min="1" /> 
+            <p:spacer />
+            <p:commandButton value="Agregar" update="panelPagos, message" action="#{mantenimientoEmpleadoFormAction.agregarPago}" icon="ui-icon-plusthick"/>
+           	</h:panelGrid>
+           	
+            	<p:dataTable id="panelPagos" value="#{mantenimientoEmpleadoFormAction.contratoEmpleadoList}" var="c" style="width:800px"  >
 						<p:column headerText="item" >
 							<h:outputText value="#{c.item}" />
 						</p:column>
@@ -244,13 +249,13 @@
 		                    </p:commandButton>
 		                 </p:column>
 				</p:dataTable>
-			</h:panelGrid> 
-            <p:commandButton id="btngu" value="Guardar" update="message" action="#{mantenimientoEmpleadoFormAction.insertar}" ajax="false" icon="ui-icon-check">
-            </p:commandButton>
-           </p:panel>
+				<br/><br/>
+            <p:commandButton id="btngu" value="#{message['empleado.registrar']}" update="message" action="#{mantenimientoEmpleadoFormAction.insertar}" ajax="false" icon="ui-icon ui-icon-disk"/>
+            <p:tooltip for="btngu"/>
+            </p:panel>
         </p:tab>
         </p:wizard>
-         <p:commandButton id="btnreg" value="Regresar" action="#{mantenimientoEmpleadoSearchAction.listar}" immediate="true" ajax = "false" icon="ui-icon ui-icon-close"/> 
+        <p:commandButton id="btnreg" value="Regresar" action="#{mantenimientoEmpleadoSearchAction.listar}" immediate="true" ajax = "false" icon="ui-icon ui-icon-close"/> 
 			
 	</p:panel>	            
 	</h:form>

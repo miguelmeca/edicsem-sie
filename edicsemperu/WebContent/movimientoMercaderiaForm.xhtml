@@ -9,8 +9,7 @@
 	<script language="JavaScript" type="text/javascript">
 		window.history.forward(-1);
 	</script>
-		<h1 class="title ui-widget-header ui-corner-all">Movimiento
-			Mercadería</h1>
+		<h1 class="title ui-widget-header ui-corner-all">#{message['movimiento.titulo']}</h1>
 		<h:form id="formMovMerc">
 			<p:messages id="message" showDetail="true" />
 			<p:panel header="#{message['panel.movimiento.mercaderia']}">
@@ -45,7 +44,7 @@
 					
 					<h:outputText value="#{message['mantenimiento.producto']}" />
 					<p:selectOneMenu id="produc"  
-						value="#{movimientoMercaderia.idproducto}" required="true"  style="width:165px" >
+						value="#{movimientoMercaderia.idproducto}" required="true"  style="width:220px" >
 						<f:selectItem itemLabel="Seleccione Producto" itemValue="#{null}"  />
 						<f:selectItems value="#{comboAction.productositems}" />
 					</p:selectOneMenu>
@@ -80,9 +79,10 @@
 					</p:selectOneMenu>
 					<p:spacer  rendered="#{movimientoMercaderia.idtipokardexproducto!=3}" />
 					</p:fieldset>
-					
+					<br/><br/>
 					<c:forEach items="${sessionScope.cargoSession}" var="cargo">
 					<c:if  scope="${cargo.idcargoempleado==1}" >
+					
 					<p:fieldset legend="Datos Comprobante"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}" >
 					<h:panelGrid columns="6" >
 					<h:outputText value="#{message['movimiento.proveedor.nombreempresa']}"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
@@ -108,17 +108,14 @@
 				</c:if>
 				</c:forEach>
 				</h:panelGrid>
-				
-				<p:commandButton id="id"
-						actionListener="#{movimientoMercaderia.insertar}"
-						value="Grabar Mercadería" ajax="false"
-						update="formMovMerc:listaMovim, message">
-					</p:commandButton>
+				<br/><br/>
+				<p:commandButton id="idG" action="#{movimientoMercaderia.insertar}" icon="ui-icon ui-icon-disk" title="#{message['movimiento.grabar']}"
+					value="#{message['movimiento.grabar']}" ajax="false" update="formMovMerc:listaMovim, message"/>
+				<p:tooltip for="idG"/>
+				<br/><br/> 
 				<p:dataTable id="listaMovim" var="d" value="#{movimientoMercaderia.data}"   rowStyleClass="#{d.idkardex == movimientoMercaderia.idMAxKardex ? 'verdeLimon' : null}"
-				paginator="true" rows="10"
-       paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-	   rowsPerPageTemplate="5,10,15" widgetVar="table"
-	   emptyMessage="No se encontro registros">
+				paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" widgetVar="table" emptyMessage="No se encontro registros">
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Id Kardex" />
@@ -127,61 +124,61 @@
 					</p:column>
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Almacen" />
+							<h:outputText value="#{message['movimiento.Almacen']}" />
 						</f:facet>
 						<h:outputText value="#{d.tbPuntoVenta.descripcion}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Tipo Kardex" />
+							<h:outputText value="#{message['movimiento.tipo']}" />
 						</f:facet>
 						<h:outputText value="#{d.tbTipoKardexProducto.descripcion}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Producto" />
+							<h:outputText value="#{message['movimiento.producto']}" />
 						</f:facet>
 						<h:outputText value="#{d.tbProducto.descripcionproducto}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Cant. Entrada" />
+							<h:outputText value="#{message['movimiento.cantEntrada']}" />
 						</f:facet>
 						<h:outputText value="#{d.cantentrada}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="valor Entrada" />
+							<h:outputText value="#{message['movimiento.valorEntrada']}" />
 						</f:facet>
 						<h:outputText value="#{d.valorunitarioentrada}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Cant. Salida" />
+							<h:outputText value="#{message['movimiento.cantSalida']}"/>
 						</f:facet>
 						<h:outputText value="#{d.cantsalida}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="valor Salida" />
+							<h:outputText value="#{message['movimiento.valorSalida']}"/>
 						</f:facet>
 						<h:outputText value="#{d.valorunitariosalida}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Cant. Existente" />
+							<h:outputText value="#{message['movimiento.cantExistente']}"/>
 						</f:facet>
 						<h:outputText value="#{d.cantexistencia}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Valor total" />
+							<h:outputText value="#{message['movimiento.valortotal']}"/>
 						</f:facet>
 						<h:outputText value="#{d.valortotal}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Valor Existente" />
+							<h:outputText value="#{message['movimiento.valorExistente']}"/>
 						</f:facet>
 						<h:outputText value="#{d.valorunitarioexistencia}" />
 					</p:column>

@@ -9,7 +9,7 @@
      <h:form id="formManteEmpList" prependId="false">
 	 <p:messages showDetail="true"/> 	  
 	  <p:dataTable value="#{mantenimientoEmpleadoSearchAction.empleadoList}" var="p"
-	   id="listaPersonas" paginator="true" rows="5"
+	   id="listaPersonas" paginator="true" rows="10"
        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	   rowsPerPageTemplate="5,10,15" widgetVar="table"
 	   emptyMessage="No se encontro registros">
@@ -38,7 +38,7 @@
 		</f:facet>
 		<h:outputText value="#{p.tbTipoDocumentoIdentidad.descripcion}" />
 	   </p:column>
-	   <p:column>
+	   <p:column sortBy="#{p.numdocumento}"  filterBy="#{p.numdocumento}" headerText="Nro Doc">
 		<f:facet name="header">
 		 <h:outputText value="Nro. de Doc." />
 		</f:facet>
@@ -65,10 +65,11 @@
 	   </p:column>
 	   <f:facet name="footer">
 		<div align="left">
-	     <h:commandLink value="Nuevo" action="#{mantenimientoEmpleadoFormAction.agregar}" />
+	     <p:commandButton id="nuevoEmpl" value="#{message['empleado.nuevo']}" action="#{mantenimientoEmpleadoFormAction.agregar}" title="#{message['empleado.nuevo.tittle']}" icon="ui-icon-star"/>
+	     <p:tooltip for="nuevoEmpl"/>
 		</div>
 	   </f:facet>
-	  </p:dataTable>		
+	  </p:dataTable>
   </h:form>
  </ui:define>
 </ui:composition>

@@ -105,17 +105,16 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	<f:loadBundle var="message"
 		basename="com.edicsem.pe.sie.client.properties.ApplicationResources" />
 	<p:layout fullPage="true">
-		<p:layoutUnit position="north" size="100">
+		<p:layoutUnit position="north" size="115">
 			<div id="header" class="ui-widget ui-widget-header">
 				<div id="logo">
-					<img src="#{request.contextPath}/images/edicsem.png" alt="Logo" style="height: 95Spx " />
+					<img src="#{request.contextPath}/images/edicsem.png" alt="Logo" style="height: 95px " />
 				</div>
 				<div id="menu" class="ui-widget">
 					<ul id="main">
-						<li class="current_page_item"><a href="index.xhtml">Página Principal</a></li>
+						<li class="current_page_item"><a href="index.jsf">Página Principal</a></li>
 						<li><p:commandLink  onclick="cambiarContrasenaDialog.show()" value ="Cambiar Contraseña"/></li> 
 						<li><p:commandLink action="#{login.cerrarSesion}"  value="Cerrar Sesión" /></li>
-						<li><a>Actualizar Datos</a></li>
 						<li>${sessionScope.loginUserSession.nombresCompletos}
 						<br />
 						#{login.fechaHoraIngreso}
@@ -152,13 +151,14 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				<h:outputText value="#{message['contrasena.actual']}" />
 	            <p:password value="#{login.passActual}" required="true"/>
 	            <h:outputText value="#{message['contrasena.nueva']}" />
-	            <p:password id="pwd1" value="#{login.passConfirma1}" feedback="true" required="true" match="pwd2" />
+	            <p:password id="pwd1" value="#{login.passConfirma1}" promptLabel="Ingrese nueva contraseña" maxlength="25" feedback="true" required="true" match="pwd2" weakLabel="peligroso" goodLabel="bueno" strongLabel="Buenísmo"  />
 	            <h:outputText value="#{message['contrasena.nueva.confirma']}" />
-	            <p:password id="pwd2" value="#{login.passConfirma2}" feedback="true" required="true"/>
-				<p:commandButton update="msj,display" value="Actualizar Contraseña" action="#{login.cambiarContrasena}"  />
+	            <p:password id="pwd2" value="#{login.passConfirma2}" promptLabel="Volver a ingresar nueva contraseña" maxlength="25" bfeedback="true" required="true" weakLabel="peligroso" goodLabel="bueno" strongLabel="Buenísmo"/>
+				<p:commandButton update="msj,display" value="Actualizar Contraseña" action="#{login.cambiarContrasena}"  icon="ui-icon ui-icon-disk" />
+				<p:commandButton value="Cerrar" oncomplete="cambiarContrasenaDialog.hide()" icon="ui-icon ui-icon-close" />
 				</h:panelGrid>
                 </td>
-                <td >
+                <td>
                     <img alt="user" src="images/userLock.png" />
                 </td>
 			</tr>
@@ -1233,7 +1233,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 		<p:confirmDialog id="confirmDeshabilitarEmp"
 			message="Esta seguro de deshabilitar dicho empleado?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
-			header="Confirm" severity="alert" widgetVar="confirmation"
+			header="Confirm" severity="alert" widgetVar="desactivarEmp"
 			position="center">
 
 			<p:commandButton type="submit" value="Si"
@@ -1647,7 +1647,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 
 				<!--N° EMail -->
 
-				<h:outputText value="#{message['mantenimiento.email']}"  />
+				<h:outputText value="#{message['mantenimiento.email']}" for="email" />
 
 				<h:panelGroup id="email">
 
