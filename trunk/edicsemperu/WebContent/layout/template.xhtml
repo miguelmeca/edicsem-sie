@@ -942,7 +942,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 			<h:panelGrid id="display" columns="2" cellpadding="2"
 				style="margin:0 auto;">
 
-				<h:outputText value="#{message['Cargoempleado.descripcion']}"
+				<h:outputText value="#{message['cargo.empleado.descripcion']}"
 					for="descripcion" />
 
 				<h:panelGroup>
@@ -952,6 +952,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 						required="true" label="descripcion"
 						requiredMessage="#{message['Cargoempleado.descripcion.validation']}"
 						style="font-weight:bold"
+						size="30"
 						rendered="#{mantenimientoCargoEmpleadoFormAction.editMode}" 
 						onkeypress="return validarLetras(event)"
 						 title="nombre del cargo de empleado"/>
@@ -962,6 +963,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 						required="true" label="descripcion"
 						requiredMessage="#{message['Cargoempleado.descripcion.validation']}"
 						style="font-weight:bold"
+						size="30"
 						rendered="#{!mantenimientoCargoEmpleadoFormAction.editMode}" 
 						onkeypress="return  validarLetras(event)"
 						 title="nombre del cargo de empleado"/>
@@ -1645,7 +1647,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 
 				<!--N° EMail -->
 
-				<h:outputText value="#{message['mantenimiento.email']}" for="email" />
+				<h:outputText value="#{message['mantenimiento.email']}"  />
 
 				<h:panelGroup id="email">
 
@@ -1656,6 +1658,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 						title="para el @ presione: la tecla Alt + 64 y en laptop Alt Gr + Q"
 						validatorMessage="Email incorrecto" maxlength="45">
 						<f:validateRegex pattern="#{message['pattern.email.norequired']}" />
+						<p:tooltip for="email"  showEffect="clip" hideEffect="explode" ></p:tooltip>
 						
 						</p:inputText>
 						     <p:watermark for="email" value="ejm@edicsem.com" /> 
@@ -1668,6 +1671,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 						title="para el @ presione: la tecla Alt + 64 y en laptop Alt Gr + Q"
 						validatorMessage="Email incorrecto" maxlength="45">
 						<f:validateRegex pattern="#{message['pattern.email.norequired']}"/>
+						<p:tooltip for="email"  showEffect="clip" hideEffect="explode" ></p:tooltip>
 				
 					
 					</p:inputText>
