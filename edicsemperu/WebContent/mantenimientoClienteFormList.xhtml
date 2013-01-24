@@ -5,18 +5,37 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
+	<script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
 		<h1 class="title ui-widget-header ui-corner-all">Lista de Clientes</h1>
 
 		<h:form id="frmClienteFormList" prependId="false">
 			<p:growl id="message" showDetail="true" />
 			<p:dataTable value="#{MantenimientoClienteSearchAction.clienteList}"  
-				var="c" paginator="true" rows="6"
+				var="c" paginator="true" rows="10"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15" widgetVar="table"
-					emptyMessage="No se encontro registros">
+					emptyMessage="No se encontro registros"
+					filteredValue="#{MantenimientoClienteSearchAction.filteredClienteSie}">
 					
-				<p:column headerText="Nombres Completos" id="nombre" filterBy="#{c.nombresCompletos}">
-					<h:outputText value="#{c.nombresCompletos}" />
+					<f:facet name="header">
+            <p:outputPanel>
+                <h:outputText value="Buscar en todos los campos:" />
+                <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px" />
+            </p:outputPanel>
+        </f:facet>
+					
+				<p:column headerText="Nombre" id="nombre" filterBy="#{c.nombrecliente}">
+					<h:outputText value="#{c.nombrecliente}" />
+				</p:column>
+				
+				<p:column headerText="Apellido Paterno" id="ap" filterBy="#{c.apepatcliente}">
+					<h:outputText value="#{c.apepatcliente}" />
+				</p:column>
+				
+				<p:column headerText="Apellido Materno" id="am" filterBy="#{c.apematcliente}">
+					<h:outputText value="#{c.apematcliente}" />
 				</p:column>
 
 				<p:column headerText="Nº de Documento" id="ndedocumento" filterBy="#{c.numdocumento}">
@@ -24,12 +43,14 @@
 				</p:column>
 				
 				<p:column headerText="Editar">
+				<center>
 					<p:commandButton  ajax="false"
 					 action="#{MantenimientoClienteFormAction.update}"
 						icon="ui-icon ui-icon-pencil">
 						<f:setPropertyActionListener value="#{c}"
 							target="#{MantenimientoClienteFormAction.objClienteSie}" />
 					</p:commandButton>
+					</center>
 				</p:column>
 
 			</p:dataTable>
