@@ -106,7 +106,7 @@ title="Ingresar Nuevo Paquete Biblico"/>
 </center>
 </f:facet>
 							
-				
+					
 				<p:column headerText="Codigo de Paquete" >
 					<h:outputText value="#{c.tbPaquete.codpaquete}" />
 				</p:column>
@@ -123,7 +123,7 @@ title="Ingresar Nuevo Paquete Biblico"/>
 <center>
 <p:commandButton  oncomplete="DetPaqueteBiblico.show()"
 				 action="#{mantenimientoDetallePaqueteBiblicoSearchAction.update}" 
-				 update=":formDetPaqueteBiblico:display"
+				 update=":frmPaqueBibliList, :formDetPaqueteBiblico:display"
 				 icon="ui-icon ui-icon-pencil" >
 <f:setPropertyActionListener value="#{c}"
 							 target="#{mantenimientoDetallePaqueteBiblicoSearchAction.objDetPaqueteSie}" />
@@ -146,16 +146,8 @@ title="Ingresar Nuevo Paquete Biblico"/>
 </p:commandButton>
 </center>
 		</p:column>
-		<f:facet name="footer">
-		<p:commandButton value="Agregar un nuevo producto al paquete"
-		update=":formDetPaqueteBiblico:display"
-		action="#{mantenimientoDetallePaqueteBiblicoSearchAction.agregar}"
-		oncomplete="DetPaqueteBiblico.show()" 
-		icon="ui-icon ui-icon-check" 
-		title="Ingresar Nuevo Paquete Biblico"/>
-		</f:facet>
-		
-		</p:dataTable>
+
+			</p:dataTable>
 	
 	</p:fieldset> 	
 </p:outputPanel>
