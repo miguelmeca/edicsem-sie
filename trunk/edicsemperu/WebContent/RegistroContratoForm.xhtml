@@ -9,8 +9,7 @@
 		<script language="JavaScript" type="text/javascript">
 		window.history.forward(-1);
 	</script>
-		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
-			Contrato </h1>
+		<h1 class="title ui-widget-header ui-corner-all">#{message['registro.contrato.tittle']}</h1>
 		<h:form id="formManteContrato3">
 			<p:messages id="message" showDetail="true"/>
 			<p:wizard id="wiz" widgetVar="wiz" flowListener="#{contratoForm.onFlowProcess}">
@@ -108,7 +107,7 @@
 				<p:message for="domicilio" />
 
 				<h:outputText value="#{message['contrato.ubigeo.referencia']}" />
-				<p:inputTextarea value="#{contratoForm.objDomicilioSie.referencia}" maxlength="115"  cols="30" rows="2" autoResize="false" />
+				<p:inputTextarea value="#{contratoForm.objDomicilioSie.referencia}" maxlength="115" style="" cols="30" rows="2" autoResize="false"  />
 				<p:spacer />
 				
 				<h:outputText value="#{message['contrato.empresa.labora.nombre']}" />
@@ -126,6 +125,12 @@
 				<h:outputText value="#{message['contrato.empresa.labora.telefono']}" />
 				<p:inputMask id="numTelefTraba" mask="999-9999" value="#{contratoForm.objClienteSie.telftrabajo}" size="30"/>
 				<p:message for="numTelefTraba" />
+				
+				<h:outputText value="#{message['contrato.llamar']}" />
+				<p:selectOneRadio  value="#{contratoForm.objContratoSie.llamar}" required="true"  >
+		            <f:selectItem itemLabel="Si" itemValue="S" />
+		            <f:selectItem itemLabel="No" itemValue="N" />
+	            </p:selectOneRadio>
 				</h:panelGrid>
 				</p:panel>
 				</p:tab>
@@ -479,9 +484,9 @@
 				</p:selectCheckboxMenu>
 				</h:panelGrid>
 				
-				<p:commandButton value="Registrar" action="#{contratoForm.insertar}" update="message" ajax="false"
-				icon="ui-icon ui-icon-check"/>
-				
+				<p:commandButton id="nuevoContrato" value="#{message['contrato.registrar']}" action="#{contratoForm.insertar}" update="message" ajax="false" title="#{message['contrato.registrar.tittle']}"
+				 icon="ui-icon ui-icon-disk"/>
+				<p:tooltip for="nuevoContrato"/>
 			</p:panel>
 		</p:tab>
 		</p:wizard>

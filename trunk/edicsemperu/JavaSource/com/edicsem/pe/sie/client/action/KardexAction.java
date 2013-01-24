@@ -81,11 +81,20 @@ public class KardexAction extends BaseMantenimientoAbstractAction {
 	 */
 	public String agregar() {
 		log.info("agregar()");
-		limpiarCampos();
+		comboManagerPunto.setTipoProducto(0);
+		tipoProducto=0;
+		idempresa=0;
+		idalmacen=0;
+		idproducto=0;
+		idtipopuntoventa=0;
+		fechaDesde=null;
+		fechaHasta=null;
 		objKardexSie = new KardexSie();
+		kardexList = new ArrayList<KardexSie>();
 		setNewRecord(true);
 		return getViewList();
 	}
+	
 	/**
 	 * @return the kardexList
 	 */
@@ -179,14 +188,10 @@ public class KardexAction extends BaseMantenimientoAbstractAction {
 		mensaje="Se actualizó correctamente el movimiento a la empresa "+ objKardexSie.getTbEmpresa().getDescripcion();
 		msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 		FacesContext.getCurrentInstance().addMessage(null, msg);
-		limpiarCampos();
+		idempresa=0;
 		return consultar();
 	}
 	
-	
-	public void limpiarCampos(){
-		idempresa=0;
-	}
 	/*
 	 * (non-Javadoc)
 	 * 

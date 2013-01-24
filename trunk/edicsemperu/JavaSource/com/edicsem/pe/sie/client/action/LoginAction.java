@@ -23,8 +23,10 @@ import org.primefaces.model.DefaultMenuModel;
 import org.primefaces.model.MenuModel;
 
 import com.edicsem.pe.sie.beans.MenuDTO;
+import com.edicsem.pe.sie.entity.AuditoriaUsuarioSie;
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
+import com.edicsem.pe.sie.service.facade.AuditoriaUsuarioService;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.DetPermisoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.LoginService;
@@ -50,6 +52,8 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 	private List<CargoEmpleadoSie> cargo;
 	private String fechaHoraIngreso, mensaje;
 	
+	@EJB
+	private AuditoriaUsuarioService auditoriaService;
 	@EJB
 	private LoginService loginService;
 	@EJB
@@ -120,8 +124,22 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 							mimenu.addSubmenu(submenu);
 						}
 					}
-				
 					Date n= new Date();
+					AuditoriaUsuarioSie a =auditoriaService.listarAuditoriaUsuario(usuario);
+					
+					if(a==null){
+						a = new AuditoriaUsuarioSie();
+						a.setUsuario(usuario);
+						auditoriaService.insertAuditoriaUsuario(a);
+					}else{
+						log.info("fecha de creacion*  "+ a.getFechacreacion());
+						n= a.getFechacreacion();
+						log.info("fecha de n*  "+ n);
+						a = new AuditoriaUsuarioSie();
+						a.setUsuario(usuario);
+						auditoriaService.insertAuditoriaUsuario(a);
+					}
+					
 					fechaHoraIngreso = DateUtil.getDateTime("dd/MM/yyyy HH:mm:ss", n);
 					log.info(" fecha hora " + fechaHoraIngreso);
 					
