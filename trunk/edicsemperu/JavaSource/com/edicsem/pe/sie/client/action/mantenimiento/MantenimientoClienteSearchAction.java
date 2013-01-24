@@ -30,6 +30,7 @@ public class MantenimientoClienteSearchAction extends
 	private List<TelefonoPersonaSie> TelefonoPersonaList;
 	private EmpleadoSie selectedEmpleado;
 	private boolean editMode;
+	private List<ClienteSie> filteredClienteSie;
 
 	@EJB
 	private ClienteService objclienteService;
@@ -192,6 +193,27 @@ public class MantenimientoClienteSearchAction extends
 	 */
 	public void setIdEstadoGeneral(int idEstadoGeneral) {
 		this.idEstadoGeneral = idEstadoGeneral;
+	}
+
+	/**
+	 * @return the filteredClienteSie
+	 */
+	public List<ClienteSie> getFilteredClienteSie() {
+		return filteredClienteSie;
+	}
+
+	/**
+	 * @param filteredClienteSie the filteredClienteSie to set
+	 */
+	public void setFilteredClienteSie(List<ClienteSie> filteredClienteSie) {
+		this.filteredClienteSie = filteredClienteSie;
+	}
+
+	/**
+	 * @return the telefonoPersonaList
+	 */
+	public List<TelefonoPersonaSie> getTelefonoPersonaList() {
+		return TelefonoPersonaList;
 	}
 
 }
