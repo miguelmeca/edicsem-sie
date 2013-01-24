@@ -625,10 +625,11 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		<p:dialog header="Registro/Modificacion Paquete Biblico" widgetVar="PaqueteBiblico" showEffect="fade"
 			hideEffect="explode" modal="true" position="center" width="500" resizable="false" >
 			<p:fieldset legend="Paquete Biblico"  >
-			<h:panelGrid id="display" columns="3"  >
+			<h:panelGrid id="display" columns="2"  >
 			
 			
 <h:outputText 	value="#{message['Paquetebiblico.codigopaquete']}"  ></h:outputText>
+<h:panelGroup>
 							
 <p:inputText value="#{mantenimientoPaqueteBiblicoFormAction.objPaqueteSie.codpaquete}"				
 onkeypress="return validarEspaciosLetrasNumeros(event)"
@@ -648,7 +649,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
  rendered="#{!mantenimientoPaqueteBiblicoFormAction.newRecord}"
  readonly="true" ></p:inputText>
 			
-				
+		</h:panelGroup>			
 							
 		 	
 				<h:outputText
@@ -661,7 +662,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 				onkeypress="return validarEspaciosLetrasNumeros(event)"
 				id="descripciondePaquete" 
 				maxlength="500"
-				title="defina una descripcion breve"
+				title="defina una descripcion hasta un maximo de 500 caracteres"
 				required="true"
 				requiredMessage="#{message['Paquetebiblico.descripcion.validation']}"
 				style="width:95%"
@@ -714,7 +715,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 	 
 		<p:dialog header="Registro/Modificacion Detalle Paquete Biblico" widgetVar="DetPaqueteBiblico" showEffect="fade"
 			hideEffect="explode" modal="true" position="center" width="450" resizable="false" >
-			<p:fieldset legend="producto Paquete Biblico"  >
+			<p:fieldset  >
 			<h:panelGrid id="display" columns="3"  >
 			
 			 
@@ -852,13 +853,14 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 				
 				<h:outputText value="#{message['horario.pv.fechaDesde']}" />
 				<h:panelGroup >
-					<p:calendar id="desdepv" required="true" requiredMessage="#{message['horario.pv.fechaDesde.validation']}" value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diainicio}" mindate="today"  pattern="dd/MM/yyyy"  />
+					<p:calendar id="desdepv" required="true" requiredMessage="#{message['horario.pv.fechaDesde.validation']}" value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diainicio}"
+					 pattern="dd/MM/yyyy" />
 					<p:message for="desdepv" />
 				</h:panelGroup>
 				
 				<h:outputText value="#{message['horario.pv.fechaHasta']}" />
 				<h:panelGroup >
-					<p:calendar id="hastapv" value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diafin}" required="true"  requiredMessage="#{message['horario.pv.fechaHasta.validation']}" mindate="today"  pattern="dd/MM/yyyy"  />
+					<p:calendar id="hastapv" value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diafin}" required="true"  requiredMessage="#{message['horario.pv.fechaHasta.validation']}" pattern="dd/MM/yyyy" />
 					<p:message for="hastapv" />
 				</h:panelGroup>
 			
@@ -1677,7 +1679,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 				<h:panelGroup>
 
 					<p:spacer height="20px" width="80"></p:spacer>
-					<p:commandButton id="btn" value="Guardar" update="empresaTable"
+					<p:commandButton id="btn" value="Guardar" update="panel"
 						action="#{empresaForm.insertar}" ajax="false"
 						icon="ui-icon ui-icon-disk"
 						title="verifique bien los datos, antes de hacer clic en Guardar" />
@@ -1708,9 +1710,10 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 					for="fechainicial"/>
 					
 					
-				<p:calendar  value="#{MetaMesFormAction.date1}"
+				<p:calendar  value="#{metaMesSearchAction.date1}"
 							 id="fechainicial"
-							 required="true"  pattern="dd/MM/yyyy"  
+							 required="true" 
+							 pattern="dd/MM/yyyy"
 							 requiredMessage="#{message['Metames.fechainicial.validation']}" />
 							 <p:message for="fechainicial" />  
 				
@@ -1719,9 +1722,10 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 				<h:outputText value="#{message['Metames.fechafinal']}"
 					for="fechafinal"  />				
 			
-				<p:calendar value="#{MetaMesFormAction.date2}"
+				<p:calendar value="#{metaMesSearchAction.date2}"
 							id="fechafinal"
-							required="true"  pattern="dd/MM/yyyy"  
+							required="true" 
+							pattern="dd/MM/yyyy"
 							 requiredMessage="#{message['Metames.fechafinal.validation']}"/>
 							 <p:message for="fechafinal" /> 
 				
@@ -1731,7 +1735,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 
 					<p:spacer height="20px"></p:spacer>
 					<p:commandButton id="btn" value="Guardar" update="metames"
-						actionListener="#{MetaMesFormAction.insertar}" ajax="false"
+						actionListener="#{metaMesSearchAction.insertar}" ajax="false"
 						icon="ui-icon ui-icon-disk" />
 
 				</h:panelGroup>
