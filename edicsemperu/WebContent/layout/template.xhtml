@@ -551,19 +551,25 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	</h:form>
 	
 <!--  Mantenimiento Horario Empleado -->
-	<h:form id="formManteHorario">
+	<h:form id="formManteHorarioPers">
 		<p:dialog widgetVar="horarioDialog" showEffect="fade" resizable="false" 
 			hideEffect="explode" modal="true" width="450" position="center">
+			
 			<h:panelGrid id="display" columns="2" cellpadding="2"
 				style="margin:0 auto;" title="Horario ">
 
-				<h:outputText value="#{message['horario.personal.dia']}" rendered="#{horarioPersonal.newRecord}"  />
-				<h:panelGroup rendered="#{horarioPersonal.newRecord}" >
+				<h:outputText value="#{message['horario.personal.dia']}"  />
+				<h:panelGroup rendered="#{horarioPersonal.newRecord==true}" >
 				<p:selectCheckboxMenu id="emplechk" required="true" value="#{horarioPersonal.diaList}" filter="true" filterMatchMode="startsWith" requiredMessage="#{message['horario.personal.dia.validation']}"
 					 style="width:200px" >
 					<f:selectItems value="#{comboAction.diasItems}" />
 				</p:selectCheckboxMenu>
 				<p:message for="emplechk" />
+				</h:panelGroup>
+				
+				<h:panelGroup  rendered="#{horarioPersonal.newRecord==false}" >
+				<h:outputText value="#{horarioPersonal.objHorarioPersonal.tbFecha.dia}" 
+				 disabled="true" />
 				</h:panelGroup>
 				
 				<h:outputText value="#{message['horario.personal.fechaDesde']}" />
@@ -813,7 +819,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 	
 	<h:form id="horarioDeshabilita" >
 
-		<p:confirmDialog id="confirmDeshabilitarHorario"
+		<p:confirmDialog id="confirmHorarioPersonal12"
 			message="Esta seguro de deshabilitar dicho horario?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
 			header="Confirm" severity="alert" widgetVar="confirmDeshabilitarHorario"
@@ -846,6 +852,8 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 				</p:selectCheckboxMenu>
 				<p:message for="pvchk" />
 				</h:panelGroup>
+				
+				
 				<h:panelGroup  rendered="#{MantenimientoHorarioPuntoVentaSearchAction.newRecord==false}" >
 				<h:outputText value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.tbFecha.dia}" 
 				 disabled="true" />
@@ -1647,7 +1655,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 
 				<!--N° EMail -->
 
-				<h:outputText value="#{message['mantenimiento.email']}" for="email" />
+				<h:outputText value="#{message['mantenimiento.email']}"  />
 
 				<h:panelGroup id="email">
 
