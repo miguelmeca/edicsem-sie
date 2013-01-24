@@ -25,8 +25,9 @@
 
 <p:fieldset legend="Registrar nuevo Horario" style="margin-top:20px" >
 
-<p:commandButton  value="Agregar" action="#{horarioPersonal.agregarhorario}" 
-oncomplete="if(#{horarioPersonal.newRecord}) horarioDialog.show()"  update="horarioPersonal,messages"  />
+<p:commandButton  value="Agregar horario" action="#{horarioPersonal.agregarhorario}"
+icon="ui-icon-star"  
+oncomplete="horarioDialog.show()"  update=":formManteHorarioPers:display"  />
 <p:spacer></p:spacer>
 <p:dataTable var="h" value="#{horarioPersonal.listaHorario}" id="horarioPersonalList" editable="true"  
  rowStyleClass="#{h.diainicio le horarioPersonal.dhoy ? null: 'colorPlomo' }"  >
@@ -49,18 +50,29 @@ oncomplete="if(#{horarioPersonal.newRecord}) horarioDialog.show()"  update="hora
 				<h:outputText value="#{h.diafin}" />
 			</p:column>
 			  <p:column headerText="Editar">
-	    <p:commandButton value="Editar" 
-		 action="#{horarioPersonal.update}" oncomplete="horarioDialog.show()"  update=":formManteHorario:display"  >
+			  <center>
+	    <p:commandButton 
+		 action="#{horarioPersonal.update}" 
+		 oncomplete="horarioDialog.show()" 
+		icon=" ui-icon-pencil"
+ 
+		  update=":formManteHorarioPers:display"  >
 		 <f:setPropertyActionListener value="#{h}"  
 		  target="#{horarioPersonal.objHorarioPersonal}" />
 		</p:commandButton>
+		</center>
 	   </p:column>
+	   
 	     <p:column headerText="Deshabilitar">
-	    <p:commandButton value="Deshabilitar" 
-		 action="#{horarioPersonal.updateDeshabilitar}" oncomplete="confirmDeshabilitarHorario.show()"  update=":formManteHorario:display"  >
+	     <center>
+	    <p:commandButton id="showConfirmHorarioPersonal12"
+						 onclick="confirmDeshabilitarHorario.show()"    
+						  icon="ui-icon ui-icon-close"	>
+						  
 		 <f:setPropertyActionListener value="#{h.idhorariopersonal}"  
 		  target="#{horarioPersonal.idhorario}" />
 		</p:commandButton>
+		</center>
 	   </p:column>
 		</p:dataTable>
 </p:fieldset>
