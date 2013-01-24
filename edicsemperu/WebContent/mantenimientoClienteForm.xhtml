@@ -9,19 +9,13 @@
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
 	<h:form id="frmcliente">
-		
-<p:wizard id="wiz" widgetVar="wiz"
-				flowListener="#{MantenimientoClienteFormAction.onFlowProcess}">
-<p:tab title="#{message['cliente.tabcliente']}">
- <p:panel header="Datos Personales"> 
-    
-<p:messages id="message" showDetail="true"/>
-
-<h:panelGrid id="display" columns="6">	
-
-
-<h:outputText value="#{message['cliente.nombre']}" for="nombre" />
-<p:inputText id="nombre"
+	<p:messages id="message" showDetail="true"/>		
+    <p:wizard id="wiz" widgetVar="wiz"	flowListener="#{MantenimientoClienteFormAction.onFlowProcess}">
+    <p:tab title="#{message['cliente.tabcliente']}">
+ 	<p:panel header="Datos Personales"> 
+ 	<h:panelGrid id="display" columns="6">	
+	<h:outputText value="#{message['cliente.nombre']}" for="nombre" />
+	<p:inputText id="nombre"
 			 value="#{MantenimientoClienteFormAction.objClienteSie.nombrecliente}"
 			 required="true" label="nombre"
 			 requiredMessage="#{message['cliente.nombre.validation']}"
@@ -236,7 +230,7 @@ requiredMessage="#{message['cliente.fechanacimiento.validation']}" />
 						</p:commandButton>
 						
 				</h:panelGrid>
-						<p:dataTable value="#{MantenimientoClienteFormAction.telefonoPersonaList}" id="listarTelefonos" var="o" style="width:400px" 
+						<p:dataTable value="#{MantenimientoClienteFormAction.telefonoPersonaList}" id="listarTelefonos" var="o" style="width:600px" 
 							 rowStyleClass="#{o.operadorTelefonico eq 'Claro' ? 'colorRojo': (o.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }"   >
 	
 							<f:facet name="header">
@@ -245,6 +239,10 @@ requiredMessage="#{message['cliente.fechanacimiento.validation']}" />
 							
 							<p:column headerText="Observación" style="width:125px">
 		                    	<h:outputText value="#{o.tipoTelef}, #{o.operadorTelefonico}, #{o.telefono}" />
+		                    </p:column>
+		                    
+		                          <p:column headerText="Detalle" style="width:125px">
+		                    	<h:outputText value="#{o.descTelefono}" />
 		                    </p:column>
 	 
 	                        <p:column headerText="Eliminar" style="width:125px">
@@ -262,7 +260,7 @@ requiredMessage="#{message['cliente.fechanacimiento.validation']}" />
 	 
 						</p:dataTable>
 						
-						 <center><p:commandButton value="Guardar" id="Guardar" update="panel"
+						 <center><p:commandButton value="Guardar" id="Guardar" update="message"
 						action="#{MantenimientoClienteFormAction.insertarOficial}"
 						ajax="false" icon="ui-icon ui-icon-disk"
 						 /></center>
@@ -274,7 +272,7 @@ requiredMessage="#{message['cliente.fechanacimiento.validation']}" />
 			
 </p:wizard>	
 
-
+  <p:commandButton id="btnreg" value="Regresar" action="#{MantenimientoClienteSearchAction.listar}" immediate="true" ajax = "false" icon="ui-icon ui-icon-close"/> 
 		
 	</h:form>
 	</ui:define>
