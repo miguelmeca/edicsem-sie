@@ -53,7 +53,7 @@ public class MantenimientoClienteSearchAction extends
 		objCliente = new ClienteSie();
 
 		log.info("despues de inicializar  ");
-		log.info("init()");
+			log.info("init()");
 
 	}
 
