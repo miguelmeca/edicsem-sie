@@ -376,19 +376,24 @@ public class MantenimientoClienteFormAction extends
 
 		setTipoDocumento(objClienteSie.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad());
 		/*******DOMICILIO***********************/
-		DomicilioPersonaSie d = objDomicilioService.buscarDomicilioXIdcliente(objClienteSie.getIdcliente());
-		log.info(" id " + d.getIddomiciliopersona()+ " nombre " + d.getDomicilio() );
+	
+		objDomicilio = objDomicilioService.buscarDomicilioXIdcliente(objClienteSie.getIdcliente());
+		log.info(" id " + objDomicilio.getIddomiciliopersona()+ " nombre " + objDomicilio.getDomicilio() );
 		 /*seteo domicilio*/                                               
-        objDomicilio.setIddomiciliopersona(d.getIddomiciliopersona());
-        objDomicilio.setDomicilio(d.getDomicilio());
-        setIdDepartamento(d.getTbUbigeo().getCoddepartamento());
-        comboManager.setIdDepartamento(idDepartamento);
-        setIdProvincia(d.getTbUbigeo().getCodprovincia());
-        comboManager.setIdProvincia(idProvincia);
-        setIdDistrito(d.getTbUbigeo().getIdubigeo().toString());
-        setTipo(d.getTbTipoCasa().getIdtipocasa());
-        objDomicilio.setTbEstadoGeneral(d.getTbEstadoGeneral());
-       
+     
+        
+        /*seteo domicilio*/
+		if(objDomicilio.getIddomiciliopersona()!=null){
+	        setIdDepartamento(objDomicilio.getTbUbigeo().getCoddepartamento());
+	        comboManager.setIdDepartamento(idDepartamento);
+	        setIdProvincia(objDomicilio.getTbUbigeo().getCodprovincia());
+	        comboManager.setIdProvincia(idProvincia);
+	        setIdUbigeo(objDomicilio.getTbUbigeo().getIdubigeo().toString());
+	        setIdDistrito(objDomicilio.getTbUbigeo().getCoddistrito());
+	        log.info(" tipo casa "+objDomicilio.getTbTipoCasa().getIdtipocasa());
+	        setTipo(objDomicilio.getTbTipoCasa().getIdtipocasa());
+	        objDomicilio.setTbEstadoGeneral(objDomicilio.getTbEstadoGeneral());
+	        }
         /*****************TELEFONO************************/
         
 		TelefonoPersonaSie t = objTelefonoService.buscarTelefonoXIdcliente(objClienteSie.getIdcliente());
@@ -410,7 +415,7 @@ public class MantenimientoClienteFormAction extends
 
 	public String insertarOficial() {
 		log.info("insertarOficial() " + objClienteSie.getIdcliente() + " "+ objClienteSie.getNombrecliente());
-
+		String paginaretorno="";
 		try {
 			if (log.isInfoEnabled()) {
 
