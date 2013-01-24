@@ -52,6 +52,8 @@ public class ContratoSie implements Serializable {
 	private String horallamada;
 
 	private String lugarentrega;
+	
+	private String llamar;
 
 	private Integer numcuotas;
 
@@ -293,6 +295,20 @@ public class ContratoSie implements Serializable {
 
 	public void setTbIncidencias(Set<IncidenciaSie> tbIncidencias) {
 		this.tbIncidencias = tbIncidencias;
+	}
+
+	/**
+	 * @return the llamar
+	 */
+	public String getLlamar() {
+		return llamar;
+	}
+
+	/**
+	 * @param llamar the llamar to set
+	 */
+	public void setLlamar(String llamar) {
+		this.llamar = llamar;
 	}
 	
 }

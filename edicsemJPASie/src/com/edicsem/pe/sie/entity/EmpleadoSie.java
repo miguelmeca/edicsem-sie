@@ -42,6 +42,7 @@ public class EmpleadoSie implements Serializable {
 
 	private String contrasena;
 	
+	private String genero;
 	
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
@@ -371,6 +372,20 @@ public class EmpleadoSie implements Serializable {
 
 	public void setCorreo(String correo) {
 		this.correo = correo;
+	}
+
+	/**
+	 * @return the genero
+	 */
+	public String getGenero() {
+		return genero;
+	}
+
+	/**
+	 * @param genero the genero to set
+	 */
+	public void setGenero(String genero) {
+		this.genero = genero;
 	}
 
 }
