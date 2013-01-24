@@ -20,7 +20,9 @@ import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleModel;
 
+import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.HorarioPersonalSie;
+import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.HorarioPersonalService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -45,11 +47,16 @@ public class MantenimientoHorarioPersonalSearchAction extends BaseMantenimientoA
 	private boolean newRecord =false;
 	private int ide;
 	private Date dDate, dDate2, dhoy;
+	private EmpleadoSie objEmpleadoSie;
 	
 	@EJB 
 	private HorarioPersonalService objHorarioPersonalService;
 	@EJB
 	private EstadogeneralService objEstadoGeneralService;
+	
+	@EJB 
+	private EmpleadoSieService objEmpleadoSieService;
+	
 
 	public static Log log = LogFactory.getLog(MantenimientoHorarioPersonalSearchAction.class);
 	
@@ -60,9 +67,11 @@ public class MantenimientoHorarioPersonalSearchAction extends BaseMantenimientoA
 	
 	public void init() {
 		log.info("init()");
-		idempleado=0;
+		objEmpleadoSie = new EmpleadoSie();
 		objHorarioPersonal = new HorarioPersonalSie();
-		eventModel = new DefaultScheduleModel(); 
+		eventModel = new DefaultScheduleModel();
+		idempleado=0;
+		diaList= new  ArrayList<String>();
 		log.info("despues de inicializar  ");
 	}
 	
@@ -121,9 +130,13 @@ public class MantenimientoHorarioPersonalSearchAction extends BaseMantenimientoA
 	}
     
 	public String agregarhorario(){
-		objHorarioPersonal= new HorarioPersonalSie();
-		newRecord=true;
-		return getViewList();
+	log.info("agregar()");
+	objHorarioPersonal= new HorarioPersonalSie();		
+	diaList= new  ArrayList<String>();
+	horaIngreso = null;
+	horaSalida= null;	
+	newRecord=true;
+	return getViewList();
 	}
 	public String updateDeshabilitar() throws Exception{
 		 
@@ -144,8 +157,10 @@ public class MantenimientoHorarioPersonalSearchAction extends BaseMantenimientoA
 	 */
 	
 	public String update() throws Exception {
-		newRecord=false;
 		
+		diaList= new  ArrayList<String>();
+		newRecord=false;	
+		diaList.add("" + objHorarioPersonal.getTbFecha().getIdFecha());
 		setHoraIngreso(objHorarioPersonal.getHoraIngreso());
 		setHoraSalida(objHorarioPersonal.getHoraSalida());
 		return getViewList();
@@ -154,64 +169,59 @@ public class MantenimientoHorarioPersonalSearchAction extends BaseMantenimientoA
 	public String insertar() throws Exception {
 		mensaje="";
 		try {
-				if (log.isInfoEnabled()) {
-					log.info("Entering my method 'insertar'  xd ");
-				}
-				if(idempleado==0){
-					mensaje="Debe seleccionar un empleado";
-					msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-					FacesContext.getCurrentInstance().addMessage(null, msg);
-				}
-				else{
-					if(newRecord){
-					log.info("fecha pp  " + getHoraIngreso() );
-					Time hora1 = new Time( getHoraIngreso().getTime());
-					Time hora2= new Time( getHoraSalida().getTime());
-					log.info(" g   "+ hora1);
-					objHorarioPersonal.setHoraIngreso(hora1);
-					objHorarioPersonal.setHoraSalida(hora2);
-					
-					/** Validation **/
-		
-					//para que no hayan cruces de horario 
-					for (int j = 0; j < diaList.size();j++) {
-						for (int i = 0; i < listaHorario.size(); i++) {
-							log.info("  verificando ");
-							if( listaHorario.get(i).getTbFecha().getIdFecha()== Integer.parseInt(diaList.get(j))
-								 && (objHorarioPersonal.getDiainicio().after(listaHorario.get(i).getDiainicio()) && 
-										objHorarioPersonal.getDiainicio().before(listaHorario.get(i).getDiafin() ) ||
-										objHorarioPersonal.getDiafin().after(listaHorario.get(i).getDiainicio()) && 
-										objHorarioPersonal.getDiafin().before(listaHorario.get(i).getDiafin() ) ||
-										objHorarioPersonal.getDiafin().equals(listaHorario.get(i).getDiafin()) ||
-										objHorarioPersonal.getDiafin().equals(listaHorario.get(i).getDiainicio())||
-										objHorarioPersonal.getDiainicio().equals(listaHorario.get(i).getDiafin())||
-										objHorarioPersonal.getDiainicio().equals(listaHorario.get(i).getDiainicio()))){
-								log.info("fechas con horario registrado   ");
-								if(	objHorarioPersonal.getHoraIngreso().equals(listaHorario.get(i).getHoraIngreso()) ||
-										objHorarioPersonal.getHoraIngreso().after(listaHorario.get(i).getHoraIngreso())
-										&& objHorarioPersonal.getHoraIngreso().before(listaHorario.get(i).getHoraSalida())){
-									log.info(objHorarioPersonal.getHoraIngreso() +" --->  getHoraIngreso "+ listaHorario.get(i).getHoraIngreso());
-									mensaje = "La hora de Ingreso es errónea";
-									break;
-								}else if(objHorarioPersonal.getHoraSalida().equals(listaHorario.get(i).getHoraSalida()) ||
-										objHorarioPersonal.getHoraSalida().after(listaHorario.get(i).getHoraIngreso())
-										&& objHorarioPersonal.getHoraSalida().before(listaHorario.get(i).getHoraSalida())){
-									log.info(objHorarioPersonal.getHoraSalida()+" --->  getHoraSalida "+listaHorario.get(i).getHoraSalida());
-									mensaje = "La hora de Salida es errónea";
-									break;
-									}
-								}
+			//para que no hayan cruces de horario 
+			for (int j = 0; j < diaList.size();j++) {
+				for (int i = 0; i < listaHorario.size(); i++) {
+					log.info("  verificando ");
+					if( listaHorario.get(i).getTbFecha().getIdFecha()== Integer.parseInt(diaList.get(j))
+						 && (objHorarioPersonal.getDiainicio().after(listaHorario.get(i).getDiainicio()) && 
+								objHorarioPersonal.getDiainicio().before(listaHorario.get(i).getDiafin() ) ||
+								objHorarioPersonal.getDiafin().after(listaHorario.get(i).getDiainicio()) && 
+								objHorarioPersonal.getDiafin().before(listaHorario.get(i).getDiafin() ) ||
+								objHorarioPersonal.getDiafin().equals(listaHorario.get(i).getDiafin()) ||
+								objHorarioPersonal.getDiafin().equals(listaHorario.get(i).getDiainicio())||
+								objHorarioPersonal.getDiainicio().equals(listaHorario.get(i).getDiafin())||
+								objHorarioPersonal.getDiainicio().equals(listaHorario.get(i).getDiainicio()))){
+						log.info("fechas con horario registrado   ");
+						if(	objHorarioPersonal.getHoraIngreso().equals(listaHorario.get(i).getHoraIngreso()) ||
+								objHorarioPersonal.getHoraIngreso().after(listaHorario.get(i).getHoraIngreso())
+								&& objHorarioPersonal.getHoraIngreso().before(listaHorario.get(i).getHoraSalida())){
+							log.info(objHorarioPersonal.getHoraIngreso() +" --->  getHoraIngreso "+ listaHorario.get(i).getHoraIngreso());
+							mensaje = "La hora de Ingreso es errónea";
+							break;
+						}else if(objHorarioPersonal.getHoraSalida().equals(listaHorario.get(i).getHoraSalida()) ||
+								objHorarioPersonal.getHoraSalida().after(listaHorario.get(i).getHoraIngreso())
+								&& objHorarioPersonal.getHoraSalida().before(listaHorario.get(i).getHoraSalida())){
+							log.info(objHorarioPersonal.getHoraSalida()+" --->  getHoraSalida "+listaHorario.get(i).getHoraSalida());
+							mensaje = "La hora de Salida es errónea";
+							break;
 							}
 						}
-					 if(mensaje.equals("")){
+					}
+				}
+			
+				
+					if(isNewRecord()){
+						
+					log.info("fecha pp  " + getHoraIngreso() );
+					Time hora1 = new Time(getHoraIngreso().getTime());
+					Time hora2= new Time(getHoraSalida().getTime());
+					
+					log.info(" g   "+ hora1);
+					
+					objHorarioPersonal.setHoraIngreso(hora1);
+					objHorarioPersonal.setHoraSalida(hora2);
+					objHorarioPersonal.setTbEmpleado(objEmpleadoSie);
+					/** Validation **/
+		
+					
+			
 						 objHorarioPersonalService.insertHorarioPersonal(diaList,objHorarioPersonal,idempleado);
 						 log.info("insertando..... ");
+						mensaje ="Se Registró Correctamente";
 						 msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
 						 FacesContext.getCurrentInstance().addMessage(null, msg);
-					 }else{
-						msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-						FacesContext.getCurrentInstance().addMessage(null, msg);
-					 }
+				
 				}else{
 					log.info("actualizando " + getHoraIngreso()+"  hora salida  "+getHoraSalida() );
 					Time hora1 = new Time( getHoraIngreso().getTime());
@@ -222,7 +232,7 @@ public class MantenimientoHorarioPersonalSearchAction extends BaseMantenimientoA
 					
 					objHorarioPersonalService.updateHorarioPersonal(objHorarioPersonal);
 				}
-				}
+				
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -453,6 +463,34 @@ public class MantenimientoHorarioPersonalSearchAction extends BaseMantenimientoA
 	 */
 	public void setIdhorario(int idhorario) {
 		this.idhorario = idhorario;
+	}
+
+	/**
+	 * @return the objEmpleadoSie
+	 */
+	public EmpleadoSie getObjEmpleadoSie() {
+		return objEmpleadoSie;
+	}
+
+	/**
+	 * @param objEmpleadoSie the objEmpleadoSie to set
+	 */
+	public void setObjEmpleadoSie(EmpleadoSie objEmpleadoSie) {
+		this.objEmpleadoSie = objEmpleadoSie;
+	}
+
+	/**
+	 * @return the log
+	 */
+	public static Log getLog() {
+		return log;
+	}
+
+	/**
+	 * @param log the log to set
+	 */
+	public static void setLog(Log log) {
+		MantenimientoHorarioPersonalSearchAction.log = log;
 	}
 
 }
