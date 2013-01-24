@@ -7,35 +7,37 @@
 	template="/layout/template.xhtml">
 	<ui:define name="body">
 		<h:form id="metames">
-		<p:growl id="message" showDetail="true" />	
+		
+		<p:messages showDetail="true"></p:messages>	
 	<p:panel header="Meta Mes"  id="meta">
 
 
-<p:panelGrid columns="2" cellpadding="5">
-				<h:outputText value="Meta Mes: " />
+<h:panelGrid columns="2"  >
+				<h:outputText value="Meses: " />
 
-				<p:selectOneMenu id="metaempresa" value="#{metaMesSearchAction.codmes}"   >
+				<p:selectOneMenu id="metaempresa" value="#{metaMesSearchAction.codmes}"  style="width:100%" >
 				
-					<f:selectItems value="#{comboAction.metaMesItems}" />
+					<f:selectItems value="#{comboAction.metaMesItems}"   />
 					<p:ajax update="meta"  listener="#{metaMesSearchAction.mostrarfecha}" 
 					 />
 				</p:selectOneMenu>
 				
 			<h:outputLabel value="Fecha Inicial :" />	
 			<p:inputText value="#{metaMesSearchAction.objMetaMesSie.fechainicio}" disabled="true"></p:inputText>
+			
 			<h:outputLabel value="Fecha Final :" />	
 				<p:inputText value="#{metaMesSearchAction.objMetaMesSie.fechafin}" disabled="true"></p:inputText>	
 								
 				 	<p:commandButton value="Editar" oncomplete="carDialog2.show()"
-						action="#{MetaMesFormAction.update}" 	update=":editarMeta2:display"
+						action="#{metaMesSearchAction.update}" 	update=":editarMeta2:display"
 						icon="ui-icon ui-icon-pencil">
 						
 						<f:setPropertyActionListener value="#{metaMesSearchAction.objMetaMesSie.idmetames}"
-							target="#{MetaMesFormAction.ide}" />
+							target="#{metaMesSearchAction.ide}" />
 
 					</p:commandButton>	
 					
-</p:panelGrid>
+</h:panelGrid>
 
 
 </p:panel>	            
