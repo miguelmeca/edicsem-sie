@@ -35,19 +35,12 @@ public class HorarioPuntoVentaServiceImpl implements HorarioPuntoVentaService{
 	public void insertHorarioPunto(HorarioPuntoVentaSie h, List<String> diaList) {
 		log.info("  insertar HorarioPunto en el servicio");
 		
-//		for (String d : diaList) {
+
 			for (int i = 0; i < diaList.size(); i++) {
 			HorarioPuntoVentaSie auxi = new HorarioPuntoVentaSie();	
 			auxi=h;
-//			auxi.setDiafin(h.getDiafin());
-//			auxi.setDiainicio(h.getDiainicio());
-//			auxi.setHoraIngreso(h.getHoraIngreso());
-//			auxi.setHoraSalida(h.getHoraSalida());
-//			auxi.setObservacion(h.getObservacion());
-//			h.setTbFecha(objFechaDao.findFecha(Integer.parseInt(d)));
-	auxi.setTbFecha(objFechaDao.findFecha(Integer.parseInt(diaList.get(i))));
-//			auxi.setTbPuntoVenta(objAlmacenDao.findAlmacen(idpuntoventa));
-//			auxi.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(38));
+			auxi.setTbFecha(objFechaDao.findFecha(Integer.parseInt(diaList.get(i))));
+
 			objHorarioPuntoDao.insertHorarioPunto(auxi);
 		}
 	}
