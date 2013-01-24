@@ -93,22 +93,30 @@ public class ClienteServiceImpl implements ClienteService {
 		objDomicilioEmpleadoDao.actualizarDomicilioEmpleado(objDomicilio);
 		
 		/**Actualiza telefono(s)**/
-		for (TelefonoPersonaSie objTelefono : TelefonoPersonaList) {
-			objTelefono.setIdcliente(cliente);
+		/** for (TelefonoPersonaSie objTelefono : TelefonoPersonaList) {
+			objTelefono.setIdcliente(cliente); **/
 			/* Estado (17) Habilitar Telefono*/
-			estado.setIdestadogeneral(17);
+	/**		estado.setIdestadogeneral(17);
 			objTelefono.setTbEstadoGeneral(estado);
 			
 			objTelefonoDao.insertarTelefonoEmpleado(objTelefono);
+		}**/
+		for (TelefonoPersonaSie objTelefono : TelefonoPersonaList) {
+			log.info("bien!! por agregar ");
+			if(objTelefono.getItem().equalsIgnoreCase("Por Agregar")){
+			objTelefono.setIdcliente(cliente);
+			objTelefono.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(17));
+			objTelefonoDao.insertarTelefonoEmpleado(objTelefono);
+			}
 		}
-		for(TelefonoPersonaSie objTelefono2 : TelefonoDeshabilitado){
+	/**	for(TelefonoPersonaSie objTelefono2 : TelefonoDeshabilitado){
 			objTelefono2.setIdtelefonopersona(objTelefono2.getIdtelefonopersona());
 			objTelefono2.setIdcliente(Cliente);
 			/* Estado (18) Deshabilitar Telefono*/
-			estado.setIdestadogeneral(18);
+		/**	estado.setIdestadogeneral(18);
 			objTelefono2.setTbEstadoGeneral(estado);
 			objTelefonoDao.actualizarTelefonoEmpleado(objTelefono2);					
-		}		
+		} 	**/	
 	} catch (Exception e) {
 		e.printStackTrace();
 	}	
