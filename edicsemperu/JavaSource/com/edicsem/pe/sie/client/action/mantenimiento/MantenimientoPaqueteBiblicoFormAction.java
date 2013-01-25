@@ -131,7 +131,7 @@ setIdEstadoGeneral(objPaqueteSie.getTbEstadoGeneral().getIdestadogeneral());
 			int error = 0;
 			if(isNewRecord()){
 			for (int i = 0; i < lista.size(); i++) {
-//				PaqueteSie a = lista.get(i).getCodpaquete();
+
 				
 				if (lista.get(i).getCodpaquete().equalsIgnoreCase(objPaqueteSie.getCodpaquete()) ) {
 					log.info("Error ... Ya se encuentra un paquete biblico");
@@ -139,9 +139,9 @@ setIdEstadoGeneral(objPaqueteSie.getTbEstadoGeneral().getIdestadogeneral());
 					paginaRetorno =mantenimientoPaqueteBiblicoSearchAction.listar();
 					error = 1;
 					break;
+					}				
 				}
-				
-			}}
+			}
 			if (error == 0) {
 						
 			if(isNewRecord()){
