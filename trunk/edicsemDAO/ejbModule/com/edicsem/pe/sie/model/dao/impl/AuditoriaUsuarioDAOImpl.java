@@ -12,6 +12,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.AuditoriaUsuarioSie;
 import com.edicsem.pe.sie.model.dao.AuditoriaUsuarioDAO;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 
 /**
  * @author karen
@@ -46,7 +47,8 @@ public class AuditoriaUsuarioDAOImpl implements AuditoriaUsuarioDAO{
 		AuditoriaUsuarioSie au = null;
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from AuditoriaUsuarioSie p where p.usuario like '"+usuario+"' order by p.idauditoria ASC");
+			Query q = em.createQuery("select p from AuditoriaUsuarioSie p where p.usuario like '"+usuario+"'" +
+					" and DATE(p.fechacreacion) = DATE('"+ DateUtil.getToday().getTime() +"') order by p.idauditoria ASC");
 			lista =  q.getResultList();
 			if(lista.size()>0){
 				au= (AuditoriaUsuarioSie) lista.get(0);

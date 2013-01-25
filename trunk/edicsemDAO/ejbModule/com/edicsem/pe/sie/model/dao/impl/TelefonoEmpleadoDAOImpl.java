@@ -114,21 +114,21 @@ public class TelefonoEmpleadoDAOImpl implements TelefonoEmpleadoDAO{
 		}
 	}
 	
-	
-	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.TelefonoEmpleadoDAO#buscarTelefonoCliente(int)
+	 */
 	public TelefonoPersonaSie buscarTelefonoCliente(int id) {
-		// TODO Auto-generated method stub
-				TelefonoPersonaSie telefonopersona= new TelefonoPersonaSie();
-				try {
-				if (log.isInfoEnabled()) {
+		TelefonoPersonaSie telefonopersona= new TelefonoPersonaSie();
+		try {
+		if (log.isInfoEnabled()) {
 				log.info("buscar TelefonoCliente");
-				} 
-				telefonopersona=em.find(TelefonoPersonaSie.class, id);
-				log.info(" TelefonoPersona " +telefonopersona);
-				} catch (Exception e) {
+		}
+			telefonopersona=em.find(TelefonoPersonaSie.class, id);
+			log.info(" TelefonoPersona " +telefonopersona);
+		} catch (Exception e) {
 				e.printStackTrace();
-				}
-				return telefonopersona;
+		}
+		return telefonopersona;
 	}
 
 	
@@ -157,13 +157,12 @@ public class TelefonoEmpleadoDAOImpl implements TelefonoEmpleadoDAO{
 		return lista;
 	}
 	
-
 	/*buscar telefono por idempleado*/
 	public TelefonoPersonaSie buscarTelefonoXIdempleado(int id) {
 		log.info(" idempleado "+ id);
 		TelefonoPersonaSie telefono =new TelefonoPersonaSie();
 		try {
-			Query q = em.createQuery("select p from TelefonoPersonaSie p where p.idempleado = "+ id);
+			Query q = em.createQuery("select p from TelefonoPersonaSie p where p.idempleado = "+ id +" and p.tbEstadoGeneral.idestadogeneral = 17 ");
 			telefono = (TelefonoPersonaSie) q.getResultList().get(0);
 			//log.info("Telefono x idempleado  --> " + lista.size());
 		} catch (Exception e) {
@@ -172,7 +171,9 @@ public class TelefonoEmpleadoDAOImpl implements TelefonoEmpleadoDAO{
 		return telefono;
 	}
 	
-	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.TelefonoEmpleadoDAO#buscarTelefonoXIdcliente(int)
+	 */
 	public TelefonoPersonaSie buscarTelefonoXIdcliente(int id) {
 		log.info(" idcliente "+ id);
 		TelefonoPersonaSie telefono =new TelefonoPersonaSie();
