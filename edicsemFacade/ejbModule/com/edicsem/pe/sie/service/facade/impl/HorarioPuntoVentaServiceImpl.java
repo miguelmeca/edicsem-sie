@@ -75,6 +75,7 @@ public class HorarioPuntoVentaServiceImpl implements HorarioPuntoVentaService{
 
 
 	public void eliminarHorarioPunto(int id) {
+		log.info("dentro del servicio en el metodo eliminar horario");
 		objHorarioPuntoDao.eliminarHorarioPunto(id);
 		
 	}	
