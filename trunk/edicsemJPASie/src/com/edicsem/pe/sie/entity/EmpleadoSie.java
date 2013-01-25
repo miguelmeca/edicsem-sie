@@ -44,6 +44,9 @@ public class EmpleadoSie implements Serializable {
 	
 	private String genero;
 	
+	@Transient
+	private int cargo;
+	
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
 
@@ -386,6 +389,20 @@ public class EmpleadoSie implements Serializable {
 	 */
 	public void setGenero(String genero) {
 		this.genero = genero;
+	}
+
+	/**
+	 * @return the cargo
+	 */
+	public int getCargo() {
+		return cargo;
+	}
+
+	/**
+	 * @param cargo the cargo to set
+	 */
+	public void setCargo(int cargo) {
+		this.cargo = cargo;
 	}
 
 }
