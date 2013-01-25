@@ -95,6 +95,9 @@ public class CobranzaSie   implements Serializable {
 	
 	@Transient
 	private String fechaVencimientoString;
+	
+	@Transient
+	private String fechaPagoString;
 
     public CobranzaSie() {
     }
@@ -274,6 +277,21 @@ public class CobranzaSie   implements Serializable {
 	 */
 	public void setFechaVencimientoString(String fechaVencimientoString) {
 		this.fechaVencimientoString = fechaVencimientoString;
+	}
+
+	/**
+	 * @return the fechaPagoString
+	 */
+	public String getFechaPagoString() {
+		fechaPagoString = DateUtil.formatoString(getFecpago(), "dd/MM/yyyy");
+		return fechaPagoString;
+	}
+
+	/**
+	 * @param fechaPagoString the fechaPagoString to set
+	 */
+	public void setFechaPagoString(String fechaPagoString) {
+		this.fechaPagoString = fechaPagoString;
 	}
 	
 }

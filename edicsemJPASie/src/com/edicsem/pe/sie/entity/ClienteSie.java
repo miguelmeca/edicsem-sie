@@ -20,6 +20,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 
 
 /**
@@ -94,6 +95,9 @@ public class ClienteSie implements Serializable {
 	
 	@Transient
 	private String nombresCompletos;
+	
+	@Transient
+	private String fechaNacimientoString;
 	
 	  @Transient
 	  private int item;
@@ -310,5 +314,20 @@ public class ClienteSie implements Serializable {
 	 */
 	public void setItem(int item) {
 		this.item = item;
+	}
+
+	/**
+	 * @return the fechaNacimientoString
+	 */
+	public String getFechaNacimientoString() {
+		fechaNacimientoString = DateUtil.formatoString(getFecnacimiento(), "dd/MM/yyyy");
+		return fechaNacimientoString;
+	}
+
+	/**
+	 * @param fechaNacimientoString the fechaNacimientoString to set
+	 */
+	public void setFechaNacimientoString(String fechaNacimientoString) {
+		this.fechaNacimientoString = fechaNacimientoString;
 	}
 }
