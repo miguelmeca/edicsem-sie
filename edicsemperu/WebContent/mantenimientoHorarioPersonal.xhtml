@@ -5,9 +5,12 @@
   xmlns:ui="http://java.sun.com/jsf/facelets"
   xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
   <ui:define name="body">
+  <script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
   <h1 class="title ui-widget-header ui-corner-all">Horario del Personal</h1>
 <h:form id="horarioPersonal">
-<p:growl id="messages" showDetail="true" />
+<p:messages showDetail="true" />
 <p:fieldset legend="Buscar Personal" style="margin-top:20px">
 <h:panelGrid columns="2"  >
 <p:outputLabel value="Cargo :" for="cargo" />
@@ -16,24 +19,22 @@
  <p:ajax update="empleado"  listener="#{comboAction.cambiar2}" />  
 </p:selectOneMenu>
 <p:outputLabel value="Empleado :" for="empleado" />
-<p:selectOneMenu id="empleado" value="#{horarioPersonal.idempleado}">
+<p:selectOneMenu id="empleado" value="#{horarioPersonal.idempleado}"  >
 <f:selectItems  value="#{comboAction.empleadoxcargo}" />
 </p:selectOneMenu>
-<p:commandButton value="Buscar" ajax="false" action="#{horarioPersonal.mostrar}" />
+<p:commandButton value="Buscar" ajax="false" icon="ui-icon-search" action="#{horarioPersonal.mostrar}" />
 </h:panelGrid>
 </p:fieldset>
 
-<p:fieldset legend="Registrar nuevo Horario" style="margin-top:20px" >
+	<p:fieldset legend="Horario Personal : #{horarioPersonal.objHorarioPersonal.tbEmpleado.nombresCompletos}" style="margin-top:20px" >
 
-<p:commandButton  value="Agregar horario" action="#{horarioPersonal.agregarhorario}"
+<p:commandButton  value="Registrar nuevo Horario" action="#{horarioPersonal.agregarhorario}"
 icon="ui-icon-star"  
 oncomplete="horarioDialog.show()"  update=":formManteHorarioPers:display"  />
 <p:spacer></p:spacer>
 <p:dataTable var="h" value="#{horarioPersonal.listaHorario}" id="horarioPersonalList" editable="true"  
  rowStyleClass="#{h.diainicio le horarioPersonal.dhoy ? null: 'colorPlomo' }"  >
-		<f:facet name="header">
-            Horario Personal
-        </f:facet>
+		
 			<p:column headerText="Dia">
 				<h:outputText value="#{h.tbFecha.dia}" />
 			</p:column>
