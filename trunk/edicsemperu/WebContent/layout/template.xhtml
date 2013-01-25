@@ -105,20 +105,30 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	<f:loadBundle var="message"
 		basename="com.edicsem.pe.sie.client.properties.ApplicationResources" />
 	<p:layout fullPage="true">
-		<p:layoutUnit position="north" size="115">
+		<p:layoutUnit position="north" size="130">
 			<div id="header" class="ui-widget ui-widget-header">
 				<div id="logo">
 					<img src="#{request.contextPath}/images/edicsem.png" alt="Logo" style="height: 95px " />
 				</div>
 				<div id="menu" class="ui-widget">
 					<ul id="main">
-						<li class="current_page_item"><a href="index.jsf">Página Principal</a></li>
-						<li><p:commandLink  onclick="cambiarContrasenaDialog.show()" value ="Cambiar Contraseña"/></li> 
+						
+						<li><p:commandLink  onclick="cambiarContrasenaDialog.show()" action="#{login.agregar}" value ="Cambiar Contraseña"/></li> 
 						<li><p:commandLink action="#{login.cerrarSesion}"  value="Cerrar Sesión" /></li>
-						<li>${sessionScope.loginUserSession.nombresCompletos}
-						<br />
-						#{login.fechaHoraIngreso}
+						
+						<li>
+						<c:if test="${sessionScope.loginUserSession.genero=='F'}">
+							<img src="#{request.contextPath}/images/iconF.png"  style="height: 50px; width: 50px  " />
+						</c:if>
+						<c:if test="${sessionScope.loginUserSession.genero=='M'}">
+							<img src="#{request.contextPath}/images/iconM.png" style="height: 50px; width: 50px " />
+						</c:if>
 						</li>
+						<li>
+						${sessionScope.loginUserSession.nombresCompletos} <br/>
+						      #{login.fechaHoraIngreso} 
+						</li>
+						
 					</ul>
 				</div>
 			</div>
@@ -470,10 +480,10 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			<p:commandButton type="submit" value="Si"
 				action="#{mantenimientoEmpleadoFormAction.telefonoElimina}"
 				update=":form:panelTlf:o"
-				oncomplete="confirmation.hide()" ajax="false">
+				oncomplete="confirmationTelEmp.hide()" ajax="false">
 			</p:commandButton>
 
-			<p:commandButton value="No" onclick="confirmation.hide()"
+			<p:commandButton value="No" onclick="confirmationTelEmp.hide()"
 				type="button" />
 
 		</p:confirmDialog>
@@ -839,15 +849,14 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 		<p:dialog widgetVar="horariopvDialog" showEffect="fade" resizable="false" 
 			hideEffect="explode" modal="true" width="550" position="center"
 			header="Horario Punto de Venta">
-			<h:panelGrid id="display" columns="2" cellpadding="2"
-				style="margin:0 auto;" >
+			<h:panelGrid id="display" columns="2" cellpadding="2" >
 
 				<h:outputText value="#{message['horario.pv.dia']}"  />
 				
 				<h:panelGroup rendered="#{MantenimientoHorarioPuntoVentaSearchAction.newRecord==true}"  >
 				<p:selectCheckboxMenu id="pvchk" required="true" value="#{MantenimientoHorarioPuntoVentaSearchAction.diaList}" 
 				filter="true" filterMatchMode="startsWith" requiredMessage="#{message['horario.pv.dia.validation']}"
-					 style="width:160px" >
+					 style="width:250px" >
 					<f:selectItems value="#{comboAction.diasItems}" />
 				</p:selectCheckboxMenu>
 				<p:message for="pvchk" />

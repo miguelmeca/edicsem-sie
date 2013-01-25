@@ -25,7 +25,6 @@ import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
-import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.FechaSie;
 import com.edicsem.pe.sie.entity.HorarioPuntoVentaSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
@@ -33,7 +32,6 @@ import com.edicsem.pe.sie.service.facade.AlmacenService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.FechaService;
 import com.edicsem.pe.sie.service.facade.HorarioPuntoVentaService;
-import com.edicsem.pe.sie.util.FaceMessage.FaceMessage;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
@@ -141,6 +139,9 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends
 	
 		
 		objHorarioPuntoVentaSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(38));
+		objHorarioPuntoVentaSie.setHoraIngreso(new Time(horaIngreso.getTime()));
+		objHorarioPuntoVentaSie.setHoraSalida(new Time(horaSalida.getTime()));
+		
 		try {
 			
 			//para que no hayan cruces de horario 
@@ -157,20 +158,29 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends
 								 objHorarioPuntoVentaSie.getDiainicio().equals(listaHorario.get(i).getDiafin())||
 								 objHorarioPuntoVentaSie.getDiainicio().equals(listaHorario.get(i).getDiainicio()))){
 						log.info("fechas con horario registrado   ");
-						mensaje ="--->";
-						msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-						Constants.MESSAGE_REGISTRO_TITULO, mensaje);
+						 
+						log.info(" hora ingreso "+objHorarioPuntoVentaSie.getHoraIngreso());
+						log.info(" hora ingreso "+objHorarioPuntoVentaSie.getHoraSalida());
+						log.info(" hora 2 "+listaHorario.get(i).getHoraIngreso());
+						log.info(" hora sal "+listaHorario.get(i).getHoraSalida());
+						log.info(" hora 2 "+listaHorario.get(i).getHoraIngreso());
 						if(	objHorarioPuntoVentaSie.getHoraIngreso().equals(listaHorario.get(i).getHoraIngreso()) ||
 								objHorarioPuntoVentaSie.getHoraIngreso().after(listaHorario.get(i).getHoraIngreso())
 								&& objHorarioPuntoVentaSie.getHoraIngreso().before(listaHorario.get(i).getHoraSalida())){
 							log.info(objHorarioPuntoVentaSie.getHoraIngreso() +" --->  getHoraIngreso "+ listaHorario.get(i).getHoraIngreso());
-							mensaje = "La hora de Ingreso es errónea";
+							mensaje = "La hora de Ingreso es errónea del día "+ listaHorario.get(i).getTbFecha().getDia();
+							msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+									Constants.MESSAGE_INFO_TITULO, mensaje);
+							FacesContext.getCurrentInstance().addMessage(null, msg);
 							break;
 						}else if(objHorarioPuntoVentaSie.getHoraSalida().equals(listaHorario.get(i).getHoraSalida()) ||
 								objHorarioPuntoVentaSie.getHoraSalida().after(listaHorario.get(i).getHoraIngreso())
 								&& objHorarioPuntoVentaSie.getHoraSalida().before(listaHorario.get(i).getHoraSalida())){
 							log.info(objHorarioPuntoVentaSie.getHoraSalida()+" --->  getHoraSalida "+listaHorario.get(i).getHoraSalida());
-							mensaje = "La hora de Salida es errónea";
+							mensaje = "La hora de Salida es errónea del día "+ listaHorario.get(i).getTbFecha().getDia();
+							msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+									Constants.MESSAGE_INFO_TITULO, mensaje);
+							FacesContext.getCurrentInstance().addMessage(null, msg);
 							break;
 							}
 						}
@@ -179,7 +189,7 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends
 			
 			
 			
-			if(isNewRecord()){
+			if(isNewRecord()&& mensaje==null){
 				
 					Time hora1 = new Time(getHoraIngreso().getTime());
 					Time hora2 = new Time(getHoraSalida().getTime());
@@ -204,7 +214,7 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends
 				
 
 				} 
-			else {
+			else if (isNewRecord()==false){
 					log.info("actualizando " + getHoraIngreso() + "  hora salida  " + getHoraSalida());
 					Time hora1 = new Time(getHoraIngreso().getTime());
 					Time hora2 = new Time(getHoraSalida().getTime());

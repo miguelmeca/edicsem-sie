@@ -50,7 +50,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	private ContratoEmpleadoSie objContratoEmpleado;
 	/*variables para telefono*/
 	private List<TelefonoPersonaSie> TelefonoPersonaList,TelefonoDeshabilitado;
-	private TelefonoPersonaSie nuevoTelef;	
+	private TelefonoPersonaSie nuevoTelef;
 	private int TipoTelef, operadorTelefonico;
 	private int idc,iddom, iddomicilio;
 	private String mensaje;
@@ -146,7 +146,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	/**
 	 * Eliminar Teléfono de la lista*/
 	 public void telefonoElimina(){
-	    	log.info("en eliminarProducto()");
+	    	log.info("en telefonoElimina()");
 			
 	    	for (int i = 0; i < TelefonoPersonaList.size(); i++) {
          	log.info(""+TelefonoPersonaList.get(i).getItem()+"  "+idt +"  "+TelefonoPersonaList.get(i).getTelefono());
@@ -155,7 +155,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 					for (int j = i; j < TelefonoPersonaList.size(); j++) {
 						log.info(" i " +i+"  j "+ j);
 						i=i+1;
-						//TelefonoPersonaList.get(j).setItem(i);
 						TelefonoPersonaList.set(j, TelefonoPersonaList.get(j));
 						
 					}break;
@@ -167,7 +166,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 					for (int j = i; j < TelefonoPersonaList.size(); j++) {
 						log.info(" i " +i+"  j "+ j);
 						i=i+1;
-						//TelefonoPersonaList.get(j).setItem(i);
 						TelefonoPersonaList.set(j, TelefonoPersonaList.get(j));
 					}
 					break;
@@ -241,15 +239,17 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 			verifica = true;
 		}
 		if (verifica) {
-		  
-			//int cantidad=TelefonoPersonaList.size();
 			
 			nuevoTelef.setItem("Por Agregar");	
 			
 			TelefonoPersonaList.add(nuevoTelef);
 			log.info("se agrego " + nuevoTelef.getTelefono());
+			mensaje="Se agregó telefono";
+			msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					Constants.MESSAGE_INFO_TITULO, mensaje);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		if (mensaje != null) {
+		if (mensaje != null &&verifica==false) {
 			msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
 					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -442,11 +442,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	        objDomicilio.setDomicilio(d.getDomicilio());
 	        setTipo(d.getTbTipoCasa().getIdtipocasa());
 	        setIdDistrito(getIdDistrito());	   
-	        /*seteo telefono*/
-            //objTelefono.setIdtelefonopersona(t.getIdtelefonopersona());
-            //objTelefono.setTelefono(fijo);
-            //setFijo(t.getTelefono());
-	        /*Estado del domicilio: deshabilitado(16)*/
 	        objDomicilio.setTbEstadoGeneral(objEstadoService.findEstadogeneral(16));
 	        /*Estado del teléfono: deshabilitado(18)*/
 	        objTelefono.setTbEstadoGeneral(objEstadoService.findEstadogeneral(18));
@@ -455,6 +450,10 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 			idUbigeo, tipo,  idCargo, DomicilioPersona, TelefonoPersona,TipoDocumento, idEmpresa, idTipoPago, codigoEmpleado, contratoEmpleadoList, TelefonoPersonaList, TelefonoDeshabilitado, ContratoDeshabilitado, detEmpresaEmpList);
 			log.info("actualizando..... ");
 			log.info("deshabilitando..... ");
+			mensaje="Se deshabilitó al empleado ";
+			msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					Constants.MESSAGE_INFO_TITULO, mensaje);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (Exception e2) {
 			e2.printStackTrace();
 			mensaje = e2.getMessage();
@@ -573,12 +572,37 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 				if (log.isInfoEnabled()) {
 					log.info("Entering my method 'insertar(registrar, actualizar)'"+ objEmpleado.getNombreemp());
 				}
+				//validar usuario
+				List<String> userList =  objEmpleadoService.listarUsuario();
+				if(userList.contains(objEmpleado.getUsuario())){
+					mensaje="Dicho usuario ya existe en el sistema";
+					msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+							Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+					FacesContext.getCurrentInstance().addMessage(null, msg);
+				}
+				
+				//validar DNI
+				List<String> dniList =  objEmpleadoService.listarDni();
+				if(dniList.contains(objEmpleado.getNumdocumento())){
+					mensaje="Dicho número de documento le pertenece a otro empleado ";
+					msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+							Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+					FacesContext.getCurrentInstance().addMessage(null, msg);
+				}
+				if(contratoEmpleadoList.size()>0){
+					mensaje="Debe registrar el contrato con dicho empleado ";
+					msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+							Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+					FacesContext.getCurrentInstance().addMessage(null, msg);
+				}
+				else{
 				objDomicilio.setTbUbigeo(objUbigeoService.findUbigeo(Integer.parseInt(idUbigeo)));
 				/*if: inserta al empleado, domicilio y telefono
 				  else: actualiza al empleado, domicilio y telefono*/
 				if (isNewRecord()) {
 					log.info("insertando..... ");
 					log.info("insertar empleado  ");
+					objEmpleado.setUsuario(objEmpleado.getUsuario().toLowerCase());
 					objEmpleadoService.insertarEmpleado(objEmpleado,objDomicilio, codigoTipoDocumento,  codigoCargoEmpleado,  
 					idUbigeo, tipo,  idCargo, DomicilioPersona, TelefonoPersona,TipoDocumento, idEmpresa, idTipoPago, codigoEmpleado, contratoEmpleadoList, TelefonoPersonaList);
 					log.info("insertando..... ");
@@ -596,6 +620,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 						Constants.MESSAGE_INFO_TITULO, mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
+				}
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();

@@ -99,6 +99,9 @@ public class ComboAction {
 	private Map<String, Integer> MetaMesItems = new HashMap<String, Integer>();
 	private Map<String, Integer> PaqueteItems = new HashMap<String, Integer>();
 	private Map<String, Integer> empleadoItems = new HashMap<String, Integer>();
+	private Map<String, Integer> expositorItems = new HashMap<String, Integer>();
+	private Map<String, Integer> vendedorItems  = new HashMap<String, Integer>();
+	private Map<String, Integer> colaboradorItems  = new HashMap<String, Integer>();
 	private Map<String, Integer> tipollamada = new HashMap<String, Integer>();
 	private Map<String, Integer> empleadoxcargo = new HashMap<String, Integer>();
 	private Map<String, Integer> diasItems = new HashMap<String, Integer>();
@@ -1376,10 +1379,67 @@ public class ComboAction {
 	}
 
 	/**
-	 * @return the productoOficialItems
+	 * @return the colaboradorItems
 	 */
-	
+	public Map<String, Integer> getColaboradorItems() {
+		return colaboradorItems;
+	}
 
-	
+	/**
+	 * @param colaboradorItems the colaboradorItems to set
+	 */
+	public void setColaboradorItems(Map<String, Integer> colaboradorItems) {
+		this.colaboradorItems = colaboradorItems;
+	}
+
+	/**
+	 * @return the vendedorItems
+	 */
+	public Map<String, Integer> getVendedorItems() {
+		return vendedorItems;
+	}
+
+	/**
+	 * @param vendedorItems the vendedorItems to set
+	 */
+	public void setVendedorItems(Map<String, Integer> vendedorItems) {
+		this.vendedorItems = vendedorItems;
+	}
+
+	/**
+	 * @return the expositorItems
+	 */
+	public Map<String, Integer> getExpositorItems() {
+		List lista = new ArrayList<EmpleadoSie>();
+		expositorItems = new HashMap<String, Integer>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getExpositorItems()' ");
+			}
+			lista = objEmpleadoService.listarExpositor(idEmpresa);
+
+			for (int i = 0; i < lista.size(); i++) {
+				EmpleadoSie entidad = new EmpleadoSie();
+				entidad = (EmpleadoSie) lista.get(i);
+				expositorItems.put(entidad.getNombresCompletos(),
+						entidad.getIdempleado());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return expositorItems;
+	}
+
+	/**
+	 * @param expositorItems the expositorItems to set
+	 */
+	public void setExpositorItems(Map<String, Integer> expositorItems) {
+		this.expositorItems = expositorItems;
+	}
 	
 }

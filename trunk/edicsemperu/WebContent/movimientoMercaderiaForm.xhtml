@@ -80,11 +80,8 @@
 					<p:spacer  rendered="#{movimientoMercaderia.idtipokardexproducto!=3}" />
 					</p:fieldset>
 					<br/><br/>
-					<c:forEach items="${sessionScope.cargoSession}" var="cargo">
-					<c:if  scope="${cargo.idcargoempleado==1}" >
-					
-					<p:fieldset legend="Datos Comprobante"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}" >
-					<h:panelGrid columns="6" >
+					<p:fieldset legend="Datos Comprobante" rendered="#{login.objEmpleado.cargo==1}" >
+					<h:panelGrid   columns="6"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}" >
 					<h:outputText value="#{message['movimiento.proveedor.nombreempresa']}"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
 					<p:selectOneMenu size="1" rendered="#{movimientoMercaderia.idtipokardexproducto==1}" style="width:165px" 
 						value="#{movimientoMercaderia.idproveedor}">
@@ -105,8 +102,6 @@
 				<p:message for="num_comp" rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
 				</h:panelGrid>
 				</p:fieldset>
-				</c:if>
-				</c:forEach>
 				</h:panelGrid>
 				<br/><br/>
 				<p:commandButton id="idG" action="#{movimientoMercaderia.insertar}" icon="ui-icon ui-icon-disk" title="#{message['movimiento.grabar']}"
@@ -146,7 +141,7 @@
 						</f:facet>
 						<h:outputText value="#{d.cantentrada}" />
 					</p:column>
-					<p:column>
+					<p:column   rendered="#{login.objEmpleado.cargo==1}">
 						<f:facet name="header">
 							<h:outputText value="#{message['movimiento.valorEntrada']}" />
 						</f:facet>
@@ -158,7 +153,7 @@
 						</f:facet>
 						<h:outputText value="#{d.cantsalida}" />
 					</p:column>
-					<p:column>
+					<p:column  rendered="#{login.objEmpleado.cargo==1}">
 						<f:facet name="header">
 							<h:outputText value="#{message['movimiento.valorSalida']}"/>
 						</f:facet>
@@ -170,13 +165,13 @@
 						</f:facet>
 						<h:outputText value="#{d.cantexistencia}" />
 					</p:column>
-					<p:column>
+					<p:column  rendered="#{login.objEmpleado.cargo==1}">
 						<f:facet name="header">
 							<h:outputText value="#{message['movimiento.valortotal']}"/>
 						</f:facet>
 						<h:outputText value="#{d.valortotal}" />
 					</p:column>
-					<p:column>
+					<p:column  rendered="#{login.objEmpleado.cargo==1}">
 						<f:facet name="header">
 							<h:outputText value="#{message['movimiento.valorExistente']}"/>
 						</f:facet>

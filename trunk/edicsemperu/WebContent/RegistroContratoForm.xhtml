@@ -136,6 +136,7 @@
 				</p:tab>
 				<p:tab title="#{message['cliente.contrato.telefono.referencia']}">
 			  	<p:panel >
+			  	<p:messages id="messaget" showDetail="true"/>
 			  	<p:fieldset   legend="#{message['cliente.contrato.telefono.referencia']}" >
 				<h:panelGrid columns="6"  id="panelTlf" >
 				
@@ -181,7 +182,7 @@
 					<p:spacer />
 					
 					<p:commandButton value="Agregar Telefono"  icon="ui-icon ui-icon-check" 
-					actionListener="#{contratoForm.telefonoAgregar}" update="telefonoList, message" > 
+					actionListener="#{contratoForm.telefonoAgregar}" update="telefonoList, messaget" > 
 					</p:commandButton>
 					
 				</h:panelGrid>
@@ -388,7 +389,7 @@
 				
         		 <p:spacer  height="35px"/>
         		 <h:panelGrid id="panelCobranzas" >
-		<p:dataTable id="listaCobranzas" var="c" value="#{contratoForm.cobranzaList}" editable="true" style=" width:50%; align:center ">
+		<p:dataTable id="listaCobranzas" var="c" value="#{contratoForm.cobranzaList}" editable="true" style=" width:50%; align:center " >
 
         <f:facet name="header">
             Editar Cobranzas
@@ -449,6 +450,7 @@
 					style="width:165px" value="#{contratoForm.idempresa}">
 					<f:selectItem itemLabel="Seleccione Empresa" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.empresaitems}" />
+					<p:ajax  listener="#{contratoForm.listarempleados}" update="super" />
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['contrato.tipo.venta']}" />
@@ -468,19 +470,19 @@
 					<p:inputText value="#{contratoForm.objContratoSie.lugarentrega}"
 						required="true" rendered="#{contratoForm.tipoVenta==1}"  />
 						
-				<h:outputText value="#{message['contrato.expositor']}" />
-				<p:selectOneMenu value="#{contratoForm.idempleadoExpositor}" required="true" filter="true" filterMatchMode="startsWith"  style="width:220px">
-					<f:selectItems value="#{comboAction.empleadoItems}" />
+				<h:outputText value="#{message['contrato.supervisor']}" />
+				<p:selectOneMenu id="super" value="#{contratoForm.idempleadoExpositor}" required="true" filter="true" filterMatchMode="startsWith"  style="width:220px">
+					<f:selectItems value="#{comboAction.expositorItems}" />
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['contrato.vendedor']}" />
 				<p:selectOneMenu value="#{contratoForm.idempleadoVendedor}" required="true" filter="true" filterMatchMode="startsWith"  style="width:220px">
-					<f:selectItems value="#{comboAction.empleadoItems}" />
+					<f:selectItems value="#{comboAction.empleadoxcargo}" />
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['contrato.colaborador']}" />
 				<p:selectCheckboxMenu value="#{contratoForm.colaboradorList}" filter="true" filterMatchMode="startsWith"  style="width:220px">
-					<f:selectItems value="#{comboAction.empleadoItems}" />
+					<f:selectItems value="#{comboAction.empleadoxcargo}" />
 				</p:selectCheckboxMenu>
 				</h:panelGrid>
 				
