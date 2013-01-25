@@ -254,6 +254,7 @@ if((verificarEmpleadoConEmpresa(parametroObtenido)) == (verificarProductoConEmpr
 			objEmpresaSie.setIdempresa(em.getIdempresa());
 			objEmpresaSie.setDescripcion(em.getDescripcion());
 			objEmpresaSie.setRazonsocial(em.getRazonsocial());
+			objEmpresaSie.setNumcuenta(em.getNumcuenta());
 			objEmpresaSie.setNumruc(em.getNumruc());
 			objEmpresaSie.setNumtelefono(em.getNumtelefono());
 			objEmpresaSie.setEmail(em.getEmail());
