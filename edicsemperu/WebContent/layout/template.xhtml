@@ -593,7 +593,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				<h:outputText value="#{message['horario.personal.horaSalida']}" />
 				<h:panelGroup >
 					<p:calendar
-						value="#{horarioPersonal.horaSalida}" pattern="HH:mm" timeOnly="true"/>
+							id="horaSal" required="true" requiredMessage="#{message['horario.personal.horaSalida.validation']}"	value="#{horarioPersonal.horaSalida}" pattern="HH:mm" timeOnly="true"/>
 				</h:panelGroup>
 				 
 				<h:outputText value="#{message['horario.personal.descripcion']}"  />
@@ -817,7 +817,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 	
 	
 	
-	<h:form id="horarioDeshabilita" >
+	<h:form>
 
 		<p:confirmDialog id="confirmHorarioPersonal12"
 			message="Esta seguro de deshabilitar dicho horario?" width="325"
