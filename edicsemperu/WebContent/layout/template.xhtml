@@ -1575,7 +1575,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 						onkeypress="return validarLetras(event)" 
 						/>
 
-					<p:inputText id="razonSocial2" value="#{empresaForm.razonsocial}"
+					<p:inputText id="razonSocial2" value="#{empresaForm.objEmpresaSie.razonsocial}"
 						required="true" label="razonsocial"
 						requiredMessage="#{message['mantenimiento.razonSocial.validation']}"
 						style="font-weight:bold" rendered="#{!empresaForm.editMode}" 
@@ -1600,7 +1600,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 						onkeypress="return validarEspaciosLetrasNumeros(event)" 
 						 />
 
-					<p:inputText id="descripcion2" value="#{empresaForm.descripcion}"
+					<p:inputText id="descripcion2" value="#{empresaForm.objEmpresaSie.descripcion}"
 						required="true" label="descripcion"
 						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
 						style="font-weight:bold" rendered="#{!empresaForm.editMode}" 
@@ -1619,7 +1619,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 						requiredMessage="#{message['mantenimiento.numruc.validation']}"
 						style="font-weight:bold" rendered="#{empresaForm.editMode}" />
 
-					<p:inputMask id="ruc2" value="#{empresaForm.numruc}"
+					<p:inputMask id="ruc2" value="#{empresaForm.objEmpresaSie.numruc}"
 						required="true" label="descripcion" mask="99999999999"
 						requiredMessage="#{message['mantenimiento.numruc.validation']}"
 						style="font-weight:bold" rendered="#{!empresaForm.editMode}" />
@@ -1641,7 +1641,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 						style="font-weight:bold" rendered="#{empresaForm.editMode}" 
 						 />
 
-					<p:inputMask id="telefono2" value="#{empresaForm.numtel}"
+					<p:inputMask id="telefono2" value="#{empresaForm.objEmpresaSie.numtelefono}"
 						required="true" label="telefono" mask="999-9999"
 						requiredMessage="#{message['mantenimiento.numtel.validation']}"
 						style="font-weight:bold" rendered="#{!empresaForm.editMode}"
@@ -1669,7 +1669,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 						
 
 			<p:inputText id="email2"
-						 value="#{empresaForm.email}"	
+						 value="#{empresaForm.objEmpresaSie.email}"	
 						 label="email2"
 						 title="para el @ presione: la tecla Alt + 64 y en laptop Alt Gr + Q"
 						 validatorMessage="correo electronico incorrecto"				
