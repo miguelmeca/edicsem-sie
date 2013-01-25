@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Modulo Migracion</h1>
+		<h:form id="frmExcelForm">
+		
+
+<p:fileUpload fileUploadListener="#{FileUpload.handleFileUpload}"
+	allowTypes="/(\.|\/)(gif|jpe?g|png|xls)$/" description="Select Images"
+	update="datatablecampana"
+	/>
+	<p:commandButton value="Realizar cambios"
+											id="guardar"
+											
+											action="#{FileUpload.subirCreditos}"
+											process="@all">
+										</p:commandButton>
+	
+
+
+
+
+<p:dataTable id="datatablecampana" var="c" value="#{FileUpload.leadsNuevos}" >
+                   
+       
+        
+        <p:column headerText="id"  >
+		<h:outputText value="#{c.id}"/>
+		</p:column>
+		
+    	<p:column  headerText="nombre"  >
+        <h:outputText value="#{c.nombre}"/>
+        </p:column>
+  
+        
+        
+       
+    </p:dataTable>
+
+
+
+		
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
