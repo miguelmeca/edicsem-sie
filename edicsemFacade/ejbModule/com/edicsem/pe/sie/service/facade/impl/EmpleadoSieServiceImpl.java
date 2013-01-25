@@ -123,6 +123,12 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 					objTelefonoDao.insertarTelefonoEmpleado(objTelefono);
 					}
 				}
+				for (TelefonoPersonaSie objTelefono :  TelefonoDeshabilitado) {
+					log.info("deshabilitar ");
+					objTelefono.setIdempleado(objEmpleado);
+					objTelefono.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(18));
+					objTelefonoDao.actualizarTelefonoEmpleado(objTelefono);
+				}
 				 log.info(" tipo casa "+ tipo);
 				/**Actualiza el domicilio**/
 				objDomicilio.setIddomiciliopersona(objDomicilio.getIddomiciliopersona());
@@ -149,9 +155,6 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 					}
 				}
 				log.info("actualizando..... ");
-				//Agregen esto a tus redirecciones parece que esta referenciando a otra cosa verifiquen a donde estan 
-				//llenando los datos 
-				//Redirections.redirectionsPage(Constants.PAGE_MODULE, Constants.LISTA_CARGO_PAGE);
 			   }catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -189,14 +192,41 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 		return objEmpleadoDao.listarEmpleadosXCargo(idCargo);
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#listarEmpleadoxEmpresas(int)
+	 */
 	public List listarEmpleadoxEmpresas(int parametroObtenido) {
 		log.info("dentro del servicio listar Empleado x Empresas ");
 		return objEmpleadoDao.listarEmpleadoxEmpresas(parametroObtenido);
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#listarEmpleadoxCargo(int)
+	 */
 	public List listarEmpleadoxCargo(int parametroObtenido) {
 		log.info("dentro del servicio listar Empleado x Cargo ");
 		
 		return objEmpleadoDao.listarEmpleadoxCargo(parametroObtenido);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#listarExpositor(int)
+	 */
+	public List listarExpositor(int idEmpresa) {
+		return objEmpleadoDao.listarExpositor(idEmpresa);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#listarDni()
+	 */
+	public List listarDni() {
+		return objEmpleadoDao.listarDni();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#listarUsuario()
+	 */
+	public List listarUsuario() {
+		return objEmpleadoDao.listarUsuario();
 	}
 }

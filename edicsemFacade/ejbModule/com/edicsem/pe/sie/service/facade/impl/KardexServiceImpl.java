@@ -82,6 +82,7 @@ public class KardexServiceImpl implements KardexService {
 			objKardex2.setValorunitarioentrada(obj.getValorunitariosalida());
 			objKardex2.setValorunitariosalida(obj.getValorunitarioentrada());
 			objKardex2.setValortotal(obj.getValortotal());
+			objKardex2.setUsuariocreacion(obj.getUsuariocreacion());
 			log.info(" almacen 2 "+objKardex2.getValorunitarioentrada()+" sali "+objKardex2.getValorunitariosalida());
 			if(idtipokardexproducto==1){
 				idtipokardexproducto=2;
@@ -122,12 +123,10 @@ public class KardexServiceImpl implements KardexService {
 					
 				oj.setIdcomprobante(objComprobanteDao.findComprobante(idcompro).getIdcomprobante());
 				}
-				
 				objDetComprobante.setId(oj);
 				objDetComprobanteDao.insertComprobante(objDetComprobante);
 			}
 		}
-		
 	}
 	
 	/* (non-Javadoc)
