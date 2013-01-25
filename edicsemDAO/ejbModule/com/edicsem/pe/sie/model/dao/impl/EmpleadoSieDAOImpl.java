@@ -138,6 +138,52 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 		return lista;
 	}
 
-//	Lista de Empleados por Empresa
-
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.EmpleadoSieDAO#listarExpositor(int)
+	 */
+	public List listarExpositor(int idEmpresa) {
+		List lista = null;
+		log.info("listarExpositor "+ idEmpresa);
+		try {
+			Query q = em.createQuery("SELECT e FROM EmpleadoSie e inner join e.tbDetEmpresaEmpleados f  " +
+					" inner join f.tbEmpresa g inner join e.tbContratoEmpleados1 h inner join h.tbCargoempleado i " +
+					" where  i.idcargoempleado = 3 and g.idempresa = " + idEmpresa  );
+			lista = q.getResultList();
+			log.info("tamano --> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();			
+		}
+		return lista;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.EmpleadoSieDAO#listarDni()
+	 */
+	public List listarDni() {
+		List lista = null;
+		try {
+			Query q = em.createQuery("SELECT e.numdocumento FROM EmpleadoSie e ");
+			lista = q.getResultList();
+			log.info("tamano --> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();			
+		}
+		return lista;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.EmpleadoSieDAO#listarUsuario()
+	 */
+	public List listarUsuario() {
+		List lista = null;
+		try {
+			Query q = em.createQuery("SELECT e.usuario FROM EmpleadoSie e ");
+			lista = q.getResultList();
+			log.info("tamano --> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();			
+		}
+		return lista;
+	}
+	
 }
