@@ -24,6 +24,7 @@ import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.HorarioPersonalSie;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
+import com.edicsem.pe.sie.service.facade.FechaService;
 import com.edicsem.pe.sie.service.facade.HorarioPersonalService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
@@ -57,6 +58,8 @@ public class MantenimientoHorarioPersonalSearchAction extends BaseMantenimientoA
 	@EJB 
 	private EmpleadoSieService objEmpleadoSieService;
 	
+	@EJB
+	private FechaService objFechaService; 
 
 	public static Log log = LogFactory.getLog(MantenimientoHorarioPersonalSearchAction.class);
 	
@@ -139,16 +142,49 @@ public class MantenimientoHorarioPersonalSearchAction extends BaseMantenimientoA
 	return getViewList();
 	}
 	public String updateDeshabilitar() throws Exception{
+		mensaje =null;
 		 
-		if (log.isInfoEnabled()) {
-			log.info("Entering my method 'DeshabilitarHorarioPersonal()'" + getIde());
-		}
-			objHorarioPersonal = objHorarioPersonalService.findHorarioPersonal(getIde());
-			objHorarioPersonal.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(37));
+		objHorarioPersonal = new HorarioPersonalSie() ;
+		int id;
+		HorarioPersonalSie c = new HorarioPersonalSie();
+		
+		try {
+			
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'DeshabilitarHorarioPersonal()'" + getIde());
+			}
+			
+			id = getIdhorario();
+			
+			c = objHorarioPersonalService.findHorarioPersonal(id);
+			
+//			objHorarioPersonal.setIdhorariopersonal(c.getIdhorariopersonal());
+//			objHorarioPersonal.setDiainicio(c.getDiainicio());
+//			objHorarioPersonal.setDiafin(c.getDiafin());
+//			objHorarioPersonal.setHoraIngreso(c.getHoraIngreso());
+//			objHorarioPersonal.setHoraSalida(c.getHoraSalida());
+//			objHorarioPersonal.setTbFecha(objFechaService.findFecha(getIdempleado()));
+//			objHorarioPersonal.setTbEmpleado(objEmpleadoSieService.buscarEmpleado(getIdempleado()));
+//			objHorarioPersonal.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(37));
 
-			objHorarioPersonalService.updateHorarioPersonal(objHorarioPersonal);
-			log.info("actualizando..... ");
- 
+				objHorarioPersonalService.eliminarHorarioPersonal(id);
+				
+				log.info("actualizando..... ");
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+						Constants.MESSAGE_DESHABILITAR_TITULO, mensaje);
+	 			
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+				
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		objHorarioPersonal  = new HorarioPersonalSie() ;
 		return mostrar();
 	}
 	
