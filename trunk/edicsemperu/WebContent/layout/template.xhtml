@@ -946,7 +946,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 		<p:dialog header="Registro / Modificacion de Cargo Empleado" widgetVar="carDialogNuevo"
 			showEffect="fade" hideEffect="explode" modal="true" width="500" resizable="false" 
 			position="center">
-<p:fieldset legend="Cargo de Empleado" >
+<p:fieldset >
 			<h:panelGrid id="display" columns="2" cellpadding="2"
 				style="margin:0 auto;">
 
@@ -1555,7 +1555,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 	<h:form id="NuevoModificaempresa">
 		<p:dialog header="Ingrese Nueva Empresa"
 			widgetVar="carDialogNuevaempresa" showEffect="fade"
-			hideEffect="explode" modal="true" width="350" position="center">
+			hideEffect="explode" modal="true" width="600" position="center">
 
 			<h:panelGrid id="display" columns="3" cellpadding="0"
 				style="margin:0 auto;">
@@ -1608,6 +1608,35 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 						 />
 					<p:message for="descripcion1" />
 				</h:panelGroup>
+				
+				
+				<!-- Numero de cuenta -->
+				<h:outputText value="#{message['mantenimiento.numerocuenta']}"
+					for="numerocuenta" />
+					
+			<h:panelGroup>
+
+					<p:inputMask  id="numerocuenta1"
+						value="#{empresaForm.objEmpresaSie.numcuenta}" required="true"
+						label="numerocuenta" mask="99999"
+						requiredMessage="#{message['mantenimiento.numerocuenta.validation']}"
+						style="font-weight:bold" rendered="#{empresaForm.editMode}"
+						
+						
+						 />
+
+					<p:inputMask  id="numerocuenta2" 
+						value="#{empresaForm.objEmpresaSie.numcuenta}"
+						required="true" label="numerocuenta" mask="99999"
+						requiredMessage="#{message['mantenimiento.numerocuenta.validation']}"
+						style="font-weight:bold" rendered="#{!empresaForm.editMode}" 
+								
+						 />
+					<p:message for="numerocuenta1" />
+				</h:panelGroup>
+					
+					
+					
 
 				<!--N° RUC -->
 				<h:outputText value="#{message['mantenimiento.numruc']}" for="ruc" />
@@ -1705,8 +1734,8 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 
 
 	<h:form id="editarMeta2">
-		<p:dialog header="Ingrese nueva meta mes" widgetVar="carDialog2"
-			showEffect="fade" hideEffect="explode" modal="true" width="600"
+		<p:dialog header="Ingrese nueva meta mes" widgetVar="carDialog2" resizable="false"
+			showEffect="fade" hideEffect="explode" modal="true" width="400"
 			position="center">
 
 			<h:panelGrid id="display" columns="3" cellpadding="2"
