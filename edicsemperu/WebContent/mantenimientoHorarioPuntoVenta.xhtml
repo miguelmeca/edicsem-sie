@@ -35,8 +35,10 @@
 		
 <p:column headerText="Mostrar"  id="mostrar" >
 <center>
-<p:commandButton  icon="ui-icon-search" ajax="false" action="#{MantenimientoHorarioPuntoVentaSearchAction.mostrar}" update="panelMostrarHorario" >
+<p:commandButton   icon="ui-icon-search" ajax="false" action="#{MantenimientoHorarioPuntoVentaSearchAction.mostrar}" 
+				  update="panelMostrarHorario" title="Muestra el detalle de horarios del trabajador"  >
 <f:setPropertyActionListener value="#{c}" target="#{MantenimientoHorarioPuntoVentaSearchAction.objPuntoVentaSie}" />
+	
 </p:commandButton>
 </center>
 
@@ -63,10 +65,10 @@ emptyMessage="No se encontraron registros" >
 			<p:column headerText="Dia">
 				<h:outputText value="#{h.tbFecha.dia}" />
 			</p:column>
-			<p:column headerText="Entrada">
+			<p:column headerText="Hora de Entrada">
 				<h:outputText value="#{h.horaIngreso}" />
 			</p:column>
-			<p:column headerText="Salida">
+			<p:column headerText="Hora de Salida">
 				<h:outputText value="#{h.horaSalida}" />
 			</p:column>
 			<p:column headerText="Dia inicio">
