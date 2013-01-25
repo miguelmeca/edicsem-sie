@@ -54,10 +54,10 @@
 			<p:inputText id="nom" value="#{contratoForm.nombreCliente}" required="true"/>
 			<p:message for="nom"  />
 			<h:outputText value="Apellido Paterno: " />
-			<p:inputText id="app" value="#{contratoForm.nombreCliente}" required="true"/>
+			<p:inputText id="app" value="#{contratoForm.apeMatCliente}" required="true"/>
 			<p:message for="app"  />
 			<h:outputText value="Apellido Materno: " />
-			<p:inputText id="apm" value="#{contratoForm.nombreCliente}" required="true"/>
+			<p:inputText id="apm" value="#{contratoForm.apePatCliente}" required="true"/>
 			<p:message for="apm"  />
 			</h:panelGrid>
 			<p:commandButton value="Buscar" action="#{contratoForm.consultar}" update="message" ajax="false"
@@ -95,43 +95,42 @@
 					</h:panelGrid>
 					<p:spacer height="30px" />
 					<p:fieldset legend="Datos del Cliente"  >
-					<h:panelGrid columns="4"   >
+					<h:panelGrid columns="4" cellpadding="3"  >
 					<h:outputText value="#{message['contrato.nombre']}" />
-					<p:inputText id="nombreCliente" value="#{contratoForm.objClienteSie.nombrecliente}" readonly="true"/>
+					<p:inputText id="nombreCliente" value="#{contratoForm.objClienteSie.nombrecliente}" size="30" readonly="true"/>
 					
 					<h:outputText value="#{message['contrato.apepaterno']}" />
-					<p:inputText id="apPatCliente" value="#{contratoForm.objClienteSie.apepatcliente}" readonly="true"/>
+					<p:inputText id="apPatCliente" value="#{contratoForm.objClienteSie.apepatcliente}" size="30" readonly="true"/>
 					 
 					<h:outputText value="#{message['contrato.apematerno']}" />
-					<p:inputText  id="apMatCliente" value="#{contratoForm.objClienteSie.apematcliente}" readonly="true"/>
+					<p:inputText  id="apMatCliente" value="#{contratoForm.objClienteSie.apematcliente}" size="30" readonly="true"/>
 					
-				
 					<h:outputText value="#{message['contrato.numero.documento']}" />
-					<p:inputText value="#{contratoForm.objClienteSie.numdocumento}" readonly="true"/>
+					<p:inputText value="#{contratoForm.objClienteSie.numdocumento}" readonly="true" size="30"/>
 					
 					<h:outputText value="#{message['contrato.cliente.correo']}" />
-					<p:inputText value="#{contratoForm.objClienteSie.correo}" readonly="true"/>
+					<p:inputText value="#{contratoForm.objClienteSie.correo}" readonly="true" size="30"/>
 					
 					<h:outputText value="#{message['contrato.fechanac']}" />
-					<p:calendar  id="fecnac" value="#{contratoForm.objClienteSie.fecnacimiento}" pattern="dd/MM/yyyy"  readonly="true"/>
+					<p:inputText  id="fecnac" value="#{contratoForm.objClienteSie.fechaNacimientoString}" size="30" pattern="dd/MM/yyyy"  readonly="true"   />
 					
 					<h:outputText value="Ubigeo " />
-					<h:outputText id="ubigeoDefecto" value="#{contratoForm.objDomicilioSie.desUbigeo}" />
+					<h:outputText id="ubigeoDefecto" value="#{contratoForm.ubigeoDefecto}" />
 					
 					<h:outputText value="#{message['contrato.ubigeo.domicilio']}" />
-					<p:inputText id="domicilio" value="#{contratoForm.objDomicilioSie.domicilio}" readonly="true"/>
+					<p:inputText id="domicilio" value="#{contratoForm.objDomicilioSie.domicilio}" size="30" readonly="true"/>
 	
 					<h:outputText value="#{message['contrato.ubigeo.referencia']}" />
-					<p:inputText value="#{contratoForm.objDomicilioSie.referencia}" readonly="true"/>
+					<p:inputText value="#{contratoForm.objDomicilioSie.referencia}" readonly="true" size="30"/>
 					
 					<h:outputText value="#{message['contrato.empresa.labora.nombre']}" />
-					<p:inputText value="#{contratoForm.objClienteSie.empresatrabajo}" readonly="true"/>
+					<p:inputText value="#{contratoForm.objClienteSie.empresatrabajo}" readonly="true" size="30"/>
 					
 					<h:outputText value="#{message['contrato.empresa.cargo']}" />
-					<p:inputText value="#{contratoForm.objClienteSie.cargotrabajo}" readonly="true"/>
+					<p:inputText value="#{contratoForm.objClienteSie.cargotrabajo}" readonly="true" size="30"/>
 					
 					<h:outputText value="#{message['contrato.empresa.labora.direccion']}" />
-					<p:inputText value="#{contratoForm.objClienteSie.directrabajo}" readonly="true"/>
+					<p:inputText value="#{contratoForm.objClienteSie.directrabajo}" readonly="true" size="30"/>
 						
 					<h:outputText value="#{message['contrato.empresa.labora.telefono']}" />
 					<p:inputMask id="numTelefTraba" mask="999-9999" value="#{contratoForm.objClienteSie.telftrabajo}" readonly="true"/>
@@ -160,7 +159,8 @@
 					</p:fieldset>
 					<p:spacer height="30px" />
 					<p:fieldset  legend="Detalle de Paquete" >
-					<p:dataTable id="detPaqueteList" var="f" value="#{contratoForm.detProductoContrato}" editable="true" style="width:60%" >
+					<p:dataTable id="detPaqueteList" var="f" value="#{contratoForm.detProductoContrato}"  style="width:60%" 
+					rowStyleClass="#{f.tbEstadoGeneral.idestadogeneral ==70 ? 'colorRojo':  'null' }" >
 				
 				        <f:facet name="header">
 				            Detalle de Paquete
@@ -208,7 +208,7 @@
 			        </p:column>
 			        
 			        <p:column headerText="Fecha Pago" style="width:125px">
-			            <h:outputText value="#{d.fecpago}"  />
+			            <h:outputText value="#{d.fechaPagoString}"  />
 			        </p:column>
 			    </p:dataTable>
 			   </p:fieldset>

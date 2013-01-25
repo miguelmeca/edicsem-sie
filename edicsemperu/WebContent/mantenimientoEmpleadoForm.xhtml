@@ -12,7 +12,7 @@
 	    <p:wizard id="wiz" widgetVar="wiz" flowListener="#{mantenimientoEmpleadoFormAction.onFlowProcess}">
 	    <p:tab title="#{message['empleado.tabpersonal']}">
 	    <p:panel header="Datos Personales"> 
-        <h:panelGrid columns="2" cellpadding="5">						
+        <h:panelGrid columns="2" cellpadding="5">
 			<h:outputText value="#{message['empleado.nombre']}" />
 			<p:inputText id="nombre" value="#{mantenimientoEmpleadoFormAction.objEmpleado.nombreemp}" required="true" label="Nombre" 
 			requiredMessage="#{message['empleado.nombre.validation']}"/>
@@ -36,8 +36,9 @@
 			<h:outputText value="#{message['empleado.confcontra']}" />
 			<p:password id="confcontra" value="#{mantenimientoEmpleadoFormAction.confcontra}" required="true" label="Confcontra"
 			requiredMessage="#{message['empleado.confcontra.validation']}"/>
-			<h:outputText value="Tipo de Doc. :" styleClass="textoAzulFuerteGrande" id="tipoL"/>
-            <p:selectOneMenu id="tipo" value="#{mantenimientoEmpleadoFormAction.tipoDocumento}" >
+			<h:outputText value="Tipo de Doc. :"id="tipoL"/>
+            <p:selectOneMenu id="tipo" value="#{mantenimientoEmpleadoFormAction.tipoDocumento}" required="true" >
+            <f:selectItem itemLabel="Seleccione Tipo de documento" itemValue="#{null}" />
             <f:selectItems  value="#{comboAction.tipoDocumentoitems}" />
             <p:ajax update="nrodoc"/>
             </p:selectOneMenu>
@@ -68,7 +69,8 @@
     
 <p:tab title="#{message['empleado.tabnumeros']}">
 			  <p:panel header="Números Telefónicos" >
-				<h:panelGrid columns="6"  id="panelTlf" >
+			  <p:messages id="messaget" showDetail="true"/>
+				<h:panelGrid columns="6"  id="panelTlf" cellpadding="4" >
 				
 				<h:outputText value="#{message['contrato.tipo.telefono']}" />
 				<p:selectOneMenu  value="#{mantenimientoEmpleadoFormAction.tipoTelef}"
@@ -112,7 +114,7 @@
 						<p:spacer />
 						
 						<p:commandButton value="Agregar Telefono Referencia"  icon="ui-icon ui-icon-check" 
-						actionListener="#{mantenimientoEmpleadoFormAction.telefonoAgregar}" update="listarTelefonos, message" > 
+						actionListener="#{mantenimientoEmpleadoFormAction.telefonoAgregar}" update="listarTelefonos, messaget" > 
 						</p:commandButton>
 						
 				</h:panelGrid>
@@ -152,7 +154,7 @@
         <p:tab title="#{message['empleado.tabdireccion']}">
         <p:panel header="Dirección">
         <h:messages errorClass="error"/>  
-        <h:panelGrid columns="2" id="panel3">
+        <h:panelGrid columns="2" id="panel3" cellpadding="4" >
          <h:outputText value="#{message['domicilio.direccion']}"  />
 			<p:inputText id="domicilio" value="#{mantenimientoEmpleadoFormAction.objDomicilio.domicilio}" required="true" label="Domicilio"
 			requiredMessage="#{message['domicilio.direccion.validation']}"/>  			    
@@ -188,8 +190,8 @@
 				<h:outputText value="Ubigeo " />
 				<h:outputText id="ubigeoDefecto2" value="#{mantenimientoEmpleadoFormAction.ubigeoDefecto}" />
 			
-			<p:outputLabel for="tipocasa" value="#{message['empleado.tipoCasa']}" styleClass="textoAzulFuerteGrande" id="tipocasaL"/>
-            <p:selectOneMenu id="tipocasa" value="#{mantenimientoEmpleadoFormAction.tipo}" styleClass="required" title="El tipo de casa es obligatorio!" >
+			<p:outputLabel for="tipocasa" value="#{message['empleado.tipoCasa']}" id="tipocasaL"/>
+            <p:selectOneMenu id="tipocasa" value="#{mantenimientoEmpleadoFormAction.tipo}" required="true" >
             <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
             <f:selectItems value="#{comboAction.tipocasaItems}" />
             </p:selectOneMenu>

@@ -11,8 +11,9 @@
 		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Kardex</h1>
 		<h:form  id="frmKardex" >
 			<p:messages id="message" showDetail="true" />
-			<p:fieldset legend="#{message['panel.seleccion.producto']}"  style="width:80% " >
-			<h:panelGrid columns="6" cellpadding="4" >
+			<p:panel header="#{message['panel.kardex']}">
+			<p:fieldset legend="#{message['panel.seleccion.producto']}"  style="width:85% " >
+			<h:panelGrid columns="6" cellpadding="5" >
 				<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
 				<p:selectOneMenu id="tipoProd" value="#{comboAction.tipoProducto}" required="true"
 				requiredMessage="#{message['kardex.tipoProducto.validation']}">
@@ -58,7 +59,7 @@
 				</p:fieldset>
 				<p:spacer width="40" />
 				<p:dataTable value="#{kardexAction.kardexList}" var="p" 
-					id="listakardex" paginator="true" rows="5" 
+					id="listakardex" paginator="true" rows="5" style="width:90%"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15" widgetVar="tableKardex"
 					emptyMessage="No se encontro registros">
@@ -72,18 +73,18 @@
                  <p:column rowspan="3" headerText="#{message['kardex.tipo']}" />
                 <p:column colspan="2" headerText="#{message['kardex.entrada']}" />
                 <p:column colspan="2" headerText="#{message['kardex.salida']}" />
-                <p:column colspan="2" headerText="#{message['kardex.existencia']}" />
-                <p:column rowspan="2" headerText="#{message['kardex.empresa']}" />
-                <p:column rowspan="2" headerText="#{message['kardex.editar']}" />
+                <p:column colspan="2" headerText="#{message['kardex.existencia']}"  rendered="#{login.objEmpleado.cargo==1}"/>
+                <p:column rowspan="2" headerText="#{message['kardex.empresa']}"  rendered="#{login.objEmpleado.cargo==1}"/>
+                <p:column rowspan="2" headerText="#{message['kardex.editar']}"  rendered="#{login.objEmpleado.cargo==1}"/>
             </p:row>  
   
             <p:row>  
                 <p:column headerText="#{message['kardex.cantEntrada']}" />
-                <p:column headerText="#{message['kardex.valorEntrada']}" />
+                <p:column headerText="#{message['kardex.valorEntrada']}"  rendered="#{login.objEmpleado.cargo==1}"/>
                 <p:column headerText="#{message['kardex.cantSalida']}" />
-                <p:column headerText="#{message['kardex.valorExistencia']}" />
+                <p:column headerText="#{message['kardex.valorExistencia']}"  rendered="#{login.objEmpleado.cargo==1}"/>
                 <p:column headerText="#{message['kardex.cantExistencia']}" />
-                <p:column headerText="#{message['kardex.valorExistencia']}" />
+                <p:column headerText="#{message['kardex.valorExistencia']}"  rendered="#{login.objEmpleado.cargo==1}"/>
             </p:row>
         </p:columnGroup>
 					 
@@ -93,19 +94,19 @@
 					</p:column>
 					<p:column>#{p.cantentrada}
 						</p:column>
-					<p:column>#{p.valorunitarioentrada}
+					<p:column  rendered="#{login.objEmpleado.cargo==1}">#{p.valorunitarioentrada}
 					</p:column>
 					<p:column>#{p.cantsalida}
 					</p:column>
-					<p:column>#{p.valorunitariosalida}
+					<p:column  rendered="#{login.objEmpleado.cargo==1}">#{p.valorunitariosalida}
 					</p:column>
 					<p:column>#{p.cantexistencia}
 					</p:column>
-					<p:column>#{p.valorunitarioexistencia}
+					<p:column  rendered="#{login.objEmpleado.cargo==1}">#{p.valorunitarioexistencia}
 					</p:column>
-					 <p:column>#{p.tbEmpresa.razonsocial}
+					 <p:column  rendered="#{login.objEmpleado.cargo==1}">#{p.tbEmpresa.razonsocial}
 					</p:column>
-					  <p:column>
+					  <p:column  rendered="#{login.objEmpleado.cargo==1}">
 				 
 					    <h:panelGroup>
 						 <p:commandButton update=":formManteKardexList:display" value="editar" 
@@ -117,7 +118,7 @@
 						</h:panelGroup>
 					</p:column>
 					</p:dataTable>
-				 
+				 </p:panel>
 				<p:spacer width="40"></p:spacer>
 		</h:form>
 	</ui:define>

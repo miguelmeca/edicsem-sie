@@ -10,12 +10,14 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.ComprobanteSie;
 import com.edicsem.pe.sie.entity.DetalleComprobanteSie;
+import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.KardexSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
@@ -39,7 +41,8 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 	private boolean editMode;
 	private Log log = LogFactory.getLog(MovimientoAction.class);
 	private DetalleComprobanteSie objDetComprobante;
-
+	HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+	EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 	@EJB
 	private KardexService objKardexService;
 	
@@ -90,7 +93,8 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 		mensaje=null;
 		valorTotalAlmacenes=0.0;
 		double valoruniex= 0.0;
-		
+		HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+		EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()' :D  " + objKardexSie.getCantentrada()
@@ -110,6 +114,12 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 			}
 			
 			else{
+				//si es de almacen
+				if(sessionUsuario.getCargo()==0){
+					objKardexSie.setValorunitarioentrada("0.0");
+					objKardexSie.setValorunitariosalida("0.0");
+					objKardexSie.setValortotal(null);
+				}
 				if(idtipokardexproducto==1){
 					//si es entrada
 					objKardexSie.setCantsalida(0);
@@ -217,13 +227,12 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 										objKardexSie.setValortotal(""+(valoruniex*objKardexSie.getCantsalida() ));
 										log.info(" g "+valoruniex);
 										validado=true;
+										break;
 									}
 								}else{
-									log.info(" g se registra y no se encontro "+valoruniex);
-									objKardexSie.setValorunitariosalida(valoruniex+"");
-									objKardexSie.setValortotal(""+(valoruniex*objKardexSie.getCantsalida() ));
-									log.info(" g "+valoruniex);
-									validado=true;
+									log.info(" g no se registra y no se encontro "+valoruniex);
+									 
+									validado=false;
 								}
 							}
 							if(validado==false){
@@ -272,14 +281,21 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 							
 							}
 							else{
+								log.info("  valoruniex **  "+valoruniex+"  Cantentrada() "+objKardexSie.getCantentrada()+" cantExistenteTotalAlmacenes "+cantExistenteTotalAlmacenes);
+								double s =valoruniex*objKardexSie.getCantentrada();
+								log.info("   valor total **  "+s);
+								objKardexSie.setValortotal(""+s);
+								log.info("   valor total **  "+objKardexSie.getValortotal());
 								validado=true;
 							}
 						 
 						if (cantExistenteTotalAlmacenes + objKardexSie.getCantentrada() < stkmaximo && idAlmacen2==0 ) {
+							stockTotalAlmacenado=cantExistenteTotalAlmacenes+objKardexSie.getCantentrada();
 							mensaje = " Se registro correctamente,  el stock actual total de dicho producto es  " + stockTotalAlmacenado;
 							validado=true;
 						}
 						if (cantExistenteTotalAlmacenes + objKardexSie.getCantentrada() > stkmaximo && idAlmacen2==0 ) {
+							stockTotalAlmacenado=cantExistenteTotalAlmacenes + objKardexSie.getCantentrada();
 							mensaje = " Se registro correctamente,  el stock actual de dicho producto es  " + stockTotalAlmacenado+" se excedio del stock permitido";
 							validado=true;
 						}
@@ -390,6 +406,7 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 						objKardexSie.setCantsalida(0);
 					}
 						log.info(" *************** INSERTAR *********"  );
+						objKardexSie.setUsuariocreacion(sessionUsuario.getUsuario());
 						objKardexService.insertMovimiento(
 								objKardexSie, objcomprobante,objDetComprobante,idproducto,
 								idtipokardexproducto, idAlmacen, idAlmacen2);

@@ -84,12 +84,28 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 		try {
 			log.info("usuario  :D ...  "+usuario+" contraseña "+contrasenia);
 			//Captura del Usuario y contraseña, Validando el Usuario
+			usuario= usuario.toLowerCase();
 			objEmpleado= loginService.validacionLogin(usuario,SecurityLogin.getMD5(contrasenia));
 			if (objEmpleado!=null) {
 				//Se valida si la contraseña del usuario encontrado esta en lo cierto.
 					log.info("usuario correcto...");
 					log.info("Nombres completos : "+ objEmpleado.getNombresCompletos());
 					log.info("contraseña: "+ objEmpleado.getContrasena());
+
+					log.info(" listando cargos " +objEmpleado.getIdempleado()   );
+					cargo = cargoService.listarCargosXEmpleado(objEmpleado.getIdempleado());
+					for (int i = 0; i < cargo.size(); i++) {
+						log.info(" ccc " +cargo.get(i).getIdcargoempleado());
+						if(cargo.get(i).getIdcargoempleado()==1||cargo.get(i).getIdcargoempleado()==13){
+							objEmpleado.setCargo(1);
+							break;
+						}else{
+							objEmpleado.setCargo(0);
+						}
+					}
+					SessionsSie.putObjectInSession(Constants.CARGO_USER, cargo);
+					
+					
 					SessionsSie.putObjectInSession(Constants.USER_KEY, objEmpleado);
 
 					//Se lista los menus del Usuario
@@ -143,12 +159,6 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 					fechaHoraIngreso = DateUtil.getDateTime("dd/MM/yyyy HH:mm:ss", n);
 					log.info(" fecha hora " + fechaHoraIngreso);
 					
-					log.info(" listando cargos " +objEmpleado.getIdempleado()   );
-					cargo = cargoService.listarCargosXEmpleado(objEmpleado.getIdempleado());
-					for (int i = 0; i < cargo.size(); i++) {
-						log.info(" ccc " +cargo.get(i).getIdcargoempleado());
-					}
-					SessionsSie.putObjectInSession(Constants.CARGO_USER, cargo);
 					
 			}else {
 				log.info("usuario incorrecto!! ...  ");
@@ -222,6 +232,25 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 		MethodExpression mExp = context.createMethodExpression(FacesContext.getCurrentInstance().getELContext(), actionListenerName, String.class, new Class[]{});
 		return mExp;
 	}
+	
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
+	 */
+	public String agregar() {
+		 passActual=null;
+		 passConfirma1=null;
+		 passConfirma2=null;
+		return getViewMant();
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewMant()
+	 */
+	public String getViewMant() {
+		return "index";
+	}
+	
 //	
 //	public MethodExpressionActionListener getActionListenerExp(String actionListenerName) {
 //		FacesContext context = FacesContext.getCurrentInstance();
