@@ -11,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.HorarioPersonalSie;
+import com.edicsem.pe.sie.entity.HorarioPuntoVentaSie;
 import com.edicsem.pe.sie.model.dao.HorarioPersonalDAO;;
 
 
@@ -54,9 +55,19 @@ public class HorarioPersonalDAOImpl implements HorarioPersonalDAO {
 	 * @see com.edicsem.pe.sie.model.dao.HorarioPersonalDAO#eliminarHorarioPersonal(int)
 	 */
 	public void eliminarHorarioPersonal(int id) {
-		// TODO Auto-generated method stub
+	
+		try {
+			
+			HorarioPersonalSie bean = findHorarioPersonal(id);
+			em.remove(bean);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
+		
+	
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.HorarioPersonalDAO#findHorarioPersonal(int)
