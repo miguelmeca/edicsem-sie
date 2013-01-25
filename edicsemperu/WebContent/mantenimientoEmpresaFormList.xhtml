@@ -26,7 +26,11 @@ emptyMessage="No se encontraron registros">
 								
 <p:column headerText="descripcion"  id="descripcion" sortBy="#{empresa.descripcion}" filterBy="#{empresa.descripcion}">
 <h:outputText value="#{empresa.descripcion}" />
-</p:column>		
+</p:column>	
+
+<p:column headerText="Número de Cuenta"  id="cuenta" sortBy="#{empresa.numcuenta}" filterBy="#{empresa.numcuenta}">
+<h:outputText value="#{empresa.numcuenta}" />
+</p:column>	
 				
 <p:column headerText="N° de RUC"  id="numruc" sortBy="#{empresa.numruc}" filterBy="#{empresa.numruc}">
 <h:outputText value="#{empresa.numruc}" />
