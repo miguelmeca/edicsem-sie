@@ -70,8 +70,6 @@ public class MantenimientoPaqueteBiblicoSearchAction extends BaseMantenimientoAb
 		
 		//PAQUETE BIBLICO
 		
-//		detPaqueteList = new ArrayList<PaqueteSie>();
-//		detPaqueteBiblicoList = new ArrayList<DetPaqueteSie>();
 		log.info("Inicializando el Constructor de 'MantenimientoPaqueteBiblicoSearchAction'");
 		objDetPaqueteSie = new DetPaqueteSie();
 		objPaqueteSie = new PaqueteSie();
