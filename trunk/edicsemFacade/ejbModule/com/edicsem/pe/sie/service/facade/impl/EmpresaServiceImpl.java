@@ -49,6 +49,7 @@ public class EmpresaServiceImpl implements EmpresaService {
 	 */
 	 
 	public EmpresaSie findEmpresa(int id) {
+		log.info("en el servicio--> "+id);
 		return objEmpresaDao.findEmpresa(id); 
 	}
 }
