@@ -66,6 +66,7 @@ public class HorarioPersonalServiceImpl implements HorarioPersonalService{
 	 * @see com.edicsem.pe.sie.service.facade.DemoService#deleteDemo(java.lang.String)
 	 */
 	public void eliminarHorarioPersonal(int id) {
+		log.info("en el servicio directo al metodo eliminar");
 		objHorarioPersonalDao.eliminarHorarioPersonal(id);
 	}
 
