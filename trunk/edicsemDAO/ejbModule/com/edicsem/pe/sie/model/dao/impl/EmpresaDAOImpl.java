@@ -51,8 +51,7 @@ public class EmpresaDAOImpl implements EmpresaDAO {
 				log.info("Actualizar Empresa");
 			}
 
-			log.info("BeanEmpresaDaoImpl" + empresa.getDescripcion()+ " " + empresa.getEmail()
-					+ " " + empresa.getNumtelefono());
+			log.info("Dentro del updateEmpresa --->");
 			em.merge(empresa);
 			log.info("---despues del merge ");
 		} catch (Exception e) {
@@ -71,7 +70,7 @@ public class EmpresaDAOImpl implements EmpresaDAO {
 			}
 			empresa = em.find(EmpresaSie.class, id);
 			
-			log.info(" EMpresa DAOIMPL " + empresa.getDescripcion());
+			log.info(" Epresa DAOIMPL-> " + empresa.getIdempresa() + "-"+ empresa.getDescripcion() +" - "+ empresa.getNumruc() +" - "+empresa.getNumtelefono() +" - "+ empresa.getEmail());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
