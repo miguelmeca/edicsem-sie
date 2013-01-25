@@ -1573,9 +1573,9 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 						requiredMessage="#{message['mantenimiento.razonSocial.validation']}"
 						style="font-weight:bold" rendered="#{empresaForm.editMode}"
 						onkeypress="return validarLetras(event)" 
-						 />
+						/>
 
-					<p:inputText id="razonSocial2" value="#{empresaForm.objEmpresaSie.razonsocial}"
+					<p:inputText id="razonSocial2" value="#{empresaForm.razonsocial}"
 						required="true" label="razonsocial"
 						requiredMessage="#{message['mantenimiento.razonSocial.validation']}"
 						style="font-weight:bold" rendered="#{!empresaForm.editMode}" 
@@ -1605,7 +1605,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
 						style="font-weight:bold" rendered="#{!empresaForm.editMode}" 
 						onkeypress="return validarEspaciosLetrasNumeros(event)"
-					/>
+						 />
 					<p:message for="descripcion1" />
 				</h:panelGroup>
 
@@ -1626,9 +1626,6 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 					<p:message for="ruc1" />
 
 				</h:panelGroup>
-
-
-
 
 				<!--N° TELEFONICO -->
 
@@ -1655,36 +1652,33 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 
 				<!--N° EMail -->
 
-				<h:outputText value="#{message['mantenimiento.email']}"  />
+				<h:outputText value="#{message['mantenimiento.email']}" for="email" />
 
-				<h:panelGroup id="email">
+				<h:panelGroup>
 
-					<p:inputText  value="#{empresaForm.objEmpresaSie.email}"
-						required="true" label="email"
-						requiredMessage="#{message['mantenimiento.email.validation']}"
-						style="font-weight:bold" rendered="#{empresaForm.editMode}" 
-						title="para el @ presione: la tecla Alt + 64 y en laptop Alt Gr + Q"
-						validatorMessage="Email incorrecto" maxlength="45">
-						<f:validateRegex pattern="#{message['pattern.email.norequired']}" />
-						<p:tooltip for="email"  showEffect="clip" hideEffect="explode" ></p:tooltip>
-						
+					<p:inputText id="email1" 
+								 value="#{empresaForm.objEmpresaSie.email}"
+								 label="email1"
+								 title="para el @ presione: la tecla Alt + 64 y en laptop Alt Gr + Q"
+								 validatorMessage="correo electronico incorrecto"					
+								 rendered="#{empresaForm.editMode}"
+								 maxlength="45"
+								 >
+       			<f:validateRegex pattern="#{message['pattern.email.norequired']}" />
 						</p:inputText>
-						     <p:watermark for="email" value="ejm@edicsem.com" /> 
 						
 
-					<p:inputText  value="#{empresaForm.email}"
-						required="true" label="email"
-						requiredMessage="#{message['mantenimiento.email.validation']}"
-						style="font-weight:bold" rendered="#{!empresaForm.editMode}" 
-						title="para el @ presione: la tecla Alt + 64 y en laptop Alt Gr + Q"
-						validatorMessage="Email incorrecto" maxlength="45">
-						<f:validateRegex pattern="#{message['pattern.email.norequired']}"/>
-						<p:tooltip for="email"  showEffect="clip" hideEffect="explode" ></p:tooltip>
-				
+			<p:inputText id="email2"
+						 value="#{empresaForm.email}"	
+						 label="email2"
+						 title="para el @ presione: la tecla Alt + 64 y en laptop Alt Gr + Q"
+						 validatorMessage="correo electronico incorrecto"				
+						 rendered="#{!empresaForm.editMode}" 
+						 maxlength="45"
+						 >
+		<f:validateRegex pattern="#{message['pattern.email.norequired']}" />
+						</p:inputText>
 					
-					</p:inputText>
-					     <p:watermark for="email" value="ejm@edicsem.com" /> 
-					<p:message for="email" />
 				</h:panelGroup>
 
 				<!-- BOTON GUARDAR -->
