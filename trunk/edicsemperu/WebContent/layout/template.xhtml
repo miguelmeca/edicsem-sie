@@ -1610,28 +1610,22 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 				</h:panelGroup>
 				
 				
-				<!-- Numero de cuenta -->
-				<h:outputText value="#{message['mantenimiento.numerocuenta']}"
-					for="numerocuenta" />
+				<!-- CUENTA -->
+				<h:outputText value="#{message['mantenimiento.numerocuenta']}"	for="numerocuenta" />
 					
 			<h:panelGroup>
 
-					<p:inputMask  id="numerocuenta1"
-						value="#{empresaForm.objEmpresaSie.numcuenta}" required="true"
-						label="numerocuenta" mask="99999"
+					<p:inputMask  id="numerocuenta1" value="#{empresaForm.objEmpresaSie.numcuenta}"
+					 	required="true"	label="numerocuenta" mask="9999"
 						requiredMessage="#{message['mantenimiento.numerocuenta.validation']}"
-						style="font-weight:bold" rendered="#{empresaForm.editMode}"
-						
-						
+						style="font-weight:bold" rendered="#{empresaForm.editMode}"					
 						 />
 
-					<p:inputMask  id="numerocuenta2" 
-						value="#{empresaForm.objEmpresaSie.numcuenta}"
-						required="true" label="numerocuenta" mask="99999"
+					<p:inputMask  id="numerocuenta2" value="#{empresaForm.objEmpresaSie.numcuenta}"
+						required="true" label="numerocuenta" mask="9999"
 						requiredMessage="#{message['mantenimiento.numerocuenta.validation']}"
-						style="font-weight:bold" rendered="#{!empresaForm.editMode}" 
-								
-						 />
+						style="font-weight:bold" rendered="#{!empresaForm.editMode}"  />
+						
 					<p:message for="numerocuenta1" />
 				</h:panelGroup>
 					
