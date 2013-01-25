@@ -36,6 +36,7 @@ public class MantenimientoEmpresaFormAction extends
 	private int ide, idEstadoGeneral;
 
 	public String razonsocialUpdate;
+	public String razonsocial;
 	public String numruc;
 	public String numtel;
 	public String email;
@@ -56,28 +57,10 @@ public class MantenimientoEmpresaFormAction extends
 	//PRODUCTO
 	private ProductoSie objProductoSie;
 	private List<ProductoSie> productoList;
-   private ProductoSie[] selectedCars;  
-	  
-	  //DATA MODEL
 
-	  
-	 
-	    
-	    
-	//Seleccionar Todos
 
-	/**
-	 * @return the selectedCars
-	 */
-	public ProductoSie[] getSelectedCars() {
-		return selectedCars;
-	}
-	/**
-	 * @param selectedCars the selectedCars to set
-	 */
-	public void setSelectedCars(ProductoSie[] selectedCars) {
-		this.selectedCars = selectedCars;
-	}
+	
+	
 	@ManagedProperty(value = "#{comboAction}")
 	private ComboAction comboManagerEmpresa;
 
@@ -100,21 +83,16 @@ public class MantenimientoEmpresaFormAction extends
 	private KardexService objKardexService;
 	@EJB
 	private ProductoService objProductoService;
+		
 	
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
-	 * #init()
-	 */
 	public void init() {
 		log.info("Inicializando el Constructor de 'MantenimientoEmpresaFormAction'");
 		objEmpresaSie = new EmpresaSie();
+		
 		//EMPLEADO X EMPRESA
 		objEmpleadoSie= new EmpleadoSie();
 		objEmpleadoSie.setNombreemp("");
+		
 		//PRODUCTO X EMPRESA
 		objProductoSie= new ProductoSie();
 		objProductoSie.setDescripcionproducto("");
@@ -138,12 +116,10 @@ public class MantenimientoEmpresaFormAction extends
 		log.info("agregar()");
 		editMode = true;
 		objEmpresaSie = new EmpresaSie();
-		razonsocialUpdate=null;
 		setNewRecord(true);
 		
 		return getViewList();
 	}
-
 	public String update() throws Exception {
 		log.info("update()" + objEmpresaSie.getIdempresa());
 
@@ -152,16 +128,12 @@ public class MantenimientoEmpresaFormAction extends
 		log.info(" id cargo " + s.getIdempresa() + " des " + s.getDescripcion());
 
 		setIdempresa(s.getIdempresa());
-		setRazonsocialUpdate(s.getRazonsocial());
-		
 		setDescripcion(s.getDescripcion());
-//		setRazonsocial(s.getRazonsocial());
-//		razonsocialUpdate = s.getRazonsocial();
+		setRazonsocial(s.getRazonsocial());
 		setNumruc(s.getNumruc());
 		setNumtel(s.getNumtelefono());		
 		setEmail(s.getEmail());
-//		setEstado(s.getTbEstadoGeneral().getIdestadogeneral());
-		setIdEstadoGeneral(s.getTbEstadoGeneral().getIdestadogeneral());
+		setEstado(s.getTbEstadoGeneral().getIdestadogeneral());
 		setNewRecord(false);
 		editMode = false;
 		return getViewList();
@@ -172,110 +144,95 @@ public class MantenimientoEmpresaFormAction extends
 
 	public String insertar() {
 
-		String paginaRetorno="";
-		mensaje =null;
 		log.info("insertar() " + isNewRecord() + " desc "
 				+ objEmpresaSie.getDescripcion() +"  "+ " razon social" +"  "+ "ruc" + objEmpresaSie.getNumruc()
 				+ objEmpresaSie.getRazonsocial() +"  "+ "EMail"
 				+ objEmpresaSie.getEmail()  );
 
-	objEmpresaSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(7));
+		/* CODIGO DURO ---> */objEmpresaSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(7));
 
-		
+		/* Esto se setea cuando pertenece a una segunda tabla (--->) */
 		try {
 
-			log.info("inicio validar codigo de Razon Social");
-			int error = 0;
-			List<EmpresaSie> lista = mantenimientoEmpresaSearch.getEmpresaList();
-										
-							
-						
-			for (int i = 0; i < lista.size(); i++) {
+			if (isNewRecord()) {
 
-				if(razonsocialUpdate!=null){
-								
-				if (lista.get(i).getRazonsocial().equalsIgnoreCase(objEmpresaSie.getRazonsocial().trim())&&
-			 (!razonsocialUpdate.equalsIgnoreCase(objEmpresaSie.getRazonsocial().trim()) ))
-				{
-								log.info("Error ... Ya se encuentra una EMPRESA igual");
-								mensaje ="Ya se encuentra una EMPRESA con el mismo nombre";
-//								paginaRetorno =mantenimientoEmpresaSearch.listar();
-								error = 1;
-								break;
+				objEmpresaSie.getRazonsocial();
+				objEmpresaSie.getDescripcion();
+				objEmpresaSie.getNumruc();
+				objEmpresaSie.getNumtelefono();
+				objEmpresaSie.getEmail();
+				
+				int error = 0;
+				List<EmpresaSie> lista = mantenimientoEmpresaSearch.getEmpresaList();
+				
+
+				for (int i = 0; i < lista.size(); i++) {
+					 EmpresaSie s = lista.get(i);
+					if ( 		s.getRazonsocial().equalsIgnoreCase(objEmpresaSie.getRazonsocial())
+							 && s.getDescripcion().equalsIgnoreCase(objEmpresaSie.getDescripcion())							
+							 && s.getNumruc().equalsIgnoreCase(objEmpresaSie.getNumruc())
+							 && s.getNumtelefono().equalsIgnoreCase(objEmpresaSie.getNumtelefono())
+							 && s.getEmail().equalsIgnoreCase(objEmpresaSie.getEmail()))  {
+					log.info("Error ... Ya se encuentra una empresa igual");
+						error = 1;
+						break;
 					}
 				}
-				else if (lista.get(i).getRazonsocial().equalsIgnoreCase(objEmpresaSie.getRazonsocial().trim())){
-					log.info("Error ... Ya se encuentra una EMPRESA igual");
-					mensaje ="Ya se encuentra una EMPRESA con el mismo nombre";
-//				paginaRetorno =mantenimientoEmpresaSearch.listar();
-					error = 1;
-					break;
-				}
-					
-			}	
-					
-			
+
 				if (error == 0) {
-				if (isNewRecord()) {
-					mensaje ="Se registró la nueva empreasa correctamente";
-					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-											Constants.MESSAGE_REGISTRO_TITULO, mensaje);
-					
-					
-					objEmpresaSie.setDescripcion(objEmpresaSie.getDescripcion().trim());
-					objEmpresaSie.setEmail(objEmpresaSie.getEmail().trim());
-					objEmpresaSie.setRazonsocial(objEmpresaSie.getRazonsocial().trim());
-					
-					
-	empresaService.insertEmpresa(objEmpresaSie);
 
+					empresaService.insertEmpresa(objEmpresaSie);
 
-	
-					
-				} 
-				else {
-				
-				log.info("actualizando EMPRESA..... ");
-				objEmpresaSie.setIdempresa(getIdempresa());
-				objEmpresaSie.setDescripcion(objEmpresaSie.getDescripcion().trim());
-				objEmpresaSie.setRazonsocial (objEmpresaSie.getRazonsocial().trim());
-				objEmpresaSie.setNumruc(objEmpresaSie.getNumruc());
-				objEmpresaSie.setNumtelefono(objEmpresaSie.getNumtelefono());
-				objEmpresaSie.setEmail(objEmpresaSie.getEmail().trim());
-				objEmpresaSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(getIdEstadoGeneral()));
-
-				
-				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-						Constants.MESSAGE_REGISTRO_TITULO, mensaje);
-				
-				
-				empresaService.updateEmpresa(objEmpresaSie);
-			
-				
+				} else {
+					// Mostrar Validacion
+					log.info("mensaje de error");
 				}
-
+				log.info("aqui validando si existe o no");
 
 			} else {
 
-				// Mostrar Validacion
-				log.info("mensaje de error");
-				msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
-						Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-			
+				objEmpresaSie.setIdempresa(getIdempresa());
+
+				objEmpresaSie.setDescripcion(getDescripcion());
+				objEmpresaSie.setRazonsocial(getRazonsocial());
+				objEmpresaSie.setNumruc(getNumruc());
+				objEmpresaSie.setNumtelefono(getNumtel());
+				objEmpresaSie.setEmail(getEmail());
+				objEmpresaSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(7));
+
+				log.info("----->>>>"
+						+ objEmpresaSie.getDescripcion()+ "  " + objEmpresaSie.getNumruc()
+						+ objEmpresaSie.getDescripcion() + objEmpresaSie.getEmail());
+				log.info("actualizando EMPRESA..... ");
+
+	
+				
+				empresaService.updateEmpresa(objEmpresaSie);
+
+				log.info("actualizando..... ");
+				log.info("objEmpresaSie.isNewRecord() : ");
 			}
-				FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (Exception e) {
 
 			e.printStackTrace();
-			mensaje = e.getMessage();
+			descripcion = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+					Constants.MESSAGE_ERROR_FATAL_TITULO, descripcion);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
+
 		objEmpresaSie = new EmpresaSie();
-		return paginaRetorno;
+
+		return mantenimientoEmpresaSearch.listar();
 	}
+
+	
+	public String getViewList() {
+		return Constants.MANT_EMPRESA_FORM_LIST_PAGE;
+	}
+	
+	
 
 	public String Eliminarempresa() throws Exception {
 		mensaje = null;
@@ -397,16 +354,7 @@ FacesContext.getCurrentInstance().addMessage(null, msg);
 	
 	
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
-	 * #getViewList()
-	 */
-	public String getViewList() {
-		return Constants.MANT_EMPRESA_FORM_LIST_PAGE;
-	}
+
 
 	/**
 	 * @return the empresaService
@@ -716,6 +664,18 @@ FacesContext.getCurrentInstance().addMessage(null, msg);
 	 */
 	public void setRazonsocialUpdate(String razonsocialUpdate) {
 		this.razonsocialUpdate = razonsocialUpdate;
+	}
+	/**
+	 * @return the razonsocial
+	 */
+	public String getRazonsocial() {
+		return razonsocial;
+	}
+	/**
+	 * @param razonsocial the razonsocial to set
+	 */
+	public void setRazonsocial(String razonsocial) {
+		this.razonsocial = razonsocial;
 	}
 
 }
