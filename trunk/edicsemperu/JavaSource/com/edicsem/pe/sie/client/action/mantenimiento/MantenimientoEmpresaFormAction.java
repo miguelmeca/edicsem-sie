@@ -43,19 +43,9 @@ public class MantenimientoEmpresaFormAction extends
 	private List<EmpresaSie> lista;	
 	
 	public int idempresa;
-
-	
-	
-	
-	
-
 	private Log log = LogFactory.getLog(MantenimientoEmpresaFormAction.class);
 	
 	private int estado;
-	
-	
-	
-	
 	//EMPLEADO
 	private EmpleadoSie objEmpleadoSie;
 	private List<EmpleadoSie> empleadoList;
@@ -135,13 +125,6 @@ public class MantenimientoEmpresaFormAction extends
 		
 		setIdempresa(objEmpresaSie.getIdempresa());
 		setIdEstadoGeneral(objEmpresaSie.getTbEstadoGeneral().getIdestadogeneral());
-//		setIdempresa(s.getIdempresa());
-//		setDescripcion(s.getDescripcion());
-//		setRazonsocial(s.getRazonsocial());
-//		setNumruc(s.getNumruc());
-//		setNumtel(s.getNumtelefono());		
-//		setEmail(s.getEmail());
-//		setEstado(s.getTbEstadoGeneral().getIdestadogeneral());
 		setNewRecord(false);
 		editMode = false;
 		return getViewList();
@@ -197,6 +180,7 @@ public class MantenimientoEmpresaFormAction extends
 
 				objEmpresaSie.setDescripcion(objEmpresaSie.getDescripcion().trim());
 				objEmpresaSie.setRazonsocial(objEmpresaSie.getRazonsocial().trim());
+				objEmpresaSie.setNumcuenta(objEmpresaSie.getNumcuenta());
 				objEmpresaSie.setNumruc(objEmpresaSie.getNumruc());
 				objEmpresaSie.setNumtelefono(objEmpresaSie.getNumtelefono());
 				objEmpresaSie.setEmail(objEmpresaSie.getEmail().trim());
