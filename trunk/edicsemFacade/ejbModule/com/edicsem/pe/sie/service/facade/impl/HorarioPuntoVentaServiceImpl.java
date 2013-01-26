@@ -38,7 +38,7 @@ public class HorarioPuntoVentaServiceImpl implements HorarioPuntoVentaService{
 		log.info("  insertar HorarioPunto en el servicio" + diaList);
 		
 		for (String d : diaList) {
-				log.info(" dia "+d);
+			log.info(" dia "+d);
 			HorarioPuntoVentaSie auxi = new HorarioPuntoVentaSie();	
 			auxi.setDiafin(h.getDiafin());
 			auxi.setDiainicio(h.getDiainicio());
