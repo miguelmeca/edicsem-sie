@@ -7,7 +7,10 @@ import javax.ejb.Stateless;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.velocity.runtime.directive.Foreach;
 
+import com.edicsem.pe.sie.entity.EmpleadoSie;
+import com.edicsem.pe.sie.entity.FechaSie;
 import com.edicsem.pe.sie.entity.HorarioPersonalSie;
 import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
@@ -42,17 +45,30 @@ public class HorarioPersonalServiceImpl implements HorarioPersonalService{
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.HorarioPersonalService#insertHorarioPersonal(java.util.List, com.edicsem.pe.sie.entity.HorarioPersonalSie, int)
 	 */
-	public void insertHorarioPersonal(List<String> diaList,HorarioPersonalSie horariopersonal, int idEmpleado) {
-		for (int i = 0; i < diaList.size(); i++) {
-			HorarioPersonalSie auxi = new HorarioPersonalSie();
-			auxi=horariopersonal;
-			auxi.setTbFecha(objFechaDao.findFecha(Integer.parseInt(diaList.get(i))));
-			auxi.setTbEmpleado(objEmpleadoDao.buscarEmpleado(idEmpleado));
-			auxi.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(36));
-			log.info("insertando 1 ");
-			objHorarioPersonalDao.insertHorarioPersonal(auxi);
-			log.info("insertando 2  ");
-		}
+	public void insertHorarioPersonal(HorarioPersonalSie horariopersonal, List<String> diaList, int idEmpleado) {
+		log.info("  insertar HorarioPERSONAL en el servicio" + diaList);
+	for (String d : diaList) {
+		
+		log.info(" dia "+d);
+		HorarioPersonalSie auxi = new HorarioPersonalSie();
+		auxi.setDiafin(horariopersonal.getDiafin());
+		auxi.setDiainicio(horariopersonal.getDiainicio());
+		auxi.setHoraIngreso(horariopersonal.getHoraIngreso());
+		auxi.setHoraSalida(horariopersonal.getHoraSalida());
+		auxi.setTbEstadoGeneral(horariopersonal.getTbEstadoGeneral());
+		EmpleadoSie emple =(objEmpleadoDao.buscarEmpleado(idEmpleado));
+		auxi.setTbEmpleado(emple);
+		
+		FechaSie fec= objFechaDao.findFecha(Integer.parseInt(d));
+		auxi.setTbFecha(fec);
+		log.info(" dia "+fec.getDia());
+		
+		objHorarioPersonalDao.insertHorarioPersonal(auxi);
+		
+		
+	}
+		
+	
 	}
 	
 	/* (non-Javadoc)
