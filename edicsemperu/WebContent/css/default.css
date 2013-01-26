@@ -61,10 +61,10 @@ img.right {
 /* Menu */
 #menu {
     position: absolute;
-    top:25px;
+    top:10px;
     right:15px;
         padding: 0;
-        height: 59px;
+        height: 70px;
     overflow: hidden;
 }
 
