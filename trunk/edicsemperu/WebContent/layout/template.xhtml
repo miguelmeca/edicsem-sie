@@ -112,20 +112,20 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				</div>
 				<div id="menu" class="ui-widget">
 					 
-						<table>
+						<table cellpadding="0" >
 							<tr>
-								<td>
-								<p:commandLink  onclick="cambiarContrasenaDialog.show()" action="#{login.agregar}" value ="Cambiar Contraseña"/>
+								<td rowspan="2" >
+								<li><p:commandLink  onclick="cambiarContrasenaDialog.show()" action="#{login.agregar}" value ="Cambiar Contraseña"/></li>
 								</td>
-								<td>
-									<p:commandLink action="#{login.cerrarSesion}"  value="Cerrar Sesión" />
+								<td rowspan="2" >
+								<li><p:commandLink action="#{login.cerrarSesion}"  value="Cerrar Sesión" /></li>
 								</td>
-								<td colspan="2">
+								<td rowspan="2" >
 									<c:if test="${sessionScope.loginUserSession.genero=='F'}">
-										<li><img src="#{request.contextPath}/images/iconF.png"  style="height: 50px; width: 50px  " /></li>
+										<li><img src="#{request.contextPath}/images/iconF.png"  style="height: 55px; width: 55px  " /></li>
 									</c:if>
 									<c:if test="${sessionScope.loginUserSession.genero=='M'}">
-										<li><img src="#{request.contextPath}/images/iconM.png" style="height: 50px; width: 50px " /></li>
+										<li><img src="#{request.contextPath}/images/iconM.png" style="height: 55px; width: 55px " /></li>
 									</c:if>
 								</td>
 								<td>${sessionScope.loginUserSession.nombresCompletos}</td>
