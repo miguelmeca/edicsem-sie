@@ -59,9 +59,9 @@
 		<class>com.edicsem.pe.sie.entity.TipoPuntoVentaSie</class>
 		<class>com.edicsem.pe.sie.entity.DetPermisoEmpleadoSie</class>
 		<class>com.edicsem.pe.sie.entity.AuditoriaUsuarioSie</class>
-		
-		<!-- <class>com.edicsem.pe.sie.entity.PersonaLead</class> -->
-<properties>
+		<class>com.edicsem.pe.sie.entity.Personalead</class>
+
+		<properties>
 			<property name="eclipselink.jdbc.driver" value="org.postgresql.Driver" />
 			<property name="eclipselink.jdbc.url" value="jdbc:postgres://192.168.1.2:5432/bd_sie" />
 			<property name="eclipselink.jdbc.user" value="postgres" />
