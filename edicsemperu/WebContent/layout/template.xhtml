@@ -590,13 +590,13 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				
 				<h:outputText value="#{message['horario.personal.fechaDesde']}" />
 				<h:panelGroup >
-					<p:calendar id="desdecl" value="#{horarioPersonal.objHorarioPersonal.diainicio}" required="true" requiredMessage="#{message['horario.personal.fechaDesde.validation']}" mindate="today"  pattern="dd/MM/yyyy"  />
+					<p:calendar id="desdecl" value="#{horarioPersonal.objHorarioPersonal.diainicio}" required="true" requiredMessage="#{message['horario.personal.fechaDesde.validation']}"   pattern="dd/MM/yyyy"  />
 					<p:message for="desdecl" />
 				</h:panelGroup>
 				
 				<h:outputText value="#{message['horario.personal.fechaHasta']}" />
 				<h:panelGroup>
-					<p:calendar id="fechasta" value="#{horarioPersonal.objHorarioPersonal.diafin}" required="true" requiredMessage="#{message['horario.personal.fechaHasta.validation']}" mindate="today"  pattern="dd/MM/yyyy"   />
+					<p:calendar id="fechasta" value="#{horarioPersonal.objHorarioPersonal.diafin}" required="true" requiredMessage="#{message['horario.personal.fechaHasta.validation']}"   pattern="dd/MM/yyyy"   />
 					<p:message for="fechasta" />
 				</h:panelGroup>
 				
@@ -1643,7 +1643,6 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 						
 					<p:message for="numerocuenta1" />
 				</h:panelGroup>
-					
 					
 					
 
