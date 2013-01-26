@@ -37,7 +37,7 @@ public class TelefonoPersonaSie implements Serializable {
 	
 	private String descTelefono;
 
-	//bi-directional many-to-one association to ClienteSie
+	//bi-directional many-to-one association to ClienteDTO
     @ManyToOne
 	@JoinColumn(name="idcliente")
 	private ClienteSie idcliente;
