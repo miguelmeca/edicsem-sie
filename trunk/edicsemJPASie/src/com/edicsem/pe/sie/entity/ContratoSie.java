@@ -71,7 +71,7 @@ public class ContratoSie implements Serializable {
 	@OneToMany(mappedBy="tbContrato")
 	private Set<CobranzaSie> tbCobranzas;
 
-	//bi-directional many-to-one association to ClienteSie
+	//bi-directional many-to-one association to ClienteDTO
     @ManyToOne
 	@JoinColumn(name="idcliente")
 	private ClienteSie tbCliente;

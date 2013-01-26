@@ -32,7 +32,7 @@ public class TipoDocumentoIdentidadSie implements Serializable {
 
 	private String descripcion;
 
-	//bi-directional many-to-one association to ClienteSie
+	//bi-directional many-to-one association to ClienteDTO
 	@OneToMany(mappedBy="tbTipoDocumentoIdentidad")
 	private Set<ClienteSie> tbClientes;
 
