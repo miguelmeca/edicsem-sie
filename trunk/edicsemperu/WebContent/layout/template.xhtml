@@ -111,25 +111,31 @@ function validarEspaciosLetrasNumeros(e) { // 1
 					<img src="#{request.contextPath}/images/edicsem.png" alt="Logo" style="height: 95px " />
 				</div>
 				<div id="menu" class="ui-widget">
-					<ul id="main">
-						
-						<li><p:commandLink  onclick="cambiarContrasenaDialog.show()" action="#{login.agregar}" value ="Cambiar Contraseña"/></li> 
-						<li><p:commandLink action="#{login.cerrarSesion}"  value="Cerrar Sesión" /></li>
-						
-						<li>
-						<c:if test="${sessionScope.loginUserSession.genero=='F'}">
-							<img src="#{request.contextPath}/images/iconF.png"  style="height: 50px; width: 50px  " />
-						</c:if>
-						<c:if test="${sessionScope.loginUserSession.genero=='M'}">
-							<img src="#{request.contextPath}/images/iconM.png" style="height: 50px; width: 50px " />
-						</c:if>
-						</li>
-						<li>
-						${sessionScope.loginUserSession.nombresCompletos} <br/>
-						      #{login.fechaHoraIngreso} 
-						</li>
-						
-					</ul>
+					 
+						<table>
+							<tr>
+								<td>
+								<p:commandLink  onclick="cambiarContrasenaDialog.show()" action="#{login.agregar}" value ="Cambiar Contraseña"/>
+								</td>
+								<td>
+									<p:commandLink action="#{login.cerrarSesion}"  value="Cerrar Sesión" />
+								</td>
+								<td colspan="2">
+									<c:if test="${sessionScope.loginUserSession.genero=='F'}">
+										<li><img src="#{request.contextPath}/images/iconF.png"  style="height: 50px; width: 50px  " /></li>
+									</c:if>
+									<c:if test="${sessionScope.loginUserSession.genero=='M'}">
+										<li><img src="#{request.contextPath}/images/iconM.png" style="height: 50px; width: 50px " /></li>
+									</c:if>
+								</td>
+								<td>${sessionScope.loginUserSession.nombresCompletos}</td>
+							</tr>
+							<tr>
+								<td>
+									#{login.fechaHoraIngreso}			
+								</td>
+							</tr>
+						</table>
 				</div>
 			</div>
 		</p:layoutUnit>
