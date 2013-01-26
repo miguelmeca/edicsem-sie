@@ -201,7 +201,7 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends
 					objHorarioPuntoVentaSie.setDiainicio(objHorarioPuntoVentaSie.getDiainicio());
 					objHorarioPuntoVentaSie.setDiafin(objHorarioPuntoVentaSie.getDiafin());
 					objHorarioPuntoVentaSie.setTbPuntoVenta(objPuntoVentaSie);
-
+					objHorarioPuntoVentaSie.setObservacion(objHorarioPuntoVentaSie.getObservacion().trim());
 					log.info("APUNTO DE INSERTAR");
 					/**********diaList se debe a q se selecciona mas de uno en el combobox y es un String que luego en el Facade se setea a entero***********************************/
 				objHorarioPuntoVentaService.insertHorarioPunto(objHorarioPuntoVentaSie,diaList);
@@ -221,8 +221,10 @@ public class MantenimientoHorarioPuntoVentaSearchAction extends
 					log.info(" g   " + hora1);
 					objHorarioPuntoVentaSie.setHoraIngreso(hora1);
 					objHorarioPuntoVentaSie.setHoraSalida(hora2);
+					objHorarioPuntoVentaSie.setObservacion(objHorarioPuntoVentaSie.getObservacion().trim());
 
 					objHorarioPuntoVentaService.updateHorarioPunto(objHorarioPuntoVentaSie);
+					
 					mensaje ="Se Actualizo Correctamente";
 					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 							Constants.MESSAGE_INFO_TITULO, mensaje);
