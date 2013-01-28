@@ -40,7 +40,7 @@ public class DomicilioPersonaSie implements Serializable {
 	
 	private String principal;
  
-	//bi-directional many-to-one association to ClienteDTO
+	//bi-directional many-to-one association to ClienteSie
     @ManyToOne
 	@JoinColumn(name="idcliente")
 	private ClienteSie idcliente;

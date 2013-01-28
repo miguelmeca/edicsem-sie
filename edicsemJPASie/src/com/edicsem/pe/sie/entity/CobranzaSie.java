@@ -74,7 +74,7 @@ public class CobranzaSie   implements Serializable {
 
 	private String usuariomodifica;
 
-	//bi-directional many-to-one association to ClienteDTO
+	//bi-directional many-to-one association to ClienteSie
     @ManyToOne
 	@JoinColumn(name="idcliente" , insertable = false, updatable = false)
 	private ClienteSie tbCliente;
