@@ -3,6 +3,8 @@ package com.edicsem.pe.sie.beans;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.edicsem.pe.sie.util.constants.DateUtil;
+
 
 public class SistemaIntegradoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -24,6 +26,8 @@ public class SistemaIntegradoDTO implements Serializable {
 	private String empresatrabajo;
 	
 	private Date fecnacimiento;
+	
+	private String fechaNacimientoString;
 
 	private String numdocumento;
 
@@ -635,6 +639,21 @@ public class SistemaIntegradoDTO implements Serializable {
 	 */
 	public void setEncargadoCobranza(String encargadoCobranza) {
 		this.encargadoCobranza = encargadoCobranza;
+	}
+
+	/**
+	 * @return the fechaNacimientoString
+	 */
+	public String getFechaNacimientoString() {
+		fechaNacimientoString = DateUtil.formatoString(getFecnacimiento(), "dd/MM/yyyy");
+		return fechaNacimientoString;
+	}
+
+	/**
+	 * @param fechaNacimientoString the fechaNacimientoString to set
+	 */
+	public void setFechaNacimientoString(String fechaNacimientoString) {
+		this.fechaNacimientoString = fechaNacimientoString;
 	}
     
 }
