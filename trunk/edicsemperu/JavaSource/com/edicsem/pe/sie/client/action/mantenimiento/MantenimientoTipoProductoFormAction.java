@@ -13,6 +13,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.primefaces.model.StreamedContent;
 
+import com.arjuna.ats.internal.jdbc.drivers.modifiers.list;
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.TipoProductoSie;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
@@ -30,6 +31,7 @@ public class MantenimientoTipoProductoFormAction extends
 
 	public String idtipoproducto;
 	public String descripcion;
+	private String codtipoproductoUpdate;
 	private int idEstadoGeneral, idc;
 	private String mensaje;
 	private TipoProductoSie nuevo;
@@ -60,17 +62,20 @@ public class MantenimientoTipoProductoFormAction extends
 		log.info("agregar()");
 		editMode = true;
 		objTipoProductoSie = new TipoProductoSie();
+		codtipoproductoUpdate=null;
 		setNewRecord(true);
 		return getViewList();
 	}
 
 	public String update() throws Exception {
 		log.info("update()" + objTipoProductoSie.getIdtipoproducto());
-		TipoProductoSie tp = objTipoProductoService.findTipoProducto(objTipoProductoSie.getIdtipoproducto());
-		log.info(" id tipoproducto " + tp.getIdtipoproducto() + " cod "+ tp.getCodtipoproducto());		
-		setIdtipoproducto(tp.getIdtipoproducto().toString());
-		objTipoProductoSie.setCodtipoproducto(tp.getCodtipoproducto());
-		objTipoProductoSie.setNombretipoproducto(tp.getNombretipoproducto());
+		objTipoProductoSie = objTipoProductoService.findTipoProducto(objTipoProductoSie.getIdtipoproducto());
+		log.info(" id tipoproducto " + objTipoProductoSie.getIdtipoproducto() + " cod "+ objTipoProductoSie.getCodtipoproducto());		
+		setIdtipoproducto(objTipoProductoSie.getIdtipoproducto().toString());
+		
+		codtipoproductoUpdate = objTipoProductoSie.getCodtipoproducto();
+	
+		objTipoProductoSie.setNombretipoproducto(objTipoProductoSie.getNombretipoproducto());
 		//setIdEstadoGeneral(c.getTbEstadoGeneral().getIdestadogeneral());
 		setNewRecord(false);
 		editMode = false;
@@ -79,32 +84,80 @@ public class MantenimientoTipoProductoFormAction extends
 	}
 
 	public String insertar() {
+		mensaje =null;
+		String paginaRetorno="";
+		objTipoProductoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(72));
+		
 		try {
 
-			if (isNewRecord()) {
-					objTipoProductoService.insertTipoProducto(objTipoProductoSie);
+			
+			int error=0;
+			List<TipoProductoSie> lista = mantenimientoTipoProductoSearch.getTipoProdList();
+			
+			for (int i = 0; i < lista.size(); i++) {
+				if (codtipoproductoUpdate!=null) {
+					if (lista.get(i).getCodtipoproducto().equalsIgnoreCase(objTipoProductoSie.getCodtipoproducto())&&
+							(!codtipoproductoUpdate.equalsIgnoreCase(objTipoProductoSie.getCodtipoproducto()))){
+					
+						log.info("Error ... Ya se encuentra un tipo de producto igual");
+						mensaje ="Ya se encuentra un tipo de producto igual con el mismo nombre";
+						error = 1;
+						break;
+					
+					
+					}
+				}
+				else if ( lista.get(i).getCodtipoproducto().equalsIgnoreCase(objTipoProductoSie.getCodtipoproducto())) {
+						log.info("Error ... Ya se encuentra un cargo igual");
+						mensaje ="Ya se encuentra un tipo de producto igual con el mismo nombre";
+						error = 1;
+						break;
+					}
+			}		
+				    if (error == 0) {
+					if (isNewRecord()) {
+				
+				
+			
+			
+				objTipoProductoService.insertTipoProducto(objTipoProductoSie);
 				setNewRecord(false);
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+						Constants.MESSAGE_REGISTRO_TITULO, mensaje);
+				mensaje ="Se registró el paquete correctamente";
 			} else {
+				
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+						Constants.MESSAGE_REGISTRO_TITULO, mensaje);	
+				
 				objTipoProductoService.updateTipoProducto(objTipoProductoSie);				
-				log.info("actualizando..... ");					
+				log.info("actualizando..... ");
+				
+				
 			}
-			//mensaje
-			mensaje ="";
-			msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-					Constants.MESSAGE_REGISTRO_TITULO, mensaje);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		} catch (Exception e) {
+				} else {
+					log.info("mensaje de error");
+					msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+							Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+				}
+				    FacesContext.getCurrentInstance().addMessage(null, msg);
+			}catch (Exception e) {
 
-			e.printStackTrace();
-			descripcion = e.getMessage();
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, descripcion);
-			log.error(e.getMessage());
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
+					e.printStackTrace();
+					mensaje = e.getMessage();
+					msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+							Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+					log.error(e.getMessage());
+					FacesContext.getCurrentInstance().addMessage(null, msg);
+				}
 		objTipoProductoSie = new TipoProductoSie();
 		return mantenimientoTipoProductoSearch.listar();
 	}
+			
+			
+			
+			
+			
 
 	public String updateDeshabilitar() throws Exception {
 
@@ -292,6 +345,20 @@ public class MantenimientoTipoProductoFormAction extends
 	
 	public String getViewList() {
 		return Constants.MANT_TIPO_PRODUCTO_FORM_LIST_PAGE;
+	}
+
+	/**
+	 * @return the codtipoproductoUpdate
+	 */
+	public String getCodtipoproductoUpdate() {
+		return codtipoproductoUpdate;
+	}
+
+	/**
+	 * @param codtipoproductoUpdate the codtipoproductoUpdate to set
+	 */
+	public void setCodtipoproductoUpdate(String codtipoproductoUpdate) {
+		this.codtipoproductoUpdate = codtipoproductoUpdate;
 	}
 	
 }
