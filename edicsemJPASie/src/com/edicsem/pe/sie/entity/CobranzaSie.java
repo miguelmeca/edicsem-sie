@@ -73,6 +73,8 @@ public class CobranzaSie   implements Serializable {
 	private String usuariocreacion;
 
 	private String usuariomodifica;
+	
+	private BigDecimal importemasmora;
 
 	//bi-directional many-to-one association to ClienteSie
     @ManyToOne
@@ -292,6 +294,20 @@ public class CobranzaSie   implements Serializable {
 	 */
 	public void setFechaPagoString(String fechaPagoString) {
 		this.fechaPagoString = fechaPagoString;
+	}
+
+	/**
+	 * @return the importemasmora
+	 */
+	public BigDecimal getImportemasmora() {
+		return importemasmora;
+	}
+
+	/**
+	 * @param importemasmora the importemasmora to set
+	 */
+	public void setImportemasmora(BigDecimal importemasmora) {
+		this.importemasmora = importemasmora;
 	}
 	
 }
