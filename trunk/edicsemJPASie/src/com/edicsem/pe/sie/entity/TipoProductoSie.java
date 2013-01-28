@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -46,6 +48,11 @@ public class TipoProductoSie implements  Serializable {
 	//bi-directional many-to-one association to ProductoSie
 	@OneToMany(mappedBy="tbTipoProducto")
 	private Set<ProductoSie> tbProductos;
+	
+	//bi-directional many-to-one association to EstadoGeneralSie
+    @ManyToOne
+	@JoinColumn(name="idestadogeneral")
+	private EstadoGeneralSie tbEstadoGeneral;
 
     public TipoProductoSie() {
     }
@@ -112,6 +119,20 @@ public class TipoProductoSie implements  Serializable {
 
 	public void setTbProductos(Set<ProductoSie> tbProductos) {
 		this.tbProductos = tbProductos;
+	}
+
+	/**
+	 * @return the tbEstadoGeneral
+	 */
+	public EstadoGeneralSie getTbEstadoGeneral() {
+		return tbEstadoGeneral;
+	}
+
+	/**
+	 * @param tbEstadoGeneral the tbEstadoGeneral to set
+	 */
+	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
+		this.tbEstadoGeneral = tbEstadoGeneral;
 	}
 	
 }
