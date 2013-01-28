@@ -11,11 +11,11 @@
 		window.history.forward(-1);
 	</script>
 		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
-			Productos </h1>
+			Producto </h1>
 		<h:form id="formManteProducto" prependId="false"
 			enctype="multipart/form-data">
 			<p:messages id="message" showDetail="true" />
-			<h:panelGrid columns="3" cellpadding="4"  >
+			<h:panelGrid columns="3" cellpadding="5"  >
 			
 				<h:outputText for="codigo" value="#{message['mantenimiento.producto.codigo']}" />
 				<p:inputText id="codigoProducto"
@@ -40,7 +40,7 @@
 					value="#{message['mantenimiento.producto.descripcion']}" />
 				<p:inputText id="desc_prod"
 					value="#{productoForm.objProductoSie.descripcionproducto}"
-					size="25" required="true"
+					size="25" required="true" onkeypress="return validarLetras(event)"
 					requiredMessage="#{message['mantenimiento.producto.descripcion.validation']}">
 				</p:inputText>
 				<p:message for="desc_prod" />
@@ -61,15 +61,15 @@
 				
 				<h:outputText
 					value="#{message['mantenimiento.producto.stock.minimo']}" />
-				<p:inputText id="stock_minimo_producto" size="10"
+				<p:inputText id="stock_minimo_producto" size="10" onkeypress="return validarNumeros(event)"
 					value="#{productoForm.objProductoSie.stkminimoproducto}"
-					required="true"
+					required="true" 
 					requiredMessage="#{message['mantenimiento.producto.stockmin.validation']}" />
 				<p:message for="stock_minimo_producto" />
 				
 				<h:outputText
 					value="#{message['mantenimiento.producto.stock.maximo']}" />
-				<p:inputText id="stock_mximo_producto" size="10"
+				<p:inputText id="stock_mximo_producto" size="10" onkeypress="return validarNumeros(event)"
 					value="#{productoForm.objProductoSie.stkmaximo}"
 					required="true"
 					requiredMessage="#{message['mantenimiento.producto.stockmax.validation']}"
@@ -79,21 +79,21 @@
 				<p:message for="stock_mximo_producto" />
 				
 				<p:outputPanel autoUpdate="true" >  
-				<p:graphicImage id="imgFotoInserta"  value="#{productoForm.image}" cache="false" style="height:90px;width:90px" >
+				<p:graphicImage id="imgFotoInserta"  value="#{productoForm.image}" cache="false" style="height:90px;width:90px; align:center" >
 				 <f:param value="#{productoForm.idFoto}" />
 				</p:graphicImage>
 				  
 				</p:outputPanel>
 				 
-				<p:commandButton value="Insertar Imagen "  update=":formInsertImageProduc:display"
+				<p:commandButton value="Insertar Imagen " icon="ui-icon-image"  update=":formInsertImageProduc:display"
 					oncomplete="imageProducDialog.show()" title="Ingresar Empleado"/>
 					<p:spacer/> 
 				
 				<p:commandButton value="Registrar" action="#{productoForm.insertar}"  ajax = "false" 
-					icon="ui-icon ui-icon-check" />
+					icon="ui-icon ui-icon-disk" />
                      
                 <p:commandButton value="Regresar" action="#{productoSearch.listar}" immediate="true" ajax= "false" update="message"
-                    icon="ui-icon ui-icon-close" />
+                    icon="ui-icon-circle-arrow-w" />
 		</h:panelGrid>
 		 </h:form>
 	</ui:define>

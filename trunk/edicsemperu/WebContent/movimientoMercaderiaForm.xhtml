@@ -11,20 +11,23 @@
 	</script>
 		<h1 class="title ui-widget-header ui-corner-all">#{message['movimiento.titulo']}</h1>
 		<h:form id="formMovMerc">
-			<p:messages id="message" showDetail="true" />
+			<p:messages id="message" showDetail="true" closable="true"  />
 			<p:panel header="#{message['panel.movimiento.mercaderia']}">
-				<h:panelGrid columns="2" id="panel">
+				<h:panelGrid columns="2" id="panel" cellpadding="4" >
 					<h:panelGroup>
-					<h:outputText value="#{message['movimiento.tipo']}" />
+					<h:outputText value="#{message['movimiento.tipo']}   " />
+					<p:spacer width="20px" />
 					<p:selectOneMenu id="idtipokardex" required="true"   
-						value="#{movimientoMercaderia.idtipokardexproducto}"  style="width:165px" >
-						<f:selectItem itemLabel="Seleccione tipo kardex" itemValue="#{null}" />
+						value="#{movimientoMercaderia.idtipokardexproducto}"  style="width:175px" >
+						 
 						<f:selectItems id="tipokardex" value="#{comboAction.tipoKardexItems}"  />
 						<p:ajax update="panel" listener="#{movimientoMercaderia.cambiar}" />
 					</p:selectOneMenu>
 					</h:panelGroup>
-					<p:message for="idtipokardex" />
-					
+					<h:panelGroup>
+					 
+					<p:spacer/>
+					</h:panelGroup>
 					<p:fieldset legend="Datos Producto">
 					<h:panelGrid columns="4">
 						<h:outputText id="ide" value="#{message['mantenimiento.producto.cantidadEnt']}"   rendered="#{!movimientoMercaderia.editMode}" />
@@ -54,7 +57,7 @@
 					<p:fieldset legend="Movimiento #{movimientoMercaderia.tipoMovimiento}"  >
 					<h:panelGrid columns="4" >
 					<h:outputText value="Almacen" />
-					<p:selectOneMenu id="idAlmacen" size="1" required="true"  style="width:165px" 
+					<p:selectOneMenu id="idAlmacen" size="1" required="true"  style="width:240px" 
 						value="#{movimientoMercaderia.idAlmacen}"  >
 						<f:selectItem itemLabel="Seleccione almacen" itemValue="#{null}" />
 						<f:selectItems value="#{comboAction.almacenItems}" />
@@ -70,18 +73,21 @@
 					</p:selectOneMenu>
 					</h:panelGrid>
 					</p:fieldset>
-					<p:fieldset legend="Movimiento #{movimientoMercaderia.tipomovimientoOpcional}"  rendered="#{movimientoMercaderia.idtipokardexproducto!=3}"  >
+					<p:fieldset legend="Movimiento #{movimientoMercaderia.tipomovimientoOpcional}  (Opcional)"  rendered="#{movimientoMercaderia.idtipokardexproducto!=3}"  >
+					<h:panelGrid columns="3" >
 					<h:outputText value="Almacen" rendered="#{movimientoMercaderia.idtipokardexproducto!=3}" />
-					<p:selectOneMenu id="idAlmacen2" size="1"  style="width:165px" 
+					<p:selectOneMenu id="idAlmacen2" size="1"  style="width:240px" 
 						value="#{movimientoMercaderia.idAlmacen2}"   rendered="#{movimientoMercaderia.idtipokardexproducto!=3}" >
 						<f:selectItem itemLabel="Seleccione almacen" itemValue="0" />
 						<f:selectItems value="#{comboAction.almacenItems}" />
 					</p:selectOneMenu>
 					<p:spacer  rendered="#{movimientoMercaderia.idtipokardexproducto!=3}" />
+					</h:panelGrid>
 					</p:fieldset>
-					<br/><br/>
+					 
+					 <h:panelGroup  rendered="#{movimientoMercaderia.idtipokardexproducto==1}" >
 					<p:fieldset legend="Datos Comprobante" rendered="#{login.objEmpleado.cargo==1}" >
-					<h:panelGrid   columns="6"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}" >
+					<h:panelGrid   columns="3"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}" >
 					<h:outputText value="#{message['movimiento.proveedor.nombreempresa']}"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
 					<p:selectOneMenu size="1" rendered="#{movimientoMercaderia.idtipokardexproducto==1}" style="width:165px" 
 						value="#{movimientoMercaderia.idproveedor}">
@@ -102,6 +108,7 @@
 				<p:message for="num_comp" rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
 				</h:panelGrid>
 				</p:fieldset>
+				</h:panelGroup>
 				</h:panelGrid>
 				<br/><br/>
 				<p:commandButton id="idG" action="#{movimientoMercaderia.insertar}" icon="ui-icon ui-icon-disk" title="#{message['movimiento.grabar']}"
@@ -113,7 +120,7 @@
 				rowsPerPageTemplate="5,10,15" widgetVar="table" emptyMessage="No se encontro registros">
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Id Kardex" />
+							<h:outputText value="Nro Kardex" />
 						</f:facet>
 						<h:outputText value="#{d.idkardex}" />
 					</p:column>

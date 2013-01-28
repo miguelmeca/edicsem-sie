@@ -154,7 +154,7 @@ public class MantenimientoContratoFormAction extends
 	 * #agregar()
 	 */
 	public String agregar() {
-		log.info("agregar()");
+		log.info("agregar()))");
 		ubigeoDefecto = "";
 		detProductoContrato = new ArrayList<DetProductoContratoSie>();
 		limpiarCampos();
@@ -174,6 +174,7 @@ public class MantenimientoContratoFormAction extends
 		selectTelef= "";
 		idpaquete=0;
 		Tipocasa=0;
+		tamanoLista=0;
 		totalacumulado= new BigDecimal(0);
 		return getViewMant();
 	}
@@ -678,11 +679,9 @@ public class MantenimientoContratoFormAction extends
 			objDomicilioSie = (DomicilioPersonaSie) objDomicilioService.listarDomicilioCliente(objClienteSie.getIdcliente()).get(0);
 			log.info("  ubigeo  " +objDomicilioSie.getTbUbigeo().getIdubigeo());
 			UbigeoSie ubi =  objubigeoService.findUbigeo(objDomicilioSie.getTbUbigeo().getIdubigeo());
-			UbigeoSie depa = (UbigeoSie) objubigeoService.listarUbigeoProvincias(ubi.getCoddepartamento()).get(0);
-			UbigeoSie prov = (UbigeoSie) objubigeoService.listarUbigeoProvincias(ubi.getCodprovincia()).get(0);
+			String depaProv = objubigeoService.findDepaProv(ubi.getCoddepartamento(),ubi.getCodprovincia());
 			
-			ubigeoDefecto =""+depa.getNombre()+" - "+prov.getNombre()+" - "+ubi.getNombre();
-			// objUbigeoService.findUbigeo(objDomicilioSie.getTbUbigeo().getIdubigeo());
+			ubigeoDefecto =depaProv+" - "+ubi.getNombre();
 			telefonoList = objTelefonoService.listarTelefonoEmpleadosXidcliente(objClienteSie.getIdcliente());
 			detProductoContrato = objDetProductoService.listarDetProductoContratoXContrato(contratoXClienteList.get(0).getIdcontrato());
 			cobranzaList =objCobranzaService.listarCobranzasXidcontrato(contratoXClienteList.get(0).getIdcontrato());

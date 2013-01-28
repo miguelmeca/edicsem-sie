@@ -9,7 +9,7 @@
 		<h:form id="form">
 		<p:messages id="message" showDetail="true"/>
 		<p:panel header="Registrar Empleado"  id="panel">
-	    <p:wizard id="wiz" widgetVar="wiz" flowListener="#{mantenimientoEmpleadoFormAction.onFlowProcess}">
+	    <p:wizard id="wiz" widgetVar="wiz" flowListener="#{mantenimientoEmpleadoFormAction.onFlowProcess}" nextLabel="#{message['btn.siguiente']}" backLabel="#{message['btn.atraz']}">
 	    <p:tab title="#{message['empleado.tabpersonal']}">
 	    <p:panel header="Datos Personales"> 
         <h:panelGrid columns="2" cellpadding="5">
@@ -36,9 +36,9 @@
 			<h:outputText value="#{message['empleado.confcontra']}" />
 			<p:password id="confcontra" value="#{mantenimientoEmpleadoFormAction.confcontra}" required="true" label="Confcontra"
 			requiredMessage="#{message['empleado.confcontra.validation']}"/>
-			<h:outputText value="Tipo de Doc. :"id="tipoL"/>
+			<h:outputText value="Tipo de Doc. :" id="tipoL"  />
             <p:selectOneMenu id="tipo" value="#{mantenimientoEmpleadoFormAction.tipoDocumento}" required="true" >
-            <f:selectItem itemLabel="Seleccione Tipo de documento" itemValue="#{null}" />
+            <f:selectItem itemLabel="Seleccione Tipo" itemValue="#{null}" />
             <f:selectItems  value="#{comboAction.tipoDocumentoitems}" />
             <p:ajax update="nrodoc"/>
             </p:selectOneMenu>
@@ -77,7 +77,7 @@
 						style="width:165px"  >
 						<f:selectItem itemLabel="Fijo" itemValue="1" />
 						<f:selectItem itemLabel="Celular" itemValue="2" />
-						<p:ajax update="panelTlf" listener="#{mantenimientoEmpleadoFormAction.limpiarDatosTelefono}" ></p:ajax>
+						<p:ajax update="panelTlf" listener="#{mantenimientoEmpleadoFormAction.limpiarDatosTelefono}" />
 				</p:selectOneMenu>
 				<p:spacer />
 					
@@ -141,7 +141,7 @@
 	 							
                             <f:setPropertyActionListener
 		                    value="#{o.telefono}"
-		                    target="#{mantenimientoEmpleadoFormAction.idt}"     />
+		                    target="#{mantenimientoEmpleadoFormAction.idt}" />
 
                             </p:commandButton>
 		                    </p:column>
