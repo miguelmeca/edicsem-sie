@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 
-public class ClienteDTO implements Serializable {
+public class SistemaIntegradoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String apematcliente;
@@ -87,7 +87,7 @@ public class ClienteDTO implements Serializable {
 	
 	private String historia;
 
-    public ClienteDTO() {
+    public SistemaIntegradoDTO() {
     	
     }
 
