@@ -83,7 +83,7 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 		}
 		return u;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -94,7 +94,7 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 		List lista = null;
 		try {
 
-			Query q = em.createQuery("select p from UbigeoSie p where p.codprovincia like '00' and p.coddistrito like '00' ORDER BY p.nombre ASC ");
+			Query q = em.createQuery("select p from UbigeoSie p where p.codprovincia ='00' and p.coddistrito ='00' ORDER BY p.nombre ASC ");
 			lista = q.getResultList();
 			log.info("tamaño lista Ubigeo  --> " + lista.size()+ "  ");
 			
@@ -115,8 +115,8 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 		List lista = null;
 		try {
 			Query q = em
-					.createQuery("select p from UbigeoSie p where  p.coddepartamento like '" + idDepartamento + "' " +
-							"and p.codprovincia like '00' and p.coddistrito like'00'" +
+					.createQuery("select p from UbigeoSie p where  p.coddepartamento = '" + idDepartamento + "' " +
+							"and p.codprovincia!='00' and p.coddistrito='00'" +
 							" ORDER BY  p.nombre ASC ");
 			lista = q.getResultList();
 			log.info("tamaño lista Ubigeo Provincias  --> " + lista.size() + "  "+idDepartamento);
@@ -137,8 +137,8 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 	public List listarUbigeoDistritos(String idDepartamento, String idProvincia) {
 		List lista = null;
 		try {
-			Query q = em.createQuery("select p from UbigeoSie p where  p.coddepartamento like '"
-							+ idDepartamento + "'  " + " and p.codprovincia like '" + idProvincia + "'  ORDER BY  p.nombre ASC ");
+			Query q = em.createQuery("select p from UbigeoSie p where  p.coddepartamento = '"
+							+ idDepartamento + "'  " + " and p.codprovincia = '" + idProvincia + "'  ORDER BY  p.nombre ASC ");
 			lista = q.getResultList();
 			log.info("tamaño lista Ubigeo  Distritos --> "
 					+ lista.size() + "  "+idProvincia+"- "+ idDepartamento);
