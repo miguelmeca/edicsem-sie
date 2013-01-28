@@ -36,7 +36,7 @@ public class TipoProductoDAOImpl implements TipoProductoDAO{
 		 
 		List lista = null;
 		try {
-			Query q = em.createQuery("select p from TipoProductoSie p");
+			Query q = em.createQuery("select p from TipoProductoSie p where p.tbEstadoGeneral.idestadogeneral = "+ 72 );
 			lista =  q.getResultList();  
 			log.info("tamaño lista Tipo de Productos --> " + lista.size());
 		} catch (Exception e) {
