@@ -147,5 +147,33 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 		}
 		return lista;
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.UbigeoDAO#findDepaProv(java.lang.String, java.lang.String)
+	 */
+	public String findDepaProv(String idDepartamento, String idProvincia) {
+		log.info("findDepaProv --> "+ "  "+idProvincia+"- "+ idDepartamento);
+		String depaprov="";
+		List lista = null;
+		List lista2 = null;
+		try {
+			Query q = em.createQuery("select p.nombre from UbigeoSie p where  p.coddepartamento = '"
+							+ idDepartamento + "'  " + " and p.codprovincia = '00'  and p.coddistrito = '00' ");
+			lista = q.getResultList();
+			depaprov=(String) lista.get(0);
+			
+			Query q2 = em.createQuery("select p.nombre from UbigeoSie p where  p.coddepartamento = '"
+							+ idDepartamento + "'  " + " and p.codprovincia = '"+ idProvincia +"'  and p.coddistrito = '00' ");
+			lista2 = q2.getResultList();
+			String prov =(String) lista2.get(0);
+			depaprov = depaprov+" - "+ prov;
+			log.info("findDepaProv --> "+depaprov+" "+
+					+ lista.size() + "  "+idProvincia+"- "+ idDepartamento);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return depaprov;
+	}
+	
+	
 }
