@@ -53,26 +53,28 @@ public class UbigeoServiceImpl implements UbigeoService{
 	 * @see com.edicsem.pe.sie.service.facade.UbigeoService#listarUbigeoDepartamentos()
 	 */
 	public List listarUbigeoDepartamentos() {
-		log.info("En el servicio dep ");
 		return objUbigeoDao.listarUbigeoDepartamentos();
 	}
-
-
+	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.UbigeoService#listarUbigeoProvincias(java.lang.String)
 	 */
 	public List listarUbigeoProvincias(String idDepartamento) {
-		log.info("En el servicio prov ");
 		return objUbigeoDao.listarUbigeoProvincias(idDepartamento);
 	}
-
-
+	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.UbigeoService#listarUbigeoDistritos(java.lang.String, java.lang.String)
 	 */
 	public List listarUbigeoDistritos(String idDepartamento, String idProvincia) {
-		log.info("En el servicio dist ");
 		return objUbigeoDao.listarUbigeoDistritos(idDepartamento, idProvincia);
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.UbigeoService#findDepaProv(java.lang.String, java.lang.String)
+	 */
+	public String findDepaProv(String idDepartamento, String idProvincia) {
+		return objUbigeoDao.findDepaProv(idDepartamento, idProvincia);
 	}
 	
 }
