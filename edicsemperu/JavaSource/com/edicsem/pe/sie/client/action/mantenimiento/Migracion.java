@@ -30,7 +30,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
-import com.edicsem.pe.sie.entity.ClienteSie;
+import com.edicsem.pe.sie.beans.SistemaIntegradoDTO;
 import com.edicsem.pe.sie.service.facade.ClienteService;
 import com.edicsem.pe.sie.util.constants.DateUtil;
 
@@ -40,7 +40,7 @@ public class Migracion implements Serializable {
 
 	public static Log log = LogFactory.getLog(Migracion.class);
 	private String nombreArchivo;
-	private List<ClienteSie> clienteMig;
+	private List<SistemaIntegradoDTO> sistMig;
 	
 	@EJB
 	private ClienteService objClienteService;
@@ -90,15 +90,15 @@ public class Migracion implements Serializable {
 		log.info("subirCreditos()");
 	
 
-		for (int i = 0; i < clienteMig.size(); i++) {
+		for (int i = 0; i < sistMig.size(); i++) {
 
-			ClienteSie cli = clienteMig.get(i);
+			SistemaIntegradoDTO cli = sistMig.get(i);
 			
-			System.out.println("cantidad: " + clienteMig.size());
-			System.out.println("id 1: " + clienteMig.get(i).getApepatcliente());
-			System.out.println("nombre 1: " + clienteMig.get(i).getApematcliente());
+			System.out.println("cantidad: " + sistMig.size());
+			System.out.println("id 1: " + sistMig.get(i).getApepatcliente());
+			System.out.println("nombre 1: " + sistMig.get(i).getApematcliente());
 		
-			objClienteService.insertCliente(cli);
+			// objClienteService.insertCliente(cli);
 		}
 		return null;
 	}
@@ -120,7 +120,7 @@ public class Migracion implements Serializable {
 			
 			/********aqui me quede*********/
 			
-			clienteMig = new ArrayList<ClienteSie>();
+			sistMig = new ArrayList<SistemaIntegradoDTO>();
 
 			List<List<HSSFCell>> sheetData = new ArrayList<List<HSSFCell>>();
 
@@ -154,7 +154,7 @@ public class Migracion implements Serializable {
 
 						if (tamano > 1) {
 							log.info(" >1 ");
-							ClienteSie cli = new ClienteSie();
+							SistemaIntegradoDTO cli = new SistemaIntegradoDTO();
 							if (data.get(0)!=null) {
 								String id = getCellValueAsString(data.get(0));
 								//cli.setIdcliente(Integer.parseInt(id)); --> Id de la BD sequencial
@@ -170,7 +170,6 @@ public class Migracion implements Serializable {
 									cli.setNumdocumento("0"+numDoc);
 								}
 								cli.setFecnacimiento(DateUtil.convertStringToDate(getCellValueAsString(data.get(5))));
-								int j=0;
 								
 								if(palabra.length==3){
 									log.info(" agrega");
@@ -178,18 +177,18 @@ public class Migracion implements Serializable {
 									cli.setApepatcliente(palabra[1]);
 									cli.setApematcliente(palabra[2]);
 									
-									clienteMig.add(cli);
+									sistMig.add(cli);
 									sheetData.add(data);
 								}else{
 									log.info(" nombres > 4  "+nombreCompleto);
 								}
 								
-							}else { 
+							}else {
 								log.info(data.get(0));
 							}
+						}
 					}
 				}
-			}
 				FacesMessage msg2 = new FacesMessage(FacesMessage.SEVERITY_INFO,
 						"Leads", "Cargado exitosamente.");
 				FacesContext.getCurrentInstance().addMessage(null, msg2);
@@ -202,7 +201,7 @@ public class Migracion implements Serializable {
 
 				FacesContext.getCurrentInstance().addMessage(null, msg2);
 
-				clienteMig = null;
+				sistMig = null;
 
 				return null;
 	    
@@ -218,10 +217,10 @@ public class Migracion implements Serializable {
 
 }
 
-log.info("cantidad: " + clienteMig.size());
-log.info("nombre: " + clienteMig.get(0).getNombrecliente());
-log.info("ape pat: " + clienteMig.get(0).getApepatcliente());
-log.info("ape mat: " + clienteMig.get(1).getApematcliente());
+log.info("cantidad: " + sistMig.size());
+log.info("nombre: " + sistMig.get(0).getNombrecliente());
+log.info("ape pat: " + sistMig.get(0).getApepatcliente());
+log.info("ape mat: " + sistMig.get(1).getApematcliente());
 
 return null;
 
@@ -284,16 +283,16 @@ return null;
 		}
 
 		/**
-		 * @return the clienteMig
+		 * @return the sistMig
 		 */
-		public List<ClienteSie> getClienteMig() {
-			return clienteMig;
+		public List<SistemaIntegradoDTO> getSistMig() {
+			return sistMig;
 		}
 
 		/**
-		 * @param clienteMig the clienteMig to set
+		 * @param sistMig the sistMig to set
 		 */
-		public void setClienteMig(List<ClienteSie> clienteMig) {
-			this.clienteMig = clienteMig;
+		public void setSistMig(List<SistemaIntegradoDTO> sistMig) {
+			this.sistMig = sistMig;
 		}
 }

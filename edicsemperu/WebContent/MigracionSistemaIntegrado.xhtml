@@ -5,34 +5,34 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
-		<h1 class="title ui-widget-header ui-corner-all">Modulo Migracion</h1>
+		<h1 class="title ui-widget-header ui-corner-all">#{message['migracion.panel']}</h1>
 		<h:form id="frmMigracionForm">
 		
 		<p:fileUpload fileUploadListener="#{migracion.handleFileUpload}"
 		allowTypes="/(\.|\/)(gif|jpe?g|png|xls)$/" description="Select Images"
 		update="datatablecampana"/>
 		
-		<p:dataTable id="datatablecampana" var="c" value="#{migracion.clienteMig}"  paginator="true" rows="10"
+		<p:dataTable id="datatablecampana" var="c" value="#{migracion.sistMig}"  paginator="true" rows="10"
 		 rowsPerPageTemplate="5,10,15"  emptyMessage="No se encontraron registros"
 		 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
 	         
-	        <p:column headerText="Nombre"  >
+	        <p:column headerText="#{message['migracion.nombre']}"  >
 			<h:outputText value="#{c.nombrecliente}"/>
 			</p:column>
 			
-	    	<p:column  headerText="Apellido Paterno"  >
+	    	<p:column  headerText="#{message['migracion.apePat']}" >
 	        <h:outputText value="#{c.apepatcliente}"/>
 	        </p:column>
 	        
-	        <p:column  headerText="Apellido Materno"  >
+	        <p:column  headerText="#{message['migracion.apeMat']}" >
 	        <h:outputText value="#{c.apematcliente}"/>
 	        </p:column>
 	        
-	        <p:column  headerText="Numero de documento"  >
+	        <p:column  headerText="#{message['migracion.numDoc']}"  >
 	        <h:outputText value="#{c.numdocumento}"/>
 	        </p:column>
 	        
-	        <p:column  headerText="Fecha de Nacimiento" >
+	        <p:column  headerText="#{message['migracion.fecNac']}" >
 	        <h:outputText value="#{c.fechaNacimientoString}"/>
 	        </p:column>
 	    </p:dataTable>

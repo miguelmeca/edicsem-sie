@@ -61,7 +61,7 @@
 			<p:message for="apm"  />
 			</h:panelGrid>
 			<p:commandButton value="Buscar" action="#{contratoForm.consultar}" update="message" ajax="false"
-				icon="ui-icon ui-icon-check"/>
+				icon="ui-icon-search"/>
 					
 				</p:fieldset>
 				<p:spacer height="30px" />
@@ -70,22 +70,22 @@
 					var="c" style="width:800px" emptyMessage="No se encontraron resultados" >
 						
 						<f:facet name="header">
-							<h:outputLabel value="Resutado de Búsqueda" />
+							<h:outputLabel value="#{message['rsltd.datatable']}" />
 						</f:facet>
 						
-						<p:column headerText="Nombres Completos"  >
+						<p:column headerText="#{message['consulta.contrato.nombreCompleto']}"  >
 		                    <h:outputText value="#{c.tbCliente.nombresCompletos}" />
 		                </p:column>
 		                
-		                <p:column headerText="Fecha de Entrega"  >
+		                <p:column headerText="#{message['consulta.contrato.fecEntrega']}"  >
 		                    <h:outputText value="#{c.fechacreacion}" />
 		                </p:column>
 		                
-		                <p:column headerText="Número de Documento"  >
+		                <p:column headerText="#{message['consulta.contrato.numDoc']}"  >
 		                    <h:outputText value="#{c.tbCliente.numdocumento}" />
 		                </p:column>
 		                
-		                <p:column headerText="Cargar" >
+		                <p:column headerText="#{message['consulta.cargar']}" >
 			                <p:commandButton icon="ui-icon-close" title="cargar"  action="#{contratoForm.cargar}" update="@form" >
 			                <f:setPropertyActionListener value="#{c.tbCliente.idcliente}" target="#{contratoForm.idcliente}" />
 								<f:setPropertyActionListener value="#{c.idcontrato}" target="#{contratoForm.idcontrato}" />
@@ -94,7 +94,7 @@
 					</p:dataTable>
 					</h:panelGrid>
 					<p:spacer height="30px" />
-					<p:fieldset legend="Datos del Cliente"  >
+					<p:fieldset legend="#{message['consulta.contrato.cliente']}"  >
 					<h:panelGrid columns="4" cellpadding="3"  >
 					<h:outputText value="#{message['contrato.nombre']}" />
 					<p:inputText id="nombreCliente" value="#{contratoForm.objClienteSie.nombrecliente}" size="30" readonly="true"/>
@@ -114,7 +114,7 @@
 					<h:outputText value="#{message['contrato.fechanac']}" />
 					<p:inputText  id="fecnac" value="#{contratoForm.objClienteSie.fechaNacimientoString}" size="30" pattern="dd/MM/yyyy"  readonly="true"   />
 					
-					<h:outputText value="Ubigeo " />
+					<h:outputText value="#{message['contrato.ubigeo']} " />
 					<h:outputText id="ubigeoDefecto" value="#{contratoForm.ubigeoDefecto}" />
 					
 					<h:outputText value="#{message['contrato.ubigeo.domicilio']}" />
@@ -145,69 +145,73 @@
 						rowStyleClass="#{t.operadorTelefonico eq 'Claro' ? 'colorRojo': (t.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }"   >
 	
 						<f:facet name="header">
-							<h:outputLabel value="Telefonos de Referencia" />
+							<h:outputLabel value="#{message['contrato.telef.referencia']}" />
 						</f:facet>
 							
-						<p:column headerText="Telefono"  >
+						<p:column headerText="#{message['consulta.telefono']}"  >
 		                    <h:outputText value="#{t.tipoTelef}, #{t.operadorTelefonico}, #{t.telefono}" />
 		                </p:column>
-		                <p:column headerText="Descripción"  >
+		                <p:column headerText="#{message['consulta.telef.desc']}"  >
 		                    <h:outputText value="#{t.descTelefono}" />
 		                </p:column>
 					</p:dataTable>
 					</h:panelGrid>
 					</p:fieldset>
 					<p:spacer height="30px" />
-					<p:fieldset  legend="Detalle de Paquete" >
+					<p:fieldset  legend="#{message['contrato.det.paquete']}" >
 					<p:dataTable id="detPaqueteList" var="f" value="#{contratoForm.detProductoContrato}"  style="width:60%" 
 					rowStyleClass="#{f.tbEstadoGeneral.idestadogeneral ==70 ? 'colorRojo':  'null' }" >
 				
 				        <f:facet name="header">
-				            Detalle de Paquete
+				            #{message['contrato.det.paquete']}
 				        </f:facet>
 				       
-				        <p:column headerText="Producto" style="width:125px">
+				        <p:column headerText="#{message['consulta.producto']}" style="width:125px">
 				             <h:outputText value="#{f.tbProducto.descripcionproducto}" />
 				        </p:column>
 				        
-				        <p:column headerText="Observación" style="width:125px">
+				        <p:column headerText="#{message['consulta.obs']}" style="width:125px">
 				              <h:outputText value="#{f.observacion}" />
 				        </p:column>
 				
-				        <p:column headerText="Cantidad" style="width:110px">
+				        <p:column headerText="#{message['consulta.cantidad']}" style="width:110px">
 				               <h:outputText value="#{f.cantidad}"  />
 				        </p:column>
 				        
-				        <p:column headerText="Estado" style="width:110px">
+				        <p:column headerText="#{message['consulta.estado']}" style="width:110px">
 				               <h:outputText value="#{f.tbEstadoGeneral.descripcion}"  />
 				        </p:column>
 				    </p:dataTable>
 				</p:fieldset>
 				<p:spacer height="30px" />
-				<p:fieldset  legend="Detalle de Pagos" >
-				<p:dataTable id="listaCobranzas" var="d" value="#{contratoForm.cobranzaList}" editable="true" style=" width:50% "
+				<p:fieldset  legend="#{message['contrato.det.pago']}" >
+				<p:dataTable id="listaCobranzas" var="d" value="#{contratoForm.cobranzaList}" editable="true" style=" width:60% "
 				rowStyleClass="#{contratoForm.dhoy le  d.fecvencimiento  ? null: (empty d.fecpago? 'colorRojo' : 'colorVerde')}">
 			        <f:facet name="header">
 			            Detalle de Cobranzas
 			        </f:facet>
-			
-			        <p:column headerText="Número de Letra" style="width:125px">
+			        
+			        <p:column headerText="#{message['consulta.num.letra']}" style="width:125px">
 			        	 <h:outputText value="#{d.numletra}" />
 			        </p:column>
 			
-			        <p:column headerText="Importe" style="width:125px">
+			        <p:column headerText="#{message['consulta.importe']}" style="width:125px">
 			            <h:outputText value="#{d.impinicial}" />
 			        </p:column>
 			        
-			        <p:column headerText="Días retrazo" style="width:125px">
+			        <p:column headerText="#{message['consulta.dias.retrazo']}" style="width:125px">
 			            <h:outputText value="#{d.diasretraso}" />
 			        </p:column>
-			
-			        <p:column headerText="Fecha Vencimiento" style="width:125px">
+			        
+			        <p:column headerText="#{message['consulta.importe']}" style="width:125px">
+			            <h:outputText value="#{d.importemasmora }" />
+			        </p:column>
+			        
+			        <p:column headerText="#{message['consulta.fec.venc']}" style="width:125px">
 			            <h:outputText value="#{d.fechaVencimientoString}"  />
 			        </p:column>
 			        
-			        <p:column headerText="Fecha Pago" style="width:125px">
+			        <p:column headerText="#{message['consulta.fec.pago']}" style="width:125px">
 			            <h:outputText value="#{d.fechaPagoString}"  />
 			        </p:column>
 			    </p:dataTable>

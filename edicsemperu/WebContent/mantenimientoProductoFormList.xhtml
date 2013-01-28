@@ -8,8 +8,7 @@
 	<script language="JavaScript" type="text/javascript">
 		window.history.forward(-1);
 	</script>
-		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
-			Productos</h1>
+		<h1 class="title ui-widget-header ui-corner-all">#{message['mantenimiento.producto.panel']}</h1>
 		<h:form id="formManteProdLista" >
 		<p:messages id="message" showDetail="true" />
 			<p:dataTable value="#{productoSearch.productoList}" var="p" 
@@ -54,12 +53,13 @@ Mantenimiento Producto
 					</p:column>
 					<f:facet name="footer">
 						<div align="left">
-							<h:commandLink value="#{message['mantenimiento.productoList.nuevo']}" action="#{productoForm.agregar}"/>
+							 <p:commandButton id="btnNuevo" value="#{message['mantenimiento.productoList.nuevo']}"  action="#{productoForm.agregar}"  title="#{message['manteninimento.producto.tittle']}" icon="ui-icon-star"/>
+							 <p:tooltip for="btnNuevo"/>
 						</div>
 					</f:facet>
 				</p:dataTable>
 				<p:blockUI block="listaProductos" trigger="listaProductos">cargando<br />
-				<p:graphicImage value="/images/ajax-loader.gif"/></p:blockUI>
+				<p:graphicImage value="/images/ajax_loader.gif"/></p:blockUI>
 		</h:form>
 	</ui:define>
 </ui:composition>

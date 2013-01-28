@@ -71,6 +71,8 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 		objcomprobante = new ComprobanteSie();
 		objDetComprobante = new DetalleComprobanteSie();
 		idMAxKardex=0;
+		idtipokardexproducto =1;
+		objKardexSie.setCantentrada(1);
 	}
 
 	public void cambiar() {
@@ -318,6 +320,10 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 												mensaje = "La cantidad de salida de dicho producto no puede ser mayor al actual: " + k.get(i).getCantexistencia() ;
 												break;
 											}else{
+												double s =valoruniex*objKardexSie.getCantentrada();
+												log.info("   valor total **  "+s);
+												objKardexSie.setValortotal(""+s);
+												log.info("   valor total **  "+objKardexSie.getValortotal());
 												log.info("  -->******* "+objKardexSie.getValortotal()+"   "+ objKardexSie.getCantentrada());
 												double d = Double.parseDouble(objKardexSie.getValortotal())/objKardexSie.getCantentrada();
 												objKardexSie.setValorunitarioentrada(""+d);
@@ -445,6 +451,8 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 	 * @return the idtipokardexproducto
 	 */
 	public int getIdtipokardexproducto() {
+		log.info("  --  1 --  ");
+		
 		return idtipokardexproducto;
 	}
 
@@ -453,14 +461,21 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 	 *            the idtipokardexproducto to set
 	 */
 	public void setIdtipokardexproducto(int idtipokardexproducto) {
+		log.info("  --  2 --  ");
 		if(idtipokardexproducto==1){
+			objKardexSie.setCantentrada(1);
+			objKardexSie.setCantsalida(0);
 			tipoMovimiento="Entrada";
 			tipomovimientoOpcional="Salida";
 		}else if(idtipokardexproducto==2){
+			objKardexSie.setCantentrada(0);
+			objKardexSie.setCantsalida(1);
 			tipoMovimiento="Salida";
 			tipomovimientoOpcional="Entrada";
 		}else{
-			tipoMovimiento="Deposito";
+			objKardexSie.setCantentrada(1);
+			objKardexSie.setCantsalida(0);
+			tipoMovimiento="Depósito";
 		}
 		this.idtipokardexproducto = idtipokardexproducto;
 	}
@@ -572,10 +587,10 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 		if (data == null) {
 			data = new ArrayList<KardexSie>();
 		}
+		idtipokardexproducto =1;
+		objKardexSie.setCantentrada(1);
 		return getViewList();
 	}
-	
-	
 
 	/**
 	 * @return the idAlmacen2

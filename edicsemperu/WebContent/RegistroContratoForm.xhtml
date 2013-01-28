@@ -12,7 +12,7 @@
 		<h1 class="title ui-widget-header ui-corner-all">#{message['registro.contrato.tittle']}</h1>
 		<h:form id="formManteContrato3">
 			<p:messages id="message" showDetail="true"/>
-			<p:wizard id="wiz" widgetVar="wiz" flowListener="#{contratoForm.onFlowProcess}">
+			<p:wizard id="wiz" widgetVar="wiz" flowListener="#{contratoForm.onFlowProcess}" nextLabel="#{message['btn.siguiente']}" backLabel="#{message['btn.atraz']}" >
 			  <p:tab title="#{message['cliente.tabpersonal']}">
 			  <p:panel header="#{message['panel.contrato.cliente']}" >
 				<h:panelGrid columns="6" id="panelCliente"  cellpadding="5" >
