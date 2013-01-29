@@ -75,4 +75,10 @@ public class ProductoServiceImpl implements ProductoService {
 		return objProductoDao.listarProductoxEmpresas(parametroObtenido);
 	}
 
+
+	public boolean verificarTipoProducto(int tipoProducto) {
+		log.info("en el servicio" + tipoProducto);
+		return objProductoDao.verificarTipoProducto(tipoProducto);
+	}
+
 }
