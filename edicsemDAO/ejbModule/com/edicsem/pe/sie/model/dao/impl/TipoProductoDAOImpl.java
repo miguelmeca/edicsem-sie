@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
   
+import com.edicsem.pe.sie.entity.DetPaqueteSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.TipoCasaSie;
 import com.edicsem.pe.sie.entity.TipoProductoSie;
@@ -81,5 +82,25 @@ public class TipoProductoDAOImpl implements TipoProductoDAO{
 			e.printStackTrace();
 		}
 	}
+	
+
+
+
+	public void eliminarTipoProducto(int parametroObtenido) {
+		try {
+			log.info("DENTRO DE LA IMPLEMENTACION DAO ELIMINAR ");
+			TipoProductoSie bean= findTipoProducto(parametroObtenido);
+			em.remove(bean);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}	
+	
+	
+	
+	
+	
 
 }
