@@ -15,5 +15,9 @@ public interface ProductoDAO {
 	public abstract ProductoSie findProducto (int id);
 	public abstract List  listarProductosXTipo(int tipoProducto);
 	public abstract List  listarProductos();
-	public abstract List listarProductoxEmpresas(int parametroObtenido);
+	public abstract List listarProductoxEmpresas(int parametroObtenido);	
+	public abstract boolean verificarTipoProducto(int tipoProducto);
+
+	
+	
 }
