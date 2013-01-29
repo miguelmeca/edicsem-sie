@@ -134,5 +134,29 @@ public class ProductoDAOImpl implements ProductoDAO {
 		}
 		return lista;
 	}
+
+
+	public boolean verificarTipoProducto(int tipoProducto) {
+		boolean bandera = true;
+		List lista = null;
+		try {
+			Query q = em.createQuery("select p from ProductoSie p where p.tbTipoProducto.idtipoproducto = "+ tipoProducto);
+			lista = q.getResultList();											
+			log.info("tamaño lista de Tipo Producto --> " + lista.size());
+			if(lista.size()>0){ //hay uno o mas empleados retornados.
+				bandera=false;
+			}else{//no hay empleados, entonces puede proseguir
+				bandera=true;
+			}
+			
+		} catch (Exception e) {
+			bandera=false;
+			e.printStackTrace();
+		}
+		return bandera;
+	}
+	
+
+	
 	
 }
