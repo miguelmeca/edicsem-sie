@@ -5,12 +5,16 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.edicsem.pe.sie.entity.TipoProductoSie;
 import com.edicsem.pe.sie.model.dao.TipoProductoDAO;
 import com.edicsem.pe.sie.service.facade.TipoProductoService;
 
 @Stateless
 public class TipoProductoServiceImpl implements TipoProductoService {
+	private Log log = LogFactory.getLog(TipoProductoServiceImpl.class);
 
 	@EJB
 	private TipoProductoDAO objTipoProductoDao;
@@ -40,5 +44,12 @@ public class TipoProductoServiceImpl implements TipoProductoService {
 	
 	public void updateTipoProducto(TipoProductoSie producto) {
 		  objTipoProductoDao.updateTipoProducto(producto);
+	}
+	
+	public void eliminarTipoProducto(int parametroObtenido) {
+		log.info("dentro del servicio eliminar"+ parametroObtenido );
+		
+		objTipoProductoDao.eliminarTipoProducto(parametroObtenido);
+		
 	}
 }
