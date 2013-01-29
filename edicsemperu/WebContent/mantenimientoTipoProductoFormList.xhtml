@@ -6,15 +6,18 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
+	<script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
 		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
 			Tipo de Productos</h1>
 			
 		<h:form id="frmTipoProdFormList" prependId="false">
-		 <p:messages  />
+	<p:messages showDetail="true"/> 	
 		
 			
 			<p:dataTable value="#{tipoProductoSearch.tipoProdList}" var="tipoProducto"
-				id="tipoProductoTable" paginator="true" rows="5"
+				id="tipoProductoTable" paginator="true" rows="15"
        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	   rowsPerPageTemplate="5,10,15" widgetVar="table"
 	   emptyMessage="No se encontro registros">
@@ -24,8 +27,8 @@
 						<h:outputText value="#{tipoProducto.codtipoproducto}" />
 											 
 				</p:column>	
-				
-				<p:column headerText="Tipo de Producto"  id="tipoProducto" filterBy="#{tipoProducto.nombretipoproducto}">
+					<f:facet name="header">  </f:facet>
+				<p:column headerText="Tipo de Producto"  id="tipoProducto" filterBy="#{tipoProducto.nombretipoproducto}" sortBy="tipoProducto.nombretipoproducto" >
 				  
 						<h:outputText value="#{tipoProducto.nombretipoproducto}" />
 											 
@@ -34,9 +37,9 @@
         		<!--********** BOTON EDITAR **********-->
 		
 	<p:column headerText="Editar">
-	
+	<center>
 <p:commandButton
-value="Editar"
+
 oncomplete="DialogTipoProd.show()"
 action="#{mantenimientoTipoProductoFormAction.update}"
 update=":NuevoModificaTipoProd:display"
@@ -48,10 +51,29 @@ icon="ui-icon ui-icon-pencil"
 target="#{mantenimientoTipoProductoFormAction.objTipoProductoSie}" />
 			 
 			</p:commandButton>
-					
+					</center>
 	</p:column>
  
  <!--**********FIN EDITAR**********-->
+ 
+ 
+ <!--**********INICIO 	DESACTIVAR**********-->
+
+<p:column headerText="Eliminar">
+<center>	
+<p:commandButton id="showConfirmTipoProducto" 				  
+				 icon="ui-icon-trash"
+				 onclick="confirmationTipoProducto.show()"> 
+	 							
+<f:setPropertyActionListener
+		 value="#{tipoProducto.idtipoproducto}"
+		 target="#{mantenimientoTipoProductoFormAction.idc}" 
+/>
+</p:commandButton>
+</center>				
+		</p:column>
+		
+		<!-- Fin de Eliminar -->
 
 <f:facet name="footer">
 <div align="left">		
@@ -59,7 +81,7 @@ target="#{mantenimientoTipoProductoFormAction.objTipoProductoSie}" />
 		
 		
 		<p:commandButton value="Nuevo Tipo de Producto"  update=":NuevoModificaTipoProd:display" 
-				icon="ui-icon-star"
+				icon="ui-icon-folder-open"
 				action="#{mantenimientoTipoProductoFormAction.agregar}"
 				oncomplete="DialogTipoProd.show()" 	title="Ingresar Nuevo Tipo de Producto"	>
 </p:commandButton>
