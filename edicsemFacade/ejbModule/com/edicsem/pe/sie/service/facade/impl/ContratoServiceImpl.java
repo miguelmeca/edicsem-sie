@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.service.facade.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -8,6 +9,7 @@ import javax.ejb.Stateless;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.edicsem.pe.sie.beans.SistemaIntegradoDTO;
 import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.CobranzaSie;
 import com.edicsem.pe.sie.entity.ContratoSie;
@@ -70,7 +72,7 @@ public class ContratoServiceImpl implements ContratoService {
 		cliente.setTbTipoDocumentoIdentidad(objtipoDao.buscarTipoDocumento(idtipodoc));
 		cliente.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23));
 		cliente.setTipocliente(1);
-		objClienteDao.insertCliente(cliente);	
+		objClienteDao.insertCliente(cliente);
 		for (TelefonoPersonaSie telefonoPersonaSie : telefonoList) {
 			telefonoPersonaSie.setIdcliente(cliente);
 			telefonoPersonaSie.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(17));
@@ -153,4 +155,72 @@ public class ContratoServiceImpl implements ContratoService {
 	public List listarClientePorParametro(String numDocumento, String codigoContrato, String nombreCliente, String apePat, String apeMat) {
 		return objContratoDao.listarClientePorParametro(numDocumento, codigoContrato, nombreCliente, apePat, apeMat);
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ContratoService#insertMigracion(java.util.List)
+	 */
+	public void insertMigracion(List<SistemaIntegradoDTO> sistMig) {
+		
+		ClienteSie cli = new ClienteSie();
+		ContratoSie con = new ContratoSie();
+		
+		for (int i = 0; i < sistMig.size(); i++) {
+			
+			SistemaIntegradoDTO s = sistMig.get(i);
+			if(sistMig.get(i-1).getCodContrato()!=s.getCodContrato()){
+			
+			cli = new ClienteSie();
+			con = new ContratoSie();
+			
+			//insertar clliente
+			cli.setApematcliente(s.getApematcliente());
+			cli.setApepatcliente(s.getApepatcliente());
+			cli.setNombrecliente(s.getNombrecliente());
+			cli.setNumdocumento(s.getNumdocumento());
+			cli.setCorreo(s.getCorreo());
+			cli.setEmpresatrabajo(s.getEmpresatrabajo());
+			cli.setCargotrabajo(s.getCargotrabajo());
+			cli.setDirectrabajo(s.getDirectrabajo());
+			cli.setFecnacimiento(s.getFecnacimiento());
+			cli.setTelftrabajo(s.getTelftrabajo());
+			cli.setTitulartelefono(s.getTitulartelefono());
+			cli.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23));
+			objClienteDao.insertCliente(cli);
+			
+			//insertar Domicilio
+			DomicilioPersonaSie dom = new DomicilioPersonaSie();
+			dom.setDomicilio(s.getDireccion());
+//			dom.setTbTipoCasa(objTipoCasaService.findTipoCasa(s.get));
+			//buscar ubigeo 
+			
+			//dom.setTbUbigeo(objUbigeoDao.findUbigeo(idUbigeo));
+			dom.setIdcliente(cli);
+			dom.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(15));
+			objDomicilioDao.insertarDomicilioEmpleado(dom);
+			
+			con.setCodcontrato(s.getCodContrato());
+			con.setNumcuotas(s.getCantCuotas());
+			con.setPagosubinicial(new  BigDecimal(s.getImporteInicial()));
+			con.setTbCliente(cli);
+			//insertar contrato
+			objContratoDao.insertContrato(con);
+			}
+			
+			CobranzaSie cob = new CobranzaSie();
+			cob.setCantcuotas(s.getCantCuotas().toString());
+			cob.setFecpago(s.getFehaPago());
+			cob.setNumletra(s.getNumLetra());
+			cob.setFecvencimiento(s.getFecnacimiento());
+			cob.setRegistroreniec(s.getRegistroReniec());
+			cob.setImpcobrado(new BigDecimal(s.getImporteCobrado()));
+			cob.setImportemasmora(new BigDecimal(s.getImportemasmora()));
+			cob.setDiasretraso(s.getDiasRetraso());
+			cob.setTbContrato(con);
+			//insertar cobranza
+			objCobranzaDao.insertCobranza(cob);
+		}
+		
+	}
+
+	
 }
