@@ -169,7 +169,19 @@ public class Migracion implements Serializable {
 								}else{
 									cli.setNumdocumento("0"+numDoc);
 								}
+								log.info(" 5 "+data.get(5).toString());
+								if(!data.get(5).toString().isEmpty()){
 								cli.setFecnacimiento(DateUtil.convertStringToDate(getCellValueAsString(data.get(5))));
+								}
+								cli.setCorreo(getCellValueAsString(data.get(6)));
+								cli.setNumTelefono(getCellValueAsString(data.get(7)));
+								cli.setDireccion(getCellValueAsString(data.get(8)));
+								cli.setDistrito(getCellValueAsString(data.get(9)));
+								cli.setPlanoDistrito(getCellValueAsString(data.get(10)));
+								cli.setDirectrabajo(getCellValueAsString(data.get(13)));
+								cli.setCargotrabajo(getCellValueAsString(data.get(14)));
+								cli.setTelftrabajo(getCellValueAsString(data.get(15)));
+								
 								
 								if(palabra.length==3){
 									log.info(" agrega");
