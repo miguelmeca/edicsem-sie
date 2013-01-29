@@ -1791,13 +1791,85 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 
 	<!-- FIN PUPAP NUEVO Y EDITAR META -->
 
+<!-- NUEVO DOMICILIO  CLIENTE -->
+<h:form >
+		<p:dialog header="Nuevo Domiclio" widgetVar="newDomicilio"
+			showEffect="fade" hideEffect="explode" modal="true" width="500" height="500" resizable="false" 
+			position="center">
+<h:panelGrid columns="3" id="panelCliente"  cellpadding="5" >
 
 
 
+<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
+					<p:selectOneMenu size="1" value="#{MantenimientoClienteFormAction.idDepartamento}"
+					required="true" style="width:220px"  id="departamento"
+					requiredMessage="#{message['contrato.ubigeo.departamento.validation']}">
+					<f:selectItem itemLabel="Seleccione Departamento" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
+					<p:ajax update="prov,dist" listener="#{MantenimientoClienteFormAction.cambiar}" />
+					</p:selectOneMenu>
+					<p:spacer/>
+
+				<h:outputText value="#{message['contrato.ubigeo.provincia']}" />
+				<p:selectOneMenu id="prov" value="#{MantenimientoClienteFormAction.idProvincia}"
+					required="true" style="width:220px"
+					requiredMessage="#{message['contrato.ubigeo.provincia.validation']}">
+					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
+					<p:ajax update="dist" listener="#{MantenimientoClienteFormAction.cambiar2}" />
+				</p:selectOneMenu>
+				<p:spacer/>
+					
+				<h:outputText value="#{message['contrato.ubigeo.distrito']}" rendered="#{MantenimientoClienteFormAction.defectoUbigeo}" />
+				<p:selectOneMenu id="dist" value="#{MantenimientoClienteFormAction.idUbigeo}" 
+					rendered="#{MantenimientoClienteFormAction.defectoUbigeo}" required="true"   effect="fade"
+					style="width:220px">
+					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+					<p:ajax update="ubigeoDefecto" listener="#{MantenimientoClienteFormAction.cambioUbica}"></p:ajax>
+				</p:selectOneMenu>
+				<p:spacer/>
+				
+				<h:outputText value="Ubigeo " />
+				<h:outputText id="ubigeoDefecto" value="#{MantenimientoClienteFormAction.ubigeoDefecto}" />
+				<p:message for="ubigeoDefecto" rendered="#{MantenimientoClienteFormAction.defectoUbigeo}"/>
 
 
 
+</h:panelGrid>
 
+	</p:dialog>
+	</h:form>
+
+ <!-- FIN DOMICILIO CLIENTE -->
  
+ 
+ <!--	  INICIO ELIMINAR TIPO DE PRODUCTO  -->
+
+	<h:form>
+
+<p:confirmDialog id="confirmTipoProducto"
+			     message="esta seguro de eliminar este Tipo de Producto?" 
+			     width="325"
+				 height="100" showEffect="explode" hideEffect="explode"
+			     header="Confirmacion" severity="alert" widgetVar="confirmationTipoProducto"
+				 position="center">
+
+<p:commandButton type="submit"
+				 value="Si"
+				 action="#{mantenimientoTipoProductoFormAction.Eliminar}" 
+				 oncomplete="confirmationTipoProducto.hide()"
+				 update=":frmTipoProdFormList" 					 		
+	             ajax="false"
+/>
+
+<p:commandButton value="No" onclick="confirmationTipoProducto.hide()"
+					type="button" />
+
+		</p:confirmDialog>
+
+	</h:form>
+
+	<!-- 	FIN ELIMINAR TIPO DE DPRODUCTO  -->
 </f:view>
 </html>
