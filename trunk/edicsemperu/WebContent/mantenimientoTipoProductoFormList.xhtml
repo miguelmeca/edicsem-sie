@@ -58,11 +58,11 @@ target="#{mantenimientoTipoProductoFormAction.objTipoProductoSie}" />
 		<!--********** BOTON NUEVO **********-->
 		
 		
-		<p:commandLink value="Nuevo Tipo de Producto"  update=":NuevoModificaTipoProd:display" 
-				
+		<p:commandButton value="Nuevo Tipo de Producto"  update=":NuevoModificaTipoProd:display" 
+				icon="ui-icon-star"
 				action="#{mantenimientoTipoProductoFormAction.agregar}"
 				oncomplete="DialogTipoProd.show()" 	title="Ingresar Nuevo Tipo de Producto"	>
-</p:commandLink>
+</p:commandButton>
 </div>
 </f:facet>
 			</p:dataTable>

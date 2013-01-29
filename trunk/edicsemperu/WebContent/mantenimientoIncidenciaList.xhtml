@@ -5,7 +5,7 @@
   xmlns:ui="http://java.sun.com/jsf/facelets"
   xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
    <ui:define name="body">
-    <h1 class="title ui-widget-header ui-corner-all">Mantenimiento Incidencias</h1>
+    <h1 class="title ui-widget-header ui-corner-all">#{message['incidencia.list.titulo']}</h1>
      <h:form id="IncidenciaList" prependId="false">
 	   <p:messages showDetail="true" />
 	  <p:dataTable value="#{mantenimientoIncidenciaSearch.listaIncidencia}" var="p"
@@ -13,7 +13,7 @@
        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	   rowsPerPageTemplate="5,10,15" widgetVar="table" rowStyleClass="#{p.tbEstadoGeneral.idestadogeneral eq '45' ? 'colorRojo': (p.tbEstadoGeneral.idestadogeneral eq '42' ? 'color2': 'color3') }"
 	   emptyMessage="No se encontro registros">
-	   <f:facet name="header">Mantenimiento Incidencia </f:facet>
+	   <f:facet name="header">#{message['incidencia.list.titulo']} </f:facet>
 	   <f:facet name="header">
 	    <p:outputPanel>
 		 <h:outputText value="Buscar :"/>

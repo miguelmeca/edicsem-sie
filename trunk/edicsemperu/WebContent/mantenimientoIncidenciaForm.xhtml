@@ -6,10 +6,10 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/layout/template.xhtml">
 	<ui:define name="body">
-	<h1 class="title ui-widget-header ui-corner-all">Incidencias</h1>
+	<h1 class="title ui-widget-header ui-corner-all">#{message['incidencia.titulo']}</h1>
 	<h:form id="editarIncidencia">
 			 <p:messages showDetail="true" />
-			 <p:fieldset legend="Observación de Incidencia">     
+			 <p:fieldset legend="#{message['incidencia.panel']}">
              <p:dataTable var="oi" value="#{mantenimientoIncidenciaForm.listaObsIncidencia}" paginator="true" rows="5"
        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	   rowsPerPageTemplate="5,10,15" emptyMessage="No se encontro registros">
@@ -21,7 +21,7 @@
         </p:column>
         <f:facet name="footer">
         <div align="left">
-        <p:commandLink value="Nueva Observación"  update=":nuevaobsinc:display" 
+        <p:commandButton value="Nueva Observación"  update=":nuevaobsinc:display" icon="ui-icon-plusthick"
 				oncomplete="ObsIncDialog.show()" 	title="Ingresar Observación"/>
         </div>
         </f:facet>
