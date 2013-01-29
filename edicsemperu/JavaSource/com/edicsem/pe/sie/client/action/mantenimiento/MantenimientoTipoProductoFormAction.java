@@ -19,6 +19,7 @@ import com.edicsem.pe.sie.entity.TipoProductoSie;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.ContratoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
+import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.service.facade.TipoProductoService;
 import com.edicsem.pe.sie.util.FaceMessage.FaceMessage;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -32,13 +33,15 @@ public class MantenimientoTipoProductoFormAction extends
 	public String idtipoproducto;
 	public String descripcion;
 	private String codtipoproductoUpdate;
-	private int idEstadoGeneral, idc;
+	private int idEstadoGeneral;
+	private int idc;
 	private String mensaje;
 	private TipoProductoSie nuevo;
 	private TipoProductoSie objTipoProductoSie;
 	private TipoProductoSie selectedTipoProducto;
 	private boolean newRecord = false;
 	private boolean editMode;
+	private List<TipoProductoSie> lista;
 	
 	@ManagedProperty(value = "#{tipoProductoSearch}")
 	private MantenimientoTipoProductoSearchAction mantenimientoTipoProductoSearch;
@@ -50,6 +53,9 @@ public class MantenimientoTipoProductoFormAction extends
 
 	@EJB
 	private EstadogeneralService objEstadoGeneralService;
+	
+	@EJB
+	private ProductoService objProductoService;
 
 	public void init() {
 		log.info("init()");
@@ -84,15 +90,20 @@ public class MantenimientoTipoProductoFormAction extends
 	}
 
 	public String insertar() {
-		mensaje =null;
+		
 		String paginaRetorno="";
-	//	objTipoProductoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(72));
+		mensaje =null;
+		log.info("insertar()");
+		
+		objTipoProductoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(72));
 		
 		try {
 
+			log.info("aqui validadndo si existe o no" + objTipoProductoSie.getCodtipoproducto());
+			lista = mantenimientoTipoProductoSearch.getTipoProdList();
 			
-			int error=0;
-			List<TipoProductoSie> lista = mantenimientoTipoProductoSearch.getTipoProdList();
+		int error =0;
+			
 			
 			for (int i = 0; i < lista.size(); i++) {
 				if (codtipoproductoUpdate!=null) {
@@ -110,6 +121,9 @@ public class MantenimientoTipoProductoFormAction extends
 				else if ( lista.get(i).getCodtipoproducto().equalsIgnoreCase(objTipoProductoSie.getCodtipoproducto())) {
 						log.info("Error ... Ya se encuentra un cargo igual");
 						mensaje ="Ya se encuentra un tipo de producto igual con el mismo nombre";
+						msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+								Constants.MESSAGE_INFO_TITULO, mensaje);
+						mensaje ="Se registró el paquete correctamente";
 						error = 1;
 						break;
 					}
@@ -137,8 +151,8 @@ public class MantenimientoTipoProductoFormAction extends
 			}
 				} else {
 					log.info("mensaje de error");
-					msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
-							Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+					mensaje ="Ya se encuentra un tipo de producto igual con el mismo nombre";
+					msg = new FacesMessage(mensaje);
 				}
 				    FacesContext.getCurrentInstance().addMessage(null, msg);
 			}catch (Exception e) {
@@ -158,48 +172,121 @@ public class MantenimientoTipoProductoFormAction extends
 			
 			
 			
-
-	public String updateDeshabilitar() throws Exception {
-
+//
+//	public String updateDeshabilitar() throws Exception {
+//
+//		objTipoProductoSie = new TipoProductoSie();
+//		int parametroObtenido;
+//		TipoProductoSie tp = new TipoProductoSie();
+//
+//		try {
+//			if (log.isInfoEnabled()) {
+//				log.info("Entering my method 'updateDESHABILITAR()'");
+//			}
+//
+//			parametroObtenido = getIdc();
+//			log.info(" ------>>>>>>aqui cactura el parametro ID "+ parametroObtenido);
+//			
+//				//if(verificar(parametroObtenido)){//true - no hay empleado con cargo, tonce procede
+//					
+//					tp = objTipoProductoService.findTipoProducto(parametroObtenido);
+//					
+//					//objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(2));
+//					//objCargoEmpleadoSie.setIdcargoempleado(c.getIdcargoempleado());
+//					//objCargoEmpleadoSie.setDescripcion(c.getDescripcion());
+//
+//					objTipoProductoService.updateTipoProducto(objTipoProductoSie);
+//					log.info("actualizando..... ");	
+//				//}	
+//				
+//				//else {
+//					
+//					//FaceMessage.FaceMessageError("ALERTA", "El cargo no se puede elminar ya que se encontraron usuarios con ese cargo");
+//				//}	
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			descripcion = e.getMessage();
+//			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+//					Constants.MESSAGE_ERROR_FATAL_TITULO, descripcion);
+//			log.error(e.getMessage());
+//			FacesContext.getCurrentInstance().addMessage(null, msg);
+//		}
+//		objTipoProductoSie = new TipoProductoSie();
+//		return mantenimientoTipoProductoSearch.listar();
+//	}
+//	
+//	
+//	
+	
+	
+	
+	public String Eliminar() throws Exception {
+		mensaje =null;
 		objTipoProductoSie = new TipoProductoSie();
 		int parametroObtenido;
-		TipoProductoSie tp = new TipoProductoSie();
-
+		
+		TipoProductoSie c = new TipoProductoSie();
+		
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'updateDESHABILITAR()'");
+				log.info("Entrando a mi metodo Eliimar Tipo de Producto");
 			}
-
-			parametroObtenido = getIdc();
-			log.info(" ------>>>>>>aqui cactura el parametro ID "+ parametroObtenido);
 			
-				//if(verificar(parametroObtenido)){//true - no hay empleado con cargo, tonce procede
-					
-					tp = objTipoProductoService.findTipoProducto(parametroObtenido);
-					
-					//objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(2));
-					//objCargoEmpleadoSie.setIdcargoempleado(c.getIdcargoempleado());
-					//objCargoEmpleadoSie.setDescripcion(c.getDescripcion());
+			parametroObtenido = getIdc();
+log.info(" ------>>>>>>aqui cactura el parametro ID "+ parametroObtenido);
+			
+if(verificarTipoProducto(parametroObtenido)){
+	
+	c = objTipoProductoService.findTipoProducto(parametroObtenido);
+	
+	
+	objTipoProductoSie.setIdtipoproducto(c.getIdtipoproducto());
+	objTipoProductoSie.setCodtipoproducto(c.getCodtipoproducto());
+	objTipoProductoSie.setNombretipoproducto(c.getNombretipoproducto());
+	objTipoProductoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(73));
 
-					objTipoProductoService.updateTipoProducto(objTipoProductoSie);
-					log.info("actualizando..... ");	
-				//}	
-				
-				//else {
-					
-					//FaceMessage.FaceMessageError("ALERTA", "El cargo no se puede elminar ya que se encontraron usuarios con ese cargo");
-				//}	
+	
 
+objTipoProductoService.eliminarTipoProducto(parametroObtenido);
+	
+	log.info("actualizando..... ");	
+	msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+			Constants.MESSAGE_DESHABILITAR_TITULO, mensaje);
+	mensaje ="WDF";
+}			
+			
+			
+else {
+	
+	
+	FaceMessage.FaceMessageError("No se puede Eliminar, por que dicho Tipo de Producto Pertenece a un Producto","");
+		return Constants.MANT_TIPO_PRODUCTO_FORM_LIST_PAGE;	
+
+}	
+FacesContext.getCurrentInstance().addMessage(null, msg);		
+			
+			
+			
+			
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
-			descripcion = e.getMessage();
+			mensaje = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, descripcion);
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
+		
 		objTipoProductoSie = new TipoProductoSie();
-		return mantenimientoTipoProductoSearch.listar();
+		return mantenimientoTipoProductoSearch.listar();		
+	}
+
+	private boolean verificarTipoProducto(int tipoProducto) {
+//entra para verificar si este tipo de producto pertenece  aun producto registrado
+		return objProductoService.verificarTipoProducto(tipoProducto);
 	}
 
 	/**
@@ -220,6 +307,7 @@ public class MantenimientoTipoProductoFormAction extends
 	 * @return the idc
 	 */
 	public int getIdc() {
+		log.info("id--->" +idc );
 		return idc;
 	}
 
@@ -359,6 +447,34 @@ public class MantenimientoTipoProductoFormAction extends
 	 */
 	public void setCodtipoproductoUpdate(String codtipoproductoUpdate) {
 		this.codtipoproductoUpdate = codtipoproductoUpdate;
+	}
+
+	/**
+	 * @return the descripcion
+	 */
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	/**
+	 * @param descripcion the descripcion to set
+	 */
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	/**
+	 * @return the lista
+	 */
+	public List<TipoProductoSie> getLista() {
+		return lista;
+	}
+
+	/**
+	 * @param lista the lista to set
+	 */
+	public void setLista(List<TipoProductoSie> lista) {
+		this.lista = lista;
 	}
 	
 }
