@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">METAS DIARIAS</h1>
+		<h:form id="frmExcelForm">
+		
+
+<p:fileUpload fileUploadListener="#{FileUploadMetasDiarias.handleFileUpload}"
+	allowTypes="/(\.|\/)(XLS|xls)$/" description="Seleccionar Excel"
+	update="datatablecampana"
+	/>
+	<p:commandButton value="Realizar cambios"
+											id="guardar"
+											
+											action="#{FileUploadMetasDiarias.subirCreditos}"
+											process="@all">
+										</p:commandButton>
+	
+
+
+
+
+<p:dataTable id="datatablecampana" var="c" value="#{FileUploadMetasDiarias.leadsNuevos}"  paginator="true" rows="10"
+ rowsPerPageTemplate="5,10,15"  emptyMessage="No se encontraron registros"
+ paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
+                   
+       
+        
+        <p:column headerText="grupo" styleClass="colorVerde" >
+		<h:outputText value="#{c.grupo}"/>
+		</p:column>
+		
+    	<p:column  headerText="meta"  >
+        <h:outputText value="#{c.meta}"/>
+        </p:column>
+  		
+  		<p:column  headerText="avance"  >
+        <h:outputText value="#{c.avance}"/>
+        </p:column>
+        <p:column  headerText="deberianestar"  >
+        <h:outputText value="#{c.deberianestar}"/>
+        </p:column>
+        
+        <p:column  headerText="falta"  >
+        <h:outputText value="#{c.falta}"/>
+        </p:column>
+        
+        <p:column  headerText="primerasemana"  >
+        <h:outputText value="#{c.primerasemana}"/>
+        </p:column>
+        
+        <p:column  headerText="segundasemana"  >
+        <h:outputText value="#{c.segundasemana}"/>
+        </p:column>
+        
+        <p:column  headerText="tercerasemana"  >
+        <h:outputText value="#{c.tercerasemana}"/>
+        </p:column>
+        
+        <p:column  headerText="cuarasemana"  >
+        <h:outputText value="#{c.cuartasemana}"/>
+        </p:column>
+        
+        <p:column  headerText="quintasemana"  >
+        <h:outputText value="#{c.quintasemana}"/>
+        </p:column>
+        
+        <p:column  headerText="metamasivo"  >
+        <h:outputText value="#{c.metamasivo}"/>
+        </p:column>
+        
+        <p:column  headerText="metapuntodeventa"  >
+        <h:outputText value="#{c.metapuntodeventa}"/>
+        </p:column>
+        
+        <p:column  headerText="avancemasivo"  >
+        <h:outputText value="#{c.avancemasivo}"/>
+        </p:column>
+        
+        <p:column  headerText="avancepuntodeventa"  >
+        <h:outputText value="#{c.avancepuntodeventa}"/>
+        </p:column>
+        
+        <p:column  headerText="faltamasivo"  >
+        <h:outputText value="#{c.faltamasivo}"/>
+        </p:column>
+        
+        <p:column  headerText="faltapuntodeventa"  >
+        <h:outputText value="#{c.faltapuntodeventa}"/>
+        </p:column>
+        
+        <p:column  headerText="faltatotal"  >
+        <h:outputText value="#{c.faltatotal}"/>
+        </p:column>
+        
+        
+        
+        
+       
+    </p:dataTable>
+
+
+
+		
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
