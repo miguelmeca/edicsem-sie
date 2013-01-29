@@ -22,6 +22,8 @@ public class SistemaIntegradoDTO implements Serializable {
 	private String correo;
 
 	private String directrabajo;
+	
+	private String distritoTrabajo;
 
 	private String empresatrabajo;
 	
@@ -90,7 +92,27 @@ public class SistemaIntegradoDTO implements Serializable {
 	private String encargadoCobranza;
 	
 	private String historia;
-
+	
+	private String vendedorResponsable;
+	
+	private Date fechaNotifica;
+	
+	private String infocorp;
+	
+	private Date registroReniec;
+	
+	private String calificaInforcorp;
+	
+	private Date fechaCalificado;
+	
+	private String calificacionCliente;
+	
+	private String numContrato;
+	
+	private String lugarTrabajo;
+	
+	private Integer diasRetraso;
+	
     public SistemaIntegradoDTO() {
     	
     }
@@ -654,6 +676,174 @@ public class SistemaIntegradoDTO implements Serializable {
 	 */
 	public void setFechaNacimientoString(String fechaNacimientoString) {
 		this.fechaNacimientoString = fechaNacimientoString;
+	}
+
+	/**
+	 * @return the distritoTrabajo
+	 */
+	public String getDistritoTrabajo() {
+		return distritoTrabajo;
+	}
+
+	/**
+	 * @param distritoTrabajo the distritoTrabajo to set
+	 */
+	public void setDistritoTrabajo(String distritoTrabajo) {
+		this.distritoTrabajo = distritoTrabajo;
+	}
+
+	/**
+	 * @return the historia
+	 */
+	public String getHistoria() {
+		return historia;
+	}
+
+	/**
+	 * @param historia the historia to set
+	 */
+	public void setHistoria(String historia) {
+		this.historia = historia;
+	}
+
+	/**
+	 * @return the vendedorResponsable
+	 */
+	public String getVendedorResponsable() {
+		return vendedorResponsable;
+	}
+
+	/**
+	 * @param vendedorResponsable the vendedorResponsable to set
+	 */
+	public void setVendedorResponsable(String vendedorResponsable) {
+		this.vendedorResponsable = vendedorResponsable;
+	}
+
+	/**
+	 * @return the fechaNotifica
+	 */
+	public Date getFechaNotifica() {
+		return fechaNotifica;
+	}
+
+	/**
+	 * @param fechaNotifica the fechaNotifica to set
+	 */
+	public void setFechaNotifica(Date fechaNotifica) {
+		this.fechaNotifica = fechaNotifica;
+	}
+
+	/**
+	 * @return the infocorp
+	 */
+	public String getInfocorp() {
+		return infocorp;
+	}
+
+	/**
+	 * @param infocorp the infocorp to set
+	 */
+	public void setInfocorp(String infocorp) {
+		this.infocorp = infocorp;
+	}
+
+	/**
+	 * @return the calificaInforcorp
+	 */
+	public String getCalificaInforcorp() {
+		return calificaInforcorp;
+	}
+
+	/**
+	 * @param calificaInforcorp the calificaInforcorp to set
+	 */
+	public void setCalificaInforcorp(String calificaInforcorp) {
+		this.calificaInforcorp = calificaInforcorp;
+	}
+
+	/**
+	 * @return the fechaCalificado
+	 */
+	public Date getFechaCalificado() {
+		return fechaCalificado;
+	}
+
+	/**
+	 * @param fechaCalificado the fechaCalificado to set
+	 */
+	public void setFechaCalificado(Date fechaCalificado) {
+		this.fechaCalificado = fechaCalificado;
+	}
+
+	/**
+	 * @return the calificacionCliente
+	 */
+	public String getCalificacionCliente() {
+		return calificacionCliente;
+	}
+
+	/**
+	 * @param calificacionCliente the calificacionCliente to set
+	 */
+	public void setCalificacionCliente(String calificacionCliente) {
+		this.calificacionCliente = calificacionCliente;
+	}
+
+	/**
+	 * @return the numContrato
+	 */
+	public String getNumContrato() {
+		return numContrato;
+	}
+
+	/**
+	 * @param numContrato the numContrato to set
+	 */
+	public void setNumContrato(String numContrato) {
+		this.numContrato = numContrato;
+	}
+
+	/**
+	 * @return the lugarTrabajo
+	 */
+	public String getLugarTrabajo() {
+		return lugarTrabajo;
+	}
+
+	/**
+	 * @param lugarTrabajo the lugarTrabajo to set
+	 */
+	public void setLugarTrabajo(String lugarTrabajo) {
+		this.lugarTrabajo = lugarTrabajo;
+	}
+
+	/**
+	 * @return the registroReniec
+	 */
+	public Date getRegistroReniec() {
+		return registroReniec;
+	}
+
+	/**
+	 * @param registroReniec the registroReniec to set
+	 */
+	public void setRegistroReniec(Date registroReniec) {
+		this.registroReniec = registroReniec;
+	}
+
+	/**
+	 * @return the diasRetraso
+	 */
+	public Integer getDiasRetraso() {
+		return diasRetraso;
+	}
+
+	/**
+	 * @param diasRetraso the diasRetraso to set
+	 */
+	public void setDiasRetraso(Integer diasRetraso) {
+		this.diasRetraso = diasRetraso;
 	}
     
 }
