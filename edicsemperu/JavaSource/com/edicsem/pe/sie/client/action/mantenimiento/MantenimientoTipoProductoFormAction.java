@@ -86,7 +86,7 @@ public class MantenimientoTipoProductoFormAction extends
 	public String insertar() {
 		mensaje =null;
 		String paginaRetorno="";
-		objTipoProductoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(72));
+	//	objTipoProductoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(72));
 		
 		try {
 

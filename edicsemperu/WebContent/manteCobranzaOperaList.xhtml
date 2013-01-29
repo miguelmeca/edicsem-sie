@@ -156,7 +156,7 @@
 					</p:dataTable>
 				</p:fieldset>
 			</h:panelGrid>
-			<p:fieldset legend="Registro del Seguimiento" style="margin-top:20px">
+			<p:fieldset legend="Registro del Seguimiento" style="margin-top:20px"  >
 				<h:panelGrid columns="2">
 					<p:outputLabel value="#{message['operadora.tipollamada']}" for="tipo" />
 					<p:selectOneMenu id="tipo" filter="true" required="true"
@@ -176,7 +176,7 @@
 					<p:selectBooleanCheckbox value="#{mantenimientoCobranzaOperaSearchAction.enviarMensaje}"/>
 					<p:commandButton id="btn" value="Guardar" update="panel"
 						action="#{mantenimientoCobranzaOperaSearchAction.insertar}"
-						ajax="false" icon="ui-icon-check" />
+						ajax="false" icon="ui-icon-comment" />
 				</h:panelGrid>
 			</p:fieldset>
 

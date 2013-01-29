@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,7 +32,13 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 import com.edicsem.pe.sie.beans.SistemaIntegradoDTO;
+import com.edicsem.pe.sie.entity.ClienteSie;
+import com.edicsem.pe.sie.entity.CobranzaSie;
+import com.edicsem.pe.sie.entity.ContratoSie;
 import com.edicsem.pe.sie.service.facade.ClienteService;
+import com.edicsem.pe.sie.service.facade.ContratoEmpleadoService;
+import com.edicsem.pe.sie.service.facade.ContratoService;
+import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
 
 @ManagedBean(name = "migracion")
@@ -43,7 +50,7 @@ public class Migracion implements Serializable {
 	private List<SistemaIntegradoDTO> sistMig;
 	
 	@EJB
-	private ClienteService objClienteService;
+	private ContratoService objContratoService;
 		  
 	public Migracion() {
 	
@@ -85,31 +92,20 @@ public class Migracion implements Serializable {
 	}
 	
 	
-	public String subirCreditos() {
-
-		log.info("subirCreditos()");
-	
-
-		for (int i = 0; i < sistMig.size(); i++) {
-
-			SistemaIntegradoDTO cli = sistMig.get(i);
-			
-			System.out.println("cantidad: " + sistMig.size());
-			System.out.println("id 1: " + sistMig.get(i).getApepatcliente());
-			System.out.println("nombre 1: " + sistMig.get(i).getApematcliente());
+	public String subirBD() {
 		
-			// objClienteService.insertCliente(cli);
-		}
+		log.info("subirBD()");
+		
+		objContratoService.insertMigracion(sistMig);
+		
 		return null;
 	}
 
-	   public String handleFileUpload(FileUploadEvent event) throws ParseException {
+	public String handleFileUpload(FileUploadEvent event) throws ParseException {
 	    	log.info("entro file  ---> :D");
-			FacesMessage msg = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
-			FacesContext.getCurrentInstance().addMessage(null, msg);
 			
 			UploadedFile file = event.getFile();
-
+			
 			try {
 				InputStreamAFile(file.getInputstream(), file.getFileName());
 			} catch (IOException e1) {
@@ -117,8 +113,6 @@ public class Migracion implements Serializable {
 			}
 			
 			nombreArchivo = file.getFileName();
-			
-			/********aqui me quede*********/
 			
 			sistMig = new ArrayList<SistemaIntegradoDTO>();
 
@@ -141,7 +135,7 @@ public class Migracion implements Serializable {
 
 						List<HSSFCell> data = new ArrayList<HSSFCell>();
 
-						for (int i = 0; i < 31; i++) {
+						for (int i = 0; i < 71; i++) {
 
 							@SuppressWarnings("static-access")
 							HSSFCell cell = row.getCell(i,
@@ -154,45 +148,102 @@ public class Migracion implements Serializable {
 
 						if (tamano > 1) {
 							log.info(" >1 ");
-							SistemaIntegradoDTO cli = new SistemaIntegradoDTO();
+							SistemaIntegradoDTO sis = new SistemaIntegradoDTO();
 							if (data.get(0)!=null) {
-								String id = getCellValueAsString(data.get(0));
-								//cli.setIdcliente(Integer.parseInt(id)); --> Id de la BD sequencial
+								sis.setEmpresa(getCellValueAsString(data.get(0)));
+								if(!data.get(5).toString().isEmpty()){
+									sis.setFechaEntrega(DateUtil.convertStringToDate(getCellValueAsString(data.get(1))));
+								}
+								sis.setNumContrato(getCellValueAsString(data.get(5)));
 								
-								String nombreCompleto = getCellValueAsString(data.get(3));
+								String nombreCompleto = getCellValueAsString(data.get(6));
 								log.info("nombre completo "+nombreCompleto);
 								
 								String [ ] palabra = nombreCompleto.split("\\ ");
-								String numDoc = getCellValueAsString(data.get(4));
+								String numDoc = getCellValueAsString(data.get(7));
 								if(numDoc.length()==8){
-									cli.setNumdocumento(numDoc);
-								}else{
-									cli.setNumdocumento("0"+numDoc);
+									sis.setNumdocumento(numDoc);
 								}
-								log.info(" 5 "+data.get(5).toString());
-								if(!data.get(5).toString().isEmpty()){
-								cli.setFecnacimiento(DateUtil.convertStringToDate(getCellValueAsString(data.get(5))));
+								else if(numDoc.length()==6){
+									sis.setNumdocumento("00"+numDoc);
 								}
-								cli.setCorreo(getCellValueAsString(data.get(6)));
-								cli.setNumTelefono(getCellValueAsString(data.get(7)));
-								cli.setDireccion(getCellValueAsString(data.get(8)));
-								cli.setDistrito(getCellValueAsString(data.get(9)));
-								cli.setPlanoDistrito(getCellValueAsString(data.get(10)));
-								cli.setDirectrabajo(getCellValueAsString(data.get(13)));
-								cli.setCargotrabajo(getCellValueAsString(data.get(14)));
-								cli.setTelftrabajo(getCellValueAsString(data.get(15)));
+								else if(numDoc.length()==7){
+									sis.setNumdocumento("0"+numDoc);
+								}
+								log.info(" 5 "+data.get(8).toString());
+								if(data.get(8).toString().isEmpty()||data.get(8).toString().equals("")||data.get(8).toString().trim().equals("")){
 								
+								}else{
+									sis.setFecnacimiento(DateUtil.convertStringToDate(getCellValueAsString(data.get(8))));
+								}
+								sis.setCorreo(getCellValueAsString(data.get(9)));
+								sis.setNumTelefono(getCellValueAsString(data.get(10)));
+								sis.setDireccion(getCellValueAsString(data.get(11)));
+								sis.setDistrito(getCellValueAsString(data.get(12)));
+								sis.setPlanoDistrito(getCellValueAsString(data.get(13)));
+								sis.setLetraSector(getCellValueAsString(data.get(14)));
+								sis.setNumSector(getCellValueAsString(data.get(15)));
+								sis.setLugarTrabajo(getCellValueAsString(data.get(16)));
+								sis.setCargotrabajo(getCellValueAsString(data.get(17)));								
+								sis.setTelftrabajo(getCellValueAsString(data.get(18)));
+								sis.setAnexo(getCellValueAsString(data.get(19)));
+								sis.setDirectrabajo(getCellValueAsString(data.get(20)));
+								sis.setDistritoTrabajo(getCellValueAsString(data.get(21)));
+								sis.setPlanoTrabajo(getCellValueAsString(data.get(22)));
+								sis.setLetraSectorTrabajo(getCellValueAsString(data.get(23)));
+								sis.setNumSectorTrabajo(getCellValueAsString(data.get(24)));
+								if(!(data.get(25).toString().trim().equals(""))){
+									sis.setCantMercaderia(Integer.parseInt(getCellValueAsString(data.get(25)).toString().trim()));
+								}
+								sis.setTipoMercaderia(getCellValueAsString(data.get(26)));
+								sis.setCantCuotas(Integer.parseInt(getCellValueAsString(data.get(27))));
+								sis.setNumLetra(getCellValueAsString(data.get(28)));
+								sis.setImporteInicial(Double.parseDouble(getCellValueAsString(data.get(29))));
+								sis.setImporteCobrado(Double.parseDouble(getCellValueAsString(data.get(30))));
+								sis.setImportemasmora(Double.parseDouble(getCellValueAsString(data.get(31))));
+								sis.setFechaVencimiento(DateUtil.convertStringToDate(getCellValueAsString(data.get(32))));
+								log.info(" lugar de pago :D  "+getCellValueAsString(data.get(38)));
+								sis.setLugarPago(getCellValueAsString(data.get(38)));
+								sis.setBanco(getCellValueAsString(data.get(39)));
+								if(!(data.get(45).toString().isEmpty()||data.get(45).toString().equals("")||data.get(45).toString().trim().equals(""))){
+								sis.setFehaPago(DateUtil.convertStringToDate(getCellValueAsString(data.get(45))));
+								}
+								sis.setEncargadoCobranza(getCellValueAsString(data.get(52)));
+								sis.setVendedorResponsable(getCellValueAsString(data.get(53)));
+								if(data.get(55)!=null){
+									if(!(data.get(55).toString().isEmpty()||data.get(55).toString().equals("")||data.get(55).toString().trim().equals(""))){
+										sis.setFechaNotifica(DateUtil.convertStringToDate(getCellValueAsString(data.get(55))));
+									}
+								}
+								sis.setDiasRetraso(Integer.parseInt(getCellValueAsString(data.get(59))));
+								//dependiendo de los dias de retrazo se analiza el tipo de cliente.
+								
+								
+								sis.setInfocorp(getCellValueAsString(data.get(63)));
+								if(data.get(64)!=null){
+									if(!(data.get(64).toString().isEmpty()||data.get(64).toString().equals("")||data.get(64).toString().trim().equals(""))){
+										sis.setRegistroReniec(DateUtil.convertStringToDate(getCellValueAsString(data.get(64))));
+									}
+								}
+								sis.setCalificaInforcorp(getCellValueAsString(data.get(65)));
+								sis.setHistoria(getCellValueAsString(data.get(66)));
+								if(data.get(68)!=null){
+									if(!(data.get(68).toString().isEmpty()||data.get(68).toString().equals("")||data.get(68).toString().trim().equals(""))){
+										sis.setFechaCalificado(DateUtil.convertStringToDate(getCellValueAsString(data.get(68))));
+									}
+								}
+								sis.setCalificacionCliente(getCellValueAsString(data.get(69)));
 								
 								if(palabra.length==3){
 									log.info(" agrega");
-									cli.setNombrecliente(palabra[0]);
-									cli.setApepatcliente(palabra[1]);
-									cli.setApematcliente(palabra[2]);
+									sis.setNombrecliente(palabra[0]);
+									sis.setApepatcliente(palabra[1]);
+									sis.setApematcliente(palabra[2]);
 									
-									sistMig.add(cli);
+									sistMig.add(sis);
 									sheetData.add(data);
 								}else{
-									log.info(" nombres > 4  "+nombreCompleto);
+									log.info(" nombres > 4  ");
 								}
 								
 							}else {
@@ -201,38 +252,34 @@ public class Migracion implements Serializable {
 						}
 					}
 				}
-				FacesMessage msg2 = new FacesMessage(FacesMessage.SEVERITY_INFO,
-						"Leads", "Cargado exitosamente.");
-				FacesContext.getCurrentInstance().addMessage(null, msg2);
+				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+						Constants.MESSAGE_INFO_TITULO, "Cargó exitosamente");
+				FacesContext.getCurrentInstance().addMessage(null, msg);
 	
 				}
 			catch (IOException e) {
 				e.printStackTrace();
-				FacesMessage msg2 = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-						"Leads", " errores -> IOException.");
+				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+						"Error Formato EXCEL", e.getMessage());
 
-				FacesContext.getCurrentInstance().addMessage(null, msg2);
-
-				sistMig = null;
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+				
+				sistMig = new ArrayList<SistemaIntegradoDTO>();
 
 				return null;
-	    
-}finally {
-	if (fis != null) {
-		try {
-			fis.close();
-		} catch (IOException e) {
-
-			e.printStackTrace();
+	    }finally {
+	    	if (fis != null) {
+			try {
+				fis.close();
+			} catch (IOException e) {
+	
+				e.printStackTrace();
+			}
 		}
 	}
 
-}
-
 log.info("cantidad: " + sistMig.size());
-log.info("nombre: " + sistMig.get(0).getNombrecliente());
-log.info("ape pat: " + sistMig.get(0).getApepatcliente());
-log.info("ape mat: " + sistMig.get(1).getApematcliente());
+log.info("nombre: " + sistMig.get(0).getNombrecliente() + " ape pat: " + sistMig.get(0).getApepatcliente()+" ape mat: " + sistMig.get(1).getApematcliente());
 
 return null;
 

@@ -46,11 +46,12 @@
 
 				<f:facet name="footer">
 					<div align="left">
-						<p:commandLink value="Nuevo Punto/Almacen"
+						<p:commandButton value="Nuevo Punto/Almacen" icon="ui-icon-star" id="nuevop"
 							action="#{almacenForm.agregar}"	title="Ingresar el Nuevo Punto de Venta/Almacen">
 							<f:setPropertyActionListener value="#{true}"
 							target="#{almacenForm.defectoUbigeo}" />
-						</p:commandLink>
+						</p:commandButton>
+						<p:tooltip for="nuevop"/>
 					</div>
 				</f:facet>
 			</p:dataTable>
