@@ -45,7 +45,7 @@
 				</p:inputText>
 				<p:message for="desc_prod" />
 				<h:outputText value="#{message['mantenimiento.producto.detalle']}" />
-				<p:inputTextarea id="detalle" size="10"
+				<p:inputTextarea id="detalle" size="10" autoResize="false" 
 					value="#{productoForm.objProductoSie.detalleproducto}"
 					rows="8" cols="50" required="true"
 					requiredMessage="#{message['mantenimiento.producto.detalle.validation']}" />
@@ -53,7 +53,7 @@
 				<p:message for="detalle" />
 				
 				<h:outputText value="#{message['mantenimiento.producto.unidad']}" rendered="#{productoForm.newRecord!=true}" />
-				<p:inputText id="unidadProducto" size="10"
+				<p:inputText id="unidadProducto" size="10" 
 					value="#{productoForm.objProductoSie.unidproducto}"
 					required="true" maxlength="10"
 					requiredMessage="#{message['mantenimiento.producto.unidad.validation']}" rendered="#{productoForm.newRecord!=true}" />
