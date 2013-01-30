@@ -49,7 +49,7 @@ body {
         background: #2EFE64;
 }
 .colorCeleste{
-        background: #2ECCFA;
+        background: #7EE2EB;
 }
 .colorPlomo{
         background: #D8D8D8;
@@ -105,7 +105,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	<f:loadBundle var="message"
 		basename="com.edicsem.pe.sie.client.properties.ApplicationResources" />
 	<p:layout fullPage="true">
-		<p:layoutUnit position="north" size="115">
+		<p:layoutUnit position="north" size="110">
 			<div id="header" class="ui-widget ui-widget-header">
 				<div id="logo">
 					<img src="#{request.contextPath}/images/edicsem.png" alt="Logo" style="height: 95px " />
@@ -1099,8 +1099,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 		<p:dialog header="Ingrese Nuevo Tipo de Producto" widgetVar="DialogTipoProd"
 			showEffect="fade" hideEffect="explode" modal="true" width="300"
 			position="center" resizable="false">
-			<h:panelGrid id="display" columns="2" cellpadding="2"
-				style="margin:0 auto;">
+			<h:panelGrid id="display" columns="2" cellpadding="4">
 				<h:outputText value="#{message['codigo.tipoProducto']}" />
 				<h:panelGroup>
 					<p:inputMask mask="aa999" id="codigo"
@@ -1227,7 +1226,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 <h:form>
 
 		<p:confirmDialog id="confirmDeshabilitarConEmp"
-			message="Los cambios se realizaran despues de hacer clic en Guardar?" width="325"
+			message="Confirma que desea eliminar dicho contrato?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
 			header="Confirm" severity="alert" widgetVar="confirmationConEmp"
 			position="center">

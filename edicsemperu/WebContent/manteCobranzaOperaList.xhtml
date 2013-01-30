@@ -9,8 +9,7 @@
 			Cobranzas</h1>
 		<h:form id="parametrosList" prependId="false">
 			<p:messages showDetail="true" />
-			<p:fieldset legend="Buscar Cliente" style="margin-top:20px">
-			</p:fieldset>
+			
 			<p:fieldset legend="Lista de Cobranzas">
 				<p:dataTable id="listaPersonas" var="p"
 					value="#{mantenimientoCobranzaOperaSearchAction.cobranzaOperaList}"
@@ -39,7 +38,7 @@
 					</p:column>
 					<p:column filterBy="#{p.tbCobranza.cantcuotas}">
 						<f:facet name="header">
-							<h:outputText value="Nro de Cuotas" />
+							<h:outputText value="Nro de Cuota" />
 						</f:facet>
 						<h:outputText value="#{p.tbCobranza.cantcuotas}" />
 					</p:column>
@@ -65,30 +64,32 @@
 			</p:fieldset>
 		</h:form>
 		<h:form id="parametrosList2" prependId="false">
-			<h:panelGrid columns="2">
+			<h:panelGrid columns="3" cellpadding="5" >
 				<p:fieldset legend="Datos del Cliente" style="margin-top:20px">
-					<h:panelGrid columns="2">
-						<h:outputText value="Nombres Completos :" />
-						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.nombrecliente}" />
-						<h:outputText value="Correo :" />
+					<h:panelGrid columns="2" cellpadding="5" >
+						<h:outputText value="Nombres Completos " />
+						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.nombrecliente}"  style="font-weight:bold"/>
+						<h:outputText value="Apellido Paterno " />
+						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.apepatcliente}"  style="font-weight:bold"/>
+						<h:outputText value="Apellido Materno  " />
+						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.apematcliente}"  style="font-weight:bold"/>
+						<h:outputText value="Correo " />
 						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.correo}" />
-						<h:outputText value="Dirección :" />
+						<h:outputText value="Dirección " />
 						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.directrabajo}" />
-						<h:outputText value="Distrito :" />
+						<h:outputText value="Distrito  " />
 						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.telftrabajo}" />
-						<h:outputText value="Empresa donde trabaja :" />
+						<h:outputText value="Empresa donde trabaja " />
 						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.empresatrabajo}" />
-						<h:outputText value="Cargo :" />
+						<h:outputText value="Cargo " />
 						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.cargotrabajo}" />
-					</h:panelGrid>
-					<h:panelGrid columns="3">
-						<h:outputText value="Teléfono :" />
+						<h:outputText value="Teléfonos" />
+						<p:spacer/>
+						</h:panelGrid>
 						<p:dataTable
 							value="#{mantenimientoCobranzaOperaSearchAction.listatelefono}" var="t"
 							rowStyleClass="#{t.operadorTelefonico eq 'Claro' ? 'colorRojo': (t.operadorTelefonico eq 'Movistar' ? 'colorCeleste': 'color3') }"
-							id="DetalleTelefono" paginator="false" rows="5"
-							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-							rowsPerPageTemplate="5,10,15" widgetVar="telefonotable"
+							id="DetalleTelefono"  widgetVar="telefonotable" 
 							emptyMessage="No se encontro registros">
 							<f:facet name="header"/>
 							<p:column>
@@ -99,7 +100,7 @@
 							</p:column>
 							<p:column>
 								<f:facet name="header">
-									<h:outputText value="Tipo de Tel." />
+									<h:outputText value="Tipo" />
 								</f:facet>
 								<h:outputText value="#{t.tipoTelef}" />
 							</p:column>
@@ -109,24 +110,28 @@
 								</f:facet>
 								<h:outputText value="#{t.operadorTelefonico}" />
 							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Desc." />
+								</f:facet>
+								<h:outputText value="#{t.descTelefono}" />
+							</p:column>
 						</p:dataTable>
-					</h:panelGrid>
 				</p:fieldset>
+
 				<p:fieldset legend="Detalle de Pagos" style="margin-top:20px">
-					<h:panelGrid columns="2">
+					<h:panelGrid columns="2"  cellpadding="4" >
 						<h:outputText value="Empresa :" />
-						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objContrato.tbEmpresa.descripcion}" />
+						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objContrato.tbEmpresa.descripcion}" style="font-weight:bold"  />
 						<h:outputText value="Nro de Cuenta :" />
-						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objContrato.tbEmpresa.numcuenta}" />
+						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objContrato.tbEmpresa.numcuenta}"  style="font-weight:bold; font-size: x-large "/>
 						<h:outputText value="Teléfonos :" />
-						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objContrato.tbEmpresa.numtelefono}" />
+						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objContrato.tbEmpresa.numtelefono}" style="font-weight:bold" />
 					</h:panelGrid>
 					<p:dataTable
 						value="#{mantenimientoCobranzaOperaSearchAction.detallePagos}" var="p"
 						rowStyleClass="#{mantenimientoCobranzaOperaSearchAction.fechoy le  p.fecvencimiento  ? null: (empty p.fecpago? 'colorRojo' : 'colorVerde')}"
-						id="DetallePagos" paginator="false" rows="10"
-						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-						rowsPerPageTemplate="5,10,15" widgetVar="pagostable"
+						id="DetallePagos"  widgetVar="pagostable"
 						emptyMessage="No se encontro registros">
 						<f:facet name="header"/>
 						<p:column>
@@ -143,7 +148,7 @@
 						</p:column>
 						<p:column>
 							<f:facet name="header">
-								<h:outputText value="Fec. de Vencimiento" />
+								<h:outputText value="Fec. Vencimiento" />
 							</f:facet>
 							<h:outputText value="#{p.fechaVencimientoString}" />
 						</p:column>
@@ -155,8 +160,34 @@
 						</p:column>
 					</p:dataTable>
 				</p:fieldset>
+				<p:fieldset legend="Productos" style="margin-top:20px">
+					<p:dataTable
+						value="#{mantenimientoCobranzaOperaSearchAction.productoContratoList}" var="r"
+						widgetVar="pagostable" rowStyleClass="#{r.tbEstadoGeneral.idestadogeneral ==70 ? 'colorRojo':  'null' }" 
+						emptyMessage="No se encontro registros">
+						<f:facet name="header"/>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Descripción" />
+							</f:facet>
+							<h:outputText value="#{r.tbProducto.descripcionproducto}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Cantidad" />
+							</f:facet>
+							<h:outputText value="#{r.cantidad}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Estado" />
+							</f:facet>
+							<h:outputText value="#{r.tbEstadoGeneral.descripcion}" />
+						</p:column>
+					</p:dataTable>
+				</p:fieldset>
 			</h:panelGrid>
-			<p:fieldset legend="Registro del Seguimiento" style="margin-top:20px"  >
+			<p:fieldset legend="Registro del Seguimiento" style="margin-top:20px; width:70%"   >
 				<h:panelGrid columns="2">
 					<p:outputLabel value="#{message['operadora.tipollamada']}" for="tipo" />
 					<p:selectOneMenu id="tipo" filter="true" required="true"
@@ -166,6 +197,7 @@
 						<f:selectItem itemValue="#{null}" itemLabel="Seleccione una opción" />
 						<f:selectItems value="#{comboAction.tipollamada}" />
 					</p:selectOneMenu>
+					
 					<p:outputLabel value="#{message['operadora.observacion']}" for="observacion" />
 					<p:inputTextarea id="observacion"
 						value="#{mantenimientoCobranzaOperaSearchAction.objCobranzaOpera.observaciones}"

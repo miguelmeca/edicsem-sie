@@ -54,10 +54,10 @@
 			<p:inputText id="nom" value="#{contratoForm.nombreCliente}" required="true"/>
 			<p:message for="nom"  />
 			<h:outputText value="Apellido Paterno: " />
-			<p:inputText id="app" value="#{contratoForm.apeMatCliente}" required="true"/>
+			<p:inputText id="app" value="#{contratoForm.apePatCliente}" required="true"/>
 			<p:message for="app"  />
 			<h:outputText value="Apellido Materno: " />
-			<p:inputText id="apm" value="#{contratoForm.apePatCliente}" required="true"/>
+			<p:inputText id="apm" value="#{contratoForm.apeMatCliente}" required="true"/>
 			<p:message for="apm"  />
 			</h:panelGrid>
 			<p:commandButton value="Buscar" action="#{contratoForm.consultar}" update="message" ajax="false"

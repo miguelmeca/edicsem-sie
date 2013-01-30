@@ -13,7 +13,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.primefaces.event.FlowEvent;
@@ -81,7 +80,8 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	private Date fechaInicioContrato;
 	private int idContrato;
 	private String idt;
-	 
+	List<String> userList ;
+	List<String> dniList;
 	private List<ContratoEmpleadoSie> contratoEmpleadoList, ContratoDeshabilitado;
 	private List<DetEmpresaEmpleadoSie> detEmpresaEmpList;
 	
@@ -511,9 +511,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		TelefonoPersonaSie t = objTelefonoService.buscarTelefonoXIdempleado(objEmpleado.getIdempleado());
 		objDomicilio = objDomicilioService.buscarDomicilioXIdempleado(objEmpleado.getIdempleado());
 		
-		log.info(" id " + c.getIdempleado()+ " nombre " + c.getNombreemp() ); 
-		log.info(" id " + t.getIdtelefonopersona()+ " nombre " + t.getTelefono() );
-		
 		/*Seteo para mostrar los datos en el form*/
 		/*seteo empleado*/
 		objEmpleado.setIdempleado(c.getIdempleado());
@@ -554,7 +551,15 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
         	contratoEmpleadoList.get(i).setTipo("Agregado");
         	contratoEmpleadoList.get(i).setItem(i+1);
         }
-        /*método bolean necesario para actualizar que retorna al form */  
+        
+        //validar usuario
+		userList =  objEmpleadoService.listarUsuario();
+		userList.remove(objEmpleado.getUsuario());
+		
+		//validar DNI
+		dniList =  objEmpleadoService.listarDni();
+		dniList.remove(objEmpleado.getNumdocumento());
+		
 		setNewRecord(false);
 		return getViewMant();
 	}
@@ -564,7 +569,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	 */
 	public String insertar() throws Exception {
 		String paginaretorno="";
-		if(StringUtils.equals(objEmpleado.getContrasena(), confcontra)){ /*probar compararcontra*/
 			/*encripta la contraseña*/
 		    objEmpleado.setContrasena(SecurityLogin.getMD5(objEmpleado.getContrasena()));
 			log.info("probando MD5..."+objEmpleado.getContrasena());
@@ -572,28 +576,21 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 				if (log.isInfoEnabled()) {
 					log.info("Entering my method 'insertar(registrar, actualizar)'"+ objEmpleado.getNombreemp());
 				}
-				//validar usuario
-				List<String> userList =  objEmpleadoService.listarUsuario();
+				
 				if(userList.contains(objEmpleado.getUsuario())){
 					mensaje="Dicho usuario ya existe en el sistema";
 					msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
 							Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-					FacesContext.getCurrentInstance().addMessage(null, msg);
 				}
-				
-				//validar DNI
-				List<String> dniList =  objEmpleadoService.listarDni();
-				if(dniList.contains(objEmpleado.getNumdocumento())){
+				else if(dniList.contains(objEmpleado.getNumdocumento())){
 					mensaje="Dicho número de documento le pertenece a otro empleado ";
 					msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
 							Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-					FacesContext.getCurrentInstance().addMessage(null, msg);
 				}
-				if(contratoEmpleadoList.size()>0){
-					mensaje="Debe registrar el contrato con dicho empleado ";
+				else if(contratoEmpleadoList.size()<0){
+					mensaje="Debe registrar el contrato del empleado ";
 					msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
 							Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-					FacesContext.getCurrentInstance().addMessage(null, msg);
 				}
 				else{
 				objDomicilio.setTbUbigeo(objUbigeoService.findUbigeo(Integer.parseInt(idUbigeo)));
@@ -615,12 +612,12 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 					log.info("insertando..... ");
 					mensaje ="Se actualizó correctamente";
 				}
-				objEmpleado = new EmpleadoSie();
 				paginaretorno= mantenimientoEmpleadoSearch.listar();
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 						Constants.MESSAGE_INFO_TITULO, mensaje);
-				FacesContext.getCurrentInstance().addMessage(null, msg);
+				objEmpleado = new EmpleadoSie();
 				}
+				FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -629,12 +626,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 			}
-	   }
-		else{
-		msg = new FacesMessage(FacesMessage.SEVERITY_WARN,Constants.MESSAGE_INFO_TITULO , Constants.MESSAGE_PASSWORDS_DESIGUALES);
-		FacesContext.getCurrentInstance().addMessage(null, msg);
-		paginaretorno = getViewMant();
-		}
 		return paginaretorno;
 	}
 	

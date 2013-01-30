@@ -59,7 +59,7 @@ public class MantenimientoContratoFormAction extends
 
 	private String mensaje;
 	public static Log log = LogFactory.getLog(MantenimientoContratoFormAction.class);
-	private int Tipocasa,idtipodoc,idUbigeo, idempresa,tipoVenta,tipopago, idpaquete, idProducto, idempleadoExpositor, idempleadoVendedor,idTelefono;
+	private int Tipocasa,idtipodoc,idUbigeo, idempresa,tipoVenta,tipopago, idpaquete, idProducto, idempleadoExpositor, idempleadoVendedor, idempleadoColaborador, idTelefono;
 	private String idProvincia, idDepartamento,  ubigeoDefecto,selectTelef;
 	private ProductoSie objProductoSie;
 	private ClienteSie objClienteSie;
@@ -79,7 +79,6 @@ public class MantenimientoContratoFormAction extends
 	private boolean skip;
 	private PaqueteSie objPaquete;
 	private DetPaqueteSie objDetPaquete;
-	private List<String> colaboradorList;
 	private List<ContratoSie> contratoXClienteList;
 	private Date dhoy, dValidoFecNac;
 	private BigDecimal totalacumulado;
@@ -140,6 +139,7 @@ public class MantenimientoContratoFormAction extends
 		selectTelef="";
 		idempleadoExpositor=0;
 		idempleadoVendedor=0;
+		idempleadoColaborador=0;
 		Tipocasa=0;idUbigeo=0;
 		idempresa = 0;
 		ubigeoDefecto = "";
@@ -189,27 +189,11 @@ public class MantenimientoContratoFormAction extends
 	public void listarempleados(){
 		comboManager.setIdEmpresa(idempresa);
 	}
+	
 	public void cambiar2() {
 		comboManager.setIdDepartamento(getIdDepartamento());
 		comboManager.setIdProvincia(getIdProvincia());
 		log.info("cambiar 2  :D  --- ");
-	}
-
-	public void cambioUbica() {
-		log.info("Ubigeo -------->" + idUbigeo + " " + ubigeoDefecto);
-		String dist = "";
-		Iterator it = comboManager.getUbigeoDistriItems().entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry e = (Map.Entry) it.next();
-			log.info("key " + e.getKey() + " value " + e.getValue());
-			if (e.getValue().toString().equals(idUbigeo+"")) {
-				log.info("xxx -" + e.getKey() + "- value -" + idUbigeo+"-");
-				dist = (String) e.getKey();
-				log.info("dist " + dist);
-				break;
-			}
-		}
-		ubigeoDefecto = "LIMA-LIMA-" + dist;
 	}
 
 	public String ingresarUbigeo() {
@@ -234,7 +218,7 @@ public class MantenimientoContratoFormAction extends
 			Map.Entry e = (Map.Entry) it2.next();
 			log.info("key " + e.getKey() + " value " + e.getValue());
 			if (e.getValue().toString().equals(idProvincia)) {
-				ubigeoDefecto += "-" + (String) e.getKey();
+				ubigeoDefecto += "- " + (String) e.getKey();
 				log.info("ubigeo prov " + ubigeoDefecto);
 				break;
 			}
@@ -243,7 +227,7 @@ public class MantenimientoContratoFormAction extends
 			Map.Entry e = (Map.Entry) it3.next();
 			log.info("key " + e.getKey() + " value " + e.getValue());
 			if (e.getValue().toString().equals(idUbigeo+"")) {
-				ubigeoDefecto += "-" + (String) e.getKey();
+				ubigeoDefecto += "- " + (String) e.getKey();
 				log.info("ubigeo distrito " + ubigeoDefecto);
 				break;
 			}
@@ -574,6 +558,7 @@ public class MantenimientoContratoFormAction extends
 	 */
 	public String insertar() {
 		mensaje=null;
+		String paginaRetorno = null;
 		List<Integer> detidEmpleadosList = new ArrayList<Integer>();
 		HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 		EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
@@ -582,30 +567,30 @@ public class MantenimientoContratoFormAction extends
 				log.info("Entering my method 'insertar()' ");
 			}
 			List<String> dniList =  objEmpleadoService.listarDni();
-			
-			if(dniList.contains(objClienteSie.getNumdocumento())){
+			if(totalacumulado.doubleValue()!=precioProducto){
+				mensaje="La suma del cronograma de pagos no es el mismo que el precio total ";
+				msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+						Constants.MESSAGE_INFO_TITULO, mensaje);
+			}
+			else if(dniList.contains(objClienteSie.getNumdocumento())){
 				mensaje="Dicho número de documento le pertenece a otro empleado ";
 				msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-						Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-				FacesContext.getCurrentInstance().addMessage(null, msg);
+						Constants.MESSAGE_INFO_TITULO, mensaje);
 			}
-			if( telefonoList.size()==0){
+			else if( telefonoList.size()==0){
 				mensaje= "Debe ingresar telefonos de referencia";
 				msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-						Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-				FacesContext.getCurrentInstance().addMessage(null, msg);
+						Constants.MESSAGE_INFO_TITULO, mensaje);
 			}
 			else if( detPaqueteList.size()==0){
 				mensaje= "Debe ingresar un producto como mínimo ";
 				msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-						Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-				FacesContext.getCurrentInstance().addMessage(null, msg);
+						Constants.MESSAGE_INFO_TITULO, mensaje);
 			}
 			else if( cobranzaList.size()==0){
 				mensaje= "Debe ingresar el detalle de cobranza";
 				msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-						Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-				FacesContext.getCurrentInstance().addMessage(null, msg);
+						Constants.MESSAGE_INFO_TITULO, mensaje);
 			}
 			if(mensaje ==null){
 			if (isNewRecord()) {
@@ -628,13 +613,8 @@ public class MantenimientoContratoFormAction extends
 					detidEmpleadosList.add(getIdempleadoExpositor());
 				if(getIdempleadoVendedor()!=0)
 					detidEmpleadosList.add(getIdempleadoVendedor());
-				if(getColaboradorList().size()>0){
-					for (int i = 0; i < colaboradorList.size(); i++) {
-						log.info("colaborador "+colaboradorList.get(i));
-						int q= Integer.parseInt(colaboradorList.get(i));
-						log.info("colaborador 2 "+q);
-						detidEmpleadosList.add(q);
-					}
+				if(getIdempleadoColaborador()!=0){
+					detidEmpleadosList.add(getIdempleadoColaborador());
 				}
 				log.info("a insertar contratito");
 				if(tipopago==1){
@@ -647,11 +627,13 @@ public class MantenimientoContratoFormAction extends
 				mensaje = "Se inserto correctamente";
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 						Constants.MESSAGE_INFO_TITULO, mensaje);
-				FacesContext.getCurrentInstance().addMessage(null, msg);
-			} else {
-				log.info("a actualizar  ");
+				
+			}paginaRetorno =Constants.CONSULTA_CONTRATO_FORM_PAGE;
+			}else{
+				paginaRetorno = getViewMant();
 			}
-			}
+
+			FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -660,7 +642,7 @@ public class MantenimientoContratoFormAction extends
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		return Constants.CONSULTA_CONTRATO_FORM_PAGE;
+		return paginaRetorno;
 	}
 	
 	/* (non-Javadoc)
@@ -685,10 +667,17 @@ public class MantenimientoContratoFormAction extends
 			telefonoList = objTelefonoService.listarTelefonoEmpleadosXidcliente(objClienteSie.getIdcliente());
 			detProductoContrato = objDetProductoService.listarDetProductoContratoXContrato(contratoXClienteList.get(0).getIdcontrato());
 			cobranzaList =objCobranzaService.listarCobranzasXidcontrato(contratoXClienteList.get(0).getIdcontrato());
-			
 		}
+		numDniCliente=null;
+		codigoContrato=null;
+		nombreCliente=null;
+		apePatCliente=null;
+		apeMatCliente=null;
 		log.info(" lista x consulta "+contratoXClienteList.size());
-		
+		mensaje = "Consulto realizada";
+		msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				Constants.MESSAGE_INFO_TITULO, mensaje);
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return Constants.CONSULTA_CONTRATO_FORM_PAGE;
 	}
 	
@@ -722,7 +711,6 @@ public class MantenimientoContratoFormAction extends
 		objDetPaquete = new DetPaqueteSie();
 		nuevoTelef = new TelefonoPersonaSie();
 		contratoXClienteList= new ArrayList<ContratoSie>();
-		colaboradorList = new ArrayList<String>();
 		domicilioList = new ArrayList<DomicilioPersonaSie>();
 	}
 	
@@ -1233,20 +1221,6 @@ public class MantenimientoContratoFormAction extends
 	}
 
 	/**
-	 * @return the colaboradorList
-	 */
-	public List<String> getColaboradorList() {
-		return colaboradorList;
-	}
-
-	/**
-	 * @param colaboradorList the colaboradorList to set
-	 */
-	public void setColaboradorList(List<String> colaboradorList) {
-		this.colaboradorList = colaboradorList;
-	}
-
-	/**
 	 * @return the idTelefono
 	 */
 	public int getIdTelefono() {
@@ -1506,6 +1480,20 @@ public class MantenimientoContratoFormAction extends
 	 */
 	public void setTotalacumulado(BigDecimal totalacumulado) {
 		this.totalacumulado = totalacumulado;
+	}
+
+	/**
+	 * @return the idempleadoColaborador
+	 */
+	public int getIdempleadoColaborador() {
+		return idempleadoColaborador;
+	}
+
+	/**
+	 * @param idempleadoColaborador the idempleadoColaborador to set
+	 */
+	public void setIdempleadoColaborador(int idempleadoColaborador) {
+		this.idempleadoColaborador = idempleadoColaborador;
 	}
 	
 }

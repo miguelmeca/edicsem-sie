@@ -38,14 +38,10 @@
 		
 	<p:column headerText="Editar">
 	<center>
-<p:commandButton
-
-oncomplete="DialogTipoProd.show()"
+<p:commandButton oncomplete="DialogTipoProd.show()"
 action="#{mantenimientoTipoProductoFormAction.update}"
-update=":NuevoModificaTipoProd:display"
-icon="ui-icon ui-icon-pencil"
-			                    
-			  >
+update=":NuevoModificaTipoProd:display" title="Editar tipo"
+icon="ui-icon ui-icon-pencil">
 			                    
 <f:setPropertyActionListener value="#{tipoProducto}" 
 target="#{mantenimientoTipoProductoFormAction.objTipoProductoSie}" />
@@ -59,10 +55,10 @@ target="#{mantenimientoTipoProductoFormAction.objTipoProductoSie}" />
  
  <!--**********INICIO 	DESACTIVAR**********-->
 
-<p:column headerText="Eliminar">
+<p:column headerText="Desactivar">
 <center>	
 <p:commandButton id="showConfirmTipoProducto" 				  
-				 icon="ui-icon-trash"
+				 icon="ui-icon-trash" title="Desactivar tipo"
 				 onclick="confirmationTipoProducto.show()"> 
 	 							
 <f:setPropertyActionListener
@@ -81,10 +77,11 @@ target="#{mantenimientoTipoProductoFormAction.objTipoProductoSie}" />
 		
 		
 		<p:commandButton value="Nuevo Tipo de Producto"  update=":NuevoModificaTipoProd:display" 
-				icon="ui-icon-folder-open"
+				icon="ui-icon-star" id="nuevoT"
 				action="#{mantenimientoTipoProductoFormAction.agregar}"
 				oncomplete="DialogTipoProd.show()" 	title="Ingresar Nuevo Tipo de Producto"	>
 </p:commandButton>
+<p:tooltip for="nuevoT"/>
 </div>
 </f:facet>
 			</p:dataTable>

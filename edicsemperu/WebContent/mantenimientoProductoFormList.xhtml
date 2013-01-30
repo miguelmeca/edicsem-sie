@@ -12,13 +12,11 @@
 		<h:form id="formManteProdLista" >
 		<p:messages id="message" showDetail="true" />
 			<p:dataTable value="#{productoSearch.productoList}" var="p" 
-					id="listaProductos" paginator="true" rows="5"
+					id="listaProductos" paginator="true" rows="10"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15" widgetVar="table"
 					emptyMessage="No se encontro registros">
-					<f:facet name="header">
-Mantenimiento Producto
-        </f:facet>
+					<f:facet name="header">Mantenimiento Producto </f:facet>
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Codigo" />
@@ -59,7 +57,7 @@ Mantenimiento Producto
 					</f:facet>
 				</p:dataTable>
 				<p:blockUI block="listaProductos" trigger="listaProductos">cargando<br />
-				<p:graphicImage value="/images/ajax_loader.gif"/></p:blockUI>
+				<p:graphicImage   value="/images/ajax_loader.gif"/></p:blockUI>
 		</h:form>
 	</ui:define>
 </ui:composition>

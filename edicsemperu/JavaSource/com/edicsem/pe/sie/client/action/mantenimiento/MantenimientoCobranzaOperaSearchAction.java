@@ -20,12 +20,14 @@ import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.CobranzaOperadoraSie;
 import com.edicsem.pe.sie.entity.CobranzaSie;
 import com.edicsem.pe.sie.entity.ContratoSie;
+import com.edicsem.pe.sie.entity.DetProductoContratoSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.service.facade.ClienteService;
 import com.edicsem.pe.sie.service.facade.CobranzaOperaService;
 import com.edicsem.pe.sie.service.facade.CobranzaService;
 import com.edicsem.pe.sie.service.facade.ContratoService;
+import com.edicsem.pe.sie.service.facade.DetProductoContratoService;
 import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.TipoLLamadaService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -44,6 +46,7 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private List<CobranzaOperadoraSie> filtrarCobranza;
 	private List<CobranzaSie> detallePagos;
 	private List<TelefonoPersonaSie> listatelefono;
+	private List<DetProductoContratoSie> productoContratoList;
 	private Date fechoy;
 	private int tipollamada; 
 	private boolean editMode;
@@ -68,6 +71,8 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private TelefonoEmpleadoService objTelefonoService;
 	@EJB 
 	private TipoLLamadaService objTipoLLamadaService;
+	@EJB
+	private DetProductoContratoService objProductoContratoService;
 	
 	public static Log log = LogFactory.getLog(MantenimientoCobranzaOperaSearchAction.class);
 	
@@ -92,7 +97,6 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#listar()
 	 */
-	/*método que lista al hacer click en el menú del template*/
 	public String listar() {
 		log.info("listarcobranzaopera 'MantenimientoCobranzaOperadoraSieSearchAction' ");
 		log.info(" session  "+sessionUsuario.getUsuario());
@@ -104,30 +108,25 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	}
 	
 	public String mostrar() throws Exception {
-		//int idcontrato;
-		log.info("mostrar detalle de pagos");
+		log.info("mostrar()");
 		idcontrato = objCobranzaOpera.getTbCobranza().getTbContrato().getIdcontrato();
 		// comenzamos a mostrar el detalles
-				log.info("listarDetalleDePagos 'MantenimientoCobranzasPorCuotasSearchAction' ");
-				detallePagos = objCobranzaService.listarCobranzasXidcontrato(idcontrato);
-				if (detallePagos == null) {
-					detallePagos = new ArrayList<CobranzaSie>();
-				}
+			log.info("listarDetalleDePagos 'MantenimientoCobranzasPorCuotasSearchAction' ");
+			detallePagos = objCobranzaService.listarCobranzasXidcontrato(idcontrato);
+			if (detallePagos == null) {
+				detallePagos = new ArrayList<CobranzaSie>();
+			}
 		objContrato = objContratoService.findContrato(idcontrato);
 	    // mostramos los datos del cliente
-		ClienteSie c = objClienteService.findCliente(objCobranzaOpera.getTbCobranza().getIdcliente()); 		
-		objcliente.setIdcliente(c.getIdcliente());
-		objcliente.setNombrecliente(c.getNombrecliente());
-		objcliente.setCorreo(c.getCorreo());
-		objcliente.setDirectrabajo(c.getDirectrabajo());
-		objcliente.setEmpresatrabajo(c.getEmpresatrabajo());
-		objcliente.setCargotrabajo(c.getCargotrabajo());
-		objcliente.setTelftrabajo(c.getTelftrabajo());
+		objcliente = objClienteService.findCliente(objCobranzaOpera.getTbCobranza().getIdcliente());
 		log.info("listartelefonos x idcliente");
 		listatelefono = objTelefonoService.listarTelefonoEmpleadosXidcliente(objcliente.getIdcliente());
 		if (listatelefono == null) {
 			listatelefono = new ArrayList<TelefonoPersonaSie>();
 		}
+		//productos del contrato
+		productoContratoList =objProductoContratoService.listarDetProductoContratoXContrato(idcontrato);
+		
 		return getViewList();
 	}
 	
@@ -140,13 +139,9 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 			if(SMTPConfig.sendMail("Seguimiento del cliente",objCobranzaOpera.getObservaciones(),"geraldine8513@gmail.com")){
 				   
 				   log.info("envío Correcto");
-				    
 				  }else {
-					  
 			       log.info("envío Fallido");
-				 
 				 }
-			
 			}	
 				objCobranzaOpera.setObservaciones(objCobranzaOpera.getObservaciones());
 				objCobranzaOpera.setTbTipoLlamada(objTipoLLamadaService.findTipoLLamada(tipollamada));
@@ -422,6 +417,21 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	 */
 	public void setFechoy(Date fechoy) {
 		this.fechoy = fechoy;
+	}
+
+	/**
+	 * @return the productoContratoList
+	 */
+	public List<DetProductoContratoSie> getProductoContratoList() {
+		return productoContratoList;
+	}
+
+	/**
+	 * @param productoContratoList the productoContratoList to set
+	 */
+	public void setProductoContratoList(
+			List<DetProductoContratoSie> productoContratoList) {
+		this.productoContratoList = productoContratoList;
 	}
 		
 }

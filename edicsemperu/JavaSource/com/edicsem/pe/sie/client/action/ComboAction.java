@@ -181,6 +181,7 @@ public class ComboAction {
 	}
 
 	public void cambiar() {
+		log.info(" tipo  prod "+tipoProducto);
 		if (tipoProducto != -1)
 			productositems = dataProducto.get(tipoProducto);
 		else
