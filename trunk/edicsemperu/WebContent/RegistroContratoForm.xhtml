@@ -85,7 +85,7 @@
 					style="width:220px">
 					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
-					<p:ajax update="ubigeoDefecto" listener="#{contratoForm.cambioUbica}"></p:ajax>
+					<p:ajax update="ubigeoDefecto" listener="#{contratoForm.ingresarUbigeo}"/>
 				</p:selectOneMenu>
 				<p:spacer/>
 				
@@ -138,7 +138,7 @@
 			  	<p:panel >
 			  	<p:messages id="messaget" showDetail="true"/>
 			  	<p:fieldset   legend="#{message['cliente.contrato.telefono.referencia']}" >
-				<h:panelGrid columns="6"  id="panelTlf" >
+				<h:panelGrid columns="6"  id="panelTlf" cellpadding="4" >
 				
 				<h:outputText value="#{message['contrato.tipo.telefono']}" />
 				<p:selectOneMenu  value="#{contratoForm.tipoTelef}"
@@ -212,9 +212,10 @@
 				</p:tab>
 				
 				<p:tab title="#{message['cliente.tabpaquete']}">
-				<p:panel>
+				<p:panel id="panelPaq" >
+				<p:messages id="messageProd" showDetail="true" />
 				<p:fieldset  legend="#{message['panel.seleccion.producto']}" >
-				<h:panelGrid columns="7" id="panelProd">
+				<h:panelGrid columns="7" id="panelProd" cellpadding="3"  >
 					
 					<h:outputText value="#{message['contrato.paquete']}" rendered="#{contratoForm.defectopaquete}" />
 					<p:selectOneMenu id="paq" filter="true" filterMatchMode="startsWith" rendered="#{contratoForm.defectopaquete}" 
@@ -225,16 +226,16 @@
 					</p:selectOneMenu>
 					
 					<h:outputText value="Tipo de Producto" />
-					<p:selectOneMenu id="tipoProd2" value="#{comboAction.tipoProducto}" style="width:165px" >
+					<p:selectOneMenu id="tipoProd2" value="#{comboAction.tipoProducto}" style="width:165px">
 						<f:selectItem itemLabel="Seleccionar tipo" itemValue="#{null}" />
 						<f:selectItems value="#{comboAction.tipoitems}" />
 						<p:ajax update="produc2" listener="#{comboAction.cambiar}" />
 					</p:selectOneMenu>
-					<p:message for="tipoProd2" />
+					<p:spacer/>
 					
 					<h:outputText value="Producto" />
 					<p:selectOneMenu filter="true" filterMatchMode="startsWith" id="produc2" style="width:200px"
-						value="#{contratoForm.objProductoSie.idproducto}" >
+						value="#{contratoForm.objProductoSie.idproducto}" requiredMessage="Debe seleccionar un producto para agregarlo a la lista" >
 						<f:selectItem itemLabel="Seleccione Producto" itemValue="#{null}"  />
 						<f:selectItems value="#{comboAction.productositems}" />
 					</p:selectOneMenu>
@@ -251,7 +252,7 @@
 						<f:selectItems value="#{comboAction.estadoitems}" />
 					</p:selectOneMenu>
 					 
-					<p:commandButton value="Agregar" icon="ui-icon ui-icon-check" update="detPaqueteList, message" 
+					<p:commandButton value="Agregar" icon="ui-icon ui-icon-check" update="panelPaq" 
 					action="#{contratoForm.agregarProducto}" />
 				</h:panelGrid>
 	   </p:fieldset>
@@ -335,7 +336,7 @@
     	
     	<p:tab title="#{message['cliente.tabcobranza']}">
     	<p:panel  id="panel2" >
-				
+				<p:messages id="messageCob" showDetail="true" />
 				<p:fieldset legend="#{message['cliente.cobranza']}" >
 				 
 				<h:outputText value="#{message['contrato.tipoPago']}" />
@@ -345,44 +346,42 @@
 						<p:ajax update="panel2"/>
 				</p:selectOneMenu>
 				<p:spacer/> 
-				<h:panelGrid columns="6" rendered="#{contratoForm.tipopago==1}" cellpadding="4" >
+				<h:panelGrid columns="4" rendered="#{contratoForm.tipopago==1}" cellpadding="4" >
 				<h:outputText value="#{message['contrato.pagosubinicial']}" />
 				<p:spinner id="subinicial" value="#{contratoForm.objContratoSie.pagosubinicial}" min="0" >
 				<f:validateDoubleRange minimum="0.0"  />
 				</p:spinner>
-				<p:spacer/>
 				
 				<h:outputText value="#{message['contrato.Fecha.pago.inicial']}" />
 				<p:calendar id="fechPagoInicial" value="#{contratoForm.objContratoSie.fechacuotainicial}" 
 				pattern="dd/MM/yyyy" effect="explode" required="true"  />
-				<p:message  for="fechPagoInicial"  />
+				
 						
 				<h:outputText value="#{message['contrato.producto.precio']}" />
 				<p:spinner id="precioProd" value="#{contratoForm.precioProducto}" required="true" min="1"  />
-				<p:message  for="precioProd"  />
+				
 				
 				<h:outputText value="#{message['contrato.cantCuotas']}" />
 				<p:spinner id="spinnerE" size="2" min="1" required="true" 
 				value="#{contratoForm.objContratoSie.numcuotas}" />
-				<p:spacer/>
+				
 				
 				<h:outputText value="#{message['contrato.fechEntrega']}" />
 				<p:calendar id="fechaentrega1" value="#{contratoForm.objContratoSie.fechaentrega}" pattern="dd/MM/yyyy" maxdate="today" label="fecha entrega"  required="true" />
-				<p:message for="fechaentrega1"  />
 				
 				</h:panelGrid>
-				<h:panelGrid columns="6"  rendered="#{contratoForm.tipopago==2}" cellpadding="4" >
+				<h:panelGrid columns="4"  rendered="#{contratoForm.tipopago==2}" cellpadding="4" >
 				
 				<h:outputText value="#{message['contrato.producto.precio']}" />
 				<p:spinner id="precioProd2" value="#{contratoForm.precioProducto}" required="true" min="1"  />
-				<p:message  for="precioProd2"  />
+				
 				
 				<h:outputText value="#{message['contrato.fechEntrega']}" />
 				<p:calendar id="fechaentrega" value="#{contratoForm.objContratoSie.fechaentrega}" pattern="dd/MM/yyyy" maxdate="today" label="fecha entrega"  required="true" />
-				<p:message for="fechaentrega"  />
+				
 				
 				</h:panelGrid>
-				<p:commandButton value="Registrar Pago(s)" action="#{contratoForm.insertarCobranza}" update="panelCobranzas"
+				<p:commandButton value="Registrar Pago(s)" action="#{contratoForm.insertarCobranza}" update="panel2"
 				icon="ui-icon ui-icon-check"/> 
 				
 				</p:fieldset>
@@ -434,6 +433,7 @@
             <p:rowEditor />
         </p:column>
         </p:dataTable>
+        <br/>
         <p:outputPanel autoUpdate="true" >
         <h:outputText value="#{message['contrato.cobranza.total.acumulado']}" />
         <p:inputText id="totalacumulado2" value="#{contratoForm.totalacumulado}"  />
@@ -444,7 +444,7 @@
 		
 		<p:tab title="#{message['cliente.tabVentas']}">
 			<p:panel header="#{message['panel.contrato.producto']}">
-			<h:panelGrid columns="4" id="panelVenta" cellpadding="3" >
+			<h:panelGrid columns="4" id="panelVenta" cellpadding="5" >
 				<h:outputText value="#{message['contrato.empresa']}" />
 				<p:selectOneMenu size="1" id="idempresa" required="true"
 					style="width:165px" value="#{contratoForm.idempresa}">
@@ -481,9 +481,9 @@
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['contrato.colaborador']}" />
-				<p:selectCheckboxMenu value="#{contratoForm.colaboradorList}" filter="true" filterMatchMode="startsWith"  style="width:220px">
+				<p:selectOneMenu value="#{contratoForm.idempleadoColaborador}" filter="true" filterMatchMode="startsWith"  style="width:220px">
 					<f:selectItems value="#{comboAction.empleadoxcargo}" />
-				</p:selectCheckboxMenu>
+				</p:selectOneMenu>
 				</h:panelGrid>
 				
 				<p:commandButton id="nuevoContrato" value="#{message['contrato.registrar']}" action="#{contratoForm.insertar}" update="message" ajax="false" title="#{message['contrato.registrar.tittle']}"

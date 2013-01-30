@@ -41,6 +41,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 	private boolean newRecord = false;
 	private PuntoVentaSie objAlmacenSie;
 	private TipoPuntoVentaSie objTipoPv;
+	List<PuntoVentaSie> lista2 ;
 
 	@ManagedProperty(value = "#{comboAction}")
 	private ComboAction comboManagerPunto;
@@ -90,7 +91,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		comboManagerPunto.setUbigeoDistriItems(null);
 		setNewRecord(true);
 		objAlmacenSie = new PuntoVentaSie();
-		return getViewList();
+		return getViewMant();
 	}
 	
 	public void limpiardialog(){
@@ -135,25 +136,38 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		ubigeoDefecto="";
 		log.info("busquedaUbigeo "+ getIdDepartamento()+" - "+getIdProvincia()+" - "+getIdDistrito()+" - "+getIdUbigeo());
 		setNewRecord(false);
-		return getViewList();
+		lista2 = mantenimientoPuntoAlmacenSearch.getAlmacenList();
+		if(newRecord==false){
+			for (int i = 0; i < lista2.size(); i++) {
+				if (lista2.get(i).getDescripcion().equalsIgnoreCase(objAlmacenSie.getDescripcion())) {
+					lista2.remove(i);
+					break;
+				}
+			}
+		}
+		return getViewMant();
 	}
 
 	public String DeshabilitarPunto() throws Exception {
-
+		
+		mensaje=null;
 		objAlmacenSie = new PuntoVentaSie();
-		PuntoVentaSie punto = new PuntoVentaSie();
-
+		
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'DeshabilitarPunto()'" + getIde());
 			}
 			log.info(" parametro ID "+ getIde());
-			punto = objAlmacenService.findAlmacen(getIde());
+			objAlmacenSie = objAlmacenService.findAlmacen(getIde());
 			
 			//deshabilitando punto de venta
-			punto.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(14));
+			objAlmacenSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(14));
 
-			objAlmacenService.updateAlmacen(punto);
+			objAlmacenService.updateAlmacen(objAlmacenSie);
+			mensaje="Se deshabilitó correctamente el almacén "+objAlmacenSie.getDescripcion();
+			msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					Constants.MESSAGE_INFO_TITULO, mensaje);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
 			log.info("deshabilitando punto ..... ");
 
 		} catch (Exception e) {
@@ -184,36 +198,31 @@ public class MantenimientoPuntoAlmacenFormAction extends
 			objAlmacenSie.setTbTipoPuntoVenta(objTipoPv);
 			objAlmacenSie.setTbUbigeo(objUbigeoService.findUbigeo(Integer.parseInt(idUbigeo)));
 			paginaRetorno =mantenimientoPuntoAlmacenSearch.getViewList();
-			if (isNewRecord()) {
-				
-				List<PuntoVentaSie> lista = mantenimientoPuntoAlmacenSearch.getAlmacenList();
-
-				for (int i = 0; i < lista.size(); i++) {
-					PuntoVentaSie s = lista.get(i);
-					if (s.getDescripcion().equalsIgnoreCase(objAlmacenSie.getDescripcion())) {
-						mensaje ="Existe un almacen/Punto de Venta con el mismo nombre";
-						error = 1;
-						break;
-					}
+			for (int i = 0; i < lista2.size(); i++) {
+				if ( lista2.get(i).getDescripcion().trim().equalsIgnoreCase(objAlmacenSie.getDescripcion().trim())) {
+					mensaje ="Existe un almacén o Punto de Venta con el mismo nombre";
+					error = 1;
+					break;
 				}
-				if (error == 0) {
+			}
+			if(error==1){
+					msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
+					paginaRetorno =getViewMant();
+			}
+			else if (isNewRecord() && error == 0) {
 					objAlmacenSie.setUsuariocreacion(sessionUsuario.getUsuario());
 					objAlmacenService.insertAlmacen(objAlmacenSie);
 					mensaje ="Se registro correctamente";
 					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 					objAlmacenSie = new PuntoVentaSie();
-				} else {
-					log.info("mensaje de error");
-					msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
-					paginaRetorno =getViewMant();
-				}
+				
 			} else {
-				objAlmacenSie.setUsuariomodifica(sessionUsuario.getUsuario());
-				objAlmacenService.updateAlmacen(objAlmacenSie);
-				mensaje ="Se actualizó correctamente";
-				log.info("actualizado");
-				objAlmacenSie = new PuntoVentaSie();
-				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+					objAlmacenSie.setUsuariomodifica(sessionUsuario.getUsuario());
+					objAlmacenService.updateAlmacen(objAlmacenSie);
+					mensaje ="Se actualizó correctamente";
+					log.info("actualizado");
+					objAlmacenSie = new PuntoVentaSie();
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 			}
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (Exception e) {

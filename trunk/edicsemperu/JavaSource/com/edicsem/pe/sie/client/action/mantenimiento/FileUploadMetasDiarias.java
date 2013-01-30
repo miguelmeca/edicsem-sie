@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -29,11 +28,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
-
 import com.edicsem.pe.sie.beans.MetasDiariasDTO;
-import com.edicsem.pe.sie.entity.Personalead;
-import com.edicsem.pe.sie.service.facade.MetasDiariasDTOService;
-import com.edicsem.pe.sie.service.facade.PersonaService;
 @SuppressWarnings("serial")
 @ManagedBean(name = "FileUploadMetasDiarias")
 @SessionScoped
@@ -44,8 +39,8 @@ public class FileUploadMetasDiarias implements Serializable {
 	private List<MetasDiariasDTO> leadsNuevos;
 	
 	
-	@EJB
-	private MetasDiariasDTOService objMetasDiariasDTOService;
+//	@EJB
+//	private MetasDiariasDTOService objMetasDiariasDTOService;
 		  
 	public FileUploadMetasDiarias() {
 
@@ -103,7 +98,7 @@ public class FileUploadMetasDiarias implements Serializable {
 			System.out.println("id 1: " + leadsNuevos.get(i).getGrupo() );
 			System.out.println("nombre 1: " + leadsNuevos.get(i).getMeta());
 		
-			objMetasDiariasDTOService.insertMetasDiariasDTO(credito);
+//			objMetasDiariasDTOService.insertMetasDiariasDTO(credito);
 			
 
 		}
@@ -352,20 +347,20 @@ return null;
 			FileUploadMetasDiarias.log = log;
 		}
 
-		/**
-		 * @return the objMetasDiariasDTOService
-		 */
-		public MetasDiariasDTOService getObjMetasDiariasDTOService() {
-			return objMetasDiariasDTOService;
-		}
-
-		/**
-		 * @param objMetasDiariasDTOService the objMetasDiariasDTOService to set
-		 */
-		public void setObjMetasDiariasDTOService(
-				MetasDiariasDTOService objMetasDiariasDTOService) {
-			this.objMetasDiariasDTOService = objMetasDiariasDTOService;
-		}
-
-	
+//		/**
+//		 * @return the objMetasDiariasDTOService
+//		 */
+//		public MetasDiariasDTOService getObjMetasDiariasDTOService() {
+//			return objMetasDiariasDTOService;
+//		}
+//
+//		/**
+//		 * @param objMetasDiariasDTOService the objMetasDiariasDTOService to set
+//		 */
+//		public void setObjMetasDiariasDTOService(
+//				MetasDiariasDTOService objMetasDiariasDTOService) {
+//			this.objMetasDiariasDTOService = objMetasDiariasDTOService;
+//		}
+//
+//	
 }

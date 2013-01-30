@@ -32,7 +32,7 @@
 			requiredMessage="#{message['empleado.usuario.validation']}"/>
 		    <h:outputText value="#{message['empleado.contrasena']}" />
 			<p:password id="contrasenya" value="#{mantenimientoEmpleadoFormAction.objEmpleado.contrasena}" required="true" label="Contrasenya"
-			requiredMessage="#{message['empleado.contrasenya.validation']}"/>
+			requiredMessage="#{message['empleado.contrasenya.validation']}" match="confcontra" />
 			<h:outputText value="#{message['empleado.confcontra']}" />
 			<p:password id="confcontra" value="#{mantenimientoEmpleadoFormAction.confcontra}" required="true" label="Confcontra"
 			requiredMessage="#{message['empleado.confcontra.validation']}"/>
