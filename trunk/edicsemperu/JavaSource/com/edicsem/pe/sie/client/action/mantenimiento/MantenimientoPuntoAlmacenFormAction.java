@@ -205,7 +205,7 @@ public class MantenimientoPuntoAlmacenFormAction extends
 				} else {
 					log.info("mensaje de error");
 					msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
-					paginaRetorno =mantenimientoPuntoAlmacenSearch.listar();
+					paginaRetorno =getViewMant();
 				}
 			} else {
 				objAlmacenSie.setUsuariomodifica(sessionUsuario.getUsuario());
@@ -347,14 +347,14 @@ public class MantenimientoPuntoAlmacenFormAction extends
 	 * #getViewList()
 	 */
 	public String getViewList() {
-		return Constants.MANT_ALMACEN_FORM_PAGE;
+		return Constants.MANT_ALMACEN_FORM_LIST_PAGE;
 	}
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewMant()
 	 */
 	public String getViewMant() {
-		return Constants.MANT_ALMACEN_FORM_LIST_PAGE;
+		return Constants.MANT_ALMACEN_FORM_PAGE;
 	}
 
 	/**
