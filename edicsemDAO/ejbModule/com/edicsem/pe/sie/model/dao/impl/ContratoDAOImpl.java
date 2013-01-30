@@ -112,20 +112,31 @@ public class ContratoDAOImpl implements ContratoDAO{
 	 */
 	public List listarClientePorParametro(String numDocumento,String codigoContrato,String nombreCliente, String apePat,String apeMat ){
 		List  lista = null;
+		log.info( numDocumento+ " c "+codigoContrato+ " n "+nombreCliente+ " ap  "+apePat+ " am "+ apeMat);
+		
 		try {
 			String sql = "select c from ContratoSie c inner join  c.tbCliente p  where  " ;
-					if(!numDocumento.equals(""))
+					if(numDocumento!=null)
 						sql+= " p.numdocumento like '"+ numDocumento +"'";
-					else if(!codigoContrato.equals("")){
+					else if(codigoContrato!=null){
 						sql+= "  c.codcontrato like '"+ codigoContrato +"'";
 					}else{
-						if(!nombreCliente.equals(""))
-							sql+= "  p.nombrecliente like '"+ nombreCliente +"'";
-						if(!apePat.equals(""))
-							sql+= " and  p.apepatcliente like '"+ apePat +"'";
-						if(!apeMat.equals(""))
-							sql+= " and  p.apematcliente like '"+ apeMat +"'";
+						if(nombreCliente!=null)
+							sql+= "  p.nombrecliente like '%"+ nombreCliente +"%'";
+						if(apePat!=null)
+							if(nombreCliente!=null){
+								sql+= " and ";
+							}
+							sql+= "  p.apepatcliente like '%"+ apePat +"%'";
+						if(apeMat!=null)
+							if(apePat!=null){
+								sql+= " and ";
+							}else if(apePat==null && nombreCliente!=null){
+								sql+= " and ";
+							}
+							sql+= "  p.apematcliente like '%"+ apeMat +"%'";
 					}
+					log.info("SQL "+sql);
 			Query q = em.createQuery(sql);
 			lista =  q.getResultList();
 			log.info("tamaño lista contrato --> " + lista.size()+"  ");
