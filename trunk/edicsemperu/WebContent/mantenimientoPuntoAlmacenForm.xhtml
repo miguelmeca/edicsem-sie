@@ -10,35 +10,14 @@
 		<h:form id="frmAlmacenForm">
 			<p:growl id="message" showDetail="true" />
 			<p:panel  header="#{message['panel.mantenimiento.punto']}">
-			<h:panelGrid id="display" columns="2" >
+			<h:panelGrid id="display" columns="2" cellpadding="5" >
 				<h:outputText value="#{message['almacen.descripcion']}" />
-				<p:inputText  value="#{almacenForm.objAlmacenSie.descripcion}" required="true"
-				requiredMessage="#{message['puntoVenta.descripcion.validation']}"
-				style="font-weight:bold" />
-			</h:panelGrid>
-			<h:panelGrid columns="2" id="panel" rendered="#{almacenForm.newRecord}"  >
-				<h:outputText value="Lima (defecto)" />
-				<p:selectBooleanCheckbox value="#{almacenForm.defectoUbigeo}">
-					<p:ajax update="panel,ubigeoDefecto" listener="#{almacenForm.limpiardialog}"
-						oncomplete="if(#{almacenForm.defectoUbigeo}) UbigeoAlmacenDialog.show()"></p:ajax>
-				</p:selectBooleanCheckbox>
-
-				<h:outputText value="#{message['contrato.ubigeo.distrito']}" rendered="#{almacenForm.defectoUbigeo}" />
-				<p:selectOneMenu value="#{almacenForm.idUbigeo}" rendered="#{almacenForm.defectoUbigeo}" required="true" filter="true" filterMatchMode="startsWith"
-					style="width:220px" requiredMessage="#{message['puntoVenta.distrito.validation']}">
-					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
-					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
-					<p:ajax update="panel" listener="#{almacenForm.cambioUbica}"></p:ajax>
-				</p:selectOneMenu>
 				
-				<h:outputText value="Ubigeo " />
-				<h:outputText id="ubigeoDefecto" value="#{almacenForm.ubigeoDefecto}" />
-			</h:panelGrid>
-			
-			<h:panelGrid columns="2" id="panel3" rendered="#{!almacenForm.newRecord}"  >
+				<p:inputText  value="#{almacenForm.objAlmacenSie.descripcion}" required="true"
+				requiredMessage="#{message['puntoVenta.descripcion.validation']}" style="width:220px;font-weight:bold" />
 				
 				<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
-				<p:selectOneMenu size="1" value="#{almacenForm.idDepartamento}" filter="true" filterMatchMode="startsWith"
+				<p:selectOneMenu value="#{almacenForm.idDepartamento}" filter="true" filterMatchMode="startsWith"
 					required="true" style="width:220px"
 					requiredMessage="#{message['puntoVenta.ubigeo.departamento.validation']}" >
 					<f:selectItem itemLabel="Seleccione Departamento"
@@ -62,15 +41,12 @@
 					requiredMessage="#{message['puntoVenta.ubigeo.distrito.validation']}" >
 					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
-					<p:ajax update="ubigeoDefecto2" listener="#{almacenForm.busquedaUbigeo}" ></p:ajax>
+					<p:ajax update="ubigeoDefecto" listener="#{almacenForm.busquedaUbigeo}" />
 				</p:selectOneMenu>
 				
 				<h:outputText value="Ubigeo " />
-				<h:outputText id="ubigeoDefecto2" value="#{almacenForm.ubigeoDefecto}" />
+				<h:outputText id="ubigeoDefecto" value="#{almacenForm.ubigeoDefecto}" />
 				
-			</h:panelGrid>
-			
-			<h:panelGrid columns="2" id="panel2" >
 				<h:outputText value="#{message['almacen.direccion']}" />
 				<p:inputText value="#{almacenForm.objAlmacenSie.direccion}" required="true" 
 					requiredMessage="#{message['puntoVenta.direccion.validation']}" />
@@ -80,10 +56,10 @@
 					<f:selectItems value="#{comboAction.tipoalmacenitems}" />
 				</p:selectOneMenu>
 				
-				<p:commandButton value="Guardar" action="#{almacenForm.insertar}" ajax="false" icon="ui-icon ui-icon-disk" />
+				<p:commandButton value="Guardar" action="#{almacenForm.insertar}" ajax="false" icon="ui-icon ui-icon-disk"  />
 						
 				<p:commandButton value="Regresar" action="#{almacenSearch.listar}" immediate="true" ajax = "false" 
-				update="panel" icon="ui-icon ui-icon-close"  />
+				 icon="ui-icon ui-icon-close"  />
 
 			</h:panelGrid>
 			</p:panel>
