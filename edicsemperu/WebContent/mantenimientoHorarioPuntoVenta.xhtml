@@ -51,7 +51,7 @@
 <p:fieldset legend="Horario:  #{MantenimientoHorarioPuntoVentaSearchAction.objPuntoVentaSie.descripcion}" style="margin-top:20px" >
 
 <p:commandButton  value="Nuevo Horario" action="#{MantenimientoHorarioPuntoVentaSearchAction.agregar}"
-icon="ui-icon-star" 
+icon="ui-icon-folder-open" 
 oncomplete="horariopvDialog.show()"  update=":formManteHorarioPV:display" >
 </p:commandButton>
 <p:spacer/>
@@ -88,10 +88,10 @@ emptyMessage="No se encontraron registros" >
 	   </p:column>
 			  
 			  
-<p:column headerText="Deshabilitar">
+<p:column headerText="Eliminar">
 <center>	
 <p:commandButton id="showConfirmDeshabilitarHpv"
-				 icon="ui-icon ui-icon-close"	 			
+				 icon="ui-icon-trash"	 			
  				 onclick="confirmationHpv.show()"
  				 >
 	 			  
