@@ -158,6 +158,10 @@ public class MantenimientoContratoFormAction extends
 		ubigeoDefecto = "";
 		detProductoContrato = new ArrayList<DetProductoContratoSie>();
 		limpiarCampos();
+		objContratoSie = new ContratoSie();
+		//buscar codigo nuevo por el número de secuencial
+		
+		
 		setNewRecord(true);
 		comboManager.setUbigeoDeparItems(null);
 		comboManager.setUbigeoProvinItems(null);
