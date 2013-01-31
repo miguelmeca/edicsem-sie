@@ -6,6 +6,9 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
+	<script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
 		<h1 class="title ui-widget-header ui-corner-all " >Mantenimiento Paquete Biblico</h1>
 <h:form id="frmPaqueBibliList">
 <p:messages showDetail="true" />
@@ -62,7 +65,7 @@
 <center>
 <p:commandButton id="showConfirmDeshabilitar1"
 			
-				 icon="ui-icon ui-icon-close"	 			
+				 icon="ui-icon-trash"	 			
 	 			 onclick="confirmationPaquete.show()">
 	 			  
 <f:setPropertyActionListener
@@ -79,7 +82,7 @@
                action="#{mantenimientoPaqueteBiblicoFormAction.agregar}"
                oncomplete="PaqueteBiblico.show()"  
                title="Crear Nuevo Paquete Biblico"
-               icon="ui-icon-check"/>
+               icon="ui-icon-folder-open"/>
 		</f:facet>
 		</p:dataTable>
 	</p:fieldset> 	
@@ -88,23 +91,21 @@
 		
 <p:outputPanel id="panelMostrarDetalle" rendered="#{mantenimientoPaqueteBiblicoSearchAction.objPaqueteSie.idpaquete!=0}" >
 	
-<p:fieldset legend="Detalles del Paquete Biblico"> 
+<p:fieldset legend="Detalles del Paquete Biblico" > 
 
-
-
-		<p:dataTable value="#{mantenimientoDetallePaqueteBiblicoSearchAction.detPaqueteBiblicoList}" 
-					var="c"		id="formdetalleform"
-					emptyMessage="No se encontraron registros" >
-					<f:facet name="header">
-		<center>
+<center>
 		<p:commandButton value="Agregar un nuevo producto al paquete"
-update=":frmPaqueBibliList, :formDetPaqueteBiblico:display"
+update=":formDetPaqueteBiblico:display"
 action="#{mantenimientoDetallePaqueteBiblicoSearchAction.agregar}"
 oncomplete="DetPaqueteBiblico.show()" 
-icon="ui-icon ui-icon-check" 
+icon="ui-icon-folder-open" 
 title="Ingresar Nuevo Paquete Biblico"/>
 </center>
-</f:facet>
+
+<p:dataTable value="#{mantenimientoDetallePaqueteBiblicoSearchAction.detPaqueteBiblicoList}" 
+var="c"		id="formdetalleform"		emptyMessage="No se encontraron registros" >
+			
+
 							
 					
 				<p:column headerText="Codigo de Paquete" >
@@ -123,7 +124,7 @@ title="Ingresar Nuevo Paquete Biblico"/>
 <center>
 <p:commandButton  oncomplete="DetPaqueteBiblico.show()"
 				 action="#{mantenimientoDetallePaqueteBiblicoSearchAction.update}" 
-				 update=":frmPaqueBibliList, :formDetPaqueteBiblico:display"
+				 update=":formDetPaqueteBiblico:display"
 				 icon="ui-icon ui-icon-pencil" >
 <f:setPropertyActionListener value="#{c}"
 							 target="#{mantenimientoDetallePaqueteBiblicoSearchAction.objDetPaqueteSie}" />
