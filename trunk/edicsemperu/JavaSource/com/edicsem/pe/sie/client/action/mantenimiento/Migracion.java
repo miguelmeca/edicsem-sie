@@ -48,6 +48,7 @@ public class Migracion implements Serializable {
 	public static Log log = LogFactory.getLog(Migracion.class);
 	private String nombreArchivo;
 	private List<SistemaIntegradoDTO> sistMig;
+	private String mensaje ;
 	
 	@EJB
 	private ContratoService objContratoService;
@@ -103,7 +104,7 @@ public class Migracion implements Serializable {
 
 	public String handleFileUpload(FileUploadEvent event) throws ParseException {
 	    	log.info("entro file  ---> :D");
-			
+	    	mensaje=null;
 			UploadedFile file = event.getFile();
 			
 			try {
@@ -177,6 +178,7 @@ public class Migracion implements Serializable {
 									sis.setFecnacimiento(DateUtil.convertStringToDate(getCellValueAsString(data.get(8))));
 								}
 								sis.setCorreo(getCellValueAsString(data.get(9)));
+								log.info("Telefonos:  "+data.get(10));
 								sis.setNumTelefono(getCellValueAsString(data.get(10)));
 								sis.setDireccion(getCellValueAsString(data.get(11)));
 								sis.setDistrito(getCellValueAsString(data.get(12)));
@@ -202,7 +204,6 @@ public class Migracion implements Serializable {
 								sis.setImporteCobrado(Double.parseDouble(getCellValueAsString(data.get(30))));
 								sis.setImportemasmora(Double.parseDouble(getCellValueAsString(data.get(31))));
 								sis.setFechaVencimiento(DateUtil.convertStringToDate(getCellValueAsString(data.get(32))));
-								log.info(" lugar de pago :D  "+getCellValueAsString(data.get(38)));
 								sis.setLugarPago(getCellValueAsString(data.get(38)));
 								sis.setBanco(getCellValueAsString(data.get(39)));
 								if(!(data.get(45).toString().isEmpty()||data.get(45).toString().equals("")||data.get(45).toString().trim().equals(""))){
@@ -217,7 +218,6 @@ public class Migracion implements Serializable {
 								}
 								sis.setDiasRetraso(Integer.parseInt(getCellValueAsString(data.get(59))));
 								//dependiendo de los dias de retrazo se analiza el tipo de cliente.
-								
 								
 								sis.setInfocorp(getCellValueAsString(data.get(63)));
 								if(data.get(64)!=null){
@@ -252,39 +252,30 @@ public class Migracion implements Serializable {
 						}
 					}
 				}
+				mensaje=  "Cargó exitosamente";
 				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-						Constants.MESSAGE_INFO_TITULO, "Cargó exitosamente");
+						Constants.MESSAGE_INFO_TITULO,mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
-	
 				}
 			catch (IOException e) {
-				e.printStackTrace();
-				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-						"Error Formato EXCEL", e.getMessage());
-
+				mensaje = ""+e.getMessage();
+				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error Formato EXCEL", mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
-				
 				sistMig = new ArrayList<SistemaIntegradoDTO>();
-
 				return null;
 	    }finally {
 	    	if (fis != null) {
 			try {
 				fis.close();
 			} catch (IOException e) {
-	
 				e.printStackTrace();
 			}
 		}
 	}
-
-log.info("cantidad: " + sistMig.size());
-log.info("nombre: " + sistMig.get(0).getNombrecliente() + " ape pat: " + sistMig.get(0).getApepatcliente()+" ape mat: " + sistMig.get(1).getApematcliente());
-
-return null;
-
+		log.info("cantidad: " + sistMig.size());
+		return null;
 	    }
-
+	
 	    public void mensajeDeVacio(String mensaje) {
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Deudor", mensaje);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
