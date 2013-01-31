@@ -178,7 +178,24 @@ public class MantenimientoContratoFormAction extends
 		totalacumulado= new BigDecimal(0);
 		return getViewMant();
 	}
-
+	
+	public String agregar2() {
+		log.info("agregar()))");
+		objClienteSie=null;
+		telefonoList=null;
+		domicilioList=new ArrayList<DomicilioPersonaSie>();
+		contratoXClienteList=new ArrayList<ContratoSie>();
+		objDomicilioSie=null;
+		detProductoContrato=null;
+		cobranzaList=null;
+		numDniCliente=null;
+		codigoContrato=null;
+		apePatCliente=null;
+		apeMatCliente=null;
+		nombreCliente=null;
+		return Constants.CONSULTA_CONTRATO_FORM_PAGE;
+	}
+	
 	public void cambiar() {
 		comboManager.setIdDepartamento(getIdDepartamento());
 		comboManager.setIdProvincia(null);
@@ -666,13 +683,9 @@ public class MantenimientoContratoFormAction extends
 			ubigeoDefecto =depaProv+" - "+ubi.getNombre();
 			telefonoList = objTelefonoService.listarTelefonoEmpleadosXidcliente(objClienteSie.getIdcliente());
 			detProductoContrato = objDetProductoService.listarDetProductoContratoXContrato(contratoXClienteList.get(0).getIdcontrato());
+			objContratoSie = objContratoService.findContrato(contratoXClienteList.get(0).getIdcontrato());
 			cobranzaList =objCobranzaService.listarCobranzasXidcontrato(contratoXClienteList.get(0).getIdcontrato());
 		}
-		numDniCliente=null;
-		codigoContrato=null;
-		nombreCliente=null;
-		apePatCliente=null;
-		apeMatCliente=null;
 		log.info(" lista x consulta "+contratoXClienteList.size());
 		mensaje = "Consulto realizada";
 		msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
@@ -693,6 +706,7 @@ public class MantenimientoContratoFormAction extends
 			ubigeoDefecto = ubi.getNombre();
 			telefonoList = objTelefonoService.listarTelefonoEmpleadosXidcliente(objClienteSie.getIdcliente());
 			detProductoContrato = objDetProductoService.listarDetProductoContratoXContrato(idcontrato);
+			objContratoSie = objContratoService.findContrato(idcontrato);
 			cobranzaList =objCobranzaService.listarCobranzasXidcontrato(idcontrato);
 		return Constants.CONSULTA_CONTRATO_FORM_PAGE;
 	}
