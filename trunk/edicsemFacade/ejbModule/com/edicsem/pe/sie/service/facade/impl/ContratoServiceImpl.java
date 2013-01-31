@@ -1,7 +1,6 @@
 package com.edicsem.pe.sie.service.facade.impl;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -161,18 +160,18 @@ public class ContratoServiceImpl implements ContratoService {
 	 * @see com.edicsem.pe.sie.service.facade.ContratoService#insertMigracion(java.util.List)
 	 */
 	public void insertMigracion(List<SistemaIntegradoDTO> sistMig) {
-		
+		log.info("insertMigracion() *");
 		ClienteSie cli = new ClienteSie();
 		ContratoSie con = new ContratoSie();
 		TelefonoPersonaSie tel = new TelefonoPersonaSie();
 		for (int i = 0; i < sistMig.size(); i++) {
 			
 			SistemaIntegradoDTO s = sistMig.get(i);
-			if(sistMig.get(i-1).getCodContrato()!=s.getCodContrato()){
+			//if(sistMig.get(i-1).getCodContrato()!=s.getCodContrato()){
 			
 			cli = new ClienteSie();
 			con = new ContratoSie();
-			
+			con.setCodcontrato(s.getNumContrato());
 			//insertar clliente
 			cli.setApematcliente(s.getApematcliente());
 			cli.setApepatcliente(s.getApepatcliente());
@@ -186,16 +185,93 @@ public class ContratoServiceImpl implements ContratoService {
 			cli.setTelftrabajo(s.getTelftrabajo());
 			cli.setTitulartelefono(s.getTitulartelefono());
 			cli.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23));
-			objClienteDao.insertCliente(cli);
+			log.info(" contr "+con.getCodcontrato());
+			//objClienteDao.insertCliente(cli);
 			
-			tel.setIdcliente(cli);
-			tel.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(17));
+		//	tel.setIdcliente(cli);
+		//	tel.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(17));
 			
-			String [ ] telefono = s.getNumTelefono().split("\\ ");
+			String [ ] telefono = s.getNumTelefono().split("\\s+");
+			log.info("tamano**  "+telefono.length);
 			for (int j = 0; j < telefono.length; j++) {
-				tel.setTelefono(telefono[i]);
-				objTelefonoDao.insertarTelefonoEmpleado(tel);
+				log.info("length "+telefono.length+"  i "+j);
+				 tel = new TelefonoPersonaSie();
+				 if(telefono[j].toString().trim().equalsIgnoreCase("C")||telefono[j].toString().trim().equalsIgnoreCase("(CLARO)")||telefono[j].toString().trim().equalsIgnoreCase("claro")){
+						tel.setOperadorTelefonico("Claro");
+					}
+					else if(telefono[j].toString().trim().equalsIgnoreCase("M")){
+						tel.setOperadorTelefonico("Movistar");
+					}
+					else if(telefono[j].toString().trim().equalsIgnoreCase("N")){
+						tel.setOperadorTelefonico("Nextel");
+					}
+					else if(telefono[j].trim().matches("^\\d")){
+					tel.setTelefono(telefono[j].toString().trim());
+					}
+					else if(telefono[j].matches("^[a-zA-Z(]")){
+					tel.setDescTelefono(telefono[j].toString().trim());
+					}
+					else if(telefono.length>j+1){
+					if(telefono[j+1]!=null){
+						log.info("  telef   "+telefono[j+1].toString());
+						if(telefono[j].toString().trim().equalsIgnoreCase("C")||telefono[j].toString().trim().equalsIgnoreCase("(CLARO)")||telefono[j].toString().trim().equalsIgnoreCase("claro")){
+							tel.setOperadorTelefonico("Claro");
+						}
+						else if(telefono[j].toString().trim().equalsIgnoreCase("M")){
+							tel.setOperadorTelefonico("Movistar");
+						}
+						else if(telefono[j].toString().trim().equalsIgnoreCase("N")){
+							tel.setOperadorTelefonico("Nextel");
+						}
+						else if(telefono[j+1].toString().trim().matches("^[a-zA-Z(]")){
+							tel.setDescTelefono(telefono[j+1].toString());
+						}
+						else if(telefono[j].trim().matches("^\\d")&&tel.getTelefono()!=null){
+							tel.setTelefono(telefono[j].toString().trim());
+						}
+					}log.info(" contr "+con.getCodcontrato()+" opera "+tel.getOperadorTelefonico()+" telefono  "+tel.getTelefono()+" desc "+tel.getDescTelefono());
+					
+				}
+				
+				log.info(" contr "+con.getCodcontrato()+" opera "+tel.getOperadorTelefonico()+" telefono  "+tel.getTelefono()+" desc "+tel.getDescTelefono());
+				//objTelefonoDao.insertarTelefonoEmpleado(tel);
 			}
+			//6614412 (CLARO) 4852734 (CASA)
+			//7969418 991289883 C
+			//2475338 2478901 UBALDO
+			//5651567 945379356 clienta 985374910
+			//5651567 945379356 clienta 985374910
+			//944470605 M     //998116218 N
+			//961075202 961718820 ESPOSO
+			//041-476090 992915331 C HIJA 943694723 M
+			//6572969 990883811 C 606*1805 N 6377138
+			//5253720 986228812 C 6572969 REF
+			//2485326 994332725 C 971146127 HIJA
+			//992528025 EDITH
+			//56 763128
+			//997830414(ESPOSO) 993701254 titular
+			//4320246(HNA. ANA) 989994543
+			//074 201722 979984307
+			//ELSA CORRALES 980111438
+			//2515079 - 2510803
+			//2510803
+			//074-202229
+			//074300521 979838615 M
+			//995034944 4691909(TRABAJO)
+			//5594049 824*1972
+			//971046238 M 985179605 ROMERO 986644735 LUIS ENRIQUE
+			//062 525247 062 791857 962668706
+			//5737224 claro 980629950
+			//AMIGA CAROL 992233488 987113743
+			//3588049 - 3265417 983050242
+			//claro 989831101 997116377
+			//5784080 ANGELA ABUELA 949262841
+			//movistar 996900021 064 545458
+			//no ex 5335104 995669453 M
+			//ANONIMO
+			//999935626 4582558 (FAMILIAR)
+
+			
 			
 			//insertar Domicilio
 			DomicilioPersonaSie dom = new DomicilioPersonaSie();
@@ -206,15 +282,15 @@ public class ContratoServiceImpl implements ContratoService {
 			//dom.setTbUbigeo(objUbigeoDao.findUbigeo(idUbigeo));
 			dom.setIdcliente(cli);
 			dom.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(15));
-			objDomicilioDao.insertarDomicilioEmpleado(dom);
+			//objDomicilioDao.insertarDomicilioEmpleado(dom);
 			
 			con.setCodcontrato(s.getCodContrato());
 			con.setNumcuotas(s.getCantCuotas());
 			con.setPagosubinicial(new  BigDecimal(s.getImporteInicial()));
 			con.setTbCliente(cli);
 			//insertar contrato
-			objContratoDao.insertContrato(con);
-			}
+		//	objContratoDao.insertContrato(con);
+			
 			
 			CobranzaSie cob = new CobranzaSie();
 			cob.setCantcuotas(s.getCantCuotas().toString());
@@ -227,7 +303,7 @@ public class ContratoServiceImpl implements ContratoService {
 			cob.setDiasretraso(s.getDiasRetraso());
 			cob.setTbContrato(con);
 			//insertar cobranza
-			objCobranzaDao.insertCobranza(cob);
+		//	objCobranzaDao.insertCobranza(cob);
 		}
 		
 	}
