@@ -1,6 +1,7 @@
 package com.edicsem.pe.sie.service.facade.impl;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -163,7 +164,7 @@ public class ContratoServiceImpl implements ContratoService {
 		
 		ClienteSie cli = new ClienteSie();
 		ContratoSie con = new ContratoSie();
-		
+		TelefonoPersonaSie tel = new TelefonoPersonaSie();
 		for (int i = 0; i < sistMig.size(); i++) {
 			
 			SistemaIntegradoDTO s = sistMig.get(i);
@@ -186,6 +187,15 @@ public class ContratoServiceImpl implements ContratoService {
 			cli.setTitulartelefono(s.getTitulartelefono());
 			cli.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23));
 			objClienteDao.insertCliente(cli);
+			
+			tel.setIdcliente(cli);
+			tel.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(17));
+			
+			String [ ] telefono = s.getNumTelefono().split("\\ ");
+			for (int j = 0; j < telefono.length; j++) {
+				tel.setTelefono(telefono[i]);
+				objTelefonoDao.insertarTelefonoEmpleado(tel);
+			}
 			
 			//insertar Domicilio
 			DomicilioPersonaSie dom = new DomicilioPersonaSie();
