@@ -15,6 +15,9 @@
 			<p:wizard id="wiz" widgetVar="wiz" flowListener="#{contratoForm.onFlowProcess}" nextLabel="#{message['btn.siguiente']}" backLabel="#{message['btn.atraz']}" >
 			  <p:tab title="#{message['cliente.tabpersonal']}">
 			  <p:panel header="#{message['panel.contrato.cliente']}" >
+			  		<h:outputText value="Codigo contrato" />
+					<p:inputText value="#{contratoForm.objContratoSie.codcontrato}" required="true" maxlength="45" size="30" />
+					
 				<h:panelGrid columns="6" id="panelCliente"  cellpadding="5" >
 
 					<h:outputText value="#{message['contrato.nombre']}" />

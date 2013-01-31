@@ -112,7 +112,7 @@ public class Migracion implements Serializable {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-			
+			SistemaIntegradoDTO sis = new SistemaIntegradoDTO();
 			nombreArchivo = file.getFileName();
 			
 			sistMig = new ArrayList<SistemaIntegradoDTO>();
@@ -149,13 +149,14 @@ public class Migracion implements Serializable {
 
 						if (tamano > 1) {
 							log.info(" >1 ");
-							SistemaIntegradoDTO sis = new SistemaIntegradoDTO();
+							
 							if (data.get(0)!=null) {
+								sis.setNumContrato(getCellValueAsString(data.get(5)));
+								
 								sis.setEmpresa(getCellValueAsString(data.get(0)));
 								if(!data.get(5).toString().isEmpty()){
 									sis.setFechaEntrega(DateUtil.convertStringToDate(getCellValueAsString(data.get(1))));
 								}
-								sis.setNumContrato(getCellValueAsString(data.get(5)));
 								
 								String nombreCompleto = getCellValueAsString(data.get(6));
 								log.info("nombre completo "+nombreCompleto);
@@ -257,8 +258,8 @@ public class Migracion implements Serializable {
 						Constants.MESSAGE_INFO_TITULO,mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 				}
-			catch (IOException e) {
-				mensaje = ""+e.getMessage();
+			catch (Exception e) {
+				mensaje = " Contrato: "+sis.getNumContrato()+",    "+e.getMessage();
 				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error Formato EXCEL", mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 				sistMig = new ArrayList<SistemaIntegradoDTO>();
