@@ -408,47 +408,12 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	
 	/*método que sirve para deshabilitar al empleado*/
 	public String deshabilitar() throws Exception{
-		objEmpleado = new EmpleadoSie();
-		int parametroObtenido;
-		EmpleadoSie e = new EmpleadoSie();
-		DomicilioPersonaSie d= new DomicilioPersonaSie();
-		TelefonoPersonaSie t = new TelefonoPersonaSie();
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'DESHABILITAR()'");
 			}
-			parametroObtenido = getIde();
-			log.info(" ------>>>>>>aqui captura el parametro ID "+ parametroObtenido);
-			e = objEmpleadoService.buscarEmpleado(parametroObtenido);
-			t = objTelefonoService.buscarTelefonoXIdempleado(parametroObtenido);
-			d = objDomicilioService.buscarDomicilioXIdempleado(parametroObtenido);
-		    log.info(" empleado------ID y nombre>" + e.getIdempleado() + " "+ e.getNombreemp());
-		    log.info(" telefono------ID y telefono>" + t.getIdtelefonopersona() + " "+ t.getTelefono());
-		    log.info(" domicilio------ID y direccion>" + d.getIddomiciliopersona() + " "+ d.getDomicilio());
-			/*seteo empleado*/
-		    objEmpleado.setIdempleado(e.getIdempleado());
-			objEmpleado.setNombreemp(e.getNombreemp());
-	        objEmpleado.setApepatemp(e.getApepatemp());
-	        objEmpleado.setApematemp(e.getApematemp());
-	        objEmpleado.setUsuario(e.getUsuario());
-	        objEmpleado.setContrasena(e.getContrasena());
-	        setTipoDocumento(e.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad());
-	        objEmpleado.setNumdocumento(e.getNumdocumento());
-	        objEmpleado.setFechanacimiento(e.getFechanacimiento());
-	        /*Estado del empleado: deshabilitado(4)*/
-	        objEmpleado.setTbEstadoGeneral(objEstadoService.findEstadogeneral(4));
-	        /*seteo domicilio*/
-	        objDomicilio.setIddomiciliopersona(d.getIddomiciliopersona());
-	        objDomicilio.setDomicilio(d.getDomicilio());
-	        setTipo(d.getTbTipoCasa().getIdtipocasa());
-	        setIdDistrito(getIdDistrito());	   
-	        objDomicilio.setTbEstadoGeneral(objEstadoService.findEstadogeneral(16));
-	        /*Estado del teléfono: deshabilitado(18)*/
-	        objTelefono.setTbEstadoGeneral(objEstadoService.findEstadogeneral(18));
 			log.info("actualizando ESTADO..... ");
-			objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, codigoTipoDocumento,  codigoCargoEmpleado,  
-			idUbigeo, tipo,  idCargo, DomicilioPersona, TelefonoPersona,TipoDocumento, idEmpresa, idTipoPago, codigoEmpleado, contratoEmpleadoList, TelefonoPersonaList, TelefonoDeshabilitado, ContratoDeshabilitado, detEmpresaEmpList);
-			log.info("actualizando..... ");
+			objEmpleadoService.eliminarEmpleado(getIde());
 			log.info("deshabilitando..... ");
 			mensaje="Se deshabilitó al empleado ";
 			msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
@@ -462,7 +427,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 			log.error(e2.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		objEmpleado = new EmpleadoSie();
 		return mantenimientoEmpleadoSearch.listar();
 	}
 	
@@ -499,6 +463,11 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		ubigeoDefecto = "";
 		fechaInicioContrato=null;
 		setNewRecord(true);
+		 //validar usuario
+		userList =  objEmpleadoService.listarUsuario();
+		
+		//validar DNI
+		dniList =  objEmpleadoService.listarDni();
 		return getViewMant();
 	}
 

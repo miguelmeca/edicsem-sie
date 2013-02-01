@@ -14,9 +14,10 @@
 			<p:messages id="message" showDetail="true"/>
 			<p:wizard id="wiz" widgetVar="wiz" flowListener="#{contratoForm.onFlowProcess}" nextLabel="#{message['btn.siguiente']}" backLabel="#{message['btn.atraz']}" >
 			  <p:tab title="#{message['cliente.tabpersonal']}">
-			  <p:panel header="#{message['panel.contrato.cliente']}" >
+			  <p:panel header="#{message['panel.contrato.cliente']}"  >
 			  		<h:outputText value="Codigo contrato" />
-					<p:inputText value="#{contratoForm.objContratoSie.codcontrato}" required="true" maxlength="45" size="30" />
+			  		<p:spacer/>
+					<p:inputText value="#{contratoForm.objContratoSie.codcontrato}" required="true" maxlength="45" size="30" readonly="true" />
 					
 				<h:panelGrid columns="6" id="panelCliente"  cellpadding="5" >
 
@@ -357,7 +358,7 @@
 				
 				<h:outputText value="#{message['contrato.Fecha.pago.inicial']}" />
 				<p:calendar id="fechPagoInicial" value="#{contratoForm.objContratoSie.fechacuotainicial}" 
-				pattern="dd/MM/yyyy" effect="explode" required="true"  />
+				pattern="dd/MM/yyyy" effect="explode" required="true" mindate="today" />
 				
 						
 				<h:outputText value="#{message['contrato.producto.precio']}" />
@@ -450,41 +451,51 @@
 			<h:panelGrid columns="4" id="panelVenta" cellpadding="5" >
 				<h:outputText value="#{message['contrato.empresa']}" />
 				<p:selectOneMenu size="1" id="idempresa" required="true"
-					style="width:165px" value="#{contratoForm.idempresa}">
+					style="width:220px"  value="#{contratoForm.idempresa}">
 					<f:selectItem itemLabel="Seleccione Empresa" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.empresaitems}" />
-					<p:ajax  listener="#{contratoForm.listarempleados}" update="super" />
+					<p:ajax  listener="#{contratoForm.listarempleados}"  />
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['contrato.tipo.venta']}" />
-				<p:selectOneMenu   size="1"  value="#{contratoForm.tipoVenta}"
-						style="width:165px"  >
+				<p:selectOneMenu value="#{contratoForm.tipoVenta}"
+						style="width:220px"  >
 						<f:selectItem itemLabel="Punto de Venta" itemValue="2" />
 						<f:selectItem itemLabel="Venta masiva" itemValue="1" />
 						<p:ajax update="panelVenta" />
+						<p:ajax  update="grupos" />
 				</p:selectOneMenu>
+				
 				<h:outputText value="#{message['contrato.puntoVenta']}" rendered="#{contratoForm.tipoVenta==2}" />
-				<p:selectOneMenu  size="1" required="true" rendered="#{contratoForm.tipoVenta==2}" >
+				<p:selectOneMenu   required="true" rendered="#{contratoForm.tipoVenta==2}" style="width:220px" >
 					<f:selectItem itemLabel="Seleccione almacen" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.almacenItemsXTipo}" />
 				</p:selectOneMenu>
 				
 				<h:outputText rendered="#{contratoForm.tipoVenta==1}" value="lugar" />
-					<p:inputText value="#{contratoForm.objContratoSie.lugarentrega}"
+				<p:inputText value="#{contratoForm.objContratoSie.lugarentrega}" style="width:220px" 
 						required="true" rendered="#{contratoForm.tipoVenta==1}"  />
-						
-				<h:outputText value="#{message['contrato.supervisor']}" />
-				<p:selectOneMenu id="super" value="#{contratoForm.idempleadoExpositor}" required="true" filter="true" filterMatchMode="startsWith"  style="width:220px">
-					<f:selectItems value="#{comboAction.expositorItems}" />
+				
+				<h:outputText value="Grupo"   />
+				<p:selectOneMenu id="grupos" value="#{contratoForm.idGrupo}"  required="true" style="width:220px" >
+					<f:selectItem itemLabel="Seleccione grupo" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.grupoItems}" />
+					<p:ajax  update="integrantes,e1,e2" />
 				</p:selectOneMenu>
 				
+				<h:outputText value="#{message['contrato.supervisor']}" />
+				
+				<p:dataList id="integrantes" value="#{contratoForm.detgrupoList}" var="d" itemType="square">
+				#{d.idempleado.nombresCompletos}
+				</p:dataList>
+				
 				<h:outputText value="#{message['contrato.vendedor']}" />
-				<p:selectOneMenu value="#{contratoForm.idempleadoVendedor}" required="true" filter="true" filterMatchMode="startsWith"  style="width:220px">
+				<p:selectOneMenu id="e1" value="#{contratoForm.idempleadoVendedor}" required="true" filter="true" filterMatchMode="startsWith"  style="width:220px">
 					<f:selectItems value="#{comboAction.empleadoxcargo}" />
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['contrato.colaborador']}" />
-				<p:selectOneMenu value="#{contratoForm.idempleadoColaborador}" filter="true" filterMatchMode="startsWith"  style="width:220px">
+				<p:selectOneMenu id="e2" value="#{contratoForm.idempleadoColaborador}" filter="true" filterMatchMode="startsWith"  style="width:220px">
 					<f:selectItems value="#{comboAction.empleadoxcargo}" />
 				</p:selectOneMenu>
 				</h:panelGrid>
