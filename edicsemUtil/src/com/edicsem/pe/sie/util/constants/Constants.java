@@ -87,6 +87,9 @@ public class Constants {
 	public static final String ASIGNAR_PERMISOS_FORM_PAGE = "AsignarPermisosForm";
 	
 	public static final String GENERAR_LISTAS_COBRANZA_FORM_PAGE = "GenerarListasCobranzaForm";
+
+	public static final String CONSULTA_CONTRATO_FORM_PAGE = "ConsultaContratoForm";
+	public static final String MIGRAR_SISTEMA_INTEGRADO = "MigracionSistemaIntegrado";
 	
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
@@ -106,6 +109,5 @@ public class Constants {
 	public static final String LOGIN_PAGE = "login";
 	public static final String USER_KEY = "loginUserSession";
 	public static final String CARGO_USER = "cargoSession";
-	public static final String CONSULTA_CONTRATO_FORM_PAGE = "ConsultaContratoForm";
 	
 	}
