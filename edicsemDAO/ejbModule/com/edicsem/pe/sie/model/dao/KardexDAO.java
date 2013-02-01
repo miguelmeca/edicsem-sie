@@ -11,7 +11,7 @@ public interface KardexDAO {
 	 
 	public abstract List  ConsultaProductos(int idproducto, int idalmacen, String fechaDesde, String fechaHasta);
 	
-	public abstract void insertMovimiento (int idProducto,KardexSie kardex);
+	public abstract void insertMovimiento (int idProducto,KardexSie kardex, int stockTotalAlmacenado);
 	
 	public abstract KardexSie findKardex (int id);
 	

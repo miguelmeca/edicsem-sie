@@ -66,7 +66,7 @@ public class KardexDAOImpl implements KardexDAO {
 		return lista;
 	}
 
-	public void insertMovimiento(int idProducto, KardexSie kardex) {
+	public void insertMovimiento(int idProducto, KardexSie kardex, int stockTotalAlmacenado) {
 
 		KardexSie kardextmp = null;
 		int cantiExist = 0;
@@ -129,13 +129,13 @@ public class KardexDAOImpl implements KardexDAO {
 				kardex.setValorunitarioexistencia(""+p);
 			}
 			log.info("insertando.... 1 " + kardex.getIdkardex() + " cant exis "
-					+ kardex.getCantexistencia());
+					+ kardex.getCantexistencia()+" stock almacenado   "+stockTotalAlmacenado);
 			em.persist(kardex);
 			
 			if(kardex.getTbTipoKardexProducto().getIdtipokardexproducto()!=3){
 				//insertando las unidades actuales de un producto, solo si es entrada y salida , no deposito
 				ProductoSie objProducto = productoDao.findProducto(idProducto);
-				objProducto.setUnidproducto(kardex.getCantexistencia());
+				objProducto.setUnidproducto(stockTotalAlmacenado);
 				productoDao.updateProducto(objProducto);
 			}
 			
