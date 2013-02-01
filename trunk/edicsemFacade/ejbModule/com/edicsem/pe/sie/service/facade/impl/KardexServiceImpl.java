@@ -56,7 +56,7 @@ public class KardexServiceImpl implements KardexService {
 	 * @see com.edicsem.pe.sie.service.facade.KardexService#insertMovimiento(com.edicsem.pe.sie.entity.KardexSie, com.edicsem.pe.sie.entity.ComprobanteSie, com.edicsem.pe.sie.entity.DetalleComprobanteSie, int, int, int, int)
 	 */
 	public void insertMovimiento( KardexSie obj, ComprobanteSie objcomprobante, DetalleComprobanteSie objDetComprobante,
-			int idproducto, int idtipokardexproducto, int idAlmacenSalida, int idAlmacenEntrada) {
+			int idproducto, int idtipokardexproducto, int idAlmacenSalida, int idAlmacenEntrada, int stockTotalAlmacenado) {
 		
 		KardexSie objKardex =obj; 
 		log.info(" "+ obj.getCantexistencia());
@@ -66,7 +66,7 @@ public class KardexServiceImpl implements KardexService {
 		objKardex.setCantentrada(obj.getCantentrada());
 		objKardex.setCantsalida(obj.getCantsalida());
 		objKardex.setCantexistencia(0);
-		objKardexDao.insertMovimiento(idproducto,objKardex);
+		objKardexDao.insertMovimiento(idproducto,objKardex, stockTotalAlmacenado);
 		log.info("entrad "+obj.getValorunitarioentrada()+" sali "+obj.getValorunitariosalida());
 		/**Si hubiese otro id de almacen 
 		 * */
@@ -94,7 +94,7 @@ public class KardexServiceImpl implements KardexService {
 				objKardex2.setValorunitarioentrada(obj.getValorunitarioentrada());
 			}
 			objKardex2.setTbTipoKardexProducto(objTipoKardexDao.findTipoKardex(idtipokardexproducto));
-			objKardexDao.insertMovimiento(idproducto,objKardex2);
+			objKardexDao.insertMovimiento(idproducto,objKardex2, stockTotalAlmacenado);
 		}
 		ComprobanteSie comp = new ComprobanteSie();
 		DetalleComprobanteSiePK oj = new DetalleComprobanteSiePK();

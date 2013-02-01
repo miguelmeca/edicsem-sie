@@ -1,6 +1,7 @@
 package com.edicsem.pe.sie.service.facade.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -164,6 +165,7 @@ public class ContratoServiceImpl implements ContratoService {
 		ClienteSie cli = new ClienteSie();
 		ContratoSie con = new ContratoSie();
 		TelefonoPersonaSie tel = new TelefonoPersonaSie();
+		List<TelefonoPersonaSie> telList= new ArrayList<TelefonoPersonaSie>() ;
 		for (int i = 0; i < sistMig.size(); i++) {
 			
 			SistemaIntegradoDTO s = sistMig.get(i);
@@ -194,8 +196,10 @@ public class ContratoServiceImpl implements ContratoService {
 			String [ ] telefono = s.getNumTelefono().split("\\s+");
 			log.info("tamano**  "+telefono.length);
 			for (int j = 0; j < telefono.length; j++) {
-				log.info("length "+telefono.length+"  i "+j);
+				log.info("length "+telefono.length+"  j "+j);
 				 tel = new TelefonoPersonaSie();
+				 log.info("  telef 1:   "+telefono[j].toString());
+				 if(telefono[j].trim().matches("([0-9]+)")){
 				 if(telefono[j].toString().trim().equalsIgnoreCase("C")||telefono[j].toString().trim().equalsIgnoreCase("(CLARO)")||telefono[j].toString().trim().equalsIgnoreCase("claro")){
 						tel.setOperadorTelefonico("Claro");
 					}
@@ -205,37 +209,63 @@ public class ContratoServiceImpl implements ContratoService {
 					else if(telefono[j].toString().trim().equalsIgnoreCase("N")){
 						tel.setOperadorTelefonico("Nextel");
 					}
-					else if(telefono[j].trim().matches("^\\d")){
+					else if(telefono[j].trim().matches("([0-9]+)")){
 					tel.setTelefono(telefono[j].toString().trim());
 					}
-					else if(telefono[j].matches("^[a-zA-Z(]")){
+					else if(telefono[j].matches("[a-zA-Z(]+")){
 					tel.setDescTelefono(telefono[j].toString().trim());
+					
+					if(telefono.length>j+1){
+						log.info("-->  "+telefono[j+1].toString().trim());
+						if(telefono[j+1]!=null){
+							if(telefono[j+1].toString().trim().matches("[a-zA-Z(]+")){
+								log.info("  "+telefono[j+1].toString().trim());
+								tel.setDescTelefono(tel.getDescTelefono()+" "+telefono[j+1].toString());
+							}
+						}
 					}
-					else if(telefono.length>j+1){
+					}
+					if(telefono.length>j+1){
 					if(telefono[j+1]!=null){
-						log.info("  telef   "+telefono[j+1].toString());
-						if(telefono[j].toString().trim().equalsIgnoreCase("C")||telefono[j].toString().trim().equalsIgnoreCase("(CLARO)")||telefono[j].toString().trim().equalsIgnoreCase("claro")){
+						log.info("  telef 2:  "+telefono[j+1].toString());
+						if(telefono[j+1].toString().trim().equalsIgnoreCase("C")||telefono[j+1].toString().trim().equalsIgnoreCase("(CLARO)")||telefono[j+1].toString().trim().equalsIgnoreCase("claro")){
 							tel.setOperadorTelefonico("Claro");
 						}
-						else if(telefono[j].toString().trim().equalsIgnoreCase("M")){
+						else if(telefono[j+1].toString().trim().equalsIgnoreCase("M")){
 							tel.setOperadorTelefonico("Movistar");
 						}
-						else if(telefono[j].toString().trim().equalsIgnoreCase("N")){
+						else if(telefono[j+1].toString().trim().equalsIgnoreCase("N")){
 							tel.setOperadorTelefonico("Nextel");
 						}
-						else if(telefono[j+1].toString().trim().matches("^[a-zA-Z(]")){
+						else if(telefono[j+1].toString().trim().matches("[a-zA-Z(]+") && tel.getDescTelefono()==null){
 							tel.setDescTelefono(telefono[j+1].toString());
 						}
-						else if(telefono[j].trim().matches("^\\d")&&tel.getTelefono()!=null){
-							tel.setTelefono(telefono[j].toString().trim());
+						else if(telefono[j+1].trim().matches("([0-9]+)")&&tel.getTelefono()!=null){
+							log.info("NUM "+telefono[j+1].trim());
+							tel.setTelefono(telefono[j+1].toString().trim());
 						}
-					}log.info(" contr "+con.getCodcontrato()+" opera "+tel.getOperadorTelefonico()+" telefono  "+tel.getTelefono()+" desc "+tel.getDescTelefono());
-					
+						//definir tipo telefono
+						if(tel.getTelefono()!=null){
+						if(tel.getTelefono().matches("\\d{7}")){
+							tel.setTipoTelef("Telefono");
+						}else if(tel.getTelefono().matches("\\d{9}")){
+							tel.setTipoTelef("Celular");
+						}
+						}
+					}
 				}
-				
+				 }else{
+					 //comienza con letra
+					 
+					 
+					 
+				 }
+					telList.add(tel);
 				log.info(" contr "+con.getCodcontrato()+" opera "+tel.getOperadorTelefonico()+" telefono  "+tel.getTelefono()+" desc "+tel.getDescTelefono());
 				//objTelefonoDao.insertarTelefonoEmpleado(tel);
 			}
+			
+			
 			//6614412 (CLARO) 4852734 (CASA)
 			//7969418 991289883 C
 			//2475338 2478901 UBALDO
@@ -305,8 +335,18 @@ public class ContratoServiceImpl implements ContratoService {
 			//insertar cobranza
 		//	objCobranzaDao.insertCobranza(cob);
 		}
-		
+
+		for (TelefonoPersonaSie tel2 : telList) {
+			log.info("contrato: "+con.getCodcontrato()+" opera "+tel2.getOperadorTelefonico()+" telefono  "+tel2.getTelefono()+" desc "+tel2.getDescTelefono());
+			
+		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ContratoService#obtenerCodigo()
+	 */
+	public int obtenerCodigo() {
+		return objContratoDao.obtenerCodigo();
+	}
 	
 }

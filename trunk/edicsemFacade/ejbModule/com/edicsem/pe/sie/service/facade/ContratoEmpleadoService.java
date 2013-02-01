@@ -17,5 +17,5 @@ public interface ContratoEmpleadoService {
 	public abstract List listarxCargo(int cargo) ;
 	public abstract List listarCargoXEmp(int idEmpleado);
 	public abstract boolean verificarEmpleadoConCargo(int idcargo);
-	
+	public abstract List listarxCargoxgrupo(int cargoEmpleado,int idGrupo);
 }

@@ -83,4 +83,11 @@ public class ContratoEmpleadoServiceImpl implements ContratoEmpleadoService {
 		log.info("en el servicio" + idcargo);
 		return objContratoEmpleadoDao.verificarEmpleadoConCargo(idcargo);
 	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ContratoEmpleadoService#listarxCargoxgrupo(int, int)
+	 */
+	public List listarxCargoxgrupo(int cargoEmpleado, int idGrupo) {
+		return objContratoEmpleadoDao.listarxCargoxgrupo(cargoEmpleado, idGrupo);
+	}
 }
