@@ -197,4 +197,21 @@ public class ContratoEmpleadoDAOImpl implements ContratoEmpleadoDAO{
 		}
 		return lista;
 	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ContratoEmpleadoDAO#listarxCargoxgrupo(int, int)
+	 */
+	public List listarxCargoxgrupo(int cargoEmpleado, int idGrupo) {
+		List lista = null;
+		try {
+			Query q = em.createQuery("select p from ContratoEmpleadoSie p  inner join p.tbEmpleado1.tbDetGrupoEmpleado d " +
+					"   where p.tbCargoempleado.idcargoempleado  = "+cargoEmpleado +"  and  d.tbGrupoVenta.idgrupo = "+idGrupo );
+			lista = q.getResultList();
+			log.info("tamaño lista listarx Cargox grupo --> " + lista.size());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 }

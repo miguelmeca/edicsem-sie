@@ -146,4 +146,19 @@ public class ContratoDAOImpl implements ContratoDAO{
 		}
 		return lista;
 	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ContratoDAO#obtenerCodigo()
+	 */
+	public int obtenerCodigo() {
+		int codigo=0;
+		try {
+			Query q = em.createNativeQuery("SELECT nextval('SIE.TB_CONTRATO_IDCONTRATO_SEQ') ");
+			codigo =  Integer.parseInt(q.getResultList().get(0).toString()); 
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return codigo;
+	}
 }
