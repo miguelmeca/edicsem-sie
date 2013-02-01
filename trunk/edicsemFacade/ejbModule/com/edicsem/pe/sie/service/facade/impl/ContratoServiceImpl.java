@@ -166,34 +166,38 @@ public class ContratoServiceImpl implements ContratoService {
 		ContratoSie con = new ContratoSie();
 		TelefonoPersonaSie tel = new TelefonoPersonaSie();
 		List<TelefonoPersonaSie> telList= new ArrayList<TelefonoPersonaSie>() ;
+		String codigoContr = ""; 
 		for (int i = 0; i < sistMig.size(); i++) {
 			
 			SistemaIntegradoDTO s = sistMig.get(i);
 			//if(sistMig.get(i-1).getCodContrato()!=s.getCodContrato()){
+			if(s.getCodContrato()!=codigoContr){
+				cli = new ClienteSie();
+				con = new ContratoSie();
+				con.setCodcontrato(s.getCodContrato());
+				//insertar clliente
+				cli.setApematcliente(s.getApematcliente());
+				cli.setApepatcliente(s.getApepatcliente());
+				cli.setNombrecliente(s.getNombrecliente());
+				cli.setNumdocumento(s.getNumdocumento());
+				cli.setCorreo(s.getCorreo());
+				cli.setEmpresatrabajo(s.getEmpresatrabajo());
+				cli.setCargotrabajo(s.getCargotrabajo());
+				cli.setDirectrabajo(s.getDirectrabajo());
+				cli.setFecnacimiento(s.getFecnacimiento());
+				cli.setTelftrabajo(s.getTelftrabajo());
+				cli.setTitulartelefono(s.getTitulartelefono());
+				cli.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23));
+				log.info(" contr "+con.getCodcontrato());
+				codigoContr=  con.getCodcontrato();
+				//objClienteDao.insertCliente(cli);
+			}
 			
-			cli = new ClienteSie();
-			con = new ContratoSie();
-			con.setCodcontrato(s.getNumContrato());
-			//insertar clliente
-			cli.setApematcliente(s.getApematcliente());
-			cli.setApepatcliente(s.getApepatcliente());
-			cli.setNombrecliente(s.getNombrecliente());
-			cli.setNumdocumento(s.getNumdocumento());
-			cli.setCorreo(s.getCorreo());
-			cli.setEmpresatrabajo(s.getEmpresatrabajo());
-			cli.setCargotrabajo(s.getCargotrabajo());
-			cli.setDirectrabajo(s.getDirectrabajo());
-			cli.setFecnacimiento(s.getFecnacimiento());
-			cli.setTelftrabajo(s.getTelftrabajo());
-			cli.setTitulartelefono(s.getTitulartelefono());
-			cli.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23));
-			log.info(" contr "+con.getCodcontrato());
-			//objClienteDao.insertCliente(cli);
 			
 		//	tel.setIdcliente(cli);
 		//	tel.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(17));
 			
-			String [ ] telefono = s.getNumTelefono().split("\\s+");
+			String [ ] telefono = s.getNumTelefono().split("(\\s(+");
 			log.info("tamano**  "+telefono.length);
 			for (int j = 0; j < telefono.length; j++) {
 				log.info("length "+telefono.length+"  j "+j);
