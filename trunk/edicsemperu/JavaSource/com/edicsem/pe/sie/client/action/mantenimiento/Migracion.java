@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,11 +31,6 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 import com.edicsem.pe.sie.beans.SistemaIntegradoDTO;
-import com.edicsem.pe.sie.entity.ClienteSie;
-import com.edicsem.pe.sie.entity.CobranzaSie;
-import com.edicsem.pe.sie.entity.ContratoSie;
-import com.edicsem.pe.sie.service.facade.ClienteService;
-import com.edicsem.pe.sie.service.facade.ContratoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.ContratoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
@@ -149,7 +143,7 @@ public class Migracion implements Serializable {
 
 						if (tamano > 1) {
 							log.info(" >1 ");
-							
+							sis = new SistemaIntegradoDTO();
 							if (data.get(0)!=null) {
 								sis.setNumContrato(getCellValueAsString(data.get(5)));
 								
@@ -236,7 +230,7 @@ public class Migracion implements Serializable {
 								sis.setCalificacionCliente(getCellValueAsString(data.get(69)));
 								
 								if(palabra.length==3){
-									log.info(" agrega");
+									log.info(" ***** "+ palabra);
 									sis.setNombrecliente(palabra[0]);
 									sis.setApepatcliente(palabra[1]);
 									sis.setApematcliente(palabra[2]);
@@ -253,6 +247,7 @@ public class Migracion implements Serializable {
 						}
 					}
 				}
+				log.info(" tamano total "+sistMig.size());
 				mensaje=  "Cargó exitosamente";
 				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 						Constants.MESSAGE_INFO_TITULO,mensaje);

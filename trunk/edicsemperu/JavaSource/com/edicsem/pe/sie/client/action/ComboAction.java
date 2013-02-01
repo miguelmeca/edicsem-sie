@@ -21,6 +21,7 @@ import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.EstadoGeneralSie;
 import com.edicsem.pe.sie.entity.FactorSancionSie;
 import com.edicsem.pe.sie.entity.FechaSie;
+import com.edicsem.pe.sie.entity.GrupoVentaSie;
 import com.edicsem.pe.sie.entity.ImporteSie;
 import com.edicsem.pe.sie.entity.MetaMesSie;
 import com.edicsem.pe.sie.entity.PaqueteSie;
@@ -46,6 +47,7 @@ import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.FactorSancionService;
 import com.edicsem.pe.sie.service.facade.FechaService;
+import com.edicsem.pe.sie.service.facade.GrupoVentaService;
 import com.edicsem.pe.sie.service.facade.ImporteService;
 import com.edicsem.pe.sie.service.facade.MetaMesService;
 import com.edicsem.pe.sie.service.facade.PaqueteService;
@@ -72,6 +74,7 @@ public class ComboAction {
 	private static FacesMessage msg = null;
 	private String mensaje;
 	private String codigoEstado;
+	private int idGrupo;
 	private String idProvincia, idDepartamento;
 	private int idCargo, idFactor, tipoImporte,idEmpresa;
 	private Map<String, Integer> tipoitems = new HashMap<String, Integer>();
@@ -82,7 +85,8 @@ public class ComboAction {
 	private Map<String, Integer> tipoDocumentoItems = new HashMap<String, Integer>();
 	private Map<String, Integer> cargoEmpleadoItems = new HashMap<String, Integer>();
 	private Map<String, Integer> productoPaqueteItems = new HashMap<String, Integer>();
-	
+	private Map<String, Integer> grupoItems = new HashMap<String, Integer>();
+	private int tipoVenta;
 	private int tipoProducto,tipoAlmacen;
 	private int cargoEmpleado;
 	private Map<String, Map<String, Integer>> dataProducto = new HashMap<String, Map<String, Integer>>();
@@ -160,6 +164,8 @@ public class ComboAction {
 	private TipoPagoService objTipoPagoService;
 	@EJB 
 	private ContratoEmpleadoService objContratoEmpleadoService;
+	@EJB
+	private GrupoVentaService objGrupoService;
 	
 	public ComboAction() {
 		log.info("inicializando constructor");
@@ -943,7 +949,14 @@ public class ComboAction {
 		empleadoxcargo = new HashMap<String, Integer>();
 
 		List listaP = new ArrayList<ContratoEmpleadoSie>();
-		listaP = (List<ContratoEmpleadoSie>) objContratoEmpleadoService.listarxCargo(cargoEmpleado);
+		
+		if(idGrupo!=0){
+			log.info("cargo --> " + getCargoEmpleado()+" grupo "+idGrupo);
+		listaP = (List<ContratoEmpleadoSie>) objContratoEmpleadoService.listarxCargoxgrupo(cargoEmpleado,idGrupo);
+		}
+		else{
+			listaP = (List<ContratoEmpleadoSie>) objContratoEmpleadoService.listarxCargo(cargoEmpleado);
+		}
 		log.info("tamaño empleado X cargo --> " + listaP.size());
 		for (int i = 0; i < listaP.size(); i++) {
 			ContratoEmpleadoSie c = new ContratoEmpleadoSie();
@@ -1441,6 +1454,75 @@ public class ComboAction {
 	 */
 	public void setExpositorItems(Map<String, Integer> expositorItems) {
 		this.expositorItems = expositorItems;
+	}
+
+	/**
+	 * @return the grupoItems
+	 */
+	public Map<String, Integer> getGrupoItems() {
+		List lista = new ArrayList<GrupoVentaSie>();
+		grupoItems = new HashMap<String, Integer>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getGrupoItems()'"+ tipoVenta);
+			}
+			lista = objGrupoService.listarGrupoVenta(tipoVenta);
+			log.info(" tamaño " + lista.size());
+			GrupoVentaSie g;
+			for (int i = 0; i < lista.size(); i++) {
+				g = new GrupoVentaSie();
+				if (lista.get(i) != null) {
+					g = (GrupoVentaSie) lista.get(i);
+					grupoItems.put(g.getDescripcion(),
+							g.getIdgrupo());
+				} else {
+					break;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return grupoItems;
+	}
+
+	/**
+	 * @param grupoItems the grupoItems to set
+	 */
+	public void setGrupoItems(Map<String, Integer> grupoItems) {
+		this.grupoItems = grupoItems;
+	}
+
+	/**
+	 * @return the idGrupo
+	 */
+	public int getIdGrupo() {
+		return idGrupo;
+	}
+
+	/**
+	 * @param idGrupo the idGrupo to set
+	 */
+	public void setIdGrupo(int idGrupo) {
+		this.idGrupo = idGrupo;
+	}
+
+	/**
+	 * @return the tipoVenta
+	 */
+	public int getTipoVenta() {
+		return tipoVenta;
+	}
+
+	/**
+	 * @param tipoVenta the tipoVenta to set
+	 */
+	public void setTipoVenta(int tipoVenta) {
+		this.tipoVenta = tipoVenta;
 	}
 	
 }

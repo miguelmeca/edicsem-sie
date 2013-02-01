@@ -28,6 +28,7 @@ import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.CobranzaSie;
 import com.edicsem.pe.sie.entity.ContratoSie;
+import com.edicsem.pe.sie.entity.DetGrupoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DetPaqueteSie;
 import com.edicsem.pe.sie.entity.DetProductoContratoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
@@ -39,6 +40,7 @@ import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.service.facade.ClienteService;
 import com.edicsem.pe.sie.service.facade.CobranzaService;
 import com.edicsem.pe.sie.service.facade.ContratoService;
+import com.edicsem.pe.sie.service.facade.DetGrupoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.DetProductoContratoService;
 import com.edicsem.pe.sie.service.facade.DetallePaqueteService;
 import com.edicsem.pe.sie.service.facade.DomicilioEmpleadoService;
@@ -82,6 +84,8 @@ public class MantenimientoContratoFormAction extends
 	private List<ContratoSie> contratoXClienteList;
 	private Date dhoy, dValidoFecNac;
 	private BigDecimal totalacumulado;
+	private int idGrupo;
+	private List<DetGrupoEmpleadoSie> detgrupoList;
 	
 	//Consultar
 	private String numDniCliente,codigoContrato,apePatCliente,apeMatCliente,nombreCliente;
@@ -112,6 +116,8 @@ public class MantenimientoContratoFormAction extends
 	private UbigeoService objubigeoService;
 	@EJB
 	private EmpleadoSieService objEmpleadoService;
+	@EJB
+	private DetGrupoEmpleadoService objDetGrupoService;
 	
 	@ManagedProperty(value = "#{comboAction}")
 	private ComboAction comboManager;
@@ -160,7 +166,8 @@ public class MantenimientoContratoFormAction extends
 		limpiarCampos();
 		objContratoSie = new ContratoSie();
 		//buscar codigo nuevo por el número de secuencial
-		
+		log.info("codigo  "+objContratoService.obtenerCodigo());
+		objContratoSie.setCodcontrato(""+objContratoService.obtenerCodigo());
 		
 		setNewRecord(true);
 		comboManager.setUbigeoDeparItems(null);
@@ -1038,6 +1045,7 @@ public class MantenimientoContratoFormAction extends
 	 * @param tipoVenta the tipoVenta to set
 	 */
 	public void setTipoVenta(int tipoVenta) {
+		comboManager.setTipoVenta(tipoVenta);
 		comboManager.setTipoAlmacen(tipoVenta);
 		this.tipoVenta = tipoVenta;
 	}
@@ -1397,6 +1405,20 @@ public class MantenimientoContratoFormAction extends
 	 * @return the radio
 	 */
 	public int getRadio() {
+		if(radio==1){
+			codigoContrato=null;
+			nombreCliente=null;
+			apePatCliente=null;
+			apeMatCliente = null;
+		}else if (radio ==2){
+			numDniCliente=null;
+			nombreCliente=null;
+			apePatCliente=null;
+			apeMatCliente = null;
+		}else{
+			numDniCliente=null;
+			codigoContrato=null;
+		}
 		return radio;
 	}
 
@@ -1404,6 +1426,22 @@ public class MantenimientoContratoFormAction extends
 	 * @param radio the radio to set
 	 */
 	public void setRadio(int radio) {
+		
+		if(radio==1){
+			codigoContrato=null;
+			nombreCliente=null;
+			apePatCliente=null;
+			apeMatCliente = null;
+		}else if (radio ==2){
+			numDniCliente=null;
+			nombreCliente=null;
+			apePatCliente=null;
+			apeMatCliente = null;
+		}else{
+			numDniCliente=null;
+			codigoContrato=null;
+		}
+		
 		this.radio = radio;
 	}
 
@@ -1512,6 +1550,38 @@ public class MantenimientoContratoFormAction extends
 	 */
 	public void setIdempleadoColaborador(int idempleadoColaborador) {
 		this.idempleadoColaborador = idempleadoColaborador;
+	}
+
+	/**
+	 * @return the detgrupoList
+	 */
+	public List<DetGrupoEmpleadoSie> getDetgrupoList() {
+		return detgrupoList;
+	}
+
+	/**
+	 * @param detgrupoList the detgrupoList to set
+	 */
+	public void setDetgrupoList(List<DetGrupoEmpleadoSie> detgrupoList) {
+		this.detgrupoList = detgrupoList;
+	}
+
+	/**
+	 * @return the idGrupo
+	 */
+	public int getIdGrupo() {
+		return idGrupo;
+	}
+
+	/**
+	 * @param idGrupo the idGrupo to set
+	 */
+	public void setIdGrupo(int idGrupo) {
+		detgrupoList= new ArrayList<DetGrupoEmpleadoSie>();
+		comboManager.setCargoEmpleado(2);
+		comboManager.setIdGrupo(idGrupo);
+		detgrupoList = objDetGrupoService.listarEmpleadosXGrupo(idGrupo);
+		this.idGrupo = idGrupo;
 	}
 	
 }

@@ -51,13 +51,13 @@
 			</h:panelGrid>
 			 <h:panelGrid columns="3" rendered="#{contratoForm.radio==3}"  >
         	<h:outputText value="Nombres: " />
-			<p:inputText id="nom" value="#{contratoForm.nombreCliente}" required="true"/>
+			<p:inputText id="nom" value="#{contratoForm.nombreCliente}" />
 			<p:message for="nom"  />
 			<h:outputText value="Apellido Paterno: " />
-			<p:inputText id="app" value="#{contratoForm.apePatCliente}" required="true"/>
+			<p:inputText id="app" value="#{contratoForm.apePatCliente}"  />
 			<p:message for="app"  />
 			<h:outputText value="Apellido Materno: " />
-			<p:inputText id="apm" value="#{contratoForm.apeMatCliente}" required="true"/>
+			<p:inputText id="apm" value="#{contratoForm.apeMatCliente}" />
 			<p:message for="apm"  />
 			</h:panelGrid>
 			<p:commandButton value="Buscar" action="#{contratoForm.consultar}" update="message" ajax="false"
