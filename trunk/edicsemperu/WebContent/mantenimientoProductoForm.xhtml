@@ -12,8 +12,7 @@
 	</script>
 		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
 			Producto </h1>
-		<h:form id="formManteProducto" prependId="false"
-			enctype="multipart/form-data">
+		<h:form id="formManteProducto" prependId="false" enctype="multipart/form-data">
 			<p:messages id="message" showDetail="true" />
 			<h:panelGrid columns="3" cellpadding="5"  >
 			
@@ -38,7 +37,7 @@
 				<p:message for="tipoproducto1" />
 				<h:outputText
 					value="#{message['mantenimiento.producto.descripcion']}" />
-				<p:inputText id="desc_prod"
+				<p:inputText id="desc_prod" maxlength="50"
 					value="#{productoForm.objProductoSie.descripcionproducto}"
 					size="25" required="true" onkeypress="return validarLetras(event)"
 					requiredMessage="#{message['mantenimiento.producto.descripcion.validation']}">
@@ -47,7 +46,7 @@
 				<h:outputText value="#{message['mantenimiento.producto.detalle']}" />
 				<p:inputTextarea id="detalle" size="10" autoResize="false" 
 					value="#{productoForm.objProductoSie.detalleproducto}"
-					rows="8" cols="50" required="true"
+					rows="8" cols="50" required="true" maxlength="120"
 					requiredMessage="#{message['mantenimiento.producto.detalle.validation']}" />
 					
 				<p:message for="detalle" />

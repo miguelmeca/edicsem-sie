@@ -34,10 +34,11 @@ import com.edicsem.pe.sie.beans.SistemaIntegradoDTO;
 import com.edicsem.pe.sie.service.facade.ContratoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
+import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name = "migracion")
 @SessionScoped
-public class Migracion implements Serializable {
+public class Migracion extends BaseMantenimientoAbstractAction implements Serializable {
 
 	public static Log log = LogFactory.getLog(Migracion.class);
 	private String nombreArchivo;
@@ -49,6 +50,23 @@ public class Migracion implements Serializable {
 		  
 	public Migracion() {
 	
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
+	 */
+	public String agregar() {
+		nombreArchivo="";
+		sistMig=new ArrayList<SistemaIntegradoDTO>();
+		mensaje ="";
+		return getViewMant();
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewMant()
+	 */
+	public String getViewMant() {
+		return Constants.MIGRAR_SISTEMA_INTEGRADO;
 	}
 	
 	public void InputStreamAFile(InputStream entrada, String nombreArchivo) {
@@ -145,7 +163,7 @@ public class Migracion implements Serializable {
 							log.info(" >1 ");
 							sis = new SistemaIntegradoDTO();
 							if (data.get(0)!=null) {
-								sis.setNumContrato(getCellValueAsString(data.get(5)));
+								sis.setCodContrato(getCellValueAsString(data.get(5)));
 								
 								sis.setEmpresa(getCellValueAsString(data.get(0)));
 								if(!data.get(5).toString().isEmpty()){
@@ -254,7 +272,7 @@ public class Migracion implements Serializable {
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 				}
 			catch (Exception e) {
-				mensaje = " Contrato: "+sis.getNumContrato()+",    "+e.getMessage();
+				mensaje = " Contrato: "+sis.getCodContrato()+",    "+e.getMessage();
 				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error Formato EXCEL", mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 				sistMig = new ArrayList<SistemaIntegradoDTO>();
@@ -341,4 +359,6 @@ public class Migracion implements Serializable {
 		public void setSistMig(List<SistemaIntegradoDTO> sistMig) {
 			this.sistMig = sistMig;
 		}
+		
+		
 }

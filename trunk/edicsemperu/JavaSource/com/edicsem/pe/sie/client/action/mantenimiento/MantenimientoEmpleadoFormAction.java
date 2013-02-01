@@ -538,14 +538,14 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	 */
 	public String insertar() throws Exception {
 		String paginaretorno="";
+		log.info("Entering my method 'insertar(registrar, actualizar)'"+ objEmpleado.getNombreemp());
 			/*encripta la contraseña*/
+		log.info("probando  ."+confcontra);
+		log.info("probando MD5..."+objEmpleado.getContrasena());
 		    objEmpleado.setContrasena(SecurityLogin.getMD5(objEmpleado.getContrasena()));
 			log.info("probando MD5..."+objEmpleado.getContrasena());
 			try {
-				if (log.isInfoEnabled()) {
-					log.info("Entering my method 'insertar(registrar, actualizar)'"+ objEmpleado.getNombreemp());
-				}
-				
+				 
 				if(userList.contains(objEmpleado.getUsuario())){
 					mensaje="Dicho usuario ya existe en el sistema";
 					msg = new FacesMessage(FacesMessage.SEVERITY_WARN,

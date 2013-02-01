@@ -32,7 +32,7 @@
 			requiredMessage="#{message['empleado.usuario.validation']}"/>
 		    <h:outputText value="#{message['empleado.contrasena']}" />
 			<p:password id="contrasenya" value="#{mantenimientoEmpleadoFormAction.objEmpleado.contrasena}" required="true" label="Contrasenya"
-			requiredMessage="#{message['empleado.contrasenya.validation']}" match="confcontra" />
+			requiredMessage="#{message['empleado.contrasenya.validation']}"  />
 			<h:outputText value="#{message['empleado.confcontra']}" />
 			<p:password id="confcontra" value="#{mantenimientoEmpleadoFormAction.confcontra}" required="true" label="Confcontra"
 			requiredMessage="#{message['empleado.confcontra.validation']}"/>
@@ -257,7 +257,7 @@
             </p:panel>
         </p:tab>
         </p:wizard>
-        <p:commandButton id="btnreg" value="Regresar" action="#{mantenimientoEmpleadoSearchAction.listar}" immediate="true" ajax = "false" icon="ui-icon ui-icon-close"/> 
+        <p:commandButton id="btnreg" value="Regresar" action="#{mantenimientoEmpleadoSearchAction.listar}" immediate="true" ajax = "false"  icon="ui-icon-circle-arrow-w"/> 
 			
 	</p:panel>	            
 	</h:form>

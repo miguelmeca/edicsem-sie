@@ -191,7 +191,8 @@ public class MantenimientoContratoFormAction extends
 	}
 	
 	public String agregar2() {
-		log.info("agregar()))");
+		log.info("agregar2()))");
+		ubigeoDefecto="";
 		objClienteSie=null;
 		telefonoList=null;
 		domicilioList=new ArrayList<DomicilioPersonaSie>();
