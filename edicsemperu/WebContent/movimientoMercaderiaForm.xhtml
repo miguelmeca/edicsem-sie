@@ -13,7 +13,7 @@
 		<h:form id="formMovMerc">
 			<p:messages id="message" showDetail="true" closable="true"  />
 			<p:panel header="#{message['panel.movimiento.mercaderia']}">
-				<h:panelGrid columns="2" id="panel" cellpadding="4" >
+				<h:panelGrid columns="2" id="panel" cellpadding="6" >
 					<h:panelGroup>
 					<h:outputText value="#{message['movimiento.tipo']}   " />
 					<p:spacer width="20px" />
@@ -29,17 +29,17 @@
 					<p:spacer/>
 					</h:panelGroup>
 					<p:fieldset legend="Datos Producto">
-					<h:panelGrid columns="4">
+					<h:panelGrid columns="2" cellpadding="4" >
 						<h:outputText id="ide" value="#{message['mantenimiento.producto.cantidadEnt']}"   rendered="#{!movimientoMercaderia.editMode}" />
-						<p:spinner id="spinnerE" size="2" min="1"  required="true" requiredMessage="#{message['movimiento.cantEntrada.validation']}" 
+						<p:spinner id="spinnerE" size="7" min="1"  required="true" requiredMessage="#{message['movimiento.cantEntrada.validation']}" 
 							value="#{movimientoMercaderia.objKardexSie.cantentrada}" rendered="#{!movimientoMercaderia.editMode}"/>
 						<h:outputText id="ids"
 							value="#{message['mantenimiento.producto.cantidadSal']}" rendered="#{movimientoMercaderia.editMode}"/>
-							<p:spinner id="spinnerS" size="2" min="1"  required="true" requiredMessage="#{message['movimiento.cantSalida.validation']}" 
+							<p:spinner id="spinnerS" size="7" min="1"  required="true" requiredMessage="#{message['movimiento.cantSalida.validation']}" 
 							value="#{movimientoMercaderia.objKardexSie.cantsalida}" rendered="#{movimientoMercaderia.editMode}"/>
 					<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
 					<p:selectOneMenu id="tipoProd" value="#{comboAction.tipoProducto}" 
-						required="true"  style="width:165px" >
+						required="true"  style="width:220px" >
 						<f:selectItem itemLabel="Seleccionar tipo" itemValue="#{null}" />
 						<f:selectItems value="#{comboAction.tipoitems}" />
 						<p:ajax update="produc" listener="#{comboAction.cambiar}" />
@@ -55,7 +55,7 @@
 					</p:fieldset>
 					
 					<p:fieldset legend="Movimiento #{movimientoMercaderia.tipoMovimiento}"  >
-					<h:panelGrid columns="4" >
+					<h:panelGrid columns="4" cellpadding="4">
 					<h:outputText value="Almacen" />
 					<p:selectOneMenu id="idAlmacen" size="1" required="true"  style="width:240px" 
 						value="#{movimientoMercaderia.idAlmacen}"  >
@@ -64,7 +64,7 @@
 					</p:selectOneMenu>
 					
 					<h:outputText value="Detalle" id="detProd" />
-					<p:inputTextarea value="#{movimientoMercaderia.objKardexSie.detallekardex}" />
+					<p:inputTextarea value="#{movimientoMercaderia.objKardexSie.detallekardex}" maxlength="60" autoResize="false" rows="5" />
 					
 					<h:outputText value="#{message['movimiento.empresa.descripcion']}" rendered="#{!movimientoMercaderia.editMode}"/>
 					<p:selectOneMenu size="1" 	value="#{movimientoMercaderia.idempresa}" rendered="#{!movimientoMercaderia.editMode}" style="width:165px">
@@ -74,7 +74,7 @@
 					</h:panelGrid>
 					</p:fieldset>
 					<p:fieldset legend="Movimiento #{movimientoMercaderia.tipomovimientoOpcional}  (Opcional)"  rendered="#{movimientoMercaderia.idtipokardexproducto!=3}"  >
-					<h:panelGrid columns="3" >
+					<h:panelGrid columns="3" cellpadding="4">
 					<h:outputText value="Almacen" rendered="#{movimientoMercaderia.idtipokardexproducto!=3}" />
 					<p:selectOneMenu id="idAlmacen2" size="1"  style="width:240px" 
 						value="#{movimientoMercaderia.idAlmacen2}"   rendered="#{movimientoMercaderia.idtipokardexproducto!=3}" >
@@ -86,7 +86,7 @@
 					</p:fieldset>
 					 
 					 <h:panelGroup  rendered="#{movimientoMercaderia.idtipokardexproducto==1}" >
-					<p:fieldset legend="Datos Comprobante" rendered="#{login.objEmpleado.cargo==1}" >
+					<p:fieldset legend="Datos Comprobante" rendered="#{login.objEmpleado.cargo==1}"  cellpadding="4">
 					<h:panelGrid   columns="3"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}" >
 					<h:outputText value="#{message['movimiento.proveedor.nombreempresa']}"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
 					<p:selectOneMenu size="1" rendered="#{movimientoMercaderia.idtipokardexproducto==1}" style="width:165px" 
@@ -97,8 +97,8 @@
 					<p:spacer />
 					<h:outputText value="#{message['movimiento.valortotal']}"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
 							
-					<p:spinner id="valortotal" size="2" min="1"  required="true" requiredMessage="#{message['movimiento.valortotal.validation']}" 
-					value="#{movimientoMercaderia.objKardexSie.valortotal}"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
+					<p:spinner id="valortotal" size="7" min="1"  required="true" requiredMessage="#{message['movimiento.valortotal.validation']}" 
+					value="#{movimientoMercaderia.objKardexSie.valortotal}"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}"  />
 					<p:message for="valortotal" rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
 				
 					<h:outputText value="#{message['movimiento.comprobante.numero']}" rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
@@ -110,7 +110,7 @@
 				</p:fieldset>
 				</h:panelGroup>
 				</h:panelGrid>
-				<br/><br/>
+				<br/>
 				<p:commandButton id="idG" action="#{movimientoMercaderia.insertar}" icon="ui-icon ui-icon-disk" title="#{message['movimiento.grabar']}"
 					value="#{message['movimiento.grabar']}" ajax="false" update="formMovMerc:listaMovim, message"/>
 				<p:tooltip for="idG"/>
