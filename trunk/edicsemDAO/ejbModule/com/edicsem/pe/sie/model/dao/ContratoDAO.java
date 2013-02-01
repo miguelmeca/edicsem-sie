@@ -16,4 +16,5 @@ public interface ContratoDAO {
 	public abstract List  listarContratos();
 	public abstract List listarContratosDeudores();
 	public abstract List listarClientePorParametro(String numDocumento,String codigoContrato,String nombreCliente, String apePat,String apeMat );
+	public abstract int obtenerCodigo();
 }
