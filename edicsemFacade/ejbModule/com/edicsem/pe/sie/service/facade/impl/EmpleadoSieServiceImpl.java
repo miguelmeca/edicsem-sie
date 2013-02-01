@@ -109,9 +109,9 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 					log.info("inicio del método insertar empleado");
 				}
 				/**Actualiza el empleado**/
-				objEmpleado.setIdempleado(objEmpleado.getIdempleado());
+				
 				objEmpleado.setTbTipoDocumentoIdentidad(objTipoDocDao.buscarTipoDocumento(TipoDocumento));
-				objEmpleado.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(3));
+				
 				objEmpleadoDao.actualizarEmpleado(objEmpleado);
 				/**Actualiza telefono(s)**/
 				log.info("bien!! :d ");
@@ -158,17 +158,15 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 			   }catch (Exception e) {
 				e.printStackTrace();
 			}
-			objEmpleado = new EmpleadoSie();
-			TelefonoPersonaList = new ArrayList<TelefonoPersonaSie>();
-			objDomicilio = new DomicilioPersonaSie();
-			contratoEmpleadoList = new ArrayList<ContratoEmpleadoSie>();
 	}
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#eliminarEmpleado(int)
 	 */
 	public void eliminarEmpleado(int id) {
-		objEmpleadoDao.eliminarEmpleado(id);
+		EmpleadoSie empleado = objEmpleadoDao.buscarEmpleado(id);
+		empleado.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(4));
+		objEmpleadoDao.actualizarEmpleado(empleado);
 	}
 
 	/* (non-Javadoc)
