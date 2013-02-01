@@ -107,8 +107,6 @@ public class SistemaIntegradoDTO implements Serializable {
 	
 	private String calificacionCliente;
 	
-	private String numContrato;
-	
 	private String lugarTrabajo;
 	
 	private Integer diasRetraso;
@@ -789,21 +787,7 @@ public class SistemaIntegradoDTO implements Serializable {
 	public void setCalificacionCliente(String calificacionCliente) {
 		this.calificacionCliente = calificacionCliente;
 	}
-
-	/**
-	 * @return the numContrato
-	 */
-	public String getNumContrato() {
-		return numContrato;
-	}
-
-	/**
-	 * @param numContrato the numContrato to set
-	 */
-	public void setNumContrato(String numContrato) {
-		this.numContrato = numContrato;
-	}
-
+	
 	/**
 	 * @return the lugarTrabajo
 	 */
