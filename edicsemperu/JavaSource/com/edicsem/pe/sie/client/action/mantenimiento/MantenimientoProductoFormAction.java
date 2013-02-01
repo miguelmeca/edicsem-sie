@@ -72,7 +72,7 @@ public class MantenimientoProductoFormAction extends
 		limpiarCampos();
 		objProductoSie = new ProductoSie();
 		setNewRecord(true);
-		return productoSearch.getViewMant();
+		return getViewMant();
 	}
  
 	/*
@@ -129,6 +129,7 @@ public class MantenimientoProductoFormAction extends
 	 * #insertar()
 	 */
 	public String insertar() {
+		log.info("Entering my method 'insertar()' " );
 		mensaje=null;
 		String paginaRetorno="";
 		//Capturando el empleado en session
@@ -136,9 +137,7 @@ public class MantenimientoProductoFormAction extends
 		EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 		log.info(" "+sessionUsuario.getNombresCompletos());
 		try {
-			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'insertar()' " );
-			}
+			
 			objProductoSie.setUsuariocreacion(sessionUsuario.getUsuario());
 			if(objProductoSie.getStkmaximo()<= objProductoSie.getStkminimoproducto()){
 				mensaje ="El stock minimo no puede ser mayor o igual al máximo";
