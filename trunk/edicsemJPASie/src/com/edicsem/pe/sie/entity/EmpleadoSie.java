@@ -132,6 +132,10 @@ public class EmpleadoSie implements Serializable {
   	@OneToMany(mappedBy="idempleado")
   	private Set<DetpagoSie> tbDetpago;
   	
+  	//bi-directional many-to-one association to DetGrupoEmpleadoSie
+  	@OneToMany(mappedBy="idempleado")
+  	private Set<DetGrupoEmpleadoSie> tbDetGrupoEmpleado;
+  	
 	public EmpleadoSie() {
     }
 
@@ -403,6 +407,14 @@ public class EmpleadoSie implements Serializable {
 	 */
 	public void setCargo(int cargo) {
 		this.cargo = cargo;
+	}
+
+	public Set<DetGrupoEmpleadoSie> getTbDetGrupoEmpleado() {
+		return tbDetGrupoEmpleado;
+	}
+
+	public void setTbDetGrupoEmpleado(Set<DetGrupoEmpleadoSie> tbDetGrupoEmpleado) {
+		this.tbDetGrupoEmpleado = tbDetGrupoEmpleado;
 	}
 
 }

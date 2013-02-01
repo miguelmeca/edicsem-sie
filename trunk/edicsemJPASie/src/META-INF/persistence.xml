@@ -60,6 +60,8 @@
 		<class>com.edicsem.pe.sie.entity.DetPermisoEmpleadoSie</class>
 		<class>com.edicsem.pe.sie.entity.AuditoriaUsuarioSie</class>
 		<class>com.edicsem.pe.sie.entity.Personalead</class>
+		<class>com.edicsem.pe.sie.entity.DetGrupoEmpleadoSie</class>
+		<class>com.edicsem.pe.sie.entity.GrupoVentaSie</class>
 
 		<properties>
 			<property name="eclipselink.jdbc.driver" value="org.postgresql.Driver" />
