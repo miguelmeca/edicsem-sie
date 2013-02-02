@@ -17,8 +17,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 
 
 /**
@@ -59,6 +61,9 @@ public class ComprobanteSie implements Serializable {
 	//bi-directional many-to-one association to DetalleComprobanteSie
 	@OneToMany(mappedBy="tbComprobante")
 	private Set<DetalleComprobanteSie> tbDetalleComprobantes;
+	
+	@Transient
+	private String fechaCreacionString;
 
     public ComprobanteSie() {
     }
@@ -141,6 +146,15 @@ public class ComprobanteSie implements Serializable {
 
 	public void setTbDetalleComprobantes(Set<DetalleComprobanteSie> tbDetalleComprobantes) {
 		this.tbDetalleComprobantes = tbDetalleComprobantes;
+	}
+
+	public String getFechaCreacionString() {
+		fechaCreacionString = DateUtil.formatoString(getFechacreacion(), "dd/MM/yyyy");
+		return fechaCreacionString;
+	}
+
+	public void setFechaCreacionString(String fechaCreacionString) {
+		this.fechaCreacionString = fechaCreacionString;
 	}
 	
 }
