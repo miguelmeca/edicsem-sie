@@ -13,7 +13,7 @@
 		<h:form id="frmComprobanteForm">
 			<p:growl id="message" showDetail="true" />
 			
-			<h:panelGrid id="display" columns="2" >
+			<h:panelGrid id="display" columns="2" style="margin-top:30px" >
 				<h:outputText value="#{message['comprobante.codigo']}" />
 				<h:panelGroup>
 					<p:inputText value="#{comprobanteForm.objComprobanteSie.codcomprobante}" readonly="true" />
@@ -51,12 +51,12 @@
 				</p:column>
 				
 				<p:column headerText="#{message['comprobante.fechaCreacion']}" >
-					<h:outputText value="#{c.tbKardex.fechacreacion}" />
+					<h:outputText value="#{c.tbKardex.fechaCreacionString}" />
 				</p:column>
 				
 			</p:dataTable>
 			
-			<h:panelGrid  columns="2" >
+			<h:panelGrid  columns="2" style="margin-top:20px">
 				<h:outputText value="#{message['comprobante.montoTotal']}" />
 				<h:panelGroup>
 					<p:inputText value="#{comprobanteForm.montoTotal}" readonly="true" />

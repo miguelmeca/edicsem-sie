@@ -369,6 +369,9 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 							log.info(" loco "+idAlmacen2);
 							validado = true;
 							stockTotalAlmacenado =objKardexSie.getCantentrada();
+							BigDecimal d = new BigDecimal(Double.parseDouble(objKardexSie.getValortotal())/objKardexSie.getCantentrada());
+							d.setScale(2);
+							objKardexSie.setValorunitarioentrada(d+"");
 							mensaje="Se registro correctamente, el stock actual Total es " + stockTotalAlmacenado +" se excedio el stock maximo";
 						}
 						else{
