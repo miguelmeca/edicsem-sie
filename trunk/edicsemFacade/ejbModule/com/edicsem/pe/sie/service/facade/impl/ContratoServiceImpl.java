@@ -196,14 +196,22 @@ public class ContratoServiceImpl implements ContratoService {
 			
 		//	tel.setIdcliente(cli);
 		//	tel.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(17));
+			//(\\s\\n[(]+)
+			//si se encuentra letra junto a numero de antepone un espacio
+		//	s.getNumTelefono().
 			
-			String [ ] telefono = s.getNumTelefono().split("(\\s(+");
+			
+			String [ ] telefono = s.getNumTelefono().trim().split("([\\s(-]+)");
+			for (int j = 0; j < telefono.length; j++) {
+				log.info("f:  "+telefono[j].toString());
+			}
+			
 			log.info("tamano**  "+telefono.length);
 			for (int j = 0; j < telefono.length; j++) {
 				log.info("length "+telefono.length+"  j "+j);
 				 tel = new TelefonoPersonaSie();
 				 log.info("  telef 1:   "+telefono[j].toString());
-				 if(telefono[j].trim().matches("([0-9]+)")){
+				 
 				 if(telefono[j].toString().trim().equalsIgnoreCase("C")||telefono[j].toString().trim().equalsIgnoreCase("(CLARO)")||telefono[j].toString().trim().equalsIgnoreCase("claro")){
 						tel.setOperadorTelefonico("Claro");
 					}
@@ -223,7 +231,7 @@ public class ContratoServiceImpl implements ContratoService {
 						log.info("-->  "+telefono[j+1].toString().trim());
 						if(telefono[j+1]!=null){
 							if(telefono[j+1].toString().trim().matches("[a-zA-Z(]+")){
-								log.info("  "+telefono[j+1].toString().trim());
+							log.info(" DESCC "+telefono[j+1].toString().trim());
 								tel.setDescTelefono(tel.getDescTelefono()+" "+telefono[j+1].toString());
 							}
 						}
@@ -231,7 +239,7 @@ public class ContratoServiceImpl implements ContratoService {
 					}
 					if(telefono.length>j+1){
 					if(telefono[j+1]!=null){
-						log.info("  telef 2:  "+telefono[j+1].toString());
+						//log.info("  telef 2:  "+telefono[j+1].toString());
 						if(telefono[j+1].toString().trim().equalsIgnoreCase("C")||telefono[j+1].toString().trim().equalsIgnoreCase("(CLARO)")||telefono[j+1].toString().trim().equalsIgnoreCase("claro")){
 							tel.setOperadorTelefonico("Claro");
 						}
@@ -257,15 +265,13 @@ public class ContratoServiceImpl implements ContratoService {
 						}
 						}
 					}
-				}
+			 
 				 }else{
 					 //comienza con letra
-					 
-					 
-					 
+					  
 				 }
-					telList.add(tel);
-				log.info(" contr "+con.getCodcontrato()+" opera "+tel.getOperadorTelefonico()+" telefono  "+tel.getTelefono()+" desc "+tel.getDescTelefono());
+				telList.add(tel);
+			//	log.info(" contr "+con.getCodcontrato()+" opera "+tel.getOperadorTelefonico()+" telefono  "+tel.getTelefono()+" desc "+tel.getDescTelefono());
 				//objTelefonoDao.insertarTelefonoEmpleado(tel);
 			}
 			
