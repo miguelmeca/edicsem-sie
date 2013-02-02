@@ -90,6 +90,9 @@ public class KardexSie implements Serializable {
     @Transient
     private String fecha;
     
+	@Transient
+	private String fechaCreacionString;
+    
     public KardexSie() {
     }
 
@@ -242,7 +245,6 @@ public class KardexSie implements Serializable {
 	 */
 	public String getFecha() {
 		fecha = DateUtil.convertDateToString(fechacreacion)+" "+DateUtil.getTimeNow(fechacreacion);
-		
 		return fecha;
 	}
 
@@ -253,6 +255,14 @@ public class KardexSie implements Serializable {
 	
 		this.fecha = fecha;
 	}
-	
+
+	public String getFechaCreacionString() {
+		fechaCreacionString = DateUtil.formatoString(getFechacreacion(), "dd/MM/yyyy HH:mm");
+		return fechaCreacionString;
+	}
+
+	public void setFechaCreacionString(String fechaCreacionString) {
+		this.fechaCreacionString = fechaCreacionString;
+	}
 	
 }
