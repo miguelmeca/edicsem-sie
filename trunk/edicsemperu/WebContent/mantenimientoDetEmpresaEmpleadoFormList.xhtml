@@ -5,8 +5,10 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
-		<h1 class="title ui-widget-header ui-corner-all">Lista de
-		Empleados por Empresa</h1>
+		<script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
+		<h1 class="title ui-widget-header ui-corner-all">#{message['mantenimiento.empleadosporempresa.tittle']}</h1>
 
 		<h:form id="frmDetEmpresaEmpleadoFormList" >
 			<p:growl id="message" showDetail="true" />
