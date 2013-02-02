@@ -155,6 +155,12 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 							valoruniex=  Double.parseDouble(k.get(i).getValorunitarioexistencia())/k.get(i).getCantexistencia();
 							}
 							log.info(" v "+ valoruniex);
+						}else{
+							if( k.get(i).getValorunitarioexistencia()!=null){
+								log.info(" uni exist "+k.get(i).getValorunitarioexistencia());
+								valoruniex=  Double.parseDouble(k.get(i).getValorunitarioexistencia())/k.get(i).getCantexistencia();
+							}
+							log.info(" v "+ valoruniex);
 						}
 						if(k.get(i).getCantexistencia()==null)
 							cantExistenteTotalAlmacenes+=0.0;
@@ -172,7 +178,7 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 					}
 					
 					log.info(" **  " + cantExistenteTotalAlmacenes + " "  + valorExistenteTotalAlmacenes +" stk minimo "+ stkminimo + " " + stkmaximo + " " + validado);
-					 
+					log.info(" **  " + valoruniex);
 					if (objKardexSie.getCantsalida() > 0) {
 						log.info(" cantexist "+ cantExistenteTotalAlmacenes + " cant Sal "+objKardexSie.getCantsalida() +" stk min " +stkminimo+ " almacen 2 " + idAlmacen2);
 						if (cantExistenteTotalAlmacenes - objKardexSie.getCantsalida() < 0) {
@@ -323,6 +329,7 @@ public class MovimientoAction extends BaseMantenimientoAbstractAction {
 												mensaje = "La cantidad de salida de dicho producto no puede ser mayor al actual: " + k.get(i).getCantexistencia() ;
 												break;
 											}else{
+												log.info(" valoruniex "+ valoruniex);
 												double s =valoruniex*objKardexSie.getCantentrada();
 												log.info("   valor total **  "+s);
 												objKardexSie.setValortotal(""+s);
