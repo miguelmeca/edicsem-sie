@@ -1,0 +1,275 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">ENTREGAS PERU</h1>
+		<h:form id="frmExcelEntregasPeruForm">
+		
+
+<p:fileUpload fileUploadListener="#{FileUploadEntregasPeru.handleFileUpload}"
+	allowTypes="/(\.|\/)(XLS|xls)$/" description="Seleccionar Excel"
+	update="datatablecampana"
+	/>
+	<p:commandButton value="Realizar cambios"	id="guardar"
+	action="#{FileUploadEntregasPeru.subirCreditos}" process="@all">
+	</p:commandButton>
+
+<p:dataTable id="datatablecampana" var="c" value="#{FileUploadEntregasPeru.leadsNuevos}"  paginator="true" rows="10"
+ rowsPerPageTemplate="5,10,15"  emptyMessage="No se encontraron registros"
+ paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
+                   
+       
+        
+        <p:column headerText="Empresa"  >
+		<h:outputText value="#{c.empresa}"/>
+		</p:column>
+		
+			<p:column  headerText="fecha"  >
+        <h:outputText value="#{c.fecha}"/>
+        </p:column>
+		
+		<p:column  headerText="boleta"  >
+        <h:outputText value="#{c.boleta}"/>
+        </p:column>
+        
+        <p:column  headerText="Ndecontrato"  >
+        <h:outputText value="#{c.numerodecontrato}"/>
+        </p:column>
+        
+    <!--     
+    	<p:column  headerText="nombre"  >
+        <h:outputText value="#{c.nombredecliente}"/>
+        </p:column>
+        
+        	
+        
+        	<p:column  headerText="DNI"  >
+        <h:outputText value="#{c.dnidelcliente}"/>
+        </p:column>
+        
+        
+        
+        	<p:column  headerText="cumpleanios"  >
+        <h:outputText value="#{c.fechadecuempleaniosString}"/>
+        </p:column>
+        
+        	<p:column  headerText="Correo"  >
+        <h:outputText value="#{c.correo}"/>
+        </p:column>
+        
+        	<p:column  headerText="NdeTelefono"  >
+        <h:outputText value="#{c.numerotelefono}"/>
+        </p:column>
+        
+        	<p:column  headerText="domiciliodeCliente"  >
+        <h:outputText value="#{c.domiciliodelcliente}"/>
+        </p:column>
+        
+        	<p:column  headerText="distrito"  >
+       <h:outputText value="#{c.domiciliodistrito}"/>
+        </p:column>
+        
+        	<p:column  headerText="planoDomicilio"  >
+        <h:outputText value="#{c.planodomicilio}"/>
+        </p:column>
+        
+        	<p:column  headerText="letraSectorDomicilio"  >
+        <h:outputText value="#{c.letrasectordomicilio}"/>
+        </p:column>
+        
+        	<p:column  headerText="NsectorDomicilio"  >
+        <h:outputText value="#{c.numerosectordomicilio}"/>
+        </p:column>
+        
+        	<p:column  headerText="lugarTrabajo"  >
+        <h:outputText value="#{c.lugardetrabajo}"/>
+        </p:column>
+        
+        	<p:column  headerText="CargoLaboral"  >
+        <h:outputText value="#{c.cargolaboral}"/>
+        </p:column>
+        
+        	<p:column  headerText="TeldeTrabajo"  >
+        <h:outputText value="#{c.telefonodeltrabajo}"/>
+        </p:column>
+        
+        	<p:column  headerText="anexo"  >
+        <h:outputText value="#{c.anexo}"/>
+        </p:column>
+        
+        	<p:column  headerText="direcciondeltrabajo"  >
+        <h:outputText value="#{c.direcciondetrabajo}"/>
+        </p:column>
+        
+        	<p:column  headerText="TrabajoDistrito"  >
+        <h:outputText value="#{c.trabajodistrito}"/>
+        </p:column>
+        
+        	<p:column  headerText="PlanoTrabajo"  >
+        <h:outputText value="#{c.planotrabajo}"/>
+        </p:column>
+        
+        	<p:column  headerText="LetraSectorTrabajo"  >
+        <h:outputText value="#{c.letrasectortrabajo}"/>
+        </p:column>
+        
+        	<p:column  headerText="NumSectorTrabajo"  >
+        <h:outputText value="#{c.numerosectortrabajo}"/>
+        </p:column>
+        
+        	<p:column  headerText="LugardeEntrega"  >
+        <h:outputText value="#{c.lugardelaentrega}"/>
+        </p:column>
+        
+        	<p:column  headerText="Nom_Vendedor"  >
+        <h:outputText value="#{c.nombredelvendedor}"/>
+        </p:column>
+        
+        	<p:column  headerText="Nom_expositor"  >
+        <h:outputText value="#{c.nombredelexpositor}"/>
+        </p:column>
+        
+        	<p:column  headerText="Nom_supervisor"  >
+        <h:outputText value="#{c.nombredelsupervisor}"/>
+        </p:column>
+        
+        	<p:column  headerText="Cant_Mercaderia"  >
+        <h:outputText value="#{c.cantidaddemercaderia}"/>
+        </p:column>
+        
+        	<p:column  headerText="Cod_Mercaderia"  >
+        <h:outputText value="#{c.codigodemercaderia}"/>
+        </p:column>
+        
+        	<p:column  headerText="MontodeAdelanto"  >
+        <h:outputText value="#{c.montodeadelanto}"/>
+        </p:column>
+        
+        	<p:column  headerText="PuntoVenta"  >
+        <h:outputText value="#{c.puntodeventa}"/>
+        </p:column>
+        
+        	<p:column  headerText="Nom_Relacionista"  >
+        <h:outputText value="#{c.nombredelrelacionista}"/>
+        </p:column>
+        
+        	<p:column  headerText="Distrito_Punto"  >
+        <h:outputText value="#{c.distritodelpunto}"/>
+        </p:column>
+        
+        	<p:column  headerText="EventoDe_Venta"  >
+        <h:outputText value="#{c.eventodeventa}"/>
+        </p:column>
+        
+        	<p:column  headerText="Fecha_Compromiso"  >
+        <h:outputText value="#{c.fechadecompromiso}"/>
+        </p:column>
+        
+        	<p:column  headerText="2De"  >
+        <h:outputText value="#{c.dosde}"/>
+        </p:column>
+        
+        	<p:column  headerText="2Hasta"  >
+        <h:outputText value="#{c.doshasta}"/>
+        </p:column>
+        
+        	<p:column  headerText="EcargadodeEntrega"  >
+        <h:outputText value="#{c.encargadodelanetrega}"/>
+        </p:column>
+        
+        	<p:column  headerText="FechaLlamadaoVisita"  >
+        <h:outputText value="#{c.fechadellamadaovisita}"/>
+        </p:column>
+        
+        	<p:column  headerText="FechaPostergada"  >
+        <h:outputText value="#{c.fechapostergada}"/>
+        </p:column>
+        
+        	<p:column  headerText="tresDe"  >
+        <h:outputText value="#{c.tresde}"/>
+        </p:column>
+        
+        	<p:column  headerText="3Hasta"  >
+        <h:outputText value="#{c.treshasta}"/>
+        </p:column>
+        
+        	<p:column  headerText="FechaFinal"  >
+        <h:outputText value="#{c.fechafinal}"/>
+        </p:column>
+        
+        	<p:column  headerText="EstadoFinal"  >
+        <h:outputText value="#{c.estadofinal}"/>
+        </p:column>
+        
+        	<p:column  headerText="Observaciones"  >
+        <h:outputText value="#{c.observaciones}"/>
+        </p:column>
+        
+        	<p:column  headerText="Nom_Patrocinador"  >
+        <h:outputText value="#{c.nombredelpatrocinado}"/>
+        </p:column>
+        
+        	<p:column  headerText="Comision_Vendedor"  >
+        <h:outputText value="#{c.comisiondelvendedor}"/>
+        </p:column>
+        
+  			
+  	
+        <p:column  headerText="FechaPagoVendedor"  >
+        <h:outputText value="#{c.fechadepagoalvendedor}"/>
+        </p:column>
+        
+         <p:column  headerText="ComsionVendedor"  >
+        <h:outputText value="#{c.comisiondelvendedor}"/>
+        </p:column>
+        
+        
+         <p:column  headerText="FechapagoExpositor"  >
+        <h:outputText value="#{c.fechadepagoalexpositor}"/>
+        </p:column>
+        
+        
+         <p:column  headerText="ComisionRelacionista"  >
+        <h:outputText value="#{c.comisiondelrelacionista}"/>
+        </p:column>
+        
+        
+         <p:column  headerText="FechapagoRelacionista"  >
+        <h:outputText value="#{c.fechadepagoalrelacionista}"/>
+        </p:column>
+        
+        
+         <p:column  headerText="ComosionPatrocinador"  >
+        <h:outputText value="#{c.comisiondelpatrocinador}"/>
+        </p:column>
+        
+        
+         <p:column  headerText="FechaPagoPatrocinador"  >
+        <h:outputText value="#{c.fechadepagoalpatrocinador}"/>
+        </p:column>
+        
+        
+         <p:column  headerText="PrecioTotal"  >
+        <h:outputText value="#{c.preciototal}"/>
+        </p:column>
+        
+        
+         <p:column  headerText="Puntaje"  >
+        <h:outputText value="#{c.puntaje}"/>
+        </p:column>
+        
+-->                
+        
+       
+    </p:dataTable>
+
+
+
+		
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
