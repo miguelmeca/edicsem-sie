@@ -29,19 +29,42 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 import com.edicsem.pe.sie.beans.MetasDiariasDTO;
+import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
+import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 @SuppressWarnings("serial")
 @ManagedBean(name = "FileUploadMetasDiarias")
 @SessionScoped
-public class FileUploadMetasDiarias implements Serializable {
+public class FileUploadMetasDiarias extends	BaseMantenimientoAbstractAction implements Serializable {
 
 	public static Log log = LogFactory.getLog(FileUploadMetasDiarias.class);
 	private String nombreArchivo;
 	private List<MetasDiariasDTO> leadsNuevos;
-	
+	private 	MetasDiariasDTO objMetasDiariasDTO;
 	
 //	@EJB
 //	private MetasDiariasDTOService objMetasDiariasDTOService;
 		  
+	public void init() {
+		log.info("init()");		
+		objMetasDiariasDTO = new MetasDiariasDTO();
+						}
+	
+	public String agregar() {
+		log.info("agregar()");
+		
+		objMetasDiariasDTO = new MetasDiariasDTO();		
+		
+		return getViewList();
+	}
+	
+	
+	public String getViewList() {
+		return Constants.MIGRACION_METAS_DIARIAS_FORM_LIST_PAGE;
+	}
+	
+	
+	
 	public FileUploadMetasDiarias() {
 
 	
@@ -269,7 +292,7 @@ public class FileUploadMetasDiarias implements Serializable {
 
 System.out.println("cantidad: " + leadsNuevos.size());
 System.out.println("id: " + leadsNuevos.get(0).getGrupo());
-
+		
 
 return null;
 
@@ -347,20 +370,6 @@ return null;
 			FileUploadMetasDiarias.log = log;
 		}
 
-//		/**
-//		 * @return the objMetasDiariasDTOService
-//		 */
-//		public MetasDiariasDTOService getObjMetasDiariasDTOService() {
-//			return objMetasDiariasDTOService;
-//		}
-//
-//		/**
-//		 * @param objMetasDiariasDTOService the objMetasDiariasDTOService to set
-//		 */
-//		public void setObjMetasDiariasDTOService(
-//				MetasDiariasDTOService objMetasDiariasDTOService) {
-//			this.objMetasDiariasDTOService = objMetasDiariasDTOService;
-//		}
-//
-//	
+
+	
 }
