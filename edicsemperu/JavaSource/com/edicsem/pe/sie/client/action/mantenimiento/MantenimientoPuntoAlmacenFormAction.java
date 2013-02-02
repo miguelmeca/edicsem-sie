@@ -82,10 +82,13 @@ public class MantenimientoPuntoAlmacenFormAction extends
 	public String agregar() {
 		log.info("agregar()");
 		defectoUbigeo=true;
-		if(defectoUbigeo){
 		comboManagerPunto.setIdDepartamento("15");
 		comboManagerPunto.setIdProvincia("01");
-		}
+		comboManagerPunto.setUbigeoDeparItems(null);
+		comboManagerPunto.setUbigeoProvinItems(null);
+		comboManagerPunto.setUbigeoDistriItems(null);
+		idDepartamento="15";
+		idProvincia="01";
 		idUbigeo="0";
 		ubigeoDefecto="";
 		comboManagerPunto.setUbigeoDistriItems(null);
@@ -94,24 +97,6 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		return getViewMant();
 	}
 	
-	public void limpiardialog(){
-		
-		if (defectoUbigeo) {
-			comboManagerPunto.setIdDepartamento("15");
-			comboManagerPunto.setIdProvincia("01");
-			log.info(" defecto lima true 1");
-			ubigeoDefecto = "";
-		} else {
-
-			comboManagerPunto.setIdDepartamento(null);
-			comboManagerPunto.setIdProvincia(null);
-			log.info(" cambio ubigeo   false  otro");
-		}
-		comboManagerPunto.setUbigeoDeparItems(null);
-		comboManagerPunto.setUbigeoProvinItems(null);
-		comboManagerPunto.setUbigeoDistriItems(null);
-	}
-
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
 	 */

@@ -12,7 +12,7 @@
 <h:form id="horarioPuntoVenta12">
 <p:messages showDetail="true" />			
 <p:dataTable value="#{MantenimientoHorarioPuntoVentaSearchAction.puntoVentaList}" var="c"
-		 paginator="true" rows="6"
+		 paginator="true" rows="6" id="punto"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15" widgetVar="table"
 					emptyMessage="No se encontraron registros" >
@@ -105,9 +105,11 @@ target="#{MantenimientoHorarioPuntoVentaSearchAction.idc}"
 </p:column>			  
 			  
 </p:dataTable>
+<p:blockUI block="punto" trigger="punto">cargando<br />
+				<p:graphicImage   value="/images/ajax_loader.gif"  style="width:60px; heigth:60px"  /></p:blockUI>
 </p:fieldset>
 	<p:fieldset legend="Visualizar Horario" style="margin-top:20px">
-    <p:schedule value="#{MantenimientoHorarioPuntoVentaSearchAction.eventModel}" draggable="false" resizable="false" locale="es_PE" view="agendaWeek"   />  
+    <p:schedule  value="#{MantenimientoHorarioPuntoVentaSearchAction.eventModel}" draggable="false" resizable="false" locale="es_PE" view="agendaWeek"   />  
 </p:fieldset>
  </p:outputPanel>
 </h:form>
