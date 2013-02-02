@@ -6,7 +6,10 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
-		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Empleados Por empresa</h1>
+		<script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
+		<h1 class="title ui-widget-header ui-corner-all">#{message['mantenimiento.empleadosporempresa.tittle']}</h1>
 		<h:form id="frmDetEmpresaEmpleadoForm">
 			<p:growl id="message" showDetail="true" />
 			
