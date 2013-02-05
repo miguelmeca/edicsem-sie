@@ -166,12 +166,14 @@ public class ContratoServiceImpl implements ContratoService {
 		ContratoSie con = new ContratoSie();
 		TelefonoPersonaSie tel = new TelefonoPersonaSie();
 		List<TelefonoPersonaSie> telList= new ArrayList<TelefonoPersonaSie>() ;
+		List<String> telefonoString= new ArrayList<String>();
 		String codigoContr = ""; 
 		for (int i = 0; i < sistMig.size(); i++) {
 			
 			SistemaIntegradoDTO s = sistMig.get(i);
 			//if(sistMig.get(i-1).getCodContrato()!=s.getCodContrato()){
 			if(s.getCodContrato()!=codigoContr){
+				log.info("nuevo contrato  --> ");
 				cli = new ClienteSie();
 				con = new ContratoSie();
 				con.setCodcontrato(s.getCodContrato());
@@ -193,16 +195,13 @@ public class ContratoServiceImpl implements ContratoService {
 				//objClienteDao.insertCliente(cli);
 			}
 			
+			//si se encuentra un ( - ) se reemplaza por un espacio
+			log.info("reempl ");
 			
-		//	tel.setIdcliente(cli);
-		//	tel.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(17));
-			//(\\s\\n[(]+)
-			//si se encuentra letra junto a numero de antepone un espacio
-		//	s.getNumTelefono().
-			
-			
-			String [ ] telefono = s.getNumTelefono().trim().split("([\\s(-]+)");
+			String [ ] telefono = s.getNumTelefono().trim().split("([\\s(-])+");
+	 
 			for (int j = 0; j < telefono.length; j++) {
+				telefono[j]= telefono[j].toString().replaceAll("([(-)])", " ");
 				log.info("f:  "+telefono[j].toString());
 			}
 			
@@ -222,21 +221,13 @@ public class ContratoServiceImpl implements ContratoService {
 						tel.setOperadorTelefonico("Nextel");
 					}
 					else if(telefono[j].trim().matches("([0-9]+)")){
+						log.info("telefono: "+telefono[j]);
 					tel.setTelefono(telefono[j].toString().trim());
 					}
 					else if(telefono[j].matches("[a-zA-Z(]+")){
 					tel.setDescTelefono(telefono[j].toString().trim());
+					}
 					
-					if(telefono.length>j+1){
-						log.info("-->  "+telefono[j+1].toString().trim());
-						if(telefono[j+1]!=null){
-							if(telefono[j+1].toString().trim().matches("[a-zA-Z(]+")){
-							log.info(" DESCC "+telefono[j+1].toString().trim());
-								tel.setDescTelefono(tel.getDescTelefono()+" "+telefono[j+1].toString());
-							}
-						}
-					}
-					}
 					if(telefono.length>j+1){
 					if(telefono[j+1]!=null){
 						//log.info("  telef 2:  "+telefono[j+1].toString());
@@ -250,9 +241,10 @@ public class ContratoServiceImpl implements ContratoService {
 							tel.setOperadorTelefonico("Nextel");
 						}
 						else if(telefono[j+1].toString().trim().matches("[a-zA-Z(]+") && tel.getDescTelefono()==null){
-							tel.setDescTelefono(telefono[j+1].toString());
+							log.info("LETRAS  "+telefono[j+1].toString().trim()+"  DESC "+ tel.getDescTelefono());
+							tel.setDescTelefono(telefono[j+1].toString().trim());
 						}
-						else if(telefono[j+1].trim().matches("([0-9]+)")&&tel.getTelefono()!=null){
+						else if(telefono[j+1].trim().matches("([0-9]+)")&&tel.getTelefono()==null){
 							log.info("NUM "+telefono[j+1].trim());
 							tel.setTelefono(telefono[j+1].toString().trim());
 						}
@@ -270,7 +262,10 @@ public class ContratoServiceImpl implements ContratoService {
 					 //comienza con letra
 					  
 				 }
-				telList.add(tel);
+					if(tel.getTelefono()!=null){
+						telefonoString.add(tel.getTelefono());
+						telList.add(tel);
+					}
 			//	log.info(" contr "+con.getCodcontrato()+" opera "+tel.getOperadorTelefonico()+" telefono  "+tel.getTelefono()+" desc "+tel.getDescTelefono());
 				//objTelefonoDao.insertarTelefonoEmpleado(tel);
 			}
