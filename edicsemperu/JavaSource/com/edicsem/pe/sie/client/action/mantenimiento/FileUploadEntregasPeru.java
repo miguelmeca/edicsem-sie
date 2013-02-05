@@ -33,6 +33,7 @@ import org.primefaces.model.UploadedFile;
 import com.ctc.wstx.util.DataUtil;
 import com.edicsem.pe.sie.beans.EntregasPeruDTO;
 import com.edicsem.pe.sie.beans.MetasDiariasDTO;
+import com.edicsem.pe.sie.beans.SistemaIntegradoDTO;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
 @SuppressWarnings("serial")
@@ -43,7 +44,7 @@ public class FileUploadEntregasPeru implements Serializable {
 	public static Log log = LogFactory.getLog(FileUploadEntregasPeru.class);
 	private String nombreArchivo;
 	private List<EntregasPeruDTO> leadsNuevos;
-	
+	private String mensaje ;
 	
 //	@EJB
 //	private MetasDiariasDTOService objMetasDiariasDTOService;
@@ -131,7 +132,7 @@ public class FileUploadEntregasPeru implements Serializable {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-
+			EntregasPeruDTO credito = new EntregasPeruDTO();
 			nombreArchivo = file.getFileName();
 			
 			/********aqui me quede*********/
@@ -172,129 +173,51 @@ public class FileUploadEntregasPeru implements Serializable {
 						int tamano = data.size();
 
 						if (tamano > 1) {
-
-						EntregasPeruDTO credito = new EntregasPeruDTO();
+							log.info(" >1 ");
+					credito = new EntregasPeruDTO();
 							
 							if (data.get(0)!=null) {
 								
+								log.info("EMPRESA-->"+data.get(0));
+				String empresa = getCellValueAsString(data.get(0));
+				credito.setEmpresa(empresa);
+
+			
+				log.info("NdContrato-->"+data.get(6));	
+				credito.setNumerodecontrato(getCellValueAsString(data.get(6)));
 						
-						String empresa = getCellValueAsString(data.get(0));
-						credito.setEmpresa(empresa);
-								
-//						credito.setEmpresa(getCellValueAsString(data.get(0)));
-								
-								if(!data.get(1).toString().isEmpty()){
-						credito.setFecha(DateUtil.convertStringToDate(getCellValueAsString(data.get(1))));
-								}
-								
-								
-						credito.setBoleta(Integer.parseInt(getCellValueAsString(data.get(5))));	
-						
-						credito.setNumerodecontrato(getCellValueAsString(data.get(6)));
-						
-						
-						
-//						
-//						credito.setNombredecliente((getCellValueAsString(data.get(8))));	
-//						
-//						
-//						
-//						String numDoc = getCellValueAsString(data.get(9));
-//						if(numDoc.length()==8){
-//				
-//							credito.setDnidelcliente(numDoc);
-//						}
-//						else if(numDoc.length()==6){
-//							
-//							credito.setDnidelcliente("00"+numDoc);
-//						}
-//						else if(numDoc.length()==7){
-//							
-//							credito.setDnidelcliente("0"+numDoc);
-//						}
-//						
-//						log.info(" fecha de cumpleanios--> "+data.get(10).toString());
-//						if(data.get(10).toString().isEmpty()||data.get(10).toString().equals("")||data.get(10).toString().trim().equals("")){
-//						
-//						}else{
-//							
-//							credito.setFechadecuempleanios(DateUtil.convertStringToDate(getCellValueAsString(data.get(10))));
-//						}
-//						
-//						credito.setCorreo(getCellValueAsString(data.get(11)));						
-//						credito.setNumerotelefono(getCellValueAsString(data.get(12)));
-//						credito.setDomiciliodelcliente(getCellValueAsString(data.get(13)));
-//						credito.setDomiciliodistrito(getCellValueAsString(data.get(14)));
-//						credito.setPlanodomicilio(Integer.getInteger(getCellValueAsString(data.get(15))));
-//						
-//						credito.setLetrasectordomicilio(getCellValueAsString(data.get(16)));						
-//						credito.setNumerosectordomicilio(Integer.getInteger(getCellValueAsString(data.get(17))));
-//						credito.setLugardetrabajo(getCellValueAsString(data.get(18)));
-//						credito.setCargolaboral(getCellValueAsString(data.get(19)));
-//						credito.setTelefonodeltrabajo(getCellValueAsString(data.get(20)));
-//						
-//						credito.setAnexo(Integer.getInteger(getCellValueAsString(data.get(21))));
-//						credito.setDirecciondetrabajo(getCellValueAsString(data.get(22)));					
-//						credito.setTrabajodistrito(getCellValueAsString(data.get(23)));
-//						credito.setPlanotrabajo(Integer.getInteger(getCellValueAsString(data.get(24))));
-//						credito.setLetrasectortrabajo(getCellValueAsString(data.get(24)));
-//						credito.setNumerosectortrabajo(Integer.getInteger(getCellValueAsString(data.get(25))));
-//						
-//						credito.setLugardelaentrega(getCellValueAsString(data.get(26)));
-//						credito.setNombredelvendedor(getCellValueAsString(data.get(32)));
-//						credito.setNombredelexpositor(getCellValueAsString(data.get(33)));
-//						credito.setNombredelsupervisor(getCellValueAsString(data.get(34)));
-//						credito.setCantidaddemercaderia(Integer.getInteger(getCellValueAsString(data.get(35))));
-//						
-//						credito.setCodigodemercaderia(getCellValueAsString(data.get(36)));
-//						credito.setMontodeadelanto(Integer.getInteger(getCellValueAsString(data.get(38))));
-//						credito.setPuntodeventa(getCellValueAsString(data.get(40)));
-//						credito.setNombredelrelacionista(getCellValueAsString(data.get(41)));
-//						
-//						
-//						credito.setDistritodelpunto(getCellValueAsString(data.get(42)));
-//						credito.setEventodeventa(getCellValueAsString(data.get(43)));
-//						credito.setFechadecompromiso(DateUtil.convertStringToDate(getCellValueAsString(data.get(44))));
-//						credito.setDosde(Integer.getInteger(getCellValueAsString(data.get(45))));
-//						credito.setDoshasta(Integer.getInteger(getCellValueAsString(data.get(46))));
-//						
-//						
-//						credito.setEncargadodelanetrega(getCellValueAsString(data.get(51)));
-//						credito.setFechadellamadaovisita(DateUtil.convertStringToDate(getCellValueAsString(data.get(52))));
-//						credito.setFechapostergada(DateUtil.convertStringToDate(getCellValueAsString(data.get(53))));
-//						credito.setTresde(Integer.getInteger(getCellValueAsString(data.get(54))));
-//						credito.setTreshasta(Integer.getInteger(getCellValueAsString(data.get(55))));
-//						
-//						
-//						credito.setFechafinal(DateUtil.convertStringToDate(getCellValueAsString(data.get(60))));
-//						credito.setEstadofinal(getCellValueAsString(data.get(61)));
-//						credito.setObservaciones(getCellValueAsString(data.get(66)));
-//						credito.setNombredelpatrocinado(getCellValueAsString(data.get(68)));
-//						credito.setComisiondelvendedor(Integer.getInteger(getCellValueAsString(data.get(69))));
-//						credito.setFechadepagoalvendedor(DateUtil.convertStringToDate(getCellValueAsString(data.get(70))));
-//						
-//						credito.setComisiondelexpositor(Integer.getInteger(getCellValueAsString(data.get(72))));
-//						credito.setFechadepagoalexpositor(DateUtil.convertStringToDate(getCellValueAsString(data.get(73))));
-//						credito.setComisiondelrelacionista(Integer.getInteger(getCellValueAsString(data.get(75))));
-//						credito.setFechadepagoalrelacionista(DateUtil.convertStringToDate(getCellValueAsString(data.get(76))));
-//						
-//						credito.setComisiondelsupervisor(Integer.getInteger(getCellValueAsString(data.get(78))));
-//						credito.setFechadepagoalsupervisor(DateUtil.convertStringToDate(getCellValueAsString(data.get(79))));
-//						
-//						
-//						credito.setComisiondelpatrocinador(Integer.getInteger(getCellValueAsString(data.get(81))));
-//						credito.setFechadepagoalpatrocinador(DateUtil.convertStringToDate(getCellValueAsString(data.get(82))));
-//						
-//						
-//						credito.setPreciototal(Integer.getInteger(getCellValueAsString(data.get(84))));
-//						credito.setPuntaje(Integer.getInteger(getCellValueAsString(data.get(85))));
-//						
-//				
-						
-						leadsNuevos.add(credito);
-						sheetData.add(data);
-						
-						
+				log.info("NOMBRE COMPLETO-->"+data.get(7));	
+				String nombreCompleto = getCellValueAsString(data.get(7));
+				String [ ] palabra = nombreCompleto.split("\\ ");
+				
+				
+				log.info("DNI-->"+getCellValueAsString(data.get(8)));	
+				String numDoc = getCellValueAsString(data.get(8));
+				if(numDoc.length()==8){
+				credito.setDnidelcliente(numDoc);
+				}
+				else if(numDoc.length()==6){
+				credito.setDnidelcliente("00"+numDoc);
+				}
+				else if(numDoc.length()==7){
+				credito.setDnidelcliente("0"+numDoc);
+				}
+
+
+				
+				if(palabra.length==3){
+							log.info(" ***** "+ palabra);
+							credito.setNombredecliente(palabra[0]);
+							credito.setApepatcliente(palabra[1]);
+							credito.setApematcliente(palabra[2]);
+							
+							leadsNuevos.add(credito);
+							sheetData.add(data);
+							
+						}else{
+							
+							log.info(" nombres > 4  ");
+						}						
 						
 							}else { 
 								log.info(data.get(0));
@@ -306,19 +229,21 @@ public class FileUploadEntregasPeru implements Serializable {
 					
 	}
 				
-				FacesMessage msg2 = new FacesMessage(FacesMessage.SEVERITY_INFO,
-						"Leads", "Cargado exitosamente.");
-				FacesContext.getCurrentInstance().addMessage(null, msg2);
-	
+				log.info(" tamano total "+leadsNuevos.size());
+				mensaje=  "Cargó exitosamente";
+				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+						Constants.MESSAGE_INFO_TITULO,mensaje);
+				FacesContext.getCurrentInstance().addMessage(null, msg);
 				}
-			catch (IOException e) {
-				e.printStackTrace();
-				FacesMessage msg2 = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-						"Leads", " errores -> IOException.");
+			catch (Exception e) {
+				mensaje = " EntregasPeru: "+ credito.getNumerodecontrato() +",    "+e.getMessage();
+				
+				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error Formato EXCEL", mensaje);
+				FacesContext.getCurrentInstance().addMessage(null, msg);
 
-				FacesContext.getCurrentInstance().addMessage(null, msg2);
+				
 
-				leadsNuevos = null;
+				leadsNuevos = new ArrayList<EntregasPeruDTO>();
 
 				return null;
 	    
@@ -335,10 +260,6 @@ public class FileUploadEntregasPeru implements Serializable {
 }
 			log.info("cantidad: " + leadsNuevos.size());
 			
-System.out.println("cantidad: " + leadsNuevos.size());
-System.out.println("id: " + leadsNuevos.get(0).getEmpresa());
-
-
 return null;
 
 
@@ -358,17 +279,14 @@ return null;
 	    
 	    public void mensajeDeVacio(String mensaje) {
 
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Deudor", mensaje);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-			// setCreditosNuevos(null);
-
+FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Deudor", mensaje);
+FacesContext.getCurrentInstance().addMessage(null, msg);
+			
 		}
 	    
 	    
 	    
-	    
-	    public String getCellValueAsString(HSSFCell cell) {
+  public String getCellValueAsString(HSSFCell cell) {
 			String strCellValue = null;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			if (cell != null) {
