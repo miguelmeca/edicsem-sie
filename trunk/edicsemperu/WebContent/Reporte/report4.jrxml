@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report4" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5197dc3c-00f6-4773-9338-b9dbf248fd44">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="48"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     tb_cliente."idcliente" AS tb_cliente_idcliente,
+     tb_cliente."nombrecliente" AS tb_cliente_nombrecliente,
+     tb_cliente."apepatcliente" AS tb_cliente_apepatcliente,
+     tb_cliente."apematcliente" AS tb_cliente_apematcliente,
+     tb_cliente."idtipodocumentoidentidad" AS tb_cliente_idtipodocumentoidentidad,
+     tb_cliente."numdocumento" AS tb_cliente_numdocumento,
+     tb_cliente."fechacreacion" AS tb_cliente_fechacreacion,
+     tb_cliente."empresatrabajo" AS tb_cliente_empresatrabajo,
+     tb_cliente."cargotrabajo" AS tb_cliente_cargotrabajo,
+     tb_cliente."directrabajo" AS tb_cliente_directrabajo,
+     tb_cliente."telftrabajo" AS tb_cliente_telftrabajo,
+     tb_cliente."titulartelefono" AS tb_cliente_titulartelefono,
+     tb_cliente."fecnacimiento" AS tb_cliente_fecnacimiento,
+     tb_cliente."correo" AS tb_cliente_correo,
+     tb_cliente."contrasena" AS tb_cliente_contrasena,
+     tb_cliente."idestadogeneral" AS tb_cliente_idestadogeneral,
+     tb_cliente."tipocliente" AS tb_cliente_tipocliente
+FROM
+     "sie"."tb_cliente" tb_cliente]]>
+	</queryString>
+	<field name="tb_cliente_nombrecliente" class="java.lang.String"/>
+	<field name="tb_cliente_apepatcliente" class="java.lang.String"/>
+	<field name="tb_cliente_apematcliente" class="java.lang.String"/>
+	<field name="tb_cliente_idcliente" class="java.lang.Integer"/>
+	<field name="tb_cliente_tipocliente" class="java.lang.Integer"/>
+	<field name="tb_cliente_numdocumento" class="java.lang.String"/>
+	<group name="tb_cliente_numdocumento">
+		<groupExpression><![CDATA[$F{tb_cliente_numdocumento}]]></groupExpression>
+	</group>
+	<group name="tb_cliente_nombrecliente">
+		<groupExpression><![CDATA[$F{tb_cliente_nombrecliente}]]></groupExpression>
+	</group>
+	<group name="tb_cliente_apepatcliente">
+		<groupExpression><![CDATA[$F{tb_cliente_apepatcliente}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d546b17f-66c5-45d5-b35c-9e52854b3a56" x="199" y="21" width="222" height="24"/>
+				<textElement>
+					<font fontName="Berlin Sans FB" size="20" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Reporte de Cliente]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="1ffedf58-a1b6-49b0-b440-1d607918910a" x="0" y="0" width="95" height="79"/>
+				<imageExpression><![CDATA["C:\\Users\\karen\\Downloads\\edicsem.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="ec2b56c8-1b7c-473f-81cb-8a6aaab0e342" x="0" y="22" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[ID Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="050f8d77-0952-44bd-859c-90d2f6a47fb0" x="120" y="22" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="838226b2-abfa-4a4b-b730-e1f443d916a9" x="240" y="22" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Ap. Paterno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b8d52477-615d-4b49-8f4d-26308930958f" x="352" y="22" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Ape. Materno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b3a874c5-dd92-47b7-b7a0-fb58f3795640" x="468" y="22" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Nro. Documento]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement uuid="8e6f8c43-c168-4cac-a96c-937fbda36c8b" x="0" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{tb_cliente_idcliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d679d2bb-d34a-43cc-bb45-898c10caf8e0" x="120" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{tb_cliente_nombrecliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="fb4ef277-a360-47d3-86a1-e14b422c2f82" x="240" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{tb_cliente_apepatcliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ce1ba935-a8d3-4ee9-9d55-e76a59505486" x="352" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{tb_cliente_apematcliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="62f11cf8-24a8-403d-b6c1-7d4247f64c7d" x="468" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{tb_cliente_numdocumento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
