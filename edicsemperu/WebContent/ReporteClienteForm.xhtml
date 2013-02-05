@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+	<script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
+		<h1 class="title ui-widget-header ui-corner-all">Consulta Cliente</h1>
+		<h:form id="formConsultaCliente">
+		<p:messages showDetail="true"/>
+		<p:panel>
+		<p:fieldset legend="Consutar Contrato">
+			 
+			<p:commandButton value="Buscar" actionListener="#{reporte.listarCliente}" update="message" ajax="false"
+				icon="ui-icon-search"/>
+		</p:fieldset>
+				
+				<p:spacer height="30px" />
+					<p:dataTable value="#{reporte.lstClientesReporting}"  
+					var="c" style="width:800px" emptyMessage="No se encontraron resultados" >
+						
+						<f:facet name="header">
+							<h:outputLabel value="#{message['rsltd.datatable']}" />
+						</f:facet>
+						
+						<p:column headerText="Ape. Paterno"  >
+		                    <h:outputText value="#{c.apepatcliente}" />
+		                </p:column>
+		                
+		                <p:column headerText="Ape. Materno"  >
+		                    <h:outputText value="#{c.apematcliente}" />
+		                </p:column>
+		                <p:column headerText="Número doc"  >
+		                    <h:outputText value="#{c.numdocumento}" />
+		        </p:column>
+		    </p:dataTable>
+		    <div align="center">
+				<p:commandLink action="#{reporte.ReportingClientes}" value="exportar"
+					ajax="false" 	title="Exportar a PDF el Reporte de Usuarios Registrados">
+					 
+				</p:commandLink>
+			</div>
+		    </p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
