@@ -60,7 +60,8 @@ public class FileUploadMetasDiarias extends	BaseMantenimientoAbstractAction impl
 	
 	
 	public String getViewList() {
-		return Constants.MIGRACION_METAS_DIARIAS_FORM_LIST_PAGE;
+		//return Constants.MIGRACION_METAS_DIARIAS_FORM_LIST_PAGE;
+		return "";
 	}
 	
 	

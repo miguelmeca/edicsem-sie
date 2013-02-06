@@ -115,9 +115,9 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 	}
 
 	public String handleFileUpload(FileUploadEvent event) throws ParseException {
-	    	log.info("entro file  ---> :D");
-	    	mensaje=null;
-			UploadedFile file = event.getFile();
+	    log.info("entro file  ---> :D");
+	    mensaje=null;
+		UploadedFile file = event.getFile();
 			
 			try {
 				InputStreamAFile(file.getInputstream(), file.getFileName());
@@ -284,16 +284,11 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
-	}
+			}
+	    }
 		log.info("cantidad: " + sistMig.size());
 		return null;
 	    }
-	
-	    public void mensajeDeVacio(String mensaje) {
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Deudor", mensaje);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
 	    
 	    public String getCellValueAsString(HSSFCell cell) {
 			String strCellValue = null;
@@ -331,21 +326,7 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 		public void setNombreArchivo(String nombreArchivo) {
 			this.nombreArchivo = nombreArchivo;
 		}
-
-		/**
-		 * @return the log
-		 */
-		public static Log getLog() {
-			return log;
-		}
-
-		/**
-		 * @param log the log to set
-		 */
-		public static void setLog(Log log) {
-			Migracion.log = log;
-		}
-
+		
 		/**
 		 * @return the sistMig
 		 */

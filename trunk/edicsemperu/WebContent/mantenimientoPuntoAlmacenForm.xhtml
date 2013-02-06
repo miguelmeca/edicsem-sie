@@ -21,8 +21,7 @@
 				<p:selectOneMenu id="dep" value="#{almacenForm.idDepartamento}" filter="true" filterMatchMode="startsWith"
 					required="true" style="width:220px"
 					requiredMessage="#{message['puntoVenta.ubigeo.departamento.validation']}" >
-					<f:selectItem itemLabel="Seleccione Departamento"
-						itemValue="#{null}" />
+					<f:selectItem itemLabel="Seleccione Departamento" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
 					<p:ajax update="prov,dist" listener="#{almacenForm.cambiar}" />
 				</p:selectOneMenu>
