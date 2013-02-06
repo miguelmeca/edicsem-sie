@@ -175,5 +175,29 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 		return depaprov;
 	}
 	
-	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.UbigeoDAO#findUbigeoXDescripcion(java.lang.String)
+	 */
+	public UbigeoSie findUbigeoXDescripcion(String distrito) {
+		log.info("findDepaProv --> "+ distrito);
+		List lista = null;
+		UbigeoSie obj=null;
+		try {
+			Query q = em.createQuery("select p from UbigeoSie p where p.nombre like '"+ distrito+"'");
+			lista = q.getResultList();
+			
+			if(lista.size()>1){
+				
+			Query q2 = em.createQuery("select p.nombre from UbigeoSie p where  p.coddepartamento = '15'  " +
+			" and p.codprovincia = '01'  and p.nombre like  '" +distrito+"'" );
+			
+			}else if(lista.size()==1){
+				obj= (UbigeoSie) lista.get(0);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return obj;
+	}
 }
