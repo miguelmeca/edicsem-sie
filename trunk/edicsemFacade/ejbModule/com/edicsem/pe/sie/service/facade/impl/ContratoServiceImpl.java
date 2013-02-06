@@ -167,13 +167,15 @@ public class ContratoServiceImpl implements ContratoService {
 		TelefonoPersonaSie tel = new TelefonoPersonaSie();
 		List<TelefonoPersonaSie> telList= new ArrayList<TelefonoPersonaSie>() ;
 		List<String> telefonoString= new ArrayList<String>();
-		String codigoContr = ""; 
+		String codigoContr = "";
+		boolean isadd=false;
 		for (int i = 0; i < sistMig.size(); i++) {
 			
 			SistemaIntegradoDTO s = sistMig.get(i);
-			//if(sistMig.get(i-1).getCodContrato()!=s.getCodContrato()){
-			if(s.getCodContrato()!=codigoContr){
-				log.info("nuevo contrato  --> ");
+			
+			if(!s.getCodContrato().equals(codigoContr)){
+				 telList= new ArrayList<TelefonoPersonaSie>() ;
+				log.info("nuevo contrato  --> "+s.getCodContrato()+"  "+codigoContr);
 				cli = new ClienteSie();
 				con = new ContratoSie();
 				con.setCodcontrato(s.getCodContrato());
@@ -189,27 +191,22 @@ public class ContratoServiceImpl implements ContratoService {
 				cli.setFecnacimiento(s.getFecnacimiento());
 				cli.setTelftrabajo(s.getTelftrabajo());
 				cli.setTitulartelefono(s.getTitulartelefono());
-				cli.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23));
-				log.info(" contr "+con.getCodcontrato());
-				codigoContr=  con.getCodcontrato();
+				cli.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23)); 
+				
+				telefonoString = new ArrayList<String>();
 				//objClienteDao.insertCliente(cli);
-			}
-			
+			} 
 			//si se encuentra un ( - ) se reemplaza por un espacio
-			log.info("reempl ");
-			
+
 			String [ ] telefono = s.getNumTelefono().trim().split("([\\s(-])+");
 	 
 			for (int j = 0; j < telefono.length; j++) {
-				telefono[j]= telefono[j].toString().replaceAll("([(-)])", " ");
-				log.info("f:  "+telefono[j].toString());
+				telefono[j]= telefono[j].toString().replaceAll("([(-)])", " "); 
 			}
 			
 			log.info("tamano**  "+telefono.length);
-			for (int j = 0; j < telefono.length; j++) {
-				log.info("length "+telefono.length+"  j "+j);
+			for (int j = 0; j < telefono.length; j++) { 
 				 tel = new TelefonoPersonaSie();
-				 log.info("  telef 1:   "+telefono[j].toString());
 				 
 				 if(telefono[j].toString().trim().equalsIgnoreCase("C")||telefono[j].toString().trim().equalsIgnoreCase("(CLARO)")||telefono[j].toString().trim().equalsIgnoreCase("claro")){
 						tel.setOperadorTelefonico("Claro");
@@ -220,56 +217,74 @@ public class ContratoServiceImpl implements ContratoService {
 					else if(telefono[j].toString().trim().equalsIgnoreCase("N")){
 						tel.setOperadorTelefonico("Nextel");
 					}
-					else if(telefono[j].trim().matches("([0-9]+)")){
-						log.info("telefono: "+telefono[j]);
-					tel.setTelefono(telefono[j].toString().trim());
-					}
 					else if(telefono[j].matches("[a-zA-Z(]+")){
-					tel.setDescTelefono(telefono[j].toString().trim());
+						tel.setDescTelefono(telefono[j].toString().trim());
+						if(telefono.length>j+1){
+							if(telefono[j+1].toString().trim().matches("[a-zA-Z(]+") ){
+								tel.setDescTelefono(tel.getDescTelefono()+" "+telefono[j+1].toString().trim());
+								if(telefono.length>j+2){
+									if(telefono[j+2].trim().matches("([0-9]+)")&&tel.getTelefono()==null){
+										tel.setTelefono(telefono[j+2].toString().trim());
+										isadd=true;
+									}
+								}
+							}
+						}else{
+							isadd=true;
+						}
+					}
+
+					else if(telefono[j].trim().matches("([0-9]+)")){
+						tel.setTelefono(telefono[j].toString().trim());
+						if(tel.getTelefono().length()< 4 && telefono.length>j+1){
+							tel.setTelefono(tel.getTelefono()+" "+telefono[j+1].toString().trim());
+							j=j+1;
+						}
+					}
+				 
+					if(telefono.length>j+1 && isadd==false){
+						if(telefono[j+1]!=null){
+							//log.info("  telef 2:  "+telefono[j+1].toString());
+							if(telefono[j+1].toString().trim().equalsIgnoreCase("C")||telefono[j+1].toString().trim().equalsIgnoreCase("(CLARO)")||telefono[j+1].toString().trim().equalsIgnoreCase("claro")){
+								tel.setOperadorTelefonico("Claro");
+							}
+							else if(telefono[j+1].toString().trim().equalsIgnoreCase("M")){
+								tel.setOperadorTelefonico("Movistar");
+							}
+							else if(telefono[j+1].toString().trim().equalsIgnoreCase("N")){
+								tel.setOperadorTelefonico("Nextel");
+							}
+							else if(telefono[j+1].toString().trim().matches("[a-zA-Z(]+") && tel.getDescTelefono()==null){
+								tel.setDescTelefono(telefono[j+1].toString().trim());
+								//nombre + apellido analizamos si el nombre es compuesto en la descripcion
+								if(telefono.length>j+2){
+									if(telefono[j+2].toString().trim().matches("[a-zA-Z(]+") ){
+										tel.setDescTelefono(tel.getDescTelefono()+" "+telefono[j+2].toString().trim());
+									}
+								}
+							}
+							else if(telefono[j+1].trim().matches("([0-9]+)")&&tel.getTelefono()==null){
+								tel.setTelefono(telefono[j+1].toString().trim());
+							}
+						}
 					}
 					
-					if(telefono.length>j+1){
-					if(telefono[j+1]!=null){
-						//log.info("  telef 2:  "+telefono[j+1].toString());
-						if(telefono[j+1].toString().trim().equalsIgnoreCase("C")||telefono[j+1].toString().trim().equalsIgnoreCase("(CLARO)")||telefono[j+1].toString().trim().equalsIgnoreCase("claro")){
-							tel.setOperadorTelefonico("Claro");
-						}
-						else if(telefono[j+1].toString().trim().equalsIgnoreCase("M")){
-							tel.setOperadorTelefonico("Movistar");
-						}
-						else if(telefono[j+1].toString().trim().equalsIgnoreCase("N")){
-							tel.setOperadorTelefonico("Nextel");
-						}
-						else if(telefono[j+1].toString().trim().matches("[a-zA-Z(]+") && tel.getDescTelefono()==null){
-							log.info("LETRAS  "+telefono[j+1].toString().trim()+"  DESC "+ tel.getDescTelefono());
-							tel.setDescTelefono(telefono[j+1].toString().trim());
-						}
-						else if(telefono[j+1].trim().matches("([0-9]+)")&&tel.getTelefono()==null){
-							log.info("NUM "+telefono[j+1].trim());
-							tel.setTelefono(telefono[j+1].toString().trim());
-						}
-						//definir tipo telefono
-						if(tel.getTelefono()!=null){
-						if(tel.getTelefono().matches("\\d{7}")){
-							tel.setTipoTelef("Telefono");
-						}else if(tel.getTelefono().matches("\\d{9}")){
-							tel.setTipoTelef("Celular");
-						}
+				if(tel.getTelefono()!=null && !telefonoString.contains(tel.getTelefono())){
+					log.info("agregadooo ");
+					//definir tipo telefono
+					if(tel.getTelefono()!=null ){
+						if(tel.getTelefono().matches("\\d{9}")){
+							log.info("telefono ");
+							tel.setTipotelefono("C");
+						}else {
+							tel.setTipotelefono("F");
 						}
 					}
-			 
-				 }else{
-					 //comienza con letra
-					  
-				 }
-					if(tel.getTelefono()!=null){
-						telefonoString.add(tel.getTelefono());
-						telList.add(tel);
-					}
-			//	log.info(" contr "+con.getCodcontrato()+" opera "+tel.getOperadorTelefonico()+" telefono  "+tel.getTelefono()+" desc "+tel.getDescTelefono());
-				//objTelefonoDao.insertarTelefonoEmpleado(tel);
+					telefonoString.add(tel.getTelefono());
+					telList.add(tel);
+					isadd=false;
+				}
 			}
-			
 			
 			//6614412 (CLARO) 4852734 (CASA)
 			//7969418 991289883 C
@@ -305,27 +320,36 @@ public class ContratoServiceImpl implements ContratoService {
 			//no ex 5335104 995669453 M
 			//ANONIMO
 			//999935626 4582558 (FAMILIAR)
-
-			
 			
 			//insertar Domicilio
 			DomicilioPersonaSie dom = new DomicilioPersonaSie();
 			dom.setDomicilio(s.getDireccion());
 //			dom.setTbTipoCasa(objTipoCasaService.findTipoCasa(s.get));
-			//buscar ubigeo 
+			//buscar ubigeo por descripcion del ditrito
+			// si hay mas de una opción? seria la de lima por defecto
 			
-			//dom.setTbUbigeo(objUbigeoDao.findUbigeo(idUbigeo));
+			if(s.getDistrito().equalsIgnoreCase("S.J.L.")){
+				s.setDistrito("SAN JUAN DE LURIGANCHO");
+			}else if(s.getDistrito().equalsIgnoreCase("SURCO")){
+				s.setDistrito("SANTIAGO DE SURCO");
+			}
+			else if(s.getDistrito().equalsIgnoreCase("V.E.S")){
+				s.setDistrito("VILLA EL SALVADOR");
+			}
+			else if(s.getDistrito().equalsIgnoreCase("V.M.T")){
+				s.setDistrito("VILLA MARIA DEL TRIUNFO");
+			}
+			
+			dom.setTbUbigeo(objUbigeoDao.findUbigeoXDescripcion(s.getDistrito().toUpperCase()));
 			dom.setIdcliente(cli);
 			dom.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(15));
 			//objDomicilioDao.insertarDomicilioEmpleado(dom);
 			
-			con.setCodcontrato(s.getCodContrato());
 			con.setNumcuotas(s.getCantCuotas());
 			con.setPagosubinicial(new  BigDecimal(s.getImporteInicial()));
 			con.setTbCliente(cli);
 			//insertar contrato
-		//	objContratoDao.insertContrato(con);
-			
+			//	objContratoDao.insertContrato(con);
 			
 			CobranzaSie cob = new CobranzaSie();
 			cob.setCantcuotas(s.getCantCuotas().toString());
@@ -338,12 +362,22 @@ public class ContratoServiceImpl implements ContratoService {
 			cob.setDiasretraso(s.getDiasRetraso());
 			cob.setTbContrato(con);
 			//insertar cobranza
-		//	objCobranzaDao.insertCobranza(cob);
-		}
-
-		for (TelefonoPersonaSie tel2 : telList) {
-			log.info("contrato: "+con.getCodcontrato()+" opera "+tel2.getOperadorTelefonico()+" telefono  "+tel2.getTelefono()+" desc "+tel2.getDescTelefono());
+			//	objCobranzaDao.insertCobranza(cob);
 			
+			log.info(" contr***** "+con.getCodcontrato()+" "+codigoContr);
+			
+			for (int j = 0; j < telList.size(); j++) {
+				
+				if(con.getCodcontrato()!=codigoContr){
+					
+					log.info("contrato: "+con.getCodcontrato()+" opera "+telList.get(j).getOperadorTelefonico()+" telefono  "+telList.get(j).getTelefono()+" desc "+telList.get(j).getDescTelefono()+" tipo "+telList.get(j).getTipotelefono());
+					//insertando telefonos
+					
+					if(j+1 == telList.size()){
+						codigoContr=  con.getCodcontrato();
+					}
+				}
+			}
 		}
 	}
 
