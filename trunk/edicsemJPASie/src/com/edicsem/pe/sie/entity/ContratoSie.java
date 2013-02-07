@@ -67,7 +67,7 @@ public class ContratoSie implements Serializable {
 
 	private String usuariomodifica;
 
-	//bi-directional many-to-one association to CobranzaDTO
+	//bi-directional many-to-one association to CobranzaSie
 	@OneToMany(mappedBy="tbContrato")
 	private Set<CobranzaSie> tbCobranzas;
 
@@ -101,6 +101,10 @@ public class ContratoSie implements Serializable {
   	//bi-directional many-to-one association to IncidenciaSie
   	@OneToMany(mappedBy="tbContrato")
   	private Set<IncidenciaSie> tbIncidencias;
+  	
+  	//bi-directional many-to-one association to SeguimientoContratoSie
+  	@OneToMany(mappedBy="tbContrato")
+  	private Set<SeguimientoContratoSie> tbSeguimientoContrato;
 	
     public ContratoSie() {
     }
@@ -309,6 +313,15 @@ public class ContratoSie implements Serializable {
 	 */
 	public void setLlamar(String llamar) {
 		this.llamar = llamar;
+	}
+
+	public Set<SeguimientoContratoSie> getTbSeguimientoContrato() {
+		return tbSeguimientoContrato;
+	}
+
+	public void setTbSeguimientoContrato(
+			Set<SeguimientoContratoSie> tbSeguimientoContrato) {
+		this.tbSeguimientoContrato = tbSeguimientoContrato;
 	}
 	
 }

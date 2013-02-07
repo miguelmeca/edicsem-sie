@@ -41,7 +41,7 @@ public class EstadoGeneralSie implements Serializable {
 	@OneToMany(mappedBy="tbEstadoGeneral")
 	private Set<CargoEmpleadoSie> tbCargoEmpleados;
 
-	//bi-directional many-to-one association to CobranzaDTO
+	//bi-directional many-to-one association to CobranzaSie
 	@OneToMany(mappedBy="tbEstadoGeneral")
 	private Set<CobranzaSie> tbCobranzas;
 
@@ -165,6 +165,17 @@ public class EstadoGeneralSie implements Serializable {
 	@OneToMany(mappedBy="tbEstadoGeneral")
 	private Set<DetProductoContratoSie> tbDetProductoContrato;
 	
+	//bi-directional many-to-one association to MotivoSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<MotivoSie> tbMotivo;
+	
+	//bi-directional many-to-one association to SeguimientoContratoSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<SeguimientoContratoSie> tbSeguimientoContrato;
+
+	public EstadoGeneralSie() {
+    }
+
     public Set<DetSancionEmpleadoSie> getTbDetSancionEmpleado() {
 		return tbDetSancionEmpleado;
 	}
@@ -173,9 +184,6 @@ public class EstadoGeneralSie implements Serializable {
 			Set<DetSancionEmpleadoSie> tbDetSancionEmpleado) {
 		this.tbDetSancionEmpleado = tbDetSancionEmpleado;
 	}
-
-	public EstadoGeneralSie() {
-    }
 
 	public Integer getIdestadogeneral() {
 		return this.idestadogeneral;
@@ -472,6 +480,23 @@ public class EstadoGeneralSie implements Serializable {
 	public void setTbDetProductoContrato(
 			Set<DetProductoContratoSie> tbDetProductoContrato) {
 		this.tbDetProductoContrato = tbDetProductoContrato;
+	}
+
+	public Set<SeguimientoContratoSie> getTbSeguimientoContrato() {
+		return tbSeguimientoContrato;
+	}
+
+	public void setTbSeguimientoContrato(
+			Set<SeguimientoContratoSie> tbSeguimientoContrato) {
+		this.tbSeguimientoContrato = tbSeguimientoContrato;
+	}
+
+	public Set<MotivoSie> getTbMotivo() {
+		return tbMotivo;
+	}
+
+	public void setTbMotivo(Set<MotivoSie> tbMotivo) {
+		this.tbMotivo = tbMotivo;
 	}
 
 	
