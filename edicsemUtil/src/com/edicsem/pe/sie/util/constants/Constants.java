@@ -47,6 +47,9 @@ public class Constants {
 	
 	public static final String MANT_CARGO_EMPLEADO_FORM_LIST_PAGE = "mantenimientoCargoEmpleadoFormList";
 	
+	public static final String MIGRACION_METAS_DIARIAS_FORM_LIST_PAGE = "excelMetasDiarias";
+	
+	
 	public static final String MOVIMIENTO_FORM_LIST_PAGE = "movimientoMercaderiaForm";
 	
 	public static final String CONTRATO_FORM_PAGE = "RegistroContratoForm";
