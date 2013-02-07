@@ -9,18 +9,16 @@
 	<script language="JavaScript" type="text/javascript">
 		window.history.forward(-1);
 	</script>
-		<h1 class="title ui-widget-header ui-corner-all">Consulta Contrato</h1>
+		<h1 class="title ui-widget-header ui-corner-all">Refinanciar Contrato</h1>
 		<h:form id="formConsultaContrato">
-		<p:messages showDetail="true"/>
+		<p:messages id="messages" showDetail="true"  closable="true"/>
 		<p:panel>
-		<p:fieldset id="fi" legend="Consutar Contrato">
+		<p:fieldset id="fi" legend="Consultar Contrato">
 			
 		<p:selectOneRadio  value="#{contratoForm.radio}" onchange="" >  
 	        <f:selectItem itemLabel="Numero de Documento" itemValue="1"/>
-	        <f:selectItem itemLabel="Código de Contrato" itemValue="2" >
-	        	</f:selectItem>
-	        <f:selectItem itemLabel="Nombres Completos" itemValue="3">  
-	        </f:selectItem>
+	        <f:selectItem itemLabel="Código de Contrato" itemValue="2"/>
+	        <f:selectItem itemLabel="Nombres Completos" itemValue="3"/>
 	        <p:ajax update="fi" />
         </p:selectOneRadio>
         <h:panelGrid columns="3" rendered="#{contratoForm.radio==1}" >
@@ -85,6 +83,10 @@
 		                    <h:outputText value="#{c.tbCliente.numdocumento}" />
 		                </p:column>
 		                
+		                <p:column headerText="#{message['consulta.contrato.estado']}"  >
+		                    <h:outputText value="#{c.tbEstadoGeneral.descripcion}" />
+		                </p:column>
+		                
 		                <p:column headerText="#{message['consulta.cargar']}" >
 			                <p:commandButton icon="ui-icon-close" title="cargar"  action="#{contratoForm.cargar}" update="@form" >
 			                <f:setPropertyActionListener value="#{c.tbCliente.idcliente}" target="#{contratoForm.idcliente}" />
@@ -118,10 +120,10 @@
 					<h:outputText value="#{contratoForm.ubigeoDefecto}" />
 					
 					<h:outputText value="#{message['contrato.ubigeo.domicilio']}" />
-					<p:inputText value="#{contratoForm.objDomicilioSie.domicilio}" size="30" readonly="true"/>
+					<p:inputTextarea value="#{contratoForm.objDomicilioSie.domicilio}" size="30" readonly="true" rows="2" cols="30" />
 	
 					<h:outputText value="#{message['contrato.ubigeo.referencia']}" />
-					<p:inputText value="#{contratoForm.objDomicilioSie.referencia}" readonly="true" size="30"/>
+					<p:inputTextarea value="#{contratoForm.objDomicilioSie.referencia}" readonly="true" size="30" rows="2" cols="30" />
 					
 					<h:outputText value="#{message['contrato.empresa.labora.nombre']}" />
 					<p:inputText value="#{contratoForm.objClienteSie.empresatrabajo}" readonly="true" size="30"/>
@@ -140,22 +142,22 @@
 					<p:fieldset legend="#{message['consulta.contrato.contrato']}"  style="margin-top:30px" >
 					<h:panelGrid columns="2" cellpadding="3"  >
 					<h:outputText value="#{message['contrato.codigo']}" />
-					<p:inputText value="#{contratoForm.objContratoSie.codcontrato}" size="20" readonly="true"/>
+					<p:inputText value="#{contratoForm.objContratoSie.codcontrato}" size="30" readonly="true"/>
 					
 					<h:outputText value="#{message['contrato.empresa']}" />
-					<p:inputText value="#{contratoForm.objContratoSie.tbEmpresa.descripcion}" size="20" readonly="true"/>
+					<p:inputText value="#{contratoForm.objContratoSie.tbEmpresa.descripcion}" size="30" readonly="true"/>
 					
 					<h:outputText value="#{message['contrato.lugar.entrega']}" />
-					<p:inputText value="#{contratoForm.objContratoSie.lugarentrega}" size="20" readonly="true"/>
+					<p:inputTextarea value="#{contratoForm.objContratoSie.lugarentrega}" size="30" readonly="true" rows="2" cols="30" />
 					
 					<h:outputText value="#{message['contrato.fecha.entrega']}" />
-					<p:inputText value="#{contratoForm.objContratoSie.fechaentrega}" size="20" readonly="true"/>
+					<p:inputText value="#{contratoForm.objContratoSie.fechaentrega}" size="30" readonly="true"/>
 					
 					<h:outputText value="#{message['contrato.usuacriocreacion']}" />
-					<p:inputText value="#{contratoForm.objContratoSie.usuariocreacion}" size="20" readonly="true"/>
+					<p:inputText value="#{contratoForm.objContratoSie.usuariocreacion}" size="30" readonly="true"/>
 					
 					<h:outputText value="#{message['contrato.fecha.creacion']}" />
-					<p:inputText value="#{contratoForm.objContratoSie.fechacreacion}" size="20" readonly="true"/>
+					<p:inputText value="#{contratoForm.objContratoSie.fechacreacion}" size="30" readonly="true"/>
 					
 					</h:panelGrid>
 					</p:fieldset>
@@ -210,49 +212,116 @@
 				    </p:dataTable>
 				</p:fieldset>
 				<p:fieldset  legend="#{message['contrato.det.pago']}" style="margin-top:30px" >
-				<p:dataTable id="listaCobranzas" var="d" value="#{contratoForm.cobranzaList}" editable="true" style=" width:60% "
-				rowStyleClass="#{contratoForm.dhoy le  d.fecvencimiento  ? null: (empty d.fecpago? 'colorRojo' : 'colorVerde')}">
-			        <f:facet name="header">
-			            Detalle de Cobranzas
-			        </f:facet>
-			        
-			        <p:column headerText="#{message['consulta.num.letra']}" style="width:125px">
-			        	 <h:outputText value="#{d.numletra}" />
-			        </p:column>
-			
-			        <p:column headerText="#{message['consulta.importe']}" style="width:125px">
-			            <h:outputText value="#{d.impinicial}" />
-			        </p:column>
-			        
-			        <p:column headerText="#{message['consulta.dias.retrazo']}" style="width:125px">
-			            <h:outputText value="#{d.diasretraso}" />
-			        </p:column>
-			        
-			        <p:column headerText="#{message['consulta.importe']}" style="width:125px">
-			            <h:outputText value="#{d.importemasmora }" />
-			        </p:column>
-			        
-			        <p:column headerText="#{message['consulta.fec.venc']}" style="width:125px">
-			            <h:outputText value="#{d.fechaVencimientoString}"  />
-			        </p:column>
-			        
-			        <p:column headerText="#{message['consulta.fec.pago']}" style="width:125px">
-			            <h:outputText value="#{d.fechaPagoString}"  />
-			        </p:column>
-			    </p:dataTable>
+				
+				<h:panelGrid id="panelCobranzas" >
+				<p:dataTable id="listaCobranzasEdit" var="c" value="#{contratoForm.cobranzaList}" editable="true" style=" width:720px " 
+					rowStyleClass="#{contratoForm.dhoy le  c.fecvencimiento  ? null: (empty c.fecpago? 'colorRojo' : 'colorVerde')}">
+		
+		        <f:facet name="header">
+		            Editar Cobranzas
+		        </f:facet>
+		
+		        <p:ajax event="rowEdit" listener="#{contratoForm.onEdit}"  update="listaCobranzasEdit"/>
+		        <p:ajax event="rowEditCancel" listener="#{contratoForm.onCancel}" update="listaCobranzasEdit" />
+		
+		        <p:column headerText="#{message['contrato.numero.letra']}" style="width:70px">
+		            <p:cellEditor>
+		                <f:facet name="output"  >
+		                    <h:outputText value="#{c.numletra}" />
+		                </f:facet>
+		                <f:facet name="input">
+		                    <h:outputText value="#{c.numletra}" />
+		                </f:facet>
+		            </p:cellEditor>
+		        </p:column>
+		        
+		        <p:column headerText="#{message['contrato.cobranza.importe']}" style="width:120px">
+		            <p:cellEditor>
+		                <f:facet name="output">
+		                    <h:outputText value="#{c.impinicial}" />
+		                </f:facet>
+		                <f:facet name="input">
+		                    <p:spinner value="#{c.impinicial}" maxlength="5"  style="width:100px"  rendered="#{empty c.fecpago}" />
+		                    <h:outputText value="#{c.impinicial}"  rendered="#{!empty c.fecpago}" />
+		                </f:facet>
+		            </p:cellEditor>
+		        </p:column>
+		        <p:column headerText="#{message['consulta.dias.retrazo']}" style="width:120px">
+					<p:cellEditor>
+		                <f:facet name="output">
+		                   <h:outputText value="#{c.diasretraso}" />
+		                </f:facet>
+		                <f:facet name="input">
+		                    <p:spinner value="#{c.diasretraso}"  style="width:100px" rendered="#{empty c.fecpago}" />
+		                    <h:outputText value="#{c.diasretraso}"  rendered="#{!empty c.fecpago}" />
+		                </f:facet>
+		            </p:cellEditor>
+				</p:column>
+				<p:column headerText="#{message['consulta.importe']}" style="width:120px">
+					<p:cellEditor>
+		                <f:facet name="output">
+		                  <h:outputText value="#{d.importemasmora}" />
+		                </f:facet>
+		                <f:facet name="input">
+		                   <p:spinner value="#{d.importemasmora}"  style="width:100px" rendered="#{empty c.fecpago}" />
+		                   <h:outputText value="#{d.importemasmora}"  rendered="#{!empty c.fecpago}" />
+		                </f:facet>
+		            </p:cellEditor>
+				</p:column>
+		        <p:column headerText="#{message['contraato.cobranza.fecVencimiento']}" style="width:120px">
+		            <p:cellEditor>
+		                <f:facet name="output">
+		                    <h:outputText value="#{c.fechaVencimientoString}"  />
+		                </f:facet>
+		                <f:facet name="input">
+		                  <p:calendar   value="#{c.fecvencimiento}" pattern="dd/MM/yyyy" rendered="#{empty c.fecpago}" /> 
+		                  <h:outputText value="#{c.fecvencimiento}"  rendered="#{!empty c.fecpago}" />
+		                </f:facet>
+		            </p:cellEditor>
+		        </p:column>
+		        <p:column headerText="#{message['consulta.fec.pago']}" style="width:120px">
+		         <p:cellEditor>
+		                <f:facet name="output">
+		                    <h:outputText value="#{c.fechaPagoString}"  />
+		                </f:facet>
+		                <f:facet name="input">
+		                  <h:outputText value="#{c.fechaPagoString}"  />
+		                </f:facet>
+		            </p:cellEditor> 
+				</p:column>
+		        <p:column headerText="Editar" style="width:50px">
+		            <p:rowEditor />
+		        </p:column>
+		        </p:dataTable>
+		        <br/>
+		        <p:outputPanel autoUpdate="true" >
+		        <h:outputText value="#{message['contrato.cobranza.total.acumulado']}" />
+		        <p:inputText id="totalacumulado2" value="#{contratoForm.totalacumulado}"  />
+		        </p:outputPanel>
+		        </h:panelGrid>
+			    
 			   </p:fieldset>
-			   <!-- observaciones  -->
+			   
 			   <p:fieldset legend="Gestión de Contrato"  style="margin-top:30px" >
-					<h:panelGrid columns="2" cellpadding="3"  >
-					 <!-- se puede anular: invaliz juridica combo -->
-					<h:outputText value="Estado" />
-					<p:inputText value="#{contratoForm.objContratoSie.codcontrato}" size="20"  />
+					<h:panelGrid columns="2" cellpadding="3">
+					<h:outputText value="#{message['consulta.contrato.estado']}" />
+					<p:selectOneMenu value="#{contratoForm.estadoRefinan}" required="true" style="width:220px">
+						<f:selectItems value="#{comboAction.estadoitems}" />
+					</p:selectOneMenu>
 					
 					<h:outputText value="Observación" />
-					<p:inputText value="#{contratoForm.objContratoSie.codcontrato}" size="20" readonly="true"/>
+					<p:inputText value="#{contratoForm.objSeguimiento.observacion}" size="20" readonly="true"/>
 					
-					 
-			   </h:panelGrid>
+					<h:outputText value="Documento sustentatorio" />
+					<p:fileUpload fileUploadListener="#{contratoForm.cargarArchivoSustentatorio}" immediate="true"
+					label="Cargar archivo" allowTypes="/(\.|\/)(gif|jpe?g|png|doc|docx|pdf)$/" cancelLabel="Cancelar" uploadLabel="Subir"
+					description="Seleccione archivo" multiple="false" customUI="true" required="true">
+					</p:fileUpload>
+					
+					<p:commandButton value="Registrar Gestión" action="#{contratoForm.consultar}" update="messages" ajax="false"
+					icon="ui-icon-disk"/>
+					
+			   		</h:panelGrid>
 			   </p:fieldset>
 			   </h:panelGrid>
 			</p:panel>

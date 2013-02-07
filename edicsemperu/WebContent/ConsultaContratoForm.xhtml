@@ -85,6 +85,10 @@
 		                    <h:outputText value="#{c.tbCliente.numdocumento}" />
 		                </p:column>
 		                
+		                <p:column headerText="#{message['consulta.contrato.estado']}"  >
+		                    <h:outputText value="#{c.tbEstadoGeneral.descripcion}" />
+		                </p:column>
+		                
 		                <p:column headerText="#{message['consulta.cargar']}" >
 			                <p:commandButton icon="ui-icon-close" title="cargar"  action="#{contratoForm.cargar}" update="@form" >
 			                <f:setPropertyActionListener value="#{c.tbCliente.idcliente}" target="#{contratoForm.idcliente}" />
@@ -95,7 +99,7 @@
 					</h:panelGrid>
 					<h:panelGrid columns="2" >
 					<p:fieldset legend="#{message['consulta.contrato.cliente']}" style="margin-top:30px" >
-					<h:panelGrid columns="4" cellpadding="3"  >
+					<h:panelGrid columns="4" cellpadding="4"  >
 					<h:outputText value="#{message['contrato.nombre']}" />
 					<p:inputText value="#{contratoForm.objClienteSie.nombrecliente}" size="30" readonly="true"/>
 					
@@ -118,10 +122,10 @@
 					<h:outputText value="#{contratoForm.ubigeoDefecto}" />
 					
 					<h:outputText value="#{message['contrato.ubigeo.domicilio']}" />
-					<p:inputText value="#{contratoForm.objDomicilioSie.domicilio}" size="30" readonly="true"/>
+					<p:inputTextarea value="#{contratoForm.objDomicilioSie.domicilio}" size="30" readonly="true" rows="2" cols="30"/>
 	
 					<h:outputText value="#{message['contrato.ubigeo.referencia']}" />
-					<p:inputText value="#{contratoForm.objDomicilioSie.referencia}" readonly="true" size="30"/>
+					<p:inputTextarea value="#{contratoForm.objDomicilioSie.referencia}" readonly="true" size="30" rows="2" cols="30"/>
 					
 					<h:outputText value="#{message['contrato.empresa.labora.nombre']}" />
 					<p:inputText value="#{contratoForm.objClienteSie.empresatrabajo}" readonly="true" size="30"/>
@@ -138,24 +142,27 @@
 					</h:panelGrid>
 					</p:fieldset>
 					<p:fieldset legend="#{message['consulta.contrato.contrato']}"  style="margin-top:30px" >
-					<h:panelGrid columns="2" cellpadding="3"  >
+					<h:panelGrid columns="2" cellpadding="4"  >
 					<h:outputText value="#{message['contrato.codigo']}" />
-					<p:inputText value="#{contratoForm.objContratoSie.codcontrato}" size="20" readonly="true"/>
+					<p:inputText value="#{contratoForm.objContratoSie.codcontrato}" size="30" readonly="true"/>
+					
+					<h:outputText value="#{message['consulta.contrato.estado']}" />
+					<p:inputText value="#{contratoForm.objContratoSie.tbEstadoGeneral.descripcion}" size="30"  readonly="true" style="font-weight:bold" />
 					
 					<h:outputText value="#{message['contrato.empresa']}" />
-					<p:inputText value="#{contratoForm.objContratoSie.tbEmpresa.descripcion}" size="20" readonly="true"/>
+					<p:inputText value="#{contratoForm.objContratoSie.tbEmpresa.descripcion}" size="30" readonly="true"/>
 					
 					<h:outputText value="#{message['contrato.lugar.entrega']}" />
-					<p:inputText value="#{contratoForm.objContratoSie.lugarentrega}" size="20" readonly="true"/>
+					<p:inputTextarea value="#{contratoForm.objContratoSie.lugarentrega}" size="30" readonly="true" rows="2" cols="30" />
 					
 					<h:outputText value="#{message['contrato.fecha.entrega']}" />
-					<p:inputText value="#{contratoForm.objContratoSie.fechaentrega}" size="20" readonly="true"/>
+					<p:inputText value="#{contratoForm.objContratoSie.fechaentrega}" size="30" readonly="true"/>
 					
 					<h:outputText value="#{message['contrato.usuacriocreacion']}" />
-					<p:inputText value="#{contratoForm.objContratoSie.usuariocreacion}" size="20" readonly="true"/>
+					<p:inputText value="#{contratoForm.objContratoSie.usuariocreacion}" size="30" readonly="true"/>
 					
 					<h:outputText value="#{message['contrato.fecha.creacion']}" />
-					<p:inputText value="#{contratoForm.objContratoSie.fechacreacion}" size="20" readonly="true"/>
+					<p:inputText value="#{contratoForm.objContratoSie.fechacreacion}" size="30" readonly="true"/>
 					
 					</h:panelGrid>
 					</p:fieldset>
@@ -196,15 +203,15 @@
 				             <h:outputText value="#{f.tbProducto.descripcionproducto}" />
 				        </p:column>
 				        
-				        <p:column headerText="#{message['consulta.obs']}" style="width:125px">
+				        <p:column headerText="#{message['consulta.obs']}">
 				              <h:outputText value="#{f.observacion}" />
 				        </p:column>
 				
-				        <p:column headerText="#{message['consulta.cantidad']}" style="width:110px">
+				        <p:column headerText="#{message['consulta.cantidad']}" >
 				               <h:outputText value="#{f.cantidad}"  />
 				        </p:column>
 				        
-				        <p:column headerText="#{message['consulta.estado']}" style="width:110px">
+				        <p:column headerText="#{message['consulta.estado']}">
 				               <h:outputText value="#{f.tbEstadoGeneral.descripcion}"  />
 				        </p:column>
 				    </p:dataTable>

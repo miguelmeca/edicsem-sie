@@ -3,6 +3,7 @@ package com.edicsem.pe.sie.client.action.mantenimiento;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 import javax.ejb.EJB;
@@ -20,7 +21,6 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
-import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.service.facade.ProductoService;
@@ -29,11 +29,7 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 
 @ManagedBean(name = "productoForm")
 @SessionScoped
-public class MantenimientoProductoFormAction extends
-		BaseMantenimientoAbstractAction {
-	
-	@ManagedProperty(value="#{comboAction}") 
-	private ComboAction comboManager;
+public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAction {
 
 	private String mensaje;
 	private Log log = LogFactory.getLog(MantenimientoProductoFormAction.class);
@@ -71,6 +67,8 @@ public class MantenimientoProductoFormAction extends
 		log.info("agregar()");
 		limpiarCampos();
 		objProductoSie = new ProductoSie();
+		image = null;
+		foto =null;
 		setNewRecord(true);
 		return getViewMant();
 	}
@@ -114,12 +112,42 @@ public class MantenimientoProductoFormAction extends
 			foto = event.getFile().getContents();
 			imageOutput.write(foto, 0, foto.length);
 			imageOutput.close();
+			event.getFile().getInputstream().close();
 			idFoto+=1;
-		} catch (Exception ex) {
-			ex.printStackTrace();
+//			 
+//		UploadedFile file = event.getFile();
+//		 
+//			ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+//
+//			String path = ctx.getRealPath("/Images");
+//			File directory = new File(path);
+//			Boolean existe = directory.exists();
+//			if (!existe) {
+//				directory.mkdir();
+//			}
+//			setImage(new DefaultStreamedContent(event.getFile().getInputstream()));
+//			log.info("path  "+path);
+//			File f = new File(path + "/" + photo);
+//			log.info("Ruta del archivo "+f.getAbsolutePath());
+//
+//			OutputStream salida = new FileOutputStream(f);
+//			foto = event.getFile().getContents();
+//			objProductoSie.setRutaimagenproducto(f.getPath());
+//			byte[] buf = new byte[1024];
+//			int len;
+//			while ((len = file.getInputstream().read(buf)) > 0) {
+//				salida.write(buf, 0, len);
+//			}
+//			salida.close();
+//			file.getInputstream().close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		
 		return productoSearch.getViewMant();
 	}
+	
+	
 
 	/*
 	 * (non-Javadoc)
@@ -288,20 +316,6 @@ public class MantenimientoProductoFormAction extends
 		this.newRecord = newRecord;
 	}
 
-	/**
-	 * @return the comboManager
-	 */
-	public ComboAction getComboManager() {
-		return comboManager;
-	}
-
-	/**
-	 * @param comboManager the comboManager to set
-	 */
-	public void setComboManager(ComboAction comboManager) {
-		comboManager.setCodigoEstado(Constants.COD_ESTADO_TB_PRODUCTO);
-		this.comboManager = comboManager;
-	}
 
 	/**
 	 * @return the productoSearch
