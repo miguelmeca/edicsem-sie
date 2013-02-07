@@ -91,6 +91,8 @@ public class Constants {
 	public static final String CONSULTA_CONTRATO_FORM_PAGE = "ConsultaContratoForm";
 	public static final String MIGRAR_SISTEMA_INTEGRADO = "MigracionSistemaIntegrado";
 	
+	public static final String GESTIONAR_CONTRATO_FORM_PAGE = "GestionarContratoForm";
+	
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
 	public static final String COD_ESTADO_TB_CARGO_EMPLEADO = "CE";
@@ -100,6 +102,7 @@ public class Constants {
 	public static final String COD_ESTADO_TB_META_MES =  "MET";
 	public static final String COD_ESTADO_TB_PUNTO_ALMACEN =  "PA";
 	public static final String COD_ESTADO_TB_DET_CONTRATO_PRODUCTO ="PRC0";
+	public static final String COD_ESTADO_TB_CONTRATO = "CON";
 	
 	//aviso mensaje "las contraseñas no coinciden"
 	public static final String MESSAGE_PASSWORDS_DESIGUALES = "Contraseñas no coinciden";
@@ -108,6 +111,6 @@ public class Constants {
 	public static final String INDEX_PAGE = "index";
 	public static final String LOGIN_PAGE = "login";
 	public static final String USER_KEY = "loginUserSession";
-	public static final String CARGO_USER = "cargoSession";
+	public static final String CARGO_USER = "cargoSession"; 
 	
 	}
