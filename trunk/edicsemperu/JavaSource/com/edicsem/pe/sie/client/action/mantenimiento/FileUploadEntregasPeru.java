@@ -161,7 +161,7 @@ public class FileUploadEntregasPeru implements Serializable {
 						/***HSSFCell: Esta clase representa la celda en una fila de la hoja de cálculo.***/
 						List<HSSFCell> data = new ArrayList<HSSFCell>();
 
-						for (int i = 0; i < 15; i++) {
+						for (int i = 0; i < 90; i++) {
 
 							@SuppressWarnings("static-access")
 							HSSFCell cell = row.getCell(i,
@@ -181,7 +181,19 @@ public class FileUploadEntregasPeru implements Serializable {
 								log.info("EMPRESA-->"+data.get(0));
 				String empresa = getCellValueAsString(data.get(0));
 				credito.setEmpresa(empresa);
-
+				
+				log.info(" FECHA_String -> "+data.get(1).toString());
+				if(data.get(1)!=null){
+					if(!(data.get(1).toString().isEmpty()||data.get(1).toString().equals("")||data.get(1).toString().trim().equals(""))){
+						credito.setFecha(DateUtil.convertStringToDate(getCellValueAsString(data.get(1))));
+					}
+				}
+				
+				
+				
+				
+				log.info("BOLETO-->"+data.get(5).toString());		
+				credito.setBoleta(getCellValueAsString(data.get(5)));
 			
 				log.info("NdContrato-->"+data.get(6));	
 				credito.setNumerodecontrato(getCellValueAsString(data.get(6)));
@@ -203,7 +215,276 @@ public class FileUploadEntregasPeru implements Serializable {
 				credito.setDnidelcliente("0"+numDoc);
 				}
 
+				log.info(" fecha de cumpleanios--> "+data.get(9).toString());
+				if(data.get(9).toString().isEmpty()||data.get(9).toString().equals("")||data.get(9).toString().trim().equals("")){
+				}else{
+				credito.setFechadecuempleanios(DateUtil.convertStringToDate(getCellValueAsString(data.get(9))));
+				}
+				
+				log.info("CORREO-->"+data.get(10));
+				credito.setCorreo(getCellValueAsString(data.get(10)));
+				
+				log.info("NdTELEFONO-->"+data.get(11));
+				credito.setNumerotelefono(getCellValueAsString(data.get(11)));
+						
+				log.info("DOMICILIO_CLIENTE-->"+data.get(12).toString());
+				credito.setDomiciliodelcliente(getCellValueAsString(data.get(12)));
+				
+				log.info("DISTRITO-->"+data.get(13));
+				credito.setDomiciliodistrito(getCellValueAsString(data.get(13)));
+				
+				
+				
+				log.info("PLANO_DOMICILIO-->"+data.get(14));
+				credito.setPlanodomicilio(getCellValueAsString(data.get(14)));
+			
+				log.info("LETRA DOMICILIO-->"+data.get(15));
+				credito.setLetrasectordomicilio(getCellValueAsString(data.get(15)));
+				
+				log.info("NUM_SECTOR_DOMICILIO-->"+data.get(16));
+				credito.setNumerosectordomicilio(getCellValueAsString(data.get(16)));
+				
+						
+//				log.info("LUGAR DE TRABAJO-->"+data.get(17));
+//				credito.setLugardetrabajo(getCellValueAsString(data.get(17)));
+//						
+//				log.info("CARGO_LABORAL-->"+data.get(18));
+//				credito.setCargolaboral(getCellValueAsString(data.get(18)));
+//				
+//				log.info("TEL_TRABAJO-->"+data.get(19));		
+//				credito.setTelefonodeltrabajo(getCellValueAsString(data.get(19)));
+						
+//				log.info("ANEXO-->"+data.get(20));
+//						credito.setAnexo(Integer.getInteger(getCellValueAsString(data.get(20))));
+						
+//				log.info("DIRECION_TRABAJO-->");
+//				
+//				if (data.get(21)!=null) {
+//					if(!(data.get(21).toString().isEmpty()||data.get(21).toString().equals("")||data.get(21).toString().trim().equals(""))){
+//					credito.setDirecciondetrabajo(getCellValueAsString(data.get(21)));	
+//				}
+//				}
+//				
+//				
+//				log.info("TRABAJO_DISTRITO-->"+data.get(22));
+//				credito.setTrabajodistrito(getCellValueAsString(data.get(22)));
+//				
+//				log.info("PLANO_TRABAJO-->"+data.get(23));
+//				credito.setPlanotrabajo(Integer.getInteger(getCellValueAsString(data.get(23))));
+//				
+//				log.info("LETRA_SECTOR_TRABAJO-->"+data.get(24));
+//				credito.setLetrasectortrabajo(getCellValueAsString(data.get(24)));
+//				
+//				log.info("NUM_SECTOR_TRABAJO-->"+data.get(25));
+//				credito.setNumerosectortrabajo(Integer.getInteger(getCellValueAsString(data.get(25))));
+//							
+//				log.info("LUGAR_ENTREGA-->"+data.get(26));
+//				credito.setLugardelaentrega(getCellValueAsString(data.get(26)));
+				
+				
+				
+				
+				
+				
+				log.info("NOMB_VENDEDOR-->"+data.get(32));
+				credito.setNombredelvendedor(getCellValueAsString(data.get(32)));
+				
+				log.info("NOMB_EXPOSITOR-->"+data.get(33));
+				credito.setNombredelexpositor(getCellValueAsString(data.get(33)));
+				
+				log.info("NOMB_SUPERVISOR-->"+data.get(34));
+				credito.setNombredelsupervisor(getCellValueAsString(data.get(34)));
+				
+				
+				
+				
+				
+				
+				log.info("CANT_MERCADERIA-->"+data.get(35).toString());
+				if(!(data.get(35).toString().trim().equals(""))){
 
+					credito.setCantidaddemercaderia(Integer.parseInt(getCellValueAsString(data.get(35)).toString().trim()));
+					}
+				
+				log.info("COD_MERCADERIA-->"+data.get(36));
+				credito.setCodigodemercaderia(getCellValueAsString(data.get(36)));
+				
+				
+
+				log.info("MONTO_ADELANTO-->"+data.get(38).toString());
+				if(!(data.get(38).toString().trim().equals(""))){
+
+					credito.setMontodeadelanto(Integer.parseInt(getCellValueAsString(data.get(38)).toString().trim()));
+					}
+
+				
+				
+				
+				
+				
+				
+				
+				
+				log.info("PUNTO_VENTA-->"+data.get(40));
+				credito.setPuntodeventa(getCellValueAsString(data.get(40)));
+				
+				log.info("NOMB_RELACIONISTA-->"+data.get(41));
+				credito.setNombredelrelacionista(getCellValueAsString(data.get(41)));
+						
+				log.info("DISTRITO_PUNTO_VENTA-->"+data.get(42));					
+				credito.setDistritodelpunto(getCellValueAsString(data.get(42)));
+				
+				log.info("EVENTO_VENTA-->"+data.get(43));
+				credito.setEventodeventa(getCellValueAsString(data.get(43)));
+				
+				
+				log.info(" FECHA_COMPROMISO-> "+data.get(44).toString());				
+				if(data.get(44)!=null){
+					if(!(data.get(44).toString().isEmpty()||data.get(44).toString().equals("")||data.get(44).toString().trim().equals(""))){
+						credito.setFechadecompromiso(DateUtil.convertStringToDate(getCellValueAsString(data.get(44))));
+					}
+				}
+				
+				log.info("ENCARGADO_ENTREGA-->"+data.get(51));
+				credito.setEncargadodelanetrega(getCellValueAsString(data.get(51)));
+				
+				log.info(" FECHA_LLAMADA_VISITA -> "+data.get(52).toString());				
+				if(data.get(52)!=null){
+					if(!(data.get(52).toString().isEmpty()||data.get(52).toString().equals("")||data.get(52).toString().trim().equals(""))){
+						credito.setFechadellamadaovisita(DateUtil.convertStringToDate(getCellValueAsString(data.get(52))));
+					}
+				}
+				
+				log.info(" FECHA_POSTERGADA -> "+data.get(53).toString());				
+				if(data.get(53)!=null){
+					if(!(data.get(53).toString().isEmpty()||data.get(53).toString().equals("")||data.get(53).toString().trim().equals(""))){
+						credito.setFechapostergada(DateUtil.convertStringToDate(getCellValueAsString(data.get(53))));
+					}
+				}
+				
+				log.info(" FECHA_FINAL -> "+data.get(60).toString());				
+				if(data.get(60)!=null){
+					if(!(data.get(60).toString().isEmpty()||data.get(60).toString().equals("")||data.get(60).toString().trim().equals(""))){
+						credito.setFechafinal(DateUtil.convertStringToDate(getCellValueAsString(data.get(60))));
+					}
+				}
+				
+				log.info("ESTADO_FACTURADO-->"+data.get(61));
+				credito.setEstadofinal(getCellValueAsString(data.get(61)));
+				
+				
+				
+				
+				
+				
+				log.info("OBSERVACIONES-->"+data.get(66));
+				credito.setObservaciones(getCellValueAsString(data.get(66)));
+				
+				
+				log.info("ESTADO_REAL-->"+data.get(67));
+				credito.setEstadoreal(getCellValueAsString(data.get(67)));
+				
+				
+				
+				log.info("NOMB_PATROCINADOR-->"+data.get(68));
+				credito.setNombredelpatrocinado(getCellValueAsString(data.get(68)));
+				
+				
+				log.info("COMSION_DEL_VENDEDOR-->"+data.get(69).toString());
+				if(!(data.get(69).toString().trim().equals(""))){
+
+					credito.setComisiondelexpositor(Integer.parseInt(getCellValueAsString(data.get(69)).toString().trim()));
+					}
+
+				
+				log.info(" FECHADEPAGOVENDEDOR -> "+data.get(70).toString());				
+				if(data.get(70)!=null){
+					if(!(data.get(70).toString().isEmpty()||data.get(70).toString().equals("")||data.get(70).toString().trim().equals(""))){
+						credito.setFechadepagoalvendedor(DateUtil.convertStringToDate(getCellValueAsString(data.get(70))));
+					}
+				}
+				
+				log.info("SEPAGOVENDEDOR-->"+data.get(71));
+				credito.setEstadoreal(getCellValueAsString(data.get(71)));
+				
+				log.info("COMSIONEXPOSITOR-->"+data.get(72).toString());
+				if(!(data.get(72).toString().trim().equals(""))){
+
+		credito.setComisiondelexpositor(Integer.parseInt(getCellValueAsString(data.get(72)).toString().trim()));
+					}
+
+				
+				log.info(" FECHADEPAGOEXPOSITOR -> "+data.get(73).toString());				
+				if(data.get(73)!=null){
+					if(!(data.get(73).toString().isEmpty()||data.get(73).toString().equals("")||data.get(73).toString().trim().equals(""))){
+						credito.setFechadepagoalexpositor(DateUtil.convertStringToDate(getCellValueAsString(data.get(73))));
+					}
+				}
+				
+				
+				log.info("SEPAGOEXPOSITOR-->"+data.get(74));
+				credito.setEstadoreal(getCellValueAsString(data.get(74)));
+				
+				log.info("COMSIONRELACIONISTA-->"+data.get(75).toString());
+				if(!(data.get(75).toString().trim().equals(""))){
+
+		credito.setComisiondelrelacionista(Integer.parseInt(getCellValueAsString(data.get(75)).toString().trim()));
+					}
+				
+
+				log.info(" FECHADEPAGORELACIONISTA -> "+data.get(76).toString());				
+				if(data.get(76)!=null){
+					if(!(data.get(76).toString().isEmpty()||data.get(76).toString().equals("")||data.get(76).toString().trim().equals(""))){
+						credito.setFechadepagoalrelacionista(DateUtil.convertStringToDate(getCellValueAsString(data.get(76))));
+					}
+				}
+				
+				log.info("SEPAGORELACIONISTA-->"+data.get(77));
+				credito.setSepagoalRelacionista(getCellValueAsString(data.get(77)));
+				
+				log.info("COMSIONSUPERVISOR-->"+data.get(78).toString());
+				if(!(data.get(78).toString().trim().equals(""))){
+
+		credito.setComisiondelsupervisor(Integer.parseInt(getCellValueAsString(data.get(78)).toString().trim()));
+					}
+				
+				
+				log.info(" FECHADEPAGOSUPERVISOR -> "+data.get(79).toString());				
+				if(data.get(79)!=null){
+					if(!(data.get(79).toString().isEmpty()||data.get(79).toString().equals("")||data.get(79).toString().trim().equals(""))){
+						credito.setFechadepagoalsupervisor(DateUtil.convertStringToDate(getCellValueAsString(data.get(79))));
+					}
+				}
+				
+				log.info("SEPAGOSUPERVISOR-->"+data.get(80));
+				credito.setEstadoreal(getCellValueAsString(data.get(80)));
+				
+				log.info("COMSIONPATROCINADOR-->"+data.get(81).toString());
+				if(!(data.get(81).toString().trim().equals(""))){
+
+		credito.setComisiondelpatrocinador(Integer.parseInt(getCellValueAsString(data.get(81)).toString().trim()));
+					}
+				
+				log.info(" FECHADEPAGOPATROCINADOR -> "+data.get(82).toString());				
+				if(data.get(82)!=null){
+					if(!(data.get(82).toString().isEmpty()||data.get(82).toString().equals("")||data.get(82).toString().trim().equals(""))){
+						credito.setFechadepagoalpatrocinador(DateUtil.convertStringToDate(getCellValueAsString(data.get(82))));
+					}
+				}
+				
+				
+				
+				log.info("SEPAGOPATROCINADOR-->"+data.get(83));
+				credito.setEstadoreal(getCellValueAsString(data.get(83)));
+				
+				log.info("PRECIOTOTAL-->"+data.get(84).toString());
+				if(!(data.get(84).toString().trim().equals(""))){
+
+		credito.setPreciototal(Integer.parseInt(getCellValueAsString(data.get(84)).toString().trim()));
+					}
+				
+				
+			
 				
 				if(palabra.length==3){
 							log.info(" ***** "+ palabra);
