@@ -9,7 +9,7 @@
 		<h:form id="frmMigracionForm">
 		<p:messages id="message" showDetail="true" closable="true" />
 		<p:fileUpload fileUploadListener="#{migracion.handleFileUpload}"
-		allowTypes="/(\.|\/)(xls)$/" description="Select Images"
+		allowTypes="/(\.|\/)(xls)$/" description="Seleccione archivo"
 		update="datatablecampana, message"/>
 		
 		<p:dataTable id="datatablecampana" var="c" value="#{migracion.sistMig}"  paginator="true" rows="15"

@@ -1,5 +1,8 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.ParseException;
@@ -21,8 +24,10 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.model.UploadedFile;
 
 import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.entity.ClienteSie;
@@ -35,6 +40,7 @@ import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.PaqueteSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
+import com.edicsem.pe.sie.entity.SeguimientoContratoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.service.facade.ClienteService;
@@ -86,11 +92,15 @@ public class MantenimientoContratoFormAction extends
 	private BigDecimal totalacumulado;
 	private int idGrupo;
 	private List<DetGrupoEmpleadoSie> detgrupoList;
+	private int estadoRefinan;
 	
 	//Consultar
 	private String numDniCliente,codigoContrato,apePatCliente,apeMatCliente,nombreCliente;
 	private int tamanoLista,idcontrato,idcliente, radio;
 	private List<DomicilioPersonaSie> domicilioList;
+	
+	//Gestionar
+	private SeguimientoContratoSie objSeguimiento;
 	
 	@EJB
 	private ProductoService objProductoService;
@@ -208,6 +218,25 @@ public class MantenimientoContratoFormAction extends
 		return Constants.CONSULTA_CONTRATO_FORM_PAGE;
 	}
 	
+	public String agregarRefinanciar() {
+		log.info("agregarRefinanciar()");
+		ubigeoDefecto="";
+		objClienteSie=null;
+		telefonoList=null;
+		domicilioList=new ArrayList<DomicilioPersonaSie>();
+		contratoXClienteList=new ArrayList<ContratoSie>();
+		objDomicilioSie=null;
+		detProductoContrato=null;
+		comboManager.setCodigoEstado(Constants.COD_ESTADO_TB_CONTRATO);
+		cobranzaList=null;
+		numDniCliente=null;
+		codigoContrato=null;
+		apePatCliente=null;
+		apeMatCliente=null;
+		nombreCliente=null;
+		return Constants.GESTIONAR_CONTRATO_FORM_PAGE;
+	}
+	
 	public void cambiar() {
 		comboManager.setIdDepartamento(getIdDepartamento());
 		comboManager.setIdProvincia(null);
@@ -215,6 +244,7 @@ public class MantenimientoContratoFormAction extends
 		idUbigeo = 0;
 		log.info("cambiar   :D  --- ");
 	}
+	
 	public void listarempleados(){
 		comboManager.setIdEmpresa(idempresa);
 	}
@@ -543,8 +573,6 @@ public class MantenimientoContratoFormAction extends
 		log.info("en onedit()");
 		totalacumulado = new BigDecimal(0);
 		for (int i = 0; i < cobranzaList.size(); i++) {
-			log.info("en onedit() ------- "+ cobranzaList.get(i).getFecvencimiento());
-			log.info("en onedit() ------- "+ cobranzaList.get(i).getImpinicial());
 			totalacumulado = totalacumulado.add(cobranzaList.get(i).getImpinicial());
 			log.info("suma bigdecimal "+	totalacumulado);
 		}
@@ -697,13 +725,17 @@ public class MantenimientoContratoFormAction extends
 			detProductoContrato = objDetProductoService.listarDetProductoContratoXContrato(contratoXClienteList.get(0).getIdcontrato());
 			objContratoSie = objContratoService.findContrato(contratoXClienteList.get(0).getIdcontrato());
 			cobranzaList =objCobranzaService.listarCobranzasXidcontrato(contratoXClienteList.get(0).getIdcontrato());
+			mensaje = "Consulto realizada";
 		}
-		log.info(" lista x consulta "+contratoXClienteList.size());
-		mensaje = "Consulto realizada";
+		else if(contratoXClienteList.size()==0){
+			mensaje = "Consulto realizada, no se encontraron datos";
+		}
+		log.info(" lista x consultaaa "+contratoXClienteList.size());
+		
 		msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 				Constants.MESSAGE_INFO_TITULO, mensaje);
 		FacesContext.getCurrentInstance().addMessage(null, msg);
-		return Constants.CONSULTA_CONTRATO_FORM_PAGE;
+		return null;
 	}
 	
 	public String cargar(){
@@ -738,7 +770,35 @@ public class MantenimientoContratoFormAction extends
 		nuevoTelef = new TelefonoPersonaSie();
 		contratoXClienteList= new ArrayList<ContratoSie>();
 		domicilioList = new ArrayList<DomicilioPersonaSie>();
+		objSeguimiento= new SeguimientoContratoSie();
 	}
+	
+	public String cargarArchivoSustentatorio(FileUploadEvent event) {
+		log.info("cargarImagenInsertar** " + event.getFile().getFileName() );
+		String photo = event.getFile().getFileName();
+		String path = "C:\\Images\\Docs";
+		UploadedFile file = event.getFile();
+		try { 
+			 
+			File directory = new File(path);
+			Boolean existe = directory.exists();
+				if (!existe) {
+					directory.mkdir();
+				}
+			log.info("path  "+path);
+			File f = new File(path + "/" + photo);
+			log.info("Ruta del archivo "+f.getAbsolutePath());
+			OutputStream salida = new FileOutputStream(f);
+			objSeguimiento.setRutaarchivo(f.getPath());
+			//byte[] buf = new byte[1024];
+			salida.write(file.getContents(), 0, file.getContents().length);
+			salida.close();
+			file.getInputstream().close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return getViewMant();
+	}	
 	
 	public String onFlowProcess(FlowEvent event) {
 	    log.info("Current wizard step:" + event.getOldStep());  
@@ -1583,6 +1643,28 @@ public class MantenimientoContratoFormAction extends
 		comboManager.setIdGrupo(idGrupo);
 		detgrupoList = objDetGrupoService.listarEmpleadosXGrupo(idGrupo);
 		this.idGrupo = idGrupo;
+	}
+
+	/**
+	 * @return the estadoRefinan
+	 */
+	public int getEstadoRefinan() {
+		return estadoRefinan;
+	}
+
+	/**
+	 * @param estadoRefinan the estadoRefinan to set
+	 */
+	public void setEstadoRefinan(int estadoRefinan) {
+		this.estadoRefinan = estadoRefinan;
+	}
+
+	public SeguimientoContratoSie getObjSeguimiento() {
+		return objSeguimiento;
+	}
+
+	public void setObjSeguimiento(SeguimientoContratoSie objSeguimiento) {
+		this.objSeguimiento = objSeguimiento;
 	}
 	
 }

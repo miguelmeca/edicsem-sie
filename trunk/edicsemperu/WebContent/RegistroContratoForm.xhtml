@@ -360,15 +360,12 @@
 				<p:calendar id="fechPagoInicial" value="#{contratoForm.objContratoSie.fechacuotainicial}" 
 				pattern="dd/MM/yyyy" effect="explode" required="true" mindate="today" />
 				
-						
 				<h:outputText value="#{message['contrato.producto.precio']}" />
 				<p:spinner id="precioProd" value="#{contratoForm.precioProducto}" required="true" min="1"  />
-				
 				
 				<h:outputText value="#{message['contrato.cantCuotas']}" />
 				<p:spinner id="spinnerE" size="2" min="1" required="true" 
 				value="#{contratoForm.objContratoSie.numcuotas}" />
-				
 				
 				<h:outputText value="#{message['contrato.fechEntrega']}" />
 				<p:calendar id="fechaentrega1" value="#{contratoForm.objContratoSie.fechaentrega}" pattern="dd/MM/yyyy" maxdate="today" label="fecha entrega"  required="true" />
@@ -379,10 +376,8 @@
 				<h:outputText value="#{message['contrato.producto.precio']}" />
 				<p:spinner id="precioProd2" value="#{contratoForm.precioProducto}" required="true" min="1"  />
 				
-				
 				<h:outputText value="#{message['contrato.fechEntrega']}" />
 				<p:calendar id="fechaentrega" value="#{contratoForm.objContratoSie.fechaentrega}" pattern="dd/MM/yyyy" maxdate="today" label="fecha entrega"  required="true" />
-				
 				
 				</h:panelGrid>
 				<p:commandButton value="Registrar Pago(s)" action="#{contratoForm.insertarCobranza}" update="panel2"
@@ -392,7 +387,7 @@
 				
         		 <p:spacer  height="35px"/>
         		 <h:panelGrid id="panelCobranzas" >
-		<p:dataTable id="listaCobranzas" var="c" value="#{contratoForm.cobranzaList}" editable="true" style=" width:50%; align:center " >
+		<p:dataTable id="listaCobranzas" var="c" value="#{contratoForm.cobranzaList}" editable="true" style=" width:775px; align:center " >
 
         <f:facet name="header">
             Editar Cobranzas
@@ -407,12 +402,12 @@
                     <h:outputText value="#{c.numletra}" />
                 </f:facet>
                 <f:facet name="input">
-                    <h:outputText value="#{c.numletra}" style="width:100%"/>
+                    <h:outputText value="#{c.numletra}"/>
                 </f:facet>
             </p:cellEditor>
         </p:column>
-
-        <p:column headerText="#{message['contrato.cobranza.importe']}" style="width:125px">
+        
+        <p:column headerText="#{message['contrato.cobranza.importe']}" style="width:300px">
             <p:cellEditor>
                 <f:facet name="output">
                     <h:outputText value="#{c.impinicial}" />
@@ -423,7 +418,7 @@
             </p:cellEditor>
         </p:column>
 
-        <p:column headerText="#{message['contraato.cobranza.fecVencimiento']}" style="width:125px">
+        <p:column headerText="#{message['contraato.cobranza.fecVencimiento']}" style="width:300px">
             <p:cellEditor>
                 <f:facet name="output">
                     <h:outputText value="#{c.fechaVencimientoString}"  />

@@ -75,7 +75,7 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 			ServletContext ctx = (ServletContext) FacesContext
 					.getCurrentInstance().getExternalContext().getContext();
 
-			String path = ctx.getRealPath("/interseguros");
+			String path = ctx.getRealPath("/SistemaIntegrado");
 
 			File directory = new File(path);
 			Boolean existe = directory.exists();
@@ -85,8 +85,7 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 
 			log.info("path  "+path);
 
-			File f = new File(path + "/" + nombreArchivo);// Aqui le dan el
-															// nombre y/o con la
+			File f = new File(path + "/" + nombreArchivo);
 
 			log.info("Ruta del archivo "+f.getAbsolutePath());
 
@@ -98,9 +97,9 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 			}
 			salida.close();
 			entrada.close();
-			System.out.println("Se realizo la conversion con exito");
+			log.info("Se realizo la conversion con exito");
 		} catch (IOException e) {
-			System.out.println("Se produjo el error : " + e.toString());
+			log.info("Se produjo el error : " + e.toString());
 		}
 	}
 	
@@ -178,11 +177,13 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 								if(numDoc.length()==8){
 									sis.setNumdocumento(numDoc);
 								}
-								else if(numDoc.length()==6){
-									sis.setNumdocumento("00"+numDoc);
-								}
-								else if(numDoc.length()==7){
-									sis.setNumdocumento("0"+numDoc);
+								else if(numDoc.length()<8){
+									int cantCeros= 7 - numDoc.length();
+									String ceros="";
+									for (int i = 0; i < cantCeros; i++) {
+										ceros+="0";
+									}
+									sis.setNumdocumento(ceros+numDoc);
 								}
 								log.info(" 5 "+data.get(8).toString());
 								if(data.get(8).toString().isEmpty()||data.get(8).toString().equals("")||data.get(8).toString().trim().equals("")){

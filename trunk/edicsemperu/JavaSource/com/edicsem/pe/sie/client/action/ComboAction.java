@@ -332,7 +332,7 @@ public class ComboAction {
 		List lista = new ArrayList<EstadoGeneralSie>();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'getEstadoitems()'");
+				log.info("Entering my method 'getEstadoitems()'"+ this.getCodigoEstado());
 			}
 			lista = objEstadoGeneralService.listarEstados(this
 					.getCodigoEstado());
