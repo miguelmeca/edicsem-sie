@@ -66,7 +66,13 @@ public class ClienteSie implements Serializable {
 	private String titulartelefono;
 	
 	private Integer tipocliente;
+	
+	private String planoTrabajo;
 
+	private String letraTrabajo;
+
+	private String sectorTrabajo;
+	
 	//bi-directional many-to-one association to TelefonoPersonaSie
   	@OneToMany(mappedBy="idcliente")
   	private Set<DomicilioPersonaSie> tbDomicilioPersona;
@@ -99,8 +105,11 @@ public class ClienteSie implements Serializable {
 	@Transient
 	private String fechaNacimientoString;
 	
-	  @Transient
-	  private int item;
+	@Transient
+	private int item;
+
+	@Transient
+	private String tipoClienteString;
 
     public ClienteSie() {
     }
@@ -329,5 +338,55 @@ public class ClienteSie implements Serializable {
 	 */
 	public void setFechaNacimientoString(String fechaNacimientoString) {
 		this.fechaNacimientoString = fechaNacimientoString;
+	}
+
+	public String getTipoClienteString() {
+		
+		if(tipocliente==null){
+			tipoClienteString="";
+		}
+		else if(tipocliente==1){
+			tipoClienteString="Puntual";
+		}
+		else if(tipocliente==2){
+			tipoClienteString="Regular";
+		}
+		else if(tipocliente==3){
+			tipoClienteString="Moroso";
+		}
+		else if(tipocliente==4){
+			tipoClienteString="Extremo";
+		}else{
+			tipoClienteString="";
+		}
+		return tipoClienteString;
+	}
+
+	public void setTipoClienteString(String tipoClienteString) {
+		this.tipoClienteString = tipoClienteString;
+	}
+
+	public String getPlanoTrabajo() {
+		return planoTrabajo;
+	}
+
+	public void setPlanoTrabajo(String planoTrabajo) {
+		this.planoTrabajo = planoTrabajo;
+	}
+
+	public String getLetraTrabajo() {
+		return letraTrabajo;
+	}
+
+	public void setLetraTrabajo(String letraTrabajo) {
+		this.letraTrabajo = letraTrabajo;
+	}
+
+	public String getSectorTrabajo() {
+		return sectorTrabajo;
+	}
+
+	public void setSectorTrabajo(String sectorTrabajo) {
+		this.sectorTrabajo = sectorTrabajo;
 	}
 }
