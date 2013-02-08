@@ -22,8 +22,6 @@ public class SeguimientoContratoSie implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_SEGUIMIENTO_CONTRATO_IDSEGCONTRATO_GENERATOR")
 	private Integer idsegcontrato;
 
-	private String codcontrato;
-
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
 
@@ -60,14 +58,6 @@ public class SeguimientoContratoSie implements Serializable {
 
 	public void setIdsegcontrato(Integer idsegcontrato) {
 		this.idsegcontrato = idsegcontrato;
-	}
-
-	public String getCodcontrato() {
-		return this.codcontrato;
-	}
-
-	public void setCodcontrato(String codcontrato) {
-		this.codcontrato = codcontrato;
 	}
 
 	public Timestamp getFechacreacion() {
