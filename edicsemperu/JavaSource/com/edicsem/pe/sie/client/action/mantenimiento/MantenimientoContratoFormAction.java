@@ -54,6 +54,7 @@ import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.PaqueteService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
+import com.edicsem.pe.sie.service.facade.SeguimientoContratoService;
 import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.UbigeoService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -81,7 +82,7 @@ public class MantenimientoContratoFormAction extends
 	private List<DetProductoContratoSie> detProductoContrato;
 	private TelefonoPersonaSie nuevoTelef;
 	private int TipoTelef, operadorTelefonico, idCobranza,idestadoProducto;
-	private double precioProducto;
+	private double precioProducto,precioMensual;
 	private boolean defectoUbigeo,defectopaquete;
 	private boolean newRecord = false;
 	private boolean skip;
@@ -101,6 +102,7 @@ public class MantenimientoContratoFormAction extends
 	
 	//Gestionar
 	private SeguimientoContratoSie objSeguimiento;
+	private int cuotasNuevas;
 	
 	@EJB
 	private ProductoService objProductoService;
@@ -128,6 +130,8 @@ public class MantenimientoContratoFormAction extends
 	private EmpleadoSieService objEmpleadoService;
 	@EJB
 	private DetGrupoEmpleadoService objDetGrupoService;
+	@EJB
+	private SeguimientoContratoService objSeguimientoContratoService;
 	
 	@ManagedProperty(value = "#{comboAction}")
 	private ComboAction comboManager;
@@ -220,11 +224,13 @@ public class MantenimientoContratoFormAction extends
 	
 	public String agregarRefinanciar() {
 		log.info("agregarRefinanciar()");
+		objSeguimiento= new SeguimientoContratoSie();
 		ubigeoDefecto="";
 		objClienteSie=null;
 		telefonoList=null;
 		domicilioList=new ArrayList<DomicilioPersonaSie>();
 		contratoXClienteList=new ArrayList<ContratoSie>();
+		objContratoSie = new ContratoSie();
 		objDomicilioSie=null;
 		detProductoContrato=null;
 		comboManager.setCodigoEstado(Constants.COD_ESTADO_TB_CONTRATO);
@@ -719,18 +725,25 @@ public class MantenimientoContratoFormAction extends
 			log.info("  ubigeo  " +objDomicilioSie.getTbUbigeo().getIdubigeo());
 			UbigeoSie ubi =  objubigeoService.findUbigeo(objDomicilioSie.getTbUbigeo().getIdubigeo());
 			String depaProv = objubigeoService.findDepaProv(ubi.getCoddepartamento(),ubi.getCodprovincia());
-			
+			estadoRefinan= objContratoSie.getTbEstadoGeneral().getIdestadogeneral();
 			ubigeoDefecto =depaProv+" - "+ubi.getNombre();
 			telefonoList = objTelefonoService.listarTelefonoEmpleadosXidcliente(objClienteSie.getIdcliente());
 			detProductoContrato = objDetProductoService.listarDetProductoContratoXContrato(contratoXClienteList.get(0).getIdcontrato());
 			objContratoSie = objContratoService.findContrato(contratoXClienteList.get(0).getIdcontrato());
 			cobranzaList =objCobranzaService.listarCobranzasXidcontrato(contratoXClienteList.get(0).getIdcontrato());
+			totalacumulado= new BigDecimal(0);
+			for (int i = 0; i < cobranzaList.size(); i++) {
+				totalacumulado = totalacumulado.add(cobranzaList.get(i).getImpinicial());
+			}
 			mensaje = "Consulto realizada";
 		}
 		else if(contratoXClienteList.size()==0){
 			mensaje = "Consulto realizada, no se encontraron datos";
+			objClienteSie = new ClienteSie();
+			objDomicilioSie = new DomicilioPersonaSie();
+			cobranzaList = new ArrayList<CobranzaSie>();
 		}
-		log.info(" lista x consultaaa "+contratoXClienteList.size());
+		log.info(" lista x consultaaa "+contratoXClienteList.size()+" MENSAJE "+ mensaje);
 		
 		msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 				Constants.MESSAGE_INFO_TITULO, mensaje);
@@ -741,17 +754,17 @@ public class MantenimientoContratoFormAction extends
 	public String cargar(){
 		log.info(" cargar() ");
 		
-			objClienteSie = objClienteService.findCliente(idcliente);
-			log.info("  " + objClienteSie.getIdcliente()+"  "+objClienteSie.getNombresCompletos());
-			domicilioList = objDomicilioService.listarDomicilioCliente(idcliente);
-			objDomicilioSie = (DomicilioPersonaSie) objDomicilioService.listarDomicilioCliente(idcliente).get(0);
-			UbigeoSie ubi =  objubigeoService.findUbigeo(objDomicilioSie.getTbUbigeo().getIdubigeo());
-			
-			ubigeoDefecto = ubi.getNombre();
-			telefonoList = objTelefonoService.listarTelefonoEmpleadosXidcliente(objClienteSie.getIdcliente());
-			detProductoContrato = objDetProductoService.listarDetProductoContratoXContrato(idcontrato);
-			objContratoSie = objContratoService.findContrato(idcontrato);
-			cobranzaList =objCobranzaService.listarCobranzasXidcontrato(idcontrato);
+		objClienteSie = objClienteService.findCliente(idcliente);
+		log.info("  " + objClienteSie.getIdcliente()+"  "+objClienteSie.getNombresCompletos());
+		domicilioList = objDomicilioService.listarDomicilioCliente(idcliente);
+		objDomicilioSie = (DomicilioPersonaSie) objDomicilioService.listarDomicilioCliente(idcliente).get(0);
+		UbigeoSie ubi =  objubigeoService.findUbigeo(objDomicilioSie.getTbUbigeo().getIdubigeo());
+		
+		ubigeoDefecto = ubi.getNombre();
+		telefonoList = objTelefonoService.listarTelefonoEmpleadosXidcliente(objClienteSie.getIdcliente());
+		detProductoContrato = objDetProductoService.listarDetProductoContratoXContrato(idcontrato);
+		objContratoSie = objContratoService.findContrato(idcontrato);
+		cobranzaList =objCobranzaService.listarCobranzasXidcontrato(idcontrato);
 		return Constants.CONSULTA_CONTRATO_FORM_PAGE;
 	}
 	
@@ -773,12 +786,31 @@ public class MantenimientoContratoFormAction extends
 		objSeguimiento= new SeguimientoContratoSie();
 	}
 	
+	public void addCuota(){
+		log.info("addCuota()");
+		CobranzaSie cob = new CobranzaSie();
+		cob.setImpinicial(new BigDecimal(precioMensual));
+		for (int i = 0; i < cuotasNuevas; i++) {
+			cobranzaList.add(cob);
+		}
+	}
+	
+	public String registrarGestion(){
+		log.info("registrarGestion()");
+		mensaje=null;
+		objSeguimientoContratoService.insertSeguimientoContrato(objSeguimiento);
+		mensaje = Constants.MESSAGE_REGISTRO_TITULO;
+		msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				Constants.MESSAGE_INFO_TITULO, mensaje);
+		return null;
+	}
+	
 	public String cargarArchivoSustentatorio(FileUploadEvent event) {
 		log.info("cargarImagenInsertar** " + event.getFile().getFileName() );
 		String photo = event.getFile().getFileName();
 		String path = "C:\\Images\\Docs";
 		UploadedFile file = event.getFile();
-		try { 
+		try {
 			 
 			File directory = new File(path);
 			Boolean existe = directory.exists();
@@ -1665,6 +1697,34 @@ public class MantenimientoContratoFormAction extends
 
 	public void setObjSeguimiento(SeguimientoContratoSie objSeguimiento) {
 		this.objSeguimiento = objSeguimiento;
+	}
+
+	/**
+	 * @return the precioMensual
+	 */
+	public double getPrecioMensual() {
+		return precioMensual;
+	}
+
+	/**
+	 * @param precioMensual the precioMensual to set
+	 */
+	public void setPrecioMensual(double precioMensual) {
+		this.precioMensual = precioMensual;
+	}
+
+	/**
+	 * @return the cuotasNuevas
+	 */
+	public int getCuotasNuevas() {
+		return cuotasNuevas;
+	}
+
+	/**
+	 * @param cuotasNuevas the cuotasNuevas to set
+	 */
+	public void setCuotasNuevas(int cuotasNuevas) {
+		this.cuotasNuevas = cuotasNuevas;
 	}
 	
 }

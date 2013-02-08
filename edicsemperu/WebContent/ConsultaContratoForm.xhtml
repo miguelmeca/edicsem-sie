@@ -137,7 +137,10 @@
 					<p:inputText value="#{contratoForm.objClienteSie.directrabajo}" readonly="true" size="30"/>
 					
 					<h:outputText value="#{message['contrato.empresa.labora.telefono']}" />
-					<p:inputText mask="999-9999" value="#{contratoForm.objClienteSie.telftrabajo}" readonly="true"/>
+					<p:inputText mask="999-9999" value="#{contratoForm.objClienteSie.telftrabajo}" readonly="true" size="30"/>
+					
+					<h:outputText value="#{message['contrato.cliente.tipo']}" />
+					<p:inputText value="#{contratoForm.objClienteSie.tipoClienteString}" readonly="true" size="30" style="font-weight:bold" />
 					
 					</h:panelGrid>
 					</p:fieldset>
