@@ -165,6 +165,8 @@ public class ContratoServiceImpl implements ContratoService {
 		ClienteSie cli = new ClienteSie();
 		ContratoSie con = new ContratoSie();
 		TelefonoPersonaSie tel = new TelefonoPersonaSie();
+		DomicilioPersonaSie dom = new DomicilioPersonaSie();
+		List<DomicilioPersonaSie> domList= new ArrayList<DomicilioPersonaSie>() ;
 		List<TelefonoPersonaSie> telList= new ArrayList<TelefonoPersonaSie>() ;
 		List<String> telefonoString= new ArrayList<String>();
 		String codigoContr = "";
@@ -188,14 +190,21 @@ public class ContratoServiceImpl implements ContratoService {
 				cli.setEmpresatrabajo(s.getEmpresatrabajo());
 				cli.setCargotrabajo(s.getCargotrabajo());
 				cli.setDirectrabajo(s.getDirectrabajo());
+				cli.setPlanoTrabajo(s.getPlanoTrabajo());
+				cli.setLetraTrabajo(s.getLetraSectorTrabajo());
+				cli.setSectorTrabajo(s.getNumSectorTrabajo());
 				cli.setFecnacimiento(s.getFecnacimiento());
 				cli.setTelftrabajo(s.getTelftrabajo());
 				cli.setTitulartelefono(s.getTitulartelefono());
 				cli.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23)); 
-				
+				dom.setDomicilio(s.getDireccion());
+				dom.setPlanoDomicilio(s.getPlanoDistrito());
+				dom.setSectorDomicilio(s.getNumSector());
+				dom.setLetraDomicilio(s.getLetraSector());
+				domList.add(dom);
 				telefonoString = new ArrayList<String>();
 				//objClienteDao.insertCliente(cli);
-			} 
+			}
 			//si se encuentra un ( - ) se reemplaza por un espacio
 
 			String [ ] telefono = s.getNumTelefono().trim().split("([\\s(-])+");
@@ -322,8 +331,13 @@ public class ContratoServiceImpl implements ContratoService {
 			//999935626 4582558 (FAMILIAR)
 			
 			//insertar Domicilio
-			DomicilioPersonaSie dom = new DomicilioPersonaSie();
-			dom.setDomicilio(s.getDireccion());
+			
+			for (int j = 0; j < domList.size(); j++) {
+				if(domList.get(j).getDomicilio().contains(s.getDireccion())){
+					dom = new DomicilioPersonaSie();
+					dom.setDomicilio(s.getDireccion());
+				}
+			}
 //			dom.setTbTipoCasa(objTipoCasaService.findTipoCasa(s.get));
 			//buscar ubigeo por descripcion del ditrito
 			// si hay mas de una opción? seria la de lima por defecto
