@@ -39,6 +39,12 @@ public class DomicilioPersonaSie implements Serializable {
 	private String referencia;
 	
 	private String principal;
+	
+	private String planoDomicilio;
+	
+	private String letraDomicilio;
+	
+	private String sectorDomicilio;
  
 	//bi-directional many-to-one association to ClienteSie
     @ManyToOne
@@ -204,6 +210,30 @@ public class DomicilioPersonaSie implements Serializable {
 	 */
 	public void setPrincipal(String principal) {
 		this.principal = principal;
+	}
+
+	public String getPlanoDomicilio() {
+		return planoDomicilio;
+	}
+
+	public void setPlanoDomicilio(String planoDomicilio) {
+		this.planoDomicilio = planoDomicilio;
+	}
+
+	public String getLetraDomicilio() {
+		return letraDomicilio;
+	}
+
+	public void setLetraDomicilio(String letraDomicilio) {
+		this.letraDomicilio = letraDomicilio;
+	}
+
+	public String getSectorDomicilio() {
+		return sectorDomicilio;
+	}
+
+	public void setSectorDomicilio(String sectorDomicilio) {
+		this.sectorDomicilio = sectorDomicilio;
 	}
 	
 	
