@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,10 +29,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
-import com.ctc.wstx.util.DataUtil;
 import com.edicsem.pe.sie.beans.EntregasPeruDTO;
-import com.edicsem.pe.sie.beans.MetasDiariasDTO;
-import com.edicsem.pe.sie.beans.SistemaIntegradoDTO;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
 @SuppressWarnings("serial")
@@ -93,22 +89,9 @@ public class FileUploadEntregasPeru implements Serializable {
 	
 	public String subirCreditos() {
 
-		System.out.println("subirCreditos()");
-		EntregasPeruDTO personalead = new EntregasPeruDTO();
-//	
-//
-//		for (int i = 0; i < leadsNuevos.size(); i++) {
-//
-//			EntregasPeruDTO credito = leadsNuevos.get(i);
-//			
-//			System.out.println("cantidad: " + leadsNuevos.size());
-//			System.out.println("id 1: " + leadsNuevos.get(i).getEmpresa() );
-//			System.out.println("nombre 1: " + leadsNuevos.get(i).getNombredecliente());
+		log.info("Subir excel a la Base de Datos");
 		
-//		EntregasPeruDTO.insertMetasDiariasDTO(credito);
-			
-
-//		}
+	
 		
 		return null;
 	}
@@ -245,41 +228,61 @@ public class FileUploadEntregasPeru implements Serializable {
 				credito.setNumerosectordomicilio(getCellValueAsString(data.get(16)));
 				
 						
-//				log.info("LUGAR DE TRABAJO-->"+data.get(17));
-//				credito.setLugardetrabajo(getCellValueAsString(data.get(17)));
-//						
-//				log.info("CARGO_LABORAL-->"+data.get(18));
-//				credito.setCargolaboral(getCellValueAsString(data.get(18)));
-//				
-//				log.info("TEL_TRABAJO-->"+data.get(19));		
-//				credito.setTelefonodeltrabajo(getCellValueAsString(data.get(19)));
+				log.info("LUGAR DE TRABAJO-->"+data.get(17));
+				credito.setLugardetrabajo(getCellValueAsString(data.get(17)));
 						
-//				log.info("ANEXO-->"+data.get(20));
-//						credito.setAnexo(Integer.getInteger(getCellValueAsString(data.get(20))));
+				log.info("CARGO_LABORAL-->"+data.get(18));
+				credito.setCargolaboral(getCellValueAsString(data.get(18)));
+				
+				log.info("TEL_TRABAJO-->"+data.get(19));		
+				credito.setTelefonodeltrabajo(getCellValueAsString(data.get(19)));
+				
+				log.info("ANEXO-->"+data.get(20).toString());
+				if(!(data.get(20).toString().trim().equals(""))){
+
+					credito.setAnexo(Integer.parseInt(getCellValueAsString(data.get(20)).toString().trim()));
+					}
 						
-//				log.info("DIRECION_TRABAJO-->");
-//				
-//				if (data.get(21)!=null) {
-//					if(!(data.get(21).toString().isEmpty()||data.get(21).toString().equals("")||data.get(21).toString().trim().equals(""))){
-//					credito.setDirecciondetrabajo(getCellValueAsString(data.get(21)));	
-//				}
-//				}
-//				
-//				
-//				log.info("TRABAJO_DISTRITO-->"+data.get(22));
-//				credito.setTrabajodistrito(getCellValueAsString(data.get(22)));
-//				
-//				log.info("PLANO_TRABAJO-->"+data.get(23));
-//				credito.setPlanotrabajo(Integer.getInteger(getCellValueAsString(data.get(23))));
-//				
-//				log.info("LETRA_SECTOR_TRABAJO-->"+data.get(24));
-//				credito.setLetrasectortrabajo(getCellValueAsString(data.get(24)));
-//				
-//				log.info("NUM_SECTOR_TRABAJO-->"+data.get(25));
-//				credito.setNumerosectortrabajo(Integer.getInteger(getCellValueAsString(data.get(25))));
-//							
-//				log.info("LUGAR_ENTREGA-->"+data.get(26));
-//				credito.setLugardelaentrega(getCellValueAsString(data.get(26)));
+						
+			
+				log.info("DIRECION_TRABAJO-->"+data.get(21));
+				credito.setDirecciondetrabajo(getCellValueAsString(data.get(21)));
+				
+				
+				log.info("TRABAJO_DISTRITO-->"+data.get(22));
+				credito.setTrabajodistrito(getCellValueAsString(data.get(22)));
+				
+				log.info("PLANO_TRABAJO-->"+data.get(23).toString());
+				if(!(data.get(23).toString().trim().equals(""))){
+
+					credito.setPlanotrabajo(Integer.parseInt(getCellValueAsString(data.get(23)).toString().trim()));
+					}
+				
+				log.info("LETRA_SECTOR_TRABAJO-->"+data.get(24));
+				credito.setLetrasectortrabajo(getCellValueAsString(data.get(24)));
+				
+				log.info("NUM_SECTOR_TRABAJO-->"+data.get(25).toString());
+				if(!(data.get(25).toString().trim().equals(""))){
+
+					credito.setNumerosectortrabajo(Integer.parseInt(getCellValueAsString(data.get(25)).toString().trim()));
+					}
+				
+				
+				log.info("LUGAR_ENTREGA-->"+data.get(26));
+				credito.setLugardelaentrega(getCellValueAsString(data.get(26)));
+				
+				
+				log.info("DISTRITOENTREGA-->"+data.get(27));
+				credito.setDistritodelaentrega(getCellValueAsString(data.get(27)));
+				
+				log.info("ZONADELANETREGA-->"+data.get(28));
+				credito.setZonadelaentrega(getCellValueAsString(data.get(28)));
+				
+				log.info("ZONADEENTREGA-->"+data.get(29));
+				credito.setZonadeentrega(getCellValueAsString(data.get(29)));
+				
+				log.info("LETRASECTORENTREGA-->"+data.get(30));
+				credito.setLetrasectorentrega(getCellValueAsString(data.get(30)));
 				
 				
 				
@@ -314,7 +317,7 @@ public class FileUploadEntregasPeru implements Serializable {
 				log.info("MONTO_ADELANTO-->"+data.get(38).toString());
 				if(!(data.get(38).toString().trim().equals(""))){
 
-					credito.setMontodeadelanto(Integer.parseInt(getCellValueAsString(data.get(38)).toString().trim()));
+					credito.setMontodeadelanto(Double.parseDouble(getCellValueAsString(data.get(38)).toString().trim()));
 					}
 
 				
@@ -393,7 +396,7 @@ public class FileUploadEntregasPeru implements Serializable {
 				log.info("COMSION_DEL_VENDEDOR-->"+data.get(69).toString());
 				if(!(data.get(69).toString().trim().equals(""))){
 
-					credito.setComisiondelexpositor(Integer.parseInt(getCellValueAsString(data.get(69)).toString().trim()));
+					credito.setComisiondelexpositor(Double.parseDouble(getCellValueAsString(data.get(69)).toString().trim()));
 					}
 
 				
@@ -410,7 +413,7 @@ public class FileUploadEntregasPeru implements Serializable {
 				log.info("COMSIONEXPOSITOR-->"+data.get(72).toString());
 				if(!(data.get(72).toString().trim().equals(""))){
 
-		credito.setComisiondelexpositor(Integer.parseInt(getCellValueAsString(data.get(72)).toString().trim()));
+		credito.setComisiondelexpositor(Double.parseDouble(getCellValueAsString(data.get(72)).toString().trim()));
 					}
 
 				
@@ -428,7 +431,7 @@ public class FileUploadEntregasPeru implements Serializable {
 				log.info("COMSIONRELACIONISTA-->"+data.get(75).toString());
 				if(!(data.get(75).toString().trim().equals(""))){
 
-		credito.setComisiondelrelacionista(Integer.parseInt(getCellValueAsString(data.get(75)).toString().trim()));
+		credito.setComisiondelrelacionista(Double.parseDouble(getCellValueAsString(data.get(75)).toString().trim()));
 					}
 				
 
@@ -445,7 +448,7 @@ public class FileUploadEntregasPeru implements Serializable {
 				log.info("COMSIONSUPERVISOR-->"+data.get(78).toString());
 				if(!(data.get(78).toString().trim().equals(""))){
 
-		credito.setComisiondelsupervisor(Integer.parseInt(getCellValueAsString(data.get(78)).toString().trim()));
+		credito.setComisiondelsupervisor(Double.parseDouble(getCellValueAsString(data.get(78)).toString().trim()));
 					}
 				
 				
@@ -462,7 +465,7 @@ public class FileUploadEntregasPeru implements Serializable {
 				log.info("COMSIONPATROCINADOR-->"+data.get(81).toString());
 				if(!(data.get(81).toString().trim().equals(""))){
 
-		credito.setComisiondelpatrocinador(Integer.parseInt(getCellValueAsString(data.get(81)).toString().trim()));
+		credito.setComisiondelpatrocinador(Double.parseDouble(getCellValueAsString(data.get(81)).toString().trim()));
 					}
 				
 				log.info(" FECHADEPAGOPATROCINADOR -> "+data.get(82).toString());				
@@ -477,12 +480,21 @@ public class FileUploadEntregasPeru implements Serializable {
 				log.info("SEPAGOPATROCINADOR-->"+data.get(83));
 				credito.setEstadoreal(getCellValueAsString(data.get(83)));
 				
+				
 				log.info("PRECIOTOTAL-->"+data.get(84).toString());
 				if(!(data.get(84).toString().trim().equals(""))){
 
-		credito.setPreciototal(Integer.parseInt(getCellValueAsString(data.get(84)).toString().trim()));
+		credito.setPreciototal(Double.parseDouble(getCellValueAsString(data.get(84)).toString().trim()));
 					}
 				
+				
+				
+				if(data.get(85)!=null){
+				if(!(data.get(85).toString().trim().equals(""))){
+
+					credito.setPuntaje(Integer.parseInt(getCellValueAsString(data.get(85)).toString().trim()));
+					}
+				}
 				
 			
 				
