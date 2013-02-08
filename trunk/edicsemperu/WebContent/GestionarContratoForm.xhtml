@@ -60,9 +60,8 @@
 			</h:panelGrid>
 			<p:commandButton value="Buscar" action="#{contratoForm.consultar}" update="message" ajax="false"
 				icon="ui-icon-search"/>
-					
-				</p:fieldset>
-				<p:spacer height="30px" />
+			</p:fieldset>
+				
 				<h:panelGrid  rendered="#{contratoForm.tamanoLista>1}" >
 					<p:dataTable value="#{contratoForm.contratoXClienteList}"  
 					var="c" style="width:800px" emptyMessage="No se encontraron resultados" >
@@ -135,14 +134,19 @@
 					<p:inputText value="#{contratoForm.objClienteSie.directrabajo}" readonly="true" size="30"/>
 					
 					<h:outputText value="#{message['contrato.empresa.labora.telefono']}" />
-					<p:inputText mask="999-9999" value="#{contratoForm.objClienteSie.telftrabajo}" readonly="true"/>
+					<p:inputText mask="999-9999" value="#{contratoForm.objClienteSie.telftrabajo}" readonly="true" size="30"/>
 					
+					<h:outputText value="#{message['contrato.cliente.tipo']}" />
+					<p:inputText value="#{contratoForm.objClienteSie.tipoClienteString}" readonly="true" size="30" style="font-weight:bold" />
 					</h:panelGrid>
 					</p:fieldset>
 					<p:fieldset legend="#{message['consulta.contrato.contrato']}"  style="margin-top:30px" >
 					<h:panelGrid columns="2" cellpadding="3"  >
 					<h:outputText value="#{message['contrato.codigo']}" />
 					<p:inputText value="#{contratoForm.objContratoSie.codcontrato}" size="30" readonly="true"/>
+					
+					<h:outputText value="#{message['consulta.contrato.estado']}" />
+					<p:inputText value="#{contratoForm.objContratoSie.tbEstadoGeneral.descripcion}" size="30"  readonly="true" style="font-weight:bold" />
 					
 					<h:outputText value="#{message['contrato.empresa']}" />
 					<p:inputText value="#{contratoForm.objContratoSie.tbEmpresa.descripcion}" size="30" readonly="true"/>
@@ -211,10 +215,23 @@
 				        </p:column>
 				    </p:dataTable>
 				</p:fieldset>
-				<p:fieldset  legend="#{message['contrato.det.pago']}" style="margin-top:30px" >
 				
-				<h:panelGrid id="panelCobranzas" >
-				<p:dataTable id="listaCobranzasEdit" var="c" value="#{contratoForm.cobranzaList}" editable="true" style=" width:720px " 
+			   </h:panelGrid>
+				<p:fieldset  legend="#{message['contrato.det.pago']}" style="margin-top:30px; colspan:2"   >
+				
+				<h:panelGrid id="panelCobranzas" columns="2" cellpadding="5"  >
+				<p:fieldset  legend="Añadir Cuotas">
+				<h:panelGrid   columns="2" cellpadding="5" cellspacing="10" >
+				<h:outputText value="#{message['contrato.cantCuotas.nueva']}" />
+				<p:spinner id="spinnerE" size="4" min="1" required="true"  value="#{contratoForm.cuotasNuevas}" />
+				
+				<h:outputText value="#{message['contrato.producto.precio.mensual']}" />
+				<p:spinner id="precioProd" value="#{contratoForm.precioMensual}" size="4"   min="1"  />
+				
+				<p:commandButton value="Agregar cuota" action="#{contratoForm.addCuota}" update="listaCobranzasEdit" ajax="false" icon="ui-icon-plus"/>
+				</h:panelGrid>
+				</p:fieldset>
+				<p:dataTable id="listaCobranzasEdit" var="c" value="#{contratoForm.cobranzaList}" editable="true" style=" width:100% " 
 					rowStyleClass="#{contratoForm.dhoy le  c.fecvencimiento  ? null: (empty c.fecpago? 'colorRojo' : 'colorVerde')}">
 		
 		        <f:facet name="header">
@@ -224,7 +241,7 @@
 		        <p:ajax event="rowEdit" listener="#{contratoForm.onEdit}"  update="listaCobranzasEdit"/>
 		        <p:ajax event="rowEditCancel" listener="#{contratoForm.onCancel}" update="listaCobranzasEdit" />
 		
-		        <p:column headerText="#{message['contrato.numero.letra']}" style="width:70px">
+		        <p:column headerText="#{message['contrato.numero.letra']}"  >
 		            <p:cellEditor>
 		                <f:facet name="output"  >
 		                    <h:outputText value="#{c.numletra}" />
@@ -235,13 +252,13 @@
 		            </p:cellEditor>
 		        </p:column>
 		        
-		        <p:column headerText="#{message['contrato.cobranza.importe']}" style="width:120px">
+		        <p:column headerText="#{message['contrato.cobranza.importe']}" style="width:120px" >
 		            <p:cellEditor>
 		                <f:facet name="output">
 		                    <h:outputText value="#{c.impinicial}" />
 		                </f:facet>
 		                <f:facet name="input">
-		                    <p:spinner value="#{c.impinicial}" maxlength="5"  style="width:100px"  rendered="#{empty c.fecpago}" />
+		                    <p:spinner value="#{c.impinicial}" size="6"  min="0" rendered="#{empty c.fecpago}" />
 		                    <h:outputText value="#{c.impinicial}"  rendered="#{!empty c.fecpago}" />
 		                </f:facet>
 		            </p:cellEditor>
@@ -252,19 +269,18 @@
 		                   <h:outputText value="#{c.diasretraso}" />
 		                </f:facet>
 		                <f:facet name="input">
-		                    <p:spinner value="#{c.diasretraso}"  style="width:100px" rendered="#{empty c.fecpago}" />
-		                    <h:outputText value="#{c.diasretraso}"  rendered="#{!empty c.fecpago}" />
+		                    <h:outputText value="#{c.diasretraso}" />
 		                </f:facet>
 		            </p:cellEditor>
 				</p:column>
-				<p:column headerText="#{message['consulta.importe']}" style="width:120px">
+				<p:column headerText="#{message['consulta.importemasmora']}" style="width:120px">
 					<p:cellEditor>
 		                <f:facet name="output">
-		                  <h:outputText value="#{d.importemasmora}" />
+		                  <h:outputText value="#{c.importemasmora}" />
 		                </f:facet>
 		                <f:facet name="input">
-		                   <p:spinner value="#{d.importemasmora}"  style="width:100px" rendered="#{empty c.fecpago}" />
-		                   <h:outputText value="#{d.importemasmora}"  rendered="#{!empty c.fecpago}" />
+		                   <p:spinner value="#{c.importemasmora}"  size="4" rendered="#{empty c.fecpago}" min="0" />
+		                   <h:outputText value="#{c.importemasmora}"  rendered="#{!empty c.fecpago}" />
 		                </f:facet>
 		            </p:cellEditor>
 				</p:column>
@@ -274,7 +290,7 @@
 		                    <h:outputText value="#{c.fechaVencimientoString}"  />
 		                </f:facet>
 		                <f:facet name="input">
-		                  <p:calendar   value="#{c.fecvencimiento}" pattern="dd/MM/yyyy" rendered="#{empty c.fecpago}" /> 
+		                  <p:calendar   value="#{c.fecvencimiento}" size="10" pattern="dd/MM/yyyy" rendered="#{empty c.fecpago}" /> 
 		                  <h:outputText value="#{c.fecvencimiento}"  rendered="#{!empty c.fecpago}" />
 		                </f:facet>
 		            </p:cellEditor>
@@ -310,7 +326,7 @@
 					</p:selectOneMenu>
 					
 					<h:outputText value="Observación" />
-					<p:inputText value="#{contratoForm.objSeguimiento.observacion}" size="20" readonly="true"/>
+					<p:inputTextarea value="#{contratoForm.objSeguimiento.observacion}" size="20" maxlength="500" cols="30"  rows="3" />
 					
 					<h:outputText value="Documento sustentatorio" />
 					<p:fileUpload fileUploadListener="#{contratoForm.cargarArchivoSustentatorio}" immediate="true"
@@ -318,12 +334,11 @@
 					description="Seleccione archivo" multiple="false" customUI="true" required="true">
 					</p:fileUpload>
 					
-					<p:commandButton value="Registrar Gestión" action="#{contratoForm.consultar}" update="messages" ajax="false"
+					<p:commandButton value="Registrar Gestión" action="#{contratoForm.registrarGestion}" update="messages" ajax="false"
 					icon="ui-icon-disk"/>
 					
 			   		</h:panelGrid>
 			   </p:fieldset>
-			   </h:panelGrid>
 			</p:panel>
 		</h:form>
 	</ui:define>

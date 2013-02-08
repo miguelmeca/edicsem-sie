@@ -114,6 +114,18 @@
 				<p:inputTextarea value="#{contratoForm.objDomicilioSie.referencia}" maxlength="115" style="" cols="30" rows="2" autoResize="false"  />
 				<p:spacer />
 				
+				<h:outputText value="#{message['contrato.ubigeo.domicilio.plano']}" />
+				<p:inputText  value="#{contratoForm.objDomicilioSie.planoDomicilio}" size="30" maxlength="5"/>
+				<p:spacer />
+				
+				<h:outputText value="#{message['contrato.ubigeo.domicilio.letra']}" />
+				<p:inputText  value="#{contratoForm.objDomicilioSie.letraDomicilio}" size="30" maxlength="5"/>
+				<p:spacer />
+				
+				<h:outputText value="#{message['contrato.ubigeo.domicilio.sector']}" />
+				<p:inputText  value="#{contratoForm.objDomicilioSie.sectorDomicilio}" size="30" maxlength="5"/>
+				<p:spacer />
+				
 				<h:outputText value="#{message['contrato.empresa.labora.nombre']}" />
 				<p:inputText value="#{contratoForm.objClienteSie.empresatrabajo}" size="30" maxlength="45" />
 				<p:spacer />
@@ -124,6 +136,18 @@
 				
 				<h:outputText value="#{message['contrato.empresa.labora.direccion']}" />
 				<p:inputText value="#{contratoForm.objClienteSie.directrabajo}" size="30"  maxlength="115" />
+				<p:spacer />
+				
+				<h:outputText value="#{message['contrato.ubigeo.cliente.plano']}" />
+				<p:inputText  value="#{contratoForm.objClienteSie.planoTrabajo}" size="30" maxlength="5"/>
+				<p:spacer />
+				
+				<h:outputText value="#{message['contrato.ubigeo.cliente.letra']}" />
+				<p:inputText  value="#{contratoForm.objClienteSie.letraTrabajo}" size="30" maxlength="5"/>
+				<p:spacer />
+				
+				<h:outputText value="#{message['contrato.ubigeo.cliente.sector']}" />
+				<p:inputText  value="#{contratoForm.objClienteSie.sectorTrabajo}" size="30" maxlength="5"/>
 				<p:spacer />
 				
 				<h:outputText value="#{message['contrato.empresa.labora.telefono']}" />
