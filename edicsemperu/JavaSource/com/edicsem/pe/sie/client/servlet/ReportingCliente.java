@@ -96,9 +96,8 @@ public class ReportingCliente extends HttpServlet {
 			JasperReport reporte = (JasperReport) JRLoader.loadObject(bufferedInputStream);
 			Map parametros = new HashMap();
 			
-			parametros.put("nombreUsuario",
-					objUsuario.getNombreemp() + " " + objUsuario.getApepatemp()
-							+ " " + objUsuario.getApematemp());
+			parametros.put("nombreUsuario", objUsuario.getNombreemp() + " " + objUsuario.getApepatemp()
+					+ " " + objUsuario.getApematemp());
 			parametros.put("nombrePC", addr.getHostName());
 			log.info(" pccc  "+ addr.getHostName());
 			

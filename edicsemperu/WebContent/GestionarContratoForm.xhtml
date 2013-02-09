@@ -223,10 +223,13 @@
 				<p:fieldset  legend="Añadir Cuotas">
 				<h:panelGrid   columns="2" cellpadding="5" cellspacing="10" >
 				<h:outputText value="#{message['contrato.cantCuotas.nueva']}" />
-				<p:spinner id="spinnerE" size="4" min="1" required="true"  value="#{contratoForm.cuotasNuevas}" />
+				<p:spinner size="4" min="1" required="true"  value="#{contratoForm.cuotasNuevas}" />
 				
 				<h:outputText value="#{message['contrato.producto.precio.mensual']}" />
-				<p:spinner id="precioProd" value="#{contratoForm.precioMensual}" size="4"   min="1"  />
+				<p:spinner value="#{contratoForm.precioMensual}" size="4"   min="1"  />
+				
+				<h:outputText value="#{message['contrato.producto.precio.mensual']}" />
+				<p:calendar value="#{contratoForm.fechaMensual}" pattern="dd/MM/yyyy" />
 				
 				<p:commandButton value="Agregar cuota" action="#{contratoForm.addCuota}" update="listaCobranzasEdit" ajax="false" icon="ui-icon-plus"/>
 				</h:panelGrid>
@@ -312,7 +315,7 @@
 		        <br/>
 		        <p:outputPanel autoUpdate="true" >
 		        <h:outputText value="#{message['contrato.cobranza.total.acumulado']}" />
-		        <p:inputText id="totalacumulado2" value="#{contratoForm.totalacumulado}"  />
+		        <p:inputText id="totalacumulado2" value="#{contratoForm.totalacumulado}" readonly="true" />
 		        </p:outputPanel>
 		        </h:panelGrid>
 			    
