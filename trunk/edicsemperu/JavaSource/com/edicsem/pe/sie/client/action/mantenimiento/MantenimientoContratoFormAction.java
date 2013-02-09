@@ -89,7 +89,7 @@ public class MantenimientoContratoFormAction extends
 	private PaqueteSie objPaquete;
 	private DetPaqueteSie objDetPaquete;
 	private List<ContratoSie> contratoXClienteList;
-	private Date dhoy, dValidoFecNac;
+	private Date dhoy, dValidoFecNac, fechaMensual;
 	private BigDecimal totalacumulado;
 	private int idGrupo;
 	private List<DetGrupoEmpleadoSie> detgrupoList;
@@ -164,6 +164,8 @@ public class MantenimientoContratoFormAction extends
 		idempresa = 0;
 		ubigeoDefecto = "";
 		totalacumulado= new BigDecimal(0);
+		precioMensual=0.0;
+		cuotasNuevas=1;
 	}
 	
 	/*
@@ -182,7 +184,6 @@ public class MantenimientoContratoFormAction extends
 		//buscar codigo nuevo por el número de secuencial
 		log.info("codigo  "+objContratoService.obtenerCodigo());
 		objContratoSie.setCodcontrato(""+objContratoService.obtenerCodigo());
-		
 		setNewRecord(true);
 		comboManager.setUbigeoDeparItems(null);
 		comboManager.setUbigeoProvinItems(null);
@@ -240,6 +241,8 @@ public class MantenimientoContratoFormAction extends
 		apePatCliente=null;
 		apeMatCliente=null;
 		nombreCliente=null;
+		cuotasNuevas=1;
+		totalacumulado= new BigDecimal(0);
 		return Constants.GESTIONAR_CONTRATO_FORM_PAGE;
 	}
 	
@@ -474,6 +477,7 @@ public class MantenimientoContratoFormAction extends
 			objCobranzaSie.setNumletra("0");
 			objCobranzaSie.setFecvencimiento(objContratoSie.getFechacuotainicial());
 			objCobranzaSie.setImpinicial(new BigDecimal(precioProducto));
+			objCobranzaSie.setImportemasmora(objCobranzaSie.getImpinicial());
 			cobranzaList.add(objCobranzaSie);
 			objCobranzaSie= new CobranzaSie();
 			
@@ -513,6 +517,7 @@ public class MantenimientoContratoFormAction extends
 					objCobranzaSie.setFecvencimiento(objContratoSie.getFechaentrega());
 					objCobranzaSie.setFecpago(objContratoSie.getFechaentrega());
 					totalacumulado = totalacumulado.add(objCobranzaSie.getImpinicial());
+					objCobranzaSie.setImportemasmora(objCobranzaSie.getImpinicial());
 					cobranzaList.add(objCobranzaSie);
 					objCobranzaSie= new CobranzaSie();
 					//lo que queda por pagar de la cuota inicial , letra -1
@@ -521,6 +526,7 @@ public class MantenimientoContratoFormAction extends
 					objCobranzaSie.setImpinicial(objContratoSie.getCuotainicial());
 					objCobranzaSie.setFecvencimiento(objContratoSie.getFechacuotainicial());
 					totalacumulado=totalacumulado.add(objCobranzaSie.getImpinicial());
+					objCobranzaSie.setImportemasmora(objCobranzaSie.getImpinicial());
 					cobranzaList.add(objCobranzaSie);
 					objCobranzaSie= new CobranzaSie();
 					isadd=false;
@@ -568,6 +574,7 @@ public class MantenimientoContratoFormAction extends
 				objCobranzaSie.setFecvencimiento(fechaVencimiento);
 				totalacumulado =totalacumulado.add(objCobranzaSie.getImpinicial());
 				log.info("totalacumulado:  "+totalacumulado);
+				objCobranzaSie.setImportemasmora(objCobranzaSie.getImpinicial());
 				cobranzaList.add(objCobranzaSie);
 				objCobranzaSie= new CobranzaSie();
 				}
@@ -579,7 +586,7 @@ public class MantenimientoContratoFormAction extends
 		log.info("en onedit()");
 		totalacumulado = new BigDecimal(0);
 		for (int i = 0; i < cobranzaList.size(); i++) {
-			totalacumulado = totalacumulado.add(cobranzaList.get(i).getImpinicial());
+			totalacumulado = totalacumulado.add(cobranzaList.get(i).getImportemasmora());
 			log.info("suma bigdecimal "+	totalacumulado);
 		}
     }
@@ -725,16 +732,17 @@ public class MantenimientoContratoFormAction extends
 			log.info("  ubigeo  " +objDomicilioSie.getTbUbigeo().getIdubigeo());
 			UbigeoSie ubi =  objubigeoService.findUbigeo(objDomicilioSie.getTbUbigeo().getIdubigeo());
 			String depaProv = objubigeoService.findDepaProv(ubi.getCoddepartamento(),ubi.getCodprovincia());
-			estadoRefinan= objContratoSie.getTbEstadoGeneral().getIdestadogeneral();
 			ubigeoDefecto =depaProv+" - "+ubi.getNombre();
 			telefonoList = objTelefonoService.listarTelefonoEmpleadosXidcliente(objClienteSie.getIdcliente());
 			detProductoContrato = objDetProductoService.listarDetProductoContratoXContrato(contratoXClienteList.get(0).getIdcontrato());
 			objContratoSie = objContratoService.findContrato(contratoXClienteList.get(0).getIdcontrato());
 			cobranzaList =objCobranzaService.listarCobranzasXidcontrato(contratoXClienteList.get(0).getIdcontrato());
 			totalacumulado= new BigDecimal(0);
+			estadoRefinan= objContratoSie.getTbEstadoGeneral().getIdestadogeneral();
 			for (int i = 0; i < cobranzaList.size(); i++) {
-				totalacumulado = totalacumulado.add(cobranzaList.get(i).getImpinicial());
+				totalacumulado = totalacumulado.add(cobranzaList.get(i).getImportemasmora());
 			}
+			fechaMensual = DateUtil.addToDate(cobranzaList.get(cobranzaList.size()-1).getFecvencimiento(), Calendar.MONTH,1);
 			mensaje = "Consulto realizada";
 		}
 		else if(contratoXClienteList.size()==0){
@@ -751,7 +759,7 @@ public class MantenimientoContratoFormAction extends
 		return null;
 	}
 	
-	public String cargar(){
+	public String cargar() throws Exception{
 		log.info(" cargar() ");
 		
 		objClienteSie = objClienteService.findCliente(idcliente);
@@ -765,6 +773,12 @@ public class MantenimientoContratoFormAction extends
 		detProductoContrato = objDetProductoService.listarDetProductoContratoXContrato(idcontrato);
 		objContratoSie = objContratoService.findContrato(idcontrato);
 		cobranzaList =objCobranzaService.listarCobranzasXidcontrato(idcontrato);
+		totalacumulado= new BigDecimal(0);
+		estadoRefinan= objContratoSie.getTbEstadoGeneral().getIdestadogeneral();
+		for (int i = 0; i < cobranzaList.size(); i++) {
+			totalacumulado = totalacumulado.add(cobranzaList.get(i).getImportemasmora());
+		}
+		fechaMensual = DateUtil.addToDate(cobranzaList.get(cobranzaList.size()-1).getFecvencimiento(), Calendar.MONTH,1);
 		return Constants.CONSULTA_CONTRATO_FORM_PAGE;
 	}
 	
@@ -784,13 +798,23 @@ public class MantenimientoContratoFormAction extends
 		contratoXClienteList= new ArrayList<ContratoSie>();
 		domicilioList = new ArrayList<DomicilioPersonaSie>();
 		objSeguimiento= new SeguimientoContratoSie();
+		precioMensual=0.0;
+		cuotasNuevas=1;
 	}
 	
-	public void addCuota(){
+	public void addCuota() throws Exception{
 		log.info("addCuota()");
-		CobranzaSie cob = new CobranzaSie();
-		cob.setImpinicial(new BigDecimal(precioMensual));
+		
 		for (int i = 0; i < cuotasNuevas; i++) {
+			CobranzaSie cob = new CobranzaSie();
+			cob.setImpinicial(new BigDecimal(precioMensual));
+			cob.setImportemasmora(new BigDecimal(precioMensual));
+			fechaMensual = DateUtil.addToDate(fechaMensual, Calendar.MONTH,i);
+			int numletra= Integer.parseInt(cobranzaList.get(cobranzaList.size()-1).getNumletra());
+			numletra=numletra+i+1;
+			cob.setNumletra(numletra+"");
+			cob.setFecvencimiento(fechaMensual);
+			totalacumulado= totalacumulado.add(new BigDecimal(precioMensual));
 			cobranzaList.add(cob);
 		}
 	}
@@ -1725,6 +1749,20 @@ public class MantenimientoContratoFormAction extends
 	 */
 	public void setCuotasNuevas(int cuotasNuevas) {
 		this.cuotasNuevas = cuotasNuevas;
+	}
+
+	/**
+	 * @return the fechaMensual
+	 */
+	public Date getFechaMensual() {
+		return fechaMensual;
+	}
+
+	/**
+	 * @param fechaMensual the fechaMensual to set
+	 */
+	public void setFechaMensual(Date fechaMensual) {
+		this.fechaMensual = fechaMensual;
 	}
 	
 }
