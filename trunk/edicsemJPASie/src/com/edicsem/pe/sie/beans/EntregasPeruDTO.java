@@ -67,6 +67,18 @@ public class EntregasPeruDTO implements Serializable {
 	
 	private String lugardelaentrega;
 	
+	
+	
+	private String distritodelaentrega;
+	
+	private String zonadelaentrega;
+	
+	private String zonadeentrega;
+	
+	private String letrasectorentrega;
+	
+	
+	
 	private String nombredelvendedor;
 	
 	private String nombredelexpositor;
@@ -77,7 +89,7 @@ public class EntregasPeruDTO implements Serializable {
 	
 	private String codigodemercaderia;
 	
-	private int montodeadelanto;
+	private double montodeadelanto;
 	
 	private String puntodeventa;
 	
@@ -109,29 +121,41 @@ public class EntregasPeruDTO implements Serializable {
 	
 	private String observaciones;
 	
+	private String estadoreal;
+	
 	private String nombredelpatrocinado;
 	
-	private int comisiondelvendedor;
+	private double comisiondelvendedor;
 	
 	private Date fechadepagoalvendedor;
 	
-	private int comisiondelexpositor;
+	private String sepagoalVendedor;
+	
+	private double comisiondelexpositor;
 	
 	private Date fechadepagoalexpositor;
 	
-	private int comisiondelrelacionista;
+	private String sepagoalexpositor;
+	
+	private double comisiondelrelacionista;
 	
 	private Date fechadepagoalrelacionista;
 	
-	private int comisiondelsupervisor;
+	private String sepagoalRelacionista;
+	
+	private double comisiondelsupervisor;
 	
 	private Date fechadepagoalsupervisor;
 	
-	private int comisiondelpatrocinador;
+	private String sepagoalSupervisor;
+	
+	private double comisiondelpatrocinador;
 	
 	private Date fechadepagoalpatrocinador;
 	
-	private int preciototal;
+	private String sepagoalPatrocinador;
+	
+	private double preciototal;
 	
 	private int puntaje;
 
@@ -571,18 +595,104 @@ public class EntregasPeruDTO implements Serializable {
 		this.codigodemercaderia = codigodemercaderia;
 	}
 
+	
+
 	/**
 	 * @return the montodeadelanto
 	 */
-	public int getMontodeadelanto() {
+	public double getMontodeadelanto() {
 		return montodeadelanto;
 	}
 
 	/**
 	 * @param montodeadelanto the montodeadelanto to set
 	 */
-	public void setMontodeadelanto(int montodeadelanto) {
+	public void setMontodeadelanto(double montodeadelanto) {
 		this.montodeadelanto = montodeadelanto;
+	}
+
+	/**
+	 * @return the comisiondelvendedor
+	 */
+	public double getComisiondelvendedor() {
+		return comisiondelvendedor;
+	}
+
+	/**
+	 * @param comisiondelvendedor the comisiondelvendedor to set
+	 */
+	public void setComisiondelvendedor(double comisiondelvendedor) {
+		this.comisiondelvendedor = comisiondelvendedor;
+	}
+
+	/**
+	 * @return the comisiondelexpositor
+	 */
+	public double getComisiondelexpositor() {
+		return comisiondelexpositor;
+	}
+
+	/**
+	 * @param comisiondelexpositor the comisiondelexpositor to set
+	 */
+	public void setComisiondelexpositor(double comisiondelexpositor) {
+		this.comisiondelexpositor = comisiondelexpositor;
+	}
+
+	/**
+	 * @return the comisiondelrelacionista
+	 */
+	public double getComisiondelrelacionista() {
+		return comisiondelrelacionista;
+	}
+
+	/**
+	 * @param comisiondelrelacionista the comisiondelrelacionista to set
+	 */
+	public void setComisiondelrelacionista(double comisiondelrelacionista) {
+		this.comisiondelrelacionista = comisiondelrelacionista;
+	}
+
+	/**
+	 * @return the comisiondelsupervisor
+	 */
+	public double getComisiondelsupervisor() {
+		return comisiondelsupervisor;
+	}
+
+	/**
+	 * @param comisiondelsupervisor the comisiondelsupervisor to set
+	 */
+	public void setComisiondelsupervisor(double comisiondelsupervisor) {
+		this.comisiondelsupervisor = comisiondelsupervisor;
+	}
+
+	/**
+	 * @return the comisiondelpatrocinador
+	 */
+	public double getComisiondelpatrocinador() {
+		return comisiondelpatrocinador;
+	}
+
+	/**
+	 * @param comisiondelpatrocinador the comisiondelpatrocinador to set
+	 */
+	public void setComisiondelpatrocinador(double comisiondelpatrocinador) {
+		this.comisiondelpatrocinador = comisiondelpatrocinador;
+	}
+
+	/**
+	 * @return the preciototal
+	 */
+	public double getPreciototal() {
+		return preciototal;
+	}
+
+	/**
+	 * @param preciototal the preciototal to set
+	 */
+	public void setPreciototal(double preciototal) {
+		this.preciototal = preciototal;
 	}
 
 	/**
@@ -816,17 +926,7 @@ public class EntregasPeruDTO implements Serializable {
 
 	/**
 	 * @return the comisiondelvendedor
-	 */
-	public int getComisiondelvendedor() {
-		return comisiondelvendedor;
-	}
-
-	/**
-	 * @param comisiondelvendedor the comisiondelvendedor to set
-	 */
-	public void setComisiondelvendedor(int comisiondelvendedor) {
-		this.comisiondelvendedor = comisiondelvendedor;
-	}
+	
 
 	/**
 	 * @return the fechadepagoalvendedor
@@ -845,20 +945,8 @@ public class EntregasPeruDTO implements Serializable {
 	/**
 	 * @return the comisiondelexpositor
 	 */
-	public int getComisiondelexpositor() {
-		return comisiondelexpositor;
-	}
-
-	/**
-	 * @param comisiondelexpositor the comisiondelexpositor to set
-	 */
-	public void setComisiondelexpositor(int comisiondelexpositor) {
-		this.comisiondelexpositor = comisiondelexpositor;
-	}
-
-	/**
-	 * @return the fechadepagoalexpositor
-	 */
+	
+	 
 	public Date getFechadepagoalexpositor() {
 		return fechadepagoalexpositor;
 	}
@@ -873,16 +961,7 @@ public class EntregasPeruDTO implements Serializable {
 	/**
 	 * @return the comisiondelrelacionista
 	 */
-	public int getComisiondelrelacionista() {
-		return comisiondelrelacionista;
-	}
-
-	/**
-	 * @param comisiondelrelacionista the comisiondelrelacionista to set
-	 */
-	public void setComisiondelrelacionista(int comisiondelrelacionista) {
-		this.comisiondelrelacionista = comisiondelrelacionista;
-	}
+	
 
 	/**
 	 * @return the fechadepagoalrelacionista
@@ -901,17 +980,7 @@ public class EntregasPeruDTO implements Serializable {
 	/**
 	 * @return the comisiondelsupervisor
 	 */
-	public int getComisiondelsupervisor() {
-		return comisiondelsupervisor;
-	}
-
-	/**
-	 * @param comisiondelsupervisor the comisiondelsupervisor to set
-	 */
-	public void setComisiondelsupervisor(int comisiondelsupervisor) {
-		this.comisiondelsupervisor = comisiondelsupervisor;
-	}
-
+	
 	/**
 	 * @return the fechadepagoalsupervisor
 	 */
@@ -929,17 +998,6 @@ public class EntregasPeruDTO implements Serializable {
 	/**
 	 * @return the comisiondelpatrocinador
 	 */
-	public int getComisiondelpatrocinador() {
-		return comisiondelpatrocinador;
-	}
-
-	/**
-	 * @param comisiondelpatrocinador the comisiondelpatrocinador to set
-	 */
-	public void setComisiondelpatrocinador(int comisiondelpatrocinador) {
-		this.comisiondelpatrocinador = comisiondelpatrocinador;
-	}
-
 	/**
 	 * @return the fechadepagoalpatrocinador
 	 */
@@ -957,16 +1015,7 @@ public class EntregasPeruDTO implements Serializable {
 	/**
 	 * @return the preciototal
 	 */
-	public int getPreciototal() {
-		return preciototal;
-	}
 
-	/**
-	 * @param preciototal the preciototal to set
-	 */
-	public void setPreciototal(int preciototal) {
-		this.preciototal = preciototal;
-	}
 
 	/**
 	 * @return the puntaje
@@ -1038,6 +1087,146 @@ public class EntregasPeruDTO implements Serializable {
 	 */
 	public void setFechaString(String fechaString) {
 		this.fechaString = fechaString;
+	}
+
+	/**
+	 * @return the estadoreal
+	 */
+	public String getEstadoreal() {
+		return estadoreal;
+	}
+
+	/**
+	 * @param estadoreal the estadoreal to set
+	 */
+	public void setEstadoreal(String estadoreal) {
+		this.estadoreal = estadoreal;
+	}
+
+	/**
+	 * @return the sepagoalVendedor
+	 */
+	public String getSepagoalVendedor() {
+		return sepagoalVendedor;
+	}
+
+	/**
+	 * @param sepagoalVendedor the sepagoalVendedor to set
+	 */
+	public void setSepagoalVendedor(String sepagoalVendedor) {
+		this.sepagoalVendedor = sepagoalVendedor;
+	}
+
+	/**
+	 * @return the sepagoalexpositor
+	 */
+	public String getSepagoalexpositor() {
+		return sepagoalexpositor;
+	}
+
+	/**
+	 * @param sepagoalexpositor the sepagoalexpositor to set
+	 */
+	public void setSepagoalexpositor(String sepagoalexpositor) {
+		this.sepagoalexpositor = sepagoalexpositor;
+	}
+
+	/**
+	 * @return the sepagoalRelacionista
+	 */
+	public String getSepagoalRelacionista() {
+		return sepagoalRelacionista;
+	}
+
+	/**
+	 * @param sepagoalRelacionista the sepagoalRelacionista to set
+	 */
+	public void setSepagoalRelacionista(String sepagoalRelacionista) {
+		this.sepagoalRelacionista = sepagoalRelacionista;
+	}
+
+	/**
+	 * @return the sepagoalSupervisor
+	 */
+	public String getSepagoalSupervisor() {
+		return sepagoalSupervisor;
+	}
+
+	/**
+	 * @param sepagoalSupervisor the sepagoalSupervisor to set
+	 */
+	public void setSepagoalSupervisor(String sepagoalSupervisor) {
+		this.sepagoalSupervisor = sepagoalSupervisor;
+	}
+
+	/**
+	 * @return the sepagoalPatrocinador
+	 */
+	public String getSepagoalPatrocinador() {
+		return sepagoalPatrocinador;
+	}
+
+	/**
+	 * @param sepagoalPatrocinador the sepagoalPatrocinador to set
+	 */
+	public void setSepagoalPatrocinador(String sepagoalPatrocinador) {
+		this.sepagoalPatrocinador = sepagoalPatrocinador;
+	}
+
+	/**
+	 * @return the distritodelaentrega
+	 */
+	public String getDistritodelaentrega() {
+		return distritodelaentrega;
+	}
+
+	/**
+	 * @param distritodelaentrega the distritodelaentrega to set
+	 */
+	public void setDistritodelaentrega(String distritodelaentrega) {
+		this.distritodelaentrega = distritodelaentrega;
+	}
+
+	/**
+	 * @return the zonadelaentrega
+	 */
+	public String getZonadelaentrega() {
+		return zonadelaentrega;
+	}
+
+	/**
+	 * @param zonadelaentrega the zonadelaentrega to set
+	 */
+	public void setZonadelaentrega(String zonadelaentrega) {
+		this.zonadelaentrega = zonadelaentrega;
+	}
+
+	/**
+	 * @return the zonadeentrega
+	 */
+	public String getZonadeentrega() {
+		return zonadeentrega;
+	}
+
+	/**
+	 * @param zonadeentrega the zonadeentrega to set
+	 */
+	public void setZonadeentrega(String zonadeentrega) {
+		this.zonadeentrega = zonadeentrega;
+	}
+
+	/**
+	 * @return the letrasectorentrega
+	 */
+	public String getLetrasectorentrega() {
+		return letrasectorentrega;
+	}
+
+	/**
+	 * @param letrasectorentrega the letrasectorentrega to set
+	 */
+	public void setLetrasectorentrega(String letrasectorentrega) {
+		this.letrasectorentrega = letrasectorentrega;
 	}
 	
 	
