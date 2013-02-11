@@ -109,6 +109,10 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 		log.info("subirBD()");
 		
 		objContratoService.insertMigracion(sistMig);
+		mensaje=  "Se realizó la migración exitosamente";
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				Constants.MESSAGE_INFO_TITULO,mensaje);
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
 		return null;
 	}
