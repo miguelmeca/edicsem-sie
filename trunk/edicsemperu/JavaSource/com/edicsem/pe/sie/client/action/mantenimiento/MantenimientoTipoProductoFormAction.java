@@ -8,16 +8,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.primefaces.model.StreamedContent;
 
-import com.arjuna.ats.internal.jdbc.drivers.modifiers.list;
-import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
+import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.TipoProductoSie;
-import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
-import com.edicsem.pe.sie.service.facade.ContratoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.service.facade.TipoProductoService;
@@ -96,7 +93,8 @@ public class MantenimientoTipoProductoFormAction extends
 		log.info("insertar()");
 		
 		objTipoProductoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(72));
-		
+		HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+		EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 		try {
 
 			log.info("aqui validadndo si existe o no" + objTipoProductoSie.getCodtipoproducto());
