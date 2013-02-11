@@ -642,7 +642,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:dialog>
 	</h:form>
 				
-		<!--  Mantenimiento Paquete Biblico -->
+	<!--  Mantenimiento Paquete Biblico -->
 	<h:form id="formPaqueteBiblico">
 	  <p:messages id="msgs"/>
 		<p:dialog header="Registro/Modificacion Paquete Biblico" widgetVar="PaqueteBiblico" showEffect="fade"
@@ -656,11 +656,11 @@ function validarEspaciosLetrasNumeros(e) { // 1
 							
 <p:inputText value="#{mantenimientoPaqueteBiblicoFormAction.objPaqueteSie.codpaquete}"				
 onkeypress="return validarEspaciosLetrasNumeros(event)"
-id="codigo"	title="el codigo debe ser entre 3 a 7 digitos" 
+id="codigo"	title="el codigo debe ser entre 6 a 10 digitos" 
 required="true"
 requiredMessage="#{message['Paquetebiblico.codigo.validation']}"
-maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRecord}" >
-<f:validateLength minimum="3" maximum="7"></f:validateLength>
+maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRecord}" >
+<f:validateLength minimum="6" maximum="10"></f:validateLength>
 <p:ajax update="msgCodigo" event="keyup" ></p:ajax>
 </p:inputText>
  <p:message  for="codigo" id="msgCodigo" display="icon"></p:message>
@@ -706,7 +706,7 @@ maxlength="7" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRec
 			</p:fieldset>
 		</p:dialog>
 	</h:form>
-				
+			
 	<!--  Mantenimiento Det Sancion Cargo -->
 	<h:form id="formDetPaqBiblico">
 		<p:dialog header="Modificacion Sancion por Cargo" widgetVar="sancionCargoDialog" showEffect="fade"
