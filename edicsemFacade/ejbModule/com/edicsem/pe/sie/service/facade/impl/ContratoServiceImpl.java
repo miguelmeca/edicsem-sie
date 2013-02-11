@@ -28,10 +28,10 @@ import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
 import com.edicsem.pe.sie.model.dao.EmpresaDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
 import com.edicsem.pe.sie.model.dao.TelefonoEmpleadoDAO;
+import com.edicsem.pe.sie.model.dao.TipoCasaDAO;
 import com.edicsem.pe.sie.model.dao.TipoDocumentoDAO;
 import com.edicsem.pe.sie.model.dao.UbigeoDAO;
 import com.edicsem.pe.sie.service.facade.ContratoService;
-import com.edicsem.pe.sie.service.facade.TipoCasaService;
 
 @Stateless
 public class ContratoServiceImpl implements ContratoService {
@@ -55,7 +55,7 @@ public class ContratoServiceImpl implements ContratoService {
 	@EJB
 	private UbigeoDAO objUbigeoDao;
 	@EJB
-	private TipoCasaService objTipoCasaService;
+	private TipoCasaDAO objTipoCasaDao;
 	@EJB
 	private EmpresaDAO objEmpresaDao;
 	@EJB
@@ -79,7 +79,7 @@ public class ContratoServiceImpl implements ContratoService {
 			telefonoPersonaSie.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(17));
 			objTelefonoDao.insertarTelefonoEmpleado(telefonoPersonaSie);
 		}
-		domicilio.setTbTipoCasa(objTipoCasaService.findTipoCasa(Tipocasa));
+		domicilio.setTbTipoCasa(objTipoCasaDao.findTipoCasa(Tipocasa));
 		domicilio.setTbUbigeo(objUbigeoDao.findUbigeo(idUbigeo));
 		domicilio.setIdcliente(cliente);
 		domicilio.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(15));
@@ -169,14 +169,36 @@ public class ContratoServiceImpl implements ContratoService {
 		List<DomicilioPersonaSie> domList= new ArrayList<DomicilioPersonaSie>() ;
 		List<TelefonoPersonaSie> telList= new ArrayList<TelefonoPersonaSie>() ;
 		List<String> telefonoString= new ArrayList<String>();
+		List<String> domicilioString= new ArrayList<String>();
 		String codigoContr = "";
 		boolean isadd=false;
 		for (int i = 0; i < sistMig.size(); i++) {
 			
 			SistemaIntegradoDTO s = sistMig.get(i);
-			
+			if(s.getDistrito().equalsIgnoreCase("S.J.L.")){
+				s.setDistrito("SAN JUAN DE LURIGANCHO");
+			}else if(s.getDistrito().equalsIgnoreCase("SURCO")){
+				s.setDistrito("SANTIAGO DE SURCO");
+			}
+			else if(s.getDistrito().equalsIgnoreCase("V.E.S")){
+				s.setDistrito("VILLA EL SALVADOR");
+			}
+			else if(s.getDistrito().equalsIgnoreCase("V.M.T")){
+				s.setDistrito("VILLA MARIA DEL TRIUNFO");
+			}else if(s.getDistrito().equalsIgnoreCase("S.J.M")){
+				s.setDistrito("SAN JUAN DE MIRAFLORES");
+			}
+			else if(s.getDistrito().equalsIgnoreCase("S.M.P.")){
+				s.setDistrito("SAN MARTIN DE PORRES");
+			}else if(s.getDistrito().equalsIgnoreCase("Ate")){
+				s.setDistrito("ATE");
+			}
+			else if(s.getDistrito().equalsIgnoreCase("Lurigancho")){
+				s.setDistrito("SAN JUAN DE LURIGANCHO");
+			}
 			if(!s.getCodContrato().equals(codigoContr)){
-				 telList= new ArrayList<TelefonoPersonaSie>() ;
+				 telList= new ArrayList<TelefonoPersonaSie>();
+				 domList= new ArrayList<DomicilioPersonaSie>();
 				log.info("nuevo contrato  --> "+s.getCodContrato()+"  "+codigoContr);
 				cli = new ClienteSie();
 				con = new ContratoSie();
@@ -197,13 +219,25 @@ public class ContratoServiceImpl implements ContratoService {
 				cli.setTelftrabajo(s.getTelftrabajo());
 				cli.setTitulartelefono(s.getTitulartelefono());
 				cli.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23)); 
+				telefonoString = new ArrayList<String>();
+				domicilioString = new ArrayList<String>();
+				log.info(" insertando cliente:  "+ cli.getNombrecliente()+" ape. pat "+cli.getApepatcliente() );
+				objClienteDao.insertCliente(cli);
+				con.setNumcuotas(s.getCantCuotas());
+				con.setPagosubinicial(new  BigDecimal(s.getImporteInicial()));
+				con.setTbCliente(cli);
+				//insertar contrato
+				objContratoDao.insertContrato(con);
+				log.info("  insertando contrato * "+con.getCodcontrato());
 				dom.setDomicilio(s.getDireccion());
+				dom.setTbTipoCasa(objTipoCasaDao.findTipoCasa(1));
+				dom.setTbUbigeo(objUbigeoDao.findUbigeoXDescripcion(s.getDistrito().toUpperCase()));
+				dom.setIdcliente(cli);
+				dom.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(15));
 				dom.setPlanoDomicilio(s.getPlanoDistrito());
 				dom.setSectorDomicilio(s.getNumSector());
 				dom.setLetraDomicilio(s.getLetraSector());
 				domList.add(dom);
-				telefonoString = new ArrayList<String>();
-				//objClienteDao.insertCliente(cli);
 			}
 			//si se encuentra un ( - ) se reemplaza por un espacio
 
@@ -290,6 +324,7 @@ public class ContratoServiceImpl implements ContratoService {
 						}
 					}
 					telefonoString.add(tel.getTelefono());
+					log.info("telefono: "+tel.getTelefono());
 					telList.add(tel);
 					isadd=false;
 				}
@@ -330,40 +365,31 @@ public class ContratoServiceImpl implements ContratoService {
 			//ANONIMO
 			//999935626 4582558 (FAMILIAR)
 			
-			//insertar Domicilio
-			
-			for (int j = 0; j < domList.size(); j++) {
-				if(domList.get(j).getDomicilio().contains(s.getDireccion())){
-					dom = new DomicilioPersonaSie();
-					dom.setDomicilio(s.getDireccion());
-				}
-			}
-//			dom.setTbTipoCasa(objTipoCasaService.findTipoCasa(s.get));
 			//buscar ubigeo por descripcion del ditrito
 			// si hay mas de una opción? seria la de lima por defecto
 			
-			if(s.getDistrito().equalsIgnoreCase("S.J.L.")){
-				s.setDistrito("SAN JUAN DE LURIGANCHO");
-			}else if(s.getDistrito().equalsIgnoreCase("SURCO")){
-				s.setDistrito("SANTIAGO DE SURCO");
-			}
-			else if(s.getDistrito().equalsIgnoreCase("V.E.S")){
-				s.setDistrito("VILLA EL SALVADOR");
-			}
-			else if(s.getDistrito().equalsIgnoreCase("V.M.T")){
-				s.setDistrito("VILLA MARIA DEL TRIUNFO");
-			}
+		for (int j = 0; j < domList.size(); j++) {
+			domicilioString.add(domList.get(j).getDomicilio());
+		}
 			
-			dom.setTbUbigeo(objUbigeoDao.findUbigeoXDescripcion(s.getDistrito().toUpperCase()));
-			dom.setIdcliente(cli);
-			dom.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(15));
-			//objDomicilioDao.insertarDomicilioEmpleado(dom);
+			//insertar Domicilio
 			
-			con.setNumcuotas(s.getCantCuotas());
-			con.setPagosubinicial(new  BigDecimal(s.getImporteInicial()));
-			con.setTbCliente(cli);
-			//insertar contrato
-			//	objContratoDao.insertContrato(con);
+			if(!domicilioString.contains(s.getDireccion())){
+				log.info("nuevo domi  " + s.getDireccion());
+				dom = new DomicilioPersonaSie();
+				dom.setDomicilio(s.getDireccion());
+				dom.setTbTipoCasa(objTipoCasaDao.findTipoCasa(1));
+				dom.setTbUbigeo(objUbigeoDao.findUbigeoXDescripcion(s.getDistrito().toUpperCase()));
+				dom.setIdcliente(cli);
+				dom.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(15));
+				dom.setPlanoDomicilio(s.getPlanoDistrito());
+				dom.setSectorDomicilio(s.getNumSector());
+				dom.setLetraDomicilio(s.getLetraSector());
+				domList.add(dom);
+				log.info("domicilio: "+dom.getDomicilio() );
+				objDomicilioDao.insertarDomicilioEmpleado(dom);
+				log.info("tamaño domic  "+domList.size());
+			}
 			
 			CobranzaSie cob = new CobranzaSie();
 			cob.setCantcuotas(s.getCantCuotas().toString());
@@ -376,25 +402,28 @@ public class ContratoServiceImpl implements ContratoService {
 			cob.setDiasretraso(s.getDiasRetraso());
 			cob.setTbContrato(con);
 			//insertar cobranza
-			//	objCobranzaDao.insertCobranza(cob);
+			log.info("  insertando cobranza * "+cob.getTbContrato().getCodcontrato()+" "+cob.getCantcuotas()+" "+cob.getFecpago());
+			objCobranzaDao.insertCobranza(cob);
 			
 			log.info(" contr***** "+con.getCodcontrato()+" "+codigoContr);
 			
-			for (int j = 0; j < telList.size(); j++) {
+			
+			if(con.getCodcontrato()!=codigoContr){
+				for (int j2 = 0; j2 < telList.size(); j2++) {
+						objTelefonoDao.insertarTelefonoEmpleado(telList.get(j2));
+						log.info("contrato: "+con.getCodcontrato()+" opera "+telList.get(j2).getOperadorTelefonico()+" telefono  "+telList.get(j2).getTelefono()+" desc "+telList.get(j2).getDescTelefono()+" tipo "+telList.get(j2).getTipotelefono());
 				
-				if(con.getCodcontrato()!=codigoContr){
-					
-					log.info("contrato: "+con.getCodcontrato()+" opera "+telList.get(j).getOperadorTelefonico()+" telefono  "+telList.get(j).getTelefono()+" desc "+telList.get(j).getDescTelefono()+" tipo "+telList.get(j).getTipotelefono());
-					//insertando telefonos
-					
-					if(j+1 == telList.size()){
-						codigoContr=  con.getCodcontrato();
-					}
 				}
+				log.info("tamaño domic  "+domList.size());
+				for (int g = 0; g< domList.size(); g++) {
+					log.info("domicilio: "+domList.get(g).getDomicilio() );
+					objDomicilioDao.insertarDomicilioEmpleado(domList.get(g));
+				}
+				codigoContr=  con.getCodcontrato();
 			}
 		}
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ContratoService#obtenerCodigo()
 	 */
