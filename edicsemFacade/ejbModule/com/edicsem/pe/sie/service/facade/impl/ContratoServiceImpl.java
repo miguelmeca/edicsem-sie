@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.edicsem.pe.sie.beans.EntregasPeruDTO;
 import com.edicsem.pe.sie.beans.SistemaIntegradoDTO;
 import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.CobranzaSie;
@@ -431,4 +432,21 @@ public class ContratoServiceImpl implements ContratoService {
 		return objContratoDao.obtenerCodigo();
 	}
 	
+public void updateEntregasPeru(List<EntregasPeruDTO> credito) {
+		
+		ContratoSie entre = new ContratoSie();
+		for (EntregasPeruDTO entregasPeruDTO : credito) {
+			 log.info("aqui Numero de Contrato"+ " "+ entregasPeruDTO.getNumerodecontrato());
+			 log.info("aqui Nombre de Cliente"+ " "+ entregasPeruDTO.getNombredecliente());
+			 log.info("aqui Nombre de Expositor"+ " "+ entregasPeruDTO.getNombredelexpositor());
+			 
+		entregasPeruDTO.getNumerodecontrato();
+			
+			
+			
+			objContratoDao.updateContrato(entre); 
+			
+		}
+	
+	}
 }
