@@ -93,6 +93,7 @@ public class Constants {
 
 	public static final String CONSULTA_CONTRATO_FORM_PAGE = "ConsultaContratoForm";
 	public static final String MIGRAR_SISTEMA_INTEGRADO = "MigracionSistemaIntegrado";
+	public static final String MIGRAR_ENTREGAS_PERU = "excelEntregasPeru";
 	
 	public static final String GESTIONAR_CONTRATO_FORM_PAGE = "GestionarContratoForm";
 	
