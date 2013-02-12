@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+import com.edicsem.pe.sie.beans.EntregasPeruDTO;
 import com.edicsem.pe.sie.beans.SistemaIntegradoDTO;
 import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.CobranzaSie;
@@ -21,5 +22,6 @@ public interface ContratoService {
 	public abstract List  listarContratos();
 	public abstract List listarClientePorParametro(String numDocumento,String codigoContrato,String nombreCliente, String apePat,String apeMat );
 	public abstract void insertMigracion(List<SistemaIntegradoDTO> sis);
+	public abstract void updateEntregasPeru(List<EntregasPeruDTO> credito );
 	public abstract int obtenerCodigo();
 }
