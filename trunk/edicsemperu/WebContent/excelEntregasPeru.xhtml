@@ -14,7 +14,9 @@
 	update="datatablecampana, message" />
 	
 	<p:commandButton value="Importar"
-	action="#{FileUploadEntregasPeru.subirCreditos}" process="@all">
+	action="#{FileUploadEntregasPeru.subirCreditos}" process="@all"
+	update="message" >
+	
 	</p:commandButton>
 
 <p:dataTable id="datatablecampana" var="c" value="#{FileUploadEntregasPeru.leadsNuevos}"  paginator="true" rows="50"
