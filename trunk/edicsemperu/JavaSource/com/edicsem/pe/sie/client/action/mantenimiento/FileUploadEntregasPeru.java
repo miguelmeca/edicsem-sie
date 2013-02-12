@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -30,6 +31,7 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 import com.edicsem.pe.sie.beans.EntregasPeruDTO;
+import com.edicsem.pe.sie.service.facade.ContratoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
 @SuppressWarnings("serial")
@@ -44,10 +46,45 @@ public class FileUploadEntregasPeru implements Serializable {
 	
 //	@EJB
 //	private MetasDiariasDTOService objMetasDiariasDTOService;
+	
+	@EJB
+	private ContratoService objContratoService;
 		  
 	public FileUploadEntregasPeru() {
+	}
+	
+	public String update(){
+		
+		nombreArchivo="";
+		leadsNuevos=new ArrayList<EntregasPeruDTO>();
+		mensaje ="";		
+		return getViewMant();
+		
+	}
+	
+	/************SUBIR ARCHIBOS**********/
+	public String subirCreditos() {
+		log.info("Subir excel a la Base de Datos");
+		 
+	
+		
+		objContratoService.updateEntregasPeru(leadsNuevos);
+		mensaje=  "Se realizó la migración exitosamente";
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				Constants.MESSAGE_INFO_TITULO,mensaje);
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		
+		
+		return null;
+	}
 
 	
+	
+	
+	
+	
+	public String getViewMant() {
+		return Constants.MIGRAR_ENTREGAS_PERU;
 	}
 	
 	public void InputStreamAFile(InputStream entrada, String nombreArchivo) {
@@ -87,14 +124,6 @@ public class FileUploadEntregasPeru implements Serializable {
 	}
 	
 	
-	public String subirCreditos() {
-
-		log.info("Subir excel a la Base de Datos");
-		
-	
-		
-		return null;
-	}
 
 	
 //	personaDao.persist(credito);
