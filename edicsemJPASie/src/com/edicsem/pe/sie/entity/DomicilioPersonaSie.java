@@ -38,6 +38,8 @@ public class DomicilioPersonaSie implements Serializable {
 
 	private String referencia;
 	
+	private String ubicacion;
+	
 	private String principal;
 	
 	private String planoDomicilio;
@@ -234,6 +236,14 @@ public class DomicilioPersonaSie implements Serializable {
 
 	public void setSectorDomicilio(String sectorDomicilio) {
 		this.sectorDomicilio = sectorDomicilio;
+	}
+
+	public String getUbicacion() {
+		return ubicacion;
+	}
+
+	public void setUbicacion(String ubicacion) {
+		this.ubicacion = ubicacion;
 	}
 	
 	
