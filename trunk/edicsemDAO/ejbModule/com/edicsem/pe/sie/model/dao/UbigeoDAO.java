@@ -17,5 +17,5 @@ public interface UbigeoDAO {
 	public abstract List  listarUbigeoProvincias( String idDepartamento);
 	public abstract List  listarUbigeoDistritos( String idDepartamento, String idProvincia);
 	public abstract String findDepaProv(String idDepartamento, String idProvincia);
-	public abstract UbigeoSie findUbigeoXDescripcion(String distrito);
+	public abstract List<UbigeoSie> findUbigeoXDescripcion(String distrito);
 }
