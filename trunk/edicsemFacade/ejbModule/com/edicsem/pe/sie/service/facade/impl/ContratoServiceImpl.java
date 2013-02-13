@@ -19,6 +19,7 @@ import com.edicsem.pe.sie.entity.DetContratoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DetProductoContratoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
+import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.model.dao.ClienteDAO;
 import com.edicsem.pe.sie.model.dao.CobranzaDAO;
 import com.edicsem.pe.sie.model.dao.ContratoDAO;
@@ -173,28 +174,35 @@ public class ContratoServiceImpl implements ContratoService {
 		List<String> domicilioString= new ArrayList<String>();
 		String codigoContr = "";
 		boolean isadd=false;
+		List<UbigeoSie> ubi = null;
 		for (int i = 0; i < sistMig.size(); i++) {
 			
 			SistemaIntegradoDTO s = sistMig.get(i);
-			if(s.getDistrito().equalsIgnoreCase("S.J.L.")){
+			if(s.getDistrito().trim().equalsIgnoreCase("S.J.L.")){
 				s.setDistrito("SAN JUAN DE LURIGANCHO");
-			}else if(s.getDistrito().equalsIgnoreCase("SURCO")){
+			}
+			else if(s.getDistrito().trim().equalsIgnoreCase("SURCO")){
 				s.setDistrito("SANTIAGO DE SURCO");
 			}
-			else if(s.getDistrito().equalsIgnoreCase("V.E.S")){
+			else if(s.getDistrito().trim().equalsIgnoreCase("V.E.S.")){
 				s.setDistrito("VILLA EL SALVADOR");
 			}
-			else if(s.getDistrito().equalsIgnoreCase("V.M.T")){
+			else if(s.getDistrito().trim().equalsIgnoreCase("V.E.S")){
+				s.setDistrito("VILLA EL SALVADOR");
+			}
+			else if(s.getDistrito().trim().equalsIgnoreCase("V.M.T.")){
 				s.setDistrito("VILLA MARIA DEL TRIUNFO");
-			}else if(s.getDistrito().equalsIgnoreCase("S.J.M")){
+			}
+			else if(s.getDistrito().trim().equalsIgnoreCase("S.J.M.")){
 				s.setDistrito("SAN JUAN DE MIRAFLORES");
 			}
-			else if(s.getDistrito().equalsIgnoreCase("S.M.P.")){
+			else if(s.getDistrito().trim().equalsIgnoreCase("S.M.P.")){
 				s.setDistrito("SAN MARTIN DE PORRES");
-			}else if(s.getDistrito().equalsIgnoreCase("Ate")){
+			}
+			else if(s.getDistrito().trim().equalsIgnoreCase("Ate")){
 				s.setDistrito("ATE");
 			}
-			else if(s.getDistrito().equalsIgnoreCase("Lurigancho")){
+			else if(s.getDistrito().trim().equalsIgnoreCase("Lurigancho")){
 				s.setDistrito("SAN JUAN DE LURIGANCHO");
 			}
 			if(!s.getCodContrato().equals(codigoContr)){
@@ -203,6 +211,8 @@ public class ContratoServiceImpl implements ContratoService {
 				log.info("nuevo contrato  --> "+s.getCodContrato()+"  "+codigoContr);
 				cli = new ClienteSie();
 				con = new ContratoSie();
+				telefonoString = new ArrayList<String>();
+				domicilioString = new ArrayList<String>();
 				con.setCodcontrato(s.getCodContrato());
 				//insertar clliente
 				cli.setApematcliente(s.getApematcliente());
@@ -217,22 +227,72 @@ public class ContratoServiceImpl implements ContratoService {
 				cli.setLetraTrabajo(s.getLetraSectorTrabajo());
 				cli.setSectorTrabajo(s.getNumSectorTrabajo());
 				cli.setFecnacimiento(s.getFecnacimiento());
-				cli.setTelftrabajo(s.getTelftrabajo());
+				
+				String [ ] telTraba = s.getTelftrabajo().trim().split("([\\s-+(]+)");
+				for (int j = 0; j < telTraba.length; j++) {
+				log.info(" tlf " + telTraba[j] );
+				}
+				if(telTraba.length==1){
+				cli.setTelftrabajo(telTraba[0]);
+				}
+				
+				if(telTraba.length>1){
+					for (int j = 0; j < telTraba.length; j++) {
+						
+						if(telTraba[j].trim().matches("([0-9]+)")){
+								tel.setTelefono(telTraba[j].toString().trim());
+								if(telTraba.length>j+1){
+									if(telTraba[j+1].toString().trim().matches("([a-zA-Z(]//s)+") ){
+									tel.setDescTelefono(telTraba[j+1].toString().trim());
+								}
+								}
+						}
+						if(telTraba[j].toString().trim().matches("([a-zA-Z(]//s)+") ){
+							tel.setDescTelefono(telTraba[j].toString().trim());
+							if(telTraba.length>j+1){
+							if(telTraba[j+1].trim().matches("([0-9]+)")){
+								tel.setTelefono(telTraba[j+1].toString().trim());
+							}
+							}
+						}
+						if(tel.getTelefono()!=null ){
+							if(tel.getTelefono().matches("\\d{9}")){
+								log.info("telefono ");
+								tel.setTipotelefono("C");
+							}else {
+								tel.setTipotelefono("F");
+							}
+						tel.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(17));
+						tel.setIdcliente(cli);
+						telList.add(tel);
+						tel= new TelefonoPersonaSie();
+						}
+					}
+				}
+				
 				cli.setTitulartelefono(s.getTitulartelefono());
 				cli.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23)); 
-				telefonoString = new ArrayList<String>();
-				domicilioString = new ArrayList<String>();
+				cli.setTbTipoDocumentoIdentidad(objtipoDao.buscarTipoDocumento(1));
+				cli.setTipocliente(1);
+				
 				log.info(" insertando cliente:  "+ cli.getNombrecliente()+" ape. pat "+cli.getApepatcliente() );
 				objClienteDao.insertCliente(cli);
 				con.setNumcuotas(s.getCantCuotas());
 				con.setPagosubinicial(new  BigDecimal(s.getImporteInicial()));
+				con.setTbEmpresa(objEmpresaDao.findEmpresaXdescripcion(s.getEmpresa()));
+				con.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(25));
 				con.setTbCliente(cli);
 				//insertar contrato
 				objContratoDao.insertContrato(con);
 				log.info("  insertando contrato * "+con.getCodcontrato());
 				dom.setDomicilio(s.getDireccion());
 				dom.setTbTipoCasa(objTipoCasaDao.findTipoCasa(1));
-				dom.setTbUbigeo(objUbigeoDao.findUbigeoXDescripcion(s.getDistrito().toUpperCase()));
+				ubi = objUbigeoDao.findUbigeoXDescripcion(s.getDistrito().toUpperCase());
+				if(ubi.size()==0){
+					dom.setUbicacion(s.getDistrito().toUpperCase());
+				}else{
+					dom.setTbUbigeo(ubi.get(0));
+				}
 				dom.setIdcliente(cli);
 				dom.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(15));
 				dom.setPlanoDomicilio(s.getPlanoDistrito());
@@ -326,6 +386,8 @@ public class ContratoServiceImpl implements ContratoService {
 					}
 					telefonoString.add(tel.getTelefono());
 					log.info("telefono: "+tel.getTelefono());
+					tel.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(17));
+					tel.setIdcliente(cli);
 					telList.add(tel);
 					isadd=false;
 				}
@@ -376,11 +438,17 @@ public class ContratoServiceImpl implements ContratoService {
 			//insertar Domicilio
 			
 			if(!domicilioString.contains(s.getDireccion())){
+				domList = new ArrayList<DomicilioPersonaSie>();
 				log.info("nuevo domi  " + s.getDireccion());
 				dom = new DomicilioPersonaSie();
 				dom.setDomicilio(s.getDireccion());
 				dom.setTbTipoCasa(objTipoCasaDao.findTipoCasa(1));
-				dom.setTbUbigeo(objUbigeoDao.findUbigeoXDescripcion(s.getDistrito().toUpperCase()));
+				ubi = objUbigeoDao.findUbigeoXDescripcion(s.getDistrito().toUpperCase());
+				if( ubi.size()==0){
+					dom.setUbicacion(s.getDistrito().toUpperCase());
+				}else{
+					dom.setTbUbigeo(ubi.get(0));
+				}
 				dom.setIdcliente(cli);
 				dom.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(15));
 				dom.setPlanoDomicilio(s.getPlanoDistrito());
@@ -398,16 +466,21 @@ public class ContratoServiceImpl implements ContratoService {
 			cob.setNumletra(s.getNumLetra());
 			cob.setFecvencimiento(s.getFecnacimiento());
 			cob.setRegistroreniec(s.getRegistroReniec());
+			cob.setImpinicial(new BigDecimal(s.getImporteInicial()));
 			cob.setImpcobrado(new BigDecimal(s.getImporteCobrado()));
 			cob.setImportemasmora(new BigDecimal(s.getImportemasmora()));
 			cob.setDiasretraso(s.getDiasRetraso());
-			cob.setTbContrato(con);
+			cob.setIdcliente(cli.getIdcliente());
+			cob.setIdcontrato(con.getIdcontrato());
+			cob.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(27));
+			cob.setTbContrato(objContratoDao.findContrato(con.getIdcontrato()));
+			cob.setTbCliente(cli);
+			
 			//insertar cobranza
 			log.info("  insertando cobranza * "+cob.getTbContrato().getCodcontrato()+" "+cob.getCantcuotas()+" "+cob.getFecpago());
 			objCobranzaDao.insertCobranza(cob);
 			
 			log.info(" contr***** "+con.getCodcontrato()+" "+codigoContr);
-			
 			
 			if(con.getCodcontrato()!=codigoContr){
 				for (int j2 = 0; j2 < telList.size(); j2++) {
