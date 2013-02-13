@@ -199,7 +199,11 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 								log.info("Telefonos:  "+data.get(10));
 								sis.setNumTelefono(getCellValueAsString(data.get(10)));
 								sis.setDireccion(getCellValueAsString(data.get(11)));
+								
 								sis.setDistrito(getCellValueAsString(data.get(12)));
+								if(sis.getDistrito()==null||sis.getDistrito().isEmpty()){
+									sis.setDistrito("LIMA");
+								}
 								sis.setPlanoDistrito(getCellValueAsString(data.get(13)));
 								sis.setLetraSector(getCellValueAsString(data.get(14)));
 								sis.setNumSector(getCellValueAsString(data.get(15)));

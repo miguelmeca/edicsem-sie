@@ -728,7 +728,7 @@ public class MantenimientoContratoFormAction extends
 			objClienteSie = objClienteService.findCliente(contratoXClienteList.get(0).getTbCliente().getIdcliente());
 			log.info("  " + objClienteSie.getIdcliente()+"  "+objClienteSie.getNombresCompletos());
 			domicilioList = objDomicilioService.listarDomicilioCliente(objClienteSie.getIdcliente());
-			objDomicilioSie = (DomicilioPersonaSie) objDomicilioService.listarDomicilioCliente(objClienteSie.getIdcliente()).get(0);
+			objDomicilioSie = domicilioList.get(0);
 			log.info("  ubigeo  " +objDomicilioSie.getTbUbigeo().getIdubigeo());
 			UbigeoSie ubi =  objubigeoService.findUbigeo(objDomicilioSie.getTbUbigeo().getIdubigeo());
 			String depaProv = objubigeoService.findDepaProv(ubi.getCoddepartamento(),ubi.getCodprovincia());
@@ -765,7 +765,7 @@ public class MantenimientoContratoFormAction extends
 		objClienteSie = objClienteService.findCliente(idcliente);
 		log.info("  " + objClienteSie.getIdcliente()+"  "+objClienteSie.getNombresCompletos());
 		domicilioList = objDomicilioService.listarDomicilioCliente(idcliente);
-		objDomicilioSie = (DomicilioPersonaSie) objDomicilioService.listarDomicilioCliente(idcliente).get(0);
+		objDomicilioSie = domicilioList.get(0);
 		UbigeoSie ubi =  objubigeoService.findUbigeo(objDomicilioSie.getTbUbigeo().getIdubigeo());
 		
 		ubigeoDefecto = ubi.getNombre();
