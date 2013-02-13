@@ -45,7 +45,7 @@
 	        </p:column>
 	        
 	    </p:dataTable>
-	    	<p:commandButton value="Migrar" action="#{migracion.subirBD}" process="@all" update="message"  >
+	    	<p:commandButton value="Migrar" action="#{migracion.subirBD}" process="@all" update="message" onclick="status.show();" ajax="false" >
 			</p:commandButton>
 		</h:form>
 	</ui:define>
