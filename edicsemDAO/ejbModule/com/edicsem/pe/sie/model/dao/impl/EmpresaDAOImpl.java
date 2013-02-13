@@ -91,4 +91,24 @@ public class EmpresaDAOImpl implements EmpresaDAO {
 		}
 		return lista;
 	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.EmpresaDAO#findEmpresaXdescripcion(java.lang.String)
+	 */
+	@Override
+	public EmpresaSie findEmpresaXdescripcion(String razonSocial) {
+		EmpresaSie obj=null;
+		List<EmpresaSie> lista = null;
+		try {
+			Query q = em.createQuery("select p from EmpresaSie p  where trim(p.razonsocial)  like  '"+ razonSocial+"'");
+			lista = q.getResultList();
+			log.info("  tamaño de lista de empresa String --->" + lista.size());
+			if(lista.size()==1){
+				obj= lista.get(0);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return obj;
+	}
 }
