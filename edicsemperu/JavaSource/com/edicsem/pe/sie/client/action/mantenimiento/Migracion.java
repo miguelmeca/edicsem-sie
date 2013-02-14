@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -225,7 +226,8 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 								sis.setImporteInicial(Double.parseDouble(getCellValueAsString(data.get(29))));
 								sis.setImporteCobrado(Double.parseDouble(getCellValueAsString(data.get(30))));
 								sis.setImportemasmora(Double.parseDouble(getCellValueAsString(data.get(31))));
-								sis.setFechaVencimiento(DateUtil.convertStringToDate(getCellValueAsString(data.get(32))));
+								log.info("fec venc  " +data.get(32).getDateCellValue());
+								sis.setFechaVencimiento(data.get(32).getDateCellValue());
 								sis.setLugarPago(getCellValueAsString(data.get(38)));
 								sis.setBanco(getCellValueAsString(data.get(39)));
 								if(!(data.get(45).toString().isEmpty()||data.get(45).toString().equals("")||data.get(45).toString().trim().equals(""))){
