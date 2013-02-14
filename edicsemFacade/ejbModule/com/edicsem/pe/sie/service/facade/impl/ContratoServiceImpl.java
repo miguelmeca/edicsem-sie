@@ -464,7 +464,8 @@ public class ContratoServiceImpl implements ContratoService {
 			cob.setCantcuotas(s.getCantCuotas().toString());
 			cob.setFecpago(s.getFehaPago());
 			cob.setNumletra(s.getNumLetra());
-			cob.setFecvencimiento(s.getFecnacimiento());
+			log.info(" --> " +s.getFechaVencimiento());
+			cob.setFecvencimiento(s.getFechaVencimiento());
 			cob.setRegistroreniec(s.getRegistroReniec());
 			cob.setImpinicial(new BigDecimal(s.getImporteInicial()));
 			cob.setImpcobrado(new BigDecimal(s.getImporteCobrado()));
