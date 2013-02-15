@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report4" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5197dc3c-00f6-4773-9338-b9dbf248fd44">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report5" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5197dc3c-00f6-4773-9338-b9dbf248fd44">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.y" value="0"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT
      tb_cliente."idcliente" AS tb_cliente_idcliente,
@@ -52,10 +52,6 @@ FROM
 				</textElement>
 				<text><![CDATA[Reporte de Cliente]]></text>
 			</staticText>
-			<image>
-				<reportElement uuid="1ffedf58-a1b6-49b0-b440-1d607918910a" x="0" y="0" width="95" height="79"/>
-				<imageExpression><![CDATA["C:\\Users\\karen\\Downloads\\edicsem.jpg"]]></imageExpression>
-			</image>
 		</band>
 	</title>
 	<pageHeader>

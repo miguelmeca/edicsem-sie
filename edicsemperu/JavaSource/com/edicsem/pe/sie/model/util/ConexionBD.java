@@ -9,18 +9,7 @@ import org.apache.commons.logging.LogFactory;
 public class ConexionBD {
 
 	public static Log log = LogFactory.getLog(ConexionBD.class);
-	/**
-	 *Permite Cargar en Memoria los Drivers 
-	 */
-	static {
-		try {
-			Class.forName("org.postgresql.Driver");
-			log.info("*Driver*");
-		} catch (Exception e) {
-			log.info(e.getMessage()+"  cause "+e.getCause());
-		}
-	}
-
+	
 	/**
 	 * Obtiene una conexión a la Base de Datos.
 	 */
@@ -28,8 +17,9 @@ public class ConexionBD {
 		
 		Connection connection = null;
 		try {
+			Class.forName("org.postgresql.Driver");
 			connection =
-			DriverManager.getConnection("jdbc:postgres://192.168.1.2:5432/bd_sie","postgres","Edicsem2011");
+			DriverManager.getConnection("jdbc:postgres://localhost:5432/bd_sie","postgres","admin");
 
 		} catch (Exception e) {
 			log.info("msj  "+e.getMessage()+"  cause "+e.getCause());

@@ -32,7 +32,7 @@ public class Reporte {
 		log.info("INICIALIZANDO EL BEAN MANAGER REPORTE BM");
 	}
 	
-	public void listarCliente(ActionEvent f) {
+	public void listarCliente() {
 		lstClientesReporting = new ArrayList<ClienteSie>();
 		log.info("listando reporte ..");
 		try {
