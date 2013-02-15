@@ -115,6 +115,9 @@ public class Constants {
 	public static final String INDEX_PAGE = "index";
 	public static final String LOGIN_PAGE = "login";
 	public static final String USER_KEY = "loginUserSession";
-	public static final String CARGO_USER = "cargoSession"; 
+	public static final String CARGO_USER = "cargoSession";
+	public static final Object REPORTE_CLIENTE_LIST = "Lista de Clientes";
+	public static final String SI = "Si";
+	public static final String FORMATO_NOMBRE_REPORTE_CONSOLIDADO = "Consolidado"; 
 	
 	}
