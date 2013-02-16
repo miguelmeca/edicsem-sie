@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +29,6 @@ import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.fill.JRFillInterruptedException;
 import net.sf.jasperreports.engine.util.JRLoader;
@@ -79,8 +77,15 @@ public class ReportingCliente extends HttpServlet {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		
+		HttpSession session = request.getSession();
+		//Captura de parametros
+		Map criteria = (Map) session.getAttribute("Constante.BLABALBAL");
+		
 		log.info("doPost()");
-		response.setHeader("Content-Disposition",
+		//response.setHeader("Content-Disposition",
+			//	"attachment; filename=\""+(String)criteria.get("titulo") +"\";");
+					response.setHeader("Content-Disposition",
 				"attachment; filename=\"Reporte_Cliente.pdf\";");
 		response.setHeader("Cache-Control", "no-cache");
 		response.setHeader("Pragma", "no-cache");
@@ -91,13 +96,10 @@ public class ReportingCliente extends HttpServlet {
 		if (sessionhttp.getAttribute(Constants.USER_KEY) == null) {
 			objUsuario = new EmpleadoSie();
 		} else {
-			objUsuario = (EmpleadoSie) sessionhttp
-					.getAttribute(Constants.USER_KEY);
+			objUsuario = (EmpleadoSie) sessionhttp.getAttribute(Constants.USER_KEY);
 		}
-		
-		log.info("MI USUARIO ES **** prueba ******");
+		 
 		log.info("USUARIO ==>" + objUsuario.getUsuario());
-		// String nombrePC=InetAddress.getLocalHost().getCanonicalHostName();
 		ServletOutputStream out = response.getOutputStream();
 		InetAddress ip = InetAddress.getLocalHost();
 		InetAddress addr = InetAddress.getByName(ip.getHostAddress());
@@ -105,37 +107,33 @@ public class ReportingCliente extends HttpServlet {
 			ServletContext context2 = getServletContext();
 			String reportLocation = context2.getRealPath("Reporte");
 
-			FileInputStream fis = new FileInputStream(reportLocation+"/report_prueba_3.jasper");
+			FileInputStream fis = new FileInputStream(reportLocation+"/report2.jasper");
 			BufferedInputStream bufferedInputStream = new BufferedInputStream(fis);
 			JasperReport reporte = (JasperReport) JRLoader.loadObject(bufferedInputStream);
-			Map parametros = new HashMap();
-			//JRBeanCollectionDataSource  jrDataSource = new JRBeanCollectionDataSource(beanCollection);
-
-			lstClientesReporting= objClienteService.listarClientes();
+			//Map parametros = new HashMap();
+			//JRBeanCollectionDataSource  jrDataSource = new JRBeanCollectionDataSource(lstClientesReporting);
+			
+			
+			/*lstClientesReporting= objClienteService.listarClientes();
 			log.info("tamañito "+lstClientesReporting.size());
 			parametros.put("nombreUsuario", objUsuario.getNombreemp() + " " + objUsuario.getApepatemp()
 					+ " " + objUsuario.getApematemp());
 			parametros.put("nombrePC", addr.getHostName());
 			parametros.put("subreport", reporte);
-			parametros.put("subreportData", new JRMapCollectionDataSource(lstClientesReporting));
+			parametros.put("subreportData", jrDataSource);
 			log.info(" pccc  "+ addr.getHostName());
-			 
+			*/
 			Context initContext = new InitialContext();
-			if ( initContext == null ) {
-				   log.info("no context!");
-				}
 			ds = (DataSource)initContext.lookup("java:/edicsemJPADatasource");
 			Connection conn = ds.getConnection();
-			log.info("termino connexion" );
 			if(ds==null){
-				log.info("Es nulo :(" );
+				log.info("Es nulo el datasource" );
 			}
 			if(conn==null){
-				log.info("Es nulo :( XDddd" );
+				log.info("Es nulo la conexion" );
 			}
-			log.info("  XDdddd" );
 			JasperPrint jasper = JasperFillManager.fillReport(reporte,
-					parametros, conn);
+					criteria, conn);
 			JRExporter exporter = new JRPdfExporter();
 			exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasper);
 			exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, out);

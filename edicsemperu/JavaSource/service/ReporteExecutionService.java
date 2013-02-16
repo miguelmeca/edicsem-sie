@@ -7,7 +7,6 @@ import clases.ReporteResult;
 public interface ReporteExecutionService {
 	
 	/**
-	 * Ejecuta el Reporte ScSiCC.
 	 * 
 	 * @param reportParams
 	 *            parametros del reporte
@@ -23,7 +22,7 @@ public interface ReporteExecutionService {
 	public ReporteResult executeReporteVirtualizer(ReporteParams reportParams);
 	
 	/**
-	 * Metodo que genera varios reportes por region y zona
+	 * Metodo que genera varios reportes segun parametros
 	 * @param reportParams
 	 */
 	public ReporteResult executeReporteMultiple(ReporteParams reportParams);

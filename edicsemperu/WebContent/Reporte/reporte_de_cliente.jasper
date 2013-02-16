@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporte_de_cliente" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="990247b5-6987-4259-8912-b417a3a64586">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="nombrePC" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     tb_cliente."idcliente" AS tb_cliente_idcliente,
+     tb_cliente."nombrecliente" AS tb_cliente_nombrecliente,
+     tb_cliente."apepatcliente" AS tb_cliente_apepatcliente,
+     tb_cliente."apematcliente" AS tb_cliente_apematcliente,
+     tb_cliente."idtipodocumentoidentidad" AS tb_cliente_idtipodocumentoidentidad,
+     tb_cliente."numdocumento" AS tb_cliente_numdocumento,
+     tb_cliente."fechacreacion" AS tb_cliente_fechacreacion,
+     tb_cliente."empresatrabajo" AS tb_cliente_empresatrabajo,
+     tb_cliente."cargotrabajo" AS tb_cliente_cargotrabajo,
+     tb_cliente."directrabajo" AS tb_cliente_directrabajo,
+     tb_cliente."telftrabajo" AS tb_cliente_telftrabajo,
+     tb_cliente."titulartelefono" AS tb_cliente_titulartelefono,
+     tb_cliente."fecnacimiento" AS tb_cliente_fecnacimiento,
+     tb_cliente."correo" AS tb_cliente_correo,
+     tb_cliente."contrasena" AS tb_cliente_contrasena,
+     tb_cliente."idestadogeneral" AS tb_cliente_idestadogeneral,
+     tb_cliente."tipocliente" AS tb_cliente_tipocliente,
+     tb_cliente."planotrabajo" AS tb_cliente_planotrabajo,
+     tb_cliente."letratrabajo" AS tb_cliente_letratrabajo,
+     tb_cliente."sectortrabajo" AS tb_cliente_sectortrabajo,
+     tb_cliente."nombrecliente" ||' ' ||
+     tb_cliente."apepatcliente" ||' ' ||
+     tb_cliente."apematcliente" AS tb_cliente_nombresCompletos
+FROM
+     "sie"."tb_cliente" tb_cliente]]>
+	</queryString>
+	<field name="tb_cliente_idcliente" class="java.lang.Integer"/>
+	<field name="tb_cliente_nombrecliente" class="java.lang.String"/>
+	<field name="tb_cliente_apepatcliente" class="java.lang.String"/>
+	<field name="tb_cliente_apematcliente" class="java.lang.String"/>
+	<field name="tb_cliente_idtipodocumentoidentidad" class="java.lang.Integer"/>
+	<field name="tb_cliente_numdocumento" class="java.lang.String"/>
+	<field name="tb_cliente_fechacreacion" class="java.sql.Timestamp"/>
+	<field name="tb_cliente_empresatrabajo" class="java.lang.String"/>
+	<field name="tb_cliente_cargotrabajo" class="java.lang.String"/>
+	<field name="tb_cliente_directrabajo" class="java.lang.String"/>
+	<field name="tb_cliente_telftrabajo" class="java.lang.String"/>
+	<field name="tb_cliente_titulartelefono" class="java.lang.String"/>
+	<field name="tb_cliente_fecnacimiento" class="java.sql.Date"/>
+	<field name="tb_cliente_correo" class="java.lang.String"/>
+	<field name="tb_cliente_contrasena" class="java.lang.String"/>
+	<field name="tb_cliente_idestadogeneral" class="java.lang.Integer"/>
+	<field name="tb_cliente_tipocliente" class="java.lang.Integer"/>
+	<field name="tb_cliente_planotrabajo" class="java.lang.String"/>
+	<field name="tb_cliente_letratrabajo" class="java.lang.String"/>
+	<field name="tb_cliente_sectortrabajo" class="java.lang.String"/>
+	<field name="tb_cliente_nombrescompletos" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="e876e61d-4c65-4ffa-8e26-44329ed6ee18" x="197" y="21" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Reporte de Cliente]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<frame>
+				<reportElement uuid="bd536c73-0622-4ae3-aac9-8e851b5a59bf" x="0" y="41" width="555" height="20"/>
+				<staticText>
+					<reportElement uuid="b88fe65c-83aa-458e-8e4c-af21a1064c8f" x="0" y="0" width="197" height="20"/>
+					<textElement/>
+					<text><![CDATA[Nombres Completos]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<frame>
+				<reportElement uuid="3b3fbb50-89af-49f0-bc07-a40720b0632e" x="0" y="0" width="555" height="20"/>
+				<textField>
+					<reportElement uuid="3b340aef-3117-4989-b09c-18662affdd2e" x="0" y="0" width="197" height="20"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{tb_cliente_nombrescompletos}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
