@@ -20,7 +20,9 @@
 		</p:fieldset>
 				
 				<p:spacer height="30px" />
-					<p:dataTable value="#{reporte.lstClientesReporting}"  
+					<p:dataTable value="#{reporte.lstClientesReporting}"  paginator="true" rows="10"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15"
 					var="c" style="width:800px" emptyMessage="No se encontraron resultados" >
 						
 						<f:facet name="header">
