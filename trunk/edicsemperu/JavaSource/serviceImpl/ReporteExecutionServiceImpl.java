@@ -122,7 +122,6 @@ public class ReporteExecutionServiceImpl  extends HttpServlet implements Reporte
 			if (fileVirtualizer != null) {
 				fileVirtualizer.setReadOnly(true);
 			}
-			connection.close();
 			log.debug("Se genero el JasperPrint");
 			reporteResult.setJasperPrint(jasperPrint);
 		} catch (JRException e) {
@@ -169,6 +168,7 @@ public class ReporteExecutionServiceImpl  extends HttpServlet implements Reporte
 			//Creamos una carpeta temporal para los reportes
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_hhmmss");
 			String carpetaTemporal = sdf.format(new Date(System.currentTimeMillis()));
+			log.info("carpta tmp "+carpetaTemporal);
 			String rutaCarpetaTemporal = MapUtils.getString(parameterMap, "directorioTemporal") + carpetaTemporal + File.separator;
 			File fileCarpetaTemporal = new File(rutaCarpetaTemporal);
 			fileCarpetaTemporal.mkdir();
@@ -189,8 +189,6 @@ public class ReporteExecutionServiceImpl  extends HttpServlet implements Reporte
 				} catch (JRException e) {
 					log.error("Error al generar reporte Consolidado", e);
 				}
-			
-			connection.close();
 			
 		} catch (JRException e) {
 			e.printStackTrace();
