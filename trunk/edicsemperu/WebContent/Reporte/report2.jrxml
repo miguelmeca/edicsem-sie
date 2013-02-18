@@ -61,26 +61,16 @@ FROM
 	<title>
 		<band height="70" splitType="Stretch">
 			<image>
-				<reportElement uuid="526d5aec-0bd4-4199-afba-cd8ce0a28624" x="-20" y="0" width="595" height="64"/>
-				<imageExpression><![CDATA["wood.jpg"]]></imageExpression>
+				<reportElement uuid="09d95801-68f4-4bfd-9426-6ec9a9732cfd" x="0" y="0" width="400" height="50"/>
+				<imageExpression><![CDATA["../images/wood.jpg"]]></imageExpression>
 			</image>
-			<staticText>
-				<reportElement uuid="284893ed-a2cb-4598-8715-28845045c8a6" style="Title" x="0" y="5" width="263" height="33"/>
-				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Wood Title]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="2816f034-beb6-4965-8f56-2a2b7f1cca5f" style="SubTitle" x="63" y="39" width="200" height="22" forecolor="#FFFFFF"/>
-				<textElement textAlignment="Right"/>
-				<text><![CDATA[Wood SubTitle]]></text>
-			</staticText>
 		</band>
 	</title>
 	<pageHeader>
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="57" splitType="Stretch">
+		<band height="59" splitType="Stretch">
 			<line>
 				<reportElement uuid="d17db477-e07a-405d-9b9f-11a7fdd2934d" positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1"/>
 				<graphicElement>
@@ -108,7 +98,7 @@ FROM
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="90" splitType="Stretch">
+		<band height="41" splitType="Stretch">
 			<line>
 				<reportElement uuid="7414edbb-581e-4d41-9f93-f6c7a35a1cd0" positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1"/>
 				<graphicElement>
