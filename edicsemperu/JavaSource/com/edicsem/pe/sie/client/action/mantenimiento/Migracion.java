@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -175,7 +174,6 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 								}
 								
 								String nombreCompleto = getCellValueAsString(data.get(6));
-								log.info("nombre completo "+nombreCompleto);
 								
 								String [ ] palabra = nombreCompleto.split("\\ ");
 								String numDoc = getCellValueAsString(data.get(7));
@@ -183,14 +181,13 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 									sis.setNumdocumento(numDoc);
 								}
 								else if(numDoc.length()<8){
-									int cantCeros= 7 - numDoc.length();
+									int cantCeros= 8 - numDoc.length();
 									String ceros="";
 									for (int i = 0; i < cantCeros; i++) {
 										ceros+="0";
 									}
 									sis.setNumdocumento(ceros+numDoc);
 								}
-								log.info(" 5 "+data.get(8).toString());
 								if(data.get(8).toString().isEmpty()||data.get(8).toString().equals("")||data.get(8).toString().trim().equals("")){
 								
 								}else{
@@ -226,7 +223,6 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 								sis.setImporteInicial(Double.parseDouble(getCellValueAsString(data.get(29))));
 								sis.setImporteCobrado(Double.parseDouble(getCellValueAsString(data.get(30))));
 								sis.setImportemasmora(Double.parseDouble(getCellValueAsString(data.get(31))));
-								log.info("fec venc  " +data.get(32).getDateCellValue());
 								sis.setFechaVencimiento(data.get(32).getDateCellValue());
 								sis.setLugarPago(getCellValueAsString(data.get(38)));
 								sis.setBanco(getCellValueAsString(data.get(39)));
@@ -259,7 +255,6 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 								sis.setCalificacionCliente(getCellValueAsString(data.get(69)));
 								
 								if(palabra.length==3){
-									log.info(" ***** "+ palabra);
 									sis.setNombrecliente(palabra[0]);
 									sis.setApepatcliente(palabra[1]);
 									sis.setApematcliente(palabra[2]);
