@@ -13,10 +13,17 @@
 		<h:form id="formConsultaCliente">
 		<p:messages showDetail="true"/>
 		<p:panel>
-		<p:fieldset legend="Consutar Contrato">
-			 
-			<p:commandButton value="Buscar" action="#{reporte.listarCliente}" update="message" ajax="false"
+		<p:fieldset legend="#{message['reporte.consulta.cliente']}" style="margin-top:30px">
+			<h:panelGrid columns="3" cellpadding="3" >
+			  <h:outputText value="#{message['reporte.tipo.cliente']}" />
+				<p:selectOneMenu  style="width:165px" value="#{reporte.idTipoCliente}" required="true" 
+				requiredMessage="#{message['reporte.tipo.cliente.validation']}" >
+				<f:selectItem itemLabel="seleccione tipo" itemValue="{null}"/>
+				<f:selectItems value="#{comboAction.tipoClienteItems}" />
+				</p:selectOneMenu>
+				<p:commandButton value="Buscar" action="#{reporte.listarCliente}" update="message" ajax="false"
 				icon="ui-icon-search"/>
+			</h:panelGrid>
 		</p:fieldset>
 				
 				<p:spacer height="30px" />
@@ -40,11 +47,10 @@
 		                    <h:outputText value="#{c.numdocumento}" />
 		        </p:column>
 		    </p:dataTable>
-		    <div align="center">
-				<p:commandLink action="#{reporte.ReportingClientes}" value="exportar"
-					ajax="false" 	title="Exportar a PDF el Reporte de Usuarios Registrados">
-					 
-				</p:commandLink>
+		    <div align="center"  style="margin-top:30px" >
+		     	<h:graphicImage value="/images/Reporting_pdf.png" />
+				<p:commandLink action="#{reporte.ReportingClientes}" value="exportar" ajax="false" 
+				title="Exportar a PDF el Reporte de clientes"  disabled="#{reporte.cantLista!=0? false:true}"/>
 			</div>
 		    </p:panel>
 		</h:form>
