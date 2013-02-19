@@ -14,4 +14,5 @@ public interface ClienteDAO {
 	public abstract void updateCliente(ClienteSie Cliente);
 	public abstract ClienteSie findCliente (int id);
 	public abstract List  listarClientes();
+	public abstract List  listarClientesXTipo(int tipoCliente);
 }
