@@ -17,7 +17,6 @@ import com.edicsem.pe.sie.entity.TipoCasaSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.model.dao.ClienteDAO;
 import com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO;
-import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
 import com.edicsem.pe.sie.model.dao.TelefonoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.TipoCasaDAO;
@@ -62,7 +61,6 @@ public class ClienteServiceImpl implements ClienteService {
 	 * @see com.edicsem.pe.sie.service.facade.ClienteService#updateCliente(com.edicsem.pe.sie.entity.ClienteSie, java.util.List)
 	 */
 	public void updateCliente(ClienteSie Cliente, DomicilioPersonaSie objDomicilio,String idUbigeo, int tipo, int TelefonoPersona, List<TelefonoPersonaSie> TelefonoPersonaList, List<TelefonoPersonaSie> TelefonoDeshabilitado) {
-//		, List<TelefonoPersonaSie> TelefonoPersonaList,int tipo,DomicilioPersonaSie objDomicilio,String idUbigeo 
 		
 	try {
 		if (log.isInfoEnabled()) {
@@ -70,8 +68,6 @@ public class ClienteServiceImpl implements ClienteService {
 		}
 		
 		objClienteDao.updateCliente(Cliente);
-		
-		
 		
 		UbigeoSie ubigeo = new UbigeoSie();
 		TipoCasaSie tipoCasa = new TipoCasaSie();
@@ -208,7 +204,11 @@ public class ClienteServiceImpl implements ClienteService {
 	public List listarClientes() {
 		return objClienteDao.listarClientes();
 	}
-	
-	
-	
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ClienteService#listarClientesXTipo(int)
+	 */
+	public List listarClientesXTipo(int tipoCliente) {
+		return objClienteDao.listarClientesXTipo(tipoCliente);
+	}
 }
