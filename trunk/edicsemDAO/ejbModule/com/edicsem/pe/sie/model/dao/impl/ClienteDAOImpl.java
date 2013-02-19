@@ -82,4 +82,20 @@ public class ClienteDAOImpl implements ClienteDAO{
 		}
 		return lista;
 	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ClienteDAO#listarClientesXTipo(int)
+	 */
+	public List listarClientesXTipo(int tipoCliente) {
+		List  lista = null;
+		try {
+			Query q = em.createQuery("select p from ClienteSie p where p.tipocliente = "+ tipoCliente);
+			lista =  q.getResultList(); 
+			log.info("tamaño lista Cliente --> " + lista.size()+"  ");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
 }
