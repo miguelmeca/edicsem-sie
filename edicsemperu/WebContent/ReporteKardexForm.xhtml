@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+	<script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
+		<h1 class="title ui-widget-header ui-corner-all">Consulta Kardex</h1>
+		<h:form id="formConsultakardex">
+		<p:messages id="message" showDetail="true"/>
+		<p:panel>
+		<p:fieldset legend="#{message['reporte.consulta.kardex']}" style="margin-top:30px">
+			<h:panelGrid columns="4" cellpadding="3" >
+				<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
+				<p:selectOneMenu value="#{comboAction.tipoProducto}" required="true"
+				requiredMessage="#{message['kardex.tipoProducto.validation']}">
+					<f:selectItem  itemValue="#{0}" itemLabel="Todos los tipos" />
+					<f:selectItems value="#{comboAction.tipoitems}"  />
+					<p:ajax update="product"  listener="#{comboAction.cambiar}"/>
+				</p:selectOneMenu>
+				
+				<h:outputText value="#{message['mantenimiento.producto']}" />
+				<p:selectOneMenu id="product" value="#{reporteKardex.idproducto}" required="true"
+				requiredMessage="#{message['kardex.producto.validation']}"  >
+					<f:selectItem itemLabel="Todos los productos" itemValue="#{0}" />
+					<f:selectItems value="#{comboAction.productositems}" />
+				</p:selectOneMenu>
+				
+				<h:outputText value="#{message['mantenimiento.kardex.tipo.almacen']}" />
+				<p:selectOneMenu  value="#{reporteKardex.idtipopuntoventa}" required="true">
+				<f:selectItem itemLabel="Seleccione tipo" itemValue="#{0}" />
+					<f:selectItems value="#{comboAction.tipoalmacenitems}" />
+					<p:ajax update="almacen"/>
+				</p:selectOneMenu>
+				 
+				<h:outputText value="#{message['mantenimiento.kardex.almacen']}" />
+				<p:selectOneMenu id="almacen"  value="#{reporteKardex.idalmacen}"  required="true"
+				requiredMessage="#{message['kardex.almacen.validation']}"  style="width:200px " >
+					<f:selectItem itemLabel="Seleccione" itemValue="#{0}" />
+					<f:selectItems value="#{comboAction.almacenItemsXTipo}" />
+				</p:selectOneMenu>
+				 
+				<h:outputText value="#{message['kardex.desde']}" />
+				<p:calendar pattern="dd/MM/yyyy" effect="explode" value="#{reporteKardex.fechaDesde}" maxdate="today" />
+				
+				<h:outputText value="#{message['kardex.hasta']}" />
+				<p:calendar pattern="dd/MM/yyyy" effect="explode" value="#{reporteKardex.fechaHasta}" maxdate="today"  />
+				
+				<p:commandButton value="Consultar" action="#{reporteKardex.consultar}" update="message" ajax="false"
+				icon="ui-icon-search"/>
+			</h:panelGrid>
+		</p:fieldset>
+		
+		<p:spacer height="30px" />
+		<p:dataTable value="#{reporteKardex.lstkardex}"  paginator="true" rows="10"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" var="p" style="width:800px" emptyMessage="No se encontraron resultados" >
+			<f:facet name="header">  
+         #{message['kardex.listadoKardex']}
+        </f:facet>
+			<p:columnGroup type="header">  
+            <p:row>
+                <p:column rowspan="3" headerText="#{message['kardex.fecCreacion']}" />
+                <p:column rowspan="3" headerText="#{message['kardex.tipo']}" />
+                <p:column rowspan="3" headerText="#{message['kardex.producto']}" />
+                <p:column colspan="2" headerText="#{message['kardex.entrada']}" />
+                <p:column colspan="2" headerText="#{message['kardex.salida']}" />
+                <p:column colspan="2" headerText="#{message['kardex.existencia']}"  rendered="#{login.objEmpleado.cargo==1}"/>
+                <p:column rowspan="2" headerText="#{message['kardex.empresa']}"  rendered="#{login.objEmpleado.cargo==1}"/>
+                <p:column rowspan="2" headerText="#{message['kardex.editar']}"  rendered="#{login.objEmpleado.cargo==1}"/>
+            </p:row>
+            <p:row>
+                <p:column headerText="#{message['kardex.cantEntrada']}" />
+                <p:column headerText="#{message['kardex.valorEntrada']}"  rendered="#{login.objEmpleado.cargo==1}"/>
+                <p:column headerText="#{message['kardex.cantSalida']}" />
+                <p:column headerText="#{message['kardex.valorExistencia']}"  rendered="#{login.objEmpleado.cargo==1}"/>
+                <p:column headerText="#{message['kardex.cantExistencia']}" />
+                <p:column headerText="#{message['kardex.valorExistencia']}"  rendered="#{login.objEmpleado.cargo==1}"/>
+            </p:row>
+        </p:columnGroup>
+					<p:column>#{p.fecha} </p:column>
+					<p:column>#{p.tbTipoKardexProducto.descripcion}</p:column>
+					<p:column>#{p.tbProducto.descripcionproducto}</p:column>
+					<p:column>#{p.cantentrada}</p:column>
+					<p:column rendered="#{login.objEmpleado.cargo==1}">#{p.valorunitarioentrada}</p:column>
+					<p:column>#{p.cantsalida}</p:column>
+					<p:column rendered="#{login.objEmpleado.cargo==1}">#{p.valorunitariosalida}</p:column>
+					<p:column>#{p.cantexistencia}</p:column>
+					<p:column rendered="#{login.objEmpleado.cargo==1}">#{p.valorunitarioexistencia}</p:column>
+					<p:column rendered="#{login.objEmpleado.cargo==1}">#{p.tbEmpresa.razonsocial}
+					</p:column>
+					<p:column rendered="#{login.objEmpleado.cargo==1}">
+					    <h:panelGroup>
+						 <p:commandButton update=":formManteKardexList:display" value="editar" 
+							oncomplete="kardexDialog.show()"  actionListener="#{kardexAction.update}"> 
+							<f:setPropertyActionListener value="#{p}" target="#{kardexAction.objKardexSie}" />  
+							<f:setPropertyActionListener value="#{false}" target="#{kardexAction.editMode}" />  
+						</p:commandButton> 
+						</h:panelGroup>
+					</p:column>
+		    </p:dataTable>
+		    <div align="center"  style="margin-top:30px" >
+		     	<h:graphicImage value="/images/Reporting_pdf.png" />
+				<p:commandLink action="#{reporteKardex.exportar}" value="exportar PDF" ajax="false" 
+				title="Exportar a PDF el Reporte de movimientos"  disabled="#{reporteKardex.cantLista!=0? false:true}">
+				<f:setPropertyActionListener target="#{reporteKardex.contentType}" value="pdf"></f:setPropertyActionListener>
+				</p:commandLink>
+				
+				<h:graphicImage value="/images/excel_icon.PNG" />
+				<p:commandLink action="#{reporteKardex.exportar}" value="exportar EXCEL" ajax="false" 
+				title="Exportar a PDF el Reporte de movimientos"  disabled="#{reporteKardex.cantLista!=0? false:true}">
+				<f:setPropertyActionListener target="#{reporteKardex.contentType}" value="xls"></f:setPropertyActionListener>
+				</p:commandLink>
+			</div>
+		    </p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -27,7 +27,7 @@
 		</p:fieldset>
 				
 				<p:spacer height="30px" />
-					<p:dataTable value="#{reporte.lstClientesReporting}"  paginator="true" rows="10"
+				<p:dataTable value="#{reporte.lstClientesReporting}"  paginator="true" rows="10"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				rowsPerPageTemplate="5,10,15"
 					var="c" style="width:800px" emptyMessage="No se encontraron resultados" >
@@ -49,8 +49,16 @@
 		    </p:dataTable>
 		    <div align="center"  style="margin-top:30px" >
 		     	<h:graphicImage value="/images/Reporting_pdf.png" />
-				<p:commandLink action="#{reporte.ReportingClientes}" value="exportar" ajax="false" 
-				title="Exportar a PDF el Reporte de clientes"  disabled="#{reporte.cantLista!=0? false:true}"/>
+				<p:commandLink action="#{reporte.ReportingClientes}" value="exportar PDF" ajax="false" 
+				title="Exportar a PDF el Reporte de clientes"  disabled="#{reporte.cantLista!=0? false:true}">
+				<f:setPropertyActionListener target="#{reporte.contentType}" value="pdf"></f:setPropertyActionListener>
+				</p:commandLink>
+				
+				<h:graphicImage value="/images/excel_icon.PNG" />
+				<p:commandLink action="#{reporte.ReportingClientes}" value="exportar EXCEL" ajax="false" 
+				title="Exportar a PDF el Reporte de clientes"  disabled="#{reporte.cantLista!=0? false:true}">
+				<f:setPropertyActionListener target="#{reporte.contentType}" value="xls"></f:setPropertyActionListener>
+				</p:commandLink>
 			</div>
 		    </p:panel>
 		</h:form>
