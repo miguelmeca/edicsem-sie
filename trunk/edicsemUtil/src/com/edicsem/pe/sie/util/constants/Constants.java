@@ -116,8 +116,10 @@ public class Constants {
 	public static final String LOGIN_PAGE = "login";
 	public static final String USER_KEY = "loginUserSession";
 	public static final String CARGO_USER = "cargoSession";
-	public static final Object REPORTE_CLIENTE_LIST = "Lista de Clientes";
+	public static final String REPORTE_CLIENTE_LIST = "Reporte Cliente";
 	public static final String SI = "Si";
-	public static final String FORMATO_NOMBRE_REPORTE_CONSOLIDADO = "Consolidado"; 
+	public static final String FORMATO_NOMBRE_REPORTE_CONSOLIDADO = "Consolidado";
+	public static final String REPORTE_CLIENTE_X_TIPO_LIST = "Reporte/report6.jasper";
+	public static final String RUTA_REPORTE_CLIENTE = "C:\\Users\\karen\\Reportes\\Report\\";
 	
 	}
