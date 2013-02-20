@@ -31,6 +31,7 @@ public class Reporte {
 	public static Log log = LogFactory.getLog(Reporte.class);
 	private int cantLista;
 	private int idTipoCliente;
+	private String ContentType;
 
 	@EJB
 	private ClienteService objClienteService;
@@ -45,16 +46,13 @@ public class Reporte {
 	
 	public void listarCliente() {
 		lstClientesReporting = new ArrayList<ClienteSie>();
-		log.info("listando reporte ..");
+		log.info("listando reporte");
 		try {
 			lstClientesReporting= objClienteService.listarClientesXTipo(idTipoCliente);
 			cantLista=lstClientesReporting.size();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		FacesContext fc = FacesContext.getCurrentInstance();
-		fc.getApplication().getNavigationHandler()
-				.handleNavigation(fc, null, "reporteClienteForm");
 	}
 	
 	public void ReportingClientes() {
@@ -70,7 +68,7 @@ public class Reporte {
 			parametros.setQueryParams(criteria);
 			
 			HttpServletResponse response = (HttpServletResponse)context.getResponse();
-			objReporteService.executeReporte(parametros, response);
+			objReporteService.executeReporte(parametros, response, ContentType);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -118,5 +116,19 @@ public class Reporte {
 	 */
 	public void setIdTipoCliente(int idTipoCliente) {
 		this.idTipoCliente = idTipoCliente;
+	}
+
+	/**
+	 * @return the contentType
+	 */
+	public String getContentType() {
+		return ContentType;
+	}
+
+	/**
+	 * @param contentType the contentType to set
+	 */
+	public void setContentType(String contentType) {
+		ContentType = contentType;
 	}
 }

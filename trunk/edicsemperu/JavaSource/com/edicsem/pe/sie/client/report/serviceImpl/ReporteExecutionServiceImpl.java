@@ -11,7 +11,6 @@ import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
@@ -24,39 +23,48 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-
 import com.edicsem.pe.sie.beans.ReporteParams;
 import com.edicsem.pe.sie.client.report.service.ReporteExecutionService;
 import com.edicsem.pe.sie.client.servlet.ReportExporter;
 import com.edicsem.pe.sie.util.constants.Constants;
 @Stateless
-public class ReporteExecutionServiceImpl extends HttpServlet  implements ReporteExecutionService  {
+public class ReporteExecutionServiceImpl implements ReporteExecutionService  {
 	
 	protected final Log log = LogFactory.getLog(ReporteExecutionServiceImpl.class);
 	private DataSource ds = null;
 	private Connection conn = null;
 	Context initContext;
 	
-	public void executeReporte(ReporteParams reportParams, HttpServletResponse response) {
-		log.info("Entering 'executeReporte' method");
+	public void executeReporte(ReporteParams reportParams, HttpServletResponse response, String ContentType) {
+		log.info("Entering 'executeReporte' ");
 		ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
 		conn = null;
-		String path = Constants.RUTA_REPORTE_CLIENTE+ (String) reportParams.getQueryParams().get("titulo") + ".pdf";
+		String path = Constants.RUTA_REPORTE_CLIENTE;
+		String titulo=  (String) reportParams.getQueryParams().get("titulo");
 		try {
 			initContext = new InitialContext();
 			ds = (DataSource) initContext.lookup("java:/edicsemJPADatasource");
 			conn = ds.getConnection();
-			response.setHeader("Content-Disposition", "attachment; filename="+ (String) reportParams.getQueryParams().get("titulo") + ".pdf");
-			response.setHeader("Cache-Control", "no-cache");
-			response.setDateHeader("Expires", 0);
-			response.setContentType("application/pdf");
 			
 			FileInputStream fis = new FileInputStream(ctx.getRealPath(reportParams.getJasperFileName()));
 			BufferedInputStream bufferedInputStream = new BufferedInputStream(fis);
 			JasperReport reporte = (JasperReport) JRLoader.loadObject(bufferedInputStream);
 			JasperPrint jasper = JasperFillManager.fillReport(reporte,reportParams.getQueryParams(), conn);
 			
-			ReportExporter.exportReportPDF(jasper, path, response);
+			titulo+="."+ContentType;
+			path +=titulo;
+			
+			response.setHeader("Content-Disposition", "attachment; filename=\""+ titulo+"\"");
+			response.setHeader("Cache-Control", "no-cache");
+			response.setDateHeader("Expires", 0);
+			
+			if(ContentType.equals("pdf")){
+				response.setContentType("application/pdf");
+				ReportExporter.exportReportPDF(jasper, path);
+			}else if(ContentType.equals("xls")){
+				response.setContentType("application/xls");
+				ReportExporter.exportReportXls(jasper, path);
+			}
 			
 		} catch (JRException e) {
 			e.printStackTrace();
@@ -76,6 +84,7 @@ public class ReporteExecutionServiceImpl extends HttpServlet  implements Reporte
 					log.info("cerrando la conexion");
 					conn.close();
 					ds = null;
+					initContext.close();
 				} catch (Exception e) {
 
 				}
