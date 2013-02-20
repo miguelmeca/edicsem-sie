@@ -44,21 +44,29 @@ public class KardexDAOImpl implements KardexDAO {
 			String fechaDesde, String fechaHasta) {
 		List lista = new ArrayList();
 		String consulta = "";
-		log.info("fechas " + fechaDesde + " fecha hasta " + fechaHasta);
+		log.info(" producto "+idproducto+" almacen"+ idalmacen +"fechas " + fechaDesde + " fecha hasta " + fechaHasta);
 		try {
-			consulta = "select p from KardexSie p where p.tbProducto.idproducto =:x1 and "
-					+ "p.tbPuntoVenta.idpuntoventa =:x2 ";
+			consulta = "select p from KardexSie p ";
+			if(idproducto!=0){
+				consulta+=" where p.tbProducto.idproducto =  "+idproducto;
+			}
+			if(idalmacen!=0){
+				if(idproducto!=0){
+					consulta+=" and p.tbPuntoVenta.idpuntoventa = "+idalmacen;
+				}else{
+					consulta+=" where p.tbPuntoVenta.idpuntoventa = "+idalmacen;
+				}
+			}
 			if (fechaDesde != "" || fechaHasta != ""){
 				consulta += " and DATE(p.fechacreacion) between DATE('"
 						+ fechaDesde + "') and  DATE('" + fechaHasta
 						+ "')  ";
 			}
 			consulta += "  ORDER BY p.fechacreacion ASC  ";
+			log.info("CONSULTA  "+consulta);
 			Query q = em.createQuery(consulta);
-			q.setParameter("x1", idproducto);
-			q.setParameter("x2", idalmacen);
 			lista = q.getResultList();
-
+			
 			log.info("tamaño lista Productos kardex --> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
