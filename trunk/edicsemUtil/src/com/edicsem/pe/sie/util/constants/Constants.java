@@ -121,5 +121,6 @@ public class Constants {
 	public static final String FORMATO_NOMBRE_REPORTE_CONSOLIDADO = "Consolidado";
 	public static final String REPORTE_CLIENTE_X_TIPO_LIST = "Reporte/report6.jasper";
 	public static final String RUTA_REPORTE_CLIENTE = "C:\\Users\\karen\\Reportes\\Report\\";
+	public static final String REPORTE_KARDEX_LIST = "Reporte/reportKardex.jasper";
 	
 	}
