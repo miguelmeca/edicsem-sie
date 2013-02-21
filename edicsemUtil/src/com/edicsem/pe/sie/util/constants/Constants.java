@@ -116,11 +116,26 @@ public class Constants {
 	public static final String LOGIN_PAGE = "login";
 	public static final String USER_KEY = "loginUserSession";
 	public static final String CARGO_USER = "cargoSession";
+	
+	//Variables para el reporte
+	public static final String RUTA_REPORTE = "E:\\Sie\\Reporte\\";
+	public static final String REPORTE_CLIENTE_JASPER = "Reporte/report6.jasper";
+	public static final String REPORTE_KARDEX_JASPER = "Reporte/reportKardex.jasper";
+	public static final String REPORTE_TITULO ="titulo";
+	
+	//Reporte Cliente
+	public static final String REPORTE_TIPO_CLIENTE ="tipoCliente";
+	
 	public static final String REPORTE_CLIENTE_LIST = "Reporte Cliente";
-	public static final String SI = "Si";
-	public static final String FORMATO_NOMBRE_REPORTE_CONSOLIDADO = "Consolidado";
-	public static final String REPORTE_CLIENTE_X_TIPO_LIST = "Reporte/report6.jasper";
-	public static final String RUTA_REPORTE_CLIENTE = "C:\\Users\\karen\\Reportes\\Report\\";
-	public static final String REPORTE_KARDEX_LIST = "Reporte/reportKardex.jasper";
+	
+	//Reporte Kardex
+	public static final String REPORTE_KARDEX_ALMACEN ="almacen";
+	public static final String REPORTE_KARDEX_PRODUCTO ="producto";
+	public static final String REPORTE_KARDEX_FECHA_DESDE ="fechaDesde";
+	public static final String REPORTE_KARDEX_FECHA_HASTA ="fechaHasta";
+	
+	public static final String REPORTE_KARDEX_LIST="Reporte Kardex";
+	public static final String RUTA_IMAGENES_PRODUCTO = "E:\\Producto\\Images" ;
+	public static final String RUTA_DOC_SUSTENTARIO = "E:\\Images\\Docs";
 	
 	}
