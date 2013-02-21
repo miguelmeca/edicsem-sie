@@ -99,8 +99,16 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 		log.info("cargarImagenInsertar** " + event.getFile().getFileName() );
 		String photo = event.getFile().getFileName();
 		FileImageOutputStream imageOutput;
-		String newFileName = "C:\\Images" + File.separator + photo;
+		String newFileName = Constants.RUTA_IMAGENES_PRODUCTO + File.separator + photo;
 		try {
+			
+			File outputFile = new File(newFileName);
+			File parentFile = outputFile.getParentFile();
+			
+			if (!parentFile.exists()){
+				parentFile.mkdirs();
+			}
+			
 			setImage(new DefaultStreamedContent(event.getFile().getInputstream()));
 			
 			log.info("ruta " + newFileName + " - " + event.getFile().getFileName());
@@ -114,32 +122,7 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 			imageOutput.close();
 			event.getFile().getInputstream().close();
 			idFoto+=1;
-//			 
-//		UploadedFile file = event.getFile();
-//		 
-//			ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-//
-//			String path = ctx.getRealPath("/Images");
-//			File directory = new File(path);
-//			Boolean existe = directory.exists();
-//			if (!existe) {
-//				directory.mkdir();
-//			}
-//			setImage(new DefaultStreamedContent(event.getFile().getInputstream()));
-//			log.info("path  "+path);
-//			File f = new File(path + "/" + photo);
-//			log.info("Ruta del archivo "+f.getAbsolutePath());
-//
-//			OutputStream salida = new FileOutputStream(f);
-//			foto = event.getFile().getContents();
-//			objProductoSie.setRutaimagenproducto(f.getPath());
-//			byte[] buf = new byte[1024];
-//			int len;
-//			while ((len = file.getInputstream().read(buf)) > 0) {
-//				salida.write(buf, 0, len);
-//			}
-//			salida.close();
-//			file.getInputstream().close();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -297,7 +280,6 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 	 * #getViewMant()
 	 */
 	public String getViewMant() {
-		log.info("getViewMant *******");
 		return Constants.MANT_PRODUCTO_FORM_PAGE;
 	}
 

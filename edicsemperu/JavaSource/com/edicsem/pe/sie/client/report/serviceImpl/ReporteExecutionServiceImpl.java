@@ -39,8 +39,8 @@ public class ReporteExecutionServiceImpl implements ReporteExecutionService  {
 		log.info("Entering 'executeReporte' ");
 		ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
 		conn = null;
-		String path = Constants.RUTA_REPORTE_CLIENTE;
-		String titulo=  (String) reportParams.getQueryParams().get("titulo");
+		String path = Constants.RUTA_REPORTE;
+		String titulo=  (String) reportParams.getQueryParams().get(Constants.REPORTE_TITULO);
 		try {
 			initContext = new InitialContext();
 			ds = (DataSource) initContext.lookup("java:/edicsemJPADatasource");

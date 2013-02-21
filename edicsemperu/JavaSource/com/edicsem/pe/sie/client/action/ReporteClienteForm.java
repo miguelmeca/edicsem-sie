@@ -23,12 +23,12 @@ import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.service.facade.ClienteService;
 import com.edicsem.pe.sie.util.constants.Constants;
 
-@ManagedBean(name = "reporte")
+@ManagedBean(name = "reporteCliente")
 @SessionScoped
-public class Reporte {
+public class ReporteClienteForm {
 
 	private List<ClienteSie> lstClientesReporting;
-	public static Log log = LogFactory.getLog(Reporte.class);
+	public static Log log = LogFactory.getLog(ReporteClienteForm.class);
 	private int cantLista;
 	private int idTipoCliente;
 	private String ContentType;
@@ -38,7 +38,7 @@ public class Reporte {
 	@EJB
 	private ReporteExecutionService objReporteService;
 	
-	public Reporte() {
+	public ReporteClienteForm() {
 		log.info("INICIALIZANDO EL BEAN MANAGER REPORTE");
 		cantLista=0;
 		idTipoCliente=0;
@@ -60,11 +60,11 @@ public class Reporte {
 		ReporteParams parametros = new ReporteParams();
 		
 		try {
-			parametros.setJasperFileName(Constants.REPORTE_CLIENTE_X_TIPO_LIST);
+			parametros.setJasperFileName(Constants.REPORTE_CLIENTE_JASPER);
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_hhmmss");
 			Map criteria = new HashMap();
-			criteria.put("titulo", Constants.REPORTE_CLIENTE_LIST+"_"+ sdf.format(new Date(System.currentTimeMillis())));
-			criteria.put("tipoCliente", idTipoCliente );
+			criteria.put(Constants.REPORTE_TITULO, Constants.REPORTE_CLIENTE_LIST+"_"+ sdf.format(new Date(System.currentTimeMillis())));
+			criteria.put(Constants.REPORTE_TIPO_CLIENTE, idTipoCliente );
 			parametros.setQueryParams(criteria);
 			
 			HttpServletResponse response = (HttpServletResponse)context.getResponse();

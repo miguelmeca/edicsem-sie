@@ -102,7 +102,7 @@ public class MantenimientoContratoFormAction extends
 	
 	//Gestionar
 	private SeguimientoContratoSie objSeguimiento;
-	private int cuotasNuevas;
+	private int cuotasNuevas,idMotivo;
 	
 	@EJB
 	private ProductoService objProductoService;
@@ -235,7 +235,7 @@ public class MantenimientoContratoFormAction extends
 		objDomicilioSie=null;
 		detProductoContrato=null;
 		comboManager.setCodigoEstado(Constants.COD_ESTADO_TB_CONTRATO);
-		cobranzaList=null;
+		cobranzaList=new ArrayList<CobranzaSie>();
 		numDniCliente=null;
 		codigoContrato=null;
 		apePatCliente=null;
@@ -728,7 +728,9 @@ public class MantenimientoContratoFormAction extends
 			objClienteSie = objClienteService.findCliente(contratoXClienteList.get(0).getTbCliente().getIdcliente());
 			log.info("  " + objClienteSie.getIdcliente()+"  "+objClienteSie.getNombresCompletos());
 			domicilioList = objDomicilioService.listarDomicilioCliente(objClienteSie.getIdcliente());
-			objDomicilioSie = domicilioList.get(0);
+			if(domicilioList.size()==1){
+				objDomicilioSie = domicilioList.get(domicilioList.size()-1);
+			}
 			log.info("  ubigeo  " +objDomicilioSie.getTbUbigeo().getIdubigeo());
 			UbigeoSie ubi =  objubigeoService.findUbigeo(objDomicilioSie.getTbUbigeo().getIdubigeo());
 			String depaProv = objubigeoService.findDepaProv(ubi.getCoddepartamento(),ubi.getCodprovincia());
@@ -804,57 +806,81 @@ public class MantenimientoContratoFormAction extends
 	
 	public void addCuota() throws Exception{
 		log.info("addCuota()");
-		
-		for (int i = 0; i < cuotasNuevas; i++) {
-			CobranzaSie cob = new CobranzaSie();
-			cob.setImpinicial(new BigDecimal(precioMensual));
-			cob.setImportemasmora(new BigDecimal(precioMensual));
-			fechaMensual = DateUtil.addToDate(fechaMensual, Calendar.MONTH,i);
-			int numletra= Integer.parseInt(cobranzaList.get(cobranzaList.size()-1).getNumletra());
-			numletra=numletra+i+1;
-			cob.setNumletra(numletra+"");
-			cob.setFecvencimiento(fechaMensual);
-			totalacumulado= totalacumulado.add(new BigDecimal(precioMensual));
-			cobranzaList.add(cob);
+		if(precioMensual<1){
+			mensaje="Debe ingresar un precio válido para agregar una nueva letra";
+			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
+		}if(cobranzaList.size()==0){
+			mensaje="Debe buscar un contrato en la parte superior";
+			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
 		}
+		else{
+			for (int i = 0; i < cuotasNuevas; i++) {
+				CobranzaSie cob = new CobranzaSie();
+				cob.setImpinicial(new BigDecimal(precioMensual));
+				cob.setImportemasmora(new BigDecimal(precioMensual));
+				fechaMensual = DateUtil.addToDate(fechaMensual, Calendar.MONTH,i);
+				int numletra= Integer.parseInt(cobranzaList.get(cobranzaList.size()-1).getNumletra());
+				numletra=numletra+i+1;
+				cob.setNumletra(numletra+"");
+				cob.setFecvencimiento(fechaMensual);
+				totalacumulado= totalacumulado.add(new BigDecimal(precioMensual));
+				cobranzaList.add(cob);
+				mensaje="Se agregó la nueva cuota";
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+			}
+		}FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 	
 	public String registrarGestion(){
 		log.info("registrarGestion()");
 		mensaje=null;
-		objSeguimientoContratoService.insertSeguimientoContrato(objSeguimiento);
+		if(objSeguimiento.getTbMotivo()==null){
+			
+		}else{
+			objSeguimientoContratoService.insertSeguimientoContrato(objSeguimiento);
+		}
 		mensaje = Constants.MESSAGE_REGISTRO_TITULO;
 		msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 				Constants.MESSAGE_INFO_TITULO, mensaje);
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return null;
 	}
 	
 	public String cargarArchivoSustentatorio(FileUploadEvent event) {
-		log.info("cargarImagenInsertar** " + event.getFile().getFileName() );
-		String photo = event.getFile().getFileName();
-		String path = "C:\\Images\\Docs";
+		log.info("cargarImagenInsertar** " + event.getFile().getFileName());
+		String path = Constants.RUTA_DOC_SUSTENTARIO;
 		UploadedFile file = event.getFile();
+		String tipo = event.getFile().getFileName();
+		String type = tipo.substring(tipo.length()-3, tipo.length());
+		log.info(" type "+type);
 		try {
-			 
+			 if(objContratoSie.getCodcontrato()==null){
+				 mensaje="Debe buscar un contrato en la parte superior";
+				 msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+							Constants.MESSAGE_INFO_TITULO, mensaje);
+			 }else{
 			File directory = new File(path);
-			Boolean existe = directory.exists();
-				if (!existe) {
-					directory.mkdir();
+				if (!directory.getParentFile().exists()) {
+					directory.mkdirs();
 				}
 			log.info("path  "+path);
-			File f = new File(path + "/" + photo);
+			File f = new File(path +File.separator + "DocSust_"+ objContratoSie.getCodcontrato()+"."+type);
 			log.info("Ruta del archivo "+f.getAbsolutePath());
 			OutputStream salida = new FileOutputStream(f);
 			objSeguimiento.setRutaarchivo(f.getPath());
-			//byte[] buf = new byte[1024];
 			salida.write(file.getContents(), 0, file.getContents().length);
 			salida.close();
 			file.getInputstream().close();
+			 mensaje="Se Adjuntó correctamente el archivo";
+			 msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+						Constants.MESSAGE_INFO_TITULO, mensaje);
+			 }
+			 FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		return getViewMant();
-	}	
+	}
 	
 	public String onFlowProcess(FlowEvent event) {
 	    log.info("Current wizard step:" + event.getOldStep());  
@@ -1763,6 +1789,20 @@ public class MantenimientoContratoFormAction extends
 	 */
 	public void setFechaMensual(Date fechaMensual) {
 		this.fechaMensual = fechaMensual;
+	}
+
+	/**
+	 * @return the idMotivo
+	 */
+	public int getIdMotivo() {
+		return idMotivo;
+	}
+
+	/**
+	 * @param idMotivo the idMotivo to set
+	 */
+	public void setIdMotivo(int idMotivo) {
+		this.idMotivo = idMotivo;
 	}
 	
 }
