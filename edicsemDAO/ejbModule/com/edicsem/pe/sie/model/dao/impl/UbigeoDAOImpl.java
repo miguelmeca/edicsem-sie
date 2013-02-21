@@ -188,9 +188,10 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 			lista2 = q.getResultList();
 			log.info(" gral "+lista2.size());
 			if(lista2.size()==1){
-				lista = q.getResultList();
+				lista = q.getResultList();		
 			}
-			else if(q.getResultList().size()>1){
+			else{
+			if(q.getResultList().size()>1){
 				lista = null;
 				Query q2 = em.createQuery("select p from UbigeoSie p where  p.coddepartamento = '15'  " +
 				" and p.codprovincia = '01'  and trim(p.nombre) like  '" +distrito+"'" );
@@ -203,7 +204,6 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 				lista= q2.getResultList();
 				log.info("aki TAMANO CALLAO --> "+ lista.size());
 			}
-			log.info(" gral2 "+lista2.size()+"  "+lista.size());
 			if(lista2.size()>0 && lista.size()==0){
 				log.info("departamento");
 				for (int i = 0; i < lista2.size(); i++) {
@@ -226,8 +226,10 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 					}
 				}
 			}
+			}
 			if(lista.size()>=1){
 				obj.add(lista.get(0));
+				log.info("ubigeo! "+obj.get(0).getNombre()+ "  " +obj.get(0).getIdubigeo());
 			}
 			
 		} catch (Exception e) {
