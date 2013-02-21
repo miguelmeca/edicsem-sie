@@ -285,9 +285,11 @@ public class ContratoServiceImpl implements ContratoService {
 				//insertar contrato
 				objContratoDao.insertContrato(con);
 				log.info("  insertando contrato * "+con.getCodcontrato());
+				dom = new DomicilioPersonaSie();
 				dom.setDomicilio(s.getDireccion());
 				dom.setTbTipoCasa(objTipoCasaDao.findTipoCasa(1));
 				ubi = objUbigeoDao.findUbigeoXDescripcion(s.getDistrito().toUpperCase());
+				log.info(" ubi "+ubi.size());
 				if(ubi.size()==0){
 					dom.setUbicacion(s.getDistrito().toUpperCase());
 				}else{
@@ -299,6 +301,9 @@ public class ContratoServiceImpl implements ContratoService {
 				dom.setSectorDomicilio(s.getNumSector());
 				dom.setLetraDomicilio(s.getLetraSector());
 				domList.add(dom);
+				if(domList.size()>0){
+				log.info("domicilio :D "+domList.get(0).getDomicilio() );
+				}
 			}
 			//si se encuentra un ( - ) se reemplaza por un espacio
 
@@ -438,7 +443,7 @@ public class ContratoServiceImpl implements ContratoService {
 			//insertar Domicilio
 			
 			if(!domicilioString.contains(s.getDireccion())){
-				domList = new ArrayList<DomicilioPersonaSie>();
+				//domList = new ArrayList<DomicilioPersonaSie>();
 				log.info("nuevo domi  " + s.getDireccion());
 				dom = new DomicilioPersonaSie();
 				dom.setDomicilio(s.getDireccion());
