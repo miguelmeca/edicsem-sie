@@ -18,7 +18,7 @@ public class SeguimientoContratoSie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_SEGUIMIENTO_CONTRATO_IDSEGCONTRATO_GENERATOR", sequenceName="TB_SEGUIMIENTO_CONTRATO_IDSEGCONTRATO_SEQ", initialValue=1, allocationSize =1)
+	@SequenceGenerator(name="TB_SEGUIMIENTO_CONTRATO_IDSEGCONTRATO_GENERATOR", sequenceName="SIE.TB_SEGUIMIENTO_CONTRATO_IDSEGCONTRATO_SEQ", initialValue=1, allocationSize =1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_SEGUIMIENTO_CONTRATO_IDSEGCONTRATO_GENERATOR")
 	private Integer idsegcontrato;
 

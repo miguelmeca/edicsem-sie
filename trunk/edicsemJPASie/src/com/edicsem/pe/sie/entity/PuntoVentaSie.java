@@ -49,6 +49,10 @@ public class PuntoVentaSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idtipopuntoventa")
 	private TipoPuntoVentaSie tbTipoPuntoVenta;
+    
+    //bi-directional many-to-one association to ContratoSie
+  	@OneToMany(mappedBy="tbPuntoVenta")
+  	private Set<ContratoSie> tbContratos;
 	
 	//bi-directional many-to-one association to EstadoGeneralSie
     @ManyToOne
@@ -180,6 +184,14 @@ public class PuntoVentaSie implements Serializable {
 
 	public void setTbTipoPuntoVenta(TipoPuntoVentaSie tbTipoPuntoVenta) {
 		this.tbTipoPuntoVenta = tbTipoPuntoVenta;
+	}
+
+	public Set<ContratoSie> getTbContratos() {
+		return tbContratos;
+	}
+
+	public void setTbContratos(Set<ContratoSie> tbContratos) {
+		this.tbContratos = tbContratos;
 	}
 	
 }
