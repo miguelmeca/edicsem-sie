@@ -114,14 +114,14 @@ public class ReporteKardexForm extends BaseMantenimientoAbstractAction{
 		ReporteParams parametros = new ReporteParams();
 		
 		try {
-			parametros.setJasperFileName(Constants.REPORTE_KARDEX_LIST);
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_hhmmss");
+			parametros.setJasperFileName(Constants.REPORTE_KARDEX_JASPER);
+			SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy_hhmmss");
 			Map criteria = new HashMap();
-			criteria.put("titulo", Constants.REPORTE_KARDEX_LIST+"_"+ sdf.format(new Date(System.currentTimeMillis())));
-			criteria.put("almacen", idalmacen);
-			criteria.put("producto", idproducto);
-			criteria.put("fechaDesde", fechaDesde);
-			criteria.put("fechaHasta", fechaHasta);
+			criteria.put(Constants.REPORTE_TITULO, Constants.REPORTE_KARDEX_LIST+"_"+ sdf.format(new Date(System.currentTimeMillis())));
+			criteria.put(Constants.REPORTE_KARDEX_ALMACEN, idalmacen);
+			criteria.put(Constants.REPORTE_KARDEX_PRODUCTO, idproducto);
+			criteria.put(Constants.REPORTE_KARDEX_FECHA_DESDE, fechaDesde);
+			criteria.put(Constants.REPORTE_KARDEX_FECHA_HASTA, fechaHasta);
 			parametros.setQueryParams(criteria);
 			
 			HttpServletResponse response = (HttpServletResponse)context.getResponse();

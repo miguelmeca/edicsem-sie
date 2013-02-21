@@ -24,6 +24,7 @@ import com.edicsem.pe.sie.entity.FechaSie;
 import com.edicsem.pe.sie.entity.GrupoVentaSie;
 import com.edicsem.pe.sie.entity.ImporteSie;
 import com.edicsem.pe.sie.entity.MetaMesSie;
+import com.edicsem.pe.sie.entity.MotivoSie;
 import com.edicsem.pe.sie.entity.PaqueteSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.ProveedorSie;
@@ -51,6 +52,7 @@ import com.edicsem.pe.sie.service.facade.FechaService;
 import com.edicsem.pe.sie.service.facade.GrupoVentaService;
 import com.edicsem.pe.sie.service.facade.ImporteService;
 import com.edicsem.pe.sie.service.facade.MetaMesService;
+import com.edicsem.pe.sie.service.facade.MotivoService;
 import com.edicsem.pe.sie.service.facade.PaqueteService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.service.facade.ProveedorService;
@@ -89,6 +91,7 @@ public class ComboAction {
 	private Map<String, Integer> cargoEmpleadoItems = new HashMap<String, Integer>();
 	private Map<String, Integer> productoPaqueteItems = new HashMap<String, Integer>();
 	private Map<String, Integer> grupoItems = new HashMap<String, Integer>();
+	private Map<String, Integer> motivoitems = new HashMap<String, Integer>();
 	private int tipoVenta;
 	private int tipoProducto,tipoAlmacen;
 	private int cargoEmpleado;
@@ -118,7 +121,8 @@ public class ComboAction {
 	private Map<String, Integer> tipoImporteItems = new HashMap<String, Integer>();
 	private Map<String, Integer> importeItems = new HashMap<String, Integer>();
 	private Map<String, Integer> tipoPagoItems = new HashMap<String, Integer>();
-	
+	@EJB
+	private MotivoService objMotivoService;
 	@EJB
 	private TipoPuntoVentaService objTipoPuntoVentaService;
 	@EJB
@@ -1564,6 +1568,42 @@ public class ComboAction {
 	 */
 	public void setTipoClienteItems(Map<String, Integer> tipoClienteItems) {
 		this.tipoClienteItems = tipoClienteItems;
+	}
+
+	/**
+	 * @return the motivoitems
+	 */
+	public Map<String, Integer> getMotivoitems() {
+		motivoitems = new HashMap<String, Integer>();
+		List lista = new ArrayList<MotivoSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getMotivoitems()'");
+			}
+			lista = objMotivoService.listarMotivo();
+			
+			for (int i = 0; i < lista.size(); i++) {
+				MotivoSie entidad = new MotivoSie();
+				entidad = (MotivoSie) lista.get(i);
+				motivoitems.put(entidad.getDescripcion(),
+						entidad.getIdmotivo());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return motivoitems;
+	}
+
+	/**
+	 * @param motivoitems the motivoitems to set
+	 */
+	public void setMotivoitems(Map<String, Integer> motivoitems) {
+		this.motivoitems = motivoitems;
 	}
 	
 }

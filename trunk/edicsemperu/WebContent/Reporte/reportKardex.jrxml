@@ -14,10 +14,19 @@
 		</conditionalStyle>
 	</style>
 	<subDataset name="PieChartDataset" uuid="9e53ed79-36c7-4502-9d23-046264683c55"/>
+	<parameter name="fechaDesde" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaHasta" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="almacen" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
      p."idkardex" AS idkardex,
-p."idalmacenpuntosventa" as almacen,
+a."descripcion" as almacen,
      p."idproducto" AS idproducto,
      pr."descripcionproducto" AS producto,
      t."descripcion" AS tipokardexproducto,
@@ -31,10 +40,12 @@ p."idalmacenpuntosventa" as almacen,
      p."fechacreacion" AS fechacreacion
 FROM
      "sie"."tb_kardex" p inner join "sie"."tb_producto" pr on p.idproducto = pr.idproducto
-inner join  "sie"."tb_tipo_kardex_producto" t on t.idtipokardexproducto = p.idtipokardexproducto]]>
+inner join  "sie"."tb_tipo_kardex_producto" t on t.idtipokardexproducto = p.idtipokardexproducto
+inner join "sie"."tb_punto_venta" a on p.idalmacenpuntosventa =a.idpuntoventa
+where p.fechacreacion between  $P{fechaDesde} and $P{fechaHasta} ]]>
 	</queryString>
 	<field name="idkardex" class="java.lang.Integer"/>
-	<field name="almacen" class="java.lang.Integer"/>
+	<field name="almacen" class="java.lang.String"/>
 	<field name="idproducto" class="java.lang.Integer"/>
 	<field name="producto" class="java.lang.String"/>
 	<field name="tipokardexproducto" class="java.lang.String"/>
@@ -51,7 +62,7 @@ inner join  "sie"."tb_tipo_kardex_producto" t on t.idtipokardexproducto = p.idti
 		<groupHeader>
 			<band height="31">
 				<frame>
-					<reportElement uuid="8ed6ef95-68bc-40cd-b65f-e33391d1058f" mode="Opaque" x="4" y="7" width="787" height="24" forecolor="#B89F7D" backcolor="#70A9C6"/>
+					<reportElement uuid="8ed6ef95-68bc-40cd-b65f-e33391d1058f" mode="Opaque" x="4" y="7" width="798" height="24" forecolor="#B89F7D" backcolor="#70A9C6"/>
 					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 						<reportElement uuid="8a4ac06e-3e82-4bf6-abe1-6307339fa81b" style="SubTitle" isPrintRepeatedValues="false" x="2" y="1" width="263" height="23" forecolor="#FFFFFF"/>
 						<textElement>
@@ -69,7 +80,7 @@ inner join  "sie"."tb_tipo_kardex_producto" t on t.idtipokardexproducto = p.idti
 				<reportElement uuid="d4f0a249-5cd9-44a0-8ee1-ef3471ff37dc" style="Title" x="18" y="0" width="91" height="77">
 					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1]]></printWhenExpression>
 				</reportElement>
-				<imageExpression><![CDATA["../images/edicsem.png"]]></imageExpression>
+				<imageExpression><![CDATA["../images/edicsem.jpg"]]></imageExpression>
 			</image>
 		</band>
 	</background>
@@ -102,49 +113,49 @@ inner join  "sie"."tb_tipo_kardex_producto" t on t.idtipokardexproducto = p.idti
 			<frame>
 				<reportElement uuid="da145658-ab84-497d-b642-a4c6cf458ad2" x="2" y="0" width="800" height="14"/>
 				<staticText>
-					<reportElement uuid="8f9cc413-e7fa-4966-999b-e1117709c113" style="Column header" positionType="Float" x="387" y="0" width="59" height="14" forecolor="#000000"/>
+					<reportElement uuid="8f9cc413-e7fa-4966-999b-e1117709c113" style="Column header" positionType="Float" x="427" y="0" width="59" height="14" forecolor="#000000"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
 					</textElement>
 					<text><![CDATA[c. salida]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="249c74b7-c682-4eda-af0c-58d360e9a5e7" style="Column header" positionType="Float" x="464" y="0" width="63" height="14" forecolor="#000000"/>
+					<reportElement uuid="249c74b7-c682-4eda-af0c-58d360e9a5e7" style="Column header" positionType="Float" x="498" y="0" width="77" height="14" forecolor="#000000"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
 					</textElement>
-					<text><![CDATA[valor uni entrada]]></text>
+					<text><![CDATA[v. u. entrada]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="c00b72b7-e610-4f7f-91e6-7517de6aaf5a" style="Column header" positionType="Float" x="534" y="0" width="91" height="14" forecolor="#000000"/>
+					<reportElement uuid="c00b72b7-e610-4f7f-91e6-7517de6aaf5a" style="Column header" positionType="Float" x="579" y="0" width="87" height="14" forecolor="#000000"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
 					</textElement>
 					<text><![CDATA[cant. existente]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="60055806-cf1a-4d87-9636-cc18a2c2c85a" style="Column header" positionType="Float" x="636" y="0" width="84" height="14" forecolor="#000000"/>
+					<reportElement uuid="60055806-cf1a-4d87-9636-cc18a2c2c85a" style="Column header" positionType="Float" x="670" y="0" width="61" height="14" forecolor="#000000"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
 					</textElement>
-					<text><![CDATA[valor unitario]]></text>
+					<text><![CDATA[valor unit.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="a261adaa-e214-4b45-97fe-4e2398d23726" style="Column header" positionType="Float" x="728" y="0" width="63" height="14" forecolor="#000000"/>
+					<reportElement uuid="a261adaa-e214-4b45-97fe-4e2398d23726" style="Column header" positionType="Float" x="739" y="0" width="59" height="14" forecolor="#000000"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
 					</textElement>
 					<text><![CDATA[valor total]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="d5604113-6aee-4bb9-90c7-76b1d062c17c" positionType="Float" x="314" y="0" width="65" height="14"/>
+					<reportElement uuid="d5604113-6aee-4bb9-90c7-76b1d062c17c" positionType="Float" x="356" y="0" width="65" height="14"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="true"/>
 					</textElement>
 					<text><![CDATA[c. Entrada]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="965a67c9-bd40-4371-8b05-818b36153d0a" style="Column header" positionType="Float" x="249" y="0" width="59" height="14" forecolor="#000000"/>
+					<reportElement uuid="965a67c9-bd40-4371-8b05-818b36153d0a" style="Column header" positionType="Float" x="276" y="0" width="59" height="14" forecolor="#000000"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
 					</textElement>
@@ -152,7 +163,7 @@ inner join  "sie"."tb_tipo_kardex_producto" t on t.idtipokardexproducto = p.idti
 				</staticText>
 			</frame>
 			<staticText>
-				<reportElement uuid="7079c8b9-f6a6-4fa5-bd79-92754dacc1a7" style="Column header" positionType="Float" x="7" y="0" width="82" height="14" forecolor="#000000"/>
+				<reportElement uuid="7079c8b9-f6a6-4fa5-bd79-92754dacc1a7" style="Column header" positionType="Float" x="6" y="0" width="82" height="14" forecolor="#000000"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
 				</textElement>
@@ -175,42 +186,42 @@ inner join  "sie"."tb_tipo_kardex_producto" t on t.idtipokardexproducto = p.idti
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="23" splitType="Stretch">
+		<band height="24" splitType="Stretch">
 			<line>
-				<reportElement uuid="f9e1dc4d-e199-4fac-be6c-b0052585f779" positionType="FixRelativeToBottom" x="20" y="15" width="769" height="1"/>
+				<reportElement uuid="f9e1dc4d-e199-4fac-be6c-b0052585f779" positionType="FixRelativeToBottom" x="6" y="15" width="794" height="1"/>
 			</line>
 			<frame>
 				<reportElement uuid="2314b629-470c-4d56-a184-fe2f41d36c71" x="4" y="0" width="798" height="15"/>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement uuid="c2176651-f381-4cfe-a96b-19b65b7a1678" style="Detail" positionType="Float" x="320" y="0" width="58" height="14"/>
+					<reportElement uuid="c2176651-f381-4cfe-a96b-19b65b7a1678" style="Detail" positionType="Float" x="364" y="0" width="51" height="14"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{cantentrada}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement uuid="2e58b62e-0270-41df-b567-682402ed73ad" style="Detail" positionType="Float" x="465" y="0" width="66" height="14"/>
+					<reportElement uuid="2e58b62e-0270-41df-b567-682402ed73ad" style="Detail" positionType="Float" x="497" y="0" width="66" height="14"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{valorunitarioentrada}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement uuid="d10b21a1-23cc-467d-a495-e4c8f027e678" style="Detail" positionType="Float" x="548" y="0" width="71" height="14"/>
+					<reportElement uuid="d10b21a1-23cc-467d-a495-e4c8f027e678" style="Detail" positionType="Float" x="584" y="0" width="71" height="14"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{cantexistencia}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement uuid="955b8b23-1da6-4b3c-86e4-29016966f10a" style="Detail" positionType="Float" x="639" y="0" width="78" height="14"/>
+					<reportElement uuid="955b8b23-1da6-4b3c-86e4-29016966f10a" style="Detail" positionType="Float" x="668" y="0" width="66" height="14"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{valorunitarioexistencia}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement uuid="f2d6d68c-da3e-4f51-9b73-8e98bfca3852" style="Detail" positionType="Float" x="729" y="0" width="57" height="14"/>
+					<reportElement uuid="f2d6d68c-da3e-4f51-9b73-8e98bfca3852" style="Detail" positionType="Float" x="739" y="0" width="57" height="14"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
 					</textElement>
@@ -233,12 +244,12 @@ inner join  "sie"."tb_tipo_kardex_producto" t on t.idtipokardexproducto = p.idti
 				<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="02700295-91d1-424a-bcd6-6d1e684f0106" x="392" y="0" width="66" height="14"/>
+				<reportElement uuid="02700295-91d1-424a-bcd6-6d1e684f0106" x="425" y="0" width="66" height="14"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{cantsalida}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="260e11c9-42eb-48af-b3b2-53e41b102eed" x="256" y="2" width="65" height="14"/>
+				<reportElement uuid="260e11c9-42eb-48af-b3b2-53e41b102eed" x="260" y="2" width="108" height="14"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{almacen}]]></textFieldExpression>
 			</textField>

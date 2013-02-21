@@ -9,16 +9,16 @@
 	<script language="JavaScript" type="text/javascript">
 		window.history.forward(-1);
 	</script>
-		<h1 class="title ui-widget-header ui-corner-all">Refinanciar Contrato</h1>
+		<h1 class="title ui-widget-header ui-corner-all">#{message['gestion.contrato.tittle']}</h1>
 		<h:form id="formConsultaContrato">
 		<p:messages id="messages" showDetail="true"  closable="true"/>
 		<p:panel>
-		<p:fieldset id="fi" legend="Consultar Contrato">
+		<p:fieldset id="fi" legend="#{message['gestion.contrato.buscar']}">
 			
-		<p:selectOneRadio  value="#{contratoForm.radio}" onchange="" >  
-	        <f:selectItem itemLabel="Numero de Documento" itemValue="1"/>
-	        <f:selectItem itemLabel="Código de Contrato" itemValue="2"/>
-	        <f:selectItem itemLabel="Nombres Completos" itemValue="3"/>
+		<p:selectOneRadio  value="#{contratoForm.radio}"   >  
+	        <f:selectItem itemLabel="#{message['gestion.contrato.opcion1']}" itemValue="1"/>
+	        <f:selectItem itemLabel="#{message['gestion.contrato.opcion2']}" itemValue="2"/>
+	        <f:selectItem itemLabel="#{message['gestion.contrato.opcion3']}" itemValue="3"/>
 	        <p:ajax update="fi" />
         </p:selectOneRadio>
         <h:panelGrid columns="3" rendered="#{contratoForm.radio==1}" >
@@ -58,13 +58,13 @@
 			<p:inputText id="apm" value="#{contratoForm.apeMatCliente}" />
 			<p:message for="apm"  />
 			</h:panelGrid>
-			<p:commandButton value="Buscar" action="#{contratoForm.consultar}" update="message" ajax="false"
+			<p:commandButton value="#{message['gestion.contrato.busqueda']}" action="#{contratoForm.consultar}" update="messages" ajax="false"
 				icon="ui-icon-search"/>
 			</p:fieldset>
 				
 				<h:panelGrid  rendered="#{contratoForm.tamanoLista>1}" >
 					<p:dataTable value="#{contratoForm.contratoXClienteList}"  
-					var="c" style="width:800px" emptyMessage="No se encontraron resultados" >
+					var="c" style="width:800px" emptyMessage="#{message['rsltd.empty']}" >
 						
 						<f:facet name="header">
 							<h:outputLabel value="#{message['rsltd.datatable']}" />
@@ -228,18 +228,16 @@
 				<h:outputText value="#{message['contrato.producto.precio.mensual']}" />
 				<p:spinner value="#{contratoForm.precioMensual}" size="4"   min="1"  />
 				
-				<h:outputText value="#{message['contrato.producto.precio.mensual']}" />
+				<h:outputText value="#{message['contrato.producto.fecha.mensual']}" />
 				<p:calendar value="#{contratoForm.fechaMensual}" pattern="dd/MM/yyyy" />
 				
-				<p:commandButton value="Agregar cuota" action="#{contratoForm.addCuota}" update="listaCobranzasEdit" ajax="false" icon="ui-icon-plus"/>
+				<p:commandButton value="#{message['gestion.add.cuota']}" action="#{contratoForm.addCuota}" update="listaCobranzasEdit,messages" ajax="false" icon="ui-icon-plus"/>
 				</h:panelGrid>
 				</p:fieldset>
 				<p:dataTable id="listaCobranzasEdit" var="c" value="#{contratoForm.cobranzaList}" editable="true" style=" width:100% " 
 					rowStyleClass="#{contratoForm.dhoy le  c.fecvencimiento  ? null: (empty c.fecpago? 'colorRojo' : 'colorVerde')}">
 		
-		        <f:facet name="header">
-		            Editar Cobranzas
-		        </f:facet>
+		        <f:facet name="header"> Editar Cobranzas </f:facet>
 		
 		        <p:ajax event="rowEdit" listener="#{contratoForm.onEdit}"  update="listaCobranzasEdit"/>
 		        <p:ajax event="rowEditCancel" listener="#{contratoForm.onCancel}" update="listaCobranzasEdit" />
@@ -318,26 +316,30 @@
 		        <p:inputText id="totalacumulado2" value="#{contratoForm.totalacumulado}" readonly="true" />
 		        </p:outputPanel>
 		        </h:panelGrid>
-			    
 			   </p:fieldset>
 			   
-			   <p:fieldset legend="Gestión de Contrato"  style="margin-top:30px" >
+			   <p:fieldset legend="#{message['gestion.tittle']}"  style="margin-top:30px" >
 					<h:panelGrid columns="2" cellpadding="3">
 					<h:outputText value="#{message['consulta.contrato.estado']}" />
 					<p:selectOneMenu value="#{contratoForm.estadoRefinan}" required="true" style="width:220px">
 						<f:selectItems value="#{comboAction.estadoitems}" />
 					</p:selectOneMenu>
 					
-					<h:outputText value="Observación" />
+					<h:outputText value="#{message['gestion.contrato.obs']}" />
 					<p:inputTextarea value="#{contratoForm.objSeguimiento.observacion}" size="20" maxlength="500" cols="30"  rows="3" />
 					
-					<h:outputText value="Documento sustentatorio" />
-					<p:fileUpload fileUploadListener="#{contratoForm.cargarArchivoSustentatorio}" immediate="true"
+					<h:outputText value="#{message['gestion.contrato.doc']}" />
+					<p:fileUpload fileUploadListener="#{contratoForm.cargarArchivoSustentatorio}" immediate="true" update="messages"
 					label="Cargar archivo" allowTypes="/(\.|\/)(gif|jpe?g|png|doc|docx|pdf)$/" cancelLabel="Cancelar" uploadLabel="Subir"
 					description="Seleccione archivo" multiple="false" customUI="true" required="true">
 					</p:fileUpload>
 					
-					<p:commandButton value="Registrar Gestión" action="#{contratoForm.registrarGestion}" update="messages" ajax="false"
+					<h:outputText value="#{message['consulta.contrato.motivo']}" />
+					<p:selectOneMenu value="#{contratoForm.idMotivo}" style="width:220px">
+						<f:selectItems value="#{comboAction.motivoitems}" />
+					</p:selectOneMenu>
+					
+					<p:commandButton value="#{message['gestion.contrato.registrar']}" action="#{contratoForm.registrarGestion}" update="messages" ajax="false"
 					icon="ui-icon-disk"/>
 					
 			   		</h:panelGrid>

@@ -11,53 +11,50 @@
 	</script>
 		<h1 class="title ui-widget-header ui-corner-all">Reporte Cliente</h1>
 		<h:form id="formConsultaCliente">
-		<p:messages showDetail="true"/>
+		<p:messages id="message" showDetail="true"/>
 		<p:panel>
 		<p:fieldset legend="#{message['reporte.consulta.cliente']}" style="margin-top:30px">
 			<h:panelGrid columns="3" cellpadding="3" >
 			  <h:outputText value="#{message['reporte.tipo.cliente']}" />
-				<p:selectOneMenu  style="width:165px" value="#{reporte.idTipoCliente}" required="true" 
+				<p:selectOneMenu  style="width:165px" value="#{reporteCliente.idTipoCliente}" required="true" 
 				requiredMessage="#{message['reporte.tipo.cliente.validation']}" >
 				<f:selectItem itemLabel="seleccione tipo" itemValue="{null}"/>
 				<f:selectItems value="#{comboAction.tipoClienteItems}" />
 				</p:selectOneMenu>
-				<p:commandButton value="Buscar" action="#{reporte.listarCliente}" update="message" ajax="false"
+				<p:commandButton value="Buscar" action="#{reporteCliente.listarCliente}" update="message" ajax="false"
 				icon="ui-icon-search"/>
 			</h:panelGrid>
 		</p:fieldset>
 				
 				<p:spacer height="30px" />
-				<p:dataTable value="#{reporte.lstClientesReporting}"  paginator="true" rows="10"
+				<p:dataTable value="#{reporteCliente.lstClientesReporting}"  paginator="true" rows="10"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				rowsPerPageTemplate="5,10,15"
 					var="c" style="width:800px" emptyMessage="No se encontraron resultados" >
-						
-						<f:facet name="header">
-							<h:outputLabel value="#{message['rsltd.datatable']}" />
-						</f:facet>
-						
-						<p:column headerText="Ape. Paterno"  >
-		                    <h:outputText value="#{c.apepatcliente}" />
-		                </p:column>
-		                
-		                <p:column headerText="Ape. Materno"  >
-		                    <h:outputText value="#{c.apematcliente}" />
-		                </p:column>
-		                <p:column headerText="Número doc"  >
-		                    <h:outputText value="#{c.numdocumento}" />
-		        </p:column>
+					<f:facet name="header">
+						<h:outputLabel value="#{message['rsltd.datatable']}" />
+					</f:facet>
+					<p:column headerText="Ape. Paterno"  >
+		                <h:outputText value="#{c.apepatcliente}" />
+		            </p:column>
+		            <p:column headerText="Ape. Materno"  >
+		                 <h:outputText value="#{c.apematcliente}" />
+		            </p:column>
+		            <p:column headerText="Número doc"  >
+		                 <h:outputText value="#{c.numdocumento}" />
+		            </p:column>
 		    </p:dataTable>
 		    <div align="center"  style="margin-top:30px" >
-		     	<h:graphicImage value="/images/Reporting_pdf.png" />
-				<p:commandLink action="#{reporte.ReportingClientes}" value="exportar PDF" ajax="false" 
-				title="Exportar a PDF el Reporte de clientes"  disabled="#{reporte.cantLista!=0? false:true}">
-				<f:setPropertyActionListener target="#{reporte.contentType}" value="pdf"></f:setPropertyActionListener>
+		     	<h:graphicImage value="/images/Reporting_pdf.png" style="width:40px;height:40px"/>
+				<p:commandLink action="#{reporte.ReportingClientes}" value="#{message['reporte.exportar.pdf']}" ajax="false" 
+				disabled="#{reporteCliente.cantLista!=0? false:true}">
+				<f:setPropertyActionListener target="#{reporte.contentType}" value="pdf"/>
 				</p:commandLink>
 				
-				<h:graphicImage value="/images/excel_icon.PNG" />
-				<p:commandLink action="#{reporte.ReportingClientes}" value="exportar EXCEL" ajax="false" 
-				title="Exportar a PDF el Reporte de clientes"  disabled="#{reporte.cantLista!=0? false:true}">
-				<f:setPropertyActionListener target="#{reporte.contentType}" value="xls"></f:setPropertyActionListener>
+				<h:graphicImage value="/images/excel_icon.PNG" style="width:40px;height:40px"/>
+				<p:commandLink action="#{reporte.ReportingClientes}" value="#{message['reporte.exportar.xls']}" ajax="false" 
+				disabled="#{reporteCliente.cantLista!=0? false:true}">
+				<f:setPropertyActionListener target="#{reporte.contentType}" value="xls"/>
 				</p:commandLink>
 			</div>
 		    </p:panel>

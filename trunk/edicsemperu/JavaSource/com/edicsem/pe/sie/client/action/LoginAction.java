@@ -241,7 +241,7 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 		 passActual=null;
 		 passConfirma1=null;
 		 passConfirma2=null;
-		return getViewMant();
+		return null;
 	}
 	
 	/* (non-Javadoc)
