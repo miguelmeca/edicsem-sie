@@ -80,6 +80,11 @@ public class ContratoSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idempresa")
 	private EmpresaSie tbEmpresa;
+    
+    //bi-directional many-to-one association to PuntoVentaSie
+    @ManyToOne
+	@JoinColumn(name="idpuntoventa")
+	private PuntoVentaSie tbPuntoVenta;
 
 	//bi-directional many-to-one association to EstadoGeneralSie
     @ManyToOne
@@ -322,6 +327,14 @@ public class ContratoSie implements Serializable {
 	public void setTbSeguimientoContrato(
 			Set<SeguimientoContratoSie> tbSeguimientoContrato) {
 		this.tbSeguimientoContrato = tbSeguimientoContrato;
+	}
+
+	public PuntoVentaSie getTbPuntoVenta() {
+		return tbPuntoVenta;
+	}
+
+	public void setTbPuntoVenta(PuntoVentaSie tbPuntoVenta) {
+		this.tbPuntoVenta = tbPuntoVenta;
 	}
 	
 }
