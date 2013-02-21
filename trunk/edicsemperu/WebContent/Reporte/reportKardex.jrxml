@@ -17,6 +17,7 @@
 	<queryString>
 		<![CDATA[SELECT
      p."idkardex" AS idkardex,
+p."idalmacenpuntosventa" as almacen,
      p."idproducto" AS idproducto,
      pr."descripcionproducto" AS producto,
      t."descripcion" AS tipokardexproducto,
@@ -33,6 +34,7 @@ FROM
 inner join  "sie"."tb_tipo_kardex_producto" t on t.idtipokardexproducto = p.idtipokardexproducto]]>
 	</queryString>
 	<field name="idkardex" class="java.lang.Integer"/>
+	<field name="almacen" class="java.lang.Integer"/>
 	<field name="idproducto" class="java.lang.Integer"/>
 	<field name="producto" class="java.lang.String"/>
 	<field name="tipokardexproducto" class="java.lang.String"/>
@@ -67,7 +69,7 @@ inner join  "sie"."tb_tipo_kardex_producto" t on t.idtipokardexproducto = p.idti
 				<reportElement uuid="d4f0a249-5cd9-44a0-8ee1-ef3471ff37dc" style="Title" x="18" y="0" width="91" height="77">
 					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1]]></printWhenExpression>
 				</reportElement>
-				<imageExpression><![CDATA["../images/edicsem.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["../images/edicsem.png"]]></imageExpression>
 			</image>
 		</band>
 	</background>
@@ -98,66 +100,73 @@ inner join  "sie"."tb_tipo_kardex_producto" t on t.idtipokardexproducto = p.idti
 	<columnHeader>
 		<band height="14" splitType="Stretch">
 			<frame>
-				<reportElement uuid="da145658-ab84-497d-b642-a4c6cf458ad2" x="4" y="0" width="787" height="14"/>
+				<reportElement uuid="da145658-ab84-497d-b642-a4c6cf458ad2" x="2" y="0" width="800" height="14"/>
 				<staticText>
-					<reportElement uuid="8f9cc413-e7fa-4966-999b-e1117709c113" style="Column header" positionType="Float" x="363" y="0" width="63" height="14" forecolor="#000000"/>
+					<reportElement uuid="8f9cc413-e7fa-4966-999b-e1117709c113" style="Column header" positionType="Float" x="387" y="0" width="59" height="14" forecolor="#000000"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
 					</textElement>
-					<text><![CDATA[cantsalida]]></text>
+					<text><![CDATA[c. salida]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="249c74b7-c682-4eda-af0c-58d360e9a5e7" style="Column header" positionType="Float" x="440" y="0" width="63" height="14" forecolor="#000000"/>
+					<reportElement uuid="249c74b7-c682-4eda-af0c-58d360e9a5e7" style="Column header" positionType="Float" x="464" y="0" width="63" height="14" forecolor="#000000"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
 					</textElement>
 					<text><![CDATA[valor uni entrada]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="c00b72b7-e610-4f7f-91e6-7517de6aaf5a" style="Column header" positionType="Float" x="512" y="0" width="91" height="14" forecolor="#000000"/>
+					<reportElement uuid="c00b72b7-e610-4f7f-91e6-7517de6aaf5a" style="Column header" positionType="Float" x="534" y="0" width="91" height="14" forecolor="#000000"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
 					</textElement>
 					<text><![CDATA[cant. existente]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="60055806-cf1a-4d87-9636-cc18a2c2c85a" style="Column header" positionType="Float" x="612" y="0" width="84" height="14" forecolor="#000000"/>
+					<reportElement uuid="60055806-cf1a-4d87-9636-cc18a2c2c85a" style="Column header" positionType="Float" x="636" y="0" width="84" height="14" forecolor="#000000"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
 					</textElement>
 					<text><![CDATA[valor unitario]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="a261adaa-e214-4b45-97fe-4e2398d23726" style="Column header" positionType="Float" x="701" y="0" width="63" height="14" forecolor="#000000"/>
+					<reportElement uuid="a261adaa-e214-4b45-97fe-4e2398d23726" style="Column header" positionType="Float" x="728" y="0" width="63" height="14" forecolor="#000000"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
 					</textElement>
-					<text><![CDATA[valortotal]]></text>
+					<text><![CDATA[valor total]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="d5604113-6aee-4bb9-90c7-76b1d062c17c" positionType="Float" x="273" y="0" width="86" height="14"/>
+					<reportElement uuid="d5604113-6aee-4bb9-90c7-76b1d062c17c" positionType="Float" x="314" y="0" width="65" height="14"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="true"/>
 					</textElement>
-					<text><![CDATA[cant. Entrada]]></text>
+					<text><![CDATA[c. Entrada]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="965a67c9-bd40-4371-8b05-818b36153d0a" style="Column header" positionType="Float" x="249" y="0" width="59" height="14" forecolor="#000000"/>
+					<textElement>
+						<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[Almacén]]></text>
 				</staticText>
 			</frame>
 			<staticText>
-				<reportElement uuid="7079c8b9-f6a6-4fa5-bd79-92754dacc1a7" style="Column header" positionType="Float" x="13" y="0" width="82" height="14" forecolor="#000000"/>
+				<reportElement uuid="7079c8b9-f6a6-4fa5-bd79-92754dacc1a7" style="Column header" positionType="Float" x="7" y="0" width="82" height="14" forecolor="#000000"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Fec. Creación]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="965a67c9-bd40-4371-8b05-818b36153d0a" style="Column header" positionType="Float" x="174" y="0" width="89" height="14" forecolor="#000000"/>
+				<reportElement uuid="965a67c9-bd40-4371-8b05-818b36153d0a" style="Column header" positionType="Float" x="166" y="0" width="59" height="14" forecolor="#000000"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[Producto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="47daf479-2413-46f8-952a-bbfc61837378" style="Column header" positionType="Float" x="101" y="0" width="47" height="14" forecolor="#000000"/>
+				<reportElement uuid="47daf479-2413-46f8-952a-bbfc61837378" style="Column header" positionType="Float" x="99" y="0" width="38" height="14" forecolor="#000000"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
 				</textElement>
@@ -166,67 +175,72 @@ inner join  "sie"."tb_tipo_kardex_producto" t on t.idtipokardexproducto = p.idti
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="61" splitType="Stretch">
+		<band height="23" splitType="Stretch">
 			<line>
 				<reportElement uuid="f9e1dc4d-e199-4fac-be6c-b0052585f779" positionType="FixRelativeToBottom" x="20" y="15" width="769" height="1"/>
 			</line>
 			<frame>
-				<reportElement uuid="2314b629-470c-4d56-a184-fe2f41d36c71" x="4" y="0" width="785" height="15"/>
+				<reportElement uuid="2314b629-470c-4d56-a184-fe2f41d36c71" x="4" y="0" width="798" height="15"/>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement uuid="c2176651-f381-4cfe-a96b-19b65b7a1678" style="Detail" positionType="Float" x="292" y="0" width="58" height="14"/>
+					<reportElement uuid="c2176651-f381-4cfe-a96b-19b65b7a1678" style="Detail" positionType="Float" x="320" y="0" width="58" height="14"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{cantentrada}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement uuid="2e58b62e-0270-41df-b567-682402ed73ad" style="Detail" positionType="Float" x="436" y="0" width="66" height="14"/>
+					<reportElement uuid="2e58b62e-0270-41df-b567-682402ed73ad" style="Detail" positionType="Float" x="465" y="0" width="66" height="14"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{valorunitarioentrada}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement uuid="d10b21a1-23cc-467d-a495-e4c8f027e678" style="Detail" positionType="Float" x="527" y="0" width="71" height="14"/>
+					<reportElement uuid="d10b21a1-23cc-467d-a495-e4c8f027e678" style="Detail" positionType="Float" x="548" y="0" width="71" height="14"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{cantexistencia}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement uuid="955b8b23-1da6-4b3c-86e4-29016966f10a" style="Detail" positionType="Float" x="615" y="0" width="84" height="14"/>
+					<reportElement uuid="955b8b23-1da6-4b3c-86e4-29016966f10a" style="Detail" positionType="Float" x="639" y="0" width="78" height="14"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{valorunitarioexistencia}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement uuid="f2d6d68c-da3e-4f51-9b73-8e98bfca3852" style="Detail" positionType="Float" x="704" y="0" width="64" height="14"/>
+					<reportElement uuid="f2d6d68c-da3e-4f51-9b73-8e98bfca3852" style="Detail" positionType="Float" x="729" y="0" width="57" height="14"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{valortotal}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement uuid="80083c22-0160-4425-bbc5-4286fa80360c" x="5" y="0" width="80" height="14"/>
+					<reportElement uuid="80083c22-0160-4425-bbc5-4286fa80360c" x="2" y="0" width="80" height="14"/>
 					<textElement/>
 					<textFieldExpression><![CDATA[$F{fechacreacion}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement uuid="aca429f9-b8e9-4888-8258-ebe321bd1dfd" x="89" y="1" width="72" height="14"/>
+					<reportElement uuid="aca429f9-b8e9-4888-8258-ebe321bd1dfd" x="85" y="1" width="50" height="14"/>
 					<textElement/>
 					<textFieldExpression><![CDATA[$F{tipokardexproducto}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<textField>
-				<reportElement uuid="247b7eb8-0fa6-4816-908f-8ce897f9b765" x="165" y="0" width="104" height="16"/>
+				<reportElement uuid="247b7eb8-0fa6-4816-908f-8ce897f9b765" x="139" y="0" width="117" height="16"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="02700295-91d1-424a-bcd6-6d1e684f0106" x="381" y="0" width="66" height="14"/>
+				<reportElement uuid="02700295-91d1-424a-bcd6-6d1e684f0106" x="392" y="0" width="66" height="14"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{cantsalida}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="260e11c9-42eb-48af-b3b2-53e41b102eed" x="256" y="2" width="65" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{almacen}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
