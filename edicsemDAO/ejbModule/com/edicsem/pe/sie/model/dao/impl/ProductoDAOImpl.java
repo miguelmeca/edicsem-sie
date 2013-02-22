@@ -155,8 +155,19 @@ public class ProductoDAOImpl implements ProductoDAO {
 		}
 		return bandera;
 	}
-	
 
-	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ProductoDAO#listarCodigosProductos()
+	 */
+	public List<String> listarCodigosProductos() {
+		List lista = null;
+		try {
+			Query q = em.createQuery("SELECT e.codproducto FROM ProductoSie ");
+			lista = q.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 	
 }
