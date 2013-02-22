@@ -18,7 +18,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
 import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 
 /**
  * The persistent class for the tb_contrato database table.
@@ -27,6 +30,7 @@ import com.edicsem.pe.sie.util.constants.Constants;
 @Entity
 @Table(name="tb_contrato", schema = Constants.ESQUEMA_SIE_POSTGRE)
 public class ContratoSie implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -110,6 +114,9 @@ public class ContratoSie implements Serializable {
   	//bi-directional many-to-one association to SeguimientoContratoSie
   	@OneToMany(mappedBy="tbContrato")
   	private Set<SeguimientoContratoSie> tbSeguimientoContrato;
+  	
+  	@Transient
+	private String fechaCreacionString;
 	
     public ContratoSie() {
     }
@@ -337,4 +344,19 @@ public class ContratoSie implements Serializable {
 		this.tbPuntoVenta = tbPuntoVenta;
 	}
 	
+	/**
+	 * @return the fechaCreacionString
+	 */
+	public String getFechaCreacionString() {
+		fechaCreacionString = DateUtil.formatoString(getFechacreacion(), "dd/MM/yyyy");
+		return fechaCreacionString;
+	}
+
+	/**
+	 * @param fechaCreacionString the fechaCreacionString to set
+	 */
+	public void setFechaCreacionString(String fechaCreacionString) {
+		this.fechaCreacionString = fechaCreacionString;
+	}
+
 }
