@@ -15,6 +15,6 @@ public interface ProductoService {
 	//MANTENIMIENTO EMPRESA VALIDACIONES PRODUCTO Y EMPLEADO
 	public abstract List listarProductoxEmpresas(int parametroObtenido);	
 	public abstract boolean verificarTipoProducto(int tipoProducto);
-	
+	public abstract List  listarCodigosProductos();
 	
 }
