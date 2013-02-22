@@ -71,7 +71,9 @@
 	   </p:column>
 	   <f:facet name="footer">
 		<div align="left">
-	     <h:commandLink value="Nuevo" action="#{mantenimientoProveedorFormAction.agregar}" />
+			<p:commandButton id="btnNuevo" value="#{message['proveedor.nuevo']}"  action="#{mantenimientoProveedorFormAction.agregar}"  
+			 title="#{message['proveedor.tittle']}" icon="ui-icon-star"/>
+			 <p:tooltip for="btnNuevo"/>
 		</div>
 	   </f:facet>
 	  </p:dataTable>		

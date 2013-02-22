@@ -17,13 +17,19 @@
 					rowsPerPageTemplate="5,10,15" widgetVar="table"
 					emptyMessage="No se encontro registros">
 					<f:facet name="header">Mantenimiento Producto </f:facet>
-					<p:column>
+					<f:facet name="header">
+					    <p:outputPanel>
+						 <h:outputText value="Buscar :"/>
+						 <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px; align=Left; "/>
+						</p:outputPanel>
+					</f:facet>
+					<p:column sortBy="#{p.codproducto}" id="codigo" filterBy="#{p.codproducto}" headerText="Codigo" >
 						<f:facet name="header">
 							<h:outputText value="Codigo" />
 						</f:facet>
 						<h:outputText value="#{p.codproducto}" />
 					</p:column>
-					<p:column>
+					<p:column sortBy="#{p.descripcionproducto}" filterBy="#{p.descripcionproducto}" headerText="#{message['mantenimiento.productoList.descripcion']}">
 						<f:facet name="header">
 							<h:outputText value="#{message['mantenimiento.productoList.descripcion']}"/>
 						</f:facet>

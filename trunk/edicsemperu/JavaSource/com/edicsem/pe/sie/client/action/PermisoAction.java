@@ -56,7 +56,7 @@ public class PermisoAction extends BaseMantenimientoAbstractAction {
 	
 	public String agregarListas() {
 		log.info("agregarrr ()");
-	
+		
 		permisosString = new DualListModel<String>(new ArrayList<String>(), new ArrayList<String>());
 		log.info("listarPermisosXEmpleado()mmm");
 		targets= objPermisoService.listarPermisosXEmpleado(idempleado);

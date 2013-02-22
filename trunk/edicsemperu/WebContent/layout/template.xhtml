@@ -103,6 +103,10 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 <!--  FIN Validar los Datos de un Formulario -->
 	</h:head>
+	<p:dialog modal="true" widgetVar="statusDialogSI" closeOnEscape="false"
+		header="Migrando Sistemas Integrados" draggable="false" closable="false">
+		<p:graphicImage value="/images/ajaxloadingbar.gif" />
+	</p:dialog>
 	<f:loadBundle var="message"
 		basename="com.edicsem.pe.sie.client.properties.ApplicationResources" />
 	<p:layout fullPage="true">
