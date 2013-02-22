@@ -159,11 +159,9 @@ public class ContratoServiceImpl implements ContratoService {
 		return objContratoDao.listarClientePorParametro(numDocumento, codigoContrato, nombreCliente, apePat, apeMat);
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.ContratoService#insertMigracion(java.util.List)
-	 */
-	public void insertMigracion(List<SistemaIntegradoDTO> sistMig) {
+	public String insertMigracion(List<SistemaIntegradoDTO> sistMig) {
 		log.info("insertMigracion() *");
+		String mensaje=null;
 		ClienteSie cli = new ClienteSie();
 		ContratoSie con = new ContratoSie();
 		TelefonoPersonaSie tel = new TelefonoPersonaSie();
@@ -175,6 +173,8 @@ public class ContratoServiceImpl implements ContratoService {
 		String codigoContr = "";
 		boolean isadd=false;
 		List<UbigeoSie> ubi = null;
+		try {
+		
 		for (int i = 0; i < sistMig.size(); i++) {
 			
 			SistemaIntegradoDTO s = sistMig.get(i);
@@ -206,8 +206,8 @@ public class ContratoServiceImpl implements ContratoService {
 				s.setDistrito("SAN JUAN DE LURIGANCHO");
 			}
 			if(!s.getCodContrato().equals(codigoContr)){
-				 telList= new ArrayList<TelefonoPersonaSie>();
-				 domList= new ArrayList<DomicilioPersonaSie>();
+				telList= new ArrayList<TelefonoPersonaSie>();
+				domList= new ArrayList<DomicilioPersonaSie>();
 				log.info("nuevo contrato  --> "+s.getCodContrato()+"  "+codigoContr);
 				cli = new ClienteSie();
 				con = new ContratoSie();
@@ -502,6 +502,12 @@ public class ContratoServiceImpl implements ContratoService {
 				codigoContr=  con.getCodcontrato();
 			}
 		}
+		
+		} catch (Exception e) {
+			mensaje =e.getMessage()+"Error en el contrato "+con.getCodcontrato();
+		}
+		
+		return mensaje;
 	}
 	
 	/* (non-Javadoc)
@@ -511,7 +517,10 @@ public class ContratoServiceImpl implements ContratoService {
 		return objContratoDao.obtenerCodigo();
 	}
 	
-public void updateEntregasPeru(List<EntregasPeruDTO> credito) {
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ContratoService#updateEntregasPeru(java.util.List)
+	 */
+	public void updateEntregasPeru(List<EntregasPeruDTO> credito) {
 		
 		ContratoSie entre = new ContratoSie();
 		for (EntregasPeruDTO entregasPeruDTO : credito) {

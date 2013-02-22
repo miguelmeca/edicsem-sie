@@ -36,9 +36,7 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 	public void insertCobranzaOpera(List<String> empleadoList) {
 		List<CobranzaSie> cobranzaSinAsignarTmp = new ArrayList<CobranzaSie>();
 		List<CobranzaSie> cobranzaList  = objCobranzaDao.listarCobranzas();
-		for (int i = 0; i < cobranzaList.size(); i++) {
-			log.info(" ***2  "+cobranzaList.get(i).getIdcontrato());
-		}
+		
 		boolean isvalidate=true;
 		List<CobranzaSie> puntualtmp = new ArrayList<CobranzaSie>(),regulartmp= new ArrayList<CobranzaSie>(),morosotmp= new ArrayList<CobranzaSie>(), extremotmp= new ArrayList<CobranzaSie>();
 		
@@ -57,23 +55,17 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 					log.info(" >0 ");
 					for (int j = 0; j < puntualtmp.size(); j++) {
 						isvalidate=false;
-						log.info( " LISTA:  "+listaContrato +"  c "+cobranzaList.get(i).getIdcontrato());
 						if(listaContrato.contains(cobranzaList.get(i).getIdcontrato())){
-							log.info( " contains  ");
 							isvalidate=false;
 						}else{
-							log.info( " noooooooooooo contains  ");
 							isvalidate=true;
 						}
 						 if(isvalidate){
-							log.info(" isvalidate ");
 							listaContrato.add(cobranzaList.get(i).getIdcontrato());
 							puntualtmp.add(cobranzaList.get(i));
-							log.info(" LISTA:  "+listaContrato+" tamaño  "+listaContrato.size());
 						}
 					}
 				}else {
-					log.info(" primeraa ");
 					listaContrato.add(cobranzaList.get(i).getIdcontrato());
 					puntualtmp.add(cobranzaList.get(i));
 					log.info(" tamaño  "+listaContrato);
@@ -122,7 +114,7 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 					log.info(" -- puntuales -- "+ puntualtmp.get(i).getIdcontrato());
 					CobranzaOperadoraSie cobranzaopera= new CobranzaOperadoraSie();
 					CobranzaSie cobranza = objCobranzaDao.findCobranza(puntualtmp.get(i).getIdcobranza());
-					cobranzaopera.setTbEmpleado(objEmpleadoDao.buscarEmpleado(Integer.parseInt(empleadoList.get(j))));
+					cobranzaopera.setTbEmpleado(objEmpleadoDao.buscarEmpleado(empleadoList.get(j)));
 					cobranzaopera.setTbCobranza(cobranza);
 					log.info("--> " +cobranzaopera.getTbEmpleado().getNombresCompletos()+", "+cobranzaopera.getTbCobranza().getTbCliente().getIdcliente());
 					objCobranzaOperaDao.insertCobranzaOpera(cobranzaopera);

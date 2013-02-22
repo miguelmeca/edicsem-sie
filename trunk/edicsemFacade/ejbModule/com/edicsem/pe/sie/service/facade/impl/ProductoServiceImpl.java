@@ -66,19 +66,27 @@ public class ProductoServiceImpl implements ProductoService {
 		return objProductoDao.listarProductosXTipo(tipoProducto); 
 	}
 	
-	
-	
-
-
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ProductoService#listarProductoxEmpresas(int)
+	 */
 	public List listarProductoxEmpresas(int parametroObtenido) {
 		log.info("dentro del servicio listar Producto x Empresas ");
 		return objProductoDao.listarProductoxEmpresas(parametroObtenido);
 	}
-
-
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ProductoService#verificarTipoProducto(int)
+	 */
 	public boolean verificarTipoProducto(int tipoProducto) {
 		log.info("en el servicio" + tipoProducto);
 		return objProductoDao.verificarTipoProducto(tipoProducto);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ProductoService#listarCodigosProductos()
+	 */
+	public List listarCodigosProductos() {
+		return objProductoDao.listarCodigosProductos();
 	}
 
 }
