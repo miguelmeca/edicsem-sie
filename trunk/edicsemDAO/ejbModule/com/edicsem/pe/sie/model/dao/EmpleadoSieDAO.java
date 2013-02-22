@@ -10,6 +10,7 @@ public interface EmpleadoSieDAO {
 	public abstract void actualizarEmpleado (EmpleadoSie empleado);
 	public abstract void eliminarEmpleado (int id);
 	public abstract EmpleadoSie buscarEmpleado (int id);
+	public abstract EmpleadoSie buscarEmpleado (String nombreCompleto);
 	public abstract List listarEmpleados ();
 	public abstract List listarEmpleadosXCargo(int idCargo);
 	public abstract List listarEmpleadoxEmpresas(int parametroObtenido);

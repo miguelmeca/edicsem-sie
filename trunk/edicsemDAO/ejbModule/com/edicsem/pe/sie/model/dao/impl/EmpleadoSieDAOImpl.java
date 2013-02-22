@@ -186,4 +186,24 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 		return lista;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.EmpleadoSieDAO#buscarEmpleado(java.lang.String)
+	 */
+	public EmpleadoSie buscarEmpleado(String nombreCompleto) {
+		List lista = null;
+		EmpleadoSie obj = null;
+		try {
+			Query q = em.createQuery("SELECT e FROM EmpleadoSie e " +
+					"where  e.nombreemp||' '||e.apepatemp||' '||e.apematemp like '" +nombreCompleto+"'");
+			lista = q.getResultList();
+			if(lista.size()==1){
+				obj= (EmpleadoSie) lista.get(0);
+			}
+			
+			log.info("tamano --> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();			
+		}
+		return obj;
+	}
 }
