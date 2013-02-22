@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -36,6 +38,7 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 	private int TipoProducto, idFoto=1;
 	private StreamedContent image;
 	private ProductoSie objProductoSie,selectedProducto;
+	private List<String> lista;
 	private boolean newRecord = false;
 	byte[] foto ;
 	@ManagedProperty(value = "#{productoSearch}")
@@ -54,6 +57,7 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 		objProductoSie = new ProductoSie();
 		image = null;
 		foto =null;
+		lista= new ArrayList<String>();
 	}
 
 	/*
@@ -146,9 +150,24 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 		//Capturando el empleado en session
 		HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 		EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
-		log.info(" "+sessionUsuario.getNombresCompletos());
 		try {
 			
+			lista = objProductoService.listarCodigosProductos();
+			objProductoSie.setCodproducto(objProductoSie.getCodproducto().trim().toUpperCase());
+			if(!isNewRecord()){
+				lista.remove(objProductoSie.getCodproducto());
+			}
+			int error = 0;
+			for (int i = 0; i < lista.size(); i++) {
+				if (lista.contains(objProductoSie.getCodproducto())) {
+					log.info("Error ... Ya se encuentra un código igual");
+					mensaje ="El código se encuentra asignado con otro producto";
+					paginaRetorno =productoSearch.getViewMant();
+					error = 1;
+					break;
+				}
+			}
+			if (error == 0) {
 			objProductoSie.setUsuariocreacion(sessionUsuario.getUsuario());
 			if(objProductoSie.getStkmaximo()<= objProductoSie.getStkminimoproducto()){
 				mensaje ="El stock minimo no puede ser mayor o igual al máximo";
@@ -156,9 +175,9 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
 			}
 			else if (isNewRecord()) {
-				if (image == null) {
+				if(image == null) {
 					log.info("imagen nula");
-					String rutaDefecto ="C:\\Images\\bibliaXDefecto.png";
+					String rutaDefecto = Constants.RUTA_IMAGEN_DEFECTO;
 					log.info("ruta" + rutaDefecto);
 					objProductoSie.setRutaimagenproducto(rutaDefecto);
 				}
@@ -180,7 +199,11 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 				}
 			}
-			
+			}else{
+				log.info("mensaje de error");
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+						Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			}
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 			
 		} catch (Exception e) {
@@ -339,6 +362,20 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 	 */
 	public void setSelectedProducto(ProductoSie selectedProducto) {
 		this.selectedProducto = selectedProducto;
+	}
+
+	/**
+	 * @return the lista
+	 */
+	public List<String> getLista() {
+		return lista;
+	}
+
+	/**
+	 * @param lista the lista to set
+	 */
+	public void setLista(List<String> lista) {
+		this.lista = lista;
 	}
 	
 }

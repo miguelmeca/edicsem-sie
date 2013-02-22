@@ -767,7 +767,9 @@ public class MantenimientoContratoFormAction extends
 		objClienteSie = objClienteService.findCliente(idcliente);
 		log.info("  " + objClienteSie.getIdcliente()+"  "+objClienteSie.getNombresCompletos());
 		domicilioList = objDomicilioService.listarDomicilioCliente(idcliente);
-		objDomicilioSie = domicilioList.get(0);
+		if(domicilioList.size()==1){
+			objDomicilioSie = domicilioList.get(domicilioList.size()-1);
+		}
 		UbigeoSie ubi =  objubigeoService.findUbigeo(objDomicilioSie.getTbUbigeo().getIdubigeo());
 		
 		ubigeoDefecto = ubi.getNombre();
@@ -835,7 +837,7 @@ public class MantenimientoContratoFormAction extends
 		log.info("registrarGestion()");
 		mensaje=null;
 		if(objSeguimiento.getTbMotivo()==null){
-			
+			mensaje ="Debe seleccionar un motivo";
 		}else{
 			objSeguimientoContratoService.insertSeguimientoContrato(objSeguimiento);
 		}

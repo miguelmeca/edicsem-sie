@@ -51,7 +51,7 @@
 				<p:message for="detalle" />
 				
 				<h:outputText value="#{message['mantenimiento.producto.unidad']}" rendered="#{productoForm.newRecord!=true}" />
-				<p:inputText id="unidadProducto" size="10" 
+				<p:inputText id="unidadProducto" size="10" readonly="true" 
 					value="#{productoForm.objProductoSie.unidproducto}"
 					required="true" maxlength="10"
 					requiredMessage="#{message['mantenimiento.producto.unidad.validation']}" rendered="#{productoForm.newRecord!=true}" />

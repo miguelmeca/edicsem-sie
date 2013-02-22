@@ -39,10 +39,11 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 @ManagedBean(name = "migracion")
 @SessionScoped
 public class Migracion extends BaseMantenimientoAbstractAction implements Serializable {
-
+	
 	public static Log log = LogFactory.getLog(Migracion.class);
 	private String nombreArchivo;
 	private List<SistemaIntegradoDTO> sistMig;
+	private List<String> listaContratosManual;
 	private String mensaje ;
 	
 	@EJB
@@ -58,6 +59,7 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 	public String agregar() {
 		nombreArchivo="";
 		sistMig=new ArrayList<SistemaIntegradoDTO>();
+		listaContratosManual = new ArrayList<String>();
 		mensaje ="";
 		return getViewMant();
 	}
@@ -103,22 +105,33 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 		}
 	}
 	
-	
-	public String subirBD() {
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
+	 */
+	public String insertar() throws Exception {
 		
 		log.info("subirBD()");
 		
-		objContratoService.insertMigracion(sistMig);
-		mensaje=  "Se realizó la migración exitosamente";
-		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-				Constants.MESSAGE_INFO_TITULO,mensaje);
+		if(sistMig.size()==0){
+			mensaje=  "Debe subir el excel a importar";
+			msg = new FacesMessage(FacesMessage.SEVERITY_WARN,Constants.MESSAGE_INFO_TITULO,mensaje);
+		}else{
+			mensaje = objContratoService.insertMigracion(sistMig);
+			if(mensaje ==null){
+				mensaje=  "Se realizó la migración exitosamente";
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO,mensaje);
+			}else{
+				msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,Constants.MESSAGE_INFO_TITULO,mensaje);
+			}
+		}
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
 		return null;
 	}
 
 	public String handleFileUpload(FileUploadEvent event) throws ParseException {
-	    log.info("entro file  ---> :D");
+	    log.info("handleFileUpload");
 	    mensaje=null;
 		UploadedFile file = event.getFile();
 			
@@ -263,6 +276,7 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 									sheetData.add(data);
 								}else{
 									log.info(" nombres > 4  ");
+									listaContratosManual.add(sis.getCodContrato());
 								}
 								
 							}else {
@@ -272,7 +286,10 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 					}
 				}
 				log.info(" tamano total "+sistMig.size());
-				mensaje=  "Cargó exitosamente";
+				mensaje=  "Cargó exitosamente el archivo "+nombreArchivo;
+						if( listaContratosManual.size()>0){
+							mensaje+=  	", no se cargó  "+ listaContratosManual.size()+" registros, por favor verfique Archivo Log";
+						}
 				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 						Constants.MESSAGE_INFO_TITULO,mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -292,7 +309,7 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 			}
 			}
 	    }
-		log.info("cantidad: " + sistMig.size());
+		log.info("cantidad registros pase Manual " +listaContratosManual.size() +" Cantidad registros subido a BD"+ sistMig.size());
 		return null;
 	    }
 	    

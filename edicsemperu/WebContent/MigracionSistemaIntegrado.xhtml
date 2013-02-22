@@ -6,17 +6,18 @@
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
 		<h1 class="title ui-widget-header ui-corner-all">#{message['migracion.panel']}</h1>
-		<h:form id="frmMigracionForm">
+		<h:form id="frmMigracionForm" enctype="multipart/form-data"  >
 		<p:messages id="message" showDetail="true" closable="true" />
-		<p:fileUpload fileUploadListener="#{migracion.handleFileUpload}"
-		allowTypes="/(\.|\/)(xls)$/" description="Seleccione archivo"
-		update="datatablecampana, message"/>
 		
-		<p:dataTable id="datatablecampana" var="c" value="#{migracion.sistMig}"  paginator="true" rows="15"
-		 rowsPerPageTemplate="5,10,15"  emptyMessage="No se encontraron registros"
+		<p:fileUpload fileUploadListener="#{migracion.handleFileUpload}" label="Cargar archivo"
+		allowTypes="/(\.|\/)(xls)$/" description="Seleccione archivo" multiple="false" customUI="true" 
+		update="datatablesi, message"/>
+		
+		<p:dataTable id="datatablesi" var="c" value="#{migracion.sistMig}"  paginator="true" rows="15"
+		 rowsPerPageTemplate="5,10,15"  emptyMessage="#{message['rsltd.empty']}"
 		 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
 	         
-	        <p:column headerText="Código "  >
+	        <p:column headerText="#{message['migracion.codigo']}"  >
 			<h:outputText value="#{c.codContrato}"/>
 			</p:column>
 			
@@ -45,8 +46,8 @@
 	        </p:column>
 	        
 	    </p:dataTable>
-	    	<p:commandButton value="Migrar" action="#{migracion.subirBD}" process="@all" update="message" onclick="status.show();" ajax="false" >
-			</p:commandButton>
+	    	<p:commandButton value="#{message['migracion.subirbd']}" action="#{migracion.insertar}" 
+	    	update="message" onclick="statusDialogSI.show();" ajax="false"/>
 		</h:form>
 	</ui:define>
 </ui:composition>

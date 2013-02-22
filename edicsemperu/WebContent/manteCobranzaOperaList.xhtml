@@ -5,56 +5,55 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
-		<h1 class="title ui-widget-header ui-corner-all">Seguimiento de
-			Cobranzas</h1>
+		<h1 class="title ui-widget-header ui-corner-all">#{message['cobranza.seguimiento']}</h1>
 		<h:form id="parametrosList" prependId="false">
 			<p:messages showDetail="true" />
 			
-			<p:fieldset legend="Lista de Cobranzas">
+			<p:fieldset legend="#{message['cobranza.lista']}">
 				<p:dataTable id="listaPersonas" var="p"
 					value="#{mantenimientoCobranzaOperaSearchAction.cobranzaOperaList}"
 					widgetVar="cobranzatable" emptyMessage="No se encontro registros"
 					filteredValue="#{mantenimientoCobranzaOperaSearchAction.filtrarCobranza}"
-					paginator="true" rows="10"
+					paginator="true" rows="10"  rowsPerPageTemplate="5,10,15"  
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 					<f:facet name="header">
 						<p:outputPanel>
-							<h:outputText value="Buscar :" />
+							<h:outputText value="#{message['buscar']}" />
 							<p:inputText id="globalFilter" onkeyup="cobranzatable.filter()"
 								style="width:150px; align:Left; " />
 						</p:outputPanel>
 					</f:facet>
 					<p:column filterBy="#{p.tbCobranza.tbContrato.codcontrato}">
 						<f:facet name="header">
-							<h:outputText value="Contrato" />
+							<h:outputText value="#{message['cobranza.lista.contrato']}" />
 						</f:facet>
 						<h:outputText value="#{p.tbCobranza.tbContrato.codcontrato}" />
 					</p:column>
 					<p:column filterBy="#{p.tbCobranza.tbCliente.nombresCompletos}">
 						<f:facet name="header">
-							<h:outputText value="Cliente" />
+							<h:outputText value="#{message['cobranza.lista.cliente']}" />
 						</f:facet>
 						<h:outputText value="#{p.tbCobranza.tbCliente.nombresCompletos}" />
 					</p:column>
 					<p:column filterBy="#{p.tbCobranza.cantcuotas}">
 						<f:facet name="header">
-							<h:outputText value="Nro de Cuota" />
+							<h:outputText value="#{message['cobranza.num.cuota']}" />
 						</f:facet>
 						<h:outputText value="#{p.tbCobranza.cantcuotas}" />
 					</p:column>
 					<p:column filterBy="#{p.tbCobranza.tbCliente.numdocumento}">
 						<f:facet name="header">
-							<h:outputText value="DNI" />
+							<h:outputText value="#{message['cobranza.lista.numDoc']}" />
 						</f:facet>
 						<h:outputText value="#{p.tbCobranza.tbCliente.numdocumento}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Tipo de Cliente" />
+							<h:outputText value="#{message['cobranza.lista.tipo']}" />
 						</f:facet>
 					</p:column>
-					<p:column headerText="Seleccionar">
-						<p:commandButton value="Mostrar" ajax="false"
+					<p:column headerText="#{message['cobranza.seleccionar']}">
+						<p:commandButton value="#{message['cobranza.mostrar']}" ajax="false"
 							action="#{mantenimientoCobranzaOperaSearchAction.mostrar}">
 							<f:setPropertyActionListener value="#{p}"
 								target="#{mantenimientoCobranzaOperaSearchAction.objCobranzaOpera}" />
@@ -65,129 +64,129 @@
 		</h:form>
 		<h:form id="parametrosList2" prependId="false">
 			<h:panelGrid columns="3" cellpadding="5" >
-				<p:fieldset legend="Datos del Cliente" style="margin-top:20px">
+				<p:fieldset legend="#{message['cobranza.datos.cliente']}" style="margin-top:20px">
 					<h:panelGrid columns="2" cellpadding="5" >
-						<h:outputText value="Nombres Completos " />
+						<h:outputText value="#{message['cobranza.nombre.completo']}" />
 						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.nombrecliente}"  style="font-weight:bold"/>
-						<h:outputText value="Apellido Paterno " />
+						<h:outputText value="#{message['cobranza.apepat']}" />
 						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.apepatcliente}"  style="font-weight:bold"/>
-						<h:outputText value="Apellido Materno  " />
+						<h:outputText value="#{message['cobranza.apemat']}" />
 						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.apematcliente}"  style="font-weight:bold"/>
-						<h:outputText value="Correo " />
+						<h:outputText value="#{message['cobranza.correo']}" />
 						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.correo}" />
-						<h:outputText value="Dirección " />
+						<h:outputText value="#{message['cobranza.direccion']}" />
 						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.directrabajo}" />
-						<h:outputText value="Distrito  " />
+						<h:outputText value="#{message['cobranza.distrito']}" />
 						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.telftrabajo}" />
-						<h:outputText value="Empresa donde trabaja " />
+						<h:outputText value="#{message['cobranza.empresa']}" />
 						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.empresatrabajo}" />
-						<h:outputText value="Cargo " />
+						<h:outputText value="#{message['cobranza.cargo']}" />
 						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.cargotrabajo}" />
-						<h:outputText value="Teléfonos" />
+						<h:outputText value="#{message['cobranza.telefonos']}" />
 						<p:spacer/>
 						</h:panelGrid>
 						<p:dataTable
 							value="#{mantenimientoCobranzaOperaSearchAction.listatelefono}" var="t"
 							rowStyleClass="#{t.operadorTelefonico eq 'Claro' ? 'colorRojo': (t.operadorTelefonico eq 'Movistar' ? 'colorCeleste': 'color3') }"
 							id="DetalleTelefono"  widgetVar="telefonotable" 
-							emptyMessage="No se encontro registros">
+							emptyMessage="#{message['rsltd.empty']}">
 							<f:facet name="header"/>
 							<p:column>
 								<f:facet name="header">
-									<h:outputText value="Teléfono" />
+									<h:outputText value="#{message['cobranza.telefono']}" />
 								</f:facet>
 								<h:outputText value="#{t.telefono}" />
 							</p:column>
 							<p:column>
 								<f:facet name="header">
-									<h:outputText value="Tipo" />
+									<h:outputText value="#{message['cobranza.tipo']}" />
 								</f:facet>
 								<h:outputText value="#{t.tipoTelef}" />
 							</p:column>
 							<p:column>
 								<f:facet name="header">
-									<h:outputText value="Operadora" />
+									<h:outputText value="#{message['cobranza.operadora']}" />
 								</f:facet>
 								<h:outputText value="#{t.operadorTelefonico}" />
 							</p:column>
 							<p:column>
 								<f:facet name="header">
-									<h:outputText value="Desc." />
+									<h:outputText value="#{message['cobranza.desc']}" />
 								</f:facet>
 								<h:outputText value="#{t.descTelefono}" />
 							</p:column>
 						</p:dataTable>
 				</p:fieldset>
 
-				<p:fieldset legend="Detalle de Pagos" style="margin-top:20px">
+				<p:fieldset legend="#{message['cobranza.pagos']}" style="margin-top:20px">
 					<h:panelGrid columns="2"  cellpadding="4" >
-						<h:outputText value="Empresa :" />
+						<h:outputText value="#{message['cobranza.empresa']}" />
 						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objContrato.tbEmpresa.descripcion}" style="font-weight:bold"  />
-						<h:outputText value="Nro de Cuenta :" />
+						<h:outputText value="#{message['cobranza.num.cuenta']}" />
 						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objContrato.tbEmpresa.numcuenta}"  style="font-weight:bold; font-size: x-large "/>
-						<h:outputText value="Teléfonos :" />
+						<h:outputText value="#{message['cobranza.empresa.telefonos']}" />
 						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objContrato.tbEmpresa.numtelefono}" style="font-weight:bold" />
 					</h:panelGrid>
 					<p:dataTable
 						value="#{mantenimientoCobranzaOperaSearchAction.detallePagos}" var="p"
 						rowStyleClass="#{mantenimientoCobranzaOperaSearchAction.fechoy le  p.fecvencimiento  ? null: (empty p.fecpago? 'colorRojo' : 'colorVerde')}"
 						id="DetallePagos"  widgetVar="pagostable"
-						emptyMessage="No se encontro registros">
+						emptyMessage="#{message['rsltd.empty']}">
 						<f:facet name="header"/>
 						<p:column>
 							<f:facet name="header">
-								<h:outputText value="Nro de Cuotas" />
+								<h:outputText value="#{message['cobranza.cuotas']}" />
 							</f:facet>
 							<h:outputText value="#{p.numletra}" />
 						</p:column>
 						<p:column>
 							<f:facet name="header">
-								<h:outputText value="Monto" />
+								<h:outputText value="#{message['cobranza.monto']}" />
 							</f:facet>
 							<h:outputText value="#{p.impinicial}" />
 						</p:column>
 						<p:column>
 							<f:facet name="header">
-								<h:outputText value="Fec. Vencimiento" />
+								<h:outputText value="#{message['cobranza.fec.vencimiento']}" />
 							</f:facet>
 							<h:outputText value="#{p.fechaVencimientoString}" />
 						</p:column>
 						<p:column>
 							<f:facet name="header">
-								<h:outputText value="Fec. de Pago" />
+								<h:outputText value="#{message['cobranza.fec.pago']}" />
 							</f:facet>
 							<h:outputText value="#{p.fecpago}" />
 						</p:column>
 					</p:dataTable>
 				</p:fieldset>
-				<p:fieldset legend="Productos" style="margin-top:20px">
+				<p:fieldset legend="#{message['cobranza.productos']}" style="margin-top:20px">
 					<p:dataTable
 						value="#{mantenimientoCobranzaOperaSearchAction.productoContratoList}" var="r"
 						widgetVar="pagostable" rowStyleClass="#{r.tbEstadoGeneral.idestadogeneral ==70 ? 'colorRojo':  'null' }" 
-						emptyMessage="No se encontro registros">
+						emptyMessage="#{message['rsltd.empty']}">
 						<f:facet name="header"/>
 						<p:column>
 							<f:facet name="header">
-								<h:outputText value="Descripción" />
+								<h:outputText value="#{message['cobranza.descripcion']}" />
 							</f:facet>
 							<h:outputText value="#{r.tbProducto.descripcionproducto}" />
 						</p:column>
 						<p:column>
 							<f:facet name="header">
-								<h:outputText value="Cantidad" />
+								<h:outputText value="#{message['cobranza.cantidad']}" />
 							</f:facet>
 							<h:outputText value="#{r.cantidad}" />
 						</p:column>
 						<p:column>
 							<f:facet name="header">
-								<h:outputText value="Estado" />
+								<h:outputText value="#{message['cobranza.estado']}" />
 							</f:facet>
 							<h:outputText value="#{r.tbEstadoGeneral.descripcion}" />
 						</p:column>
 					</p:dataTable>
 				</p:fieldset>
 			</h:panelGrid>
-			<p:fieldset legend="Registro del Seguimiento" style="margin-top:20px; width:70%"   >
+			<p:fieldset legend="#{message['cobranza.registro']}" style="margin-top:20px; width:70%"   >
 				<h:panelGrid columns="2">
 					<p:outputLabel value="#{message['operadora.tipollamada']}" for="tipo" />
 					<p:selectOneMenu id="tipo" filter="true" required="true"
@@ -204,14 +203,13 @@
 						requiredMessage="#{message['operadora.observacion.validation']}"
 						rows="3" cols="60" maxlength="500" required="true" label="Correo"
 						autoResize="false" />
-					<h:outputText value="Enviar al sistema :" />
+					<h:outputText value="#{message['cobranza.sistema']}" />
 					<p:selectBooleanCheckbox value="#{mantenimientoCobranzaOperaSearchAction.enviarMensaje}"/>
-					<p:commandButton id="btn" value="Guardar" update="panel"
+					<p:commandButton id="btn" value="#{message['cobranza.guardar']}" update="panel"
 						action="#{mantenimientoCobranzaOperaSearchAction.insertar}"
 						ajax="false" icon="ui-icon-comment" />
 				</h:panelGrid>
 			</p:fieldset>
-
 		</h:form>
 	</ui:define>
 </ui:composition>
