@@ -137,5 +137,6 @@ public class Constants {
 	public static final String REPORTE_KARDEX_LIST="Reporte Kardex";
 	public static final String RUTA_IMAGENES_PRODUCTO = "E:\\Producto\\Images" ;
 	public static final String RUTA_DOC_SUSTENTARIO = "E:\\Images\\Docs";
+	public static final String RUTA_IMAGEN_DEFECTO = "E:\\Producto\\Images\\bibliaXDefecto.png";
 	
 	}
