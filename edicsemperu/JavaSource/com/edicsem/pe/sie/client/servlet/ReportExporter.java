@@ -5,12 +5,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JExcelApiExporter;
 import net.sf.jasperreports.engine.export.JRHtmlExporter;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 
@@ -21,8 +24,17 @@ public class ReportExporter {
 
 	public static final Log log = LogFactory.getLog(ReportExporter.class);
 
-	public static void exportReportPDF(JasperPrint jp, String path) throws JRException, IOException {
-//		JRPdfExporter exporter = new JRPdfExporter();
+	public static void exportReportPDF(JasperPrint jp, HttpServletResponse response) throws JRException, IOException {
+		JRPdfExporter exporter = new JRPdfExporter();
+		/**
+		 * con Path 
+		 * 		File outputFile = new File(path);
+		File parentFile = outputFile.getParentFile();
+		
+		if (!parentFile.exists()){
+			parentFile.mkdirs();
+		}
+		FileOutputStream fos = new FileOutputStream(outputFile);
 		
 		File outputFile = new File(path);
 		File parentFile = outputFile.getParentFile();
@@ -30,11 +42,14 @@ public class ReportExporter {
 		if (!parentFile.exists()){
 			parentFile.mkdirs();
 		}
-//		FileOutputStream fos = new FileOutputStream(outputFile);
-//		exporter.setParameter(JRExporterParameter.JASPER_PRINT, jp);
-//		exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, fos);
-//		exporter.exportReport();
-		JasperExportManager.exportReportToPdfFile(jp, path);
+		 * */
+		ServletOutputStream out =	response.getOutputStream();
+		
+		exporter.setParameter(JRExporterParameter.JASPER_PRINT, jp);
+		exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, out);
+		exporter.exportReport();
+
+		log.info("PDF Report exported: " );
 	}
 
 	public static void exportReportXls(JasperPrint jp, String path) throws JRException, FileNotFoundException {
@@ -55,7 +70,6 @@ public class ReportExporter {
 		exporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.FALSE);  
 		exporter.exportReport();
 		log.info("XLS Report exported: " );
-		//JasperExportManager.exportReportToPdfFile(jp, path);
 	}
 
 	public static void exportReportHtml(JasperPrint jp, String path) throws JRException, FileNotFoundException {

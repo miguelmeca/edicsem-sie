@@ -39,7 +39,7 @@ public class ReporteExecutionServiceImpl implements ReporteExecutionService  {
 		log.info("Entering 'executeReporte' ");
 		ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
 		conn = null;
-		String path = Constants.RUTA_REPORTE;
+		
 		String titulo=  (String) reportParams.getQueryParams().get(Constants.REPORTE_TITULO);
 		try {
 			initContext = new InitialContext();
@@ -52,7 +52,7 @@ public class ReporteExecutionServiceImpl implements ReporteExecutionService  {
 			JasperPrint jasper = JasperFillManager.fillReport(reporte,reportParams.getQueryParams(), conn);
 			
 			titulo+="."+ContentType;
-			path +=titulo;
+			log.info("Titulo  "+titulo);
 			
 			response.setHeader("Content-Disposition", "attachment; filename=\""+ titulo+"\"");
 			response.setHeader("Cache-Control", "no-cache");
@@ -60,10 +60,10 @@ public class ReporteExecutionServiceImpl implements ReporteExecutionService  {
 			
 			if(ContentType.equals("pdf")){
 				response.setContentType("application/pdf");
-				ReportExporter.exportReportPDF(jasper, path);
+				ReportExporter.exportReportPDF(jasper, response);
 			}else if(ContentType.equals("xls")){
 				response.setContentType("application/xls");
-				ReportExporter.exportReportXls(jasper, path);
+			//	ReportExporter.exportReportXls(jasper, path);
 			}
 			
 		} catch (JRException e) {
@@ -86,7 +86,8 @@ public class ReporteExecutionServiceImpl implements ReporteExecutionService  {
 					ds = null;
 					initContext.close();
 				} catch (Exception e) {
-
+					log.info(e.getMessage());
+					e.printStackTrace();
 				}
 			}
 		}
