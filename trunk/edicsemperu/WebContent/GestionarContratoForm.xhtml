@@ -34,36 +34,31 @@
 			<h:panelGroup id="nrodoc" >
 				<p:inputMask id="numdoc1" value="#{contratoForm.numDniCliente}" mask="99999999"
 					rendered="#{contratoForm.idtipodoc==1}" required="true" />
-				<p:message for="numdoc1"  />
-					
+			
 				<p:inputMask id="numdoc2" value="#{contratoForm.numDniCliente}" mask="99999999999"
 					rendered="#{contratoForm.idtipodoc==2}" required="true"/>
-				<p:message for="numdoc2"  />
+				
 			</h:panelGroup>
 			
 			</h:panelGrid>
 			<h:panelGrid columns="3" rendered="#{contratoForm.radio==2}"  >
-			<h:outputText value="Código Contrato: " />
+			<h:outputText value="#{message['gestion.codigo.contrato']}" />
 			<p:inputText id="cod" value="#{contratoForm.codigoContrato}" required="true"/>
-			<p:message for="cod"  />
 			</h:panelGrid>
-			 <h:panelGrid columns="3" rendered="#{contratoForm.radio==3}"  >
-        	<h:outputText value="Nombres: " />
+			 <h:panelGrid columns="2" rendered="#{contratoForm.radio==3}" cellpadding="3" >
+        	<h:outputText value="#{message['gestion.cliente.nombre']}" />
 			<p:inputText id="nom" value="#{contratoForm.nombreCliente}" />
-			<p:message for="nom"  />
-			<h:outputText value="Apellido Paterno: " />
-			<p:inputText id="app" value="#{contratoForm.apePatCliente}"  />
-			<p:message for="app"  />
-			<h:outputText value="Apellido Materno: " />
+			<h:outputText value="#{message['gestion.cliente.apePat']}" />
+			<p:inputText value="#{contratoForm.apePatCliente}"  />
+			<h:outputText value="#{message['gestion.cliente.apeMat']}" />
 			<p:inputText id="apm" value="#{contratoForm.apeMatCliente}" />
-			<p:message for="apm"  />
 			</h:panelGrid>
 			<p:commandButton value="#{message['gestion.contrato.busqueda']}" action="#{contratoForm.consultar}" update="messages" ajax="false"
 				icon="ui-icon-search"/>
 			</p:fieldset>
 				
 				<h:panelGrid  rendered="#{contratoForm.tamanoLista>1}" >
-					<p:dataTable value="#{contratoForm.contratoXClienteList}"  
+					<p:dataTable value="#{contratoForm.contratoXClienteList}"   rowsPerPageTemplate="5,10,15"  rows="5"
 					var="c" style="width:800px" emptyMessage="#{message['rsltd.empty']}" >
 						
 						<f:facet name="header">
@@ -237,7 +232,7 @@
 				<p:dataTable id="listaCobranzasEdit" var="c" value="#{contratoForm.cobranzaList}" editable="true" style=" width:100% " 
 					rowStyleClass="#{contratoForm.dhoy le  c.fecvencimiento  ? null: (empty c.fecpago? 'colorRojo' : 'colorVerde')}">
 		
-		        <f:facet name="header"> Editar Cobranzas </f:facet>
+		        <f:facet name="header">#{message['gestion.editar.cobranza']}</f:facet>
 		
 		        <p:ajax event="rowEdit" listener="#{contratoForm.onEdit}"  update="listaCobranzasEdit"/>
 		        <p:ajax event="rowEditCancel" listener="#{contratoForm.onCancel}" update="listaCobranzasEdit" />
@@ -306,7 +301,7 @@
 		                </f:facet>
 		            </p:cellEditor> 
 				</p:column>
-		        <p:column headerText="Editar" style="width:50px">
+		        <p:column headerText="#{message['gestion.editar']}" style="width:50px">
 		            <p:rowEditor />
 		        </p:column>
 		        </p:dataTable>

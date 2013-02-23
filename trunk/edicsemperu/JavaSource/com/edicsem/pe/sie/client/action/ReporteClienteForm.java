@@ -42,6 +42,7 @@ public class ReporteClienteForm {
 		log.info("INICIALIZANDO EL BEAN MANAGER REPORTE");
 		cantLista=0;
 		idTipoCliente=0;
+		ContentType="";
 	}
 	
 	public void listarCliente() {
