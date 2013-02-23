@@ -65,6 +65,7 @@
 		<class>com.edicsem.pe.sie.entity.MotivoSie</class>
 		<class>com.edicsem.pe.sie.entity.SeguimientoContratoSie</class>
 		<class>com.edicsem.pe.sie.entity.TipoClienteSie</class>
+		<class>com.edicsem.pe.sie.entity.HistoricoContratoEmpleadoSie</class>
 
 		<properties>
 			<property name="eclipselink.jdbc.driver" value="org.postgresql.Driver" />
