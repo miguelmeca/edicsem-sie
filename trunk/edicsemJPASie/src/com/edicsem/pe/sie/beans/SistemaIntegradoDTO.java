@@ -17,8 +17,6 @@ public class SistemaIntegradoDTO implements Serializable {
 
 	private String cargotrabajo;
 
-	private String contrasena;
-
 	private String correo;
 
 	private String directrabajo;
@@ -169,20 +167,6 @@ public class SistemaIntegradoDTO implements Serializable {
 	 */
 	public void setCargotrabajo(String cargotrabajo) {
 		this.cargotrabajo = cargotrabajo;
-	}
-
-	/**
-	 * @return the contrasena
-	 */
-	public String getContrasena() {
-		return contrasena;
-	}
-
-	/**
-	 * @param contrasena the contrasena to set
-	 */
-	public void setContrasena(String contrasena) {
-		this.contrasena = contrasena;
 	}
 
 	/**
