@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import com.edicsem.pe.sie.beans.RecaudacionDTO;
 import com.edicsem.pe.sie.entity.CobranzaSie;
 import com.edicsem.pe.sie.model.dao.CobranzaDAO;
 import com.edicsem.pe.sie.service.facade.CobranzaService;
@@ -56,4 +57,12 @@ public class CobranzaServiceImpl implements CobranzaService {
 	public List calcularEfectividad(int idEmpleado) {
 		return objCobranzaDao.calcularEfectividad(idEmpleado);
 	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.CobranzaService#MigrarRcaudacion(java.util.List)
+	 */
+	public String MigrarRcaudacion(List<RecaudacionDTO> lst) {
+		return null;
+	}
+	
 }
