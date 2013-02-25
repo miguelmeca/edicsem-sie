@@ -103,8 +103,12 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 <!--  FIN Validar los Datos de un Formulario -->
 	</h:head>
-	<p:dialog modal="true" widgetVar="statusDialogSI" closeOnEscape="false"
+	<p:dialog modal="true" widgetVar="statusDialogSI" closeOnEscape="false" resizable="false"
 		header="Migrando Sistemas Integrados" draggable="false" closable="false">
+		<p:graphicImage value="/images/ajaxloadingbar.gif" />
+	</p:dialog>
+	<p:dialog modal="true" widgetVar="statusDialogCob" closeOnEscape="false" resizable="false"
+		header="Generando listas de cobranza" draggable="false" closable="false">
 		<p:graphicImage value="/images/ajaxloadingbar.gif" />
 	</p:dialog>
 	<f:loadBundle var="message"
@@ -403,8 +407,52 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:dialog>
 	</h:form>
 	
+	<!--  Mantenimiento MOTIVO (Registrar , actualizar)-->
 
+	<h:form id="NuevoModificamotivo">
+		<p:dialog header="Ingrese Nuevo Motivo"
+			widgetVar="carDialogNuevomotivo" showEffect="fade"
+			hideEffect="explode" modal="true" width="600" position="center">
+			<p:messages id="message"   showDetail="true" escape="false" closable="true" />
+			<h:panelGrid id="display" columns="2"  >
+				
+				<h:outputText value="#{message['mantenimiento.descripcion']}" />
+				<p:inputText id="descripcion"
+						value="#{motivoSearch.motivo.descripcion}" required="true"
+						label="descripcion" requiredMessage="FALTA DESCRIPCION"
+						style="font-weight:bold" maxlength="30"
+						onkeypress="return validarEspaciosLetrasNumeros(event)"  />
+				<p:message for="descripcion" />
+				
+				<h:panelGroup>
+					<p:spacer height="20px"/>
+					<p:commandButton value="Guardar" update="message"
+						action="#{motivoSearch.insertar}"  icon="ui-icon ui-icon-disk" />
+						<p:commandButton value="Cancelar" onclick="carDialogNuevomotivo.hide()" icon="ui-icon ui-icon-close"/>
+				</h:panelGroup>
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+	
+	<!-- Deshabilitar Motivo  -->
+	<h:form>
+		<p:confirmDialog id="confirmDeshabilitarMotivo" 
+			message="#{message['motivo.deshabilitar.message']}"
+			width="325" height="100" showEffect="explode" hideEffect="explode"
+			header="Confirm" severity="alert" widgetVar="confirmationMotivo"
+			position="center">
 
+			<p:commandButton value="Si"
+				action="#{motivoSearch.delete}"
+				update=":frmMotivoFormList:motivoTable,:frmMotivoFormList:messages "
+				oncomplete="confirmationMotivo.hide()" ajax="false">
+			</p:commandButton>
+
+			<p:commandButton value="No" onclick="confirmationMotivo.hide()"/>
+
+		</p:confirmDialog>
+	</h:form>
+	
 	<h:form id="NuevoModificaPunto">
 		<p:dialog header="Ingrese Nuevo Punto de Venta/Almacen" resizable="false" 
 			widgetVar="carDialogNuevoPunto" showEffect="fade"
@@ -464,7 +512,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 	<h:form>
 		<p:confirmDialog id="confirmDeshabilitarAlmacen" 
-			message="Esta seguro de deshabilitar dicho Punto de venta/Almacen?"
+			message="#{message['almacen.deshabilitar.message']}"
 			width="325" height="100" showEffect="explode" hideEffect="explode"
 			header="Confirm" severity="alert" widgetVar="confirmationAlmacen"
 			position="center">
@@ -472,7 +520,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			<p:commandButton type="submit" value="Si"
 				action="#{almacenForm.DeshabilitarPunto}"
 				update=":frmAlmacenFormList:almacenTable"
-				oncomplete="confirmation.hide()" ajax="false">
+				oncomplete="confirmationAlmacen.hide()" ajax="false">
 			</p:commandButton>
 
 			<p:commandButton value="No" onclick="confirmation.hide()"

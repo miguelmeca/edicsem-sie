@@ -15,7 +15,8 @@
 					
 					<p:pickList  value="#{cobranza.teleoperadorasString}" var="p" itemLabel="#{p}" itemValue="#{p}" />
 					
-					<p:commandButton action="#{cobranza.insertar}" value="generar" ajax="false" update="message"/>
+					<p:commandButton actionListener="#{cobranza.insertar}" value="generar"
+					onclick="statusDialogCob.show();" update="message"/>
 				</h:panelGrid>
 			</p:panel>
 		</h:form>

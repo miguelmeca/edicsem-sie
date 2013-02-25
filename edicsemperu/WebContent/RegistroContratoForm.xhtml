@@ -51,6 +51,12 @@
 					<p:message for="nrodoc1" rendered="#{contratoForm.idtipodoc==1}" />
 					<p:message for="nrodoc2" rendered="#{contratoForm.idtipodoc==2}" />
 					
+					<h:outputText value="#{message['empleado.genero']}" />
+					<p:selectOneRadio  value="#{contratoForm.objClienteSie.genero}" required="true" >
+						<f:selectItem itemLabel="Femenino" itemValue="F" />
+						<f:selectItem itemLabel="Masculino" itemValue="M" />
+					</p:selectOneRadio>
+            
 					<h:outputText value="#{message['contrato.cliente.correo']}" />
 					<p:inputText value="#{contratoForm.objClienteSie.correo}" id="email" validatorMessage="Email incorrecto" maxlength="45" size="30"  title="para el @ presione: la tecla Alt + 64 y en laptop Alt Gr + Q">
 					 <f:validateRegex pattern="#{message['pattern.email.norequired']}" />
@@ -93,11 +99,11 @@
 				</p:selectOneMenu>
 				<p:spacer/>
 				
-				<h:outputText value="Ubigeo " />
+				<h:outputText value="#{message['contrato.ubigeo']}" />
 				<h:outputText id="ubigeoDefecto" value="#{contratoForm.ubigeoDefecto}" style="width:320px"/>
 				<p:message for="ubigeoDefecto" rendered="#{contratoForm.defectoUbigeo}"/>
 				
-				<h:outputText value="Tipo Casa" />
+				<h:outputText value="#{message['contrato.tipocasa']}" />
 				<p:selectOneMenu style="width:165px" required="true" id="tipocasa"
 				value="#{contratoForm.tipocasa}">
 					<f:selectItem itemLabel="Seleccione tipo casa" itemValue="#{null}" />
@@ -221,13 +227,13 @@
 							 rowStyleClass="#{t.operadorTelefonico eq 'Claro' ? 'colorRojo': (t.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }"   >
 	
 							<f:facet name="header">
-								<h:outputLabel value="Telefonos de Referencia" />
+								<h:outputLabel value="#{message['contrato.telef.referencia']}" />
 							</f:facet>
 							
-							<p:column headerText="Telefono"  >
+							<p:column headerText="#{message['contrato.telefono']}"  >
 		                    	<h:outputText value="#{t.tipoTelef}, #{t.operadorTelefonico}, #{t.telefono}" />
 		                    </p:column>
-		                    <p:column headerText="Descripción"  >
+		                    <p:column headerText="#{message['contrato.telefono.descripcion']}"  >
 		                    	<h:outputText value="#{t.descTelefono}" />
 		                    </p:column>
 		                    <p:column headerText="Eliminar" >
@@ -253,7 +259,7 @@
 						<p:ajax update="panel2,detPaqueteList" listener="#{contratoForm.cambioPaquete}" />
 					</p:selectOneMenu>
 					
-					<h:outputText value="Tipo de Producto" />
+					<h:outputText value="#{message['contrato.tipo.producto']}" />
 					<p:selectOneMenu id="tipoProd2" value="#{comboAction.tipoProducto}" style="width:165px">
 						<f:selectItem itemLabel="Seleccionar tipo" itemValue="#{null}" />
 						<f:selectItems value="#{comboAction.tipoitems}" />
@@ -261,17 +267,17 @@
 					</p:selectOneMenu>
 					<p:spacer/>
 					
-					<h:outputText value="Producto" />
+					<h:outputText value="#{message['contrato.producto']}" />
 					<p:selectOneMenu filter="true" filterMatchMode="startsWith" id="produc2" style="width:200px"
 						value="#{contratoForm.objProductoSie.idproducto}" requiredMessage="Debe seleccionar un producto para agregarlo a la lista" >
 						<f:selectItem itemLabel="Seleccione Producto" itemValue="#{null}"  />
 						<f:selectItems value="#{comboAction.productositems}" />
 					</p:selectOneMenu>
 					
-					<h:outputText value="Observación" />
+					<h:outputText value="#{message['contrato.observacion']}" />
 					<p:inputText value="#{contratoForm.objProductoSie.observacionContrato}" maxlength="40"/>
 					
-					<h:outputText value="Cantidad" />
+					<h:outputText value="#{message['contrato.producto.cantidad']}" />
 					<p:spinner value="#{contratoForm.objProductoSie.cantidadContrato}" min="1" requiredMessage="#{message['contrato.cantidad.producto']}"  />
 					<p:spacer/>
 					<h:outputText value="Estado" />
@@ -288,7 +294,7 @@
     <p:dataTable id="detPaqueteList" var="g" value="#{contratoForm.detPaqueteList}" editable="true" style="width:60%; align:center" >
 
         <f:facet name="header">
-            Editar Paquete
+            #{message['contrato.editar.paquete']}
         </f:facet>
        
         <p:ajax event="rowEdit" listener="#{contratoForm.onEditDetPaquete}"  update="@this" />
@@ -304,7 +310,7 @@
                 </f:facet>
             </p:cellEditor>
         </p:column>
-        <p:column headerText="Producto" style="width:125px">
+        <p:column headerText="#{message['contrato.producto']}" style="width:125px">
             <p:cellEditor>
                 <f:facet name="output">
                     <h:outputText value="#{g.tbProducto.descripcionproducto}" />
@@ -315,7 +321,7 @@
             </p:cellEditor>
         </p:column>
         
-        <p:column headerText="Observación" style="width:125px">
+        <p:column headerText="#{message['contrato.observacion']}" style="width:125px">
             <p:cellEditor>
                 <f:facet name="output">
                     <h:outputText value="#{g.observacion}" />
@@ -326,7 +332,7 @@
             </p:cellEditor>
         </p:column>
 
-        <p:column headerText="Cantidad" style="width:80px">
+        <p:column headerText="#{message['contrato.producto.cantidad']}" style="width:80px">
             <p:cellEditor>
                 <f:facet name="output">
                     <h:outputText value="#{g.cantidad}"  />
@@ -337,7 +343,7 @@
             </p:cellEditor>
         </p:column>
         
-        <p:column headerText="Estados" style="width:110px">
+        <p:column headerText="#{message['contrato.estado']}" style="width:110px">
             <p:cellEditor>
                 <f:facet name="output">
                    <h:outputText value="#{g.tbEstadoGeneral.descripcion}"  />
@@ -352,7 +358,7 @@
             <p:rowEditor />
         </p:column>
 
-        <p:column headerText="Eliminar" >
+        <p:column headerText="#{message['contrato.eliminar']}" >
            <p:commandButton icon="ui-icon-close"
 							oncomplete="confirmationProductoContrato.show()" title="eliminar">
 					<f:setPropertyActionListener value="#{g.item}" target="#{contratoForm.idCobranza}" />
