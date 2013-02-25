@@ -11,8 +11,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.MotivoSie;
-import com.edicsem.pe.sie.entity.PuntoVentaSie;
-import com.edicsem.pe.sie.model.dao.AlmacenDAO;
 import com.edicsem.pe.sie.model.dao.MotivoDAO;
 
 /**
@@ -73,7 +71,7 @@ public class MotivoDAOImpl implements MotivoDAO{
 	public List listarMotivo() {
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from MotivoSie p ");
+			Query q = em.createQuery("select p from MotivoSie p where p.tbEstadoGeneral.idestadogeneral = 74 ");
 			lista =  q.getResultList(); 						
 		   log.info("tamaño lista Motivo -> " + lista.size()+"  ");
 		} catch (Exception e) {
