@@ -49,4 +49,10 @@ public class PaqueteServiceImpl implements PaqueteService {
 		log.info("En el servicio ");
 		return objDetPaqueteDao.listarPaquetes();
 	}
+
+
+	public PaqueteSie buscarXcodigoPaquete(String codPaquete) {
+		log.info("en el SERVICIO BUSCANDO COD-PAQUETE"+"-->  "+codPaquete);
+		return  objDetPaqueteDao.buscarXcodigoPaquete(codPaquete);
+	}
 }
