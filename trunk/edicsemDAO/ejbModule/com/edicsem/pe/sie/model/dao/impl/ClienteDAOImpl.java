@@ -83,9 +83,38 @@ public class ClienteDAOImpl implements ClienteDAO{
 		return lista;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.ClienteDAO#listarClientesXTipo(int)
-	 */
+
+	public ClienteSie buscarIdCliente(String dni) {
+		ClienteSie p = new ClienteSie();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("buscar DNI de cliente en la IMPLEMENTACION DAO" + dni);
+			}
+
+Query q = em.createQuery("select p from  ClienteSie p where p.tbEstadoGeneral.idestadogeneral = 23 AND p.numdocumento like  '"+ dni + "'");
+			if (q.getResultList().size() == 1) {
+
+				p = (ClienteSie) q.getResultList().get(0);
+				// casteado tiene columnas pero no se ah mencionado cuales son p=(ContratoSie) q.getResultList().get(0);
+				
+			}
+			log.info("Aquita Cliente-->"+ p.getNumdocumento()); 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return p;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 	public List listarClientesXTipo(int tipoCliente) {
 		List  lista = null;
 		try {
@@ -97,5 +126,4 @@ public class ClienteDAOImpl implements ClienteDAO{
 		}
 		return lista;
 	}
-	
 }
