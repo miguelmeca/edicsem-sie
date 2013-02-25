@@ -1,7 +1,10 @@
 package com.edicsem.pe.sie.beans;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Date;
+
+import com.edicsem.pe.sie.util.constants.DateUtil;
 
 
 public class RecaudacionDTO implements Serializable {
@@ -13,7 +16,11 @@ public class RecaudacionDTO implements Serializable {
 	
 	private Date fecpago;
 	
+	private String fecpagoString;
+	
 	private Date fechaVencimiento;
+	
+	private String fechaVencimientoString;
 	
 	private double montoPagado;
 	
@@ -33,7 +40,7 @@ public class RecaudacionDTO implements Serializable {
 	
 	private String medioAtencion;
 	
-	private String horaAtencion;
+	private Time horaAtencion;
 	
 	private String nrocheque;
 	
@@ -226,20 +233,6 @@ public class RecaudacionDTO implements Serializable {
 	}
 
 	/**
-	 * @return the horaAtencion
-	 */
-	public String getHoraAtencion() {
-		return horaAtencion;
-	}
-
-	/**
-	 * @param horaAtencion the horaAtencion to set
-	 */
-	public void setHoraAtencion(String horaAtencion) {
-		this.horaAtencion = horaAtencion;
-	}
-
-	/**
 	 * @return the nrocheque
 	 */
 	public String getNrocheque() {
@@ -265,6 +258,50 @@ public class RecaudacionDTO implements Serializable {
 	 */
 	public void setBancoCheque(String bancoCheque) {
 		this.bancoCheque = bancoCheque;
+	}
+
+	/**
+	 * @return the fecpagoString
+	 */
+	public String getFecpagoString() {
+		fecpagoString = DateUtil.convertDateToString(fecpago);
+		return fecpagoString;
+	}
+
+	/**
+	 * @param fecpagoString the fecpagoString to set
+	 */
+	public void setFecpagoString(String fecpagoString) {
+		this.fecpagoString = fecpagoString;
+	}
+
+	/**
+	 * @return the fechaVencimientoString
+	 */
+	public String getFechaVencimientoString() {
+		fechaVencimientoString = DateUtil.convertDateToString(fechaVencimiento);
+		return fechaVencimientoString;
+	}
+
+	/**
+	 * @param fechaVencimientoString the fechaVencimientoString to set
+	 */
+	public void setFechaVencimientoString(String fechaVencimientoString) {
+		this.fechaVencimientoString = fechaVencimientoString;
+	}
+
+	/**
+	 * @return the horaAtencion
+	 */
+	public Time getHoraAtencion() {
+		return horaAtencion;
+	}
+
+	/**
+	 * @param horaAtencion the horaAtencion to set
+	 */
+	public void setHoraAtencion(Time horaAtencion) {
+		this.horaAtencion = horaAtencion;
 	}
     
 }

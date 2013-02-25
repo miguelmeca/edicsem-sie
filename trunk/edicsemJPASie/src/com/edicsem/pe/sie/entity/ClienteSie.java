@@ -73,6 +73,8 @@ public class ClienteSie implements Serializable {
 
 	private String sectorTrabajo;
 	
+	private String genero;
+	
 	//bi-directional many-to-one association to TelefonoPersonaSie
   	@OneToMany(mappedBy="idcliente")
   	private Set<DomicilioPersonaSie> tbDomicilioPersona;
@@ -388,5 +390,13 @@ public class ClienteSie implements Serializable {
 
 	public void setSectorTrabajo(String sectorTrabajo) {
 		this.sectorTrabajo = sectorTrabajo;
+	}
+
+	public String getGenero() {
+		return genero;
+	}
+
+	public void setGenero(String genero) {
+		this.genero = genero;
 	}
 }

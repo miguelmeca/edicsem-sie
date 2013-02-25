@@ -70,6 +70,8 @@ public class ContratoSie implements Serializable {
 	private String usuariocreacion;
 
 	private String usuariomodifica;
+	
+	private String rutaImagenContrato;
 
 	//bi-directional many-to-one association to CobranzaSie
 	@OneToMany(mappedBy="tbContrato")
@@ -357,6 +359,20 @@ public class ContratoSie implements Serializable {
 	 */
 	public void setFechaCreacionString(String fechaCreacionString) {
 		this.fechaCreacionString = fechaCreacionString;
+	}
+
+	/**
+	 * @return the rutaImagenContrato
+	 */
+	public String getRutaImagenContrato() {
+		return rutaImagenContrato;
+	}
+
+	/**
+	 * @param rutaImagenContrato the rutaImagenContrato to set
+	 */
+	public void setRutaImagenContrato(String rutaImagenContrato) {
+		this.rutaImagenContrato = rutaImagenContrato;
 	}
 
 }

@@ -71,7 +71,7 @@
 			<property name="eclipselink.jdbc.driver" value="org.postgresql.Driver" />
 			<property name="eclipselink.jdbc.url" value="jdbc:postgres://localhost:5432/bd_sie" />
 			<property name="eclipselink.jdbc.user" value="postgres" />
-			<property name="eclipselink.jdbc.password" value="admin" />
+			<property name="eclipselink.jdbc.password" value="Edicsem2011" />
 			<property name="eclipselink.logging.level" value="FINE" />
 			<property name="jboss.entity.manager.factory.jndi.name"
 				value="java:/sieSoftJPAEntityManagerFactory" />
