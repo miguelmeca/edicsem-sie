@@ -12,4 +12,5 @@ public interface PaqueteService {
 	public abstract void updatePaquete(PaqueteSie p);
 	public abstract PaqueteSie findPaquete (int id);
 	public abstract List  listarPaquetes();
+	public abstract PaqueteSie buscarXcodigoPaquete (String codPaquete);
 }
