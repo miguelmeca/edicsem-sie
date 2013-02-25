@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.model.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -16,4 +17,5 @@ public interface CobranzaDAO {
 	public abstract List<CobranzaSie>  listarCobranzas();
 	public abstract List  listarCobranzasXidcontrato(int idcontrato);
 	public abstract List  calcularEfectividad(int idEmpleado);
+	public abstract CobranzaSie buscarCobranzaXcodigo(String codigo, Date fechaVencimiento,double montototalpagado);
 }
