@@ -82,11 +82,20 @@ public class ProductoServiceImpl implements ProductoService {
 		return objProductoDao.verificarTipoProducto(tipoProducto);
 	}
 
+	
+	public ProductoSie buscarXcodigoProducto(String codProducto) {
+		log.info("en el SERVICIO BUSCANDO ID-PRODUCTO"+ codProducto);
+		return objProductoDao.buscarXcodigoProducto(codProducto);
+	}
+	
+	
+
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ProductoService#listarCodigosProductos()
 	 */
 	public List listarCodigosProductos() {
 		return objProductoDao.listarCodigosProductos();
 	}
+
 
 }
