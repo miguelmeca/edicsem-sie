@@ -52,4 +52,13 @@ public class EmpresaServiceImpl implements EmpresaService {
 		log.info("en el servicio--> "+id);
 		return objEmpresaDao.findEmpresa(id); 
 	}
+
+
+	public EmpresaSie buscarIdEmpresa(String razonSocial) {
+		log.info("en el SERVICIO BUSCANDO DESCRIPCION"+ razonSocial);
+		return objEmpresaDao.buscarIdEmpresa(razonSocial);
+	}
+
+
+	
 }
