@@ -17,5 +17,9 @@ public interface ProductoDAO {
 	public abstract List  listarProductos();
 	public abstract List listarProductoxEmpresas(int parametroObtenido);	
 	public abstract boolean verificarTipoProducto(int tipoProducto);
+	public abstract ProductoSie buscarXcodigoProducto (String codProducto);
+	
+	
+	
 	public abstract List  listarCodigosProductos();
 }
