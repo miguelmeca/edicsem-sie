@@ -214,4 +214,8 @@ public class ContratoEmpleadoDAOImpl implements ContratoEmpleadoDAO{
 		}
 		return lista;
 	}
+
+
+	
+	
 }
