@@ -1,6 +1,7 @@
 package com.edicsem.pe.sie.model.dao.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -15,6 +16,7 @@ import org.apache.commons.logging.LogFactory;
 import com.edicsem.pe.sie.entity.CobranzaSie;
 import com.edicsem.pe.sie.entity.MetaMesSie;
 import com.edicsem.pe.sie.model.dao.CobranzaDAO;
+import com.edicsem.pe.sie.model.dao.ContratoDAO;
 import com.edicsem.pe.sie.model.dao.MetaMesDAO;
 import com.edicsem.pe.sie.util.constants.DateUtil;
 
@@ -31,6 +33,8 @@ public class CobranzaDAOImpl implements CobranzaDAO{
 	
 	@EJB
 	private MetaMesDAO metaMesDao;
+	@EJB
+	private ContratoDAO objContratoDao;
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.CobranzaDAO#insertCobranza(com.edicsem.pe.sie.entity.CobranzaSie)
@@ -135,5 +139,23 @@ public class CobranzaDAOImpl implements CobranzaDAO{
 			e.printStackTrace();
 		}
 		return lista;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.CobranzaDAO#buscarCobranzaXcodigo(java.lang.String, java.util.Date, double)
+	 */
+	public CobranzaSie buscarCobranzaXcodigo(String codigo, Date fechaVencimiento,double montototalpagado){
+		CobranzaSie cobranza=null;
+		try {
+			Query q = em.createQuery("select p from CobranzaSie p  where " +
+					" p.tbCliente.numdocumento = '" +codigo+"' and  DATE(p.fecvencimiento) =  DATE('" +fechaVencimiento+"') "+
+					" and p.importemasmora = "+ montototalpagado);
+			if(q.getResultList().size()>0){
+			cobranza = (CobranzaSie) q.getResultList().get(0);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cobranza;
 	}
 }
