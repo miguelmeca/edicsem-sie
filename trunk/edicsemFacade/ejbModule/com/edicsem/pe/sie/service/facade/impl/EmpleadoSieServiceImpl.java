@@ -227,4 +227,10 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	public List listarUsuario() {
 		return objEmpleadoDao.listarUsuario();
 	}
+
+
+	public EmpleadoSie buscarEmpleadoVendedor(String nombreCompleto) {
+log.info("dentro del servicio en busca del nombre y Id empleado--> SERVICEIMPLE-->"+ nombreCompleto);
+		return objEmpleadoDao.buscarEmpleadoVendedor(nombreCompleto);
+	}
 }
