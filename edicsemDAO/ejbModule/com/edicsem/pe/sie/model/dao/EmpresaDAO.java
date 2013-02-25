@@ -14,4 +14,6 @@ public interface EmpresaDAO {
 	public abstract EmpresaSie findEmpresa (int id);
 	public abstract List<EmpresaSie>  listarEmpresas();
 	public abstract EmpresaSie findEmpresaXdescripcion(String razonSocial);
+	public abstract EmpresaSie buscarIdEmpresa (String razonSocial);	
+	
 }
