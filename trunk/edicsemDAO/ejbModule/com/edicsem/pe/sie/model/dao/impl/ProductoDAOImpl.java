@@ -156,9 +156,33 @@ public class ProductoDAOImpl implements ProductoDAO {
 		return bandera;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.ProductoDAO#listarCodigosProductos()
-	 */
+
+	public ProductoSie buscarXcodigoProducto(String codProducto) {
+	
+		ProductoSie p = new ProductoSie();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("buscar Codigo de Producto" +"  "+ codProducto );
+			}
+
+Query q = em.createQuery("select p from ProductoSie p where p.tbEstadoGeneral.idestadogeneral = 5 AND p.codproducto like  '"+ codProducto + "'");
+			if (q.getResultList().size() == 1) {
+
+				p = (ProductoSie) q.getResultList().get(0);
+				// casteado tiene columnas pero no se ah mencionado cuales son p=(ProductoSie) q.getResultList().get(0);
+				
+			}
+			log.info("Aquita PRODUCTO-->"+ p.getCodproducto());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return p;
+	}
+
+	
+	
+	
+	
 	public List<String> listarCodigosProductos() {
 		List lista = null;
 		try {
@@ -168,6 +192,6 @@ public class ProductoDAOImpl implements ProductoDAO {
 			e.printStackTrace();
 		}
 		return lista;
-	}
+	}	
 	
 }
