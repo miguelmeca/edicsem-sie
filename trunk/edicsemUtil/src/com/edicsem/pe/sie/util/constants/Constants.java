@@ -12,6 +12,8 @@ public class Constants {
 	
 	public static final String MESSAGE_INFO_TITULO = "Mensaje: ";
 	public static final String MESSAGE_REGISTRO_TITULO = "Se registró correctamente";
+	public static final String MESSAGE_ACTUALIZO_TITULO = "Se actualizó correctamente";
+	public static final String MESSAGE_DESHABILITO_TITULO = "Se deshabilitó correctamente";
 	public static final String MESSAGE_DESHABILITAR_TITULO = "Se deshabilito correctamente";
 	public static final String MESSAGE_ERROR_FATAL_TITULO = "Mensaje de Error";
 	public static final String MESSAGE_ERROR_FATAL_TITULO2 = "Mensaje de Error2";
@@ -87,6 +89,8 @@ public class Constants {
 	public static final String MANT_META_EMPLEADO_FORM_PAGE = "mantenimientoMetaEmpleadoForm";
 	public static final String MANT_META_EMPLEADO_LIST_PAGE = "mantenimientoMetaEmpleadoFormList";
 	
+	public static final String MANT_MOTIVO_FORM_LIST_PAGE = "mantenimientoMotivoFormList";
+	
 	public static final String ASIGNAR_PERMISOS_FORM_PAGE = "AsignarPermisosForm";
 	
 	public static final String GENERAR_LISTAS_COBRANZA_FORM_PAGE = "GenerarListasCobranzaForm";
@@ -94,7 +98,7 @@ public class Constants {
 	public static final String CONSULTA_CONTRATO_FORM_PAGE = "ConsultaContratoForm";
 	public static final String MIGRAR_SISTEMA_INTEGRADO = "MigracionSistemaIntegrado";
 	public static final String MIGRAR_ENTREGAS_PERU = "excelEntregasPeru";
-	
+	public static final String MIGRAR_SISTEMA_RECAUDACION="MigracionSistemaRecaudacion";
 	public static final String GESTIONAR_CONTRATO_FORM_PAGE = "GestionarContratoForm";
 	
 	//constantes de tablas con la TB_ESTADO_GENERAL
