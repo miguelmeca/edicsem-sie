@@ -26,4 +26,5 @@ public interface EmpleadoSieService {
 	public abstract List listarExpositor(int idEmpresa);
 	public abstract List listarDni();
 	public abstract List listarUsuario();
+	public abstract EmpleadoSie buscarEmpleadoVendedor (String nombreCompleto);
 }
