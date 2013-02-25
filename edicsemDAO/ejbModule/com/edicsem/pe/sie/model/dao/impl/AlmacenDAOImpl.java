@@ -98,5 +98,32 @@ public class AlmacenDAOImpl implements AlmacenDAO{
 		}
 		return lista;
 	}
+
+
+	public PuntoVentaSie buscarIdpuntoVenta(String puntoVenta) {
+	
+
+		PuntoVentaSie p = new PuntoVentaSie();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("buscar puntoVenta en la IMPLEMENTACION DAO" + puntoVenta );
+			}
+
+Query q = em.createQuery("select p from  PuntoVentaSie p where p.tbEstadoGeneral.idestadogeneral = 13 AND p.descripcion like  '"+ puntoVenta + "'");
+			if (q.getResultList().size() == 1) {
+
+				p = (PuntoVentaSie) q.getResultList().get(0);
+				// casteado tiene columnas pero no se ah mencionado cuales son p=(ContratoSie) q.getResultList().get(0);
+				
+			}
+			log.info("Aquita PUNTO-VENTA-->"+ p.getDescripcion()); 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return p;	
+		
+	}
+	
+	
 	
 }
