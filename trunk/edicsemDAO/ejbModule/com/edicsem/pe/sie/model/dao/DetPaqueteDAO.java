@@ -16,4 +16,5 @@ public interface DetPaqueteDAO {
 	public abstract List  listarDetPaquetes(int paquete);
 	public abstract boolean verificarPaquetesicontieneProductos(int parametroObtenido);
 	public abstract void eliminarDetPaquete (int id);
+	public abstract List buscarXcodigoPaquete(String codPaquete);
 }
