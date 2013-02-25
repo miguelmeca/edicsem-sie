@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -114,7 +115,7 @@ public class MigracionRecaudacion extends BaseMantenimientoAbstractAction implem
 			mensaje=  "Debe subir el excel a importar";
 			msg = new FacesMessage(FacesMessage.SEVERITY_WARN,Constants.MESSAGE_INFO_TITULO,mensaje);
 		}else{
-			mensaje = objCobranzaService.MigrarRcaudacion(recaudaMig);
+			mensaje = objCobranzaService.MigrarRecaudacion(recaudaMig);
 			if(mensaje ==null){
 				mensaje=  "Se realizó la migración exitosamente";
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO,mensaje);
@@ -141,7 +142,7 @@ public class MigracionRecaudacion extends BaseMantenimientoAbstractAction implem
 			nombreArchivo = file.getFileName();
 			
 			recaudaMig = new ArrayList<RecaudacionDTO>();
-
+			
 			List<List<HSSFCell>> sheetData = new ArrayList<List<HSSFCell>>();
 
 			FileInputStream fis = null;
@@ -152,24 +153,20 @@ public class MigracionRecaudacion extends BaseMantenimientoAbstractAction implem
 
 				@SuppressWarnings("rawtypes")
 				Iterator rows = sheet.rowIterator();
-
+				
 				while (rows.hasNext()) {
 
 					HSSFRow row = (HSSFRow) rows.next();
 
-					if (row.getRowNum() > 0) {
+					if (row.getRowNum() > 6) {
 
 						List<HSSFCell> data = new ArrayList<HSSFCell>();
 
-						for (int i = 0; i < 71; i++) {
-
+						for (int i = 0; i < 16; i++) {
 							@SuppressWarnings("static-access")
-							HSSFCell cell = row.getCell(i,
-									row.RETURN_NULL_AND_BLANK);
-
+							HSSFCell cell = row.getCell(i,row.RETURN_NULL_AND_BLANK);
 							data.add(cell);
 						}
-
 						int tamano = data.size();
 
 						if (tamano > 1) {
@@ -188,32 +185,34 @@ public class MigracionRecaudacion extends BaseMantenimientoAbstractAction implem
 								sis.setReferencia(getCellValueAsString(data.get(10)));
 								sis.setTerminal(getCellValueAsString(data.get(11)));
 								sis.setMedioAtencion(getCellValueAsString(data.get(12)));
-								sis.setHoraAtencion(getCellValueAsString(data.get(13)));
+								HSSFCell a= data.get(13);
+								Time hora  = new Time(a.getDateCellValue().getTime());
+								sis.setHoraAtencion(hora);
 								sis.setNrocheque(getCellValueAsString(data.get(14)));
 								sis.setBancoCheque(getCellValueAsString(data.get(15)));
 								recaudaMig.add(sis);
 								sheetData.add(data);
-								
+								mensaje=  "Cargó exitosamente el archivo "+nombreArchivo;
+								msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO,mensaje);
 							}else {
-								log.info(data.get(0));
 							}
 						}else{
 							//mandar mensaje
+							mensaje="Cargó correctamente, pero no se encontraron datos en el archivo"+nombreArchivo;
+							msg = new FacesMessage(FacesMessage.SEVERITY_WARN,Constants.MESSAGE_INFO_TITULO,mensaje);
 						}
 					}
 				}
 				log.info(" tamano total "+recaudaMig.size());
-				mensaje=  "Cargó exitosamente el archivo "+nombreArchivo;
 				
-				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-						Constants.MESSAGE_INFO_TITULO,mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 				}
 			catch (Exception e) {
-			//	mensaje = " Contrato: "+sis.getCodContrato()+",    "+e.getMessage();
-				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error Formato EXCEL", mensaje);
+				mensaje = " Contrato: "+sis.getCodigoDepositante()+",    "+e.getMessage();
+				msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error Formato EXCEL", mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 				recaudaMig = new ArrayList<RecaudacionDTO>();
+				e.printStackTrace();
 				return null;
 	    }finally {
 	    	if (fis != null) {
@@ -262,6 +261,34 @@ public class MigracionRecaudacion extends BaseMantenimientoAbstractAction implem
 
 		public void setNombreArchivo(String nombreArchivo) {
 			this.nombreArchivo = nombreArchivo;
+		}
+
+		/**
+		 * @return the recaudaMig
+		 */
+		public List<RecaudacionDTO> getRecaudaMig() {
+			return recaudaMig;
+		}
+
+		/**
+		 * @param recaudaMig the recaudaMig to set
+		 */
+		public void setRecaudaMig(List<RecaudacionDTO> recaudaMig) {
+			this.recaudaMig = recaudaMig;
+		}
+
+		/**
+		 * @return the mensaje
+		 */
+		public String getMensaje() {
+			return mensaje;
+		}
+
+		/**
+		 * @param mensaje the mensaje to set
+		 */
+		public void setMensaje(String mensaje) {
+			this.mensaje = mensaje;
 		}
 		
 		

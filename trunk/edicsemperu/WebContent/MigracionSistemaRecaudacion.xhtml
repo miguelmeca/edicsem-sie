@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">#{message['migracion.recaudacion.panel']}</h1>
+		<h:form id="frmMigracionForm" enctype="multipart/form-data"  >
+		<p:messages id="message" showDetail="true" closable="true" />
+		
+		<p:fileUpload fileUploadListener="#{recaudacion.handleFileUpload}" label="Cargar archivo" cancelLabel="Cancelar" uploadLabel="cambiar de archivo"
+		allowTypes="/(\.|\/)(xls)$/" description="Seleccione archivo" multiple="false" customUI="true" 
+		update="datatablesr, message"/>
+		
+		<p:dataTable id="datatablesr" var="c" value="#{recaudacion.recaudaMig}"  paginator="true" rows="15"
+		 rowsPerPageTemplate="5,10,15"  emptyMessage="#{message['rsltd.empty']}"
+		 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
+	    
+	        <p:column headerText="#{message['migracion.recaudacion.codigodepositante']}">
+			<h:outputText value="#{c.codigoDepositante}"/>
+			</p:column>
+			
+	        <p:column headerText="#{message['migracion.recaudacion.info']}">
+			<h:outputText value="#{c.infoRetorno}"/>
+			</p:column>
+			
+	    	<p:column  headerText="#{message['migracion.recaudacion.fecpago']}">
+	        <h:outputText value="#{c.fecpagoString}"/>
+	        </p:column>
+	        
+	        <p:column  headerText="#{message['migracion.recaudacion.fecven']}"> 
+	        <h:outputText value="#{c.fechaVencimientoString}"/>
+	        </p:column>
+	        
+	        <p:column  headerText="#{message['migracion.recaudacion.montopagado']}">
+	        <h:outputText value="#{c.montoPagado}"/>
+	        </p:column>
+	        
+	        <p:column  headerText="#{message['migracion.recaudacion.morapagada']}">
+	        <h:outputText value="#{c.moraPagada}"/>
+	        </p:column>
+	          
+	        <p:column  headerText="#{message['migracion.recaudacion.montototal']}">
+	        <h:outputText value="#{c.montoTotalPagado}"/>
+	        </p:column>
+	        
+	        <p:column  headerText="#{message['migracion.recaudacion.nroOperacion']}">
+	        <h:outputText value="#{c.numOperacion}"/>
+	        </p:column>
+	        
+	        <p:column  headerText="#{message['migracion.recaudacion.horaAtencion']}">
+	        <h:outputText value="#{c.horaAtencion}"/>
+	        </p:column>
+	        
+	    </p:dataTable>
+	    
+	    	<p:commandButton value="#{message['migracion.recaudacion.subirbd']}" action="#{recaudacion.insertar}" 
+	    	update="message" onclick="statusDialogSI.show();" ajax="false"/>
+		</h:form>
+	</ui:define>
+</ui:composition>
