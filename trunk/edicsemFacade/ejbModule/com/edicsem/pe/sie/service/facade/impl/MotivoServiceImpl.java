@@ -22,6 +22,7 @@ public class MotivoServiceImpl implements MotivoService {
 	 * @see com.edicsem.pe.sie.service.facade.MotivoService#insertMotivo(com.edicsem.pe.sie.entity.MotivoSie)
 	 */
 	public void insertMotivo(MotivoSie m) {
+		m.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(74));
 		objMotivoDao.insertMotivo(m);
 	}
 	
@@ -44,6 +45,14 @@ public class MotivoServiceImpl implements MotivoService {
 	 */
 	public List listarMotivo() {
 		return objMotivoDao.listarMotivo();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.MotivoService#deleteCargoEmpleado(com.edicsem.pe.sie.entity.MotivoSie)
+	 */
+	public void deleteCargoEmpleado(MotivoSie m) {
+		m.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(75));
+		objMotivoDao.updateMotivo(m);
 	}
 	
 }

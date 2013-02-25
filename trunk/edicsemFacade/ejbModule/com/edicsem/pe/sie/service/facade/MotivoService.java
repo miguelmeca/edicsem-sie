@@ -10,6 +10,7 @@ public interface MotivoService {
 	
 	public abstract void insertMotivo(MotivoSie m);
 	public abstract void updateMotivo(MotivoSie m);
+	public abstract void deleteCargoEmpleado (MotivoSie m);
 	public abstract MotivoSie findMotivo (int id);
 	public abstract List listarMotivo();
 }
