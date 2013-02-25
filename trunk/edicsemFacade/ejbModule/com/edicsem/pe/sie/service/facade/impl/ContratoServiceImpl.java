@@ -12,23 +12,35 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.beans.EntregasPeruDTO;
 import com.edicsem.pe.sie.beans.SistemaIntegradoDTO;
+import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.CobranzaSie;
+import com.edicsem.pe.sie.entity.ContratoEmpleadoSie;
 import com.edicsem.pe.sie.entity.ContratoSie;
 import com.edicsem.pe.sie.entity.DetContratoEmpleadoSie;
+import com.edicsem.pe.sie.entity.DetPaqueteSie;
 import com.edicsem.pe.sie.entity.DetProductoContratoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
+import com.edicsem.pe.sie.entity.PaqueteSie;
+import com.edicsem.pe.sie.entity.ProductoSie;
+import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
+import com.edicsem.pe.sie.model.dao.AlmacenDAO;
+import com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.ClienteDAO;
 import com.edicsem.pe.sie.model.dao.CobranzaDAO;
 import com.edicsem.pe.sie.model.dao.ContratoDAO;
+import com.edicsem.pe.sie.model.dao.ContratoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.DetContratoEmpleadoDAO;
+import com.edicsem.pe.sie.model.dao.DetPaqueteDAO;
 import com.edicsem.pe.sie.model.dao.DetProductoContratoDAO;
 import com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
 import com.edicsem.pe.sie.model.dao.EmpresaDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
+import com.edicsem.pe.sie.model.dao.PaqueteDAO;
+import com.edicsem.pe.sie.model.dao.ProductoDAO;
 import com.edicsem.pe.sie.model.dao.TelefonoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.TipoCasaDAO;
 import com.edicsem.pe.sie.model.dao.TipoDocumentoDAO;
@@ -37,6 +49,8 @@ import com.edicsem.pe.sie.service.facade.ContratoService;
 
 @Stateless
 public class ContratoServiceImpl implements ContratoService {
+	
+	
 
 	@EJB
 	private ClienteDAO objClienteDao;
@@ -64,6 +78,20 @@ public class ContratoServiceImpl implements ContratoService {
 	private DetContratoEmpleadoDAO objDetContratoEmpleadoDao;
 	@EJB
 	private EmpleadoSieDAO objEmpleadoDao;
+	@EJB
+	private ProductoDAO objProductoDAO;
+	@EJB
+	private PaqueteDAO objPaqueteDAO;
+	@EJB
+	private AlmacenDAO objAlmacenDAO;
+	@EJB
+	private DetPaqueteDAO objDetPaqueteDAO;
+	@EJB
+	private DetContratoEmpleadoDAO objDetContratoEmpleadoDAO;
+	@EJB
+	private CargoEmpleadoDAO objCargoEmpleadoDAO;
+	@EJB
+	private ContratoEmpleadoDAO objContratoEmpleadoDAO;
 	
 	public static Log log = LogFactory.getLog(ContratoServiceImpl.class);
 
@@ -157,6 +185,130 @@ public class ContratoServiceImpl implements ContratoService {
 	 */
 	public List listarClientePorParametro(String numDocumento, String codigoContrato, String nombreCliente, String apePat, String apeMat) {
 		return objContratoDao.listarClientePorParametro(numDocumento, codigoContrato, nombreCliente, apePat, apeMat);
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ContratoService#insertMigracion(java.util.List)
+	 */
+	
+	public void updateEntregasPeru(List<EntregasPeruDTO> credito) {
+
+		ContratoSie con = new ContratoSie();
+		DetProductoContratoSie detprodcon = new DetProductoContratoSie();
+		DetContratoEmpleadoSie detconemp = new DetContratoEmpleadoSie();
+		CargoEmpleadoSie cargoemp = new CargoEmpleadoSie();
+		ProductoSie produc = new ProductoSie();	
+		PaqueteSie paque = new PaqueteSie();
+		PuntoVentaSie punto = new PuntoVentaSie();
+		ContratoEmpleadoSie contraemple= new ContratoEmpleadoSie();
+		
+		log.info("actualizar() *");
+		
+		for (int i = 0; i < credito.size(); i++) {	
+			EntregasPeruDTO s = credito.get(i);
+			detprodcon = new DetProductoContratoSie();
+		con = objContratoDao.buscarXcodigoContrato(s.getNumerodecontrato());
+		
+			log.info("Num-Contrato"+"--> "+con.getCodcontrato()+ "--ID DE CONTRATO"+ con.getIdcontrato());
+			con.setLugarentrega(s.getLugardelaentrega());
+			log.info("Lugarentrega"+"-->"+con.getLugarentrega());			
+			con.setFechaentrega(s.getFecha());
+			log.info("Fecha de Entrega"+ "-->"+con.getFechaentrega());			
+			con.setTbEmpresa(objEmpresaDao.buscarIdEmpresa(s.getEmpresa().trim().toUpperCase()));
+			log.info("Id-Empresa"+"-->"+con.getTbEmpresa().getIdempresa());
+			con.setTbCliente(objClienteDao.buscarIdCliente(s.getDnidelcliente()));
+			log.info("Id-Cliente"+"-->"+con.getTbCliente().getIdcliente().toString());
+			
+		punto = objAlmacenDAO.buscarIdpuntoVenta(s.getPuntodeventa());
+		log.info("NOMBRE-PUNTO-VENTA"+"-->"+ punto.getDescripcion() + "ID-PUNTO-VENTA"+"-->"+punto.getIdpuntoventa());
+		
+		if (punto!=null) {
+			con.setTbPuntoVenta(punto);
+			log.info("Dentro del If!=null"+ "-->"+ con.getTbPuntoVenta().getIdpuntoventa());			
+		}				
+			if (s.getEventodeventa().trim().toUpperCase().equalsIgnoreCase("MASIVO")) {				
+				String tventaMas = s.getEventodeventa();
+				tventaMas = tventaMas.substring(0, 3);			
+				con.setTipoventa(tventaMas);
+				log.info("TIpo-Venta-MAS"+"-->"+con.getTipoventa());	
+			}	else if (s.getEventodeventa().trim().toUpperCase().equalsIgnoreCase("PUNTO DE VENTA")) {				
+				con.setTipoventa("PNT");				
+				log.info("TIpo-Venta-PNT"+"-->"+con.getTipoventa());
+			}			
+			else {
+				con.setTipoventaotros(s.getEventodeventa());				
+			}			
+			con.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(25));
+			objContratoDao.updateContrato(con);
+			
+/***DET_PRODUCTO_CONTRATO***/
+			
+			detprodcon.setTbContrato(con);
+			log.info("ID DE CONTRATO PARA DET_PRODUCTO_CONTRATO"+"-->"+ con.getIdcontrato());
+			detprodcon.setCantidad(s.getCantidaddemercaderia());
+			log.info("Cantidad de Mercaderia"+ "-->"+ detprodcon.getCantidad());
+			detprodcon.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(74));
+					
+			ProductoSie obj1 = objProductoDAO.buscarXcodigoProducto(s.getCodigodemercaderia());
+			if (obj1.getCodproducto()!=null) {			
+				log.info("CODIGO_PRODUCTO"+"-->  "+obj1.getCodproducto() +" -- " + "ID_PRODUCTO-->"+ obj1.getIdproducto());
+				detprodcon.setTbProducto(obj1);	
+				objDetProductoContratoDao.insertDetProductoContrato(detprodcon);
+			}
+			else{
+				List<DetPaqueteSie> lista = objDetPaqueteDAO.buscarXcodigoPaquete(s.getCodigodemercaderia());
+				for (int j = 0; j <lista.size(); j++) {
+					DetProductoContratoSie det= new DetProductoContratoSie();
+
+					det.setTbContrato(con);
+					log.info("ID DE CONTRATO PARA DETALLE"+"-->"+ con.getIdcontrato());
+					det.setCantidad(s.getCantidaddemercaderia());
+					log.info("Cantidad de Mercaderia"+ "-->"+ detprodcon.getCantidad());
+					det.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(74));					
+//					log.info("productos de la lista "+"-->  "+lista.get(j).getTbProducto().getIdproducto() );
+					produc= objProductoDAO.findProducto(lista.get(j).getTbProducto().getIdproducto());	 
+					det.setTbProducto(produc);	
+					objDetProductoContratoDao.insertDetProductoContrato(det);
+				}
+		
+			}
+			
+/****DET_CONTRATO_EMPLEADO****/		
+			
+		detconemp.setTbContrato(con);
+		log.info("ID DE CONTRATO-TB_DET_CONTRATO_EMPLEADO"+"-->"+ con.getIdcontrato()+" -- "+ con.getCodcontrato());
+		
+		detconemp.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(58));
+		
+		
+		detconemp.setTbEmpleado(objEmpleadoDao.buscarEmpleadoVendedor(s.getNombredelvendedor()));
+		log.info("ID-VENDEDOR igual ah ID-EMPLEADO"+"--> "+ detconemp.getTbEmpleado().getIdempleado());
+		if (s.getNombredelvendedor()!=null) {
+		detconemp.setIdCargoContrato(1);
+		log.info("CARGO-CONTRATO-VENDEDOR-->"+"  "+ detconemp.getIdCargoContrato());
+		}
+		
+		detconemp.setTbEmpleado(objEmpleadoDao.buscarEmpleadoVendedor(s.getNombredelexpositor()));
+		log.info("ID-EXPOSITOR igual ah ID-EMPLEADO"+"--> "+ detconemp.getTbEmpleado().getIdempleado());
+		if (s.getNombredelexpositor()!=null) {
+			detconemp.setIdCargoContrato(2);
+			log.info("CARGO-CONTRATO-EXPOSITOR-->"+"  "+ detconemp.getIdCargoContrato());
+			}
+		
+		detconemp.setTbEmpleado(objEmpleadoDao.buscarEmpleadoVendedor(s.getNombredelsupervisor()));
+		log.info("ID-SUPERVISOR igual ah ID-EMPLEADO"+"--> "+ detconemp.getTbEmpleado().getIdempleado());
+		if (s.getNombredelsupervisor()!=null) {
+			detconemp.setIdCargoContrato(3);
+			log.info("CARGO-CONTRATO-SUPERVISOr-->"+"  "+ detconemp.getIdCargoContrato());
+			}
+		
+		
+		
+		objDetContratoEmpleadoDao.insertDetContratoEmpleado(detconemp);
+		
+		
+			
+}			
 	}
 	
 	public String insertMigracion(List<SistemaIntegradoDTO> sistMig) {
@@ -441,6 +593,8 @@ public class ContratoServiceImpl implements ContratoService {
 		}
 			
 			//insertar Domicilio
+		
+		
 			
 			if(!domicilioString.contains(s.getDireccion())){
 				//domList = new ArrayList<DomicilioPersonaSie>();
@@ -488,6 +642,7 @@ public class ContratoServiceImpl implements ContratoService {
 			
 			log.info(" contr***** "+con.getCodcontrato()+" "+codigoContr);
 			
+			
 			if(con.getCodcontrato()!=codigoContr){
 				for (int j2 = 0; j2 < telList.size(); j2++) {
 						objTelefonoDao.insertarTelefonoEmpleado(telList.get(j2));
@@ -502,12 +657,6 @@ public class ContratoServiceImpl implements ContratoService {
 				codigoContr=  con.getCodcontrato();
 			}
 		}
-		
-		} catch (Exception e) {
-			mensaje =e.getMessage()+"Error en el contrato "+con.getCodcontrato();
-		}
-		
-		return mensaje;
 	}
 	
 	/* (non-Javadoc)
@@ -517,24 +666,16 @@ public class ContratoServiceImpl implements ContratoService {
 		return objContratoDao.obtenerCodigo();
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.ContratoService#updateEntregasPeru(java.util.List)
-	 */
-	public void updateEntregasPeru(List<EntregasPeruDTO> credito) {
-		
-		ContratoSie entre = new ContratoSie();
-		for (EntregasPeruDTO entregasPeruDTO : credito) {
-			 log.info("aqui Numero de Contrato"+ " "+ entregasPeruDTO.getNumerodecontrato());
-			 log.info("aqui Nombre de Cliente"+ " "+ entregasPeruDTO.getNombredecliente());
-			 log.info("aqui Nombre de Expositor"+ " "+ entregasPeruDTO.getNombredelexpositor());
-			 
-		entregasPeruDTO.getNumerodecontrato();
-			
-			
-			
-			objContratoDao.updateContrato(entre); 
-			
-		}
-	
-	}
+
+
+
+public ContratoSie buscarXcodigoContrato(String codContrato) {
+	log.info("en el SERVICIO BUSCANDO N DE CONTRATO"+ codContrato);
+	return objContratoDao.buscarXcodigoContrato(codContrato);
+}
+
+
+
+
+
 }
