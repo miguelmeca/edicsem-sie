@@ -24,7 +24,7 @@ public class ReportExporter {
 
 	public static final Log log = LogFactory.getLog(ReportExporter.class);
 
-	public static void exportReportPDF(JasperPrint jp, HttpServletResponse response) throws JRException, IOException {
+	public static void exportReportPDF(JasperPrint jp,ServletOutputStream out ) throws JRException, IOException {
 		JRPdfExporter exporter = new JRPdfExporter();
 		/**
 		 * con Path 
@@ -43,12 +43,10 @@ public class ReportExporter {
 			parentFile.mkdirs();
 		}
 		 * */
-		ServletOutputStream out =	response.getOutputStream();
 		
 		exporter.setParameter(JRExporterParameter.JASPER_PRINT, jp);
 		exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, out);
 		exporter.exportReport();
-
 		log.info("PDF Report exported: " );
 	}
 

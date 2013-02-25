@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
@@ -52,15 +53,15 @@ public class ReporteExecutionServiceImpl implements ReporteExecutionService  {
 			JasperPrint jasper = JasperFillManager.fillReport(reporte,reportParams.getQueryParams(), conn);
 			
 			titulo+="."+ContentType;
-			log.info("Titulo  "+titulo);
-			
-			response.setHeader("Content-Disposition", "attachment; filename=\""+ titulo+"\"");
+			log.info("Titulo-->  "+titulo);
+			response.setHeader("Content-Disposition", "attachment; filename=\""+ titulo+"\";");
 			response.setHeader("Cache-Control", "no-cache");
 			response.setDateHeader("Expires", 0);
+			ServletOutputStream out =	response.getOutputStream();
 			
 			if(ContentType.equals("pdf")){
 				response.setContentType("application/pdf");
-				ReportExporter.exportReportPDF(jasper, response);
+				ReportExporter.exportReportPDF(jasper, out);
 			}else if(ContentType.equals("xls")){
 				response.setContentType("application/xls");
 			//	ReportExporter.exportReportXls(jasper, path);

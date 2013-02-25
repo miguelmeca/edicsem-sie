@@ -180,6 +180,8 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 							sis = new SistemaIntegradoDTO();
 							if (data.get(0)!=null) {
 								sis.setCodContrato(getCellValueAsString(data.get(5)));
+								//buscar codigo de contrato 
+								
 								
 								sis.setEmpresa(getCellValueAsString(data.get(0)));
 								if(!data.get(5).toString().isEmpty()){
@@ -290,13 +292,13 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 						if( listaContratosManual.size()>0){
 							mensaje+=  	", no se cargó  "+ listaContratosManual.size()+" registros, por favor verfique Archivo Log";
 						}
-				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 						Constants.MESSAGE_INFO_TITULO,mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 				}
 			catch (Exception e) {
 				mensaje = " Contrato: "+sis.getCodContrato()+",    "+e.getMessage();
-				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error Formato EXCEL", mensaje);
+				msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error Formato EXCEL", mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 				sistMig = new ArrayList<SistemaIntegradoDTO>();
 				return null;
