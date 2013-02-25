@@ -85,10 +85,10 @@ public class DetallePaqueteDAOImpl implements DetPaqueteDAO {
 			e.printStackTrace();
 		}
 	}
-
-
 	
-	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.DetPaqueteDAO#verificarPaquetesicontieneProductos(int)
+	 */
 	public boolean verificarPaquetesicontieneProductos(int parametroObtenido) {
 		boolean bandera = true;
 		
@@ -108,11 +108,12 @@ public class DetallePaqueteDAOImpl implements DetPaqueteDAO {
 			e.printStackTrace();
 		}
 		
-		
 		return bandera;
 	}
 
-
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.DetPaqueteDAO#eliminarDetPaquete(int)
+	 */
 	public void eliminarDetPaquete(int id) {
 		try {
 			log.info("DAOIMPL ELIMINAR ");
@@ -123,6 +124,29 @@ public class DetallePaqueteDAOImpl implements DetPaqueteDAO {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.DetPaqueteDAO#buscarXcodigoPaquete(java.lang.String)
+	 */
+	public List buscarXcodigoPaquete(String codPaquete) {
+
+		List p = null;
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("buscar Codigo Paquete" +"  "+ codPaquete );
+			}
+			Query q = em.createQuery("select p from DetPaqueteSie p inner join p.tbPaquete q" +
+		" where q.codpaquete like  '"+ codPaquete + "'");
+			if (q.getResultList().size() >= 1) {	
+				p =  q.getResultList();
+				// casteado tiene columnas pero no se ah mencionado cuales son p=(ContratoSie) q.getResultList().get(0);
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return p;
 	}	
 	
 	
