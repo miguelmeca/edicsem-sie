@@ -197,40 +197,25 @@ public class ContratoDAOImpl implements ContratoDAO{
 		return bandera;
 	}
 	
-	
-	
-	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ContratoDAO#buscarXcodigoContrato(java.lang.String)
+	 */
 	public ContratoSie buscarXcodigoContrato(String codContrato) {
 
-		ContratoSie p = new ContratoSie();
+		ContratoSie p = null;
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("buscar Numero de Contrato" +"  "+ codContrato );
 			}
-
-Query q = em.createQuery("select p from ContratoSie p where p.tbEstadoGeneral.idestadogeneral = 25 AND p.codcontrato like  '"+ codContrato + "'");
+			Query q = em.createQuery("select p from ContratoSie p where p.tbEstadoGeneral.idestadogeneral = 25 AND p.codcontrato like  '"+ codContrato + "'");
+			
 			if (q.getResultList().size() == 1) {
-
 				p = (ContratoSie) q.getResultList().get(0);
-				// casteado tiene columnas pero no se ah mencionado cuales son p=(ContratoSie) q.getResultList().get(0);
-				
 			}
-			log.info("Aquita CONTRATO-->"+ p.getCodcontrato());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return p;
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }
