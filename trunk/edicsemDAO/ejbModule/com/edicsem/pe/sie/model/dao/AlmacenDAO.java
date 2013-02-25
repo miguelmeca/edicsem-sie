@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
  
 
@@ -15,4 +16,6 @@ public interface AlmacenDAO {
 	public abstract PuntoVentaSie findAlmacen (int id);
 	public abstract List  listarAlmacenes();
 	public abstract List  listarPuntoVenta(int tipo);
+	public abstract PuntoVentaSie buscarIdpuntoVenta (String puntoVenta);
+	
 }
