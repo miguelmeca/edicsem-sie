@@ -830,20 +830,26 @@ public class MantenimientoContratoFormAction extends
 				mensaje="Se agregó la nueva cuota";
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 			}
-		}FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 	
 	public String registrarGestion(){
 		log.info("registrarGestion()");
 		mensaje=null;
+		if(objContratoSie.getIdcontrato()==null){
+			mensaje ="Debe buscar un contrato";
+			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
+		}
 		if(objSeguimiento.getTbMotivo()==null){
 			mensaje ="Debe seleccionar un motivo";
+			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
 		}else{
 			objSeguimientoContratoService.insertSeguimientoContrato(objSeguimiento);
+			mensaje = Constants.MESSAGE_REGISTRO_TITULO;
+			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 		}
-		mensaje = Constants.MESSAGE_REGISTRO_TITULO;
-		msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-				Constants.MESSAGE_INFO_TITULO, mensaje);
+		
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return null;
 	}

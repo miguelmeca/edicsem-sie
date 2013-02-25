@@ -191,6 +191,7 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 			} else {
 				log.info("a actualizar "+ TipoProducto +" " + " ruta " + objProductoSie.getRutaimagenproducto());
 				if(TipoProducto>0){
+					objProductoSie.setUsuariomodifica(sessionUsuario.getUsuario());
 					objProductoService.updateProducto(objProductoSie,TipoProducto);
 					mensaje ="Se actualizó correctamente";
 					objProductoSie = new ProductoSie();

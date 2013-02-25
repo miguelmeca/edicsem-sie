@@ -14,7 +14,7 @@
 		<p:messages id="messages" showDetail="true"  closable="true"/>
 		<p:panel>
 		<p:fieldset id="fi" legend="#{message['gestion.contrato.buscar']}">
-			
+		
 		<p:selectOneRadio  value="#{contratoForm.radio}"   >  
 	        <f:selectItem itemLabel="#{message['gestion.contrato.opcion1']}" itemValue="1"/>
 	        <f:selectItem itemLabel="#{message['gestion.contrato.opcion2']}" itemValue="2"/>
@@ -37,7 +37,6 @@
 			
 				<p:inputMask id="numdoc2" value="#{contratoForm.numDniCliente}" mask="99999999999"
 					rendered="#{contratoForm.idtipodoc==2}" required="true"/>
-				
 			</h:panelGroup>
 			
 			</h:panelGrid>
@@ -314,7 +313,7 @@
 			   </p:fieldset>
 			   
 			   <p:fieldset legend="#{message['gestion.tittle']}"  style="margin-top:30px" >
-					<h:panelGrid columns="2" cellpadding="3">
+					<h:panelGrid columns="2" cellpadding="4">
 					<h:outputText value="#{message['consulta.contrato.estado']}" />
 					<p:selectOneMenu value="#{contratoForm.estadoRefinan}" required="true" style="width:220px">
 						<f:selectItems value="#{comboAction.estadoitems}" />

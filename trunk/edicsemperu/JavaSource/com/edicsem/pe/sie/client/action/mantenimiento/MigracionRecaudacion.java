@@ -57,25 +57,25 @@ public class MigracionRecaudacion extends BaseMantenimientoAbstractAction implem
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
 	 */
 	public String agregar() {
+		nombreArchivo ="";
 		recaudaMig=new ArrayList<RecaudacionDTO>();
 		mensaje ="";
-		return getViewMant();
+		return null;
 	}
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewMant()
 	 */
 	public String getViewMant() {
-		return Constants.MIGRAR_SISTEMA_INTEGRADO;
+		return Constants.MIGRAR_SISTEMA_RECAUDACION;
 	}
 	
 	public void InputStreamAFile(InputStream entrada, String nombreArchivo) {
+		
 		try {
+			ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
 
-			ServletContext ctx = (ServletContext) FacesContext
-					.getCurrentInstance().getExternalContext().getContext();
-
-			String path = ctx.getRealPath("/SistemaIntegrado");
+			String path = ctx.getRealPath("/SistemaRecaudacion");
 
 			File directory = new File(path);
 			Boolean existe = directory.exists();
@@ -103,7 +103,6 @@ public class MigracionRecaudacion extends BaseMantenimientoAbstractAction implem
 		}
 	}
 	
-
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
 	 */
@@ -168,7 +167,7 @@ public class MigracionRecaudacion extends BaseMantenimientoAbstractAction implem
 							data.add(cell);
 						}
 						int tamano = data.size();
-
+						
 						if (tamano > 1) {
 							sis = new RecaudacionDTO();
 							if (data.get(0)!=null) {
@@ -290,6 +289,5 @@ public class MigracionRecaudacion extends BaseMantenimientoAbstractAction implem
 		public void setMensaje(String mensaje) {
 			this.mensaje = mensaje;
 		}
-		
-		
+	
 }

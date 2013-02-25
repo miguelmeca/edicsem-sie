@@ -31,6 +31,7 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 import com.edicsem.pe.sie.beans.SistemaIntegradoDTO;
+import com.edicsem.pe.sie.entity.ContratoSie;
 import com.edicsem.pe.sie.service.facade.ContratoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
@@ -127,7 +128,7 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 		}
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		return null;
+		return getViewMant();
 	}
 
 	public String handleFileUpload(FileUploadEvent event) throws ParseException {
@@ -181,7 +182,13 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 							if (data.get(0)!=null) {
 								sis.setCodContrato(getCellValueAsString(data.get(5)));
 								//buscar codigo de contrato 
-								
+								ContratoSie contrato = objContratoService.buscarXcodigoContrato(sis.getCodContrato());
+								if(contrato!=null){
+									sistMig= new ArrayList<SistemaIntegradoDTO>();
+									mensaje ="El contrato con el código  '"+contrato.getCodcontrato()+"' ya existe";
+									msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO,mensaje);
+									break;
+								}
 								
 								sis.setEmpresa(getCellValueAsString(data.get(0)));
 								if(!data.get(5).toString().isEmpty()){
@@ -251,7 +258,8 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 										sis.setFechaNotifica(DateUtil.convertStringToDate(getCellValueAsString(data.get(55))));
 									}
 								}
-								sis.setDiasRetraso(Integer.parseInt(getCellValueAsString(data.get(59))));
+								String diasRetrazo =getCellValueAsString(data.get(59));
+								sis.setDiasRetraso(Integer.parseInt(diasRetrazo));
 								//dependiendo de los dias de retrazo se analiza el tipo de cliente.
 								
 								sis.setInfocorp(getCellValueAsString(data.get(63)));
@@ -288,20 +296,22 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 					}
 				}
 				log.info(" tamano total "+sistMig.size());
-				mensaje=  "Cargó exitosamente el archivo "+nombreArchivo;
-						if( listaContratosManual.size()>0){
+				if(mensaje!=null){
+					mensaje=  "Cargó exitosamente el archivo "+nombreArchivo;
+					if( listaContratosManual.size()>0){
 							mensaje+=  	", no se cargó  "+ listaContratosManual.size()+" registros, por favor verfique Archivo Log";
-						}
-				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-						Constants.MESSAGE_INFO_TITULO,mensaje);
+					}
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO,mensaje);
+				}
+				
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 				}
 			catch (Exception e) {
-				mensaje = " Contrato: "+sis.getCodContrato()+",    "+e.getMessage();
+				mensaje = " Contrato: "+sis.getCodContrato()+",    "+e.getMessage()+", causa: "+e.getCause();
 				msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error Formato EXCEL", mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 				sistMig = new ArrayList<SistemaIntegradoDTO>();
-				return null;
+				e.printStackTrace();
 	    }finally {
 	    	if (fis != null) {
 			try {

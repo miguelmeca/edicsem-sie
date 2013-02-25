@@ -19,12 +19,12 @@
 					emptyMessage="No se encontro registros"
 					filteredValue="#{MantenimientoClienteSearchAction.filteredClienteSie}">
 					
-					<f:facet name="header">
-            <p:outputPanel>
-                <h:outputText value="Buscar en todos los campos:" />
-                <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px" />
-            </p:outputPanel>
-        </f:facet>
+			<f:facet name="header">
+	            <p:outputPanel>
+	                <h:outputText value="Buscar en todos los campos:" />
+	                <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px" />
+	            </p:outputPanel>
+            </f:facet>
 					
 				<p:column headerText="Nombre" id="nombre" filterBy="#{c.nombrecliente}">
 					<h:outputText value="#{c.nombrecliente}" />

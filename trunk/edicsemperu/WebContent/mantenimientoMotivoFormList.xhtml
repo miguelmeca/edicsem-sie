@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">#{message['motivo.titulo']}</h1>
+
+		<h:form id="frmMotivoFormList" prependId="false">
+			<p:messages id="messages" showDetail="true" escape="false" closable="true" />
+			<p:dataTable  value="#{motivoSearch.motivoList}" var="m" id="motivoTable" paginator="true" 
+			rows="10"  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	   		rowsPerPageTemplate="5,10,15" widgetVar="table" emptyMessage="#{message['rsltd.empty']}">	
+
+				<p:column headerText="#{message['motivo.descripcion']}" >
+					<h:outputText value="#{m.descripcion}" />
+				</p:column>
+				
+				<p:column headerText="#{message['motivo.editar']}">
+					<center>
+					<p:commandButton title="#{message['motivo.editar.tittle']}" action="#{motivoSearch.update}" 
+					oncomplete="carDialogNuevomotivo.show()" update=":NuevoModificamotivo:display" icon="ui-icon ui-icon-pencil" >
+						<f:setPropertyActionListener value="#{m}" target="#{motivoSearch.motivo}" />
+					</p:commandButton>
+					</center>
+				</p:column>
+				
+				<p:column headerText="#{message['motivo.deshabilitar']}">
+					<center>
+					<p:commandButton icon="ui-icon ui-icon-close" onclick="confirmationMotivo.show()" title="Deshabilitar" >
+							<f:setPropertyActionListener value="#{m}" target="#{motivoSearch.motivo}" />
+					</p:commandButton>
+					</center>
+				</p:column>
+				
+				<f:facet name="footer">
+					<div align="left">
+						<p:commandButton value="#{message['motivo.nuevo']}" icon="ui-icon-star" id="nuevop" oncomplete="carDialogNuevomotivo.show()" 
+							update=":NuevoModificamotivo:display"  action="#{motivoSearch.agregar}" title="#{message['motivo.nuevo.tittle']}"/>
+						<p:tooltip for="nuevop"/>
+					</div>
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
