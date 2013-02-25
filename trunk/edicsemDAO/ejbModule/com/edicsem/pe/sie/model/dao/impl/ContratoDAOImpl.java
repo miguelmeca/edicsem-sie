@@ -161,4 +161,76 @@ public class ContratoDAOImpl implements ContratoDAO{
 		}
 		return codigo;
 	}
+
+	
+	public ContratoSie buscarXcodigoContrato(int id) {
+		
+		
+		
+		
+		return null;
+	}
+
+	
+	
+	
+	
+	//verifico si este numero de contrato ya se encuentra en la BD de sistemas integrados
+	public boolean verificarNumContrato(int numContrato) {
+		boolean bandera = true;	
+		List lista = null;
+		try {
+			Query q = em.createQuery("select p from ContratoSie p where p.tbEstadoGeneral.idestadogeneral = 25 AND p.codcontrato like  '"+ numContrato + "'");
+			lista = q.getResultList();											
+			log.info("tamaño lista Numero Contrato --> " + lista.size());
+			if(lista.size()>0){ //hay uno o mas contratos retornados.
+				bandera=false;
+			}else{//no hay contrato, entonces puede proseguir
+				bandera=true;
+			}
+			
+		} catch (Exception e) {
+			bandera=false;
+			e.printStackTrace();
+		}
+				
+		return bandera;
+	}
+	
+	
+	
+	
+	public ContratoSie buscarXcodigoContrato(String codContrato) {
+
+		ContratoSie p = new ContratoSie();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("buscar Numero de Contrato" +"  "+ codContrato );
+			}
+
+Query q = em.createQuery("select p from ContratoSie p where p.tbEstadoGeneral.idestadogeneral = 25 AND p.codcontrato like  '"+ codContrato + "'");
+			if (q.getResultList().size() == 1) {
+
+				p = (ContratoSie) q.getResultList().get(0);
+				// casteado tiene columnas pero no se ah mencionado cuales son p=(ContratoSie) q.getResultList().get(0);
+				
+			}
+			log.info("Aquita CONTRATO-->"+ p.getCodcontrato());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return p;
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
