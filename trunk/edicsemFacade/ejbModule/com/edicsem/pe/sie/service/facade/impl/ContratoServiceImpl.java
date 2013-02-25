@@ -21,6 +21,7 @@ import com.edicsem.pe.sie.entity.DetContratoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DetPaqueteSie;
 import com.edicsem.pe.sie.entity.DetProductoContratoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
+import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.PaqueteSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
@@ -236,7 +237,7 @@ public class ContratoServiceImpl implements ContratoService {
 				log.info("TIpo-Venta-PNT"+"-->"+con.getTipoventa());
 			}			
 			else {
-				con.setTipoventaotros(s.getEventodeventa());				
+				//con.setTipoventaotros(s.getEventodeventa());				
 			}			
 			con.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(25));
 			objContratoDao.updateContrato(con);
@@ -311,6 +312,7 @@ public class ContratoServiceImpl implements ContratoService {
 }			
 	}
 	
+
 	public String insertMigracion(List<SistemaIntegradoDTO> sistMig) {
 		log.info("insertMigracion() *");
 		String mensaje=null;
@@ -416,6 +418,9 @@ public class ContratoServiceImpl implements ContratoService {
 							}
 						tel.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(17));
 						tel.setIdcliente(cli);
+						if(tel.getDescTelefono()==null){
+							tel.setDescTelefono("Trabajo");
+						}
 						telList.add(tel);
 						tel= new TelefonoPersonaSie();
 						}
@@ -431,7 +436,14 @@ public class ContratoServiceImpl implements ContratoService {
 				objClienteDao.insertCliente(cli);
 				con.setNumcuotas(s.getCantCuotas());
 				con.setPagosubinicial(new  BigDecimal(s.getImporteInicial()));
-				con.setTbEmpresa(objEmpresaDao.findEmpresaXdescripcion(s.getEmpresa()));
+				EmpresaSie empr = objEmpresaDao.findEmpresaXdescripcion(s.getEmpresa());
+				if(empr==null){
+					con.setTbEmpresa(empr);
+				}else{
+					mensaje="No se encontró la empresa '"+s.getEmpresa()+"'";
+					break;
+				}
+				
 				con.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(25));
 				con.setTbCliente(cli);
 				//insertar contrato
@@ -457,8 +469,7 @@ public class ContratoServiceImpl implements ContratoService {
 				log.info("domicilio :D "+domList.get(0).getDomicilio() );
 				}
 			}
-			//si se encuentra un ( - ) se reemplaza por un espacio
-
+			
 			String [ ] telefono = s.getNumTelefono().trim().split("([\\s(-])+");
 	 
 			for (int j = 0; j < telefono.length; j++) {
@@ -531,7 +542,6 @@ public class ContratoServiceImpl implements ContratoService {
 					}
 					
 				if(tel.getTelefono()!=null && !telefonoString.contains(tel.getTelefono())){
-					log.info("agregadooo ");
 					//definir tipo telefono
 					if(tel.getTelefono()!=null ){
 						if(tel.getTelefono().matches("\\d{9}")){
@@ -584,20 +594,14 @@ public class ContratoServiceImpl implements ContratoService {
 			//no ex 5335104 995669453 M
 			//ANONIMO
 			//999935626 4582558 (FAMILIAR)
-			
-			//buscar ubigeo por descripcion del ditrito
-			// si hay mas de una opción? seria la de lima por defecto
-			
-		for (int j = 0; j < domList.size(); j++) {
-			domicilioString.add(domList.get(j).getDomicilio());
-		}
+						
+			for (int j = 0; j < domList.size(); j++) {
+				domicilioString.add(domList.get(j).getDomicilio());
+			}
 			
 			//insertar Domicilio
-		
-		
 			
 			if(!domicilioString.contains(s.getDireccion())){
-				//domList = new ArrayList<DomicilioPersonaSie>();
 				log.info("nuevo domi  " + s.getDireccion());
 				dom = new DomicilioPersonaSie();
 				dom.setDomicilio(s.getDireccion());
@@ -642,7 +646,6 @@ public class ContratoServiceImpl implements ContratoService {
 			
 			log.info(" contr***** "+con.getCodcontrato()+" "+codigoContr);
 			
-			
 			if(con.getCodcontrato()!=codigoContr){
 				for (int j2 = 0; j2 < telList.size(); j2++) {
 						objTelefonoDao.insertarTelefonoEmpleado(telList.get(j2));
@@ -657,7 +660,14 @@ public class ContratoServiceImpl implements ContratoService {
 				codigoContr=  con.getCodcontrato();
 			}
 		}
+		
+		} catch (Exception e) {
+			mensaje =e.getMessage()+"Error en el contrato "+con.getCodcontrato();
+		}
+		
+		return mensaje;
 	}
+	
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ContratoService#obtenerCodigo()
