@@ -22,6 +22,7 @@ public interface ContratoService {
 	public abstract List  listarContratos();
 	public abstract List listarClientePorParametro(String numDocumento,String codigoContrato,String nombreCliente, String apePat,String apeMat );
 	public abstract String insertMigracion(List<SistemaIntegradoDTO> sis);
-	public abstract void updateEntregasPeru(List<EntregasPeruDTO> credito );
 	public abstract int obtenerCodigo();
+	public abstract void updateEntregasPeru(List<EntregasPeruDTO> credito );
+	public abstract ContratoSie buscarXcodigoContrato (String codContrato);
 }
