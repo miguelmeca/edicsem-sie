@@ -100,8 +100,7 @@ public class AlmacenDAOImpl implements AlmacenDAO{
 	}
 
 
-	public PuntoVentaSie buscarIdpuntoVenta(String puntoVenta) {
-	
+	public PuntoVentaSie buscarIdpuntoVenta(String puntoVenta) {	
 
 		PuntoVentaSie p = new PuntoVentaSie();
 		try {
