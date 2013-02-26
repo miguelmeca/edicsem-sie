@@ -66,13 +66,13 @@ public class ContratoSie implements Serializable {
 	private BigDecimal pagosubinicial;
 
 	private String tipoventa;
-
+	
 	private String usuariocreacion;
 
 	private String usuariomodifica;
 	
 	private String rutaImagenContrato;
-
+	
 	//bi-directional many-to-one association to CobranzaSie
 	@OneToMany(mappedBy="tbContrato")
 	private Set<CobranzaSie> tbCobranzas;
@@ -119,7 +119,7 @@ public class ContratoSie implements Serializable {
   	
   	@Transient
 	private String fechaCreacionString;
-	
+
     public ContratoSie() {
     }
 
@@ -338,6 +338,7 @@ public class ContratoSie implements Serializable {
 		this.tbSeguimientoContrato = tbSeguimientoContrato;
 	}
 
+	
 	public PuntoVentaSie getTbPuntoVenta() {
 		return tbPuntoVenta;
 	}
@@ -345,7 +346,6 @@ public class ContratoSie implements Serializable {
 	public void setTbPuntoVenta(PuntoVentaSie tbPuntoVenta) {
 		this.tbPuntoVenta = tbPuntoVenta;
 	}
-	
 	/**
 	 * @return the fechaCreacionString
 	 */
