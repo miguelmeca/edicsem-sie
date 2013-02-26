@@ -11,5 +11,6 @@ public interface AlmacenService {
 	public abstract PuntoVentaSie findAlmacen (int id);
 	public abstract List listarAlmacenes();
 	public abstract List listarAlmacenXtipo(int tipo);
+	public abstract PuntoVentaSie buscarIdpuntoVenta (String puntoVenta);
 	
 }
