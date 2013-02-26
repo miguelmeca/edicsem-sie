@@ -95,8 +95,7 @@ public class MetaMesSearchAction extends BaseMantenimientoAbstractAction {
 			if (isNewRecord()) {
 
 				String fecha = DateUtil.formatoString(getDate1(), "dd/MM/yyyy");
-				String fecha2 = DateUtil
-						.formatoString(getDate2(), "dd/MM/yyyy");
+				String fecha2 = DateUtil.formatoString(getDate2(), "dd/MM/yyyy");
 
 				fecha = fecha.substring(0, 5);
 				log.info("--> " + fecha);
