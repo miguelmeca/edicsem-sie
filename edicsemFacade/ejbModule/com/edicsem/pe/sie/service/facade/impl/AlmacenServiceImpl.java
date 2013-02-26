@@ -5,6 +5,9 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.model.dao.AlmacenDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
@@ -21,6 +24,8 @@ public class AlmacenServiceImpl implements AlmacenService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.AlmacenService#insertAlmacen(com.edicsem.pe.sie.entity.PuntoVentaSie)
 	 */
+	public static Log log = LogFactory.getLog(ContratoServiceImpl.class);
+	
 	
 	public void insertAlmacen(PuntoVentaSie almacen) {
 		almacen.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(13));
@@ -55,5 +60,11 @@ public class AlmacenServiceImpl implements AlmacenService {
 	 */
 	public List listarAlmacenXtipo(int tipo) {
 		return objAlmacenDao.listarPuntoVenta(tipo);
+	}
+
+	
+	public PuntoVentaSie buscarIdpuntoVenta(String puntoVenta) {
+	log.info("DENTRO DER SERVICIO-->"+ "  "+puntoVenta);
+		return objAlmacenDao.buscarIdpuntoVenta(puntoVenta);
 	}
 }
