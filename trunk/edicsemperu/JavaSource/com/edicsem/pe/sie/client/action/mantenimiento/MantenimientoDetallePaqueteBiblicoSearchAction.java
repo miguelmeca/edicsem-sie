@@ -119,35 +119,24 @@ public class MantenimientoDetallePaqueteBiblicoSearchAction extends BaseMantenim
 	}
 	
 
-
-	
-	
-	
 	
 	//AGREGAR Y UPDATE
-public String agregar() {
-	
-			log.info("agregar()");
-		
-			editMode = true;
-			objDetPaqueteSie = new DetPaqueteSie();
-		
-			
-			objDetPaqueteSie.setCantidad(1);
-			
-			setNewRecord(true);
-			return getViewList();
-		}
-		
+	public String agregar() {
+		log.info("agregar()");
+
+		editMode = true;
+		objDetPaqueteSie = new DetPaqueteSie();
+		objDetPaqueteSie.setCantidad(1);
+		setNewRecord(true);
+		return getViewList();
+	}
 		
 		
 		
 		
 public String update() throws Exception {
-			log.info("update()  " );
-
+	log.info("update()  " );
 	log.info(" id_detalle_paquete" + " " + objDetPaqueteSie.getIdDetPaquete() + " id_de_producto "+ objDetPaqueteSie.getTbProducto().getIdproducto());		
-
 
 	objDetPaqueteSie = objDetallePaqueteService.findDetPaquete(objDetPaqueteSie.getIdDetPaquete());
 	
@@ -158,9 +147,9 @@ public String update() throws Exception {
 	setIdEstadoGeneral(objDetPaqueteSie.getTbEstadoGeneral().getIdestadogeneral());
 			
 			
-			setNewRecord(false);
-			editMode = false;
-			return getViewList();
+	setNewRecord(false);
+	editMode = false;
+	return getViewList();
 		}
 
 
@@ -168,13 +157,10 @@ public String insertar() {
 	mensaje =null;
 	
 	String paginaRetorno="";
-
 	
 	objDetPaqueteSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(71));
 	objDetPaqueteSie.setTbProducto(objProductoService.findProducto(idproducto));
 	objDetPaqueteSie.setTbPaquete(objPaqueteService.findPaquete(idpaquete));
-	
-
 	
 	try {
 		
