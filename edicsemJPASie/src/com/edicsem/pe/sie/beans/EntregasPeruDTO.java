@@ -14,6 +14,7 @@ public class EntregasPeruDTO implements Serializable {
 	private String empresa;
 	
 	private Date fecha;
+	/**fecha de entrega**/
 	
 	private String fechaString;
 	
@@ -67,17 +68,13 @@ public class EntregasPeruDTO implements Serializable {
 	
 	private String lugardelaentrega;
 	
-	
-	
 	private String distritodelaentrega;
 	
 	private String zonadelaentrega;
 	
 	private String zonadeentrega;
 	
-	private String letrasectorentrega;
-	
-	
+	private String letrasectorentrega;	
 	
 	private String nombredelvendedor;
 	
@@ -187,11 +184,6 @@ public class EntregasPeruDTO implements Serializable {
 		this.fecha = fecha;
 	}
 
-	/**
-	 * @return the boleta
-	 */
-
-	
 	
 
 
