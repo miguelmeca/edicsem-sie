@@ -5,41 +5,41 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
-		<h1 class="title ui-widget-header ui-corner-all">ENTREGAS PERU</h1>
-		<h:form id="frmEntregasperuForm">
-<p:messages id="message" showDetail="true" closable="true" />		
+	<h1 class="title ui-widget-header ui-corner-all">#{message['migracion.entregasperu']}</h1>
+	<h:form id="frmEntregasperuForm">
+	
+<p:messages id="message" showDetail="true" closable="true" />
 
 <p:fileUpload fileUploadListener="#{FileUploadEntregasPeru.handleFileUpload}"
-	allowTypes="/(\.|\/)(XLS|xls)$/" description="Seleccionar Excel"
+	allowTypes="/(\.|\/)(XLS|xls)$/" description="Seleccionar archivo"
 	update="datatablecampana, message" />
-	
-	<p:commandButton value="Importar"
+		
+<p:commandButton value="Migrar"
 	action="#{FileUploadEntregasPeru.subirCreditos}" process="@all"
-	update="message" >
-	
-	</p:commandButton>
+	update="message" onclick="status.show();" ajax="false" >
+</p:commandButton>
 
 <p:dataTable id="datatablecampana" var="c" value="#{FileUploadEntregasPeru.leadsNuevos}"  paginator="true" rows="50"
  rowsPerPageTemplate="50,10,15" widgetVar="table"  emptyMessage="No se encontraron registros"
  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
                    
-       
+  	    <p:column  headerText="Ndecontrato" id="numerodecontrato" sortBy="#{c.numerodecontrato}" filterBy="#{c.numerodecontrato}"  >
+        <h:outputText value="#{c.numerodecontrato}"/>
+        </p:column>
+        
+        <p:column  headerText="fecha" id="fechaString" sortBy="#{c.fechaString}" filterBy="#{c.fechaString}" >
+        <h:outputText value="#{c.fechaString}"/>
+        </p:column>	
         
         <p:column headerText="Empresa" id="empresa" sortBy="#{c.empresa}" filterBy="#{c.empresa}" >
 		<h:outputText value="#{c.empresa}"/>
 		</p:column>
 		
-		 <p:column  headerText="fecha"  >
-        <h:outputText value="#{c.fechaString}"/>
-        </p:column>	
-        	
-        	
-		<p:column  headerText="Ndecontrato" id="numerodecontrato" sortBy="#{c.numerodecontrato}" filterBy="#{c.numerodecontrato}"  >
-        <h:outputText value="#{c.numerodecontrato}"/>
+		<p:column  headerText="DNI" id="dnidelcliente" sortBy="#{c.dnidelcliente}" filterBy="#{c.dnidelcliente}"  >
+        <h:outputText value="#{c.dnidelcliente}"/>
         </p:column>
-        
-        
-		   <p:column  headerText="nombre" id="nombre" sortBy="#{c.nombredecliente}" filterBy="#{c.nombredecliente}"  >
+		
+		<p:column  headerText="nombre" id="nombre" sortBy="#{c.nombredecliente}" filterBy="#{c.nombredecliente}"  >
         <h:outputText value="#{c.nombredecliente}"/>
         </p:column>
         
@@ -51,28 +51,39 @@
         <h:outputText value="#{c.apematcliente}"/>
         </p:column>
         
-        <p:column  headerText="DNI" id="dnidelcliente" sortBy="#{c.dnidelcliente}" filterBy="#{c.dnidelcliente}"  >
-        <h:outputText value="#{c.dnidelcliente}"/>
+        <p:column  headerText="PuntoVenta" id="puntodeventa" sortBy="#{c.puntodeventa}" filterBy="#{c.puntodeventa}"  >
+        <h:outputText value="#{c.puntodeventa}"/>
         </p:column>
-		
-	 
+    
+		    <p:column  headerText="LugarEntrega" id="lugardelaentrega" sortBy="#{c.lugardelaentrega}" filterBy="#{c.lugardelaentrega}"  >
+        <h:outputText value="#{c.lugardelaentrega}"/>
+        </p:column>    
+    
+    	 <p:column  headerText="CodigoMercaderia" id="codigodemercaderia" sortBy="#{c.codigodemercaderia}" filterBy="#{c.codigodemercaderia}"  >
+        <h:outputText value="#{c.codigodemercaderia}"/>
+        </p:column>    	
+            
+        <p:column  headerText="CantidadMercaderia" id="cantidaddemercaderia" sortBy="#{c.cantidaddemercaderia}" filterBy="#{c.cantidaddemercaderia}"  >
+        <h:outputText value="#{c.cantidaddemercaderia}"/>
+        </p:column>
+        
+        <p:column  headerText="EventoVenta" id="eventodeventa" sortBy="#{c.eventodeventa}" filterBy="#{c.eventodeventa}"  >
+        <h:outputText value="#{c.eventodeventa}"/>
+        </p:column>
+       	 
          <p:column  headerText="Nom_Vendedor"  id="nombredelvendedor" sortBy="#{c.nombredelvendedor}" filterBy="#{c.nombredelvendedor}" >
         <h:outputText value="#{c.nombredelvendedor}"/>
         </p:column>
         
-            <p:column  headerText="Nom_expositor" id="nombredelexpositor" sortBy="#{c.nombredelexpositor}" filterBy="#{c.nombredelexpositor}" >
+        <p:column  headerText="Nom_expositor" id="nombredelexpositor" sortBy="#{c.nombredelexpositor}" filterBy="#{c.nombredelexpositor}" >
         <h:outputText value="#{c.nombredelexpositor}"/>
         </p:column>
         
-            <p:column  headerText="Nom_supervisor" id="nombredelsupervisor" sortBy="#{c.nombredelsupervisor}" filterBy="#{c.nombredelsupervisor}" >
+        <p:column  headerText="Nom_supervisor" id="nombredelsupervisor" sortBy="#{c.nombredelsupervisor}" filterBy="#{c.nombredelsupervisor}" >
         <h:outputText value="#{c.nombredelsupervisor}"/>
         </p:column>
         
-      
-        
-    </p:dataTable>
-    
-		
-		</h:form>
-	</ui:define>
+</p:dataTable>
+</h:form>
+</ui:define>
 </ui:composition>
