@@ -19,14 +19,12 @@ import org.primefaces.event.FlowEvent;
 
 import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.entity.ContratoEmpleadoSie;
-import com.edicsem.pe.sie.entity.DetEmpresaEmpleadoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.ContratoEmpleadoService;
-import com.edicsem.pe.sie.service.facade.DetEmpresaEmpleadoService;
 import com.edicsem.pe.sie.service.facade.DomicilioEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
@@ -83,7 +81,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	List<String> userList ;
 	List<String> dniList;
 	private List<ContratoEmpleadoSie> contratoEmpleadoList, ContratoDeshabilitado;
-	private List<DetEmpresaEmpleadoSie> detEmpresaEmpList;
 	
 	@ManagedProperty(value="#{comboAction}") 
 	private ComboAction comboManager;
@@ -108,8 +105,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	private TipoPagoService objTipoPagoService;
 	@EJB 
 	private ContratoEmpleadoService objContratoEmpleadoService;
-	@EJB 
-	private DetEmpresaEmpleadoService objDetEmpresaEmpService;
 	
 	public static Log log = LogFactory.getLog(MantenimientoEmpleadoFormAction.class);
 	
@@ -511,7 +506,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
         /*seteo contrato*/
         contratoEmpleadoList = objContratoEmpleadoService.listarCargoXEmp(c.getIdempleado());
         /*seteo detalle contrato*/
-        detEmpresaEmpList = objDetEmpresaEmpService.listarDetEmpresaEmpleadoXidempleado(c.getIdempleado());
+      // detEmpresaEmpList = objDetEmpresaEmpService.listarDetEmpresaEmpleadoXidempleado(c.getIdempleado());
         /**/
         for (int i = 0; i < TelefonoPersonaList.size(); i++) {
         	TelefonoPersonaList.get(i).setItem("Agregado");
@@ -577,9 +572,9 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 				} else {
 					log.info("actualizando..... ");
 					objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, codigoTipoDocumento,  codigoCargoEmpleado,  
-					idUbigeo, tipo,  idCargo, DomicilioPersona, TelefonoPersona,TipoDocumento, idEmpresa, idTipoPago, codigoEmpleado, contratoEmpleadoList, TelefonoPersonaList, TelefonoDeshabilitado, ContratoDeshabilitado, detEmpresaEmpList);
+					idUbigeo, tipo,  idCargo, DomicilioPersona, TelefonoPersona,TipoDocumento, idEmpresa, idTipoPago, codigoEmpleado, contratoEmpleadoList, TelefonoPersonaList, TelefonoDeshabilitado, ContratoDeshabilitado);
 					log.info("insertando..... ");
-					mensaje ="Se actualizó correctamente";
+					mensaje = Constants.MESSAGE_ACTUALIZO_TITULO;
 				}
 				paginaretorno= mantenimientoEmpleadoSearch.listar();
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
@@ -1278,20 +1273,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 			List<ContratoEmpleadoSie> contratoDeshabilitado) {
 		ContratoDeshabilitado = contratoDeshabilitado;
 	}
-
-	/**
-	 * @return the detEmpresaEmpList
-	 */
-	public List<DetEmpresaEmpleadoSie> getDetEmpresaEmpList() {
-		return detEmpresaEmpList;
-	}
-
-	/**
-	 * @param detEmpresaEmpList the detEmpresaEmpList to set
-	 */
-	public void setDetEmpresaEmpList(List<DetEmpresaEmpleadoSie> detEmpresaEmpList) {
-		this.detEmpresaEmpList = detEmpresaEmpList;
-	}  
 }
 
 

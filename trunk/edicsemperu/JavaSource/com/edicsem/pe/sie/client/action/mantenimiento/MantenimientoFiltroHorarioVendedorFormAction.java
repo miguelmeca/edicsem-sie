@@ -17,7 +17,7 @@ import org.apache.commons.logging.LogFactory;
 import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.entity.FiltroHorarioVentaSie;
 import com.edicsem.pe.sie.entity.HorarioPersonalSie;
-import com.edicsem.pe.sie.service.facade.DetEmpresaEmpleadoService;
+import com.edicsem.pe.sie.service.facade.ContratoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.FiltroHorarioVentaService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
@@ -40,7 +40,7 @@ public class MantenimientoFiltroHorarioVendedorFormAction extends BaseMantenimie
 	private FiltroHorarioVentaService objFiltroHorarioService;
 	
 	@EJB
-	private DetEmpresaEmpleadoService objDetEmpresaEmpleadoService;
+	private ContratoEmpleadoService objcontratoEmpleadoService;
 	
 	@ManagedProperty(value = "#{comboAction}")
 	private ComboAction comboManager;
@@ -129,7 +129,7 @@ public class MantenimientoFiltroHorarioVendedorFormAction extends BaseMantenimie
 	}
 	
 	public String vertipovendedor(){
-		int i = objDetEmpresaEmpleadoService.filtrartipoventaPersonal(idvendedor);
+		int i = objcontratoEmpleadoService.filtrartipoventaPersonal(idvendedor);
 		if(i==1){
 		 tipoventa= true;
 		}else{

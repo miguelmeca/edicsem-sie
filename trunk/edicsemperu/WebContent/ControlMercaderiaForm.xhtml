@@ -10,58 +10,73 @@
 		window.history.forward(-1);
 	</script>
 		<h1 class="title ui-widget-header ui-corner-all">#{message['control.mercaderia.tittle']}</h1>
-		<h:form id="formConsultaContrato">
+		<h:form id="formControlMercaderia">
 		<p:messages showDetail="true"/>
 		<p:panel>
-		<p:fieldset >
-        <h:panelGrid columns="2" cellpadding="4" >
-        <h:outputText value="#{message['control.punto.venta']}" />
-			<p:selectOneMenu id="tipoDoc" style="width:165px" value="#{contratoForm.idtipodoc}" required="true" 
-				requiredMessage="#{message['contrato.tipo.documento.validation']}" >
-				<f:selectItems value="#{comboAction.tipoDocumentoitems}" />
+		<p:fieldset legend="#{message['control.mercaderia.tittle']}" >
+        <h:panelGrid columns="2" cellpadding="6" >
+			<h:outputText value="#{message['mantenimiento.kardex.tipo.almacen']}" />
+			<p:selectOneMenu  id="tipoAlmacen"  value="#{comboAction.tipoAlmacen}" required="true" style="width:220px" >
+			<f:selectItem itemLabel="Seleccione tipo" itemValue="#{null}" />
+				<f:selectItems value="#{comboAction.tipoalmacenitems}" />
+				<p:ajax update="almacen"  />
+			</p:selectOneMenu>
+			
+			<h:outputText value="#{message['control.punto.venta']}" />
+			<p:selectOneMenu id="almacen"  value="#{control.idalmacen}"  required="true" style="width:220px" >
+				<f:selectItem itemLabel="Seleccione" itemValue="#{null}" />
+				<f:selectItems value="#{comboAction.almacenItemsXTipo}" />
 			</p:selectOneMenu>
 			
 			<h:outputText value="#{message['control.encargado']}" />
-			<p:inputText value="#{contratoForm.codigoContrato}" required="true"/>
+			<p:selectOneMenu value="#{control.idEmpleado}" required="true" style="width:220px" >
+				<f:selectItem  itemValue="#{null}" itemLabel="Seleccionar Empleado" />
+				<f:selectItems value="#{comboAction.empleadoxcargo}"  />
+			</p:selectOneMenu>
 			
-        	<h:outputText value="#{message['control.tipo.producto']} " />
-			<p:inputText value="#{contratoForm.nombreCliente}" />
+			<h:outputText value="#{message['control.tipo.producto']}" />
+			<p:selectOneMenu id="tipoProd" value="#{comboAction.tipoProducto}" required="true" style="width:220px" >
+				<f:selectItem  itemValue="#{null}" itemLabel="Seleccionar tipo" />
+				<f:selectItems value="#{comboAction.tipoitems}"  />
+				<p:ajax update="product"  listener="#{comboAction.cambiar}"/>
+			</p:selectOneMenu>
 			
 			<h:outputText value="#{message['control.producto']}" />
-			<p:inputText value="#{contratoForm.apePatCliente}"  />
+			<p:selectOneMenu id="product"  value="#{control.idProducto}" required="true"  style="width:220px ">
+				<f:selectItem itemLabel="Seleccione Producto" itemValue="#{null}" />
+				<f:selectItems value="#{comboAction.productositems}" />
+			</p:selectOneMenu>
 			
 			<h:outputText value="#{message['control.cantidad.hay']}" />
-			<p:inputText value="#{contratoForm.apeMatCliente}" />
+			<p:inputText value="#{control.objcontrolSie.cantidad}" style="width:220px" />
 			
 			<h:outputText value="#{message['control.cantidad.deberia']}" />
-			<p:inputText value="#{contratoForm.apePatCliente}" readonly="true" />
+			<p:inputText value="#{control.cantidadDeberia}" readonly="true" style="width:220px" />
 			
-			</h:panelGrid>
-			<p:commandButton value="Consultar Verificación" action="#{contratoForm.consultar}" update="message" ajax="false" icon="ui-icon-search"/>
+			<p:commandButton value="Ver Verificación" action="#{contratoForm.consultar}" update="message" ajax="false" icon="ui-icon-search"/>
 			<p:commandButton value="Agregar" action="#{contratoForm.consultar}" update="message" ajax="false"	icon="ui-icon-plus"/>
-			</p:fieldset>
-			<p:fieldset legend="Productos ">
-				<h:panelGrid  rendered="#{contratoForm.tamanoLista>1}" >
-					<p:dataTable value="#{contratoForm.contratoXClienteList}"  var="c" 
-					style="width:800px" emptyMessage="No se encontraron resultados" >
-						
-						<p:column headerText="#{message['control.dt.producto']}" >
-		                    <h:outputText value="#{c.tbCliente.nombresCompletos}" />
-		                </p:column>
+			<p:spacer/>
+			</h:panelGrid>
+		</p:fieldset>
+		<p:fieldset legend="Productos " style="margin-top:30px">
+				<p:dataTable value="#{contratoForm.contratoXClienteList}"  var="c" style="width:800px" >
+					<p:column headerText="#{message['control.dt.producto']}" >
+		                <h:outputText value="#{c.tbCliente.nombresCompletos}" />
+		             </p:column>
 		                
-		                <p:column headerText="#{message['control.dt.cant.deberia']}" >
-		                    <h:outputText value="#{c.fechaCreacionString}" />
-		                </p:column>
+		             <p:column headerText="#{message['control.dt.cant.deberia']}" >
+		                 <h:outputText value="#{c.fechaCreacionString}" />
+		             </p:column>
 		                
-		                <p:column headerText="#{message['control.dt.cant.hay']}"  >
-		                    <h:outputText value="#{c.tbCliente.numdocumento}" />
-		                </p:column>
+		             <p:column headerText="#{message['control.dt.cant.hay']}"  >
+		                 <h:outputText value="#{c.tbCliente.numdocumento}" />
+		             </p:column>
 		                
-					</p:dataTable>
-				
-				<p:commandButton value="Grabar" action="#{contratoForm.consultar}" update="message" ajax="false" icon="ui-icon-search"/>
+				</p:dataTable>
+		
+		<p:commandButton value="Grabar" action="#{contratoForm.consultar}" update="message" 
+		ajax="false" icon="ui-icon-search"/>
 			
-		</h:panelGrid>
 		</p:fieldset>
 		</p:panel>
 		</h:form>
