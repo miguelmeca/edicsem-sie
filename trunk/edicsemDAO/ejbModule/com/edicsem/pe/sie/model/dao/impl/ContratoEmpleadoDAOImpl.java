@@ -128,7 +128,7 @@ public class ContratoEmpleadoDAOImpl implements ContratoEmpleadoDAO{
 				
 				for (int i = 0; i < lista.size(); i++) {
 					//averiguar cantidad de contratos por cada patrociando (contratos en los que el patrocinado es expositor = 1)
-					List<DetContratoEmpleadoSie> lista2 = objDetContratoEmpleadoDao.listarContratoXEmpleado(lista.get(i).getIdempleado(), fechaInicio, fechaFin, 1 );
+					List<DetContratoEmpleadoSie> lista2 = objDetContratoEmpleadoDao.listarContratoXEmpleado(lista.get(i).getTbEmpleado1().getIdempleado(), fechaInicio, fechaFin, 1 );
 					
 					lista.get(i).setCantContratoXPatrocinado(lista2.size());
 				}
@@ -214,8 +214,43 @@ public class ContratoEmpleadoDAOImpl implements ContratoEmpleadoDAO{
 		}
 		return lista;
 	}
-
-
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ContratoEmpleadoDAO#verificarEmpleadoConEmpresa(int)
+	 */
+	public boolean verificarEmpleadoConEmpresa(int idcargo) {
+		// aqui veremos si pertenece la empresa a un empleado para poder eliminarlo
+		boolean bandera = true;
+			List lista = null;
+			try {
+				Query q = em.createQuery("select p from ContratoEmpleadoSie p where p.tbEmpresa.idempresa = "+ idcargo);
+				lista = q.getResultList();
+				log.info("tamaño lista empresas --> " + lista.size());
+				if(lista.size()>0){ //hay uno o mas empresas retorna y muestra el msj de que no se podra eliminar.
+					bandera=false;
+				}else{//no hay empresas, entonces puede proseguir
+					bandera=true;//se ejecuta el query
+				}
+			} catch (Exception e) {
+				bandera=false;
+				e.printStackTrace();
+			}
+			return bandera;
+	}
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ContratoEmpleadoDAO#filtrartipoventaPersonal(int)
+	 */
+	public int filtrartipoventaPersonal(int idvendedor) {
+		int p=0;
+		try {
+			Query q = em.createQuery("select p.tbEmpresa.tipoVenta from ContratoEmpleadoSie p where p.tbEmpleado.idempleado = "+idvendedor);
+			
+			p =  Integer.parseInt(q.getResultList().get(0).toString());
+			log.info(" filtrartipoventaPersonal " + p );
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return p;
+	}
 }
