@@ -63,10 +63,6 @@ public class DetPaqueteSie implements Serializable {
 	@Transient
   	private String isnew;
   	
-    
-   
-    
-    
     @Transient
     private String observacion;
     
