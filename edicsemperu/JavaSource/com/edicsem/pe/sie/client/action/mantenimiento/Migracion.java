@@ -27,6 +27,7 @@ import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
@@ -44,7 +45,7 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 	public static Log log = LogFactory.getLog(Migracion.class);
 	private String nombreArchivo;
 	private List<SistemaIntegradoDTO> sistMig;
-	private List<String> listaContratosManual;
+	List<List<HSSFCell>> listaContratosManual;
 	private String mensaje ;
 	
 	@EJB
@@ -60,7 +61,7 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 	public String agregar() {
 		nombreArchivo="";
 		sistMig=new ArrayList<SistemaIntegradoDTO>();
-		listaContratosManual = new ArrayList<String>();
+		listaContratosManual = new ArrayList<List<HSSFCell>>();
 		mensaje ="";
 		return getViewMant();
 	}
@@ -111,7 +112,7 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
 	 */
 	public String insertar() throws Exception {
-		
+		RequestContext context = RequestContext.getCurrentInstance();
 		log.info("subirBD()");
 		
 		if(sistMig.size()==0){
@@ -123,6 +124,7 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 				mensaje=  "Se realizó la migración exitosamente";
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO,mensaje);
 			}else{
+				context.execute("statusDialogSI.hide()");
 				msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,Constants.MESSAGE_INFO_TITULO,mensaje);
 			}
 		}
@@ -177,7 +179,6 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 						int tamano = data.size();
 
 						if (tamano > 1) {
-							log.info(" >1 ");
 							sis = new SistemaIntegradoDTO();
 							if (data.get(0)!=null) {
 								sis.setCodContrato(getCellValueAsString(data.get(5)));
@@ -213,10 +214,12 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 								if(data.get(8).toString().isEmpty()||data.get(8).toString().equals("")||data.get(8).toString().trim().equals("")){
 								
 								}else{
-									sis.setFecnacimiento(DateUtil.convertStringToDate(getCellValueAsString(data.get(8))));
+									if(getCellValueAsString(data.get(8)).substring(0, 2).contains("/")){
+										sis.setFecnacimiento(DateUtil.convertStringToDate(getCellValueAsString(data.get(8))));
+									}else{
+									}
 								}
 								sis.setCorreo(getCellValueAsString(data.get(9)));
-								log.info("Telefonos:  "+data.get(10));
 								sis.setNumTelefono(getCellValueAsString(data.get(10)));
 								sis.setDireccion(getCellValueAsString(data.get(11)));
 								
@@ -261,18 +264,24 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 								String diasRetrazo =getCellValueAsString(data.get(59));
 								sis.setDiasRetraso(Integer.parseInt(diasRetrazo));
 								//dependiendo de los dias de retrazo se analiza el tipo de cliente.
-								
+								//volver a calificar al cliente : Puntual , regular,  mmoroso, extremo
 								sis.setInfocorp(getCellValueAsString(data.get(63)));
 								if(data.get(64)!=null){
 									if(!(data.get(64).toString().isEmpty()||data.get(64).toString().equals("")||data.get(64).toString().trim().equals(""))){
-										sis.setRegistroReniec(DateUtil.convertStringToDate(getCellValueAsString(data.get(64))));
+										String fec = getCellValueAsString(data.get(64));
+										if(fec.contains("-")){
+											SimpleDateFormat df = new SimpleDateFormat("dd-mm-yyyy");
+											sis.setRegistroReniec(df.parse(data.get(64).getStringCellValue()));
+										}else{
+											sis.setRegistroReniec(data.get(64).getDateCellValue());
+										}
 									}
 								}
 								sis.setCalificaInforcorp(getCellValueAsString(data.get(65)));
 								sis.setHistoria(getCellValueAsString(data.get(66)));
 								if(data.get(68)!=null){
 									if(!(data.get(68).toString().isEmpty()||data.get(68).toString().equals("")||data.get(68).toString().trim().equals(""))){
-										sis.setFechaCalificado(DateUtil.convertStringToDate(getCellValueAsString(data.get(68))));
+										sis.setFechaCalificado(data.get(68).getDateCellValue());										
 									}
 								}
 								sis.setCalificacionCliente(getCellValueAsString(data.get(69)));
@@ -285,8 +294,7 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 									sistMig.add(sis);
 									sheetData.add(data);
 								}else{
-									log.info(" nombres > 4  ");
-									listaContratosManual.add(sis.getCodContrato());
+									listaContratosManual.add(data);
 								}
 								
 							}else {
@@ -296,7 +304,7 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 					}
 				}
 				log.info(" tamano total "+sistMig.size());
-				if(mensaje!=null){
+				if(mensaje==null){
 					mensaje=  "Cargó exitosamente el archivo "+nombreArchivo;
 					if( listaContratosManual.size()>0){
 							mensaje+=  	", no se cargó  "+ listaContratosManual.size()+" registros, por favor verfique Archivo Log";
