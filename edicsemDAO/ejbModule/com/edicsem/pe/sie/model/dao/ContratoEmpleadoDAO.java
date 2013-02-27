@@ -19,4 +19,6 @@ public interface ContratoEmpleadoDAO {
 	public abstract List listarCargoXEmp(int idEmpleado);
 	public abstract boolean verificarEmpleadoConCargo(int idcargo);
 	public abstract List listarxCargoxgrupo(int cargoEmpleado,int idGrupo);
+	public abstract boolean verificarEmpleadoConEmpresa(int idcargo);
+	public abstract int filtrartipoventaPersonal(int idvendedor);
 }
