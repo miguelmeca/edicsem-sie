@@ -1,0 +1,18 @@
+package com.edicsem.pe.sie.service.facade;
+
+import java.util.List;
+
+import javax.ejb.Local;
+
+import com.edicsem.pe.sie.entity.VerificaClienteSie;
+import com.edicsem.pe.sie.entity.VerificaProductoSie;
+import com.edicsem.pe.sie.entity.VerificaTelefonoSie;
+@Local
+public interface VerificaClienteService {
+
+	public abstract void insertVerificaCliente(VerificaClienteSie v,List<VerificaProductoSie> lstProducto, List<VerificaTelefonoSie> lstTelefono);
+	public abstract void updateVerificaCliente(VerificaClienteSie v);
+	public abstract VerificaClienteSie findVerificaCliente (int id);
+	public abstract List  listarVerificaCliente();
+	
+}

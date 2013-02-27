@@ -61,7 +61,6 @@ public class ContratoEmpleadoServiceImpl implements ContratoEmpleadoService {
 		return objContratoEmpleadoDao.listarPatrocinados(idEmpleado, fechaInicio, fechaFin );
 	}
 
-
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ContratoEmpleadoService#listarxCargo(int)
 	 */
@@ -90,4 +89,19 @@ public class ContratoEmpleadoServiceImpl implements ContratoEmpleadoService {
 	public List listarxCargoxgrupo(int cargoEmpleado, int idGrupo) {
 		return objContratoEmpleadoDao.listarxCargoxgrupo(cargoEmpleado, idGrupo);
 	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ContratoEmpleadoService#verificarEmpleadoConEmpresa(int)
+	 */
+	public boolean verificarEmpleadoConEmpresa(int idcargo) {
+		return objContratoEmpleadoDao.verificarEmpleadoConEmpresa(idcargo);
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ContratoEmpleadoService#filtrartipoventaPersonal(int)
+	 */
+	public int filtrartipoventaPersonal(int idvendedor) {
+		return objContratoEmpleadoDao.filtrartipoventaPersonal(idvendedor);
+	}
+	
 }
