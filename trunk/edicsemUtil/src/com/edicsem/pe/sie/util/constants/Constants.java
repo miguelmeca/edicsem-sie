@@ -100,6 +100,10 @@ public class Constants {
 	public static final String MIGRAR_ENTREGAS_PERU = "excelEntregasPeru";
 	public static final String MIGRAR_SISTEMA_RECAUDACION="MigracionSistemaRecaudacion";
 	public static final String GESTIONAR_CONTRATO_FORM_PAGE = "GestionarContratoForm";
+
+	public static final String CONTROL_MERCADERIA_FORM = "ControlMercaderiaForm";
+
+	public static final String VERIFICA_CLIENTE_FORM = "VerificaClienteForm";
 	
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
