@@ -10,13 +10,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.ContratoEmpleadoSie;
-import com.edicsem.pe.sie.entity.DetEmpresaEmpleadoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.ContratoEmpleadoDAO;
-import com.edicsem.pe.sie.model.dao.DetEmpresaEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
 import com.edicsem.pe.sie.model.dao.EmpresaDAO;
@@ -53,8 +51,6 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	private UbigeoDAO objUbigeoDao;
 	@EJB
 	private TipoCasaDAO objTipoCasaDao;
-	@EJB
-	private DetEmpresaEmpleadoDAO objDetEmpresaEmpDao;
 	   
 	public static Log log = LogFactory.getLog(EmpleadoSieServiceImpl.class);
 		
@@ -79,17 +75,11 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 		/**Estado del domicilio: habilitado(15)**/
 		objDomicilio.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(15));
 		objDomicilioDao.insertarDomicilioEmpleado(objDomicilio);
-		/**Insertar Detalle Empleado(s)**/
 		
 		/**Inserta Contrato(s)**/
 		for (ContratoEmpleadoSie objContrato : contratoEmpleadoList) {
-			objContrato.setIdempleado(objEmpleado.getIdempleado());
-			DetEmpresaEmpleadoSie detempemp=new DetEmpresaEmpleadoSie();
-			detempemp.setTbEmpresa(objEmpresaDao.findEmpresa(objContrato.getEmpresa()));
-			detempemp.setTbEmpleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
-			detempemp.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(64));
-			objDetEmpresaEmpDao.insertDetEmpresaEmpleadoSie(detempemp);
-			objContrato.setTbDetEmpresaEmpleado(objDetEmpresaEmpDao.findDetEmpresaEmpleadoSie(detempemp.getIdDetEmpresaEmpl()));
+			objContrato.setTbEmpleado1(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
+			objContrato.setTbEmpresa(objEmpresaDao.findEmpresa(objContrato.getEmpresa()));
 			objContrato.setTbCargoempleado(objCargoEmpDao.buscarCargoEmpleado(idCargo));
 			objContrato.setTbTipoPago(objTipoPagoDao.findTipoPago(idTipoPago));
 			objContrato.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
@@ -103,7 +93,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#actualizarEmpleado(com.edicsem.pe.sie.entity.EmpleadoSie, com.edicsem.pe.sie.entity.DomicilioPersonaSie, com.edicsem.pe.sie.entity.TelefonoPersonaSie, int, int, java.lang.String, java.lang.String, int, java.lang.String, java.lang.String, int, int, java.lang.String, int, int, int, int, int, int)
 	 */
 	public void actualizarEmpleado(EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, int codigoTipoDocumento, int codigoCargoEmpleado,
-	String idUbigeo, int tipo, int idCargo, int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int idEmpresa, int idTipoPago, int codigoEmpleado, List<ContratoEmpleadoSie> contratoEmpleadoList, List<TelefonoPersonaSie> TelefonoPersonaList, List<TelefonoPersonaSie> TelefonoDeshabilitado, List<ContratoEmpleadoSie> ContratoDeshabilitado, List<DetEmpresaEmpleadoSie> detEmpresaEmpList) {			
+	String idUbigeo, int tipo, int idCargo, int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int idEmpresa, int idTipoPago, int codigoEmpleado, List<ContratoEmpleadoSie> contratoEmpleadoList, List<TelefonoPersonaSie> TelefonoPersonaList, List<TelefonoPersonaSie> TelefonoDeshabilitado, List<ContratoEmpleadoSie> ContratoDeshabilitado) {			
 			try {
 				if (log.isInfoEnabled()) {
 					log.info("inicio del método insertar empleado");
@@ -141,13 +131,8 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 				/**Actualiza Contrato(s)**/
 				for (ContratoEmpleadoSie objContrato : contratoEmpleadoList) {
 					if(objContrato.getTipo()!=null && objContrato.getTipo().equalsIgnoreCase("Por Agregar")){
-						objContrato.setIdempleado(objEmpleado.getIdempleado());
-						DetEmpresaEmpleadoSie detempemp=new DetEmpresaEmpleadoSie();
-						detempemp.setTbEmpresa(objEmpresaDao.findEmpresa(objContrato.getEmpresa()));
-						detempemp.setTbEmpleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
-						detempemp.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(64));
-						objDetEmpresaEmpDao.insertDetEmpresaEmpleadoSie(detempemp);
-						objContrato.setTbDetEmpresaEmpleado(objDetEmpresaEmpDao.findDetEmpresaEmpleadoSie(detempemp.getIdDetEmpresaEmpl()));
+						objContrato.setTbEmpresa(objEmpresaDao.findEmpresa(objContrato.getEmpresa()));
+						objContrato.setTbEmpleado1(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
 						objContrato.setTbCargoempleado(objCargoEmpDao.buscarCargoEmpleado(idCargo));
 						objContrato.setTbTipoPago(objTipoPagoDao.findTipoPago(idTipoPago));
 						objContrato.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
