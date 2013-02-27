@@ -481,7 +481,7 @@ public class ContratoServiceImpl implements ContratoService {
 				con.setNumcuotas(s.getCantCuotas());
 				con.setPagosubinicial(new  BigDecimal(s.getImporteInicial()));
 				EmpresaSie empr = objEmpresaDao.findEmpresaXdescripcion(s.getEmpresa());
-				if(empr==null){
+				if(empr!=null){
 					con.setTbEmpresa(empr);
 				}else{
 					mensaje="No se encontró la empresa '"+s.getEmpresa()+"'";
@@ -724,7 +724,6 @@ public class ContratoServiceImpl implements ContratoService {
 
 
 public ContratoSie buscarXcodigoContrato(String codContrato) {
-	log.info("en el SERVICIO BUSCANDO N DE CONTRATO"+ codContrato);
 	return objContratoDao.buscarXcodigoContrato(codContrato);
 }
 
