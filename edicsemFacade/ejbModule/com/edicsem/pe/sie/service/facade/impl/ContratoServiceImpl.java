@@ -21,6 +21,7 @@ import com.edicsem.pe.sie.entity.DetContratoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DetPaqueteSie;
 import com.edicsem.pe.sie.entity.DetProductoContratoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
+import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.PaqueteSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
