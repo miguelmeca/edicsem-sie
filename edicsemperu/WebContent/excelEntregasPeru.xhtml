@@ -6,21 +6,21 @@
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
 	<h1 class="title ui-widget-header ui-corner-all">#{message['migracion.entregasperu']}</h1>
-	<h:form id="frmEntregasperuForm">
+	<h:form id="frmEntregasperuForm" enctype="multipart/form-data" >
 	
 <p:messages id="message" showDetail="true" closable="true" />
 
-<p:fileUpload fileUploadListener="#{FileUploadEntregasPeru.handleFileUpload}"
-	allowTypes="/(\.|\/)(XLS|xls)$/" description="Seleccionar archivo"
+<p:fileUpload fileUploadListener="#{FileUploadEntregasPeru.handleFileUpload}" label="Seleccionar archivo" uploadLabel="Cargar archivo" cancelLabel="Cancelar archivo"
+	allowTypes="/(\.|\/)(XLS|xls)$/" description="Seleccionar archivo"  multiple="false" customUI="true" 
 	update="datatablecampana, message" />
 		
-<p:commandButton value="Migrar"
-	action="#{FileUploadEntregasPeru.subirCreditos}" process="@all"
-	update="message" onclick="status.show();" ajax="false" >
+<p:commandButton value="#{message['entregasperu.subirbd']}"
+	actionListener="#{FileUploadEntregasPeru.subirCreditos}" 
+	update="message" onclick="statusDialogEP.show();" >
 </p:commandButton>
 
-<p:dataTable id="datatablecampana" var="c" value="#{FileUploadEntregasPeru.leadsNuevos}"  paginator="true" rows="50"
- rowsPerPageTemplate="50,10,15" widgetVar="table"  emptyMessage="No se encontraron registros"
+<p:dataTable id="datatablecampana" var="c" value="#{FileUploadEntregasPeru.leadsNuevos}"  paginator="true" rows="15"
+ rowsPerPageTemplate="5,10,15"   emptyMessage="#{message['rsltd.empty']}"
  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
                    
   	    <p:column  headerText="Ndecontrato" id="numerodecontrato" sortBy="#{c.numerodecontrato}" filterBy="#{c.numerodecontrato}"  >
