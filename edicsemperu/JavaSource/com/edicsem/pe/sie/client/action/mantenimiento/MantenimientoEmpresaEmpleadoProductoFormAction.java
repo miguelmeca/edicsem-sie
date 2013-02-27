@@ -14,15 +14,13 @@ import org.apache.commons.logging.LogFactory;
 import org.primefaces.context.RequestContext;
 
 import com.edicsem.pe.sie.client.action.ComboAction;
-import com.edicsem.pe.sie.client.action.MantenimientoCargoEmpleadoSearchAction;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpresaSie;
-import com.edicsem.pe.sie.service.facade.DetEmpresaEmpleadoService;
+import com.edicsem.pe.sie.service.facade.ContratoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.KardexService;
-import com.edicsem.pe.sie.util.FaceMessage.FaceMessage;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
@@ -63,7 +61,7 @@ public class MantenimientoEmpresaEmpleadoProductoFormAction extends
 	private EstadogeneralService objEstadoGeneralService;
 	
 	@EJB
-	private DetEmpresaEmpleadoService objDetEmpresaEmpleadoService;
+	private ContratoEmpleadoService objcontratoEmpleadoService;
 	
 	@EJB
 	private KardexService objKardexService;
@@ -210,7 +208,7 @@ else {
 
 	private boolean verificarEmpleadoConEmpresa(int idcargo) {
 		// Aqui verificaremos si esta empresa pertenece a un empleado en la TB.DetalleEmpresaEmpleado
-		return objDetEmpresaEmpleadoService.verificarEmpleadoConEmpresa(idcargo) ;
+		return objcontratoEmpleadoService.verificarEmpleadoConEmpresa(idcargo) ;
 	}
 
 	private boolean verificarProductoConEmpresa(int idcargo) {

@@ -10,8 +10,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.EmpleadoSie;
-import com.edicsem.pe.sie.entity.EmpresaSie;
-import com.edicsem.pe.sie.service.facade.DetEmpresaEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -37,9 +35,6 @@ public class MantenimientoEmpresaEmpleadoProductoSearchAction extends BaseManten
 	
 	@EJB
 	private EmpresaService empresaService;
-	
-	@EJB
-	private DetEmpresaEmpleadoService objDetEmpresaEmpleadoService;
 	
 	@EJB
 	private EmpleadoSieService objEmpleadoSieService;

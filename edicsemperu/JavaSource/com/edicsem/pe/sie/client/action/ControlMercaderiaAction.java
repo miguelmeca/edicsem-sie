@@ -1,8 +1,7 @@
 package com.edicsem.pe.sie.client.action;
 
-import java.text.SimpleDateFormat;
+import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -11,13 +10,16 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.edicsem.pe.sie.entity.KardexSie;
-import com.edicsem.pe.sie.service.facade.EmpresaService;
-import com.edicsem.pe.sie.service.facade.KardexService;
+import com.edicsem.pe.sie.client.action.mantenimiento.MantenimientoProductoSearchAction;
+import com.edicsem.pe.sie.entity.ControlKardexSie;
+import com.edicsem.pe.sie.entity.EmpleadoSie;
+import com.edicsem.pe.sie.service.facade.ControlMercaderiaService;
+import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
@@ -26,38 +28,19 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 @SessionScoped
 public class ControlMercaderiaAction extends BaseMantenimientoAbstractAction {
 	private Log log = LogFactory.getLog(ControlMercaderiaAction.class);
-	private List<KardexSie> kardexList;
-	private KardexSie objKardexSie;
-	private String mensaje,idtipoAlmacen;
-	private int tipoProducto, stockActual,idtipopuntoventa;
-	/**
-	 * @return the idtipopuntoventa
-	 */
-	public int getIdtipopuntoventa() {
-		return idtipopuntoventa;
-	}
-
-	/**
-	 * @param idtipopuntoventa the idtipopuntoventa to set
-	 */
-	public void setIdtipopuntoventa(int idtipopuntoventa) {
-		comboManagerPunto.setTipoAlmacen(idtipopuntoventa);
-		this.idtipopuntoventa = idtipopuntoventa;
-	}
-
-	private String valorActual;
-	private int idproducto, idalmacen, idempresa=0;
-	private Date fechaDesde, fechaHasta;
-	private List<KardexSie> listadoKardex;
-	private boolean editMode, newRecord;
+	private ControlKardexSie objcontrolSie;
+	private String mensaje;
+	private int idalmacen, idProducto, idEmpleado, cantidad, cantidadDeberia;
+	private List<ControlKardexSie> lstControl;
+	private boolean newRecord;
+	
+	@EJB
+	private ProductoService objProductoService;
+	@EJB
+	private ControlMercaderiaService objControlService;
 	
 	@ManagedProperty(value = "#{comboAction}")
-	private ComboAction comboManagerPunto;
-	
-	@EJB
-	private KardexService objKardexService;
-	@EJB
-	private EmpresaService objEmpresaService;
+	private ComboAction combo;
 	
 	public ControlMercaderiaAction() {
 		log.info("inicializando constructor MantenimientoKardex");
@@ -66,12 +49,8 @@ public class ControlMercaderiaAction extends BaseMantenimientoAbstractAction {
 
 	public void init() {
 		log.info("init()");
-		objKardexSie = new KardexSie();
-		stockActual = 0;
-		valorActual ="";
-		idempresa=0;
-		kardexList = new ArrayList<KardexSie>();
 	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -81,143 +60,75 @@ public class ControlMercaderiaAction extends BaseMantenimientoAbstractAction {
 	 */
 	public String agregar() {
 		log.info("agregar()");
-		comboManagerPunto.setTipoProducto(0);
-		tipoProducto=0;
-		idempresa=0;
+		idEmpleado=0;
 		idalmacen=0;
-		idproducto=0;
-		idtipopuntoventa=0;
-		fechaDesde=null;
-		fechaHasta=null;
-		objKardexSie = new KardexSie();
-		kardexList = new ArrayList<KardexSie>();
+		idProducto=0;
+		objcontrolSie = new ControlKardexSie();
+		lstControl= new ArrayList<ControlKardexSie>();
+		combo.setCargoEmpleado(12);
 		setNewRecord(true);
-		return getViewList();
-	}
-	
-	/**
-	 * @return the kardexList
-	 */
-	public List<KardexSie> getKardexList() {
-		
-		return kardexList;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
-	 * #consultar()
-	 */
-	public String consultar() throws Exception {
-		mensaje =null;
-		stockActual=0;
-		kardexList = new ArrayList<KardexSie>();
-		log.info("entreando a consultar() x");
-		
-		log.info(" dentro de getKardexList  " + getTipoProducto() + " " + getIdproducto() + "" + getIdalmacen());
-		log.info(" f  "+fechaDesde +" "+fechaHasta);
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			String fechaD = "", fechaH = "";
-			log.info((fechaDesde == null )+"  - "+(fechaHasta != null));
-			log.info((fechaDesde == null && fechaHasta != null));
-			if (fechaDesde == null && fechaHasta != null){
-				log.info(" f  ");
-				mensaje ="Por favor ingresar una fecha de inicio ";
-				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
-				FacesContext.getCurrentInstance().addMessage(null, msg);
-			}else{
-			if (fechaDesde != null && fechaHasta == null){
-				//la fecha hasta será la actual
-				fechaHasta= DateUtil.getToday().getTime();
-			}
-			if (fechaDesde == null){
-				fechaD = "";
-			}if (fechaHasta == null){
-				fechaH = "";
-			}else if (fechaDesde != null && fechaHasta != null){
-				fechaD = "" + sdf.format(fechaDesde);
-				fechaH = "" + sdf.format(fechaHasta);
-			}log.info("con ");
-			kardexList = objKardexService.ConsultaProductos(getIdproducto(), getIdalmacen(), fechaD, fechaH);
-
-			if(kardexList.size()==0){
-				kardexList = new ArrayList<KardexSie>();
-				stockActual=0;
-				setMensaje(" consulta realizada ");
-				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
-				FacesContext.getCurrentInstance().addMessage(null, msg);
-			}else{ 
-				
-				log.info("cantidad existente :D "+ kardexList.get(kardexList.size() - 1).getCantexistencia());
-				stockActual = kardexList.get(kardexList.size() - 1).getCantexistencia();
-				valorActual = kardexList.get(kardexList.size() - 1).getValorunitarioexistencia();
-				log.info("nuevo stock actual " + getStockActual());
-				setMensaje(" consulta realizada ");
-				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
-				FacesContext.getCurrentInstance().addMessage(null, msg);
-			}
-			}
 		return getViewList();
 	}
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
 	 */
-	
 	public String update() throws Exception {
-		log.info("update ()"+ objKardexSie.getIdkardex() );  
-		idempresa=0;
-		log.info(" empresa " + idempresa);
+		log.info("update ()");
 		setNewRecord(false);
 		return getViewList();
 	}
-
+	
+	public String addControl() {
+		log.info("addControl()");
+		objcontrolSie.setTbProducto(objProductoService.findProducto(idProducto));
+		lstControl.add(objcontrolSie);
+		objcontrolSie = new ControlKardexSie();
+		setNewRecord(true);
+		return null;
+	}
+	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
 	 */
-	
 	public String insertar() throws Exception {
-		log.info(" insertar() " +idempresa);
-		if(idempresa!=0){
-			objKardexSie.setTbEmpresa(objEmpresaService.findEmpresa(idempresa));
+		log.info("Entering my method 'insertar()' " );
+		HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+		EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
+		try {
+			if (isNewRecord()) {
+				objcontrolSie.setUsuariocreacion(sessionUsuario.getUsuario());
+				objControlService.insertControlKardex(lstControl,idalmacen, idEmpleado );
+				mensaje=Constants.MESSAGE_REGISTRO_TITULO;
+				objcontrolSie = new ControlKardexSie();
+			}else {
+				objcontrolSie.setUsuariomodifica(sessionUsuario.getUsuario());
+				objcontrolSie.setFechamodifica(new Timestamp(DateUtil.getToday().getTime().getTime()));
+				objControlService.updateControlKardex(objcontrolSie);
+				mensaje =Constants.MESSAGE_ACTUALIZO_TITULO;
+			}
+			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-	
-		objKardexService.updateKardex(objKardexSie);
-		mensaje="Se actualizó correctamente el movimiento a la empresa "+ objKardexSie.getTbEmpresa().getDescripcion();
+		
 		msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 		FacesContext.getCurrentInstance().addMessage(null, msg);
-		idempresa=0;
-		return consultar();
+		return null;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
-	 * #getViewList()
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewList()
 	 */
-
 	public String getViewList() {
-
-		return "mantenimientoKardex";
-	}
-
-	/**
-	 * @return the idproducto
-	 */
-	public int getIdproducto() {
-		return idproducto;
-	}
-
-	/**
-	 * @param idproducto
-	 *            the idproducto to set
-	 */
-	public void setIdproducto(int idproducto) {
-		this.idproducto = idproducto;
+		return Constants.CONTROL_MERCADERIA_FORM;
 	}
 
 	/**
@@ -236,96 +147,6 @@ public class ControlMercaderiaAction extends BaseMantenimientoAbstractAction {
 	}
 
 	/**
-	 * @return the fechaDesde
-	 */
-	public Date getFechaDesde() {
-		return fechaDesde;
-	}
-
-	/**
-	 * @param fechaDesde
-	 *            the fechaDesde to set
-	 */
-	public void setFechaDesde(Date fechaDesde) {
-		this.fechaDesde = fechaDesde;
-	}
-
-	/**
-	 * @return the fechaHasta
-	 */
-	public Date getFechaHasta() {
-		return fechaHasta;
-	}
-
-	/**
-	 * @param fechaHasta
-	 *            the fechaHasta to set
-	 */
-	public void setFechaHasta(Date fechaHasta) {
-		this.fechaHasta = fechaHasta;
-	}
-
-	/**
-	 * @return the listadoKardex
-	 */
-	public List<KardexSie> getListadoKardex() {
-		return listadoKardex;
-	}
-
-	/**
-	 * @param listadoKardex
-	 *            the listadoKardex to set
-	 */
-	public void setListadoKardex(List<KardexSie> listadoKardex) {
-		this.listadoKardex = listadoKardex;
-	}
-
-	/**
-	 * @return the objKardexSie
-	 */
-	public KardexSie getObjKardexSie() {
-		return objKardexSie;
-	}
-
-	/**
-	 * @param objKardexSie
-	 *            the objKardexSie to set
-	 */
-	public void setObjKardexSie(KardexSie objKardexSie) {
-		this.objKardexSie = objKardexSie;
-	}
-
-	/**
-	 * @return the editMode
-	 */
-	public boolean isEditMode() {
-		return editMode;
-	}
-
-	/**
-	 * @param editMode
-	 *            the editMode to set
-	 */
-	public void setEditMode(boolean editMode) {
-		this.editMode = editMode;
-	}
-
-	/**
-	 * @return the stockActual
-	 */
-	public int getStockActual() {
-		return stockActual;
-	}
-
-	/**
-	 * @param stockActual
-	 *            the stockActual to set
-	 */
-	public void setStockActual(int stockActual) {
-		this.stockActual = stockActual;
-	}
-
-	/**
 	 * @return the mensaje
 	 */
 	public String getMensaje() {
@@ -340,44 +161,6 @@ public class ControlMercaderiaAction extends BaseMantenimientoAbstractAction {
 		this.mensaje = mensaje;
 	}
 	
-
-	/**
-	 * @param kardexList
-	 *            the kardexList to set
-	 */
-	public void setKardexList(List<KardexSie> kardexList) {
-		this.kardexList = kardexList;
-	}
-
-	/**
-	 * @return the tipoProducto
-	 */
-	public int getTipoProducto() {
-		return tipoProducto;
-	}
-
-	/**
-	 * @param tipoProducto
-	 *            the tipoProducto to set
-	 */
-	public void setTipoProducto(int tipoProducto) {
-		this.tipoProducto = tipoProducto;
-	}
-
-	/**
-	 * @return the idempresa
-	 */
-	public int getIdempresa() {
-		return idempresa;
-	}
-
-	/**
-	 * @param idempresa the idempresa to set
-	 */
-	public void setIdempresa(int idempresa) {
-		this.idempresa = idempresa;
-	}
-
 	/**
 	 * @return the newRecord
 	 */
@@ -393,39 +176,95 @@ public class ControlMercaderiaAction extends BaseMantenimientoAbstractAction {
 	}
 
 	/**
-	 * @return the idtipoAlmacen
+	 * @return the objcontrolSie
 	 */
-	public String getIdtipoAlmacen() {
-		return idtipoAlmacen;
+	public ControlKardexSie getObjcontrolSie() {
+		return objcontrolSie;
 	}
 
 	/**
-	 * @param idtipoAlmacen the idtipoAlmacen to set
+	 * @param objcontrolSie the objcontrolSie to set
 	 */
-	public void setIdtipoAlmacen(String idtipoAlmacen) {
-		this.idtipoAlmacen = idtipoAlmacen;
+	public void setObjcontrolSie(ControlKardexSie objcontrolSie) {
+		this.objcontrolSie = objcontrolSie;
 	}
 
 	/**
-	 * @return the valorActual
+	 * @return the idProducto
 	 */
-	public String getValorActual() {
-		return valorActual;
+	public int getIdProducto() {
+		return idProducto;
 	}
 
 	/**
-	 * @param valorActual the valorActual to set
+	 * @param idProducto the idProducto to set
 	 */
-	public void setValorActual(String valorActual) {
-		this.valorActual = valorActual;
+	public void setIdProducto(int idProducto) {
+		this.idProducto = idProducto;
 	}
 
-	public ComboAction getComboManagerPunto() {
-		return comboManagerPunto;
+	/**
+	 * @return the idEmpleado
+	 */
+	public int getIdEmpleado() {
+		return idEmpleado;
 	}
 
-	public void setComboManagerPunto(ComboAction comboManagerPunto) {
-		this.comboManagerPunto = comboManagerPunto;
+	/**
+	 * @param idEmpleado the idEmpleado to set
+	 */
+	public void setIdEmpleado(int idEmpleado) {
+		this.idEmpleado = idEmpleado;
 	}
 
+	/**
+	 * @return the cantidad
+	 */
+	public int getCantidad() {
+		return cantidad;
+	}
+
+	/**
+	 * @param cantidad the cantidad to set
+	 */
+	public void setCantidad(int cantidad) {
+		this.cantidad = cantidad;
+	}
+
+	public int getCantidadDeberia() {
+		return cantidadDeberia;
+	}
+
+	public void setCantidadDeberia(int cantidadDeberia) {
+		this.cantidadDeberia = cantidadDeberia;
+	}
+
+	/**
+	 * @return the lstControl
+	 */
+	public List<ControlKardexSie> getLstControl() {
+		return lstControl;
+	}
+
+	/**
+	 * @param lstControl the lstControl to set
+	 */
+	public void setLstControl(List<ControlKardexSie> lstControl) {
+		this.lstControl = lstControl;
+	}
+
+	/**
+	 * @return the combo
+	 */
+	public ComboAction getCombo() {
+		return combo;
+	}
+
+	/**
+	 * @param combo the combo to set
+	 */
+	public void setCombo(ComboAction combo) {
+		this.combo = combo;
+	}
+	
 }

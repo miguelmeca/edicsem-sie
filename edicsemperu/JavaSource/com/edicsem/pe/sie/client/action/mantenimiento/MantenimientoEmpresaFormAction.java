@@ -12,12 +12,12 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.arjuna.ats.internal.jdbc.drivers.modifiers.list;
 import com.edicsem.pe.sie.client.action.ComboAction;
+import com.edicsem.pe.sie.entity.ContratoEmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
-import com.edicsem.pe.sie.service.facade.DetEmpresaEmpleadoService;
+import com.edicsem.pe.sie.service.facade.ContratoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
@@ -71,7 +71,7 @@ public class MantenimientoEmpresaFormAction extends
 	
 	//EMPLEADO X EMPRESA
 	@EJB
-	private DetEmpresaEmpleadoService objDetEmpresaEmpleadoService;
+	private ContratoEmpleadoService objcontratoEmpleadoService;
 	@EJB
 	private EmpleadoSieService objEmpleadoSieService;
 	//PRODUCTO X EMPRESA
@@ -335,20 +335,13 @@ FacesContext.getCurrentInstance().addMessage(null, msg);
 	
 	private boolean verificarEmpleadoConEmpresa(int idcargo) {
 		// Aqui verificaremos si esta empresa pertenece a un empleado en la TB.DetalleEmpresaEmpleado
-		return objDetEmpresaEmpleadoService.verificarEmpleadoConEmpresa(idcargo) ;
+		return objcontratoEmpleadoService.verificarEmpleadoConEmpresa(idcargo) ;
 	}
 
 	private boolean verificarProductoConEmpresa(int idcargo) {
 		// Aqui verificaremos si esta empresa pertenece a un empleado en la TB.DetalleEmpresaEmpleado
 		return objKardexService.verificarProductoConEmpresa(idcargo) ;
 	}
-	
-	
-	
-	
-	
-
-
 	/**
 	 * @return the empresaService
 	 */
