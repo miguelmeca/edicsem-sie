@@ -3,6 +3,8 @@ package com.edicsem.pe.sie.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.edicsem.pe.sie.util.constants.Constants;
+
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -12,16 +14,17 @@ import java.util.Date;
  * 
  */
 @Entity
-@Table(name="tb_historico_contrato_empleado")
+@Table(name="tb_historico_contrato_empleado", schema = Constants.ESQUEMA_SIE_POSTGRE)
 public class HistoricoContratoEmpleadoSie implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_HISTORICO_CONTRATO_EMPLEADO_IDHISTCONTRATOEMPL_GENERATOR", sequenceName="TB_HISTORICO_CONTRATO_EMPLEADO_IDHISTCONTRATOEMPL_SEQ")
+	@SequenceGenerator(name="TB_HISTORICO_CONTRATO_EMPLEADO_IDHISTCONTRATOEMPL_GENERATOR", sequenceName="SIE.TB_HISTORICO_CONTRATO_EMPLEADO_IDHISTCONTRATOEMPL_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_HISTORICO_CONTRATO_EMPLEADO_IDHISTCONTRATOEMPL_GENERATOR")
 	private Integer idhistcontratoempl;
 
+	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
 
     @Temporal( TemporalType.DATE)

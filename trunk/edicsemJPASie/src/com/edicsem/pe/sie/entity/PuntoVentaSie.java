@@ -75,7 +75,10 @@ public class PuntoVentaSie implements Serializable {
 	//bi-directional many-to-one association to HorarioPuntoVentaSie
 	@OneToMany(mappedBy="tbPuntoVenta")
 	private Set<HorarioPuntoVentaSie> tbHorarioPuntoVentas;
-  	
+	
+	//bi-directional many-to-one association to ControlKardexSie
+	@OneToMany(mappedBy="tbPuntoVenta")
+	private Set<ControlKardexSie> tbControlKardex;
 
     public PuntoVentaSie() {
     }
@@ -192,6 +195,14 @@ public class PuntoVentaSie implements Serializable {
 
 	public void setTbContratos(Set<ContratoSie> tbContratos) {
 		this.tbContratos = tbContratos;
+	}
+
+	public Set<ControlKardexSie> getTbControlKardex() {
+		return tbControlKardex;
+	}
+
+	public void setTbControlKardex(Set<ControlKardexSie> tbControlKardex) {
+		this.tbControlKardex = tbControlKardex;
 	}
 	
 }

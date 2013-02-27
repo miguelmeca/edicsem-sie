@@ -136,6 +136,10 @@ public class EmpleadoSie implements Serializable {
   	@OneToMany(mappedBy="idempleado")
   	private Set<DetGrupoEmpleadoSie> tbDetGrupoEmpleado;
   	
+  	//bi-directional many-to-one association to ControlKardexSie
+  	@OneToMany(mappedBy="tbEmpleado")
+  	private Set<ControlKardexSie> tbControlKardex;
+  	
 	public EmpleadoSie() {
     }
 
@@ -415,6 +419,14 @@ public class EmpleadoSie implements Serializable {
 
 	public void setTbDetGrupoEmpleado(Set<DetGrupoEmpleadoSie> tbDetGrupoEmpleado) {
 		this.tbDetGrupoEmpleado = tbDetGrupoEmpleado;
+	}
+
+	public Set<ControlKardexSie> getTbControlKardex() {
+		return tbControlKardex;
+	}
+
+	public void setTbControlKardex(Set<ControlKardexSie> tbControlKardex) {
+		this.tbControlKardex = tbControlKardex;
 	}
 
 }

@@ -172,6 +172,10 @@ public class EstadoGeneralSie implements Serializable {
 	//bi-directional many-to-one association to SeguimientoContratoSie
 	@OneToMany(mappedBy="tbEstadoGeneral")
 	private Set<SeguimientoContratoSie> tbSeguimientoContrato;
+	
+	//bi-directional many-to-one association to ControlKardexSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<ControlKardexSie> tbControlKardex;
 
 	public EstadoGeneralSie() {
     }
@@ -497,6 +501,14 @@ public class EstadoGeneralSie implements Serializable {
 
 	public void setTbMotivo(Set<MotivoSie> tbMotivo) {
 		this.tbMotivo = tbMotivo;
+	}
+
+	public Set<ControlKardexSie> getTbControlKardex() {
+		return tbControlKardex;
+	}
+
+	public void setTbControlKardex(Set<ControlKardexSie> tbControlKardex) {
+		this.tbControlKardex = tbControlKardex;
 	}
 
 	
