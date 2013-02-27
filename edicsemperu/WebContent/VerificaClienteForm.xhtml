@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+	<script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
+		<h1 class="title ui-widget-header ui-corner-all">#{message['verifica.tittle']}</h1>
+		<h:form id="formVerificaCliente">
+		<p:messages id="messages" showDetail="true"/>
+		<p:panel>
+		<p:fieldset >
+        <h:panelGrid columns="2" >
+        <h:outputText value="#{message['verifica.tipo.doc']}" />
+			<p:selectOneMenu id="tipoDoc" style="width:165px" value="#{contratoForm.idtipodoc}" required="true" 
+				requiredMessage="#{message['contrato.tipo.documento.validation']}" >
+				<f:selectItems value="#{comboAction.tipoDocumentoitems}" />
+				<p:ajax update="nrodoc"/>
+			</p:selectOneMenu>
+			
+			<h:outputText value="#{message['verifica.num.doc']}" />
+			<h:panelGroup id="nrodoc" >
+				<p:inputMask id="numdoc1" value="#{contratoForm.numDniCliente}" mask="99999999"
+					rendered="#{contratoForm.idtipodoc==1}" required="true" />
+				<p:message for="numdoc1"  />
+					
+				<p:inputMask id="numdoc2" value="#{contratoForm.numDniCliente}" mask="99999999999"
+					rendered="#{contratoForm.idtipodoc==2}" required="true"/>
+				<p:message for="numdoc2"  />
+			</h:panelGroup>
+			
+        	<h:outputText value="#{message['verifica.nombre.cliente']} " />
+			<p:inputText value="#{contratoForm.nombreCliente}" />
+			
+			</h:panelGrid>
+			</p:fieldset>
+			
+			<p:fieldset legend="#{message['verifica.producto']}">
+					<p:dataTable value="#{contratoForm.contratoXClienteList}"  var="c" 
+					emptyMessage="No se encontraron resultados" >
+						<f:facet name="header">
+							<h:outputLabel value="#{message['rsltd.datatable']}" />
+						</f:facet>
+						<p:column headerText="#{message['control.dt.producto']}" >
+		                    <h:outputText value="#{c.tbCliente.nombresCompletos}" />
+		                </p:column>
+		                
+		                <p:column headerText="#{message['control.dt.cant.hay']}"  >
+		                    <h:outputText value="#{c.tbCliente.numdocumento}" />
+		                </p:column>
+					</p:dataTable>
+			</p:fieldset>
+			<p:fieldset legend="#{message['verifica.num.telefonico']}">
+			<h:panelGrid columns="6"  id="panelTlf" cellpadding="4" >
+				
+				<h:outputText value="#{message['contrato.tipo.telefono']}" />
+				<p:selectOneMenu  value="#{contratoForm.tipoTelef}"
+						style="width:165px"  >
+						<f:selectItem itemLabel="Fijo" itemValue="1" />
+						<f:selectItem itemLabel="Celular" itemValue="2" />
+						<p:ajax update="panelTlf" listener="#{contratoForm.limpiarDatosTelefono}" ></p:ajax>
+				</p:selectOneMenu>
+				<p:spacer />
+					
+					<h:outputText value="#{message['contrato.operadorTelefonico']}" />
+					<p:selectOneMenu id="operadorTelefonico" required="true" value="#{contratoForm.operadorTelefonico}" rendered="#{contratoForm.tipoTelef==1}"
+						style="width:165px">
+						<f:selectItem itemLabel="Seleccione Operador" itemValue="#{null}" />
+						<f:selectItem itemLabel="Claro" itemValue="1" />
+						<f:selectItem itemLabel="Telefónica" itemValue="2" />
+					</p:selectOneMenu>
+					<p:message for="operadorTelefonico" rendered="#{contratoForm.tipoTelef==1}" />
+					
+					<p:selectOneMenu id="operadorCelular" required="true" value="#{contratoForm.operadorTelefonico}" rendered="#{contratoForm.tipoTelef==2}"
+						style="width:165px" >
+						<f:selectItem itemLabel="Seleccione Operador" itemValue="#{null}" />
+						<f:selectItem itemLabel="Claro" itemValue="1" />
+						<f:selectItem itemLabel="Movistar" itemValue="2" />
+						<f:selectItem itemLabel="Nextel" itemValue="3" />
+					</p:selectOneMenu>
+					<p:message for="operadorCelular" rendered="#{contratoForm.tipoTelef==2}" />
+					
+					<h:outputText value="#{message['contrato.telefono']}" rendered="#{contratoForm.tipoTelef==1}" />
+					<p:inputMask id="numTelef" mask="999-9999" value="#{contratoForm.nuevoTelef.telefono}"
+					rendered="#{contratoForm.tipoTelef==1}"/>
+					<p:message for="numTelef" rendered="#{contratoForm.tipoTelef==1}"/>
+					
+					<h:outputText value="#{message['contrato.celular']}"  rendered="#{contratoForm.tipoTelef==2}"/>
+					<p:inputMask mask="999-999999" value="#{contratoForm.nuevoTelef.telefono}" id="numCelular"
+					rendered="#{contratoForm.tipoTelef==2}"/>
+					<p:message for="numCelular"  rendered="#{contratoForm.tipoTelef==2}"/>
+						
+					<h:outputText value="#{message['contrato.telefono.descripcion']}" />
+					<p:inputText value="#{contratoForm.nuevoTelef.descTelefono}" maxlength="40" />
+					<p:spacer />
+					
+					<p:commandButton value="Agregar Telefono"  icon="ui-icon ui-icon-check" 
+					action="#{contratoForm.telefonoAgregar}" update="telefonoList, messages" > 
+					</p:commandButton>
+				</h:panelGrid>
+			</p:fieldset>
+					<p:dataTable value="#{contratoForm.telefonoList}" id="telefonoList" var="t" style="width:400px"
+					rowStyleClass="#{t.operadorTelefonico eq 'Claro' ? 'colorRojo': (t.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }" >
+							 
+							<f:facet name="header">
+								<h:outputLabel value="#{message['contrato.telef.referencia']}" />
+							</f:facet>
+							<p:column headerText="#{message['contrato.telefono']}"  >
+		                    	<h:outputText value="#{t.tipoTelef}, #{t.operadorTelefonico}, #{t.telefono}" />
+		                    </p:column>
+		                    <p:column headerText="#{message['contrato.telefono.descripcion']}"  >
+		                    	<h:outputText value="#{t.descTelefono}" />
+		                    </p:column>
+		                    <p:column headerText="Eliminar" >
+			                    <p:commandButton icon="ui-icon-close" oncomplete="confirmationTelefonoContrato.show()" title="eliminar">
+								<f:setPropertyActionListener value="#{t.telefono}" target="#{contratoForm.selectTelef}" />
+								</p:commandButton>
+							</p:column>
+					</p:dataTable>
+		</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

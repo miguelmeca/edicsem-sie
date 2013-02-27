@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+	<script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
+		<h1 class="title ui-widget-header ui-corner-all">#{message['control.mercaderia.tittle']}</h1>
+		<h:form id="formConsultaContrato">
+		<p:messages showDetail="true"/>
+		<p:panel>
+		<p:fieldset >
+        <h:panelGrid columns="2" cellpadding="4" >
+        <h:outputText value="#{message['control.punto.venta']}" />
+			<p:selectOneMenu id="tipoDoc" style="width:165px" value="#{contratoForm.idtipodoc}" required="true" 
+				requiredMessage="#{message['contrato.tipo.documento.validation']}" >
+				<f:selectItems value="#{comboAction.tipoDocumentoitems}" />
+			</p:selectOneMenu>
+			
+			<h:outputText value="#{message['control.encargado']}" />
+			<p:inputText value="#{contratoForm.codigoContrato}" required="true"/>
+			
+        	<h:outputText value="#{message['control.tipo.producto']} " />
+			<p:inputText value="#{contratoForm.nombreCliente}" />
+			
+			<h:outputText value="#{message['control.producto']}" />
+			<p:inputText value="#{contratoForm.apePatCliente}"  />
+			
+			<h:outputText value="#{message['control.cantidad.hay']}" />
+			<p:inputText value="#{contratoForm.apeMatCliente}" />
+			
+			<h:outputText value="#{message['control.cantidad.deberia']}" />
+			<p:inputText value="#{contratoForm.apePatCliente}" readonly="true" />
+			
+			</h:panelGrid>
+			<p:commandButton value="Consultar Verificación" action="#{contratoForm.consultar}" update="message" ajax="false" icon="ui-icon-search"/>
+			<p:commandButton value="Agregar" action="#{contratoForm.consultar}" update="message" ajax="false"	icon="ui-icon-plus"/>
+			</p:fieldset>
+			<p:fieldset legend="Productos ">
+				<h:panelGrid  rendered="#{contratoForm.tamanoLista>1}" >
+					<p:dataTable value="#{contratoForm.contratoXClienteList}"  var="c" 
+					style="width:800px" emptyMessage="No se encontraron resultados" >
+						
+						<p:column headerText="#{message['control.dt.producto']}" >
+		                    <h:outputText value="#{c.tbCliente.nombresCompletos}" />
+		                </p:column>
+		                
+		                <p:column headerText="#{message['control.dt.cant.deberia']}" >
+		                    <h:outputText value="#{c.fechaCreacionString}" />
+		                </p:column>
+		                
+		                <p:column headerText="#{message['control.dt.cant.hay']}"  >
+		                    <h:outputText value="#{c.tbCliente.numdocumento}" />
+		                </p:column>
+		                
+					</p:dataTable>
+				
+				<p:commandButton value="Grabar" action="#{contratoForm.consultar}" update="message" ajax="false" icon="ui-icon-search"/>
+			
+		</h:panelGrid>
+		</p:fieldset>
+		</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
