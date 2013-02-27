@@ -91,7 +91,9 @@ mensaje=  "Se realizó la migración exitosamente";
 FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 Constants.MESSAGE_INFO_TITULO,mensaje);
 FacesContext.getCurrentInstance().addMessage(null, msg);
-return null;
+return getViewMant();
+		
+		
 	}
 
 	
@@ -599,7 +601,7 @@ return null;
 				}
 			catch (Exception e) {
 				
-				mensaje = " EntregasPeru: "+ credito.getNumerodecontrato() +",    "+e.getMessage();
+				mensaje = " EntregasPeru: este número de Contrato no existe "+ credito.getNumerodecontrato() +",    "+e.getMessage();
 				log.info(mensaje);
 				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error Formato EXCEL", mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
