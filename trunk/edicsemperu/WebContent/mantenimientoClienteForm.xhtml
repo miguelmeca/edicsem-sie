@@ -10,13 +10,15 @@
 	<ui:define name="body">
 	<h:form id="frmcliente">
 	<p:messages id="message" showDetail="true"/>		
-    <p:wizard id="wiz" widgetVar="wiz"	flowListener="#{MantenimientoClienteFormAction.onFlowProcess}">
+    <p:wizard id="wiz" widgetVar="wiz"	flowListener="#{MantenimientoClienteFormAction.onFlowProcess}" nextLabel="#{message['btn.siguiente']}" backLabel="#{message['btn.atraz']}">
     <p:tab title="#{message['cliente.tabcliente']}">
     <p:spacer height="20"></p:spacer>
  	<p:panel header="Datos Personales"> 
  	<h:panelGrid id="display" columns="6" cellpadding="3">	
-	<h:outputText value="#{message['cliente.nombre']}" for="nombre" />
-	<p:inputText id="nombre"
+
+<h:outputText value="#{message['cliente.nombre']}" for="nombre" />
+
+<p:inputText id="nombre"
 			 value="#{MantenimientoClienteFormAction.objClienteSie.nombrecliente}"
 			 required="true" label="nombre" size="30"
 			 requiredMessage="#{message['cliente.nombre.validation']}"
@@ -64,8 +66,8 @@
 <p:calendar pagedate="-8380" maxdate="today" 
 value="#{MantenimientoClienteFormAction.objClienteSie.fecnacimiento}"
 id="fechanacimiento" showButtonPanel="true" size="30"			
-required="true"   pattern="dd/MM/yyyy"  locale="es" label="fechanacimiento"
-requiredMessage="#{message['cliente.fechanacimiento.validation']}" />
+ pattern="dd/MM/yyyy"  locale="es" label="fechanacimiento"
+/>
 
 <p:outputLabel for="tipo" value="Tipo de Doc. :"
 			   styleClass="textoAzulFuerteGrande" id="tipoL" />
@@ -140,7 +142,7 @@ requiredMessage="#{message['cliente.fechanacimiento.validation']}" />
 </p:tab>
 
 <p:tab title="#{message['cliente.tabdireccion']}">
-<p:panel header="Dirección">
+<p:panel header="#{message['direccion.wizar']}">
 <h:messages errorClass="error"/>  
 <h:panelGrid columns="2" id="panel3">
 <p:outputLabel value="#{message['cliente.domicilio.direccion']}" for="domicilio" />
@@ -151,10 +153,10 @@ requiredMessage="#{message['cliente.fechanacimiento.validation']}" />
 				
 <h:outputText value="#{message['cliente.ubigeo.departamento']}" />
 <p:selectOneMenu size="1" value="#{MantenimientoClienteFormAction.idDepartamento}" filter="true" 
-				 filterMatchMode="startsWith"
+				 filterMatchMode="startsWith"  
 				 required="true" style="width:220px"
 				 requiredMessage="#{message['cliente.ubigeo.departamento.validation']}" >
-<f:selectItem itemLabel="Seleccione Departamento"
+<f:selectItem itemLabel="Seleccione Departamento" 
 			  itemValue="#{null}" />
 <f:selectItems value="#{comboAction.ubigeoDeparItems}" />
 <p:ajax update="prov,dist" listener="#{MantenimientoClienteFormAction.cambiar}" />
@@ -182,7 +184,7 @@ requiredMessage="#{message['cliente.fechanacimiento.validation']}" />
 <h:outputText value="Ubigeo " />
 <h:outputText id="ubigeoDefecto2" value="#{MantenimientoClienteFormAction.ubigeoDefecto}" />
 			
-<p:outputLabel for="tipocasa" value="#{message['cliente.tipoCasa']}" styleClass="textoAzulFuerteGrande" id="tipocasaL"/>
+<p:outputLabel for="tipocasa" value="#{message['cliente.dimicilio.tipoCasa']}" styleClass="textoAzulFuerteGrande" id="tipocasaL"/>
 <p:selectOneMenu id="tipocasa" value="#{MantenimientoClienteFormAction.tipo}" styleClass="required"
  title="El tipo de casa es obligatorio!"  style="width:220px" >
 <f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
