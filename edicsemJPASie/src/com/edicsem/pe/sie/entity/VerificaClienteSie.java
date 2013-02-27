@@ -3,6 +3,8 @@ package com.edicsem.pe.sie.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.edicsem.pe.sie.util.constants.Constants;
+
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Set;
@@ -13,7 +15,7 @@ import java.util.Set;
  * 
  */
 @Entity
-@Table(name="tb_verifica_cliente")
+@Table(name="tb_verifica_cliente", schema = Constants.ESQUEMA_SIE_POSTGRE)
 public class VerificaClienteSie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -24,6 +26,13 @@ public class VerificaClienteSie implements Serializable {
 
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
+
+    @Temporal( TemporalType.DATE)
+	private Date fechamodifica;
+
+	private String usuariocreacion;
+
+	private String usuariomodifica;
 
     @Temporal( TemporalType.DATE)
 	private Date fecnacimiento;
@@ -37,8 +46,11 @@ public class VerificaClienteSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
-
-	private Integer idtipodocumentoidentidad;
+    
+    //bi-directional many-to-one association to TipoDocumentoIdentidadSie
+    @ManyToOne
+	@JoinColumn(name="idtipodocumentoidentidad")
+	private TipoDocumentoIdentidadSie tbTipoDocumentoIdentidad;
 
 	private String nombrecliente;
 
@@ -79,14 +91,6 @@ public class VerificaClienteSie implements Serializable {
 
 	public void setFecnacimiento(Date fecnacimiento) {
 		this.fecnacimiento = fecnacimiento;
-	}
-
-	public Integer getIdtipodocumentoidentidad() {
-		return this.idtipodocumentoidentidad;
-	}
-
-	public void setIdtipodocumentoidentidad(Integer idtipodocumentoidentidad) {
-		this.idtipodocumentoidentidad = idtipodocumentoidentidad;
 	}
 
 	public String getNombrecliente() {
@@ -143,6 +147,38 @@ public class VerificaClienteSie implements Serializable {
 
 	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
 		this.tbEstadoGeneral = tbEstadoGeneral;
+	}
+
+	public TipoDocumentoIdentidadSie getTbTipoDocumentoIdentidad() {
+		return tbTipoDocumentoIdentidad;
+	}
+
+	public void setTbTipoDocumentoIdentidad(TipoDocumentoIdentidadSie tbTipoDocumentoIdentidad) {
+		this.tbTipoDocumentoIdentidad = tbTipoDocumentoIdentidad;
+	}
+
+	public Date getFechamodifica() {
+		return fechamodifica;
+	}
+
+	public void setFechamodifica(Date fechamodifica) {
+		this.fechamodifica = fechamodifica;
+	}
+
+	public String getUsuariocreacion() {
+		return usuariocreacion;
+	}
+
+	public void setUsuariocreacion(String usuariocreacion) {
+		this.usuariocreacion = usuariocreacion;
+	}
+
+	public String getUsuariomodifica() {
+		return usuariomodifica;
+	}
+
+	public void setUsuariomodifica(String usuariomodifica) {
+		this.usuariomodifica = usuariomodifica;
 	}
 	
 }

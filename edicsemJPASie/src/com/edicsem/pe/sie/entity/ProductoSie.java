@@ -85,6 +85,10 @@ public class ProductoSie implements Serializable {
   	@OneToMany(mappedBy="tbProducto")
   	private Set<ControlKardexSie> tbControlKardex;
   	
+	//bi-directional many-to-one association to VerificaProductoSie
+  	@OneToMany(mappedBy="tbProducto")
+  	private Set<VerificaProductoSie> tbVerificaProducto;
+  	
   	@Transient 
   	private String observacionContrato;
   	
@@ -273,6 +277,14 @@ public class ProductoSie implements Serializable {
 
 	public void setTbControlKardex(Set<ControlKardexSie> tbControlKardex) {
 		this.tbControlKardex = tbControlKardex;
+	}
+
+	public Set<VerificaProductoSie> getTbVerificaProducto() {
+		return tbVerificaProducto;
+	}
+
+	public void setTbVerificaProducto(Set<VerificaProductoSie> tbVerificaProducto) {
+		this.tbVerificaProducto = tbVerificaProducto;
 	}
 	
 }

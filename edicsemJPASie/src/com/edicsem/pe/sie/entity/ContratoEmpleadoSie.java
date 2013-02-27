@@ -34,9 +34,7 @@ public class ContratoEmpleadoSie implements Serializable {
 	@SequenceGenerator(name="TB_CONTRATO_EMPLEADO_IDCONTRATOEMPL_GENERATOR", sequenceName="SIE.TB_CONTRATO_EMPLEADO_IDCONTRATOEMPL_SEQ", initialValue=1, allocationSize =1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_CONTRATO_EMPLEADO_IDCONTRATOEMPL_GENERATOR")
 	private Integer idContratoEmpl;
-
-	private Integer idempleado;
-
+	
 	private BigDecimal basico;
 	
 	private Integer  periodoPrueba;
@@ -72,7 +70,7 @@ public class ContratoEmpleadoSie implements Serializable {
     
 	//bi-directional many-to-one association to EmpleadoSie
     @ManyToOne
-	@JoinColumn(name="idempleado", insertable = false, updatable = false)
+	@JoinColumn(name="idempleado" )
 	private EmpleadoSie tbEmpleado1;
 
 	//bi-directional many-to-one association to EmpleadoSie
@@ -90,10 +88,10 @@ public class ContratoEmpleadoSie implements Serializable {
 	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
     
-    //bi-directional many-to-one association to DetEmpresaEmpleadoSie
+	//bi-directional many-to-one association to EmpresaSie
     @ManyToOne
-	@JoinColumn(name="idDetEmpresaEmpl")
-	private DetEmpresaEmpleadoSie tbDetEmpresaEmpleado;
+	@JoinColumn(name="idempresa")
+	private EmpresaSie tbEmpresa;
     
 	@Transient
 	private Integer cantContratoXPatrocinado;
@@ -147,20 +145,6 @@ public class ContratoEmpleadoSie implements Serializable {
 
 	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
 		this.tbEstadoGeneral = tbEstadoGeneral;
-	}
-
-	/**
-	 * @return the idempleado
-	 */
-	public Integer getIdempleado() {
-		return idempleado;
-	}
-
-	/**
-	 * @param idempleado the idempleado to set
-	 */
-	public void setIdempleado(Integer idempleado) {
-		this.idempleado = idempleado;
 	}
 	
 	/**
@@ -245,14 +229,6 @@ public class ContratoEmpleadoSie implements Serializable {
 		this.item = item;
 	}
 
-	public DetEmpresaEmpleadoSie getTbDetEmpresaEmpleado() {
-		return tbDetEmpresaEmpleado;
-	}
-
-	public void setTbDetEmpresaEmpleado(DetEmpresaEmpleadoSie tbDetEmpresaEmpleado) {
-		this.tbDetEmpresaEmpleado = tbDetEmpresaEmpleado;
-	}
-
 	/**
 	 * @return the empresa
 	 */
@@ -293,6 +269,14 @@ public class ContratoEmpleadoSie implements Serializable {
 	 */
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+
+	public EmpresaSie getTbEmpresa() {
+		return tbEmpresa;
+	}
+
+	public void setTbEmpresa(EmpresaSie tbEmpresa) {
+		this.tbEmpresa = tbEmpresa;
 	}
 	
 }

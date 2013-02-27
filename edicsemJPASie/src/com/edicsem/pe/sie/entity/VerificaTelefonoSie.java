@@ -3,18 +3,20 @@ package com.edicsem.pe.sie.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.edicsem.pe.sie.util.constants.Constants;
+
 
 /**
  * The persistent class for the tb_verifica_telefono database table.
  * 
  */
 @Entity
-@Table(name="tb_verifica_telefono")
+@Table(name="tb_verifica_telefono", schema = Constants.ESQUEMA_SIE_POSTGRE)
 public class VerificaTelefonoSie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_VERIFICA_TELEFONO_IDVERIFICATELEFONO_GENERATOR", sequenceName="TB_VERIFICA_TELEFONO_IDVERIFICATELEFONO_SEQ")
+	@SequenceGenerator(name="TB_VERIFICA_TELEFONO_IDVERIFICATELEFONO_GENERATOR", sequenceName="SIE.TB_VERIFICA_TELEFONO_IDVERIFICATELEFONO_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_VERIFICA_TELEFONO_IDVERIFICATELEFONO_GENERATOR")
 	private Integer idverificatelefono;
 
