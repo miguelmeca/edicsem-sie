@@ -46,7 +46,7 @@
 	        </p:column>
 	        
 	    </p:dataTable>
-	    	<p:commandButton value="#{message['migracion.subirbd']}" actionListener="#{migracion.insertar}" 
+	    	<p:commandButton value="#{message['migracion.subirbd']}" action="#{migracion.insertar}" ajax="false"
 	    	update="message" onclick="statusDialogSI.show();" />
 		</h:form>
 	</ui:define>
