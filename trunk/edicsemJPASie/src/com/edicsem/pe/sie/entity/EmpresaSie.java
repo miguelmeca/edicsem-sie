@@ -63,9 +63,9 @@ public class EmpresaSie  implements Serializable {
 	@OneToMany(mappedBy="tbEmpresa")
 	private Set<KardexSie> tbKardex;
 
-	//bi-directional many-to-one association to DetEmpresaEmpleadoSie
+	//bi-directional many-to-one association to ContratoEmpleadoSie
 	@OneToMany(mappedBy="tbEmpresa")
-	private Set<DetEmpresaEmpleadoSie> tbDetEmpresaEmpleados;
+	private Set<ContratoEmpleadoSie> tbContratoEmpleados;
 	
     public EmpresaSie() {
     }
@@ -150,15 +150,6 @@ public class EmpresaSie  implements Serializable {
 		this.tbKardex = tbKardex;
 	}
 
-	public Set<DetEmpresaEmpleadoSie> getTbDetEmpresaEmpleados() {
-		return tbDetEmpresaEmpleados;
-	}
-
-	public void setTbDetEmpresaEmpleados(
-			Set<DetEmpresaEmpleadoSie> tbDetEmpresaEmpleados) {
-		this.tbDetEmpresaEmpleados = tbDetEmpresaEmpleados;
-	}
-
 	public Integer getTipoVenta() {
 		return tipoVenta;
 	}
@@ -179,6 +170,14 @@ public class EmpresaSie  implements Serializable {
 	 */
 	public void setNumcuenta(String numcuenta) {
 		this.numcuenta = numcuenta;
+	}
+
+	public Set<ContratoEmpleadoSie> getTbContratoEmpleados() {
+		return tbContratoEmpleados;
+	}
+
+	public void setTbContratoEmpleados(Set<ContratoEmpleadoSie> tbContratoEmpleados) {
+		this.tbContratoEmpleados = tbContratoEmpleados;
 	}
 	
 }

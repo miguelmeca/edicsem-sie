@@ -43,6 +43,10 @@ public class TipoDocumentoIdentidadSie implements Serializable {
 	//bi-directional many-to-one association to ProveedorSie
 	@OneToMany(mappedBy="tbTipoDocumentoIdentidad")
 	private Set<ProveedorSie> tbProveedors;
+	
+	//bi-directional many-to-one association to VerificaClienteSie
+	@OneToMany(mappedBy="tbTipoDocumentoIdentidad")
+	private Set<VerificaClienteSie> tbVerificaClientes;
 
 	//bi-directional many-to-one association to EstadoGeneralSie
     @ManyToOne
@@ -98,6 +102,14 @@ public class TipoDocumentoIdentidadSie implements Serializable {
 
 	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
 		this.tbEstadoGeneral = tbEstadoGeneral;
+	}
+
+	public Set<VerificaClienteSie> getTbVerificaClientes() {
+		return tbVerificaClientes;
+	}
+
+	public void setTbVerificaClientes(Set<VerificaClienteSie> tbVerificaClientes) {
+		this.tbVerificaClientes = tbVerificaClientes;
 	}
 	
 }

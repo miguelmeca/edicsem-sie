@@ -40,7 +40,6 @@
 		<class>com.edicsem.pe.sie.entity.MetaEmpleadoSie</class>
 		<class>com.edicsem.pe.sie.entity.MetaMesSie</class>
 		<class>com.edicsem.pe.sie.entity.DetContratoEmpleadoSie</class>
-		<class>com.edicsem.pe.sie.entity.DetEmpresaEmpleadoSie</class>
 		<class>com.edicsem.pe.sie.entity.FechaSie</class>
 		<class>com.edicsem.pe.sie.entity.FiltroHorarioVentaSie</class>
 		<class>com.edicsem.pe.sie.entity.IncidenciaSie</class>
