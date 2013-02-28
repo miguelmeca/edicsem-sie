@@ -147,7 +147,7 @@ id="fechanacimiento" showButtonPanel="true" size="30"
 <h:panelGrid columns="2" id="panel3">
 <p:outputLabel value="#{message['cliente.domicilio.direccion']}" for="domicilio" />
 <p:inputText id="domicilio" value="#{MantenimientoClienteFormAction.objDomicilio.domicilio}"
-			 required="true" label="Domicilio"
+			 required="true" 
 			 requiredMessage="#{message['cliente.domicilio.direccion.validation']}" 
 			 style="width:200%" />  			    
 				
@@ -249,14 +249,17 @@ id="fechanacimiento" showButtonPanel="true" size="30"
 <p:inputText value="#{MantenimientoClienteFormAction.nuevoTelef.descTelefono}" />
 <p:spacer />
 						
-<p:commandButton value="Agregar Telefono Referencia"  
+<p:commandButton value="Agregar"  
 				 icon="ui-icon ui-icon-check" 
 				 actionListener="#{MantenimientoClienteFormAction.telefonoAgregar}"
 				 update="listarTelefonos, message" > 
 </p:commandButton>
+
 						
+
 </h:panelGrid>
 <!-- Tabla de Telefonos -->
+<p:spacer></p:spacer>
 <p:dataTable value="#{MantenimientoClienteFormAction.telefonoPersonaList}" id="listarTelefonos" var="o" style="width:600px" 
 			 rowStyleClass="#{o.operadorTelefonico eq 'Claro' ? 'colorRojo': (o.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }"   >
 	
