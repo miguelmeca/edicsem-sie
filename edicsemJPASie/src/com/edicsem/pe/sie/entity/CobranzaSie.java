@@ -100,6 +100,9 @@ public class CobranzaSie   implements Serializable {
 	
 	@Transient
 	private String fechaPagoString;
+	
+	@Transient
+	private String nuevo;
 
     public CobranzaSie() {
     }
@@ -308,6 +311,20 @@ public class CobranzaSie   implements Serializable {
 	 */
 	public void setImportemasmora(BigDecimal importemasmora) {
 		this.importemasmora = importemasmora;
+	}
+
+	/**
+	 * @return the nuevo
+	 */
+	public String getNuevo() {
+		return nuevo;
+	}
+
+	/**
+	 * @param nuevo the nuevo to set
+	 */
+	public void setNuevo(String nuevo) {
+		this.nuevo = nuevo;
 	}
 	
 }
