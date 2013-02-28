@@ -158,4 +158,21 @@ public class CobranzaDAOImpl implements CobranzaDAO{
 		}
 		return cobranza;
 	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.CobranzaDAO#buscarCobranzaXcodigoContrato(java.lang.Integer)
+	 */
+	public List buscarCobranzaXcodigoContrato(Integer idcontrato) {
+		List cobranza=null;
+		try {
+			Query q = em.createQuery("select p from CobranzaSie p  where " +
+					" p.tbContrato.idcontrato  = '" +idcontrato+"'");
+			if(q.getResultList().size()>0){
+			cobranza = q.getResultList();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cobranza;
+	}
 }

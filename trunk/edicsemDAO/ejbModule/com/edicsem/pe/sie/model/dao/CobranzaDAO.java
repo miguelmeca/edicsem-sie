@@ -18,4 +18,5 @@ public interface CobranzaDAO {
 	public abstract List  listarCobranzasXidcontrato(int idcontrato);
 	public abstract List  calcularEfectividad(int idEmpleado);
 	public abstract CobranzaSie buscarCobranzaXcodigo(String codigo, Date fechaVencimiento,double montototalpagado);
+	public abstract List buscarCobranzaXcodigoContrato(Integer idcontrato);
 }
