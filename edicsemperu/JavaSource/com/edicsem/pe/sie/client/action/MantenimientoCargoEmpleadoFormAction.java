@@ -138,7 +138,7 @@ for (EmpleadoSie miempleado : cargoempleadoList ) {
 
 	public String update() throws Exception {
 		log.info("update()" + objCargoEmpleadoSie.getIdcargoempleado());
-		objCargoEmpleadoSie = objCargoEmpleadoService.buscarCargoEmpleado(objCargoEmpleadoSie.getIdcargoempleado());
+		
 		log.info(" id cargo " +objCargoEmpleadoSie.getIdcargoempleado() + " des "+ objCargoEmpleadoSie.getDescripcion());		
 		setIdcargoempleado(objCargoEmpleadoSie.getIdcargoempleado().toString());
 		descripcionUpdate = objCargoEmpleadoSie.getDescripcion();
