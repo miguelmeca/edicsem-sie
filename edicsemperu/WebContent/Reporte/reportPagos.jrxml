@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportPagos" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1c5e0377-4706-4315-a358-37f5c5976fc5">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportPagos" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="net.sf.jasperreports.engine.JRDefaultScriptlet" uuid="1c5e0377-4706-4315-a358-37f5c5976fc5">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.y" value="27"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -35,7 +35,7 @@ cob.impcobrado as impcobrado,
      c."correo" AS correo,
      c."contrasena" AS contrasena,
      c."idestadogeneral" AS idestadogeneral,
-     c."tipocliente" AS tipocliente,
+     tip."descripcion" AS tipocliente,
 con."codcontrato" as codigoContrato,
 con."fechaentrega" as fechaentrega,
 e."descripcion" as estado,
@@ -47,7 +47,7 @@ inner join "sie"."tb_cobranza" cob
 on con.idcontrato = cob.idcontrato
  inner join "sie"."tb_tipo_documento_identidad" t on
 c.idtipodocumentoidentidad = t.idtipodocumentoidentidad
-inner join "sie"."tb_estado_general" e on con.idestadogeneral = e.idestadogeneral where  con."codcontrato" = $P{codcontrato}]]>
+inner join "sie"."tb_estado_general" e on con.idestadogeneral = e.idestadogeneral  inner join "sie"."tb_tipo_cliente" tip on tip.idTipoCliente = c.tipocliente where  con."codcontrato" = $P{codcontrato}]]>
 	</queryString>
 	<field name="retrazo" class="java.lang.Integer"/>
 	<field name="fecvencimiento" class="java.sql.Date"/>
@@ -65,7 +65,7 @@ inner join "sie"."tb_estado_general" e on con.idestadogeneral = e.idestadogenera
 	<field name="correo" class="java.lang.String"/>
 	<field name="contrasena" class="java.lang.String"/>
 	<field name="idestadogeneral" class="java.lang.Integer"/>
-	<field name="tipocliente" class="java.lang.Integer"/>
+	<field name="tipocliente" class="java.lang.String"/>
 	<field name="codigocontrato" class="java.lang.String"/>
 	<field name="fechaentrega" class="java.sql.Date"/>
 	<field name="estado" class="java.lang.String"/>
@@ -90,56 +90,14 @@ inner join "sie"."tb_estado_general" e on con.idestadogeneral = e.idestadogenera
 			<band height="6"/>
 		</groupFooter>
 	</group>
-	<background>
-		<band height="555" splitType="Stretch">
-			<image>
-				<reportElement uuid="d47ea37e-8405-415d-b920-136f39ab310d" x="-20" y="65" width="229" height="250">
-					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1]]></printWhenExpression>
-				</reportElement>
-				<imageExpression><![CDATA["flower1.png"]]></imageExpression>
-			</image>
-			<image>
-				<reportElement uuid="5d8f8f10-2c29-4cd7-aca3-15f44cb97fec" x="-20" y="-20" width="229" height="250">
-					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} > 1]]></printWhenExpression>
-				</reportElement>
-				<imageExpression><![CDATA["flower1.png"]]></imageExpression>
-			</image>
-			<staticText>
-				<reportElement uuid="5498efa6-8aae-4a8f-870d-27cbbf310886" mode="Opaque" x="275" y="-10" width="240" height="181" backcolor="#FFFFCC">
-					<printWhenExpression><![CDATA[Boolean.FALSE]]></printWhenExpression>
-				</reportElement>
-				<box topPadding="4" leftPadding="4" bottomPadding="4" rightPadding="4">
-					<pen lineWidth="1.0" lineColor="#CC9900"/>
-					<topPen lineWidth="1.0" lineColor="#CC9900"/>
-					<leftPen lineWidth="1.0" lineColor="#CC9900"/>
-					<bottomPen lineWidth="1.0" lineColor="#CC9900"/>
-					<rightPen lineWidth="1.0" lineColor="#CC9900"/>
-				</box>
-				<textElement markup="none">
-					<font size="12"/>
-				</textElement>
-				<text><![CDATA[Flowers
-
-There are two flowers, the first one is printed only starting from the second page, the other one only in the first page.]]></text>
-			</staticText>
-			<line>
-				<reportElement uuid="4973764f-b0eb-43f9-bf8a-83536dc637fa" x="72" y="37" width="204" height="1">
-					<printWhenExpression><![CDATA[Boolean.FALSE]]></printWhenExpression>
-				</reportElement>
-				<graphicElement>
-					<pen lineWidth="3.0" lineStyle="Dotted" lineColor="#996600"/>
-				</graphicElement>
-			</line>
-		</band>
-	</background>
 	<title>
-		<band height="302" splitType="Stretch">
+		<band height="267" splitType="Stretch">
 			<staticText>
 				<reportElement uuid="8437b781-e3a0-4dd7-a066-b9ffb3898301" style="SubTitle" x="336" y="65" width="449" height="29"/>
 				<textElement textAlignment="Right">
 					<font size="22" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Flower SubTitle]]></text>
+				<text><![CDATA[Detalle de Pagos]]></text>
 			</staticText>
 			<frame>
 				<reportElement uuid="7f6b7026-e91f-46ec-936d-81ef4a09272d" mode="Opaque" x="-20" y="0" width="822" height="65" forecolor="#006699" backcolor="#006699"/>
@@ -148,7 +106,7 @@ There are two flowers, the first one is printed only starting from the second pa
 					<textElement textAlignment="Right">
 						<font size="54" isBold="false"/>
 					</textElement>
-					<text><![CDATA[Flower Title]]></text>
+					<text><![CDATA[Reporte de Pagos Clientes]]></text>
 				</staticText>
 			</frame>
 			<frame>
@@ -162,7 +120,7 @@ There are two flowers, the first one is printed only starting from the second pa
 				</staticText>
 			</frame>
 			<frame>
-				<reportElement uuid="10a592d6-b893-4e3b-8bc5-b1d7bf68c121" x="4" y="115" width="313" height="150"/>
+				<reportElement uuid="10a592d6-b893-4e3b-8bc5-b1d7bf68c121" x="4" y="115" width="313" height="124"/>
 				<staticText>
 					<reportElement uuid="1274d4b9-374a-45f3-a60d-d01642b46beb" style="Column header" positionType="Float" x="11" y="93" width="67" height="14" forecolor="#000000"/>
 					<textElement>
@@ -284,7 +242,7 @@ There are two flowers, the first one is printed only starting from the second pa
 			</line>
 			<frame>
 				<reportElement uuid="2957e0eb-f936-47a4-b1d5-598efeb022a2" x="6" y="0" width="796" height="14"/>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
 					<reportElement uuid="8473c9ca-3db8-4f20-87e9-273c22fdf235" style="Detail" positionType="Float" x="98" y="0" width="97" height="14"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
@@ -305,7 +263,7 @@ There are two flowers, the first one is printed only starting from the second pa
 					</textElement>
 					<textFieldExpression><![CDATA[$F{numletra}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
 					<reportElement uuid="9ae678e5-fdc5-41e2-8fc6-a4edcfc4171c" style="Detail" positionType="Float" x="427" y="0" width="94" height="14"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
