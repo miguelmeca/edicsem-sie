@@ -239,7 +239,7 @@ msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 		e.printStackTrace();
 		mensaje = e.getMessage();
 		msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-				Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+				Constants.MESSAGE_ERROR_FATAL_TITULO_DETALLE, mensaje);
 		log.error(e.getMessage());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
