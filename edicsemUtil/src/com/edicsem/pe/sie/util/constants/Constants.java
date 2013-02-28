@@ -130,11 +130,11 @@ public class Constants {
 	public static final String RUTA_REPORTE = "E:\\Sie\\Reporte\\";
 	public static final String REPORTE_CLIENTE_JASPER = "Reporte/report6.jasper";
 	public static final String REPORTE_KARDEX_JASPER = "Reporte/reportKardex.jasper";
+	public static final String REPORTE_PAGOS__CONTRATO_JASPER = "Reporte/reportPagos.jasper";
 	public static final String REPORTE_TITULO ="titulo";
 	
 	//Reporte Cliente
 	public static final String REPORTE_TIPO_CLIENTE ="tipoCliente";
-	
 	public static final String REPORTE_CLIENTE_LIST = "Reporte Cliente";
 	
 	//Reporte Kardex
@@ -142,6 +142,10 @@ public class Constants {
 	public static final String REPORTE_KARDEX_PRODUCTO ="producto";
 	public static final String REPORTE_KARDEX_FECHA_DESDE ="fechaDesde";
 	public static final String REPORTE_KARDEX_FECHA_HASTA ="fechaHasta";
+	public static final String REPORTE_CODIGO_CONTRATO = "codContrato";
+	
+	//Reporte Pagos Cliente
+	public static final String REPORTE_PAGOS_LIST = "Reporte de Pagos";
 	
 	public static final String REPORTE_KARDEX_LIST="Reporte Kardex";
 	public static final String RUTA_IMAGENES_PRODUCTO = "E:\\Producto\\Images" ;
