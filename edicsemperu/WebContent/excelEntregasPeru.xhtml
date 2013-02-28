@@ -15,7 +15,7 @@
 	update="datatablecampana, message" />
 		
 <p:commandButton value="#{message['entregasperu.subirbd']}"
-	actionListener="#{FileUploadEntregasPeru.subirCreditos}" 
+	action="#{FileUploadEntregasPeru.subirCreditos}"  ajax="false"
 	update="message" onclick="statusDialogEP.show();" >
 </p:commandButton>
 
