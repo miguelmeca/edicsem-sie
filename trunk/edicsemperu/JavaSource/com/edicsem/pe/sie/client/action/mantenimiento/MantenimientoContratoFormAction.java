@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
@@ -29,7 +32,9 @@ import org.primefaces.event.FlowEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.UploadedFile;
 
+import com.edicsem.pe.sie.beans.ReporteParams;
 import com.edicsem.pe.sie.client.action.ComboAction;
+import com.edicsem.pe.sie.client.report.service.ReporteExecutionService;
 import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.CobranzaSie;
 import com.edicsem.pe.sie.entity.ContratoSie;
@@ -93,7 +98,7 @@ public class MantenimientoContratoFormAction extends
 	private BigDecimal totalacumulado;
 	private int idGrupo;
 	private List<DetGrupoEmpleadoSie> detgrupoList;
-	private int estadoRefinan;
+	private int estadoRefinan,existContrato;
 	
 	//Consultar
 	private String numDniCliente,codigoContrato,apePatCliente,apeMatCliente,nombreCliente;
@@ -103,6 +108,9 @@ public class MantenimientoContratoFormAction extends
 	//Gestionar
 	private SeguimientoContratoSie objSeguimiento;
 	private int cuotasNuevas,idMotivo;
+	
+	//Reporte
+	private String ContentType;
 	
 	@EJB
 	private ProductoService objProductoService;
@@ -132,6 +140,8 @@ public class MantenimientoContratoFormAction extends
 	private DetGrupoEmpleadoService objDetGrupoService;
 	@EJB
 	private SeguimientoContratoService objSeguimientoContratoService;
+	@EJB
+	private ReporteExecutionService objReporteService;
 	
 	@ManagedProperty(value = "#{comboAction}")
 	private ComboAction comboManager;
@@ -166,6 +176,7 @@ public class MantenimientoContratoFormAction extends
 		totalacumulado= new BigDecimal(0);
 		precioMensual=0.0;
 		cuotasNuevas=1;
+		existContrato=0;
 	}
 	
 	/*
@@ -586,7 +597,20 @@ public class MantenimientoContratoFormAction extends
 		log.info("en onedit()");
 		totalacumulado = new BigDecimal(0);
 		for (int i = 0; i < cobranzaList.size(); i++) {
-			totalacumulado = totalacumulado.add(cobranzaList.get(i).getImportemasmora());
+			
+			if(cobranzaList.get(i).getFecpago()==null){
+				double pr =cobranzaList.get(i).getDiasretraso()*0.3;
+				log.info(cobranzaList.get(i).getDiasretraso() + "  * 0.3 =  "+pr);
+				
+				double imp = cobranzaList.get(i).getImpinicial().doubleValue()+pr;
+				log.info(" imp  "+imp);
+				
+				BigDecimal g = new BigDecimal(imp);
+				g=g.setScale(2, RoundingMode.HALF_UP);
+				log.info(" imp  "+g);
+				cobranzaList.get(i).setImportemasmora(g);
+				totalacumulado = totalacumulado.add(cobranzaList.get(i).getImportemasmora());
+			}
 			log.info("suma bigdecimal "+	totalacumulado);
 		}
     }
@@ -728,13 +752,19 @@ public class MantenimientoContratoFormAction extends
 			objClienteSie = objClienteService.findCliente(contratoXClienteList.get(0).getTbCliente().getIdcliente());
 			log.info("  " + objClienteSie.getIdcliente()+"  "+objClienteSie.getNombresCompletos());
 			domicilioList = objDomicilioService.listarDomicilioCliente(objClienteSie.getIdcliente());
-			if(domicilioList.size()==1){
-				objDomicilioSie = domicilioList.get(domicilioList.size()-1);
+			if(domicilioList.size()>=1){
+				for (int i = 0; i < domicilioList.size(); i++) {
+					if(domicilioList.get(i).getTbUbigeo()!=null){
+						objDomicilioSie = domicilioList.get(i);
+						UbigeoSie ubi =  objubigeoService.findUbigeo(objDomicilioSie.getTbUbigeo().getIdubigeo());
+						log.info("nombre "+ubi.getNombre() );
+						String depaProv = objubigeoService.findDepaProv(ubi.getCoddepartamento(),ubi.getCodprovincia());
+						ubigeoDefecto =depaProv+" - "+ubi.getNombre();
+						log.info("ubigeoDefecto:  "+ubigeoDefecto);
+						domicilioList.get(i).setDesUbigeo(ubigeoDefecto);
+					}
+				}
 			}
-			log.info("  ubigeo  " +objDomicilioSie.getTbUbigeo().getIdubigeo());
-			UbigeoSie ubi =  objubigeoService.findUbigeo(objDomicilioSie.getTbUbigeo().getIdubigeo());
-			String depaProv = objubigeoService.findDepaProv(ubi.getCoddepartamento(),ubi.getCodprovincia());
-			ubigeoDefecto =depaProv+" - "+ubi.getNombre();
 			telefonoList = objTelefonoService.listarTelefonoEmpleadosXidcliente(objClienteSie.getIdcliente());
 			detProductoContrato = objDetProductoService.listarDetProductoContratoXContrato(contratoXClienteList.get(0).getIdcontrato());
 			objContratoSie = objContratoService.findContrato(contratoXClienteList.get(0).getIdcontrato());
@@ -742,16 +772,20 @@ public class MantenimientoContratoFormAction extends
 			totalacumulado= new BigDecimal(0);
 			estadoRefinan= objContratoSie.getTbEstadoGeneral().getIdestadogeneral();
 			for (int i = 0; i < cobranzaList.size(); i++) {
+				if(cobranzaList.get(i).getFecpago()==null){
 				totalacumulado = totalacumulado.add(cobranzaList.get(i).getImportemasmora());
+				}
 			}
 			fechaMensual = DateUtil.addToDate(cobranzaList.get(cobranzaList.size()-1).getFecvencimiento(), Calendar.MONTH,1);
 			mensaje = "Consulto realizada";
+			setExistContrato(1);
 		}
 		else if(contratoXClienteList.size()==0){
 			mensaje = "Consulto realizada, no se encontraron datos";
 			objClienteSie = new ClienteSie();
 			objDomicilioSie = new DomicilioPersonaSie();
 			cobranzaList = new ArrayList<CobranzaSie>();
+			setExistContrato(0);
 		}
 		log.info(" lista x consultaaa "+contratoXClienteList.size()+" MENSAJE "+ mensaje);
 		
@@ -769,10 +803,23 @@ public class MantenimientoContratoFormAction extends
 		domicilioList = objDomicilioService.listarDomicilioCliente(idcliente);
 		if(domicilioList.size()==1){
 			objDomicilioSie = domicilioList.get(domicilioList.size()-1);
+			UbigeoSie ubi =  objubigeoService.findUbigeo(objDomicilioSie.getTbUbigeo().getIdubigeo());
+			String depaProv = objubigeoService.findDepaProv(ubi.getCoddepartamento(),ubi.getCodprovincia());
+			ubigeoDefecto =depaProv+" - "+ubi.getNombre();
+			log.info("ubigeoDefecto1:  "+ubigeoDefecto);
+		}else if(domicilioList.size()>1){
+			for (int i = 0; i < domicilioList.size(); i++) {
+				if(domicilioList.get(i).getTbUbigeo()!=null){
+					objDomicilioSie = domicilioList.get(i);
+					UbigeoSie ubi =  objubigeoService.findUbigeo(objDomicilioSie.getTbUbigeo().getIdubigeo());
+					log.info("nombre "+ubi.getNombre() );
+					String depaProv = objubigeoService.findDepaProv(ubi.getCoddepartamento(),ubi.getCodprovincia());
+					ubigeoDefecto =depaProv+" - "+ubi.getNombre();
+					log.info("ubigeoDefecto:  "+ubigeoDefecto);
+					domicilioList.get(i).setDesUbigeo(ubigeoDefecto);
+				}
+			}
 		}
-		UbigeoSie ubi =  objubigeoService.findUbigeo(objDomicilioSie.getTbUbigeo().getIdubigeo());
-		
-		ubigeoDefecto = ubi.getNombre();
 		telefonoList = objTelefonoService.listarTelefonoEmpleadosXidcliente(objClienteSie.getIdcliente());
 		detProductoContrato = objDetProductoService.listarDetProductoContratoXContrato(idcontrato);
 		objContratoSie = objContratoService.findContrato(idcontrato);
@@ -780,10 +827,13 @@ public class MantenimientoContratoFormAction extends
 		totalacumulado= new BigDecimal(0);
 		estadoRefinan= objContratoSie.getTbEstadoGeneral().getIdestadogeneral();
 		for (int i = 0; i < cobranzaList.size(); i++) {
+			if(cobranzaList.get(i).getFecpago()==null){
 			totalacumulado = totalacumulado.add(cobranzaList.get(i).getImportemasmora());
+			}
 		}
+		setExistContrato(1);
 		fechaMensual = DateUtil.addToDate(cobranzaList.get(cobranzaList.size()-1).getFecvencimiento(), Calendar.MONTH,1);
-		return Constants.CONSULTA_CONTRATO_FORM_PAGE;
+		return null;
 	}
 	
 	public void limpiarCampos(){
@@ -825,6 +875,7 @@ public class MantenimientoContratoFormAction extends
 				numletra=numletra+i+1;
 				cob.setNumletra(numletra+"");
 				cob.setFecvencimiento(fechaMensual);
+				cob.setNuevo("N");
 				totalacumulado= totalacumulado.add(new BigDecimal(precioMensual));
 				cobranzaList.add(cob);
 				mensaje="Se agregó la nueva cuota";
@@ -841,11 +892,13 @@ public class MantenimientoContratoFormAction extends
 			mensaje ="Debe buscar un contrato";
 			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
 		}
-		if(objSeguimiento.getTbMotivo()==null){
+		if(idMotivo==0){
 			mensaje ="Debe seleccionar un motivo";
 			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
 		}else{
-			objSeguimientoContratoService.insertSeguimientoContrato(objSeguimiento);
+			
+			objSeguimientoContratoService.insertSeguimientoContrato(objSeguimiento,idMotivo,objContratoSie,estadoRefinan, cobranzaList);
+			
 			mensaje = Constants.MESSAGE_REGISTRO_TITULO;
 			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 		}
@@ -902,6 +955,35 @@ public class MantenimientoContratoFormAction extends
 	            return event.getNewStep();  
 	      }
 	}
+	
+	public void ReportingPagos() {
+		log.info("ReportingPagos() " +objContratoSie.getCodcontrato());
+		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+		ReporteParams parametros = new ReporteParams();
+		
+		try {
+			if(objContratoSie.getCodcontrato()==null){
+				 mensaje="Debe buscar un contrato en la parte superior";
+				 msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+							Constants.MESSAGE_INFO_TITULO, mensaje);
+			 }else{
+			parametros.setJasperFileName(Constants.REPORTE_PAGOS__CONTRATO_JASPER);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_hhmmss");
+			Map criteria = new HashMap();
+			criteria.put(Constants.REPORTE_TITULO, Constants.REPORTE_PAGOS_LIST+"_"+ sdf.format(new Date(System.currentTimeMillis())));
+			criteria.put(Constants.REPORTE_CODIGO_CONTRATO, objContratoSie.getCodcontrato());
+			parametros.setQueryParams(criteria);
+			
+			HttpServletResponse response = (HttpServletResponse)context.getResponse();
+			objReporteService.executeReporte(parametros, response, ContentType);
+			 }
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			FacesContext.getCurrentInstance().responseComplete(); 
+		}
+	}
+	
 	public ProductoSie getSelectedProducto() {
 		return selectedProducto;
 	}
@@ -1811,6 +1893,28 @@ public class MantenimientoContratoFormAction extends
 	 */
 	public void setIdMotivo(int idMotivo) {
 		this.idMotivo = idMotivo;
+	}
+
+	/**
+	 * @return the contentType
+	 */
+	public String getContentType() {
+		return ContentType;
+	}
+
+	/**
+	 * @param contentType the contentType to set
+	 */
+	public void setContentType(String contentType) {
+		ContentType = contentType;
+	}
+
+	public int getExistContrato() {
+		return existContrato;
+	}
+
+	public void setExistContrato(int existContrato) {
+		this.existContrato = existContrato;
 	}
 	
 }

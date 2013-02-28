@@ -66,7 +66,7 @@
 				</p:fieldset>
 				<p:spacer height="30px" />
 				<h:panelGrid  rendered="#{contratoForm.tamanoLista>1}" >
-					<p:dataTable value="#{contratoForm.contratoXClienteList}"  
+					<p:dataTable value="#{contratoForm.contratoXClienteList}"  paginator="true"  rowsPerPageTemplate="5,10,15"  rows="5"
 					var="c" style="width:800px" emptyMessage="No se encontraron resultados" >
 						
 						<f:facet name="header">
@@ -109,14 +109,17 @@
 					<h:outputText value="#{message['contrato.apematerno']}" />
 					<p:inputText  value="#{contratoForm.objClienteSie.apematcliente}" size="30" readonly="true"/>
 					
+					<h:outputText value="#{message['contrato.fechanac']}" />
+					<p:inputText value="#{contratoForm.objClienteSie.fechaNacimientoString}" size="30" pattern="dd/MM/yyyy"  readonly="true"   />
+					
+					<h:outputText value="#{message['contrato.tipo.documento']}" />
+					<p:inputText value="#{contratoForm.objClienteSie.tbTipoDocumentoIdentidad.descripcion}" readonly="true" size="30"/>
+					
 					<h:outputText value="#{message['contrato.numero.documento']}" />
 					<p:inputText value="#{contratoForm.objClienteSie.numdocumento}" readonly="true" size="30"/>
 					
 					<h:outputText value="#{message['contrato.cliente.correo']}" />
 					<p:inputText value="#{contratoForm.objClienteSie.correo}" readonly="true" size="30"/>
-					
-					<h:outputText value="#{message['contrato.fechanac']}" />
-					<p:inputText value="#{contratoForm.objClienteSie.fechaNacimientoString}" size="30" pattern="dd/MM/yyyy"  readonly="true"   />
 					
 					<h:outputText value="#{message['contrato.ubigeo']} " />
 					<h:outputText value="#{contratoForm.ubigeoDefecto}" />
@@ -165,7 +168,7 @@
 					<p:inputText value="#{contratoForm.objContratoSie.usuariocreacion}" size="30" readonly="true"/>
 					
 					<h:outputText value="#{message['contrato.fecha.creacion']}" />
-					<p:inputText value="#{contratoForm.objContratoSie.fechacreacion}" size="30" readonly="true"/>
+					<p:inputText value="#{contratoForm.objContratoSie.fechaCreacionString}" size="30" readonly="true"/>
 					
 					</h:panelGrid>
 					</p:fieldset>
@@ -253,6 +256,19 @@
 			   </p:fieldset>
 			   </h:panelGrid>
 			</p:panel>
+			<div align="center"  style="margin-top:30px" >
+		     	<h:graphicImage value="/images/Reporting_pdf.png" style="width:40px;height:40px"/>
+				<p:commandLink action="#{contratoForm.ReportingPagos}" value="#{message['reporte.exportar.pagos.pdf']}" ajax="false" 
+				 >
+				<f:setPropertyActionListener target="#{contratoForm.contentType}" value="pdf"/>
+				</p:commandLink>
+				
+				<h:graphicImage value="/images/excel_icon.PNG" style="width:40px;height:40px"/>
+				<p:commandLink action="#{contratoForm.ReportingPagos}" value="#{message['reporte.exportar.pagos.xls']}" ajax="false" 
+				 >
+				<f:setPropertyActionListener target="#{contratoForm.contentType}" value="xls"/>
+				</p:commandLink>
+			</div>
 		</h:form>
 	</ui:define>
 </ui:composition>

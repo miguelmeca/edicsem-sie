@@ -338,6 +338,7 @@ public class ComboAction {
 	 * @return the estadoitems
 	 */
 	public Map<String, Integer> getEstadoitems() {
+		estadoitems =  new HashMap<String, Integer>();
 		List lista = new ArrayList<EstadoGeneralSie>();
 		try {
 			if (log.isInfoEnabled()) {

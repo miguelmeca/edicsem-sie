@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JExcelApiExporter;
 import net.sf.jasperreports.engine.export.JRHtmlExporter;
@@ -44,10 +45,11 @@ public class ReportExporter {
 		}
 		 * */
 		
-		exporter.setParameter(JRExporterParameter.JASPER_PRINT, jp);
-		exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, out);
-		exporter.exportReport();
-		log.info("PDF Report exported: " );
+//		exporter.setParameter(JRExporterParameter.JASPER_PRINT, jp);
+//		exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, out);
+//		exporter.exportReport();
+		JasperExportManager.exportReportToPdfStream(jp, out);
+		log.info("PDF Report exported :) " );
 	}
 
 	public static void exportReportXls(JasperPrint jp, String path) throws JRException, FileNotFoundException {
