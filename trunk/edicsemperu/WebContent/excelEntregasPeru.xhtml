@@ -16,18 +16,18 @@
 		
 <p:commandButton value="#{message['entregasperu.subirbd']}"
 	action="#{FileUploadEntregasPeru.subirCreditos}"  ajax="false"
-	update="message" onclick="statusDialogEP.show();" >
+	update="message" onclick="statusDialogEP.show();" icon="ui-icon-star"  >
 </p:commandButton>
 
 <p:dataTable id="datatablecampana" var="c" value="#{FileUploadEntregasPeru.leadsNuevos}"  paginator="true" rows="15"
  rowsPerPageTemplate="5,10,15"   emptyMessage="#{message['rsltd.empty']}"
  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
                    
-  	    <p:column  headerText="Ndecontrato" id="numerodecontrato" sortBy="#{c.numerodecontrato}" filterBy="#{c.numerodecontrato}"  >
+  	    <p:column  headerText="Nº de Contrato" id="numerodecontrato" sortBy="#{c.numerodecontrato}" filterBy="#{c.numerodecontrato}"  >
         <h:outputText value="#{c.numerodecontrato}"/>
         </p:column>
         
-        <p:column  headerText="fecha" id="fechaString" sortBy="#{c.fechaString}" filterBy="#{c.fechaString}" >
+        <p:column  headerText="Fecha" id="fechaString" sortBy="#{c.fechaString}" filterBy="#{c.fechaString}" >
         <h:outputText value="#{c.fechaString}"/>
         </p:column>	
         
@@ -39,47 +39,47 @@
         <h:outputText value="#{c.dnidelcliente}"/>
         </p:column>
 		
-		<p:column  headerText="nombre" id="nombre" sortBy="#{c.nombredecliente}" filterBy="#{c.nombredecliente}"  >
+		<p:column  headerText="Nombre de Cliente" id="nombre" sortBy="#{c.nombredecliente}" filterBy="#{c.nombredecliente}"  >
         <h:outputText value="#{c.nombredecliente}"/>
         </p:column>
         
-         <p:column  headerText="paterno" id="apepatcliente" sortBy="#{c.apepatcliente}" filterBy="#{c.apepatcliente}"  >
+        <p:column  headerText="Ape. Paterno" id="apepatcliente" sortBy="#{c.apepatcliente}" filterBy="#{c.apepatcliente}"  >
         <h:outputText value="#{c.apepatcliente}"/>
         </p:column>
         
-         <p:column  headerText="materno" id="apematcliente" sortBy="#{c.apematcliente}" filterBy="#{c.apematcliente}"  >
+        <p:column  headerText="Ape. Materno" id="apematcliente" sortBy="#{c.apematcliente}" filterBy="#{c.apematcliente}"  >
         <h:outputText value="#{c.apematcliente}"/>
         </p:column>
         
-        <p:column  headerText="PuntoVenta" id="puntodeventa" sortBy="#{c.puntodeventa}" filterBy="#{c.puntodeventa}"  >
+        <p:column  headerText="Punto de Venta" id="puntodeventa" sortBy="#{c.puntodeventa}" filterBy="#{c.puntodeventa}"  >
         <h:outputText value="#{c.puntodeventa}"/>
         </p:column>
     
-		    <p:column  headerText="LugarEntrega" id="lugardelaentrega" sortBy="#{c.lugardelaentrega}" filterBy="#{c.lugardelaentrega}"  >
+	    <p:column  headerText="Lugar de Entrega" id="lugardelaentrega" sortBy="#{c.lugardelaentrega}" filterBy="#{c.lugardelaentrega}"  >
         <h:outputText value="#{c.lugardelaentrega}"/>
         </p:column>    
     
-    	 <p:column  headerText="CodigoMercaderia" id="codigodemercaderia" sortBy="#{c.codigodemercaderia}" filterBy="#{c.codigodemercaderia}"  >
+    	 <p:column  headerText="Cod. de Mercaderia" id="codigodemercaderia" sortBy="#{c.codigodemercaderia}" filterBy="#{c.codigodemercaderia}"  >
         <h:outputText value="#{c.codigodemercaderia}"/>
         </p:column>    	
             
-        <p:column  headerText="CantidadMercaderia" id="cantidaddemercaderia" sortBy="#{c.cantidaddemercaderia}" filterBy="#{c.cantidaddemercaderia}"  >
+        <p:column  headerText="Cant. de Mercaderia" id="cantidaddemercaderia" sortBy="#{c.cantidaddemercaderia}" filterBy="#{c.cantidaddemercaderia}"  >
         <h:outputText value="#{c.cantidaddemercaderia}"/>
         </p:column>
         
-        <p:column  headerText="EventoVenta" id="eventodeventa" sortBy="#{c.eventodeventa}" filterBy="#{c.eventodeventa}"  >
+        <p:column  headerText="Evento de Venta" id="eventodeventa" sortBy="#{c.eventodeventa}" filterBy="#{c.eventodeventa}"  >
         <h:outputText value="#{c.eventodeventa}"/>
         </p:column>
        	 
-         <p:column  headerText="Nom_Vendedor"  id="nombredelvendedor" sortBy="#{c.nombredelvendedor}" filterBy="#{c.nombredelvendedor}" >
+         <p:column  headerText="Vendedor"  id="nombredelvendedor" sortBy="#{c.nombredelvendedor}" filterBy="#{c.nombredelvendedor}" >
         <h:outputText value="#{c.nombredelvendedor}"/>
         </p:column>
         
-        <p:column  headerText="Nom_expositor" id="nombredelexpositor" sortBy="#{c.nombredelexpositor}" filterBy="#{c.nombredelexpositor}" >
+        <p:column  headerText="Expositor" id="nombredelexpositor" sortBy="#{c.nombredelexpositor}" filterBy="#{c.nombredelexpositor}" >
         <h:outputText value="#{c.nombredelexpositor}"/>
         </p:column>
         
-        <p:column  headerText="Nom_supervisor" id="nombredelsupervisor" sortBy="#{c.nombredelsupervisor}" filterBy="#{c.nombredelsupervisor}" >
+        <p:column  headerText="Supervisor" id="nombredelsupervisor" sortBy="#{c.nombredelsupervisor}" filterBy="#{c.nombredelsupervisor}" >
         <h:outputText value="#{c.nombredelsupervisor}"/>
         </p:column>
         
