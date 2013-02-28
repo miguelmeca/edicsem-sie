@@ -122,19 +122,19 @@ public class ContratoDAOImpl implements ContratoDAO{
 						sql+= "  c.codcontrato like '"+ codigoContrato +"'";
 					}else{
 						if(nombreCliente!=null)
-							sql+= "  p.nombrecliente like '"+ nombreCliente +"%'";
+							sql+= "  UPPER(p.nombrecliente) like UPPER('"+ nombreCliente.trim() +"%')";
 						if(apePat!=null)
 							if(nombreCliente!=null){
 								sql+= " and ";
 							}
-							sql+= "  p.apepatcliente like '"+ apePat +"%'";
+							sql+= "  UPPER(p.apepatcliente) like UPPER('"+ apePat.trim() +"%')";
 						if(apeMat!=null)
 							if(apePat!=null){
 								sql+= " and ";
 							}else if(apePat==null && nombreCliente!=null){
 								sql+= " and ";
 							}
-							sql+= "  p.apematcliente like '"+ apeMat +"%'";
+							sql+= "  UPPER(p.apematcliente) like UPPER('"+ apeMat.trim() +"%')";
 					}
 					log.info("SQL "+sql);
 			Query q = em.createQuery(sql);

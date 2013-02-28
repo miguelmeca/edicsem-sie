@@ -75,9 +75,7 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 	public UbigeoSie findUbigeo(int id) {
 		UbigeoSie u = new UbigeoSie();
 		try {
-			if (log.isInfoEnabled()) {
-				log.info("buscar Ubigeo");
-			}
+			log.info("buscar Ubigeo "+ id);
 			u = em.find(UbigeoSie.class, id);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -168,8 +166,7 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 			lista2 = q2.getResultList();
 			String prov =(String) lista2.get(0);
 			depaprov = depaprov+" - "+ prov;
-			log.info("findDepaProv --> "+depaprov+" "+
-					+ lista.size() + "  "+idProvincia+"- "+ idDepartamento);
+			log.info("findDepaProv --> "+depaprov+" "+ lista.size() + "  "+idProvincia+"- "+ idDepartamento);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
