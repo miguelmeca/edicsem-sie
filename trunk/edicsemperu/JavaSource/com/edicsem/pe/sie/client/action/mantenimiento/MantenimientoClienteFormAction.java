@@ -150,38 +150,37 @@ public class MantenimientoClienteFormAction extends
 		nuevoTelef = new TelefonoPersonaSie();
 	}
 	
-	/**
-	 * Eliminar Teléfono de la lista*/
-	 public void telefonoElimina(){
-	    	log.info("en eliminarProducto()");
-			
-	    	for (int i = 0; i < TelefonoPersonaList.size(); i++) {
-         	log.info(""+TelefonoPersonaList.get(i).getItem()+"  "+idt +"  "+TelefonoPersonaList.get(i).getTelefono());
-				if(TelefonoPersonaList.get(i).getTelefono()==idt && TelefonoPersonaList.get(i).getItem()=="Por Agregar"){
-					TelefonoPersonaList.remove(i);
-					for (int j = i; j < TelefonoPersonaList.size(); j++) {
-						log.info(" i " +i+"  j "+ j);
-						i=i+1;
-						//TelefonoPersonaList.get(j).setItem(i);
-						TelefonoPersonaList.set(j, TelefonoPersonaList.get(j));
-						
-					}break;
-				}
-				else if(TelefonoPersonaList.get(i).getTelefono()==(idt) && TelefonoPersonaList.get(i).getItem()=="Agregado"){
-					TelefonoPersonaList.get(i).setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(18));
-					TelefonoDeshabilitado.add(TelefonoPersonaList.get(i));
-					TelefonoPersonaList.remove(i);
-					for (int j = i; j < TelefonoPersonaList.size(); j++) {
-						log.info(" i " +i+"  j "+ j);
-						i=i+1;
-						//TelefonoPersonaList.get(j).setItem(i);
-						TelefonoPersonaList.set(j, TelefonoPersonaList.get(j));
-					}
-					break;
-				}
+	
+	public void telefonoElimina(){
+    	log.info("en eliminarProducto()");
+		
+    	for (int i = 0; i < TelefonoPersonaList.size(); i++) {
+     	log.info(""+TelefonoPersonaList.get(i).getItem()+"  "+idt +"  "+TelefonoPersonaList.get(i).getTelefono());
+			if(TelefonoPersonaList.get(i).getTelefono()==idt && TelefonoPersonaList.get(i).getItem()=="Por Agregar"){
+				TelefonoPersonaList.remove(i);
+				for (int j = i; j < TelefonoPersonaList.size(); j++) {
+					log.info(" i " +i+"  j "+ j);
+					i=i+1;
+					//TelefonoPersonaList.get(j).setItem(i);
+					TelefonoPersonaList.set(j, TelefonoPersonaList.get(j));
+					
+				}break;
 			}
-			idt="";
-	    }
+			else if(TelefonoPersonaList.get(i).getTelefono()==(idt) && TelefonoPersonaList.get(i).getItem()=="Agregado"){
+				TelefonoPersonaList.get(i).setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(18));
+				TelefonoDeshabilitado.add(TelefonoPersonaList.get(i));
+				TelefonoPersonaList.remove(i);
+				for (int j = i; j < TelefonoPersonaList.size(); j++) {
+					log.info(" i " +i+"  j "+ j);
+					i=i+1;
+					//TelefonoPersonaList.get(j).setItem(i);
+					TelefonoPersonaList.set(j, TelefonoPersonaList.get(j));
+				}
+				break;
+			}
+		}
+		idt="";
+    }
 	
 	/* METODO AGREGAR TELEFONO */
 
