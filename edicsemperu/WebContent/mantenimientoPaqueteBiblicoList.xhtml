@@ -15,8 +15,15 @@
 			
 			
                
-      <p:fieldset legend="Lista de Paquetes Biblicos">          
-               	
+      <p:fieldset>  
+      <center>  
+               	<p:commandButton value="Nuevo Paquete Biblico"
+			   update=":formPaqueteBiblico:display"
+               action="#{mantenimientoPaqueteBiblicoFormAction.agregar}"
+               oncomplete="PaqueteBiblico.show()"  
+               title="Crear Nuevo Paquete Biblico"
+               icon="ui-icon-star"/>
+               </center>
 			<p:dataTable  value="#{mantenimientoPaqueteBiblicoSearchAction.detPaqueteList}" var="pb" paginator="true" rows="10"
        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	   rowsPerPageTemplate="5,10,15" widgetVar="table"
@@ -61,7 +68,7 @@
 				
 <!--**********INICIO 	DESACTIVAR**********-->
 
-<p:column headerText="Deshabilitar Paquete Biblico">
+<p:column headerText="Deshabilitar">
 <center>
 <p:commandButton id="showConfirmDeshabilitar1"
 			
@@ -76,14 +83,9 @@
 				
 		</p:column>
 		
-		<f:facet name="header">
-		<p:commandButton value="Nuevo Paquete Biblico"
-			   update=":formPaqueteBiblico:display"
-               action="#{mantenimientoPaqueteBiblicoFormAction.agregar}"
-               oncomplete="PaqueteBiblico.show()"  
-               title="Crear Nuevo Paquete Biblico"
-               icon="ui-icon-folder-open"/>
-		</f:facet>
+		
+		
+	
 		</p:dataTable>
 	</p:fieldset> 	
 		
@@ -92,15 +94,6 @@
 <p:outputPanel id="panelMostrarDetalle" rendered="#{mantenimientoPaqueteBiblicoSearchAction.objPaqueteSie.idpaquete!=0}" >
 	
 <p:fieldset legend="Detalles del Paquete Biblico" > 
-
-<center>
-		<p:commandButton value="Agregar un nuevo producto al paquete"
-update=":formDetPaqueteBiblico:display"
-action="#{mantenimientoDetallePaqueteBiblicoSearchAction.agregar}"
-oncomplete="DetPaqueteBiblico.show()" 
-icon="ui-icon-folder-open" 
-title="Ingresar Nuevo Paquete Biblico"/>
-</center>
 
 <p:dataTable value="#{mantenimientoDetallePaqueteBiblicoSearchAction.detPaqueteBiblicoList}" 
 var="c"		id="formdetalleform"		emptyMessage="No se encontraron registros" >
@@ -150,6 +143,14 @@ var="c"		id="formdetalleform"		emptyMessage="No se encontraron registros" >
 
 			</p:dataTable>
 	
+<center>
+		<p:commandButton value="Agregar un nuevo producto al paquete"
+update=":formDetPaqueteBiblico:display"
+action="#{mantenimientoDetallePaqueteBiblicoSearchAction.agregar}"
+oncomplete="DetPaqueteBiblico.show()" 
+icon="ui-icon-star" 
+title="Ingresar Nuevo Paquete Biblico"/>
+</center>
 	</p:fieldset> 	
 </p:outputPanel>
 			
