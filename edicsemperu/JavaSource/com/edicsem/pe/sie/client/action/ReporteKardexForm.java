@@ -55,6 +55,7 @@ public class ReporteKardexForm extends BaseMantenimientoAbstractAction{
 		idalmacen=0;
 		idproducto=0;
 		idtipopuntoventa=0;
+		ContentType="";
 	}
 	
 	/* (non-Javadoc)
@@ -110,6 +111,7 @@ public class ReporteKardexForm extends BaseMantenimientoAbstractAction{
 	}
 	
 	public void exportar() {
+		log.info("exportand  ");
 		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 		ReporteParams parametros = new ReporteParams();
 		

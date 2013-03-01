@@ -39,7 +39,7 @@ public class ReporteClienteForm {
 	private ReporteExecutionService objReporteService;
 	
 	public ReporteClienteForm() {
-		log.info("INICIALIZANDO EL BEAN MANAGER REPORTE");
+		log.info("INICIALIZANDO REPORTE");
 		cantLista=0;
 		idTipoCliente=0;
 		ContentType="";

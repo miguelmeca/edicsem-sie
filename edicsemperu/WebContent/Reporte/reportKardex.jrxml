@@ -42,7 +42,8 @@ FROM
      "sie"."tb_kardex" p inner join "sie"."tb_producto" pr on p.idproducto = pr.idproducto
 inner join  "sie"."tb_tipo_kardex_producto" t on t.idtipokardexproducto = p.idtipokardexproducto
 inner join "sie"."tb_punto_venta" a on p.idalmacenpuntosventa =a.idpuntoventa
-where p.fechacreacion between  $P{fechaDesde} and $P{fechaHasta} ]]>
+
+where p.fechacreacion between  $P{fechaDesde} and $P{fechaHasta}]]>
 	</queryString>
 	<field name="idkardex" class="java.lang.Integer"/>
 	<field name="almacen" class="java.lang.String"/>
@@ -186,7 +187,7 @@ where p.fechacreacion between  $P{fechaDesde} and $P{fechaHasta} ]]>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="24" splitType="Stretch">
+		<band height="28" splitType="Stretch">
 			<line>
 				<reportElement uuid="f9e1dc4d-e199-4fac-be6c-b0052585f779" positionType="FixRelativeToBottom" x="6" y="15" width="794" height="1"/>
 			</line>
@@ -273,7 +274,7 @@ where p.fechacreacion between  $P{fechaDesde} and $P{fechaHasta} ]]>
 					</textElement>
 					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 				</textField>
-				<textField pattern="EEEEE dd MMMMM yyyy">
+				<textField pattern="EEEEE dd MMMMM yyyy HH:mm:ss">
 					<reportElement uuid="2271c186-369b-4fcf-8b97-cdadb6be1974" style="Column header" x="2" y="0" width="197" height="16" forecolor="#FFFFFF"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>

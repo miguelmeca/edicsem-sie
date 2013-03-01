@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportPagos" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="net.sf.jasperreports.engine.JRDefaultScriptlet" uuid="1c5e0377-4706-4315-a358-37f5c5976fc5">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="27"/>
+	<property name="ireport.y" value="288"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -90,8 +90,18 @@ inner join "sie"."tb_estado_general" e on con.idestadogeneral = e.idestadogenera
 			<band height="6"/>
 		</groupFooter>
 	</group>
+<background>
+		<band height="89" splitType="Stretch">
+			<image>
+				<reportElement uuid="d4f0a249-5cd9-44a0-8ee1-ef3471ff37dc" style="Title" x="18" y="0" width="91" height="77">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["../images/edicsem.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</background>
 	<title>
-		<band height="267" splitType="Stretch">
+		<band height="252" splitType="Stretch">
 			<staticText>
 				<reportElement uuid="8437b781-e3a0-4dd7-a066-b9ffb3898301" style="SubTitle" x="336" y="65" width="449" height="29"/>
 				<textElement textAlignment="Right">
@@ -100,9 +110,9 @@ inner join "sie"."tb_estado_general" e on con.idestadogeneral = e.idestadogenera
 				<text><![CDATA[Detalle de Pagos]]></text>
 			</staticText>
 			<frame>
-				<reportElement uuid="7f6b7026-e91f-46ec-936d-81ef4a09272d" mode="Opaque" x="-20" y="0" width="822" height="65" forecolor="#006699" backcolor="#006699"/>
+				<reportElement uuid="7f6b7026-e91f-46ec-936d-81ef4a09272d" mode="Opaque" x="135" y="0" width="667" height="65" forecolor="#006699" backcolor="#006699"/>
 				<staticText>
-					<reportElement uuid="7c8e9d66-0645-4ee1-ac09-952dff073ee8" style="Title" x="231" y="0" width="578" height="65"/>
+					<reportElement uuid="7c8e9d66-0645-4ee1-ac09-952dff073ee8" style="Title" x="88" y="0" width="578" height="65"/>
 					<textElement textAlignment="Right">
 						<font size="54" isBold="false"/>
 					</textElement>
@@ -110,7 +120,7 @@ inner join "sie"."tb_estado_general" e on con.idestadogeneral = e.idestadogenera
 				</staticText>
 			</frame>
 			<frame>
-				<reportElement uuid="d1cb4ac8-5779-4889-81dc-2d20587ba8da" mode="Opaque" x="2" y="91" width="315" height="24" forecolor="#B89F7D" backcolor="#70A9C6"/>
+				<reportElement uuid="d1cb4ac8-5779-4889-81dc-2d20587ba8da" mode="Opaque" x="2" y="92" width="315" height="24" forecolor="#B89F7D" backcolor="#70A9C6"/>
 				<staticText>
 					<reportElement uuid="15b23bde-9c89-405b-a0d1-809386381a77" x="4" y="0" width="283" height="24"/>
 					<textElement>
@@ -120,7 +130,7 @@ inner join "sie"."tb_estado_general" e on con.idestadogeneral = e.idestadogenera
 				</staticText>
 			</frame>
 			<frame>
-				<reportElement uuid="10a592d6-b893-4e3b-8bc5-b1d7bf68c121" x="4" y="115" width="313" height="124"/>
+				<reportElement uuid="10a592d6-b893-4e3b-8bc5-b1d7bf68c121" x="4" y="117" width="313" height="124"/>
 				<staticText>
 					<reportElement uuid="1274d4b9-374a-45f3-a60d-d01642b46beb" style="Column header" positionType="Float" x="11" y="93" width="67" height="14" forecolor="#000000"/>
 					<textElement>
@@ -312,7 +322,7 @@ inner join "sie"."tb_estado_general" e on con.idestadogeneral = e.idestadogenera
 					</textElement>
 					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 				</textField>
-				<textField pattern="EEEEE dd MMMMM yyyy">
+				<textField pattern="EEEEE dd MMMMM yyyy HH:mm:ss">
 					<reportElement uuid="784ff386-0086-4c27-92a6-0632c20a065a" style="Column header" x="2" y="0" width="197" height="16" forecolor="#FFFFFF"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
