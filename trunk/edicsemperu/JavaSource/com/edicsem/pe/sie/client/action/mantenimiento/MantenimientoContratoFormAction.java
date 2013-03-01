@@ -152,7 +152,7 @@ public class MantenimientoContratoFormAction extends
 	}
 	
 	public void init() {
-		log.info("init()");
+		log.info("init() c");
 		tamanoLista=0;
 		limpiarCampos();
 		radio=1;
@@ -177,6 +177,7 @@ public class MantenimientoContratoFormAction extends
 		precioMensual=0.0;
 		cuotasNuevas=1;
 		existContrato=0;
+		ContentType="";
 	}
 	
 	/*
@@ -957,7 +958,7 @@ public class MantenimientoContratoFormAction extends
 	}
 	
 	public void ReportingPagos() {
-		log.info("ReportingPagos() " +objContratoSie.getCodcontrato());
+		log.info("ReportingPagos()c " +objContratoSie.getCodcontrato());
 		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 		ReporteParams parametros = new ReporteParams();
 		
@@ -967,7 +968,7 @@ public class MantenimientoContratoFormAction extends
 				 msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
 							Constants.MESSAGE_INFO_TITULO, mensaje);
 			 }else{
-			parametros.setJasperFileName(Constants.REPORTE_PAGOS__CONTRATO_JASPER);
+			parametros.setJasperFileName(Constants.REPORTE_PAGOS_CONTRATO_JASPER);
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_hhmmss");
 			Map criteria = new HashMap();
 			criteria.put(Constants.REPORTE_TITULO, Constants.REPORTE_PAGOS_LIST+"_"+ sdf.format(new Date(System.currentTimeMillis())));
