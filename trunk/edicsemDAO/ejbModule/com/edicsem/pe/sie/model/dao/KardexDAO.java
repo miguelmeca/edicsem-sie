@@ -23,5 +23,5 @@ public interface KardexDAO {
 	
 	public abstract boolean verificarProductoConEmpresa (int idcargo);
 	
-	public abstract List  ConsultaKardexAlmacen(int idAlmacen);
+	public abstract List<KardexSie> ConsultaKardexAlmacen(int idAlmacen);
 }
