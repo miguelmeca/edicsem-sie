@@ -31,6 +31,9 @@ public class VerificaProductoSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idverificacliente")
 	private VerificaClienteSie tbVerificaCliente;
+    
+    @Transient
+    private int item;
 
     public VerificaProductoSie() {
     }
@@ -66,5 +69,20 @@ public class VerificaProductoSie implements Serializable {
 	public void setTbProducto(ProductoSie tbProducto) {
 		this.tbProducto = tbProducto;
 	}
-	
+
+	/**
+	 * @return the item
+	 */
+	public int getItem() {
+		return item;
+	}
+
+	/**
+	 * @param item the item to set
+	 */
+	public void setItem(int item) {
+		this.item = item;
+	}
+
+	 
 }
