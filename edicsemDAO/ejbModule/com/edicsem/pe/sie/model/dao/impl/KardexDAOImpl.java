@@ -289,8 +289,8 @@ public class KardexDAOImpl implements KardexDAO {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.KardexDAO#ConsultaKardexAlmacen(int)
 	 */
-	public List ConsultaKardexAlmacen(int idAlmacen) {
-		List lista = new ArrayList();
+	public List<KardexSie> ConsultaKardexAlmacen(int idAlmacen) {
+		List<KardexSie> lista = new ArrayList<KardexSie>();
 		List<Integer> listaTmp = null;
 		try {
 			
@@ -298,12 +298,19 @@ public class KardexDAOImpl implements KardexDAO {
 					"and p.tbTipoKardexProducto.idtipokardexproducto< 3 ");
 			listaTmp= q.getResultList();
 			for (int i = 0; i < listaTmp.size(); i++) {
-				Query q2 = em.createQuery("select p from KardexSie p where p.tbPuntoVenta.idpuntoventa = "+idAlmacen+
-						" and p.tbProducto.idproducto = "+listaTmp.get(i)  +" p.tbTipoKardexProducto.idtipokardexproducto< 3 ORDER BY a.idkardex ASC ");
-				lista.add(q2.getResultList());
+				log.info(" producto --> " + listaTmp.get(i));
 			}
-			 
-			log.info("tamaño lista Productos kardex --> " + lista.size());
+			for (int i = 0; i < listaTmp.size(); i++) {
+				Query q2 = em.createQuery("select p from KardexSie p where p.tbPuntoVenta.idpuntoventa = "+idAlmacen+
+						" and p.tbProducto.idproducto = "+listaTmp.get(i)  +" and p.tbTipoKardexProducto.idtipokardexproducto< 3 ORDER BY p.idkardex DESC LIMIT 1 ");
+				log.info(" kardex --> " + q2.getResultList().size());
+				if( q2.getResultList().size()>0){
+				KardexSie k = (KardexSie) q2.getResultList().get(0);
+				lista.add(k);
+				}
+			}
+			
+			log.info("tamaño lista kardex x almacen--> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
