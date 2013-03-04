@@ -169,7 +169,7 @@ public class KardexServiceImpl implements KardexService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.KardexService#ConsultaKardexAlmacen(int)
 	 */
-	public List ConsultaKardexAlmacen(int idAlmacen) {
+	public List<KardexSie> ConsultaKardexAlmacen(int idAlmacen) {
 		return objKardexDao.ConsultaKardexAlmacen(idAlmacen);
 	}
 	
