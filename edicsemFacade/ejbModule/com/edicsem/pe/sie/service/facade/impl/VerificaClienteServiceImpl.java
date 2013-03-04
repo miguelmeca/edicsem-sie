@@ -11,7 +11,9 @@ import org.apache.commons.logging.LogFactory;
 import com.edicsem.pe.sie.entity.VerificaClienteSie;
 import com.edicsem.pe.sie.entity.VerificaProductoSie;
 import com.edicsem.pe.sie.entity.VerificaTelefonoSie;
+import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
+import com.edicsem.pe.sie.model.dao.TipoDocumentoDAO;
 import com.edicsem.pe.sie.model.dao.VerificaClienteDAO;
 import com.edicsem.pe.sie.model.dao.VerificaProductoDAO;
 import com.edicsem.pe.sie.model.dao.VerificaTelefonoDAO;
@@ -28,17 +30,23 @@ public class VerificaClienteServiceImpl implements VerificaClienteService {
 	private  VerificaTelefonoDAO objverificatelefonoDao;
 	@EJB
 	private  EstadoGeneralDAO objEstadoGeneralDao;
+	@EJB
+	private  EmpleadoSieDAO objEmpleadoDao;
+	@EJB
+	private  TipoDocumentoDAO objTipoDocDao;
  
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.AlmacenService#insertAlmacen(com.edicsem.pe.sie.entity.PuntoVentaSie)
 	 */
 	public static Log log = LogFactory.getLog(ContratoServiceImpl.class);
-
+	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.VerificaClienteService#insertVerificaCliente(com.edicsem.pe.sie.entity.VerificaClienteSie)
+	 * @see com.edicsem.pe.sie.service.facade.VerificaClienteService#insertVerificaCliente(com.edicsem.pe.sie.entity.VerificaClienteSie, java.util.List, java.util.List, int, int)
 	 */
-	public void insertVerificaCliente(VerificaClienteSie v,List<VerificaProductoSie> lstProducto, List<VerificaTelefonoSie> lstTelefono) {
+	public void insertVerificaCliente(VerificaClienteSie v,List<VerificaProductoSie> lstProducto, List<VerificaTelefonoSie> lstTelefono, int idEmpleado, int idtipodoc) {
 		v.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(76));
+		v.setTbEmpleado(objEmpleadoDao.buscarEmpleado(idEmpleado));
+		v.setTbTipoDocumentoIdentidad(objTipoDocDao.buscarTipoDocumento(idtipodoc));
 		objverificaclienteDao.insertVerificaCliente(v);
 		
 		for (int i = 0; i < lstProducto.size(); i++) {

@@ -355,10 +355,13 @@ public class ContratoServiceImpl implements ContratoService {
 		objDetContratoEmpleadoDao.insertDetContratoEmpleado(detconemp);	
 		}
 		}			
-		}
+	}
 	
-	public String insertMigracion(List<SistemaIntegradoDTO> sistMig) {
-		log.info("insertMigracion() *");
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ContratoService#insertMigracion(java.util.List, java.lang.String)
+	 */
+	public String insertMigracion(List<SistemaIntegradoDTO> sistMig, String usuariocreacion) {
+		log.info("insertMigracion()");
 		String mensaje=null;
 		ClienteSie cli = new ClienteSie();
 		ContratoSie con = new ContratoSie();
@@ -369,7 +372,7 @@ public class ContratoServiceImpl implements ContratoService {
 		List<String> telefonoString= new ArrayList<String>();
 		List<String> domicilioString= new ArrayList<String>();
 		String codigoContr = "";
-		boolean isadd=false;
+		boolean isadd = false;
 		List<UbigeoSie> ubi = null;
 		try {
 		
@@ -477,6 +480,7 @@ public class ContratoServiceImpl implements ContratoService {
 				cli.setTipocliente(1);
 				
 				log.info(" insertando cliente:  "+ cli.getNombrecliente()+" ape. pat "+cli.getApepatcliente() );
+				cli.setUsuariocreacion(usuariocreacion);
 				objClienteDao.insertCliente(cli);
 				con.setNumcuotas(s.getCantCuotas());
 				con.setPagosubinicial(new  BigDecimal(s.getImporteInicial()));
@@ -491,6 +495,7 @@ public class ContratoServiceImpl implements ContratoService {
 				con.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(25));
 				con.setTbCliente(cli);
 				//insertar contrato
+				con.setUsuariocreacion(usuariocreacion);
 				objContratoDao.insertContrato(con);
 				log.info("  insertando contrato * "+con.getCodcontrato());
 				dom = new DomicilioPersonaSie();
@@ -686,6 +691,7 @@ public class ContratoServiceImpl implements ContratoService {
 			
 			//insertar cobranza
 			log.info("  insertando cobranza * "+cob.getTbContrato().getCodcontrato()+" "+cob.getCantcuotas()+" "+cob.getFecpago());
+			cob.setUsuariocreacion(usuariocreacion);
 			objCobranzaDao.insertCobranza(cob);
 			
 			log.info(" contr***** "+con.getCodcontrato()+" "+codigoContr);
