@@ -154,18 +154,23 @@ public class KardexServiceImpl implements KardexService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.KardexService#findKardex(int)
 	 */
-	
 	public KardexSie findKardex(int id) {
 		return objKardexDao.findKardex(id);
 	}
 
-
-
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.KardexService#verificarProductoConEmpresa(int)
+	 */
 	public boolean verificarProductoConEmpresa(int idcargo) {
 		log.info("En el servicio verificar Producto Con Empresa ");
 		return objKardexDao.verificarProductoConEmpresa(idcargo) ;
 	}
 	
-
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.KardexService#ConsultaKardexAlmacen(int)
+	 */
+	public List ConsultaKardexAlmacen(int idAlmacen) {
+		return objKardexDao.ConsultaKardexAlmacen(idAlmacen);
+	}
 	
 }
