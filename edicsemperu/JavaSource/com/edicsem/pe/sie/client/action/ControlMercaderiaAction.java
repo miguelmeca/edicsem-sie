@@ -15,10 +15,10 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.edicsem.pe.sie.client.action.mantenimiento.MantenimientoProductoSearchAction;
 import com.edicsem.pe.sie.entity.ControlKardexSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.service.facade.ControlMercaderiaService;
+import com.edicsem.pe.sie.service.facade.KardexService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
@@ -38,12 +38,14 @@ public class ControlMercaderiaAction extends BaseMantenimientoAbstractAction {
 	private ProductoService objProductoService;
 	@EJB
 	private ControlMercaderiaService objControlService;
+	@EJB
+	private KardexService objKardexSie;
 	
 	@ManagedProperty(value = "#{comboAction}")
 	private ComboAction combo;
 	
 	public ControlMercaderiaAction() {
-		log.info("inicializando constructor MantenimientoKardex");
+		log.info("inicializando constructor ControlMercaderiaAction");
 		init();
 	}
 
@@ -121,6 +123,14 @@ public class ControlMercaderiaAction extends BaseMantenimientoAbstractAction {
 		
 		msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 		FacesContext.getCurrentInstance().addMessage(null, msg);
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#consultar()
+	 */
+	public String consultar() throws Exception {
+		objKardexSie.ConsultaKardexAlmacen(idalmacen);
 		return null;
 	}
 	
