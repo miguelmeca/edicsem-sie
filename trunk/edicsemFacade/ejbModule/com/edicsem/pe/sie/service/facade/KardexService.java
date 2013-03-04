@@ -17,4 +17,5 @@ public interface KardexService {
 	public abstract void updateKardex(KardexSie kardex);
 	public abstract KardexSie findKardex (int id);
 	public abstract boolean verificarProductoConEmpresa (int idcargo);
+	public abstract List  ConsultaKardexAlmacen(int idAlmacen);
 }
