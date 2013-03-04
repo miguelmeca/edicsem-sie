@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+	<script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
+		<h1 class="title ui-widget-header ui-corner-all">Asignar Grupos de Ventas</h1>
+		<h:form id="formGrupo">
+			<p:messages id="message" showDetail="true" />
+			<p:panel>
+			<p:fieldset legend="Resultado de Meta">
+			<p:dataTable id="availableCars" var="car" value="#{tableBean.carsSmall}">  
+	            <p:column style="width:20px">
+	                <h:outputText id="dragIcon" styleClass="ui-icon ui-icon-arrow-4" />
+	                <p:draggable for="dragIcon" revert="true" />
+	            </p:column>
+	            <p:column headerText="Model">
+	                <h:outputText value="#{car.model}" />
+	            </p:column>
+	            <p:column headerText="Year">  
+	                <h:outputText value="#{car.year}" />
+	            </p:column>
+	            <p:column headerText="Manufacturer">
+	                <h:outputText value="#{car.manufacturer}" />
+	            </p:column>
+	            <p:column headerText="Color">
+	                <h:outputText value="#{car.color}" />
+	            </p:column>
+            </p:dataTable>
+            
+        <p:droppable for="selectedCars" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+        <p:ajax listener="#{tableBean.onCarDrop}" update="dropArea availableCars" />
+        </p:droppable>
+        
+			<p:commandButton  action="#{permiso.insertar}" value="Registrar Permisos" ajax="false" update="formPermisos" icon="ui-icon ui-icon-disk" />
+			</h:panelGrid>
+		   	</p:fieldset>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
