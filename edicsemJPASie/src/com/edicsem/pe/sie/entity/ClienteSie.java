@@ -54,6 +54,8 @@ public class ClienteSie implements Serializable {
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
 	
+	private Timestamp fechamodifica;
+	
 	@Temporal( TemporalType.DATE)
 	private Date fecnacimiento;
 
@@ -100,6 +102,10 @@ public class ClienteSie implements Serializable {
 	//bi-directional many-to-one association to ContratoSie
 	@OneToMany(mappedBy="tbCliente")
 	private Set<ContratoSie> tbContratos;
+	
+	private String usuariocreacion;
+
+	private String usuariomodifica;
 	
 	@Transient
 	private String nombresCompletos;
@@ -398,5 +404,29 @@ public class ClienteSie implements Serializable {
 
 	public void setGenero(String genero) {
 		this.genero = genero;
+	}
+
+	public Timestamp getFechamodifica() {
+		return fechamodifica;
+	}
+
+	public void setFechamodifica(Timestamp fechamodifica) {
+		this.fechamodifica = fechamodifica;
+	}
+
+	public String getUsuariocreacion() {
+		return usuariocreacion;
+	}
+
+	public void setUsuariocreacion(String usuariocreacion) {
+		this.usuariocreacion = usuariocreacion;
+	}
+
+	public String getUsuariomodifica() {
+		return usuariomodifica;
+	}
+
+	public void setUsuariomodifica(String usuariomodifica) {
+		this.usuariomodifica = usuariomodifica;
 	}
 }

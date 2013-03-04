@@ -29,6 +29,8 @@ public class ControlKardexSie implements Serializable {
     
     private Integer cantidad;
     
+    private Integer cantidaddeberia;
+    
     //bi-directional many-to-one association to ProductoSie
     @ManyToOne
 	@JoinColumn(name="idProducto")
@@ -53,6 +55,9 @@ public class ControlKardexSie implements Serializable {
 	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
 	
+    @Transient
+    private int item;
+    
     public ControlKardexSie() {
     }
 
@@ -134,6 +139,34 @@ public class ControlKardexSie implements Serializable {
 
 	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
 		this.tbEstadoGeneral = tbEstadoGeneral;
+	}
+
+	/**
+	 * @return the cantidaddeberia
+	 */
+	public Integer getCantidaddeberia() {
+		return cantidaddeberia;
+	}
+
+	/**
+	 * @param cantidaddeberia the cantidaddeberia to set
+	 */
+	public void setCantidaddeberia(Integer cantidaddeberia) {
+		this.cantidaddeberia = cantidaddeberia;
+	}
+
+	/**
+	 * @return the item
+	 */
+	public int getItem() {
+		return item;
+	}
+
+	/**
+	 * @param item the item to set
+	 */
+	public void setItem(int item) {
+		this.item = item;
 	}
     
 }
