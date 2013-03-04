@@ -19,6 +19,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -33,6 +34,7 @@ import org.primefaces.model.UploadedFile;
 
 import com.edicsem.pe.sie.beans.SistemaIntegradoDTO;
 import com.edicsem.pe.sie.entity.ContratoSie;
+import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.service.facade.ContratoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
@@ -113,13 +115,15 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 	 */
 	public String insertar() throws Exception {
 		RequestContext context = RequestContext.getCurrentInstance();
+		HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+		EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 		log.info("subirBD()");
 		
 		if(sistMig.size()==0){
-			mensaje=  "Debe subir el excel a importar";
+			mensaje = "Debe subir el excel a importar";
 			msg = new FacesMessage(FacesMessage.SEVERITY_WARN,Constants.MESSAGE_INFO_TITULO,mensaje);
 		}else{
-			mensaje = objContratoService.insertMigracion(sistMig);
+			mensaje = objContratoService.insertMigracion(sistMig, sessionUsuario.getUsuario());
 			if(mensaje ==null){
 				mensaje=  "Se realizó la migración exitosamente";
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO,mensaje);

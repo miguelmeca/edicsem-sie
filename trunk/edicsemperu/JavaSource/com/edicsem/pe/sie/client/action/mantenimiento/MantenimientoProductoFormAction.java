@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,7 @@ import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name = "productoForm")
@@ -134,8 +136,6 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 		return productoSearch.getViewMant();
 	}
 	
-	
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -168,7 +168,6 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 				}
 			}
 			if (error == 0) {
-			objProductoSie.setUsuariocreacion(sessionUsuario.getUsuario());
 			if(objProductoSie.getStkmaximo()<= objProductoSie.getStkminimoproducto()){
 				mensaje ="El stock minimo no puede ser mayor o igual al máximo";
 				paginaRetorno = productoSearch.getViewMant();
@@ -182,36 +181,34 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 					objProductoSie.setRutaimagenproducto(rutaDefecto);
 				}
 				log.info("a insertar "+TipoProducto +" " );
+				objProductoSie.setUsuariocreacion(sessionUsuario.getUsuario());
 				objProductoService.insertProducto(objProductoSie,TipoProducto);
-				mensaje ="Se registro correctamente";
 				objProductoSie = new ProductoSie();
 				limpiarCampos();
 				paginaRetorno = productoSearch.listar();
-				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, Constants.MESSAGE_REGISTRO_TITULO);
 			} else {
 				log.info("a actualizar "+ TipoProducto +" " + " ruta " + objProductoSie.getRutaimagenproducto());
 				if(TipoProducto>0){
 					objProductoSie.setUsuariomodifica(sessionUsuario.getUsuario());
+					objProductoSie.setFechamodifica(new Timestamp(DateUtil.getToday().getTime().getTime()));
 					objProductoService.updateProducto(objProductoSie,TipoProducto);
-					mensaje ="Se actualizó correctamente";
 					objProductoSie = new ProductoSie();
 					limpiarCampos();
 					paginaRetorno = productoSearch.listar();
-					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, Constants.MESSAGE_ACTUALIZO_TITULO);
 				}
 			}
 			}else{
 				log.info("mensaje de error");
-				msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
-						Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			}
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}

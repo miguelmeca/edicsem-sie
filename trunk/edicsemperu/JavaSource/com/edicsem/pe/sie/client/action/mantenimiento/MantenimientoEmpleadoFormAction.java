@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -12,6 +13,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -33,6 +35,7 @@ import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.TipoPagoService;
 import com.edicsem.pe.sie.service.facade.UbigeoService;
 import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 import com.edicsem.pe.sie.util.security.SecurityLogin;
 
@@ -539,6 +542,8 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		log.info("probando MD5..."+objEmpleado.getContrasena());
 		    objEmpleado.setContrasena(SecurityLogin.getMD5(objEmpleado.getContrasena()));
 			log.info("probando MD5..."+objEmpleado.getContrasena());
+			HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+			EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 			try {
 				 
 				if(userList.contains(objEmpleado.getUsuario())){
@@ -563,6 +568,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 				if (isNewRecord()) {
 					log.info("insertando..... ");
 					log.info("insertar empleado  ");
+					objEmpleado.setUsuariocreacion(sessionUsuario.getUsuario());
 					objEmpleado.setUsuario(objEmpleado.getUsuario().toLowerCase());
 					objEmpleadoService.insertarEmpleado(objEmpleado,objDomicilio, codigoTipoDocumento,  codigoCargoEmpleado,  
 					idUbigeo, tipo,  idCargo, DomicilioPersona, TelefonoPersona,TipoDocumento, idEmpresa, idTipoPago, codigoEmpleado, contratoEmpleadoList, TelefonoPersonaList);
@@ -571,6 +577,8 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 					mensaje=Constants.MESSAGE_REGISTRO_TITULO;
 				} else {
 					log.info("actualizando..... ");
+					objEmpleado.setUsuariomodifica(sessionUsuario.getUsuario());
+					objEmpleado.setFechamodifica(new Timestamp(DateUtil.getToday().getTime().getTime()));
 					objEmpleadoService.actualizarEmpleado(objEmpleado,objDomicilio, codigoTipoDocumento,  codigoCargoEmpleado,  
 					idUbigeo, tipo,  idCargo, DomicilioPersona, TelefonoPersona,TipoDocumento, idEmpresa, idTipoPago, codigoEmpleado, contratoEmpleadoList, TelefonoPersonaList, TelefonoDeshabilitado, ContratoDeshabilitado);
 					log.info("insertando..... ");

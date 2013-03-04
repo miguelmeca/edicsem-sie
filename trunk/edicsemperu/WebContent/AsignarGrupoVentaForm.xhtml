@@ -19,12 +19,6 @@
 	                <h:outputText id="dragIcon" styleClass="ui-icon ui-icon-arrow-4" />
 	                <p:draggable for="dragIcon" revert="true" />
 	            </p:column>
-	            <p:column headerText="Model">
-	                <h:outputText value="#{car.model}" />
-	            </p:column>
-	            <p:column headerText="Year">  
-	                <h:outputText value="#{car.year}" />
-	            </p:column>
 	            <p:column headerText="Manufacturer">
 	                <h:outputText value="#{car.manufacturer}" />
 	            </p:column>
@@ -38,9 +32,8 @@
         </p:droppable>
         
 			<p:commandButton  action="#{permiso.insertar}" value="Registrar Permisos" ajax="false" update="formPermisos" icon="ui-icon ui-icon-disk" />
-			</h:panelGrid>
-		   	</p:fieldset>
-			</p:panel>
-		</h:form>
+	</p:fieldset>
+	</p:panel>
+	</h:form>
 	</ui:define>
 </ui:composition>

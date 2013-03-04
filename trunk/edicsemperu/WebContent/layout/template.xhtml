@@ -512,8 +512,23 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
+	
+	<!-- Eliminar Producto  -->
+	<h:form>
+		<p:confirmDialog message="Esta seguro de eliminar dicho Producto de la lista?"
+			width="325" height="100" showEffect="explode" hideEffect="explode"
+			header="Confirm" severity="alert" widgetVar="confirmationProductoVerifica"
+			position="center">
 
+			<p:commandButton type="submit" value="Si" action="#{verifica.eliminarProducto}" 
+			update=":lstProducto" oncomplete="confirmationProductoVerifica.hide()" ajax="false"/>
 
+			<p:commandButton value="No" onclick="confirmationProductoVerifica.hide()" type="button" />
+			
+		</p:confirmDialog>
+	</h:form>
+	
+	
 	<h:form>
 		<p:confirmDialog id="confirmDeshabilitarAlmacen" 
 			message="#{message['almacen.deshabilitar.message']}"
@@ -762,7 +777,27 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 			</p:fieldset>
 		</p:dialog>
 	</h:form>
-			
+	
+	<!--  Verificar Cliente -->
+	<h:form>
+		<p:confirmDialog message="Esta seguro de eliminar dicho Producto de la lista?"
+			width="325" height="100" showEffect="explode" hideEffect="explode"
+			header="Confirm" severity="alert" widgetVar="confirmationTelefonoVerifica"
+			position="center">
+
+			<p:commandButton type="submit" value="Si"
+				action="#{verifica.eliminaTelefono}"
+				update=":telefonoList"
+				oncomplete="confirmationTelefonoVerifica.hide()" ajax="false">
+			</p:commandButton>
+
+			<p:commandButton value="No" onclick="confirmationTelefonoVerifica.hide()"
+				type="button" />
+
+		</p:confirmDialog>
+	</h:form>
+	
+	
 	<!--  Mantenimiento Det Sancion Cargo -->
 	<h:form id="formDetPaqBiblico">
 		<p:dialog header="Modificacion Sancion por Cargo" widgetVar="sancionCargoDialog" showEffect="fade"

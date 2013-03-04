@@ -1235,12 +1235,13 @@ public class ComboAction {
 				log.info("Entering my method 'getEmpleadoItems()' "+getIdCargo());
 			}
 			lista = objEmpleadoService.listarEmpleadoxEmpresas(getIdEmpresa());
-			
-			for (int i = 0; i < lista.size(); i++) {
-				EmpleadoSie entidad = new EmpleadoSie();
-				entidad = (EmpleadoSie) lista.get(i);
-				empleadosXEmpresaitems.put(entidad.getNombresCompletos(),
-						entidad.getIdempleado());
+			if(lista!=null){
+				for (int i = 0; i < lista.size(); i++) {
+					EmpleadoSie entidad = new EmpleadoSie();
+					entidad = (EmpleadoSie) lista.get(i);
+					empleadosXEmpresaitems.put(entidad.getNombresCompletos(),
+							entidad.getIdempleado());
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

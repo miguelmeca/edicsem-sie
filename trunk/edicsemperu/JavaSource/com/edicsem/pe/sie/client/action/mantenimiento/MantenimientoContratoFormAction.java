@@ -88,7 +88,7 @@ public class MantenimientoContratoFormAction extends
 	private TelefonoPersonaSie nuevoTelef;
 	private int TipoTelef, operadorTelefonico, idCobranza,idestadoProducto;
 	private double precioProducto,precioMensual;
-	private boolean defectoUbigeo,defectopaquete;
+	private boolean defectoUbigeo;
 	private boolean newRecord = false;
 	private boolean skip;
 	private PaqueteSie objPaquete;
@@ -165,7 +165,6 @@ public class MantenimientoContratoFormAction extends
 		idtipodoc=1;
 		tipopago=1;
 		defectoUbigeo = true;
-		defectopaquete= true;
 		selectTelef="";
 		idempleadoExpositor=0;
 		idempleadoVendedor=0;
@@ -232,6 +231,7 @@ public class MantenimientoContratoFormAction extends
 		apePatCliente=null;
 		apeMatCliente=null;
 		nombreCliente=null;
+		idtipodoc=1;
 		return Constants.CONSULTA_CONTRATO_FORM_PAGE;
 	}
 	
@@ -255,6 +255,7 @@ public class MantenimientoContratoFormAction extends
 		nombreCliente=null;
 		cuotasNuevas=1;
 		totalacumulado= new BigDecimal(0);
+		idtipodoc=1;
 		return Constants.GESTIONAR_CONTRATO_FORM_PAGE;
 	}
 	
@@ -387,20 +388,17 @@ public class MantenimientoContratoFormAction extends
 	}
 	
 	public void cambioPaquete(){
-		log.info("en el metodod cambioPaquete() ");
+		log.info("en el metodo cambioPaquete() ");
 		detPaqueteList=new ArrayList<DetPaqueteSie>();
 		
 		List<DetPaqueteSie> detalle = objDetPaqueteService.listarDetPaquetes(getIdpaquete());
 		if(detalle.size()>0){
 			for (int i = 0; i < detalle.size(); i++) {
-			log.info("tamaño li 22 ...."+ detalle.get(i).getCantidad());
 			DetPaqueteSie detq =detalle.get(i);
-			log.info("tamaño li 33 "+ detalle.get(i).getTbProducto().getDescripcionproducto());
 			detq.setItem(i+1);
 			detPaqueteList.add(detq);
-			log.info("tamaño lista de paq "+ detPaqueteList.size());
+			log.info("tamaño lista detalle paquete "+ detPaqueteList.size());
 		}
-		log.info(" karenx d");
 		setPrecioProducto(objPaqueteService.findPaquete(getIdpaquete()).getPrecioventa().doubleValue());
 		}
 	}
@@ -855,6 +853,7 @@ public class MantenimientoContratoFormAction extends
 		objSeguimiento= new SeguimientoContratoSie();
 		precioMensual=0.0;
 		cuotasNuevas=1;
+		idtipodoc=1;
 	}
 	
 	public void addCuota() throws Exception{
@@ -1352,20 +1351,6 @@ public class MantenimientoContratoFormAction extends
 	 */
 	public void setObjDetPaquete(DetPaqueteSie objDetPaquete) {
 		this.objDetPaquete = objDetPaquete;
-	}
-
-	/**
-	 * @return the defectopaquete
-	 */
-	public boolean isDefectopaquete() {
-		return defectopaquete;
-	}
-
-	/**
-	 * @param defectopaquete the defectopaquete to set
-	 */
-	public void setDefectopaquete(boolean defectopaquete) {
-		this.defectopaquete = defectopaquete;
 	}
 
 	/**

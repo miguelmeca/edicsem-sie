@@ -11,80 +11,123 @@
 	</script>
 		<h1 class="title ui-widget-header ui-corner-all">#{message['control.mercaderia.tittle']}</h1>
 		<h:form id="formControlMercaderia">
-		<p:messages showDetail="true"/>
+		<p:messages id="message" showDetail="true" closable="true"/>
 		<p:panel>
-		 <h:panelGrid columns="2" cellpadding="6" >
+		<h:panelGrid columns="2" cellpadding="6" >
 		<p:fieldset legend="#{message['control.mercaderia.tittle']}" >
         <h:panelGrid columns="2" cellpadding="6" >
 			<h:outputText value="#{message['mantenimiento.kardex.tipo.almacen']}" />
-			<p:selectOneMenu  id="tipoAlmacen"  value="#{comboAction.tipoAlmacen}" required="true" style="width:220px" >
+			<p:selectOneMenu  id="tipoAlmacen"  value="#{comboAction.tipoAlmacen}" required="true" style="width:240px" >
 			<f:selectItem itemLabel="Seleccione tipo" itemValue="#{null}" />
 				<f:selectItems value="#{comboAction.tipoalmacenitems}" />
 				<p:ajax update="almacen"  />
 			</p:selectOneMenu>
 			
 			<h:outputText value="#{message['control.punto.venta']}" />
-			<p:selectOneMenu id="almacen"  value="#{control.idalmacen}"  required="true" style="width:220px" >
+			<p:selectOneMenu id="almacen"  value="#{control.idalmacen}"  required="true" style="width:240px" >
 				<f:selectItem itemLabel="Seleccione" itemValue="#{null}" />
 				<f:selectItems value="#{comboAction.almacenItemsXTipo}" />
 			</p:selectOneMenu>
-			
-			<h:outputText value="#{message['control.encargado']}" />
-			<p:selectOneMenu value="#{control.idEmpleado}" required="true" style="width:220px" >
-				<f:selectItem  itemValue="#{null}" itemLabel="Seleccionar Empleado" />
-				<f:selectItems value="#{comboAction.empleadoxcargo}"  />
-			</p:selectOneMenu>
+			<f:facet name="footer">
+			<p:commandButton value="#{message['control.consultar.mercaderia']}" action="#{control.consultar}" update="message, lstControl" ajax="false" icon="ui-icon-search"/>
+		</f:facet>
 		</h:panelGrid>
 		</p:fieldset>
 		
 		<p:fieldset legend="#{message['control.producto.tittle']}" >
         <h:panelGrid columns="2" cellpadding="6" >
 			<h:outputText value="#{message['control.tipo.producto']}" />
-			<p:selectOneMenu id="tipoProd" value="#{comboAction.tipoProducto}" required="true" style="width:220px" >
+			<p:selectOneMenu id="tipoProd" value="#{comboAction.tipoProducto}" style="width:240px" >
 				<f:selectItem  itemValue="#{null}" itemLabel="Seleccionar tipo" />
 				<f:selectItems value="#{comboAction.tipoitems}"  />
 				<p:ajax update="product"  listener="#{comboAction.cambiar}"/>
 			</p:selectOneMenu>
 			
 			<h:outputText value="#{message['control.producto']}" />
-			<p:selectOneMenu id="product"  value="#{control.idProducto}" required="true"  style="width:220px ">
+			<p:selectOneMenu id="product"  value="#{control.idProducto}" style="width:240px ">
 				<f:selectItem itemLabel="Seleccione Producto" itemValue="#{null}" />
 				<f:selectItems value="#{comboAction.productositems}" />
 			</p:selectOneMenu>
 			
 			<h:outputText value="#{message['control.cantidad.hay']}" />
-			<p:inputText value="#{control.objcontrolSie.cantidad}" style="width:220px" />
+			<p:inputText value="#{control.objcontrolSie.cantidad}" style="width:240px" />
 			
-			<h:outputText value="#{message['control.cantidad.deberia']}" />
-			<p:inputText value="#{control.cantidadDeberia}" readonly="true" style="width:220px" />
-			<p:commandButton value="Agregar" action="#{contratoForm.consultar}" update="message" ajax="false"	icon="ui-icon-plus"/>
-			<p:spacer/>
+			<f:facet name="footer">
+			<p:commandButton value="#{message['control.add.producto']}" action="#{control.agregarProducto}" update="message, lstControl" icon="ui-icon-plus"/>
+			</f:facet>
 			</h:panelGrid>
 		</p:fieldset>
 		</h:panelGrid>
-		<p:fieldset legend="Productos " style="margin-top:30px">
-				<p:dataTable value="#{contratoForm.contratoXClienteList}"  var="c" style="width:800px" 
-				paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="5,10,15" emptyMessage="#{message['rsltd.empty']}">
-					<p:column headerText="#{message['control.dt.producto']}"  >
-		                <h:outputText value="#{c.tbCliente.nombresCompletos}" />
-		             </p:column>
+		<p:fieldset legend="#{message['control.producto']} " style="margin-top:30px">
+				<p:dataTable value="#{control.lstControl}" id="lstControl"  var="c" style="width:800px" paginator="true" rows="10" editable="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" emptyMessage="#{message['rsltd.empty']}">
+					
+					<p:ajax event="rowEdit" listener="#{control.onEdit}"  update="lstControl"/>
+					<p:ajax event="rowEditCancel" update="lstControl" />
+					
+					 <p:column headerText="#{message['control.dt.item']}" style="width:90px">
+			            <p:cellEditor>
+			                <f:facet name="output">
+			                    <h:outputText value="#{c.item}" />
+			                </f:facet>
+			                <f:facet name="input">
+			                    <h:outputText value="#{c.item}" />
+			                </f:facet>
+			            </p:cellEditor>
+			        </p:column>
+			        
+			        <p:column headerText="#{message['control.dt.producto']}" filterBy="#{c.tbProducto.descripcionproducto}" filterMatchMode="contains" style="width:450px">
+			            <p:cellEditor>
+			                <f:facet name="output"  >
+			                    <h:outputText value="#{c.tbProducto.descripcionproducto}" />
+			                </f:facet>
+			                <f:facet name="input">
+			                    <h:outputText value="#{c.tbProducto.descripcionproducto}" />
+			                </f:facet>
+			            </p:cellEditor>
+			        </p:column>
+		                 
+		            <p:column headerText="#{message['control.dt.cant.hay']}" >
+		            	<p:cellEditor>
+			                <f:facet name="output"  >
+			                   <h:outputText value="#{c.cantidad}" />
+			                </f:facet>
+			                <f:facet name="input">
+			                    <p:spinner value="#{c.cantidad}" size="4"/>
+			                </f:facet>
+			            </p:cellEditor>
+			        </p:column>
 		                
-		             <p:column headerText="#{message['control.dt.cant.deberia']}" >
-		                 <h:outputText value="#{c.fechaCreacionString}" />
+		             <p:column  headerText="#{message['control.dt.cant.deberia']}" >
+		                 <p:cellEditor>
+			                <f:facet name="output">
+			                   <h:outputText value="#{c.cantidaddeberia}"/>
+			                </f:facet>
+			                <f:facet name="input">
+			                   <h:outputText value="#{c.cantidaddeberia}"/>
+			                </f:facet>
+			            </p:cellEditor>
 		             </p:column>
-		                
-		             <p:column headerText="#{message['control.dt.cant.hay']}"  >
-		                 <h:outputText value="#{c.tbCliente.numdocumento}" />
-		             </p:column>
-		                
+		            <p:column headerText="#{message['gestion.editar']}" style="width:50px">
+		            	<p:rowEditor />
+		            </p:column>
 				</p:dataTable>
+		</p:fieldset>
 		
-		<p:commandButton value="Ver Verificación" action="#{control.consultar}" update="message" ajax="false" icon="ui-icon-search"/>
+		<p:fieldset legend="Responsable " style="margin-top:30px">
+		<h:panelGrid columns="2" cellpadding="6" >
+			<h:outputText value="#{message['control.encargado']}" />
+			<p:selectOneMenu value="#{control.idEmpleado}" style="width:220px" >
+				<f:selectItem  itemValue="#{null}" itemLabel="Seleccionar Empleado" />
+				<f:selectItems value="#{comboAction.empleadoxcargo}"  />
+			</p:selectOneMenu>
 			
-		<p:commandButton value="Grabar" action="#{control.insertar}" update="message" 
-		ajax="false" icon="ui-icon-search"/>
+			<p:commandButton value="Ver Verificación" action="#{control.consultar}" update="message" ajax="false" icon="ui-icon-search"/>
 			
+			<p:commandButton value="Grabar" action="#{control.insertar}" update="message" ajax="false" icon="ui-icon-search"/>
+			
+			</h:panelGrid>
 		</p:fieldset>
 		</p:panel>
 		</h:form>

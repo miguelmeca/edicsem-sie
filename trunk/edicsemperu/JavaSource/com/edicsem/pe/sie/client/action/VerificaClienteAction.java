@@ -15,10 +15,12 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.edicsem.pe.sie.entity.DetPaqueteSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.VerificaClienteSie;
 import com.edicsem.pe.sie.entity.VerificaProductoSie;
 import com.edicsem.pe.sie.entity.VerificaTelefonoSie;
+import com.edicsem.pe.sie.service.facade.DetallePaqueteService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.service.facade.VerificaClienteService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -30,8 +32,8 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 public class VerificaClienteAction extends BaseMantenimientoAbstractAction {
 	private Log log = LogFactory.getLog(VerificaClienteAction.class);
 	private VerificaClienteSie objverificaclienteSie;
-	private String mensaje;
-	private int idtipodoc,tipoTelef,operadortelefonico, idproducto;
+	private String mensaje, selectTelef;
+	private int idtipodoc,tipoTelef,operadortelefonico, idproducto, idpaquete, item, idEmpleado;
 	private VerificaProductoSie verificaProd;
 	private VerificaTelefonoSie verificaTel;
 	private List<VerificaProductoSie> lstProducto;
@@ -40,8 +42,12 @@ public class VerificaClienteAction extends BaseMantenimientoAbstractAction {
 	
 	@EJB
 	private VerificaClienteService objverificaClienteService;
+	
 	@EJB
 	private ProductoService objProductoService;
+	
+	@EJB
+	private DetallePaqueteService objDetPaqueteService;
 	
 	@ManagedProperty(value = "#{comboAction}")
 	private ComboAction combo;
@@ -53,6 +59,7 @@ public class VerificaClienteAction extends BaseMantenimientoAbstractAction {
 
 	public void init() {
 		log.info("init()");
+		idtipodoc=1;
 	}
 	
 	/*
@@ -70,6 +77,8 @@ public class VerificaClienteAction extends BaseMantenimientoAbstractAction {
 		lstProducto= new ArrayList<VerificaProductoSie>();
 		lstTelefono = new ArrayList<VerificaTelefonoSie>();
 		setNewRecord(true);
+		combo.setCargoEmpleado(12);
+		idtipodoc=1;
 		return  getViewList();
 	}
 	
@@ -93,7 +102,7 @@ public class VerificaClienteAction extends BaseMantenimientoAbstractAction {
 		try {
 			if (isNewRecord()) {
 				objverificaclienteSie.setUsuariocreacion(sessionUsuario.getUsuario());
-				objverificaClienteService.insertVerificaCliente(objverificaclienteSie, lstProducto, lstTelefono);
+				objverificaClienteService.insertVerificaCliente(objverificaclienteSie, lstProducto, lstTelefono, idEmpleado,idtipodoc);
 				mensaje=Constants.MESSAGE_REGISTRO_TITULO;
 				objverificaclienteSie = new VerificaClienteSie();
 			}else {
@@ -105,8 +114,7 @@ public class VerificaClienteAction extends BaseMantenimientoAbstractAction {
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
@@ -115,10 +123,44 @@ public class VerificaClienteAction extends BaseMantenimientoAbstractAction {
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return null;
 	}
+	
 	public void productoAgregar(){
-		log.info("Producto agregar " );
-		verificaProd.setTbProducto(objProductoService.findProducto(idproducto));
-		lstProducto.add(verificaProd);
+		mensaje=null;
+		log.info("productoAgregar() " );
+		
+		if(idproducto==0){
+			mensaje="Debe seleccionar un producto para agregarlo a la lista";
+		}else{
+			int cantidad= lstProducto.size();
+			if(verificaProd.getCantidad()<1){
+				mensaje="Cantidad debe ser mayor que 0 ";
+			}
+			if(cantidad==0){
+				verificaProd.setItem(1);
+				verificaProd.setTbProducto(objProductoService.findProducto(idproducto));
+				lstProducto.add(verificaProd);
+			}else{
+				for (int i = 0; i < lstProducto.size(); i++) {
+					if(lstProducto.get(i).getTbProducto().getIdproducto()==idproducto){
+						mensaje="Dicho producto ya se encuentra registrado en la lista, usted puede editarlo ";
+					}
+					verificaProd.setItem(cantidad+1);
+				}
+				if(mensaje==null){
+					verificaProd.setTbProducto(objProductoService.findProducto(idproducto));;
+					lstProducto.add(verificaProd);
+					mensaje="Se agregó correctamente ";
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+							Constants.MESSAGE_INFO_TITULO, mensaje);
+					mensaje=null;
+				}
+				verificaProd= new VerificaProductoSie();
+			}
+		}
+		if(mensaje!=null){
+			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+		}
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 	
 	public void  telefonoAgregar(){
@@ -173,6 +215,53 @@ public class VerificaClienteAction extends BaseMantenimientoAbstractAction {
 		}
 	}
 	
+	public void cambioPaquete(){
+		log.info("en el metodo cambioPaquete() ");
+		lstProducto = new ArrayList<VerificaProductoSie>();
+		
+		List<DetPaqueteSie> detalle = objDetPaqueteService.listarDetPaquetes(getIdpaquete());
+		if(detalle.size()>0){
+			for (int i = 0; i < detalle.size(); i++) {
+				VerificaProductoSie v = new VerificaProductoSie();
+				v.setTbProducto(detalle.get(i).getTbProducto());
+				v.setCantidad(detalle.get(i).getCantidad());
+				v.setItem(lstProducto.size()+1);
+				lstProducto.add(v);
+			}
+		}
+	}
+	
+	/**
+	 * Eliminar Teléfono de la lista*/
+	public void  eliminaTelefono(){
+		log.info("telefono telefonoElimina " + selectTelef);
+		for (int i = 0; i < lstTelefono.size(); i++) {
+			log.info("t"+ lstTelefono.get(i)+"-"+selectTelef);
+			log.info("t"+ lstTelefono.get(i).getTelefono()+"-"+selectTelef);
+			if(lstTelefono.get(i).getTelefono().equals(selectTelef)){
+				lstTelefono.remove(i);
+				log.info("se elimino ");
+			}
+		}
+	}
+	
+	/**
+	 * Eliminar Producto de la lista*/
+    public void eliminarProducto(){
+    	log.info("en eliminarProducto() "+item);
+		for (int i = 0; i < lstProducto.size(); i++) {
+			if(lstProducto.get(i).getItem()==(item)){
+				lstProducto.remove(i);
+				for (int j = i; j < lstProducto.size(); j++) {
+					log.info(" i " +i+"  j "+ j);
+					i=i+1;
+					lstProducto.get(j).setItem(i);
+					lstProducto.set(j, lstProducto.get(j));
+				}
+			}
+		}
+    }
+    
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewList()
 	 */
@@ -347,6 +436,62 @@ public class VerificaClienteAction extends BaseMantenimientoAbstractAction {
 	 */
 	public void setIdproducto(int idproducto) {
 		this.idproducto = idproducto;
+	}
+
+	/**
+	 * @return the idpaquete
+	 */
+	public int getIdpaquete() {
+		return idpaquete;
+	}
+
+	/**
+	 * @param idpaquete the idpaquete to set
+	 */
+	public void setIdpaquete(int idpaquete) {
+		this.idpaquete = idpaquete;
+	}
+
+	/**
+	 * @return the selectTelef
+	 */
+	public String getSelectTelef() {
+		return selectTelef;
+	}
+
+	/**
+	 * @param selectTelef the selectTelef to set
+	 */
+	public void setSelectTelef(String selectTelef) {
+		this.selectTelef = selectTelef;
+	}
+
+	/**
+	 * @return the item
+	 */
+	public int getItem() {
+		return item;
+	}
+
+	/**
+	 * @param item the item to set
+	 */
+	public void setItem(int item) {
+		this.item = item;
+	}
+
+	/**
+	 * @return the idEmpleado
+	 */
+	public int getIdEmpleado() {
+		return idEmpleado;
+	}
+
+	/**
+	 * @param idEmpleado the idEmpleado to set
+	 */
+	public void setIdEmpleado(int idEmpleado) {
+		this.idEmpleado = idEmpleado;
 	}
 	
 }

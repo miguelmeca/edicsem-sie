@@ -14,9 +14,11 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.primefaces.event.RowEditEvent;
 
 import com.edicsem.pe.sie.entity.ControlKardexSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
+import com.edicsem.pe.sie.entity.KardexSie;
 import com.edicsem.pe.sie.service.facade.ControlMercaderiaService;
 import com.edicsem.pe.sie.service.facade.KardexService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
@@ -51,6 +53,7 @@ public class ControlMercaderiaAction extends BaseMantenimientoAbstractAction {
 
 	public void init() {
 		log.info("init()");
+		lstControl = new ArrayList<ControlKardexSie>();
 	}
 	
 	/*
@@ -130,10 +133,70 @@ public class ControlMercaderiaAction extends BaseMantenimientoAbstractAction {
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#consultar()
 	 */
 	public String consultar() throws Exception {
-		objKardexSie.ConsultaKardexAlmacen(idalmacen);
+		log.info("consultar()");
+		List<KardexSie> lista = objKardexSie.ConsultaKardexAlmacen(idalmacen);
+		lstControl = new ArrayList<ControlKardexSie>();
+		for (int i = 0; i < lista.size(); i++) {
+			if(lista.get(i).getCantexistencia()>0){
+				ControlKardexSie control = new ControlKardexSie();
+				log.info("prod "+lista.get(i).getTbProducto().getIdproducto());
+				control.setTbProducto(lista.get(i).getTbProducto());
+				control.setItem(i+1);
+				control.setCantidaddeberia(lista.get(i).getCantexistencia());
+				lstControl.add(control);
+			}
+		}
 		return null;
 	}
 	
+	public void agregarProducto(){
+		log.info("agregarProducto()  "+objcontrolSie.getCantidad());
+		mensaje=null; 
+		
+		if(getIdProducto()==0){
+			mensaje="Debe seleccionar un producto para agregarlo a la lista";
+		}else{
+			int cantidadt= lstControl.size();
+			objcontrolSie.setTbProducto(objProductoService.findProducto(idProducto));
+			if(cantidad<1){
+				mensaje="Cantidad debe ser mayor que 0 ";
+			}
+			if(cantidadt==0){
+				objcontrolSie.setItem(1);
+				lstControl.add(objcontrolSie);
+				log.info("tamaño lista "+ lstControl.size());
+			}else{
+				for (int i = 0; i < lstControl.size(); i++) {
+					if(lstControl.get(i).getTbProducto().getIdproducto()==objcontrolSie.getTbProducto().getIdproducto()){
+						mensaje="Dicho producto ya se encuentra registrado en la lista, usted puede la cantidad ";
+					}
+					objcontrolSie.setItem(cantidadt+1);
+				}
+				if(mensaje==null){
+					lstControl.add(objcontrolSie);
+					mensaje="Se agregó correctamente ";
+					objcontrolSie = new ControlKardexSie();
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+					mensaje=null;
+				}
+				log.info("tamaño lista de paq "+ lstControl.size()+" "+mensaje);
+			}
+		}
+		if(mensaje!=null){
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+		}
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+	
+	public void onEdit(RowEditEvent event) {
+		log.info("en onedit()");
+		
+    }
+    
+    public void onCancel(RowEditEvent event) {
+    	
+    }
+    
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewList()
 	 */

@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,10 +18,12 @@ import org.apache.commons.logging.LogFactory;
 import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.entity.ComprobanteSie;
 import com.edicsem.pe.sie.entity.DetalleComprobanteSie;
+import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.service.facade.ComprobanteService;
 import com.edicsem.pe.sie.service.facade.DetalleComprobanteService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name = "comprobanteForm")
@@ -110,13 +114,14 @@ public class MantenimientoComprobanteFormAction extends
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
 	 */
 	public String insertar() {
-		
-		log.info("insertar()" + isNewRecord()  );
-		int error = 0;
+		log.info("insertar()" );
+		HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+		EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 		try {
-				objComprobanteService.updateComprobante(objComprobanteSie);
-				
-				log.info("actualizado");
+			objComprobanteSie.setUsuariomodifica(sessionUsuario.getUsuario());
+			objComprobanteSie.setFechamodifica(new Timestamp(DateUtil.getToday().getTime().getTime()));
+			objComprobanteService.updateComprobante(objComprobanteSie);
+			log.info("actualizado");
 			
 		} catch (Exception e) {
 
