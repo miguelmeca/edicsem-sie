@@ -285,5 +285,29 @@ public class KardexDAOImpl implements KardexDAO {
 		}
 		return bandera;
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.KardexDAO#ConsultaKardexAlmacen(int)
+	 */
+	public List ConsultaKardexAlmacen(int idAlmacen) {
+		List lista = new ArrayList();
+		List<Integer> listaTmp = null;
+		try {
+			
+			Query q = em.createQuery("select distinct tbProducto.idproducto from KardexSie p where p.tbPuntoVenta.idpuntoventa = "+idAlmacen+
+					"and p.tbTipoKardexProducto.idtipokardexproducto< 3 ");
+			listaTmp= q.getResultList();
+			for (int i = 0; i < listaTmp.size(); i++) {
+				Query q2 = em.createQuery("select p from KardexSie p where p.tbPuntoVenta.idpuntoventa = "+idAlmacen+
+						" and p.tbProducto.idproducto = "+listaTmp.get(i)  +" p.tbTipoKardexProducto.idtipokardexproducto< 3 ORDER BY a.idkardex ASC ");
+				lista.add(q2.getResultList());
+			}
+			 
+			log.info("tamaño lista Productos kardex --> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 
 }
