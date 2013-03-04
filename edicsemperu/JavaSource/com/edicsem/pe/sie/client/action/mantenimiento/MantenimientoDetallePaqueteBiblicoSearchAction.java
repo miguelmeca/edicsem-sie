@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -7,17 +8,20 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.DetPaqueteSie;
+import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.PaqueteSie;
 import com.edicsem.pe.sie.service.facade.DetallePaqueteService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.PaqueteService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name = "mantenimientoDetallePaqueteBiblicoSearchAction")
@@ -155,7 +159,8 @@ public String update() throws Exception {
 
 public String insertar() {
 	mensaje =null;
-	
+	HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+	EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 	String paginaRetorno="";
 	
 	objDetPaqueteSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(71));
@@ -186,8 +191,6 @@ public String insertar() {
 		if (error == 0) {		
 		if(isNewRecord()){
 			
-
-			
 		objDetPaqueteSie.setCantidad(objDetPaqueteSie.getCantidad());	
 		objDetPaqueteSie.setTbProducto(objProductoService.findProducto(idproducto));
 
@@ -203,7 +206,8 @@ public String insertar() {
 		
 		else{
 			
-
+			objDetPaqueteSie.setUsuariomodifica(sessionUsuario.getUsuario());
+			objDetPaqueteSie.setFechamodifica(new Timestamp(DateUtil.getToday().getTime().getTime()));
 objDetPaqueteSie.setIdDetPaquete(getIdDetPaquete());
 
 objDetPaqueteSie.setCantidad(objDetPaqueteSie.getCantidad());
@@ -215,8 +219,7 @@ objDetallePaqueteService.updateDetPaquete(objDetPaqueteSie);
 
 log.info("actualizando..... ");	
 msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-	Constants.MESSAGE_REGISTRO_TITULO, mensaje);
-			mensaje="Se actualizó el Producto";
+	Constants.MESSAGE_INFO_TITULO, Constants.MESSAGE_ACTUALIZO_TITULO );
 			log.info("actualizado");
 		}
 		msg = new FacesMessage(FacesMessage.SEVERITY_INFO,

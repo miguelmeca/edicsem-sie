@@ -11,12 +11,12 @@
 	</script>
 		<h1 class="title ui-widget-header ui-corner-all">#{message['verifica.tittle']}</h1>
 		<h:form id="formVerificaCliente">
-		<p:messages id="messages" showDetail="true"/>
+		<p:messages id="messages" showDetail="true" closable="true"/>
 		<p:panel>
-		<p:fieldset >
+		<p:fieldset>
         <h:panelGrid columns="2" cellpadding="4">
         <h:outputText value="#{message['verifica.tipo.doc']}" />
-			<p:selectOneMenu id="tipoDoc" style="width:165px" value="#{verifica.idtipodoc}" required="true" >
+			<p:selectOneMenu id="tipoDoc" style="width:165px" value="#{verifica.idtipodoc}">
 				<f:selectItems value="#{comboAction.tipoDocumentoitems}" />
 				<p:ajax update="nrodoc"/>
 			</p:selectOneMenu>
@@ -24,57 +24,75 @@
 			<h:outputText value="#{message['verifica.num.doc']}" />
 			<h:panelGroup id="nrodoc" >
 				<p:inputMask id="numdoc1" value="#{verifica.objverificaclienteSie.numdocumento}" mask="99999999"
-					rendered="#{verifica.idtipodoc==1}" required="true" />
-				<p:message for="numdoc1"  />
+					rendered="#{verifica.idtipodoc==1}"  />
 					
 				<p:inputMask id="numdoc2" value="#{verifica.objverificaclienteSie.numdocumento}" mask="99999999999"
-					rendered="#{verifica.idtipodoc==2}" required="true"/>
-				<p:message for="numdoc2"  />
+					rendered="#{verifica.idtipodoc==2}"/>
 			</h:panelGroup>
 			
         	<h:outputText value="#{message['verifica.nombre.cliente']} " />
 			<p:inputText value="#{verifica.objverificaclienteSie.nombrecliente}" />
 			
+			<h:outputText value="#{message['verifica.fecha.nacimiento']} " rendered="#{verifica.idtipodoc>1}"/>
+			<p:calendar value="#{contratoForm.objClienteSie.fecnacimiento}" required="true" pattern="dd/MM/yyyy" 
+			size="30" locale="es" pagedate="01/01/1990" maxdate="#{contratoForm.dValidoFecNac}" rendered="#{verifica.idtipodoc>1}"/>
 			</h:panelGrid>
 			</p:fieldset>
 			
 			<p:fieldset legend="#{message['verifica.producto']}" style="margin-top:30px">
-					<h:panelGrid columns="2" cellpadding="4">
-					<p:fieldset legend="Añadir Producto">
+				<h:panelGrid columns="2" cellpadding="6">
+					<h:panelGrid>
+					<p:fieldset legend="#{message['verifica.anadir.paquete']}">
+					<h:panelGrid columns="2" cellpadding="4" >
+					<h:outputText value="#{message['contrato.paquete']}" />
+					<p:selectOneMenu filter="true" filterMatchMode="contains" value="#{verifica.idpaquete}">
+						<f:selectItem itemLabel="Seleccione Paquete" itemValue="#{null}" />
+						<f:selectItems value="#{comboAction.paqueteItems}" />
+						<p:ajax update="lstProducto" listener="#{verifica.cambioPaquete}" />
+					</p:selectOneMenu>
+					</h:panelGrid>
+					</p:fieldset>
+					
+					<p:fieldset legend="#{message['verifica.anadir.producto']}" style="margin-top:10px">
 					<h:panelGrid columns="2" cellpadding="4" >
 					<h:outputText value="#{message['contrato.tipo.producto']}" />
-					<p:selectOneMenu id="tipoProd2" value="#{comboAction.tipoProducto}" style="width:220px">
+					<p:selectOneMenu id="tipoProd2" value="#{comboAction.tipoProducto}" style="width:240px">
 						<f:selectItem itemLabel="Seleccionar tipo" itemValue="#{null}" />
 						<f:selectItems value="#{comboAction.tipoitems}" />
 						<p:ajax update="produc2" listener="#{comboAction.cambiar}" />
 					</p:selectOneMenu>
 					
 					<h:outputText value="#{message['contrato.producto']}" />
-					<p:selectOneMenu filter="true" filterMatchMode="startsWith" id="produc2" style="width:220px"
-						value="#{verifica.idproducto}" requiredMessage="Debe seleccionar un producto para agregarlo a la lista" >
+					<p:selectOneMenu filter="true" filterMatchMode="contains" id="produc2" style="width:240px"
+						value="#{verifica.idproducto}" >
 						<f:selectItem itemLabel="Seleccione Producto" itemValue="#{null}"  />
 						<f:selectItems value="#{comboAction.productositems}" />
 					</p:selectOneMenu>
 					
 					<h:outputText value="#{message['contrato.producto.cantidad']}" />
-					<p:spinner value="#{verifica.verificaProd.cantidad}" min="1" requiredMessage="#{message['contrato.cantidad.producto']}"  />
-					
+					<p:spinner value="#{verifica.verificaProd.cantidad}" min="1"   />
+					<f:facet name="footer">
 					<p:commandButton value="Agregar Producto"  icon="ui-icon ui-icon-plus" 
-					action="#{verifica.productoAgregar}" update="lstProducto, messages" > 
-					</p:commandButton>
+					action="#{verifica.productoAgregar}" update="lstProducto, messages" />
+					</f:facet>
 					</h:panelGrid>
 					</p:fieldset>
-					<p:dataTable value="#{verifica.lstProducto}" id="lstProducto" var="c" >
+					</h:panelGrid>
+					<p:dataTable value="#{verifica.lstProducto}" id="lstProducto" var="c" paginator="true" rows="5">
 						<f:facet name="header">
 							<h:outputLabel value="#{message['verifica.producto.lista']}" />
 						</f:facet>
 						<p:column headerText="#{message['control.dt.producto']}" >
 		                    <h:outputText value="#{c.tbProducto.descripcionproducto}" />
 		                </p:column>
-		                
 		                <p:column headerText="#{message['verifica.cantidad']}"  >
 		                    <h:outputText value="#{c.cantidad}" />
 		                </p:column>
+		                <p:column headerText="#{message['contrato.eliminar']}" >
+		                <p:commandButton icon="ui-icon-close" oncomplete="confirmationProductoVerifica.show()" title="eliminar">
+							<f:setPropertyActionListener value="#{c.item}" target="#{verifica.item}" />
+							</p:commandButton>
+						</p:column>
 					</p:dataTable>
 					</h:panelGrid>
 			</p:fieldset>
@@ -83,24 +101,23 @@
 			<h:panelGrid columns="2"  id="panelTlf" cellpadding="4" >
 				<p:fieldset>
 				<h:panelGrid columns="4" id="panelTelef" cellpadding="4" >
-				
-				<h:outputText value="#{message['contrato.tipo.telefono']}" />
-				<p:selectOneMenu  value="#{verifica.tipoTelef}"
+					<h:outputText value="#{message['contrato.tipo.telefono']}" />
+					<p:selectOneMenu  value="#{verifica.tipoTelef}"
 						style="width:165px"  >
 						<f:selectItem itemLabel="Fijo" itemValue="1" />
 						<f:selectItem itemLabel="Celular" itemValue="2" />
 						<p:ajax  update="panelTelef" />
-				</p:selectOneMenu>
+					</p:selectOneMenu>
 					
 					<h:outputText value="#{message['contrato.operadorTelefonico']}" />
-					<p:selectOneMenu id="operadorTelefonico" required="true" value="#{verifica.operadortelefonico}" rendered="#{contratoForm.tipoTelef==1}"
+					<p:selectOneMenu id="operadorTelefonico" value="#{verifica.operadortelefonico}" rendered="#{contratoForm.tipoTelef==1}"
 						style="width:165px">
 						<f:selectItem itemLabel="Seleccione Operador" itemValue="#{null}" />
 						<f:selectItem itemLabel="Claro" itemValue="1" />
 						<f:selectItem itemLabel="Telefónica" itemValue="2" />
 					</p:selectOneMenu>
 					
-					<p:selectOneMenu id="operadorCelular" required="true" value="#{verifica.operadortelefonico}" rendered="#{contratoForm.tipoTelef==2}"
+					<p:selectOneMenu id="operadorCelular" value="#{verifica.operadortelefonico}" rendered="#{contratoForm.tipoTelef==2}"
 						style="width:165px" >
 						<f:selectItem itemLabel="Seleccione Operador" itemValue="#{null}" />
 						<f:selectItem itemLabel="Claro" itemValue="1" />
@@ -120,29 +137,43 @@
 					<p:inputText value="#{verifica.verificaTel.desctelefono}" maxlength="40" />
 					
 					<p:commandButton value="#{message['verifica.agrega.telefono']}"  icon="ui-icon ui-icon-plus" 
-					action="#{contratoForm.telefonoAgregar}" update="telefonoList, messages"/>
+					action="#{verifica.telefonoAgregar}" update="telefonoList, messages"/>
 					
 				</h:panelGrid>
 				</p:fieldset>
-				<p:dataTable value="#{verifica.lstTelefono}" id="telefonoList" var="t" style="width:400px"
-					rowStyleClass="#{t.operadorTelefonico eq 'Claro' ? 'colorRojo': (t.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }" >
-							 
+				<p:dataTable value="#{verifica.lstTelefono}" id="telefonoList" var="t" style="width:400px" paginator="true" rows="5"
+				rowStyleClass="#{t.operadortelefonico eq 'Claro' ? 'colorRojo': (t.operadortelefonico eq 'Movistar' ? 'color2': 'color3') }" >
+							
 							<f:facet name="header">
 								<h:outputLabel value="#{message['verifica.telef.referencia']}" />
 							</f:facet>
-							<p:column headerText="#{message['contrato.telefono']}"  >
-		                    	<h:outputText value="#{t.tipoTelef}, #{t.operadorTelefonico}, #{t.telefono}" />
+							<p:column headerText="#{message['contrato.telefono']}" >
+		                    	<h:outputText value="#{t.tipotelefono}, #{t.operadortelefonico}, #{t.telefono}" />
 		                    </p:column>
 		                    <p:column headerText="#{message['contrato.telefono.descripcion']}"  >
-		                    	<h:outputText value="#{t.descTelefono}" />
+		                    	<h:outputText value="#{t.desctelefono}" />
 		                    </p:column>
 		                    <p:column headerText="Eliminar" >
-			                    <p:commandButton icon="ui-icon-close" oncomplete="confirmationTelefonoContrato.show()" title="eliminar">
-								<f:setPropertyActionListener value="#{t.telefono}" target="#{contratoForm.selectTelef}" />
+			                    <p:commandButton icon="ui-icon-close" oncomplete="confirmationTelefonoVerifica.show()" title="eliminar">
+								<f:setPropertyActionListener value="#{t.telefono}" target="#{verifica.selectTelef}" />
 								</p:commandButton>
 							</p:column>
 					</p:dataTable>
 				</h:panelGrid>
+				
+				<p:fieldset legend="#{message['verifica.responsable']}" style="margin-top:30px">
+				<h:panelGrid columns="2" cellpadding="6" >
+					<h:outputText value="#{message['control.encargado']}" />
+					<p:selectOneMenu value="#{verifica.idEmpleado}" style="width:220px" >
+						<f:selectItem  itemValue="#{null}" itemLabel="Seleccionar Empleado" />
+						<f:selectItems value="#{comboAction.empleadoxcargo}" />
+					</p:selectOneMenu>
+					
+					<p:commandButton id="nuevoVerifica" value="#{message['verifica.registrar']}" action="#{verifica.insertar}" 
+					update="message" ajax="false" title="#{message['verifica.registrar.tittle']}" icon="ui-icon ui-icon-disk"/>
+					<p:tooltip for="nuevoVerifica"/>
+				</h:panelGrid>
+				</p:fieldset>
 			</p:fieldset>
 		</p:panel>
 		</h:form>

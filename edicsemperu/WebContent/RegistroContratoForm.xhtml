@@ -251,9 +251,8 @@
 				<p:fieldset  legend="#{message['panel.seleccion.producto']}" >
 				<h:panelGrid columns="7" id="panelProd" cellpadding="3"  >
 					
-					<h:outputText value="#{message['contrato.paquete']}" rendered="#{contratoForm.defectopaquete}" />
-					<p:selectOneMenu id="paq" filter="true" filterMatchMode="startsWith" rendered="#{contratoForm.defectopaquete}" 
-						value="#{contratoForm.idpaquete}">
+					<h:outputText value="#{message['contrato.paquete']}" />
+					<p:selectOneMenu id="paq" filter="true" filterMatchMode="contains" value="#{contratoForm.idpaquete}">
 						<f:selectItem itemLabel="Seleccione Paquete" itemValue="#{null}" />
 						<f:selectItems value="#{comboAction.paqueteItems}" />
 						<p:ajax update="panel2,detPaqueteList" listener="#{contratoForm.cambioPaquete}" />

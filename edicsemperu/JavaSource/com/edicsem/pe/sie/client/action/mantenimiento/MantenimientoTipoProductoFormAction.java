@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -20,6 +21,7 @@ import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.service.facade.TipoProductoService;
 import com.edicsem.pe.sie.util.FaceMessage.FaceMessage;
 import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name = "mantenimientoTipoProductoFormAction")
@@ -112,8 +114,6 @@ public class MantenimientoTipoProductoFormAction extends
 						mensaje ="Ya se encuentra un tipo de producto igual con el mismo nombre";
 						error = 1;
 						break;
-					
-					
 					}
 				}
 				else if ( lista.get(i).getCodtipoproducto().equalsIgnoreCase(objTipoProductoSie.getCodtipoproducto())) {
@@ -125,29 +125,22 @@ public class MantenimientoTipoProductoFormAction extends
 						error = 1;
 						break;
 					}
-			}		
-				    if (error == 0) {
-					if (isNewRecord()) {
-				
-				
-			
-			
-				objTipoProductoService.insertTipoProducto(objTipoProductoSie);
-				setNewRecord(false);
-				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-						Constants.MESSAGE_REGISTRO_TITULO, mensaje);
-				mensaje ="Se registró el paquete correctamente";
-			} else {
-				
-				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-						Constants.MESSAGE_REGISTRO_TITULO, mensaje);	
-				
-				objTipoProductoService.updateTipoProducto(objTipoProductoSie);				
-				log.info("actualizando..... ");
-				
-				
 			}
-				} else {
+			if (error == 0) {
+				if (isNewRecord()) {
+					objTipoProductoSie.setUsuariocreacion(sessionUsuario.getUsuario());
+					objTipoProductoService.insertTipoProducto(objTipoProductoSie);
+					setNewRecord(false);
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_REGISTRO_TITULO, mensaje);
+					mensaje ="Se registró el paquete correctamente";
+			} else {
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_REGISTRO_TITULO, mensaje);	
+					objTipoProductoSie.setUsuariomodifica(sessionUsuario.getUsuario());
+					objTipoProductoSie.setFechamodifica(new Timestamp(DateUtil.getToday().getTime().getTime()));
+					objTipoProductoService.updateTipoProducto(objTipoProductoSie);				
+					log.info("actualizando..... ");
+			}
+			} else {
 					log.info("mensaje de error");
 					mensaje ="Ya se encuentra un tipo de producto igual con el mismo nombre";
 					msg = new FacesMessage(mensaje);

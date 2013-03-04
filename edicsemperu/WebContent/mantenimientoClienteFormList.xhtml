@@ -26,15 +26,15 @@
 	            </p:outputPanel>
             </f:facet>
 					
-				<p:column headerText="Nombre" id="nombre" filterBy="#{c.nombrecliente}">
+				<p:column headerText="Nombre" id="nombre" filterBy="#{c.nombrecliente}" filterMatchMode="contains" >
 					<h:outputText value="#{c.nombrecliente}" />
 				</p:column>
 				
-				<p:column headerText="Apellido Paterno" id="ap" filterBy="#{c.apepatcliente}">
+				<p:column headerText="Apellido Paterno" id="ap" filterBy="#{c.apepatcliente}" filterMatchMode="contains" >
 					<h:outputText value="#{c.apepatcliente}" />
 				</p:column>
 				
-				<p:column headerText="Apellido Materno" id="am" filterBy="#{c.apematcliente}">
+				<p:column headerText="Apellido Materno" id="am" filterBy="#{c.apematcliente}"filterMatchMode="contains" >
 					<h:outputText value="#{c.apematcliente}" />
 				</p:column>
 
