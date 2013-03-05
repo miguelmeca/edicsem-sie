@@ -14,25 +14,40 @@
 			<p:messages id="message" showDetail="true" />
 			<p:panel>
 			<p:fieldset legend="Resultado de Meta">
-			<p:dataTable id="availableCars" var="car" value="#{tableBean.carsSmall}">  
+			<p:dataTable var="g" value="#{grupo.detGrupoEmplList}" id="data">  
 	            <p:column style="width:20px">
 	                <h:outputText id="dragIcon" styleClass="ui-icon ui-icon-arrow-4" />
 	                <p:draggable for="dragIcon" revert="true" />
 	            </p:column>
-	            <p:column headerText="Manufacturer">
-	                <h:outputText value="#{car.manufacturer}" />
+	            <p:column headerText="Grupo">
+	                <h:outputText value="#{g.tbGrupoVenta.descripcion}" />
 	            </p:column>
-	            <p:column headerText="Color">
-	                <h:outputText value="#{car.color}" />
+	            <p:column headerText="Empleado">
+	                <h:outputText value="#{g.tbempleado.nombresCompletos}" />
 	            </p:column>
             </p:dataTable>
-            
-        <p:droppable for="selectedCars" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
-        <p:ajax listener="#{tableBean.onCarDrop}" update="dropArea availableCars" />
+            </p:fieldset>
+            <p:fieldset id="selected" legend="Selected Cars" style="margin-top:20px">
+              <p:outputPanel id="area">
+              <p:dataTable var="car" value="#{tableBean.droppedCars}"   
+                    rendered="#{not empty tableBean.droppedCars}">  
+  
+                <p:column headerText="Model">  
+                    <h:outputText value="#{car.model}" />  
+                </p:column>  
+  
+                <p:column headerText="Year">  
+                    <h:outputText value="#{car.year}" />  
+                </p:column>
+              </p:dataTable>
+          </p:outputPanel>
+          </p:fieldset>
+          
+        <p:droppable for="selected" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="data" onDrop="handleDrop">  
+        <p:ajax listener="#{grupo.onCarDrop}" update="area data" />
         </p:droppable>
         
-			<p:commandButton  action="#{permiso.insertar}" value="Registrar Permisos" ajax="false" update="formPermisos" icon="ui-icon ui-icon-disk" />
-	</p:fieldset>
+        
 	</p:panel>
 	</h:form>
 	</ui:define>
