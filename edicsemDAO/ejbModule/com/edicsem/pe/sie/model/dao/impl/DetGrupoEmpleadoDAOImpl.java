@@ -92,9 +92,8 @@ public class DetGrupoEmpleadoDAOImpl implements DetGrupoEmpleadoDAO{
 	public List listarEmpleadosXGrupo(int idGrupo) {
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from DetGrupoEmpleadoSie p inner join  p.idempleado.tbContratoEmpleados1 m where " +
-					" p.tbGrupoVenta.idgrupo = "+idGrupo+" and   " +
-					" m.tbCargoempleado.idcargoempleado = 16");
+			Query q = em.createQuery("select p from DetGrupoEmpleadoSie p inner join  p.tbempleado.tbContratoEmpleados1 m where " +
+					" p.tbGrupoVenta.idgrupo = "+idGrupo+" and m.tbCargoempleado.idcargoempleado = 16");
 			lista =  q.getResultList();
 		   log.info("tamaño lista grupo --> " + lista.size()+"  ");
 		} catch (Exception e) {
