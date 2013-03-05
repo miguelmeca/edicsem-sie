@@ -106,6 +106,8 @@ public class Constants {
 
 	public static final String VERIFICA_CLIENTE_FORM = "VerificaClienteForm";
 	
+	public static final String MANT_ASIGNAR_GRUPO_VENTA = "AsignarGrupoVentaForm";
+	
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
 	public static final String COD_ESTADO_TB_CARGO_EMPLEADO = "CE";
