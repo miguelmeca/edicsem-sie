@@ -12,4 +12,5 @@ public interface GrupoVentaService {
 	public abstract void updateGrupo(GrupoVentaSie g);
 	public abstract GrupoVentaSie findGrupoVenta(int id);
 	public abstract List  listarGrupoVenta(int tipoVenta);
+	public abstract List  listarGrupoVenta();
 }

@@ -47,4 +47,11 @@ public class GrupoVentaServiceImpl implements GrupoVentaService {
 		return objGrupoDao.listarGrupoVenta(tipoVenta);
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.GrupoVentaService#listarGrupoVenta()
+	 */
+	public List listarGrupoVenta() {
+		return objGrupoDao.listarGrupoVenta();
+	}
+	
 }
