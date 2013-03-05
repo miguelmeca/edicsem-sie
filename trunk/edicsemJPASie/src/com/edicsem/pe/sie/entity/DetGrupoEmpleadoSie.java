@@ -28,7 +28,7 @@ public class DetGrupoEmpleadoSie implements Serializable {
 	//bi-directional many-to-one association to EmpleadoSie
     @ManyToOne
 	@JoinColumn(name="idempleado")
-	private EmpleadoSie idempleado;
+	private EmpleadoSie tbempleado;
 
 	//bi-directional many-to-one association to GrupoVentaSie
     @ManyToOne
@@ -62,12 +62,11 @@ public class DetGrupoEmpleadoSie implements Serializable {
 		this.tbGrupoVenta = tbGrupoVenta;
 	}
 
-	public EmpleadoSie getIdempleado() {
-		return idempleado;
+	public EmpleadoSie getTbempleado() {
+		return tbempleado;
 	}
 
-	public void setIdempleado(EmpleadoSie idempleado) {
-		this.idempleado = idempleado;
+	public void setTbempleado(EmpleadoSie tbempleado) {
+		this.tbempleado = tbempleado;
 	}
-	
 }
