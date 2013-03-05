@@ -66,26 +66,26 @@
 				</p:fieldset>
 				<p:spacer height="30px" />
 				<h:panelGrid  rendered="#{contratoForm.tamanoLista>1}" >
-					<p:dataTable value="#{contratoForm.contratoXClienteList}"  paginator="true"  rowsPerPageTemplate="5,10,15"  rows="5"
+					<p:dataTable value="#{contratoForm.contratoXClienteList}"  paginator="true" sortMode="multiple" rowsPerPageTemplate="5,10,15"  rows="5"
 					var="c" style="width:800px" emptyMessage="No se encontraron resultados" >
 						
 						<f:facet name="header">
 							<h:outputLabel value="#{message['rsltd.datatable']}" />
 						</f:facet>
 						
-						<p:column headerText="#{message['consulta.contrato.nombreCompleto']}"  >
+						<p:column headerText="#{message['consulta.contrato.nombreCompleto']}" sortBy="#{c.tbCliente.nombresCompletos}" >
 		                    <h:outputText value="#{c.tbCliente.nombresCompletos}" />
 		                </p:column>
 		                
-		                <p:column headerText="#{message['consulta.contrato.fecEntrega']}"  >
+		                <p:column headerText="#{message['consulta.contrato.fecEntrega']}" sortBy="#{c.fechaCreacionString}"  >
 		                    <h:outputText value="#{c.fechaCreacionString}" />
 		                </p:column>
 		                
-		                <p:column headerText="#{message['consulta.contrato.numDoc']}"  >
+		                <p:column headerText="#{message['consulta.contrato.numDoc']}" sortBy="#{c.tbCliente.numdocumento}" >
 		                    <h:outputText value="#{c.tbCliente.numdocumento}" />
 		                </p:column>
 		                
-		                <p:column headerText="#{message['consulta.contrato.estado']}"  >
+		                <p:column headerText="#{message['consulta.contrato.estado']}" sortBy="#{c.tbEstadoGeneral.descripcion}" >
 		                    <h:outputText value="#{c.tbEstadoGeneral.descripcion}" />
 		                </p:column>
 		                
