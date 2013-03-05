@@ -129,7 +129,7 @@ public class EmpleadoSie implements Serializable {
   	private Set<DetpagoSie> tbDetpago;
   	
   	//bi-directional many-to-one association to DetGrupoEmpleadoSie
-  	@OneToMany(mappedBy="idempleado")
+  	@OneToMany(mappedBy="tbempleado")
   	private Set<DetGrupoEmpleadoSie> tbDetGrupoEmpleado;
   	
   	//bi-directional many-to-one association to ControlKardexSie
