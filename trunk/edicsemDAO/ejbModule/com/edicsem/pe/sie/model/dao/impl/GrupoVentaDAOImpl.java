@@ -11,8 +11,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.GrupoVentaSie;
-import com.edicsem.pe.sie.entity.PuntoVentaSie;
-import com.edicsem.pe.sie.model.dao.AlmacenDAO;
 import com.edicsem.pe.sie.model.dao.GrupoVentaDAO;
 
 /**
@@ -79,6 +77,21 @@ public class GrupoVentaDAOImpl implements GrupoVentaDAO{
 		List  lista = null;
 		try {
 			Query q = em.createQuery("select p from GrupoVentaSie p where p.tipo = "+ tipoVenta);
+			lista =  q.getResultList(); 
+		   log.info("tamaño lista grupo x tipo --> " + lista.size()+"  ");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.GrupoVentaDAO#listarGrupoVenta()
+	 */
+	public List listarGrupoVenta() {
+		List  lista = null;
+		try {
+			Query q = em.createQuery("select p from GrupoVentaSie p ");
 			lista =  q.getResultList(); 
 		   log.info("tamaño lista grupo --> " + lista.size()+"  ");
 		} catch (Exception e) {
