@@ -12,34 +12,37 @@
 		<h1 class="title ui-widget-header ui-corner-all">#{message['verifica.tittle']}</h1>
 		<h:form id="formVerificaCliente">
 		<p:messages id="messages" showDetail="true" closable="true"/>
-		<p:panel>
+		<p:wizard id="wiz" widgetVar="wiz" flowListener="#{contratoForm.onFlowProcess}" nextLabel="#{message['btn.siguiente']}" backLabel="#{message['btn.atraz']}" >
+		<p:tab title="#{message['verifica.tab.cliente']}">
 		<p:fieldset>
-        <h:panelGrid columns="2" cellpadding="4">
+        <h:panelGrid id="panelC" columns="2" cellpadding="4">
         <h:outputText value="#{message['verifica.tipo.doc']}" />
-			<p:selectOneMenu id="tipoDoc" style="width:165px" value="#{verifica.idtipodoc}">
+			<p:selectOneMenu id="tipoDoc" style="width:165px" value="#{verifica.idtipodoc}" required="true">
 				<f:selectItems value="#{comboAction.tipoDocumentoitems}" />
-				<p:ajax update="nrodoc"/>
+				<p:ajax update="panelC"/>
 			</p:selectOneMenu>
 			
 			<h:outputText value="#{message['verifica.num.doc']}" />
 			<h:panelGroup id="nrodoc" >
 				<p:inputMask id="numdoc1" value="#{verifica.objverificaclienteSie.numdocumento}" mask="99999999"
-					rendered="#{verifica.idtipodoc==1}"  />
+					rendered="#{verifica.idtipodoc==1}" required="true" />
 					
 				<p:inputMask id="numdoc2" value="#{verifica.objverificaclienteSie.numdocumento}" mask="99999999999"
-					rendered="#{verifica.idtipodoc==2}"/>
+					rendered="#{verifica.idtipodoc==2}" required="true" />
 			</h:panelGroup>
 			
         	<h:outputText value="#{message['verifica.nombre.cliente']} " />
-			<p:inputText value="#{verifica.objverificaclienteSie.nombrecliente}" />
+			<p:inputText value="#{verifica.objverificaclienteSie.nombrecliente}" required="true" maxlength="140" />
 			
 			<h:outputText value="#{message['verifica.fecha.nacimiento']} " rendered="#{verifica.idtipodoc>1}"/>
 			<p:calendar value="#{contratoForm.objClienteSie.fecnacimiento}" required="true" pattern="dd/MM/yyyy" 
 			size="30" locale="es" pagedate="01/01/1990" maxdate="#{contratoForm.dValidoFecNac}" rendered="#{verifica.idtipodoc>1}"/>
 			</h:panelGrid>
 			</p:fieldset>
-			
-			<p:fieldset legend="#{message['verifica.producto']}" style="margin-top:30px">
+			</p:tab>
+			<p:tab title="#{message['verifica.tab.producto']}">
+			<p:panel>
+			<p:messages id="messageP" showDetail="true" closable="true"/>
 				<h:panelGrid columns="2" cellpadding="6">
 					<h:panelGrid>
 					<p:fieldset legend="#{message['verifica.anadir.paquete']}">
@@ -70,11 +73,13 @@
 					</p:selectOneMenu>
 					
 					<h:outputText value="#{message['contrato.producto.cantidad']}" />
-					<p:spinner value="#{verifica.verificaProd.cantidad}" min="1"   />
+					<p:spinner value="#{verifica.verificaProd.cantidad}" min="1" />
+					
 					<f:facet name="footer">
 					<p:commandButton value="Agregar Producto"  icon="ui-icon ui-icon-plus" 
-					action="#{verifica.productoAgregar}" update="lstProducto, messages" />
+					action="#{verifica.productoAgregar}" update="lstProducto, messageP" />
 					</f:facet>
+					
 					</h:panelGrid>
 					</p:fieldset>
 					</h:panelGrid>
@@ -95,15 +100,15 @@
 						</p:column>
 					</p:dataTable>
 					</h:panelGrid>
-			</p:fieldset>
-			
-			<p:fieldset legend="#{message['verifica.num.telefonico']}" style="margin-top:30px">
+					</p:panel>
+			</p:tab>
+			<p:tab title="#{message['verifica.tab.telefono']}">
+			<p:panel>
 			<h:panelGrid columns="2"  id="panelTlf" cellpadding="4" >
 				<p:fieldset>
 				<h:panelGrid columns="4" id="panelTelef" cellpadding="4" >
 					<h:outputText value="#{message['contrato.tipo.telefono']}" />
-					<p:selectOneMenu  value="#{verifica.tipoTelef}"
-						style="width:165px"  >
+					<p:selectOneMenu  value="#{verifica.tipoTelef}" style="width:165px"  >
 						<f:selectItem itemLabel="Fijo" itemValue="1" />
 						<f:selectItem itemLabel="Celular" itemValue="2" />
 						<p:ajax  update="panelTelef" />
@@ -134,7 +139,7 @@
 					rendered="#{verifica.tipoTelef==2}"/>
 					
 					<h:outputText value="#{message['contrato.telefono.descripcion']}" />
-					<p:inputText value="#{verifica.verificaTel.desctelefono}" maxlength="40" />
+					<p:inputText value="#{verifica.verificaTel.desctelefono}" maxlength="45" />
 					
 					<p:commandButton value="#{message['verifica.agrega.telefono']}"  icon="ui-icon ui-icon-plus" 
 					action="#{verifica.telefonoAgregar}" update="telefonoList, messages"/>
@@ -169,13 +174,19 @@
 						<f:selectItems value="#{comboAction.empleadoxcargo}" />
 					</p:selectOneMenu>
 					
+					<h:outputText value="#{message['verifica.observaciones']}" />
+					<p:inputTextarea value="#{verifica.objverificaclienteSie.observaciones}" maxlength="40" 
+					rows="3" style="width:220px" />
+					<f:facet name="footer">
 					<p:commandButton id="nuevoVerifica" value="#{message['verifica.registrar']}" action="#{verifica.insertar}" 
 					update="message" ajax="false" title="#{message['verifica.registrar.tittle']}" icon="ui-icon ui-icon-disk"/>
 					<p:tooltip for="nuevoVerifica"/>
+					</f:facet>
 				</h:panelGrid>
 				</p:fieldset>
-			</p:fieldset>
-		</p:panel>
+			</p:panel>
+			</p:tab>
+			</p:wizard>
 		</h:form>
 	</ui:define>
 </ui:composition>

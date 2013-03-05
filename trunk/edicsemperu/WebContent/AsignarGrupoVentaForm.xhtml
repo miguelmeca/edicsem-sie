@@ -12,9 +12,9 @@
 		<h1 class="title ui-widget-header ui-corner-all">Asignar Grupos de Ventas</h1>
 		<h:form id="formGrupo">
 			<p:messages id="message" showDetail="true" />
-			<p:panel>
+			 
 			<p:fieldset legend="Resultado de Meta">
-			<p:dataTable var="g" value="#{grupo.detGrupoEmplList}" id="data">  
+			<p:dataTable var="g" value="#{grupo.grupoEmplList}" id="data">  
 	            <p:column style="width:20px">
 	                <h:outputText id="dragIcon" styleClass="ui-icon ui-icon-arrow-4" />
 	                <p:draggable for="dragIcon" revert="true" />
@@ -27,28 +27,32 @@
 	            </p:column>
             </p:dataTable>
             </p:fieldset>
-            <p:fieldset id="selected" legend="Selected Cars" style="margin-top:20px">
-              <p:outputPanel id="area">
-              <p:dataTable var="car" value="#{tableBean.droppedCars}"   
-                    rendered="#{not empty tableBean.droppedCars}">  
-  
-                <p:column headerText="Model">  
-                    <h:outputText value="#{car.model}" />  
-                </p:column>  
-  
-                <p:column headerText="Year">  
-                    <h:outputText value="#{car.year}" />  
-                </p:column>
-              </p:dataTable>
-          </p:outputPanel>
-          </p:fieldset>
-          
-        <p:droppable for="selected" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="data" onDrop="handleDrop">  
-        <p:ajax listener="#{grupo.onCarDrop}" update="area data" />
+            <p:fieldset id="selected" legend="Grupos Asignados" style="margin-top:20px">
+              <p:dataTable var="v" value="#{grupo.grupoVentaList}"  id="idGrupo">
+              <p:column headerText="Grupo">
+              
+              <p:dataTable var="f" value="#{v.detalle}" >
+	               <f:facet name="header">
+	               			#{v.tbGrupoVenta.descripcion}
+	               </f:facet>
+	               <p:outputPanel id="t">
+              <h:outputText value="!!!Drop here!!!" style="font-size:24px;"  rendered="#{empty v.detalle}" />
+              </p:outputPanel>
+	               <p:column headerText="Grupo">
+		                <h:outputText value="#{v.tbGrupoVenta.descripcion}" />
+		           </p:column>
+	              <p:column headerText="Integrante">
+		                <h:outputText value="#{f.tbempleado.nombresCompletos}" />
+		           </p:column>
+	           </p:dataTable>
+               </p:column>
+               </p:dataTable>
+               
+             </p:fieldset>
+        <p:droppable for="idGrupo" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="data">  
+        <p:ajax listener="#{grupo.onDrop}" update="@form" />
         </p:droppable>
-        
-        
-	</p:panel>
+         
 	</h:form>
 	</ui:define>
 </ui:composition>

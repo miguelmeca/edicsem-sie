@@ -73,12 +73,16 @@ public class VerificaClienteAction extends BaseMantenimientoAbstractAction {
 		log.info("agregar()");
 		objverificaclienteSie = new VerificaClienteSie();
 		verificaTel= new VerificaTelefonoSie();
-		verificaProd = new VerificaProductoSie(); 
+		verificaProd = new VerificaProductoSie();
+		verificaProd.setCantidad(1);
 		lstProducto= new ArrayList<VerificaProductoSie>();
 		lstTelefono = new ArrayList<VerificaTelefonoSie>();
 		setNewRecord(true);
 		combo.setCargoEmpleado(12);
 		idtipodoc=1;
+		tipoTelef=1;
+		idpaquete=0;
+		idproducto=0;
 		return  getViewList();
 	}
 	
@@ -100,26 +104,32 @@ public class VerificaClienteAction extends BaseMantenimientoAbstractAction {
 		HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 		EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 		try {
+			if(idEmpleado==0){
+				mensaje="Debe seleccionar un empleado";
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			}
 			if (isNewRecord()) {
 				objverificaclienteSie.setUsuariocreacion(sessionUsuario.getUsuario());
 				objverificaClienteService.insertVerificaCliente(objverificaclienteSie, lstProducto, lstTelefono, idEmpleado,idtipodoc);
 				mensaje=Constants.MESSAGE_REGISTRO_TITULO;
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 				objverificaclienteSie = new VerificaClienteSie();
 			}else {
 				objverificaclienteSie.setUsuariomodifica(sessionUsuario.getUsuario());
 				objverificaclienteSie.setFechamodifica(new Timestamp(DateUtil.getToday().getTime().getTime()));
 				objverificaClienteService.updateVerificaCliente(objverificaclienteSie);
 				mensaje =Constants.MESSAGE_ACTUALIZO_TITULO;
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		
-		msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+	
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return null;
 	}
@@ -168,7 +178,7 @@ public class VerificaClienteAction extends BaseMantenimientoAbstractAction {
 		
 		if( verificaTel.getTelefono()==null||verificaTel.getTelefono().equals("")){
 			mensaje= "Debe ingresar un número telefónico";
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+			msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
 					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
