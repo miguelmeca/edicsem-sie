@@ -146,7 +146,29 @@ public class ContratoDAOImpl implements ContratoDAO{
 		}
 		return lista;
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ContratoDAO#listarContratoEntregaLetraObsequio(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public List listarContratoEntregaLetraObsequio(String numDocumento,String codigoContrato, String nombreCliente, String apePat,String apeMat) {
+		List  lista = null;
+		log.info( numDocumento+ " c "+codigoContrato+ " n "+nombreCliente+ " ap  "+apePat+ " am "+ apeMat);
+		
+		try {
+			String sql = "select c from ContratoSie c where  c.idcontrato in (select p.tbContrato.idcontrato " +
+					" from CobranzaSie p  where p.fecpago is not null and p.tbContrato.idcontrato = c.idcontrato )" ;
+					
+			log.info("SQL "+sql);
+			Query q = em.createQuery(sql);
+			lista =  q.getResultList();
+			log.info("tamaño lista contrato --> " + lista.size()+"  ");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.ContratoDAO#obtenerCodigo()
 	 */
@@ -165,15 +187,8 @@ public class ContratoDAOImpl implements ContratoDAO{
 	
 	public ContratoSie buscarXcodigoContrato(int id) {
 		
-		
-		
-		
 		return null;
 	}
-
-	
-	
-	
 	
 	//verifico si este numero de contrato ya se encuentra en la BD de sistemas integrados
 	public boolean verificarNumContrato(int numContrato) {
