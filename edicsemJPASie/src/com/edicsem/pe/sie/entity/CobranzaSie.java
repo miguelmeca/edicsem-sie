@@ -2,6 +2,7 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Set;
@@ -75,6 +76,12 @@ public class CobranzaSie   implements Serializable {
 	private String usuariomodifica;
 	
 	private BigDecimal importemasmora;
+	
+	private String nrooperacion;
+	
+	private Time horapago;
+
+	private String lugarpago;
 
 	//bi-directional many-to-one association to ClienteSie
     @ManyToOne
@@ -325,6 +332,30 @@ public class CobranzaSie   implements Serializable {
 	 */
 	public void setNuevo(String nuevo) {
 		this.nuevo = nuevo;
+	}
+
+	public Time getHorapago() {
+		return horapago;
+	}
+
+	public void setHorapago(Time horapago) {
+		this.horapago = horapago;
+	}
+
+	public String getNrooperacion() {
+		return nrooperacion;
+	}
+
+	public void setNrooperacion(String nrooperacion) {
+		this.nrooperacion = nrooperacion;
+	}
+
+	public String getLugarpago() {
+		return lugarpago;
+	}
+
+	public void setLugarpago(String lugarpago) {
+		this.lugarpago = lugarpago;
 	}
 	
 }
