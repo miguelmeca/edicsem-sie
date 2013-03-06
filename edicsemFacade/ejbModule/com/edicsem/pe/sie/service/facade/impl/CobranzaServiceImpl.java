@@ -85,6 +85,10 @@ public class CobranzaServiceImpl implements CobranzaService {
 				}else{
 					log.info(" cobranza "+cobranza.getTbCliente().getNombresCompletos());
 					cobranza.setFecpago(s.getFecpago());
+					cobranza.setNrooperacion(s.getNumOperacion());
+					if(s.getHoraAtencion()!=null)
+					cobranza.setHorapago(s.getHoraAtencion());
+					cobranza.setLugarpago("B");
 					//Definir si en Banco, oficina
 					objCobranzaDao.updateCobranza(cobranza);
 				}

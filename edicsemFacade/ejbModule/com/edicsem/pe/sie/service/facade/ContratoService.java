@@ -20,9 +20,11 @@ public interface ContratoService {
 	public abstract void updateContrato(ContratoSie contrato);
 	public abstract ContratoSie findContrato (int id);
 	public abstract List  listarContratos();
-	public abstract List listarClientePorParametro(String numDocumento,String codigoContrato,String nombreCliente, String apePat,String apeMat );
+	public abstract List listarClientePorParametro(String numDocumento,String codigoContrato,String nombreCliente, String apePat,String apeMat);
 	public abstract String insertMigracion(List<SistemaIntegradoDTO> sis, String usuariocreacion);
 	public abstract int obtenerCodigo();
 	public abstract void updateEntregasPeru(List<EntregasPeruDTO> credito );
 	public abstract ContratoSie buscarXcodigoContrato (String codContrato);
+	public abstract List listarContratoEntregaLetraObsequio(String numDocumento,String codigoContrato,String nombreCliente, String apePat,String apeMat);
+	
 }

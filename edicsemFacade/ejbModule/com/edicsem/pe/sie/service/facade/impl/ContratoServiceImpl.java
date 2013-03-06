@@ -51,8 +51,6 @@ import com.edicsem.pe.sie.service.facade.ContratoService;
 @Stateless
 public class ContratoServiceImpl implements ContratoService {
 	
-	
-
 	@EJB
 	private ClienteDAO objClienteDao;
 	@EJB
@@ -482,6 +480,7 @@ public class ContratoServiceImpl implements ContratoService {
 				log.info(" insertando cliente:  "+ cli.getNombrecliente()+" ape. pat "+cli.getApepatcliente() );
 				cli.setUsuariocreacion(usuariocreacion);
 				objClienteDao.insertCliente(cli);
+				con.setFechaentrega(s.getFechaEntrega());
 				con.setNumcuotas(s.getCantCuotas());
 				con.setPagosubinicial(new  BigDecimal(s.getImporteInicial()));
 				EmpresaSie empr = objEmpresaDao.findEmpresaXdescripcion(s.getEmpresa());
@@ -726,15 +725,18 @@ public class ContratoServiceImpl implements ContratoService {
 		return objContratoDao.obtenerCodigo();
 	}
 	
-
-
-
-public ContratoSie buscarXcodigoContrato(String codContrato) {
-	return objContratoDao.buscarXcodigoContrato(codContrato);
-}
-
-
-
-
-
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ContratoService#buscarXcodigoContrato(java.lang.String)
+	 */
+	public ContratoSie buscarXcodigoContrato(String codContrato) {
+		return objContratoDao.buscarXcodigoContrato(codContrato);
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ContratoService#listarContratoEntregaLetraObsequio(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public List listarContratoEntregaLetraObsequio(String numDocumento,String codigoContrato, String nombreCliente, String apePat,String apeMat) {
+		return objContratoDao.listarContratoEntregaLetraObsequio(numDocumento, codigoContrato, nombreCliente, apePat, apeMat);
+	}
+	
 }
