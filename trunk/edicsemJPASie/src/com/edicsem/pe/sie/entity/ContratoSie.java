@@ -91,6 +91,11 @@ public class ContratoSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idpuntoventa")
 	private PuntoVentaSie tbPuntoVenta;
+    
+    //bi-directional many-to-one association to EstadoGeneralSie
+    @ManyToOne
+	@JoinColumn(name="idestadogeneralentrega")
+	private EstadoGeneralSie tbEstadoGeneralEntrega;
 
 	//bi-directional many-to-one association to EstadoGeneralSie
     @ManyToOne
@@ -119,6 +124,9 @@ public class ContratoSie implements Serializable {
   	
   	@Transient
 	private String fechaCreacionString;
+  	
+  	@Transient
+	private String fechaEntregaString;
 
     public ContratoSie() {
     }
@@ -373,6 +381,35 @@ public class ContratoSie implements Serializable {
 	 */
 	public void setRutaImagenContrato(String rutaImagenContrato) {
 		this.rutaImagenContrato = rutaImagenContrato;
+	}
+
+	/**
+	 * @return the tbEstadoGeneralEntrega
+	 */
+	public EstadoGeneralSie getTbEstadoGeneralEntrega() {
+		return tbEstadoGeneralEntrega;
+	}
+
+	/**
+	 * @param tbEstadoGeneralEntrega the tbEstadoGeneralEntrega to set
+	 */
+	public void setTbEstadoGeneralEntrega(EstadoGeneralSie tbEstadoGeneralEntrega) {
+		this.tbEstadoGeneralEntrega = tbEstadoGeneralEntrega;
+	}
+
+	/**
+	 * @return the fechaEntregaString
+	 */
+	public String getFechaEntregaString() {
+		fechaEntregaString = DateUtil.formatoString(getFechaentrega(), "dd/MM/yyyy");
+		return fechaEntregaString;
+	}
+
+	/**
+	 * @param fechaEntregaString the fechaEntregaString to set
+	 */
+	public void setFechaEntregaString(String fechaEntregaString) {
+		this.fechaEntregaString = fechaEntregaString;
 	}
 
 }
