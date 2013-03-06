@@ -196,6 +196,24 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:dialog>
 	</h:form>
 	
+	<!--  CONSULTAR VERIFICACION  -->
+	<h:form id="formVerVerificacion">
+		<p:dialog header="#{message['verifica.ver']}" widgetVar="verVerificaDialog" resizable="false" 
+			showEffect="fade" hideEffect="explode" modal="true" position="center">
+			<p:messages id="msj" showDetail="true"  />
+				<h:panelGrid id="display" columns="2" cellpadding="5" >
+				<h:outputText value="#{message['contrasena.actual']}" />
+	            <p:password value="#{login.passActual}" required="true"/>
+	            <h:outputText value="#{message['contrasena.nueva']}" />
+	            <p:password id="pwd1" value="#{login.passConfirma1}" promptLabel="Ingrese nueva contraseña" maxlength="25" feedback="true" required="true" match="pwd2" weakLabel="peligroso" goodLabel="bueno" strongLabel="Buenísmo"  />
+	            <h:outputText value="#{message['contrasena.nueva.confirma']}" />
+	            <p:password id="pwd2" value="#{login.passConfirma2}" promptLabel="Volver a ingresar nueva contraseña" maxlength="25" bfeedback="true" required="true" weakLabel="peligroso" goodLabel="bueno" strongLabel="Buenísmo"/>
+				<p:commandButton update="msj,display" value="Actualizar Contraseña" action="#{login.cambiarContrasena}"  icon="ui-icon ui-icon-disk" />
+				<p:commandButton value="Cerrar" oncomplete="cambiarContrasenaDialog.hide()" icon="ui-icon ui-icon-close" />
+				</h:panelGrid>
+			</p:fieldset>
+		</p:dialog>
+	</h:form>
 	
 	<!--  Mantenimiento |x Detalle - Modificar-->
 	<h:form id="formManteKardexList">

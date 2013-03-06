@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+	<script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
+		<h1 class="title ui-widget-header ui-corner-all">#{message['configurar.pago.cargo.tittle']}</h1>
+		<h:form id="formControlMercaderia">
+		<p:messages id="message" showDetail="true" closable="true"/>
+		<p:panel>
+		<p:fieldset legend="#{message['configurar.pago']}" >
+        <h:panelGrid columns="2" cellpadding="6" >
+			<h:outputText value="#{message['configurar.cargo']}" />
+			<p:selectOneMenu value="#{comboAction.tipoAlmacen}" required="true" style="width:240px" >
+			<f:selectItem itemLabel="Seleccione tipo" itemValue="#{null}" />
+				<f:selectItems value="#{comboAction.tipoalmacenitems}" />
+			</p:selectOneMenu>
+			
+			<h:outputText value="#{message['configurar.comision']}" />
+			<p:spinner   />
+			
+			<h:outputText value="#{message['configurar.basico']}" />
+			<p:spinner   />
+			
+			<h:outputText value="#{message['configurar.factor']}" />
+			<p:selectOneMenu value="#{control.idalmacen}"  required="true" style="width:240px" >
+				<f:selectItem itemLabel="Seleccione" itemValue="#{null}" />
+				<f:selectItems value="#{comboAction.almacenItemsXTipo}" />
+			</p:selectOneMenu>
+			
+			<f:facet name="footer">
+			<p:commandButton value="#{message['control.consultar.mercaderia']}" action="#{control.consultar}" update="message, lstControl" ajax="false" icon="ui-icon-search"/>
+			</f:facet>
+			
+		</h:panelGrid>
+		</p:fieldset>
+		
+		<p:fieldset legend="Responsable " style="margin-top:30px">
+		<h:panelGrid columns="2" cellpadding="6" >
+			<h:outputText value="#{message['control.encargado']}" />
+			<p:selectOneMenu value="#{control.idEmpleado}" style="width:220px" >
+				<f:selectItem  itemValue="#{null}" itemLabel="Seleccionar Empleado" />
+				<f:selectItems value="#{comboAction.empleadoxcargo}"  />
+			</p:selectOneMenu>
+			
+			<p:commandButton value="Ver Verificación" action="#{control.consultar}" update="message" ajax="false" icon="ui-icon-search"/>
+			
+			<p:commandButton value="Grabar" action="#{control.insertar}" update="message" ajax="false" icon="ui-icon-search"/>
+			
+			</h:panelGrid>
+		</p:fieldset>
+		</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

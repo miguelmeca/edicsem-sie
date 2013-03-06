@@ -36,7 +36,7 @@
 			
 			<h:outputText value="#{message['verifica.fecha.nacimiento']} " rendered="#{verifica.idtipodoc>1}"/>
 			<p:calendar value="#{contratoForm.objClienteSie.fecnacimiento}" required="true" pattern="dd/MM/yyyy" 
-			size="30" locale="es" pagedate="01/01/1990" maxdate="#{contratoForm.dValidoFecNac}" rendered="#{verifica.idtipodoc>1}"/>
+			size="30" maxlength="10" locale="es" pagedate="01/01/1990" maxdate="#{contratoForm.dValidoFecNac}" rendered="#{verifica.idtipodoc>1}"/>
 			</h:panelGrid>
 			</p:fieldset>
 			</p:tab>
@@ -44,7 +44,7 @@
 			<p:panel>
 			<p:messages id="messageP" showDetail="true" closable="true"/>
 				<h:panelGrid columns="2" cellpadding="6">
-					<h:panelGrid>
+					<h:panelGroup>
 					<p:fieldset legend="#{message['verifica.anadir.paquete']}">
 					<h:panelGrid columns="2" cellpadding="4" >
 					<h:outputText value="#{message['contrato.paquete']}" />
@@ -58,7 +58,7 @@
 					
 					<p:fieldset legend="#{message['verifica.anadir.producto']}" style="margin-top:10px">
 					<h:panelGrid columns="2" cellpadding="4" >
-					<h:outputText value="#{message['contrato.tipo.producto']}" />
+					<h:outputLabel value="#{message['contrato.tipo.producto']}" />
 					<p:selectOneMenu id="tipoProd2" value="#{comboAction.tipoProducto}" style="width:240px">
 						<f:selectItem itemLabel="Seleccionar tipo" itemValue="#{null}" />
 						<f:selectItems value="#{comboAction.tipoitems}" />
@@ -75,14 +75,13 @@
 					<h:outputText value="#{message['contrato.producto.cantidad']}" />
 					<p:spinner value="#{verifica.verificaProd.cantidad}" min="1" />
 					
-					<f:facet name="footer">
-					<p:commandButton value="Agregar Producto"  icon="ui-icon ui-icon-plus" 
+					 
+					<p:commandButton value="#{message['verifica.agrega.producto']}"  icon="ui-icon ui-icon-plus" 
 					action="#{verifica.productoAgregar}" update="lstProducto, messageP" />
-					</f:facet>
-					
+					 
 					</h:panelGrid>
 					</p:fieldset>
-					</h:panelGrid>
+					</h:panelGroup>
 					<p:dataTable value="#{verifica.lstProducto}" id="lstProducto" var="c" paginator="true" rows="5">
 						<f:facet name="header">
 							<h:outputLabel value="#{message['verifica.producto.lista']}" />

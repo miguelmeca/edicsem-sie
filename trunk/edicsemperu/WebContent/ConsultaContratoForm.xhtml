@@ -15,7 +15,7 @@
 		<p:panel>
 		<p:fieldset id="fi" legend="Consutar Contrato">
 			
-		<p:selectOneRadio  value="#{contratoForm.radio}" onchange="" >  
+		<p:selectOneRadio  value="#{contratoForm.radio}" >  
 	        <f:selectItem itemLabel="Numero de Documento" itemValue="1"/>
 	        <f:selectItem itemLabel="Código de Contrato" itemValue="2" >
 	        	</f:selectItem>
@@ -67,7 +67,7 @@
 				<p:spacer height="30px" />
 				<h:panelGrid  rendered="#{contratoForm.tamanoLista>1}" >
 					<p:dataTable value="#{contratoForm.contratoXClienteList}"  paginator="true" sortMode="multiple" rowsPerPageTemplate="5,10,15"  rows="5"
-					var="c" style="width:800px" emptyMessage="No se encontraron resultados" >
+					var="c" style="width:800px" emptyMessage="#{message['rsltd.empty']}" >
 						
 						<f:facet name="header">
 							<h:outputLabel value="#{message['rsltd.datatable']}" />
@@ -78,7 +78,7 @@
 		                </p:column>
 		                
 		                <p:column headerText="#{message['consulta.contrato.fecEntrega']}" sortBy="#{c.fechaCreacionString}"  >
-		                    <h:outputText value="#{c.fechaCreacionString}" />
+		                    <h:outputText value="#{c.fechaEntregaString}" />
 		                </p:column>
 		                
 		                <p:column headerText="#{message['consulta.contrato.numDoc']}" sortBy="#{c.tbCliente.numdocumento}" >
@@ -90,7 +90,7 @@
 		                </p:column>
 		                
 		                <p:column headerText="#{message['consulta.cargar']}" >
-			                <p:commandButton icon="ui-icon-close" title="cargar"  action="#{contratoForm.cargar}" update="@form" >
+			                <p:commandButton icon="ui-icon-arrowreturnthick-1-s" title="cargar"  action="#{contratoForm.cargar}" update="@form" >
 			                <f:setPropertyActionListener value="#{c.tbCliente.idcliente}" target="#{contratoForm.idcliente}" />
 								<f:setPropertyActionListener value="#{c.idcontrato}" target="#{contratoForm.idcontrato}" />
 							</p:commandButton>
