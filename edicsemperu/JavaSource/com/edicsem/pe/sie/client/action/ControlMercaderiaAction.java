@@ -143,6 +143,7 @@ public class ControlMercaderiaAction extends BaseMantenimientoAbstractAction {
 				control.setTbProducto(lista.get(i).getTbProducto());
 				control.setItem(i+1);
 				control.setCantidaddeberia(lista.get(i).getCantexistencia());
+				control.setCantidad(lista.get(i).getCantexistencia());
 				lstControl.add(control);
 			}
 		}

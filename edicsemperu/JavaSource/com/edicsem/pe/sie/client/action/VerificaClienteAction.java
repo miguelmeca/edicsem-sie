@@ -108,13 +108,21 @@ public class VerificaClienteAction extends BaseMantenimientoAbstractAction {
 				mensaje="Debe seleccionar un empleado";
 				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			}
-			if (isNewRecord()) {
+			if(lstProducto.size()==0){
+				mensaje="Debe agregar productos a la lista";
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			}
+			if(lstTelefono.size()==0){
+				mensaje="Debe agregar teléfonos a la lista";
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			}
+			if (isNewRecord() && mensaje==null) {
 				objverificaclienteSie.setUsuariocreacion(sessionUsuario.getUsuario());
 				objverificaClienteService.insertVerificaCliente(objverificaclienteSie, lstProducto, lstTelefono, idEmpleado,idtipodoc);
 				mensaje=Constants.MESSAGE_REGISTRO_TITULO;
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 				objverificaclienteSie = new VerificaClienteSie();
-			}else {
+			}else if(isNewRecord()==false && mensaje==null) {
 				objverificaclienteSie.setUsuariomodifica(sessionUsuario.getUsuario());
 				objverificaclienteSie.setFechamodifica(new Timestamp(DateUtil.getToday().getTime().getTime()));
 				objverificaClienteService.updateVerificaCliente(objverificaclienteSie);

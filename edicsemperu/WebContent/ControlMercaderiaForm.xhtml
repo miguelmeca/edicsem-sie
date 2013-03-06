@@ -94,7 +94,7 @@
 			                   <h:outputText value="#{c.cantidad}" />
 			                </f:facet>
 			                <f:facet name="input">
-			                    <p:spinner value="#{c.cantidad}" size="4"/>
+			                    <p:spinner value="#{c.cantidad}" size="4" min="1" />
 			                </f:facet>
 			            </p:cellEditor>
 			        </p:column>
@@ -123,7 +123,7 @@
 				<f:selectItems value="#{comboAction.empleadoxcargo}"  />
 			</p:selectOneMenu>
 			
-			<p:commandButton value="Ver Verificación" action="#{control.consultar}" update="message" ajax="false" icon="ui-icon-search"/>
+			<p:commandButton value="#{message['verifica.ver']}" action="#{control.consultar}" update="message" ajax="false" icon="ui-icon-search"/>
 			
 			<p:commandButton value="Grabar" action="#{control.insertar}" update="message" ajax="false" icon="ui-icon-search"/>
 			
