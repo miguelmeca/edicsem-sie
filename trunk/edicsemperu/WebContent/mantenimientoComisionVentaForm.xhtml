@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+	<script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
+		<h1 class="title ui-widget-header ui-corner-all">#{message['comision.ventas.tittle']}</h1>
+		<h:form id="formComisionSearch">
+		<p:messages id="message" showDetail="true" closable="true" />
+		<p:panel>
+			<h:panelGrid columns="2" cellpadding="5" id="pg" >
+				<p:selectOneRadio  value="#{comisionForm.option}" >  
+			        <f:selectItem itemLabel="Por criterio comisión" itemValue="1"/>
+			        <f:selectItem itemLabel="Por rango de venta" itemValue="2" />
+			        <p:ajax update="pg" />
+		        </p:selectOneRadio>
+		        <p:spacer/>
+		        
+				<h:outputText value="#{message['comision.venta.criterio']}" rendered="#{comisionForm.option==2}"/>
+				<p:selectOneMenu value="#{comisionForm.idcriterio}" required="true" rendered="#{comisionForm.option==2}" >
+					<f:selectItem itemValue="#{null}" itemLabel="Seleccionar criterio" />
+					<f:selectItems value="#{comboAction.criterioComisionitems}" />
+				</p:selectOneMenu>
+				
+				<h:outputText value="#{message['comision.venta.rango.inicial']}" rendered="#{comisionForm.option==1}"/>
+				<p:spinner value="#{comisionForm.objcomisionSie.rangoinicial}" required="true" min="1" rendered="#{comisionForm.option==1}" size="25"/>
+				
+				<h:outputText value="#{message['comision.venta.rango.final']}" rendered="#{comisionForm.option==1}"/>
+				<p:spinner value="#{comisionForm.objcomisionSie.rangofinal}" required="true" min="1" rendered="#{comisionForm.option==1}" size="25"/>
+				
+				<h:outputText value="#{message['comision.venta.cargo']}"   />
+				<p:selectOneMenu value="#{comisionForm.idcargo}" required="true" >
+					<f:selectItem itemValue="#{null}" itemLabel="Seleccionar cargo" />
+					<f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
+				</p:selectOneMenu>
+				
+				<h:outputText value="#{message['comision.venta.base']}" />
+				<p:spinner value="#{comisionForm.objcomisionSie.base}" required="true" min="1" size="25" />
+				
+				<h:outputText value="#{message['comision.venta.porcentaje']}" />
+				<p:spinner value="#{comisionForm.objcomisionSie.porcentaje}" required="true" min="1" size="25"/>
+				
+				<h:outputText value="#{message['comision.venta.pagoinmediato']}" />
+				<p:spinner value="#{comisionForm.objcomisionSie.pagoinmediato}" required="true" min="1" size="25"/>
+				
+				<p:commandButton value="Registrar" action="#{comisionForm.insertar}" ajax="false" icon="ui-icon ui-icon-disk" />
+                
+                <p:commandButton value="Regresar" action="#{comisionSearch.listar}" immediate="true" ajax= "false" update="message"
+                    icon="ui-icon-circle-arrow-w" />
+		</h:panelGrid>
+		</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
