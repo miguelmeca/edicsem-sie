@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.service.facade.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -80,6 +81,13 @@ public class VerificaClienteServiceImpl implements VerificaClienteService {
 	 */
 	public List listarVerificaCliente() {
 		return objverificaclienteDao.listarVerificaCliente();
+	}
+
+	@Override
+	public List listarVerificacionXFechaXalmacen(Date fechaDesde,
+			Date fechaHasta, int idalmacen) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
