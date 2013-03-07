@@ -6,6 +6,7 @@ import javax.persistence.*;
 import com.edicsem.pe.sie.util.constants.Constants;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 
 /**
@@ -41,6 +42,18 @@ public class ComisionVentaSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idcriterio")
 	private CriterioComisionSie tbCriterioComision;
+    
+	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
+	private Timestamp fechacreacion;
+	
+	private Timestamp fechamodifica;
+	
+	private String usuariocreacion;
+
+	private String usuariomodifica;
+    
+    @Transient
+    private String rangoString;
 
     public ComisionVentaSie() {
     }
@@ -107,6 +120,58 @@ public class ComisionVentaSie implements Serializable {
 
 	public void setTbCargoempleado(CargoEmpleadoSie tbCargoempleado) {
 		this.tbCargoempleado = tbCargoempleado;
+	}
+
+	/**
+	 * @return the rangoString
+	 */
+	public String getRangoString() {
+		if(rangofinal==null)
+		{
+			rangoString=  rangoinicial+" a "+rangofinal;
+		}else{
+			rangoString=  rangoinicial+" a +";
+		}
+		return rangoString;
+	}
+
+	/**
+	 * @param rangoString the rangoString to set
+	 */
+	public void setRangoString(String rangoString) {
+		this.rangoString = rangoString;
+	}
+
+	public Timestamp getFechacreacion() {
+		return fechacreacion;
+	}
+
+	public void setFechacreacion(Timestamp fechacreacion) {
+		this.fechacreacion = fechacreacion;
+	}
+
+	public Timestamp getFechamodifica() {
+		return fechamodifica;
+	}
+
+	public void setFechamodifica(Timestamp fechamodifica) {
+		this.fechamodifica = fechamodifica;
+	}
+
+	public String getUsuariocreacion() {
+		return usuariocreacion;
+	}
+
+	public void setUsuariocreacion(String usuariocreacion) {
+		this.usuariocreacion = usuariocreacion;
+	}
+
+	public String getUsuariomodifica() {
+		return usuariomodifica;
+	}
+
+	public void setUsuariomodifica(String usuariomodifica) {
+		this.usuariomodifica = usuariomodifica;
 	}
 	
 }
