@@ -123,7 +123,7 @@
 				<f:selectItems value="#{comboAction.empleadoxcargo}"  />
 			</p:selectOneMenu>
 			
-			<p:commandButton value="#{message['verifica.ver']}" action="#{control.consultar}" update="message" ajax="false" icon="ui-icon-search"/>
+			<p:commandButton value="#{message['verifica.ver']}" title="ver verificación" icon="ui-icon-search" oncomplete="verVerificaDialog.show()"  />
 			
 			<p:commandButton value="Grabar" action="#{control.insertar}" update="message" ajax="false" icon="ui-icon-search"/>
 			

@@ -33,7 +33,7 @@ public class VerificaClienteAction extends BaseMantenimientoAbstractAction {
 	private Log log = LogFactory.getLog(VerificaClienteAction.class);
 	private VerificaClienteSie objverificaclienteSie;
 	private String mensaje, selectTelef;
-	private int idtipodoc,tipoTelef,operadortelefonico, idproducto, idpaquete, item, idEmpleado;
+	private int idtipodoc,tipoTelef,operadortelefonico, idproducto, idpaquete, item, idEmpleado, idalmacen;
 	private VerificaProductoSie verificaProd;
 	private VerificaTelefonoSie verificaTel;
 	private List<VerificaProductoSie> lstProducto;
@@ -510,6 +510,20 @@ public class VerificaClienteAction extends BaseMantenimientoAbstractAction {
 	 */
 	public void setIdEmpleado(int idEmpleado) {
 		this.idEmpleado = idEmpleado;
+	}
+
+	/**
+	 * @return the idalmacen
+	 */
+	public int getIdalmacen() {
+		return idalmacen;
+	}
+
+	/**
+	 * @param idalmacen the idalmacen to set
+	 */
+	public void setIdalmacen(int idalmacen) {
+		this.idalmacen = idalmacen;
 	}
 	
 }

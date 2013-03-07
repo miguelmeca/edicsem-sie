@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+	<script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
+		<h1 class="title ui-widget-header ui-corner-all">#{message['comision.ventas.tittle']}</h1>
+		<h:form id="formManteComisionLista" >
+		<p:messages id="message" showDetail="true" />
+			<p:dataTable value="#{comisionSearch.comisionList}" var="p" 
+					id="listaComision" paginator="true" rows="10"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" widgetVar="table"
+					emptyMessage="No se encontro registros">
+					<f:facet name="header">Mantenimiento Comisión </f:facet>
+					<f:facet name="header">
+					    <p:outputPanel>
+						 <h:outputText value="Buscar :"/>
+						 <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px; align=Left; "/>
+						</p:outputPanel>
+					</f:facet>
+					<p:column sortBy="#{p.rangoString}" filterBy="#{p.rangoString}" headerText="cant" >
+						<f:facet name="header">
+							<h:outputText value="#{message['comision.venta.cantidad']}" />
+						</f:facet>
+						<h:outputText value="#{p.rangoString}" />
+					</p:column>
+					<p:column sortBy="#{p.base}" filterBy="#{p.base}" headerText="#{message['mantenimiento.productoList.descripcion']}">
+						<f:facet name="header">
+							<h:outputText value="#{message['comision.venta.base']}"/>
+						</f:facet>
+						<h:outputText value="#{p.base}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{message['mantenimiento.productoList.modificar']}" />
+						</f:facet>
+						<p:commandButton update=":formComisionSearch:display" icon="ui-icon ui-icon-pencil"
+							title="#{message['comision.editarDatos']}" action="#{comisionForm.update}" >
+							<f:setPropertyActionListener value="#{p}" target="#{comisionForm.objcomisionSie}" />
+						</p:commandButton>
+					</p:column>
+					<f:facet name="footer">
+						<div align="left">
+							 <p:commandButton id="btnNuevo" value="#{message['mantenimiento.comision.nuevo']}"  action="#{comisionForm.agregar}"  
+							 title="#{message['manteninimento.comision.nuevo.tittle']}" icon="ui-icon-star"/>
+							 <p:tooltip for="btnNuevo"/>
+						</div>
+					</f:facet>
+				</p:dataTable>
+				<p:blockUI block="listaComision" trigger="listaComision">cargando<br />
+				<p:graphicImage   value="/images/ajax_loader.gif"  style="width:60px; heigth:60px"  /></p:blockUI>
+		</h:form>
+	</ui:define>
+</ui:composition>

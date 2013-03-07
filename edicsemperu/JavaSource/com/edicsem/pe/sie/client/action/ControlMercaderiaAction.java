@@ -2,6 +2,7 @@ package com.edicsem.pe.sie.client.action;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -19,9 +20,11 @@ import org.primefaces.event.RowEditEvent;
 import com.edicsem.pe.sie.entity.ControlKardexSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.KardexSie;
+import com.edicsem.pe.sie.entity.VerificaProductoSie;
 import com.edicsem.pe.sie.service.facade.ControlMercaderiaService;
 import com.edicsem.pe.sie.service.facade.KardexService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
+import com.edicsem.pe.sie.service.facade.VerificaProductoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
@@ -31,11 +34,15 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 public class ControlMercaderiaAction extends BaseMantenimientoAbstractAction {
 	private Log log = LogFactory.getLog(ControlMercaderiaAction.class);
 	private ControlKardexSie objcontrolSie;
-	private String mensaje;
-	private int idalmacen, idProducto, idEmpleado, cantidad, cantidadDeberia;
+	private String mensaje,actionConsultar;
+	private int idalmacen, idProducto, idEmpleado, cantidadDeberia;
 	private List<ControlKardexSie> lstControl;
+	private List<VerificaProductoSie> lstProducto;
 	private boolean newRecord;
+	private Date fechaDesde, fechaHasta;
 	
+	@EJB
+	private VerificaProductoService objverificaProductoService;
 	@EJB
 	private ProductoService objProductoService;
 	@EJB
@@ -54,6 +61,7 @@ public class ControlMercaderiaAction extends BaseMantenimientoAbstractAction {
 	public void init() {
 		log.info("init()");
 		lstControl = new ArrayList<ControlKardexSie>();
+		actionConsultar="";
 	}
 	
 	/*
@@ -71,7 +79,9 @@ public class ControlMercaderiaAction extends BaseMantenimientoAbstractAction {
 		objcontrolSie = new ControlKardexSie();
 		lstControl= new ArrayList<ControlKardexSie>();
 		combo.setCargoEmpleado(12);
+		objcontrolSie.setCantidad(1);
 		setNewRecord(true);
+		actionConsultar="";
 		return getViewList();
 	}
 	
@@ -101,19 +111,26 @@ public class ControlMercaderiaAction extends BaseMantenimientoAbstractAction {
 		HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 		EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 		try {
-			if (isNewRecord()) {
+			if(idEmpleado==0){
+				mensaje="Debe ingresar un empleado para registrar ";
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
+			}else if(idalmacen==3){
+				mensaje = "El almacén no puede ser externo";
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
+			}
+			else if (isNewRecord()) {
 				objcontrolSie.setUsuariocreacion(sessionUsuario.getUsuario());
 				objControlService.insertControlKardex(lstControl,idalmacen, idEmpleado );
 				mensaje=Constants.MESSAGE_REGISTRO_TITULO;
 				objcontrolSie = new ControlKardexSie();
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 			}else {
 				objcontrolSie.setUsuariomodifica(sessionUsuario.getUsuario());
 				objcontrolSie.setFechamodifica(new Timestamp(DateUtil.getToday().getTime().getTime()));
 				objControlService.updateControlKardex(objcontrolSie);
 				mensaje =Constants.MESSAGE_ACTUALIZO_TITULO;
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 			}
-			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -124,7 +141,6 @@ public class ControlMercaderiaAction extends BaseMantenimientoAbstractAction {
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 		
-		msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return null;
 	}
@@ -133,18 +149,27 @@ public class ControlMercaderiaAction extends BaseMantenimientoAbstractAction {
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#consultar()
 	 */
 	public String consultar() throws Exception {
-		log.info("consultar()");
-		List<KardexSie> lista = objKardexSie.ConsultaKardexAlmacen(idalmacen);
-		lstControl = new ArrayList<ControlKardexSie>();
-		for (int i = 0; i < lista.size(); i++) {
-			if(lista.get(i).getCantexistencia()>0){
-				ControlKardexSie control = new ControlKardexSie();
-				log.info("prod "+lista.get(i).getTbProducto().getIdproducto());
-				control.setTbProducto(lista.get(i).getTbProducto());
-				control.setItem(i+1);
-				control.setCantidaddeberia(lista.get(i).getCantexistencia());
-				control.setCantidad(lista.get(i).getCantexistencia());
-				lstControl.add(control);
+		log.info("consultar() "+actionConsultar+" "+fechaDesde+" "+fechaHasta+" "+ idalmacen);
+		
+		if(idalmacen==0){
+			mensaje = "Debe seleccionar un almacén para consultar sus verificaciones";
+		}
+		if(actionConsultar.equalsIgnoreCase("V")){
+			lstProducto = objverificaProductoService.listarVerificacionXFechaXalmacen(fechaDesde, fechaHasta, idalmacen);
+		}
+		else{
+			List<KardexSie> lista = objKardexSie.ConsultaKardexAlmacen(idalmacen);
+			lstControl = new ArrayList<ControlKardexSie>();
+			for (int i = 0; i < lista.size(); i++) {
+				if(lista.get(i).getCantexistencia()>0){
+					ControlKardexSie control = new ControlKardexSie();
+					log.info("prod "+lista.get(i).getTbProducto().getIdproducto());
+					control.setTbProducto(lista.get(i).getTbProducto());
+					control.setItem(i+1);
+					control.setCantidaddeberia(lista.get(i).getCantexistencia());
+					control.setCantidad(lista.get(i).getCantexistencia());
+					lstControl.add(control);
+				}
 			}
 		}
 		return null;
@@ -159,7 +184,7 @@ public class ControlMercaderiaAction extends BaseMantenimientoAbstractAction {
 		}else{
 			int cantidadt= lstControl.size();
 			objcontrolSie.setTbProducto(objProductoService.findProducto(idProducto));
-			if(cantidad<1){
+			if(objcontrolSie.getCantidad()<1){
 				mensaje="Cantidad debe ser mayor que 0 ";
 			}
 			if(cantidadt==0){
@@ -291,20 +316,6 @@ public class ControlMercaderiaAction extends BaseMantenimientoAbstractAction {
 		this.idEmpleado = idEmpleado;
 	}
 
-	/**
-	 * @return the cantidad
-	 */
-	public int getCantidad() {
-		return cantidad;
-	}
-
-	/**
-	 * @param cantidad the cantidad to set
-	 */
-	public void setCantidad(int cantidad) {
-		this.cantidad = cantidad;
-	}
-
 	public int getCantidadDeberia() {
 		return cantidadDeberia;
 	}
@@ -339,6 +350,62 @@ public class ControlMercaderiaAction extends BaseMantenimientoAbstractAction {
 	 */
 	public void setCombo(ComboAction combo) {
 		this.combo = combo;
+	}
+
+	/**
+	 * @return the lstProducto
+	 */
+	public List<VerificaProductoSie> getLstProducto() {
+		return lstProducto;
+	}
+
+	/**
+	 * @param lstProducto the lstProducto to set
+	 */
+	public void setLstProducto(List<VerificaProductoSie> lstProducto) {
+		this.lstProducto = lstProducto;
+	}
+
+	/**
+	 * @return the fechaDesde
+	 */
+	public Date getFechaDesde() {
+		return fechaDesde;
+	}
+
+	/**
+	 * @param fechaDesde the fechaDesde to set
+	 */
+	public void setFechaDesde(Date fechaDesde) {
+		this.fechaDesde = fechaDesde;
+	}
+
+	/**
+	 * @return the fechaHasta
+	 */
+	public Date getFechaHasta() {
+		return fechaHasta;
+	}
+
+	/**
+	 * @param fechaHasta the fechaHasta to set
+	 */
+	public void setFechaHasta(Date fechaHasta) {
+		this.fechaHasta = fechaHasta;
+	}
+
+	/**
+	 * @return the actionConsultar
+	 */
+	public String getActionConsultar() {
+		return actionConsultar;
+	}
+
+	/**
+	 * @param actionConsultar the actionConsultar to set
+	 */
+	public void setActionConsultar(String actionConsultar) {
+		this.actionConsultar = actionConsultar;
 	}
 	
 }

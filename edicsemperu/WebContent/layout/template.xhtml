@@ -202,15 +202,31 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			showEffect="fade" hideEffect="explode" modal="true" position="center">
 			<p:messages id="msj" showDetail="true"  />
 				<h:panelGrid id="display" columns="2" cellpadding="5" >
-				<h:outputText value="#{message['contrasena.actual']}" />
-	            <p:password value="#{login.passActual}" required="true"/>
-	            <h:outputText value="#{message['contrasena.nueva']}" />
-	            <p:password id="pwd1" value="#{login.passConfirma1}" promptLabel="Ingrese nueva contraseña" maxlength="25" feedback="true" required="true" match="pwd2" weakLabel="peligroso" goodLabel="bueno" strongLabel="Buenísmo"  />
-	            <h:outputText value="#{message['contrasena.nueva.confirma']}" />
-	            <p:password id="pwd2" value="#{login.passConfirma2}" promptLabel="Volver a ingresar nueva contraseña" maxlength="25" bfeedback="true" required="true" weakLabel="peligroso" goodLabel="bueno" strongLabel="Buenísmo"/>
-				<p:commandButton update="msj,display" value="Actualizar Contraseña" action="#{login.cambiarContrasena}"  icon="ui-icon ui-icon-disk" />
-				<p:commandButton value="Cerrar" oncomplete="cambiarContrasenaDialog.hide()" icon="ui-icon ui-icon-close" />
+					<h:outputText value="Desde" />
+					<p:calendar value="#{control.fechaDesde}" required="true" size="10" pattern="dd/MM/yyyy"  />
+					<h:outputText value="Hasta" />
+					<p:calendar value="#{control.fechaHasta}" required="true" size="10" pattern="dd/MM/yyyy" />
+					<f:facet name="footer">
+					<p:commandButton update="msj,lstProducto" value="Consultar" action="#{control.consultar}" icon="ui-icon-search">
+						<f:setPropertyActionListener value="v" target="#{control.actionConsultar}" />
+					</p:commandButton>
+					</f:facet>
 				</h:panelGrid>
+				
+				<p:dataTable value="#{control.lstProducto}" id="lstProducto" var="c" paginator="true" rows="5" style="width:550px"  >
+					<f:facet name="header">
+						<h:outputLabel value="#{message['verifica.producto.lista']}" />
+					</f:facet>
+					<p:column headerText="#{message['control.dt.producto']}" >
+		                <h:outputText value="#{c.tbProducto.descripcionproducto}" />
+		            </p:column>
+		            <p:column headerText="#{message['verifica.cantidad']}"  >
+		                <h:outputText value="#{c.cantidad}" />
+		            </p:column>
+				</p:dataTable>
+				
+				<p:commandButton value="Cerrar" oncomplete="verVerificaDialog.hide()" icon="ui-icon ui-icon-close" />
+				
 		</p:dialog>
 	</h:form>
 	

@@ -16,6 +16,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.ContratoEmpleadoSie;
+import com.edicsem.pe.sie.entity.CriterioComisionSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.EstadoGeneralSie;
@@ -44,6 +45,7 @@ import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.service.facade.AlmacenService;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.ContratoEmpleadoService;
+import com.edicsem.pe.sie.service.facade.CriterioComisionService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.EmpresaService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
@@ -92,6 +94,7 @@ public class ComboAction {
 	private Map<String, Integer> productoPaqueteItems = new HashMap<String, Integer>();
 	private Map<String, Integer> grupoItems = new HashMap<String, Integer>();
 	private Map<String, Integer> motivoitems = new HashMap<String, Integer>();
+	private Map<String, Integer> criterioComisionitems = new HashMap<String, Integer>();
 	private int tipoVenta;
 	private int tipoProducto,tipoAlmacen;
 	private int cargoEmpleado;
@@ -121,6 +124,8 @@ public class ComboAction {
 	private Map<String, Integer> tipoImporteItems = new HashMap<String, Integer>();
 	private Map<String, Integer> importeItems = new HashMap<String, Integer>();
 	private Map<String, Integer> tipoPagoItems = new HashMap<String, Integer>();
+	@EJB
+	private CriterioComisionService objCriterioComisionService;
 	@EJB
 	private MotivoService objMotivoService;
 	@EJB
@@ -1606,6 +1611,43 @@ public class ComboAction {
 	 */
 	public void setMotivoitems(Map<String, Integer> motivoitems) {
 		this.motivoitems = motivoitems;
+	}
+
+	/**
+	 * @return the criterioComisionitems
+	 */
+	public Map<String, Integer> getCriterioComisionitems() {
+		criterioComisionitems = new HashMap<String, Integer>();
+		List lista = new ArrayList<CriterioComisionSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getCriterioComisionitems()'");
+			}
+			lista = objCriterioComisionService.listarCriterioComision();
+
+			for (int i = 0; i < lista.size(); i++) {
+				CriterioComisionSie tipo = new CriterioComisionSie();
+				tipo = (CriterioComisionSie) lista.get(i);
+				criterioComisionitems.put(tipo.getDescripcion(),
+						tipo.getIdcriterio());
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return criterioComisionitems;
+	}
+
+	/**
+	 * @param criterioComisionitems the criterioComisionitems to set
+	 */
+	public void setCriterioComisionitems(Map<String, Integer> criterioComisionitems) {
+		this.criterioComisionitems = criterioComisionitems;
 	}
 	
 }
