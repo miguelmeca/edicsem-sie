@@ -59,7 +59,7 @@ public class ComisionVentaDAOImpl implements ComisionVentaDAO{
 		ComisionVentaSie c= new ComisionVentaSie();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("buscar Almacen"+ id);
+				log.info("buscar Comision "+ id);
 			} 
 		c=	em.find(ComisionVentaSie.class, id);
 		

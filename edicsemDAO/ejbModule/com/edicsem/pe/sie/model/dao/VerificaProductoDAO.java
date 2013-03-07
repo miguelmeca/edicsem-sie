@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.model.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -14,5 +15,5 @@ public interface VerificaProductoDAO {
 	public abstract void updateVerificaProducto(VerificaProductoSie v);
 	public abstract VerificaProductoSie findVerificaProducto(int id);
 	public abstract List  listarVerificaProducto();
-	
+	public abstract List listarVerificacionXFechaXalmacen(Date fechaDesde, Date fechaHasta, int idalmacen);
 }

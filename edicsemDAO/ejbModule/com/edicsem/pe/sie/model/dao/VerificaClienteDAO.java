@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.model.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -14,5 +15,4 @@ public interface VerificaClienteDAO {
 	public abstract void updateVerificaCliente(VerificaClienteSie v);
 	public abstract VerificaClienteSie findVerificaCliente (int id);
 	public abstract List  listarVerificaCliente();
-	
 }
