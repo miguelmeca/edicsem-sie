@@ -51,6 +51,11 @@ public class VerificaClienteSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idtipodocumentoidentidad")
 	private TipoDocumentoIdentidadSie tbTipoDocumentoIdentidad;
+    
+    //bi-directional many-to-one association to PuntoVentaSie
+    @ManyToOne
+	@JoinColumn(name="idpuntoventa")
+	private PuntoVentaSie tbPuntoVenta;
 
 	private String nombrecliente;
 
@@ -179,6 +184,14 @@ public class VerificaClienteSie implements Serializable {
 
 	public void setUsuariomodifica(String usuariomodifica) {
 		this.usuariomodifica = usuariomodifica;
+	}
+	
+	public PuntoVentaSie getTbPuntoVenta() {
+		return tbPuntoVenta;
+	}
+	
+	public void setTbPuntoVenta(PuntoVentaSie tbPuntoVenta) {
+		this.tbPuntoVenta = tbPuntoVenta;
 	}
 	
 }
