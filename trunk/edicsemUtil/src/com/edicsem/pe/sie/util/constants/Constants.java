@@ -110,6 +110,10 @@ public class Constants {
 
 	public static final String MANT_ENTREGA_LETRAS = "EntregaLetrasContratoForm";
 	
+	public static final String MANT_COMISION_FORM_LIST_PAGE = "mantenimientoComisionVentaFormList";
+	
+	public static final String MANT_COMISION_FORM_PAGE = "mantenimientoComisionVentaForm";
+	
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
 	public static final String COD_ESTADO_TB_CARGO_EMPLEADO = "CE";
