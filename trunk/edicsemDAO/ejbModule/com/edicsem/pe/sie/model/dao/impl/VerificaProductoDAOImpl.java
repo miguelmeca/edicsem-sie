@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.model.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -81,4 +82,20 @@ public class VerificaProductoDAOImpl implements VerificaProductoDAO{
 		return lista;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.VerificaClienteDAO#listarVerificacionXFechaXalmacen(java.util.Date, java.util.Date, int)
+	 */
+	public List listarVerificacionXFechaXalmacen(Date fechaDesde, Date fechaHasta, int idalmacen) {
+		List  lista = null;
+		try {
+			Query q = em.createQuery("select p from VerificaProductoSie p where DATE(p.tbVerificaCliente.fechacreacion) " +
+					" between DATE('"+fechaDesde+"') and DATE('"+fechaHasta+"')  and " +
+					" p.tbVerificaCliente.tbPuntoVenta.idpuntoventa = "+idalmacen );
+			lista =  q.getResultList();
+		   log.info("tamaño lista Verifica x fecha x almacen --> " + lista.size()+"  ");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 }
