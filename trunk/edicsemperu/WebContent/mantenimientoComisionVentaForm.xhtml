@@ -10,13 +10,13 @@
 		window.history.forward(-1);
 	</script>
 		<h1 class="title ui-widget-header ui-corner-all">#{message['comision.ventas.tittle']}</h1>
-		<h:form id="formComisionSearch">
+		<h:form id="formComisionform">
 		<p:messages id="message" showDetail="true" closable="true" />
 		<p:panel>
 			<h:panelGrid columns="2" cellpadding="5" id="pg" >
 				<p:selectOneRadio  value="#{comisionForm.option}" >  
-			        <f:selectItem itemLabel="Por criterio comisión" itemValue="1"/>
-			        <f:selectItem itemLabel="Por rango de venta" itemValue="2" />
+			        <f:selectItem itemLabel="Por rango de venta" itemValue="1"/>
+			        <f:selectItem itemLabel="Por criterio comisión" itemValue="2" />
 			        <p:ajax update="pg" />
 		        </p:selectOneRadio>
 		        <p:spacer/>
@@ -31,19 +31,30 @@
 				<p:spinner value="#{comisionForm.objcomisionSie.rangoinicial}" required="true" min="1" rendered="#{comisionForm.option==1}" size="25"/>
 				
 				<h:outputText value="#{message['comision.venta.rango.final']}" rendered="#{comisionForm.option==1}"/>
-				<p:spinner value="#{comisionForm.objcomisionSie.rangofinal}" required="true" min="1" rendered="#{comisionForm.option==1}" size="25"/>
+				<p:spinner value="#{comisionForm.objcomisionSie.rangofinal}" rendered="#{comisionForm.option==1}" size="25" />
 				
 				<h:outputText value="#{message['comision.venta.cargo']}"   />
-				<p:selectOneMenu value="#{comisionForm.idcargo}" required="true" >
+				<p:selectOneMenu value="#{comisionForm.idcargo}" required="true" style="width:250px">
 					<f:selectItem itemValue="#{null}" itemLabel="Seleccionar cargo" />
 					<f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
 				</p:selectOneMenu>
 				
+				<h:outputText value="#{message['comision.venta.evento']}" />
+				<p:selectOneMenu value="#{comisionForm.idevento}" required="true" style="width:250px" >
+					<f:selectItem itemValue="#{null}" itemLabel="Seleccionar evento" />
+					<f:selectItems value="#{comboAction.tipoEventoVentaitems}" />
+				</p:selectOneMenu>
+				
 				<h:outputText value="#{message['comision.venta.base']}" />
-				<p:spinner value="#{comisionForm.objcomisionSie.base}" required="true" min="1" size="25" />
+				<p:spinner value="#{comisionForm.objcomisionSie.base}" required="true" min="1" size="25" >
+				<p:ajax update="porcentaj" event="change" listener="#{comisionForm.consultar}" />
+				</p:spinner>
+				
+				<h:outputText value="#{message['comision.ejemplo690']}" />
+				<p:spacer/>
 				
 				<h:outputText value="#{message['comision.venta.porcentaje']}" />
-				<p:spinner value="#{comisionForm.objcomisionSie.porcentaje}" required="true" min="1" size="25"/>
+				<p:spinner id="porcentaj" value="#{comisionForm.objcomisionSie.porcentaje}" required="true" size="25" readonly="true" />
 				
 				<h:outputText value="#{message['comision.venta.pagoinmediato']}" />
 				<p:spinner value="#{comisionForm.objcomisionSie.pagoinmediato}" required="true" min="1" size="25"/>
@@ -52,6 +63,7 @@
                 
                 <p:commandButton value="Regresar" action="#{comisionSearch.listar}" immediate="true" ajax= "false" update="message"
                     icon="ui-icon-circle-arrow-w" />
+                    
 		</h:panelGrid>
 		</p:panel>
 		</h:form>

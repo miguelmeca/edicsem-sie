@@ -620,6 +620,89 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:confirmDialog>
 	</h:form>
 	
+	<!--  NUEVO / MODIFICA CRITERIO -->
+	<h:form id="NuevoModificaCriterio">
+		<p:dialog header="Criterio Venta" widgetVar="criterioNuevoDialog" showEffect="fade"
+			hideEffect="explode" modal="true" width="600" position="center">
+			
+			<h:panelGrid id="display" columns="2" cellpadding="3" >
+				
+				<h:outputText value="#{message['mantenimiento.descripcion']}" for="descripcion" />
+				<h:panelGroup>
+					<p:inputText id="descripcion1" value="#{criterioForm.objcriterioSie.descripcion}" required="true"
+						label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
+						style="font-weight:bold" rendered="#{criterioForm.newRecord}"
+						onkeypress="return validarEspaciosLetrasNumeros(event)" />
+						
+					<p:inputText id="descripcion2" value="#{criterioForm.objcriterioSie.descripcion}" required="true" 
+						label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
+						style="font-weight:bold" rendered="#{!criterioForm.newRecord}" 
+						onkeypress="return validarEspaciosLetrasNumeros(event)" />
+				</h:panelGroup>
+				
+				<f:facet name="footer">
+				<p:commandButton value="Guardar" update="panel" action="#{criterioForm.insertar}" ajax="false"
+					icon="ui-icon ui-icon-disk" />
+				</f:facet>
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+	
+	<!--  NUEVO / MODIFICA LUGAR -->
+	<h:form id="NuevoModificaLugar">
+		<p:dialog header="Lugar de Venta" widgetVar="lugarNuevoDialog" showEffect="fade"
+			hideEffect="explode" modal="true" width="600" position="center">
+
+			<h:panelGrid id="display" columns="2" cellpadding="3" >
+				
+				<h:outputText value="#{message['mantenimiento.descripcion']}" for="descripcion" />
+				<h:panelGroup>
+					<p:inputText id="descripcion1" value="#{lugarForm.objlugarSie.descripcion}" required="true"
+						label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
+						style="font-weight:bold" rendered="#{lugarForm.newRecord}"
+						onkeypress="return validarEspaciosLetrasNumeros(event)" />
+						
+					<p:inputText id="descripcion2" value="#{lugarForm.objlugarSie.descripcion}" required="true" 
+						label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
+						style="font-weight:bold" rendered="#{!lugarForm.newRecord}" 
+						onkeypress="return validarEspaciosLetrasNumeros(event)" />
+				</h:panelGroup>
+				
+				<f:facet name="footer">
+				<p:commandButton value="Guardar" update="panel" action="#{lugarForm.insertar}" ajax="false"
+					icon="ui-icon ui-icon-disk" />
+				</f:facet>
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+	
+	<!--  NUEVO / MODIFICA EVENTO -->
+	<h:form id="NuevoModificaEvento">
+		<p:dialog header="Tipo Evento Venta" widgetVar="eventoNuevoDialog" showEffect="fade"
+			hideEffect="explode" modal="true" width="600" position="center">
+
+			<h:panelGrid id="display" columns="2" cellpadding="3" >
+				
+				<h:outputText value="#{message['mantenimiento.descripcion']}" for="descripcion" />
+				<h:panelGroup>
+					<p:inputText id="descripcion1" value="#{eventoForm.objeventoSie.descripcion}" required="true"
+						label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
+						style="font-weight:bold" rendered="#{eventoForm.newRecord}"
+						onkeypress="return validarEspaciosLetrasNumeros(event)" />
+						
+					<p:inputText id="descripcion2" value="#{eventoForm.objeventoSie.descripcion}" required="true" 
+						label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
+						style="font-weight:bold" rendered="#{!eventoForm.newRecord}" 
+						onkeypress="return validarEspaciosLetrasNumeros(event)" />
+				</h:panelGroup>
+				
+				<f:facet name="footer">
+				<p:commandButton value="Guardar" update="panel" action="#{eventoForm.insertar}" ajax="false"
+					icon="ui-icon ui-icon-disk" />
+				</f:facet>
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
 	
 	<h:form>
 		<p:confirmDialog message="Esta seguro de eliminar dicho Producto de la lista?"

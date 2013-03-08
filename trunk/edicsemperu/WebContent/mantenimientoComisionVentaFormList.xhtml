@@ -23,6 +23,18 @@
 						 <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px; align=Left; "/>
 						</p:outputPanel>
 					</f:facet>
+					<p:column sortBy="#{p.tbCargoempleado.descripcion}" filterBy="#{p.tbCargoempleado.descripcion}" headerText="#{message['comision.venta.cargo']}" >
+						<f:facet name="header">
+							<h:outputText value="#{message['comision.venta.cargo']}" />
+						</f:facet>
+						<h:outputText value="#{p.tbCargoempleado.descripcion}" />
+					</p:column>
+					<p:column sortBy="#{p.tbTipoEventoVenta.descripcion}" filterBy="#{p.tbTipoEventoVenta.descripcion}" headerText="#{message['comision.venta.evento']}"  >
+						<f:facet name="header">
+							<h:outputText value="#{message['comision.venta.evento']}" />
+						</f:facet>
+						<h:outputText value="#{p.tbTipoEventoVenta.descripcion}" />
+					</p:column>
 					<p:column sortBy="#{p.rangoString}" filterBy="#{p.rangoString}" headerText="cant" >
 						<f:facet name="header">
 							<h:outputText value="#{message['comision.venta.cantidad']}" />
@@ -35,18 +47,30 @@
 						</f:facet>
 						<h:outputText value="#{p.base}" />
 					</p:column>
+					<p:column sortBy="#{p.porcentaje}" filterBy="#{p.porcentaje}" headerText="#{message['comision.venta.porcentaje']}">
+						<f:facet name="header">
+							<h:outputText value="#{message['comision.venta.porcentaje']}"/>
+						</f:facet>
+						<h:outputText value="#{p.porcentaje}" />
+					</p:column>
+					<p:column sortBy="#{p.pagoinmediato}" filterBy="#{p.pagoinmediato}" headerText="#{message['comision.pagoinmediato']}">
+						<f:facet name="header">
+							<h:outputText value="#{message['comision.pagoinmediato']}"/>
+						</f:facet>
+						<h:outputText value="#{p.pagoinmediato}" />
+					</p:column>
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="#{message['mantenimiento.productoList.modificar']}" />
+							<h:outputText value="Modificar" />
 						</f:facet>
-						<p:commandButton update=":formComisionSearch:display" icon="ui-icon ui-icon-pencil"
+						<p:commandButton icon="ui-icon ui-icon-pencil"
 							title="#{message['comision.editarDatos']}" action="#{comisionForm.update}" >
 							<f:setPropertyActionListener value="#{p}" target="#{comisionForm.objcomisionSie}" />
 						</p:commandButton>
 					</p:column>
 					<f:facet name="footer">
 						<div align="left">
-							 <p:commandButton id="btnNuevo" value="#{message['mantenimiento.comision.nuevo']}"  action="#{comisionForm.agregar}"  
+							 <p:commandButton id="btnNuevo" value="#{message['mantenimiento.comision.nuevo']}" ajax="false"  action="#{comisionForm.agregar}"  
 							 title="#{message['manteninimento.comision.nuevo.tittle']}" icon="ui-icon-star"/>
 							 <p:tooltip for="btnNuevo"/>
 						</div>

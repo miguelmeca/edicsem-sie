@@ -1,6 +1,7 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -25,9 +26,8 @@ public class MantenimientoComisionFormAction extends BaseMantenimientoAbstractAc
 
 	private String mensaje;
 	private Log log = LogFactory.getLog(MantenimientoComisionFormAction.class);
-	private int idcargo, idcriterio, option;
+	private int idcargo, idcriterio, option, idevento;
 	private ComisionVentaSie objcomisionSie;
-	private List<String> lista;
 	private boolean newRecord = false;
 	
 	@ManagedProperty(value = "#{comisionSearch}")
@@ -41,6 +41,9 @@ public class MantenimientoComisionFormAction extends BaseMantenimientoAbstractAc
 		init();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#init()
+	 */
 	public void init() {
 		log.info("init()");
 		objcomisionSie = new ComisionVentaSie();
@@ -56,6 +59,10 @@ public class MantenimientoComisionFormAction extends BaseMantenimientoAbstractAc
 	public String agregar() {
 		log.info("agregar()");
 		objcomisionSie = new ComisionVentaSie();
+		option=1;
+		idcargo=0;
+		idcriterio=0;
+		idevento=0;
 		setNewRecord(true);
 		return getViewMant();
 	}
@@ -89,9 +96,12 @@ public class MantenimientoComisionFormAction extends BaseMantenimientoAbstractAc
 		EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 		
 		try {
+			if(objcomisionSie.getRangofinal()==0){
+				objcomisionSie.setRangofinal(null);
+			}
 			if(isNewRecord()){
 				objcomisionSie.setUsuariocreacion(sessionUsuario.getUsuario());
-				objComisionService.insertComisionVenta(objcomisionSie);
+				objComisionService.insertComisionVenta(objcomisionSie, idcargo,idcriterio,idevento);
 				objcomisionSie = new ComisionVentaSie();
 				paginaRetorno = comisionSearch.listar();
 				mensaje=Constants.MESSAGE_REGISTRO_TITULO;
@@ -101,6 +111,7 @@ public class MantenimientoComisionFormAction extends BaseMantenimientoAbstractAc
 				objcomisionSie.setUsuariomodifica(sessionUsuario.getUsuario());
 				objComisionService.updateComisionVenta(objcomisionSie);
 				mensaje=Constants.MESSAGE_ACTUALIZO_TITULO;
+				paginaRetorno = comisionSearch.listar();
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			}
 			
@@ -121,10 +132,13 @@ public class MantenimientoComisionFormAction extends BaseMantenimientoAbstractAc
 	 */
 	
 	public String consultar() throws Exception {
-		log.info("en el consultar ");
-		return getViewMant();
+		log.info("consultar() --> "+ objcomisionSie.getBase());
+		//cambiar el porcentaje 
+		BigDecimal porc =  objcomisionSie.getBase().divide(new BigDecimal(690.0), 16, RoundingMode.HALF_UP);
+		objcomisionSie.setPorcentaje(porc);
+		return null;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -160,20 +174,6 @@ public class MantenimientoComisionFormAction extends BaseMantenimientoAbstractAc
 	 */
 	public void setNewRecord(boolean newRecord) {
 		this.newRecord = newRecord;
-	}
-
-	/**
-	 * @return the lista
-	 */
-	public List<String> getLista() {
-		return lista;
-	}
-
-	/**
-	 * @param lista the lista to set
-	 */
-	public void setLista(List<String> lista) {
-		this.lista = lista;
 	}
 
 	public ComisionVentaSie getObjcomisionSie() {
@@ -246,7 +246,6 @@ public class MantenimientoComisionFormAction extends BaseMantenimientoAbstractAc
 	public int getOption() {
 		if(option==2){
 			objcomisionSie.setRangoinicial(0);
-			objcomisionSie.setRangofinal(0);
 		}else{
 			idcriterio=0;
 		}
@@ -259,12 +258,25 @@ public class MantenimientoComisionFormAction extends BaseMantenimientoAbstractAc
 	public void setOption(int option) {
 		if(option==1){
 			objcomisionSie.setRangoinicial(0);
-			objcomisionSie.setRangofinal(0);
 		}else{
 
 			idcriterio=0;
 		}
 		this.option = option;
+	}
+
+	/**
+	 * @return the idevento
+	 */
+	public int getIdevento() {
+		return idevento;
+	}
+
+	/**
+	 * @param idevento the idevento to set
+	 */
+	public void setIdevento(int idevento) {
+		this.idevento = idevento;
 	}
 	
 }
