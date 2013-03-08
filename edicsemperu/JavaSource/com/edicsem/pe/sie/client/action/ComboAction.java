@@ -34,6 +34,7 @@ import com.edicsem.pe.sie.entity.SancionSie;
 import com.edicsem.pe.sie.entity.TipoCasaSie;
 import com.edicsem.pe.sie.entity.TipoClienteSie;
 import com.edicsem.pe.sie.entity.TipoDocumentoIdentidadSie;
+import com.edicsem.pe.sie.entity.TipoEventoVentaSie;
 import com.edicsem.pe.sie.entity.TipoFiltroSie;
 import com.edicsem.pe.sie.entity.TipoImporteSie;
 import com.edicsem.pe.sie.entity.TipoKardexProductoSie;
@@ -62,6 +63,7 @@ import com.edicsem.pe.sie.service.facade.SancionService;
 import com.edicsem.pe.sie.service.facade.TipoCasaService;
 import com.edicsem.pe.sie.service.facade.TipoClienteService;
 import com.edicsem.pe.sie.service.facade.TipoDocumentoService;
+import com.edicsem.pe.sie.service.facade.TipoEventoVentaService;
 import com.edicsem.pe.sie.service.facade.TipoFiltroService;
 import com.edicsem.pe.sie.service.facade.TipoImporteService;
 import com.edicsem.pe.sie.service.facade.TipoKardexService;
@@ -95,6 +97,7 @@ public class ComboAction {
 	private Map<String, Integer> grupoItems = new HashMap<String, Integer>();
 	private Map<String, Integer> motivoitems = new HashMap<String, Integer>();
 	private Map<String, Integer> criterioComisionitems = new HashMap<String, Integer>();
+	private Map<String, Integer> tipoEventoVentaitems = new HashMap<String, Integer>();
 	private int tipoVenta;
 	private int tipoProducto,tipoAlmacen;
 	private int cargoEmpleado;
@@ -180,6 +183,8 @@ public class ComboAction {
 	private ContratoEmpleadoService objContratoEmpleadoService;
 	@EJB
 	private GrupoVentaService objGrupoService;
+	@EJB
+	private TipoEventoVentaService objTipoEventoVentaService;
 	
 	public ComboAction() {
 		log.info("inicializando constructor");
@@ -1648,6 +1653,44 @@ public class ComboAction {
 	 */
 	public void setCriterioComisionitems(Map<String, Integer> criterioComisionitems) {
 		this.criterioComisionitems = criterioComisionitems;
+	}
+
+	/**
+	 * @return the tipoEventoVentaitems
+	 */
+	public Map<String, Integer> getTipoEventoVentaitems() {
+		
+		tipoEventoVentaitems = new HashMap<String, Integer>();
+		List lista = new ArrayList<TipoEventoVentaSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getTipoEventoVentaitems()'");
+			}
+			lista = objTipoEventoVentaService.listarTipoEventoVenta();
+
+			for (int i = 0; i < lista.size(); i++) {
+				TipoEventoVentaSie tipo = new TipoEventoVentaSie();
+				tipo = (TipoEventoVentaSie) lista.get(i);
+				tipoEventoVentaitems.put(tipo.getDescripcion(),
+						tipo.getIdtipoevento());
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return tipoEventoVentaitems;
+	}
+
+	/**
+	 * @param tipoEventoVentaitems the tipoEventoVentaitems to set
+	 */
+	public void setTipoEventoVentaitems(Map<String, Integer> tipoEventoVentaitems) {
+		this.tipoEventoVentaitems = tipoEventoVentaitems;
 	}
 	
 }
