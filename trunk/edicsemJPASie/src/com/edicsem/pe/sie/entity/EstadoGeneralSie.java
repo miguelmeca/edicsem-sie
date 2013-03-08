@@ -180,6 +180,14 @@ public class EstadoGeneralSie implements Serializable {
 	//bi-directional many-to-one association to CriterioComisionSie
 	@OneToMany(mappedBy="tbEstadoGeneral")
 	private Set<CriterioComisionSie> tbCriterioComisions;
+	
+	//bi-directional many-to-one association to TipoEventoVentaSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<TipoEventoVentaSie> tbTipoEventoVenta;
+	
+	//bi-directional many-to-one association to LugarVentaSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<LugarVentaSie> tbLugarventas;
 
 	public EstadoGeneralSie() {
     }
@@ -520,6 +528,22 @@ public class EstadoGeneralSie implements Serializable {
 	
 	public void setTbContratosEntrega(Set<ContratoSie> tbContratosEntrega) {
 		this.tbContratosEntrega = tbContratosEntrega;
+	}
+
+	public Set<TipoEventoVentaSie> getTbTipoEventoVenta() {
+		return tbTipoEventoVenta;
+	}
+
+	public void setTbTipoEventoVenta(Set<TipoEventoVentaSie> tbTipoEventoVenta) {
+		this.tbTipoEventoVenta = tbTipoEventoVenta;
+	}
+
+	public Set<LugarVentaSie> getTbLugarventas() {
+		return tbLugarventas;
+	}
+
+	public void setTbLugarventas(Set<LugarVentaSie> tbLugarventas) {
+		this.tbLugarventas = tbLugarventas;
 	}
 	
 }

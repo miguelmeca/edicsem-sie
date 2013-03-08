@@ -71,6 +71,8 @@
 		<class>com.edicsem.pe.sie.entity.VerificaTelefonoSie</class>
 		<class>com.edicsem.pe.sie.entity.ComisionVentaSie</class>
 		<class>com.edicsem.pe.sie.entity.CriterioComisionSie</class>
+		<class>com.edicsem.pe.sie.entity.TipoEventoVentaSie</class>
+		<class>com.edicsem.pe.sie.entity.LugarVentaSie</class>
 		
 		<properties>
 			<property name="eclipselink.jdbc.driver" value="org.postgresql.Driver" />
