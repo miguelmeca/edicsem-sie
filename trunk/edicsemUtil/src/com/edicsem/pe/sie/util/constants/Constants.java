@@ -114,6 +114,13 @@ public class Constants {
 	
 	public static final String MANT_COMISION_FORM_PAGE = "mantenimientoComisionVentaForm";
 	
+	public static final String MANT_EVENTO_FORM_LIST_PAGE = "mantenimientoEventoFormList";
+	public static final String MANT_EVENTO_FORM_PAGE = "mantenimientoEventoForm";
+
+	public static final String MANT_CRITERIO_FORM_LIST_PAGE = "mantenimientoCriterioFormList";
+	
+	public static final String MANT_LUGAR_FORM_LIST_PAGE = "mantenimientoLugarVentaFormList";
+	
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
 	public static final String COD_ESTADO_TB_CARGO_EMPLEADO = "CE";
@@ -159,5 +166,6 @@ public class Constants {
 	public static final String RUTA_IMAGENES_PRODUCTO = "E:\\Producto\\Images" ;
 	public static final String RUTA_DOC_SUSTENTARIO = "E:\\Images\\Docs";
 	public static final String RUTA_IMAGEN_DEFECTO = "E:\\Producto\\Images\\bibliaXDefecto.png";
+
 	
 	}
