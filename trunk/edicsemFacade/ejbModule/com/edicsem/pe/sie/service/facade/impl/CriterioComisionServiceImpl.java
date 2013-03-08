@@ -5,15 +5,9 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.edicsem.pe.sie.entity.CriterioComisionSie;
-import com.edicsem.pe.sie.entity.PuntoVentaSie;
-import com.edicsem.pe.sie.model.dao.AlmacenDAO;
 import com.edicsem.pe.sie.model.dao.CriterioComisionDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
-import com.edicsem.pe.sie.service.facade.AlmacenService;
 import com.edicsem.pe.sie.service.facade.CriterioComisionService;
 
 @Stateless
@@ -28,6 +22,7 @@ public class CriterioComisionServiceImpl implements CriterioComisionService {
 	 * @see com.edicsem.pe.sie.service.facade.CriterioComisionService#insertCriterioComision(com.edicsem.pe.sie.entity.CriterioComisionSie)
 	 */
 	public void insertCriterioComision(CriterioComisionSie c) {
+		c.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(88));
 		objCriterioComisionDao.insertCriterioComision(c);
 	}
 	
