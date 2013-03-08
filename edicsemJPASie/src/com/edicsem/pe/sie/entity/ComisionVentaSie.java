@@ -23,7 +23,7 @@ public class ComisionVentaSie implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_COMISION_VENTA_IDCOMISION_GENERATOR")
 	private Integer idcomision;
 
-	private String base;
+	private BigDecimal base;
 
 	//bi-directional many-to-one association to CargoEmpleadoSie
     @ManyToOne
@@ -32,7 +32,7 @@ public class ComisionVentaSie implements Serializable {
 
 	private BigDecimal pagoinmediato;
 
-	private String porcentaje;
+	private BigDecimal porcentaje;
 
 	private Integer rangofinal;
 
@@ -42,6 +42,11 @@ public class ComisionVentaSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idcriterio")
 	private CriterioComisionSie tbCriterioComision;
+    
+    //bi-directional many-to-one association to TipoEventoVentaSie
+    @ManyToOne
+	@JoinColumn(name="idtipoevento")
+	private TipoEventoVentaSie tbTipoEventoVenta;
     
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
@@ -66,28 +71,12 @@ public class ComisionVentaSie implements Serializable {
 		this.idcomision = idcomision;
 	}
 
-	public String getBase() {
-		return this.base;
-	}
-
-	public void setBase(String base) {
-		this.base = base;
-	}
-
 	public BigDecimal getPagoinmediato() {
 		return this.pagoinmediato;
 	}
 
 	public void setPagoinmediato(BigDecimal pagoinmediato) {
 		this.pagoinmediato = pagoinmediato;
-	}
-
-	public String getPorcentaje() {
-		return this.porcentaje;
-	}
-
-	public void setPorcentaje(String porcentaje) {
-		this.porcentaje = porcentaje;
 	}
 
 	public Integer getRangofinal() {
@@ -126,7 +115,7 @@ public class ComisionVentaSie implements Serializable {
 	 * @return the rangoString
 	 */
 	public String getRangoString() {
-		if(rangofinal==null)
+		if(rangofinal!=null)
 		{
 			rangoString=  rangoinicial+" a "+rangofinal;
 		}else{
@@ -172,6 +161,36 @@ public class ComisionVentaSie implements Serializable {
 
 	public void setUsuariomodifica(String usuariomodifica) {
 		this.usuariomodifica = usuariomodifica;
+	}
+
+	/**
+	 * @return the tbTipoEventoVenta
+	 */
+	public TipoEventoVentaSie getTbTipoEventoVenta() {
+		return tbTipoEventoVenta;
+	}
+
+	/**
+	 * @param tbTipoEventoVenta the tbTipoEventoVenta to set
+	 */
+	public void setTbTipoEventoVenta(TipoEventoVentaSie tbTipoEventoVenta) {
+		this.tbTipoEventoVenta = tbTipoEventoVenta;
+	}
+
+	public BigDecimal getPorcentaje() {
+		return porcentaje;
+	}
+
+	public void setPorcentaje(BigDecimal porcentaje) {
+		this.porcentaje = porcentaje;
+	}
+
+	public BigDecimal getBase() {
+		return base;
+	}
+
+	public void setBase(BigDecimal base) {
+		this.base = base;
 	}
 	
 }
