@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.ejb.Local;
 
-import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
  
 
