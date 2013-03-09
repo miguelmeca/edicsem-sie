@@ -5,15 +5,20 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.edicsem.pe.sie.entity.TipoDocumentoIdentidadSie;
 import com.edicsem.pe.sie.model.dao.TipoDocumentoDAO;
 import com.edicsem.pe.sie.service.facade.TipoDocumentoService;
 @Stateless
 public class TipoDocumentoServiceImpl implements TipoDocumentoService{
+	
+	private Log log = LogFactory.getLog(ClienteServiceImpl.class);
 	//llamo a mi EJB y redirecciono todo al DAO
 	@EJB
 	private TipoDocumentoDAO objTipoDocumentoDao;
-
+ 
 	
 	public void insertarTipoDocumento(TipoDocumentoIdentidadSie tipodocumento) {
 		objTipoDocumentoDao.insertarTipoDocumento(tipodocumento);
@@ -31,7 +36,7 @@ public class TipoDocumentoServiceImpl implements TipoDocumentoService{
 
 	
 	public TipoDocumentoIdentidadSie buscarTipoDocumento(int id) {
-		// TODO Auto-generated method stub
+		log.info("Dentro del Imple Servicio-->"+ id);
 		return objTipoDocumentoDao.buscarTipoDocumento(id);
 	}
  
