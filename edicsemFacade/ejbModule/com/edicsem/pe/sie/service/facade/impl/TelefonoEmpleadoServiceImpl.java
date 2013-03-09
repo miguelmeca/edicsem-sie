@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.model.dao.TelefonoEmpleadoDAO;
+import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
 @Stateless
 public class TelefonoEmpleadoServiceImpl implements TelefonoEmpleadoService{
@@ -20,6 +21,9 @@ public class TelefonoEmpleadoServiceImpl implements TelefonoEmpleadoService{
 	
 	@EJB
 	private TelefonoEmpleadoDAO objTelefonoEmpleadoDao;
+	
+	@EJB
+	private EstadogeneralService objEstadoGeneralService;
 	
 	
 	
@@ -70,11 +74,11 @@ public class TelefonoEmpleadoServiceImpl implements TelefonoEmpleadoService{
 	/*Listar todos los telefonos por codigo de cliente*/
 
 	
-	public void actualizarTelefonoCliente(TelefonoPersonaSie telefonocliente) {
-		
-		objTelefonoEmpleadoDao.actualizarTelefonoCliente(telefonocliente);
-		
-	}
+//	public void actualizarTelefonoCliente(TelefonoPersonaSie telefonocliente) {
+//		
+//		objTelefonoEmpleadoDao.actualizarTelefonoCliente(telefonocliente);
+//		
+//	}
 	
 	
 	
@@ -100,4 +104,25 @@ public class TelefonoEmpleadoServiceImpl implements TelefonoEmpleadoService{
 		return objTelefonoEmpleadoDao.buscarTelefonoCliente(id);
 	}
 
+
+	public void actualizarTelefonoCliente(List<TelefonoPersonaSie> telefonoDeshabilitado) {
+		for (int i = 0; i < telefonoDeshabilitado.size() ; i++) {			
+			TelefonoPersonaSie s = telefonoDeshabilitado.get(i);
+			log.info("DENTRO DEL SERVICIO");
+			
+	s.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(18));
+ objTelefonoEmpleadoDao.actualizarTelefonoCliente(s);
+					}		
+				}
+
+
+	public void insertarTelefonoCliente(TelefonoPersonaSie telefonopersona) {
+log.info("en el servicio TELEFONO CLIENTE-->" + telefonopersona );
+		
+		objTelefonoEmpleadoDao.insertarTelefonoCliente(telefonopersona);
+	}
+
+	
+	
+	
 }
