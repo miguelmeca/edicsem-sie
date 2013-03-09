@@ -68,10 +68,10 @@ public class TipoDocumentoDAOImpl implements TipoDocumentoDAO{
 				TipoDocumentoIdentidadSie tipodocumento= new TipoDocumentoIdentidadSie();
 				try {
 				if (log.isInfoEnabled()) {
-				log.info("buscar TipoDocumento");
+				log.info("buscar TipoDocumento IMple-DAO -->"+ id);
 				} 
 				tipodocumento=em.find(TipoDocumentoIdentidadSie.class, id);
-				log.info(" TipoDocumento " +tipodocumento);
+				log.info(" TipoDocumento DAO-imple -->" +tipodocumento);
 				} catch (Exception e) {
 				e.printStackTrace();
 				}
