@@ -46,6 +46,7 @@ public class UbigeoServiceImpl implements UbigeoService{
 	 */
 
 	public UbigeoSie findUbigeo(int id) {
+		log.info("Id Ubigeo--> "+ id);
 		return objUbigeoDao.findUbigeo(id); 
 	}
 
