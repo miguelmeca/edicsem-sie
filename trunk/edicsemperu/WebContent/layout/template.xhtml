@@ -1378,31 +1378,11 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 
 	</h:form>
 
-	<!-- 	FIN DESACTIVAR TIPO PRODUCTO  -->
-	<!--	  INICIO DESACTIVAR	 TELEFONO DE CLIENTE  -->
+	
+	
+	
 
-<h:form>
 
-		<p:confirmDialog id="confirmDeshabilitarTelCli"
-			message="Los cambios se realizaran despues de hacer clic en Guardar?" width="325"
-			height="100" showEffect="explode" hideEffect="explode"
-			header="Confirm" severity="alert" widgetVar="confirmationTelCli"
-			position="center">
-
-			<p:commandButton type="submit" value="Si"
-				action="#{MantenimientoClienteFormAction.telefonoElimina}"
-				update="@all"
-				oncomplete="confirmationTelCli.hide()" ajax="false">
-			</p:commandButton>
-
-			<p:commandButton value="No" onclick="confirmationTelCli.hide()"
-				type="button" />
-
-		</p:confirmDialog>
-
-	</h:form>
-
-	<!-- 	FIN DESACTIVAR (TELEFONO DE CLIENTE)  -->
 	
 		<!--	  INICIO DESACTIVAR	 TELEFONO DE EMPLEADO  -->
 
@@ -2077,6 +2057,133 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 
 	</h:form>
 
-	<!-- 	FIN ELIMINAR TIPO DE DPRODUCTO  -->
+					<!-- 	FIN ELIMINAR TIPO DE DPRODUCTO  -->
+					
+					
+					<!--	  INICIO DESACTIVAR	 TELEFONO y DOMICLIO DE CLIENTE  -->
+
+<h:form>
+
+		<p:confirmDialog id="confirmDeshabilitarTelCli"
+			message="Los cambios  de Teléfono se realizaran despues de hacer clic en Guardar?" width="325"
+			height="100" showEffect="explode" hideEffect="explode"
+			header="Confirm" severity="alert" widgetVar="confirmationTelCli"
+			position="center">
+
+			<p:commandButton type="submit" value="Si"
+				action="#{MantenimientoClienteFormAction.telefonoElimina}"
+				update="@all"
+				oncomplete="confirmationTelCli.hide()" ajax="false">
+			</p:commandButton>
+
+			<p:commandButton value="No" onclick="confirmationTelCli.hide()"
+				type="button" />
+
+		</p:confirmDialog>
+
+	</h:form>
+
+<h:form>
+
+		<p:confirmDialog 
+			message="Los cambios  de Domicilio se realizaran despues de hacer clic en Guardar?" width="325"
+			height="100" showEffect="explode" hideEffect="explode"
+			header="Confirmar" severity="alert" widgetVar="confirmationDomiCli"
+			position="center">
+
+			<p:commandButton type="submit" value="Si"
+				action="#{MantenimientoClienteFormAction.domicilioElimina}"
+				update="@all"
+				oncomplete="confirmationDomiCli.hide()" ajax="false">
+			</p:commandButton>
+
+			<p:commandButton value="No" onclick="confirmationDomiCli.hide()"
+				type="button" />
+
+		</p:confirmDialog>
+
+	</h:form>
+	
+					
+					
+							<!--NUEVO DOMICILIO CLIENTE  -->
+	<h:form id="ClienteDomicilio">
+		<p:dialog header="Nuevo Domicilio de Cliente" widgetVar="carDialogNuevoDomicli"
+			showEffect="fade" hideEffect="explode" modal="true" width="800" resizable="false" 
+			position="center">
+<p:fieldset >
+<h:panelGrid columns="2" id="panel3">
+
+<h:outputLabel value="#{message['cliente.domicilio.direccion']}" for="domicilio" />
+<p:inputText id="domicilio" value="#{MantenimientoClienteFormAction.domicilio}"  style="width:220%" />
+
+<h:outputLabel value="#{message['cliente.domicilio.referencia']}" for="referencia" />
+<p:inputText id="referencia" value="#{MantenimientoClienteFormAction.referencia}"  style="width:220%" />
+			  
+<h:outputText value="#{message['cliente.dimicilio.tipoCasa']}" />
+<p:selectOneMenu style="width:165px" required="true" id="tipocasa"
+value="#{MantenimientoClienteFormAction.tipocasanuevo}">
+<f:selectItem itemLabel="Seleccione tipo casa" itemValue="#{null}" />
+<f:selectItems value="#{comboAction.tipocasaItems}" />
+</p:selectOneMenu>
+					
+					
+	<h:outputText value="#{message['cliente.ubigeo.departamento']}" />
+					<p:selectOneMenu size="1" value="#{MantenimientoClienteFormAction.idDepartamento24}"
+					required="true" style="width:220px" id="departamento24"
+					requiredMessage="#{message['cliente.ubigeo.departamento.validation']}">
+					<f:selectItem itemLabel="Seleccione Departamento" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
+					<p:ajax update="prov,dist" listener="#{MantenimientoClienteFormAction.cambiarnew}" />
+					</p:selectOneMenu>
+					
+				
+				<h:outputText value="#{message['cliente.ubigeo.provincia']}" />
+				<p:selectOneMenu id="prov" value="#{MantenimientoClienteFormAction.idProvincia24}"
+					required="true" style="width:220px"
+					requiredMessage="#{message['cliente.ubigeo.provincia.validation']}">
+					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
+					<p:ajax update="dist" listener="#{MantenimientoClienteFormAction.cambiar24}" />
+				</p:selectOneMenu>
+				
+				
+					
+				<h:outputText value="#{message['cliente.ubigeo.distrito']}" rendered="#{MantenimientoClienteFormAction.defectoUbigeo24}" />
+				<p:selectOneMenu id="dist" value="#{MantenimientoClienteFormAction.idUbigeo}" 
+					rendered="#{MantenimientoClienteFormAction.defectoUbigeo24}" required="true"   effect="fade"
+					style="width:220px">
+					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+					<p:ajax update="ubigeoDefecto1" listener="#{MantenimientoClienteFormAction.ingresarUbigeo24}"/>
+				</p:selectOneMenu>
+				
+				
+				<h:outputText value="#{message['cliente.ubigeo']}" />
+				<h:outputText id="ubigeoDefecto1" value="#{MantenimientoClienteFormAction.ubigeoDefecto24}" style="width:320px"/>
+				<p:message for="ubigeoDefecto1" rendered="#{MantenimientoClienteFormAction.defectoUbigeo24}"/>					
+
+
+					
+						  
+<h:panelGroup>
+<p:commandButton id="btnDomicilio" value="Guardar" 
+					update=":listarDomicilio"
+					action="#{MantenimientoClienteFormAction.domicilioAgregar}" ajax="false"
+					icon="ui-icon ui-icon-disk"
+					title="verifique bien los datos, antes de hacer clic en Guardar" />
+</h:panelGroup>			  
+
+
+
+
+	<!-- 	FIN DOMICILIO DE CLIENTE    -->
+
+
+</h:panelGrid>
+</p:fieldset>
+</p:dialog>
+</h:form>
+	
 </f:view>
 </html>
