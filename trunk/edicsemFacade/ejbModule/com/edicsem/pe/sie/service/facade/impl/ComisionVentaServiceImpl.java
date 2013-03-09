@@ -41,9 +41,15 @@ public class ComisionVentaServiceImpl implements ComisionVentaService {
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.ComisionVentaService#updateComisionVenta(com.edicsem.pe.sie.entity.ComisionVentaSie)
+	 * @see com.edicsem.pe.sie.service.facade.ComisionVentaService#updateComisionVenta(com.edicsem.pe.sie.entity.ComisionVentaSie, int, int, int)
 	 */
-	public void updateComisionVenta(ComisionVentaSie c) {
+	public void updateComisionVenta(ComisionVentaSie c,int idcargo,int idcriterio,int idevento){
+		if(idcargo!=0)
+			c.setTbCargoempleado(objCargoDAO.buscarCargoEmpleado(idcargo));
+			if(idcriterio!=0)
+			c.setTbCriterioComision(objcriterioDAO.findCriterioComision(idcriterio));
+			if(idevento!=0)
+			c.setTbTipoEventoVenta(objeventoDAO.findTipoEventoVenta(idevento));
 		objComisionVentaDAO.updateComisionVenta(c);
 	}
 	
