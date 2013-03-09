@@ -34,14 +34,14 @@
 				<p:spinner value="#{comisionForm.objcomisionSie.rangofinal}" rendered="#{comisionForm.option==1}" size="25" />
 				
 				<h:outputText value="#{message['comision.venta.cargo']}"   />
-				<p:selectOneMenu value="#{comisionForm.idcargo}" required="true" style="width:250px">
+				<p:selectOneMenu value="#{comisionForm.idcargo}" style="width:250px">
 					<f:selectItem itemValue="#{null}" itemLabel="Seleccionar cargo" />
 					<f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['comision.venta.evento']}" />
-				<p:selectOneMenu value="#{comisionForm.idevento}" required="true" style="width:250px" >
-					<f:selectItem itemValue="#{null}" itemLabel="Seleccionar evento" />
+				<p:selectOneMenu value="#{comisionForm.idevento}" style="width:250px" >
+					<f:selectItem itemValue="#{null}" itemLabel="Cualquier evento" />
 					<f:selectItems value="#{comboAction.tipoEventoVentaitems}" />
 				</p:selectOneMenu>
 				
@@ -57,7 +57,7 @@
 				<p:spinner id="porcentaj" value="#{comisionForm.objcomisionSie.porcentaje}" required="true" size="25" readonly="true" />
 				
 				<h:outputText value="#{message['comision.venta.pagoinmediato']}" />
-				<p:spinner value="#{comisionForm.objcomisionSie.pagoinmediato}" required="true" min="1" size="25"/>
+				<p:spinner value="#{comisionForm.objcomisionSie.pagoinmediato}" min="1" size="25"/>
 				
 				<p:commandButton value="Registrar" action="#{comisionForm.insertar}" ajax="false" icon="ui-icon ui-icon-disk" />
                 
