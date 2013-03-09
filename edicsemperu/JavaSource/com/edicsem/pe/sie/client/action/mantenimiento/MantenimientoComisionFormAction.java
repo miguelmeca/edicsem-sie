@@ -76,6 +76,12 @@ public class MantenimientoComisionFormAction extends BaseMantenimientoAbstractAc
 	 */
 	public String update() throws Exception {
 		log.info("update()");
+		idcargo = objcomisionSie.getTbCargoempleado().getIdcargoempleado();
+		idevento = objcomisionSie.getTbTipoEventoVenta().getIdtipoevento();
+		if(objcomisionSie.getRangoinicial()!=null){
+			option=1;
+		}else 
+			option=2;
 		setNewRecord(false);
 		return comisionSearch.getViewMant();
 	}
@@ -96,8 +102,10 @@ public class MantenimientoComisionFormAction extends BaseMantenimientoAbstractAc
 		EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 		
 		try {
-			if(objcomisionSie.getRangofinal()==0){
-				objcomisionSie.setRangofinal(null);
+			if(objcomisionSie.getRangofinal()!=null){
+				if(objcomisionSie.getRangofinal()==0){
+					objcomisionSie.setRangofinal(null);
+				}
 			}
 			if(isNewRecord()){
 				objcomisionSie.setUsuariocreacion(sessionUsuario.getUsuario());
@@ -109,10 +117,10 @@ public class MantenimientoComisionFormAction extends BaseMantenimientoAbstractAc
 			}
 			else{
 				objcomisionSie.setUsuariomodifica(sessionUsuario.getUsuario());
-				objComisionService.updateComisionVenta(objcomisionSie);
+				objComisionService.updateComisionVenta(objcomisionSie, idcargo,idcriterio,idevento);
 				mensaje=Constants.MESSAGE_ACTUALIZO_TITULO;
 				paginaRetorno = comisionSearch.listar();
-				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 			}
 			
 			FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -133,8 +141,13 @@ public class MantenimientoComisionFormAction extends BaseMantenimientoAbstractAc
 	
 	public String consultar() throws Exception {
 		log.info("consultar() --> "+ objcomisionSie.getBase());
-		//cambiar el porcentaje 
-		BigDecimal porc =  objcomisionSie.getBase().divide(new BigDecimal(690.0), 16, RoundingMode.HALF_UP);
+		//cambiar el porcentaje
+		BigDecimal porc ;
+		if(objcomisionSie.getBase()!=new BigDecimal(0)){
+			porc =  objcomisionSie.getBase().divide(new BigDecimal(690.0), 16, RoundingMode.HALF_UP);
+		}else{
+			porc= new BigDecimal(0);
+		}
 		objcomisionSie.setPorcentaje(porc);
 		return null;
 	}

@@ -109,14 +109,14 @@ public class MantenimientoLugarVentaFormAction extends BaseMantenimientoAbstract
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewList()
 	 */
 	public String getViewList() {
-		return Constants.MANT_EVENTO_FORM_LIST_PAGE;
+		return Constants.MANT_LUGAR_FORM_LIST_PAGE;
 	}
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewMant()
 	 */
 	public String getViewMant() {
-		return Constants.MANT_EVENTO_FORM_PAGE;
+		return Constants.MANT_LUGAR_FORM_LIST_PAGE;
 	}
 
 	/**
