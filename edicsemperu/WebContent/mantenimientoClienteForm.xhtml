@@ -13,7 +13,7 @@
     <p:wizard id="wiz" widgetVar="wiz"	flowListener="#{MantenimientoClienteFormAction.onFlowProcess}" nextLabel="#{message['btn.siguiente']}" backLabel="#{message['btn.atraz']}">
     <p:tab title="#{message['cliente.tabcliente']}">
     <p:spacer height="20"></p:spacer>
- 	<p:panel header="Datos Personales"> 
+ 	<p:panel header="#{message['datos.personales']}"> 
  	<h:panelGrid id="display" columns="6" cellpadding="3">	
 
 <h:outputText value="#{message['cliente.nombre']}" for="nombre" />
@@ -95,14 +95,25 @@ id="fechanacimiento" showButtonPanel="true" size="30"
 			 requiredMessage="#{message['cliente.nrodoc.validation']}"
 					 />
 					 
-</h:panelGroup> 		
+</h:panelGroup> 
+<h:panelGroup id="genero">
+
+<h:outputText value="#{message['cliente.genero']}" />
+</h:panelGroup> 
+
+<h:panelGroup id="genero2">
+<p:selectOneRadio  value="#{MantenimientoClienteFormAction.objClienteSie.genero}" required="true" >
+<f:selectItem itemLabel="Femenino" itemValue="F" />
+<f:selectItem itemLabel="Masculino" itemValue="M" />
+</p:selectOneRadio>		
+</h:panelGroup> 
 </h:panelGrid>
 </p:panel>	 
 <!-- fin Datos personales -->  
 <p:spacer height="20"></p:spacer>
 
 <!-- Inicio Datos Laborales -->
-<p:panel header="Datos Laborales"> 
+<p:panel header="#{message['datos.laborale']}"> 
 <h:panelGrid id="display2" columns="6" cellpadding="3">
  	
 <h:outputText  value="#{message['cliente.empresatrabajo']}"   for="empresatrabajo" />	
@@ -142,56 +153,68 @@ id="fechanacimiento" showButtonPanel="true" size="30"
 </p:tab>
 
 <p:tab title="#{message['cliente.tabdireccion']}">
-<p:panel header="#{message['direccion.wizar']}">
-<h:messages errorClass="error"/>  
+<p:panel>
+
 <h:panelGrid columns="2" id="panel3">
-<p:outputLabel value="#{message['cliente.domicilio.direccion']}" for="domicilio" />
-<p:inputText id="domicilio" value="#{MantenimientoClienteFormAction.objDomicilio.domicilio}"
-			 required="true" 
-			 requiredMessage="#{message['cliente.domicilio.direccion.validation']}" 
-			 style="width:200%" />  			    
-				
-<h:outputText value="#{message['cliente.ubigeo.departamento']}" />
-<p:selectOneMenu size="1" value="#{MantenimientoClienteFormAction.idDepartamento}" filter="true" 
-				 filterMatchMode="startsWith"  
-				 required="true" style="width:220px"
-				 requiredMessage="#{message['cliente.ubigeo.departamento.validation']}" >
-<f:selectItem itemLabel="Seleccione Departamento" 
-			  itemValue="#{null}" />
-<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
-<p:ajax update="prov,dist" listener="#{MantenimientoClienteFormAction.cambiar}" />
-</p:selectOneMenu>
 
-<h:outputText value="#{message['cliente.ubigeo.provincia']}" />
-<p:selectOneMenu id="prov" value="#{MantenimientoClienteFormAction.idProvincia}"
-				 filter="true" filterMatchMode="startsWith"
-				 required="true" style="width:220px"
-				 requiredMessage="#{message['cliente.ubigeo.provincia.validation']}" >
-<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
-<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
-<p:ajax update="dist" listener="#{MantenimientoClienteFormAction.cambiar2}" />
-</p:selectOneMenu>
 
-<h:outputText value="#{message['cliente.ubigeo.distrito']}" />
-<p:selectOneMenu id="dist" value="#{MantenimientoClienteFormAction.idUbigeo}" filter="true" filterMatchMode="startsWith"
-				 required="true" style="width:220px"
-				 requiredMessage="#{message['cliente.ubigeo.distrito.validation']}" >
-<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
-<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
-<p:ajax update="ubigeoDefecto2" listener="#{MantenimientoClienteFormAction.busquedaUbigeo}" ></p:ajax>
-</p:selectOneMenu>
-				
-<h:outputText value="Ubigeo " />
-<h:outputText id="ubigeoDefecto2" value="#{MantenimientoClienteFormAction.ubigeoDefecto}" />
-			
-<p:outputLabel for="tipocasa" value="#{message['cliente.dimicilio.tipoCasa']}" styleClass="textoAzulFuerteGrande" id="tipocasaL"/>
-<p:selectOneMenu id="tipocasa" value="#{MantenimientoClienteFormAction.tipo}" styleClass="required"
- title="El tipo de casa es obligatorio!"  style="width:220px" >
-<f:selectItem  itemValue="#{null}" itemLabel="Seleccione una opción"/>
-<f:selectItems value="#{comboAction.tipocasaItems}" />
-</p:selectOneMenu>
-</h:panelGrid>
-          
+<p:commandButton value="Agregar Domicilio"
+ update=":ClienteDomicilio"
+ icon="ui-icon-star"
+ action="#{MantenimientoClienteFormAction.agregar2}"
+ oncomplete="carDialogNuevoDomicli.show()" 
+
+/>
+
+</h:panelGrid>	
+<p:spacer></p:spacer>
+<center>									
+									<!-- TABLA - LISTA DOMICILIO-->
+
+<p:dataTable value="#{MantenimientoClienteFormAction.domicilioPersonaList}" id="listarDomicilio" var="d" style="width:800px"   >
+	
+<f:facet name="header">
+<h:outputLabel value="Domicilios de cliente" />
+</f:facet>
+
+
+
+<p:column headerText="Direccion" >
+<h:outputText value="#{d.domicilio}" />
+</p:column>
+
+<p:column headerText="Referencia" >
+<h:outputText value="#{d.referencia}" />
+</p:column>
+
+<p:column headerText="TipoCasa" >
+<h:outputText value="#{d.tbTipoCasa.descripcion}" />
+</p:column>
+		                    
+<p:column headerText="Ubigeo">
+<h:outputText value="#{d.tbUbigeo.nombre}" />
+</p:column>
+
+<p:column headerText="Ubicación">
+<h:outputText value="#{d.ubicacion}" />
+</p:column>
+	
+ 
+<p:column headerText="#{message['eliminar.domicilio.cliente']}" >
+<center>
+<p:commandButton id="showConfirmDeshabilitarDomiCli" 
+	           	 icon="ui-icon ui-icon-close"
+		         oncomplete="confirmationDomiCli.show()"> 
+	 							
+<f:setPropertyActionListener  value="#{d.iddomiciliopersona}"
+		                      target="#{MantenimientoClienteFormAction.idd}"     />
+</p:commandButton>
+</center>
+</p:column>
+
+	 
+</p:dataTable>
+     </center>     								
 </p:panel>
 </p:tab>
 <!-- Fin de Domicilio -->
@@ -200,7 +223,7 @@ id="fechanacimiento" showButtonPanel="true" size="30"
 
 <!-- Inicio de Telefono -->
 <p:tab title="#{message['cliente.tabnumeros']}">
-<p:panel header="Números Telefónicos" >
+<p:panel  >
 <h:panelGrid columns="6"  id="panelTlf" >
 				
 <h:outputText value="#{message['cliente.tipo.telefono']}" />
@@ -249,7 +272,7 @@ id="fechanacimiento" showButtonPanel="true" size="30"
 <p:inputText value="#{MantenimientoClienteFormAction.nuevoTelef.descTelefono}" />
 <p:spacer />
 						
-<p:commandButton value="Agregar"  
+<p:commandButton value="Agregar teléfono"  
 				 icon="ui-icon ui-icon-check" 
 				 actionListener="#{MantenimientoClienteFormAction.telefonoAgregar}"
 				 update="listarTelefonos, message" > 
@@ -260,46 +283,57 @@ id="fechanacimiento" showButtonPanel="true" size="30"
 </h:panelGrid>
 <!-- Tabla de Telefonos -->
 <p:spacer></p:spacer>
-<p:dataTable value="#{MantenimientoClienteFormAction.telefonoPersonaList}" id="listarTelefonos" var="o" style="width:600px" 
+<center>
+<p:dataTable value="#{MantenimientoClienteFormAction.telefonoPersonaList}" id="listarTelefonos" var="o" style="width:800px" 
 			 rowStyleClass="#{o.operadorTelefonico eq 'Claro' ? 'colorRojo': (o.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }"   >
 	
 <f:facet name="header">
-<h:outputLabel value="Telefonos de Referencia" />
+<h:outputLabel value="#{message['telefonos.de.cliente']}" />
 </f:facet>
-							
-<p:column headerText="Observación" style="width:125px">
-		 <h:outputText value="#{o.tipoTelef}, #{o.operadorTelefonico}, #{o.telefono}" />
+
+<p:column headerText="#{message['cliente.telefono.cliente']}" >
+<h:outputText value="#{o.telefono}" />
+</p:column>
+
+<p:column headerText="#{message['cliente.tipotelefono']}" >
+<h:outputText value="#{o.tipotelefono}" />
+</p:column>
+
+<p:column headerText="#{message['cliente.operador.Telefonico']}" >
+<h:outputText value="#{o.operadorTelefonico}" />
 </p:column>
 		                    
-<p:column headerText="Detalle" style="width:125px">
-		  <h:outputText value="#{o.descTelefono}" />
+<p:column headerText="#{message['cliente.telefonodescripcion']}">
+<h:outputText value="#{o.descTelefono}" />
 </p:column>
 	 
-<p:column headerText="Eliminar" style="width:125px">
+<p:column headerText="#{message['eliminar.telefono.cliente']}" >
+<center>
 <p:commandButton id="showConfirmDeshabilitarTelCli" 
-				           value="Eliminar"  
-				           icon="ui-icon ui-icon-close"
-				           onclick="confirmationTelCli.show()"> 
+	           	 icon="ui-icon ui-icon-close"
+		         oncomplete="confirmationTelCli.show()"> 
 	 							
-<f:setPropertyActionListener  value="#{o.telefono}"
+<f:setPropertyActionListener  value="#{o.idtelefonopersona}"
 		                      target="#{MantenimientoClienteFormAction.idt}"     />
 </p:commandButton>
+</center>
 </p:column>
 	 
 </p:dataTable>
+<br></br><br></br>
 						
-<center><p:commandButton value="Guardar" id="Guardar" update="message"
+<p:commandButton value="Guardar" id="Guardar" update="message"
  						 action="#{MantenimientoClienteFormAction.insertarOficial}"
 						 ajax="false" icon="ui-icon ui-icon-disk"
 		 />
 </center>
-					
+	<br></br>				
 </p:panel>
 </p:tab>    
 </p:wizard>	
-
-<p:commandButton id="btnreg" value="Regresar"  icon="ui-icon-circle-arrow-w" action="#{MantenimientoClienteSearchAction.listar}" immediate="true" ajax = "false" /> 
-		
+<center>
+<p:commandButton id="btnreg" value="Regresar lista de Cliente"  icon="ui-icon-circle-arrow-w" action="#{MantenimientoClienteSearchAction.listar}" immediate="true" ajax = "false" /> 
+</center>		
 </h:form>
 </ui:define>
 </ui:composition>
