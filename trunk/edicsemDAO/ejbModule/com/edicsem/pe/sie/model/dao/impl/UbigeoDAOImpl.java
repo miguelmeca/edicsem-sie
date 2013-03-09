@@ -75,7 +75,7 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 	public UbigeoSie findUbigeo(int id) {
 		UbigeoSie u = new UbigeoSie();
 		try {
-			log.info("buscar Ubigeo "+ id);
+			log.info("buscar Id-Ubigeo DAO-IMPLE "+ id);
 			u = em.find(UbigeoSie.class, id);
 		} catch (Exception ex) {
 			ex.printStackTrace();
