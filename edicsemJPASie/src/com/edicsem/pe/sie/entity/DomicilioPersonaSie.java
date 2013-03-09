@@ -77,7 +77,7 @@ public class DomicilioPersonaSie implements Serializable {
 	private String desUbigeo;
     
     @Transient
-    private int item;
+    private String item;
 
     
     @Transient
@@ -189,16 +189,7 @@ public class DomicilioPersonaSie implements Serializable {
 	/**
 	 * @return the item
 	 */
-	public int getItem() {
-		return item;
-	}
-
-	/**
-	 * @param item the item to set
-	 */
-	public void setItem(int item) {
-		this.item = item;
-	}
+	
 
 	/**
 	 * @return the principal
@@ -244,6 +235,20 @@ public class DomicilioPersonaSie implements Serializable {
 
 	public void setUbicacion(String ubicacion) {
 		this.ubicacion = ubicacion;
+	}
+
+	/**
+	 * @return the item
+	 */
+	public String getItem() {
+		return item;
+	}
+
+	/**
+	 * @param item the item to set
+	 */
+	public void setItem(String item) {
+		this.item = item;
 	}
 	
 	
