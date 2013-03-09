@@ -110,7 +110,7 @@ public class DomicilioEmpleadoDAOImpl implements DomicilioEmpleadoDAO{
 		log.info(" idcliente "+ id);	
 	List<DomicilioPersonaSie> domiciliocliente =new ArrayList<DomicilioPersonaSie>();
 		try {
-			Query q = em.createQuery("select d from DomicilioPersonaSie d where d.idcliente = "+ id);
+			Query q = em.createQuery("select d from DomicilioPersonaSie d where d.idcliente = "+ id + " AND d.tbEstadoGeneral.idestadogeneral = 15" );
 			domiciliocliente = q.getResultList();
 			log.info("Domicilio x idcliente  --> " + domiciliocliente.size());
 			
