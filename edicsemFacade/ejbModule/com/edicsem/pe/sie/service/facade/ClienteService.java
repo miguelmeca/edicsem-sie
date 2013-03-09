@@ -12,8 +12,10 @@ import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 public interface ClienteService {
 	
 	public abstract void insertCliente(ClienteSie Cliente);
-	public abstract void updateCliente(ClienteSie Cliente, DomicilioPersonaSie objDomicilio,String idUbigeo, int tipo, int TelefonoPersona, List<TelefonoPersonaSie> TelefonoPersonaList, List<TelefonoPersonaSie> TelefonoDeshabilitado);
+	public abstract void updateCliente(ClienteSie Cliente, DomicilioPersonaSie objDomicilio,String idUbigeo1,int idUbigeo, int tipo,int Tipocasanuevo, int TelefonoPersona, List<TelefonoPersonaSie> TelefonoPersonaList, List<TelefonoPersonaSie> TelefonoDeshabilitado, List<DomicilioPersonaSie> DomicilioPersonaList, List<DomicilioPersonaSie> DomicilioPersonaDeshabilitado);
 	public abstract ClienteSie findCliente (int id);
 	public abstract List  listarClientes();
 	public abstract List  listarClientesXTipo(int tipoCliente);
 }
+
+//, List<TelefonoPersonaSie> TelefonoPersonaList,int tipo,DomicilioPersonaSie objDomicilio,String idUbigeo
