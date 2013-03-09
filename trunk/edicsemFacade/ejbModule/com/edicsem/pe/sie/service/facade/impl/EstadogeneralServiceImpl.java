@@ -52,8 +52,9 @@ public class EstadogeneralServiceImpl implements EstadogeneralService{
 	 */
 
 	public EstadoGeneralSie findEstadogeneral(int id) {
-		log.info("en el servicio");
-	
+		
+		log.info("en el servicio EstadoGeneralSie"+"  "+id);
+		
 		return objEstadogeneralDao.findEstadoGeneral(id); 
 	}
 
