@@ -56,12 +56,12 @@ public class EstadogeneralDAOImpl implements EstadoGeneralDAO {
 		EstadoGeneralSie e= new EstadoGeneralSie();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("buscar Estado General "+ id);
+				log.info("buscar Estado General IMPLE-DAO "+ id);
 			} 
 		e=	em.find(EstadoGeneralSie.class, id);
 		} catch (Exception ex) {
-//			ex.printStackTrace();
-			System.out.println("findEstadoGeneral-->");
+			ex.printStackTrace();
+//			System.out.println("findEstadoGeneral-->");
 		}
 		return e;
 	}
