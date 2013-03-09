@@ -22,6 +22,7 @@ public class LugarVentaServiceImpl implements LugarVentaService {
 	 * @see com.edicsem.pe.sie.service.facade.LugarVentaService#insertLugarVenta(com.edicsem.pe.sie.entity.LugarVentaSie)
 	 */
 	public void insertLugarVenta(LugarVentaSie l) {
+		l.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(90));
 		objlugarventaDao.insertLugarVenta(l);
 	}
 	
