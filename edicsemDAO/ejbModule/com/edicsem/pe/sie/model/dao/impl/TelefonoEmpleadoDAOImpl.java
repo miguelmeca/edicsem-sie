@@ -37,13 +37,26 @@ public class TelefonoEmpleadoDAOImpl implements TelefonoEmpleadoDAO{
 		}
 	}
 
+	
+	public void insertarTelefonoCliente(TelefonoPersonaSie telefonopersona) {
+		log.info("apunto de insertar telefono CLIENTE"+ "- "+ telefonopersona.getTelefono()+" - ");
+		try {
+		
+			if (log.isInfoEnabled()) {
+				log.info("apunto de insertar telefono-CLIENTE");
+			}
+			em.persist(telefonopersona);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#updateDemo(com.edicsem.pe.sie.entity.Usuario)
 	 */
 	public void actualizarTelefonoEmpleado(TelefonoPersonaSie telefonopersona) {
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("apunto de insertar Empleado");
+				log.info("apunto de actualizar Empleado");
 			}
 			em.merge(telefonopersona);
 		} catch (Exception e) {
@@ -51,6 +64,18 @@ public class TelefonoEmpleadoDAOImpl implements TelefonoEmpleadoDAO{
 		}
 	}
 
+	
+	
+	public void actualizarTelefonoCliente(TelefonoPersonaSie telefonopersona) {
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("apunto de actualizar Cliente en el DAOImpl creca al merge");
+			}
+			em.merge(telefonopersona);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#deleteDemo(java.lang.String)
 	 */
@@ -92,7 +117,7 @@ public class TelefonoEmpleadoDAOImpl implements TelefonoEmpleadoDAO{
 		log.info(" idcliente "+ id);	
 	List<TelefonoPersonaSie> telefono =new ArrayList<TelefonoPersonaSie>();
 		try {
-			Query q = em.createQuery("select p from TelefonoPersonaSie p where p.idcliente = "+ id);
+			Query q = em.createQuery("select p from TelefonoPersonaSie p where p.tbEstadoGeneral.idestadogeneral = 17 AND p.idcliente = "+ id);
 			telefono = q.getResultList();
 			log.info("Telefono x idcliente  --> " + telefono.size());
 			
@@ -103,17 +128,8 @@ public class TelefonoEmpleadoDAOImpl implements TelefonoEmpleadoDAO{
 	}
 	
 	
-	public void actualizarTelefonoCliente(TelefonoPersonaSie telefonopersona) {
-		try {
-			if (log.isInfoEnabled()) {
-				log.info("apunto de actualizar Cliente en el DAOImpl creca al merge");
-			}
-			em.merge(telefonopersona);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	
+
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.TelefonoEmpleadoDAO#buscarTelefonoCliente(int)
 	 */
@@ -136,7 +152,7 @@ public class TelefonoEmpleadoDAOImpl implements TelefonoEmpleadoDAO{
 	public List listarTelefonoEmpleadosXidcliente (int idcliente) {
 		List lista = null;
 		try {
-			Query q = em.createQuery("select p from TelefonoPersonaSie p where p.idcliente = "+idcliente);
+			Query q = em.createQuery("select p from TelefonoPersonaSie p where p.tbEstadoGeneral.idestadogeneral = 17 AND  p.idcliente = "+idcliente);
 			lista = q.getResultList();
 			log.info("tamaño lista telefonos x cliente --> " + lista.size());
 		} catch (Exception e) {
@@ -185,6 +201,18 @@ public class TelefonoEmpleadoDAOImpl implements TelefonoEmpleadoDAO{
 			e.printStackTrace();
 		}
 		return telefono;
+	}
+
+
+	public void actualizarTelefonoCliente(List<TelefonoPersonaSie> telefonoDeshabilitado) {
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("apunto de actualizar Cliente en el DAOImpl creca al merge");
+			}
+			em.merge(telefonoDeshabilitado);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
