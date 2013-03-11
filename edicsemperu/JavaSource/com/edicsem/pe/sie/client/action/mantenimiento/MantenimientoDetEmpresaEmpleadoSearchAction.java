@@ -4,14 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.el.ExpressionFactory;
+import javax.el.MethodExpression;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.MethodExpressionActionListener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.primefaces.event.DragDropEvent;
+import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.model.DefaultMenuModel;
+import org.primefaces.model.MenuModel;
 
 import com.edicsem.pe.sie.beans.GrupoEmpleadoDTO;
+import com.edicsem.pe.sie.beans.MenuDTO;
 import com.edicsem.pe.sie.entity.DetGrupoEmpleadoSie;
 import com.edicsem.pe.sie.entity.GrupoVentaSie;
 import com.edicsem.pe.sie.service.facade.DetGrupoEmpleadoService;
@@ -28,11 +36,13 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	private List<GrupoEmpleadoDTO>  grupoEmplList;
 	private List<GrupoVentaSie> grupoVentasieList;
 	private List<GrupoEmpleadoDTO> grupoVentaList;
-	private int idGrupo;
+	private int idGrupo, idempleado;
+	private String grupoEscogido;
 	@EJB
 	private DetGrupoEmpleadoService detgrupoemplService;
 	@EJB
 	private GrupoVentaService grupoventaService;
+	private MenuModel mimenu;
 	
 	public MantenimientoDetEmpresaEmpleadoSearchAction() {
 		init();
@@ -47,8 +57,10 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 		}
 		detGrupoEmplList = new ArrayList<DetGrupoEmpleadoSie>();
 		grupoEmplList = new ArrayList<GrupoEmpleadoDTO>();
+		setMimenu(new DefaultMenuModel());
 		idGrupo=0;
 		idGrupo =0;
+		idempleado=0;
 	}
 	
 	/* (non-Javadoc)
@@ -68,37 +80,64 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 			g.setTbempleado(detGrupoEmplList.get(i).getTbempleado());
 			grupoEmplList.add(g);
 		}
-		
+		setMimenu(new DefaultMenuModel());
+		MenuItem item = new MenuItem();
+		List<MenuDTO> lstMenu = new ArrayList<MenuDTO>();
 		grupoVentasieList = grupoventaService.listarGrupoVenta();
 		for (int i = 0; i < grupoVentasieList.size(); i++) {
 			GrupoEmpleadoDTO g = new GrupoEmpleadoDTO();
 			g.setTbGrupoVenta(grupoVentasieList.get(i));
 			grupoVentaList.add(g);
+			MenuDTO e = new MenuDTO();
+			e.setNombreMenu(grupoVentaList.get(i).getTbGrupoVenta().getDescripcion());
+			e.setNombreActionListener("#{grupo.update}");
+			log.info("grupo:  "+grupoVentaList.get(i).getTbGrupoVenta().getDescripcion());
+			lstMenu.add(e);
+		}
+		log.info("tamañito  "+lstMenu.size());
+		for (MenuDTO a : lstMenu) {
+			item = new MenuItem();
+			item.setValue(a.getNombreMenu());
+			item.setAjax(false);
+			
+			if (a.getNombreActionListener() != null && a.getNombreActionListener().isEmpty() == false) {
+				log.info("cambio "+a.getNombreActionListener());
+				item.setActionExpression(getMethod(a.getNombreActionListener()));
+				log.info("sss "+item.getActionExpression());
+				item.setUrl(null);
+			}
+			mimenu.addMenuItem(item);
+			log.info("nomb menu: "+a.getNombreMenu()+" url "+a.getUrlMenu()+" action  "+a.getNombreActionListener());
 		}
 		return getViewList();
 	}
 	
-	/**
-	 * @param ddEvent
+	public MethodExpression getMethod(String actionListenerName) {
+		ExpressionFactory context = FacesContext.getCurrentInstance().getApplication().getExpressionFactory();
+		MethodExpression mExp = context.createMethodExpression(FacesContext.getCurrentInstance().getELContext(), actionListenerName, String.class, new Class[]{});
+		return mExp;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
 	 */
-	public void onDrop(DragDropEvent ddEvent){
-		log.info(" onDrop() "+ddEvent.getDropId()+" "+ddEvent.getDragId());
-        GrupoEmpleadoDTO d = ((GrupoEmpleadoDTO) ddEvent.getData());
-        if(d!=null)
-        {
-        	log.info("!= null");
-        	if(grupoVentaList.get(0).getDetalle()==null){
-        		log.info("detalle  = null");
-        		List<GrupoEmpleadoDTO> listaNueva = new ArrayList<GrupoEmpleadoDTO>();
-        		listaNueva.add(d);
-        		grupoVentaList.get(0).setDetalle(listaNueva);
-        	}else
-        	{
-        		log.info("detalle  es diferente");
-        		grupoVentaList.get(0).getDetalle().add(d);
-        	}
+	public String update(){
+		log.info("update!!! ");
+		log.info("empleado "+idempleado);
+		if(idempleado!=0){
+        	log.info("!= null  "+idempleado);
+        	List<GrupoEmpleadoDTO> listaNueva = new ArrayList<GrupoEmpleadoDTO>();
+        	for (int i = 0; i < grupoEmplList.size(); i++) {
+				if(grupoEmplList.get(i).getTbempleado().getIdempleado()==idempleado){
+					log.info("encontrado ");
+					listaNueva.add(grupoEmplList.get(i));
+		        	grupoVentaList.get(0).setDetalle(listaNueva);
+		        	grupoEmplList.remove(i);
+		        	break;
+				}
+			}
         }
-        grupoEmplList.remove(d);
+		return null;
     }
 	
 	/* (non-Javadoc)
@@ -162,6 +201,48 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	 */
 	public void setGrupoEmplList(List<GrupoEmpleadoDTO> grupoEmplList) {
 		this.grupoEmplList = grupoEmplList;
+	}
+
+	/**
+	 * @return the mimenu
+	 */
+	public MenuModel getMimenu() {
+		return mimenu;
+	}
+
+	/**
+	 * @param mimenu the mimenu to set
+	 */
+	public void setMimenu(MenuModel mimenu) {
+		this.mimenu = mimenu;
+	}
+
+	/**
+	 * @return the idempleado
+	 */
+	public int getIdempleado() {
+		return idempleado;
+	}
+
+	/**
+	 * @param idempleado the idempleado to set
+	 */
+	public void setIdempleado(int idempleado) {
+		this.idempleado = idempleado;
+	}
+
+	/**
+	 * @return the grupoEscogido
+	 */
+	public String getGrupoEscogido() {
+		return grupoEscogido;
+	}
+
+	/**
+	 * @param grupoEscogido the grupoEscogido to set
+	 */
+	public void setGrupoEscogido(String grupoEscogido) {
+		this.grupoEscogido = grupoEscogido;
 	}
 	
 }

@@ -14,16 +14,31 @@
 			<p:messages id="message" showDetail="true" />
 			 
 			<p:fieldset legend="Resultado de Meta">
+			
 			<p:dataTable var="g" value="#{grupo.grupoEmplList}" id="data">  
-	            <p:column style="width:20px">
-	                <h:outputText id="dragIcon" styleClass="ui-icon ui-icon-arrow-4" />
-	                <p:draggable for="dragIcon" revert="true" />
-	            </p:column>
 	            <p:column headerText="Grupo">
 	                <h:outputText value="#{g.tbGrupoVenta.descripcion}" />
 	            </p:column>
 	            <p:column headerText="Empleado">
 	                <h:outputText value="#{g.tbempleado.nombresCompletos}" />
+	            </p:column>
+	            <p:column>
+		            <f:facet name="header">
+		            	<h:outputText value="Escoger Grupo" />
+		            </f:facet>
+		            <p:menuButton id="extensionMenu" widgetVar="reportMenu" position="dynamic" value="action" >
+		            <p:menuitem id="rtf" label="probica" value="probica"  >
+			            <p:commandButton  title="rtf" action="#{grupo.update}" value="probca"  >
+	                        <f:setPropertyActionListener target="#{grupo.idempleado}" value="#{g.tbempleado.idempleado}" />
+	                    </p:commandButton>
+	                </p:menuitem>
+		        </p:menuButton>
+		         
+		        <p:menuButton value="Actions" model="#{grupo.mimenu}" >
+		        <c:forEach  items="#{grupo.grupoVentasieList}" var="c" >
+		        <p:menuitem value="c.descripcion" /> 
+		        </c:forEach>
+		        </p:menuButton>
 	            </p:column>
             </p:dataTable>
             </p:fieldset>
@@ -35,9 +50,6 @@
 	               <f:facet name="header">
 	               			#{v.tbGrupoVenta.descripcion}
 	               </f:facet>
-	               <p:outputPanel id="t">
-              <h:outputText value="!!!Drop here!!!" style="font-size:24px;"  rendered="#{empty v.detalle}" />
-              </p:outputPanel>
 	               <p:column headerText="Grupo">
 		                <h:outputText value="#{v.tbGrupoVenta.descripcion}" />
 		           </p:column>
@@ -49,9 +61,6 @@
                </p:dataTable>
                
              </p:fieldset>
-        <p:droppable for="idGrupo" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="data">  
-        <p:ajax listener="#{grupo.onDrop}" update="@form" />
-        </p:droppable>
          
 	</h:form>
 	</ui:define>
