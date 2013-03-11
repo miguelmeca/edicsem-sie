@@ -319,8 +319,20 @@ public class MantenimientoClienteFormAction extends
 
 	public void telefonoAgregar() {
 		log.info("telefono agregar " + nuevoTelef.getTelefono());
+		
+		if( nuevoTelef.getTelefono()==null||nuevoTelef.getTelefono().equals("")){
+			mensaje= "Debe ingresar un número telefónico";
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		else{
+		log.info("telefono agregar " + nuevoTelef.getTelefono());
+		
+		
 		boolean verifica = false;
 		mensaje = null;
+		
 		if (TipoTelef == 1)
 			nuevoTelef.setTipotelefono("F");
 		else
@@ -362,6 +374,7 @@ public class MantenimientoClienteFormAction extends
 			}
 			nuevoTelef = new TelefonoPersonaSie();
 			}
+	}
 	/**********************DOMICILIO**************************/
 	public void cambiar() {
 		comboManager.setIdDepartamento(getIdDepartamento());
