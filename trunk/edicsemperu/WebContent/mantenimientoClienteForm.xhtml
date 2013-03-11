@@ -149,16 +149,15 @@ id="fechanacimiento" showButtonPanel="true" size="30"
 
 </h:panelGrid>
 </p:panel>
-<!-- Fin de Datos Laborales -->
-</p:tab>
 
-<p:tab title="#{message['cliente.tabdireccion']}">
-<p:panel>
+<br></br>
+
+<p:panel header="#{message['cliente.tabdireccion']}"> 
 
 <h:panelGrid columns="2" id="panel3">
 
 
-<p:commandButton value="Agregar Domicilio"
+<p:commandButton value="Nuevo Domicilio"
  update=":ClienteDomicilio"
  icon="ui-icon-star"
  action="#{MantenimientoClienteFormAction.agregar2}"
@@ -216,8 +215,10 @@ id="fechanacimiento" showButtonPanel="true" size="30"
 </p:dataTable>
      </center>     								
 </p:panel>
+<!-- Fin de Datos Laborales -->
 </p:tab>
-<!-- Fin de Domicilio -->
+
+
 
 
 
