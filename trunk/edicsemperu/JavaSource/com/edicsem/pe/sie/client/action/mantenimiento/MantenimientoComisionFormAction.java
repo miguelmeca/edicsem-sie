@@ -143,7 +143,7 @@ public class MantenimientoComisionFormAction extends BaseMantenimientoAbstractAc
 		log.info("consultar() --> "+ objcomisionSie.getBase());
 		//cambiar el porcentaje
 		BigDecimal porc ;
-		if(objcomisionSie.getBase()!=new BigDecimal(0)){
+		if(!objcomisionSie.getBase().toString().equalsIgnoreCase("0")){
 			porc =  objcomisionSie.getBase().divide(new BigDecimal(690.0), 16, RoundingMode.HALF_UP);
 		}else{
 			porc= new BigDecimal(0);
