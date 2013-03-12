@@ -30,49 +30,26 @@ public class MantenimientoEmpresaEmpleadoProductoSearchAction extends BaseManten
 	private List<EmpleadoSie> empleadoList;
 	private EmpleadoSie objEmpleadoSie;
 	private EmpleadoSie nuevoempleado;
-	private int idCargo;
-	
+	private int idCargo;	
 	
 	@EJB
-	private EmpresaService empresaService;
-	
+	private EmpresaService empresaService;	
 	@EJB
 	private EmpleadoSieService objEmpleadoSieService;
 	
-	
-//	public List<EmpresaSie> getEmpresaList() throws Exception {
-//		return empresaList;
-//	}
-
 	// aqui listare los empleados
 	public List<EmpleadoSie> getEmpleadoList() throws Exception{
 		return empleadoList;
 	}
-	
-
-	
+		
 	public void init() {
 		log.info("init()");
-		
-	
-		
-
 		objEmpleadoSie= new EmpleadoSie();
-
 		objEmpleadoSie.setNombresCompletos("");
 		objEmpleadoSie.setNumdocumento("");
 		objEmpleadoSie.setNombreemp("");
-	
-		
-		
-		
-//		
-//		
-//		nuevo = new EmpresaSie();
 		nuevoempleado = new EmpleadoSie();
-		
-		
-	}
+			}
 
 	/**
 	 * @return the empleadoList
