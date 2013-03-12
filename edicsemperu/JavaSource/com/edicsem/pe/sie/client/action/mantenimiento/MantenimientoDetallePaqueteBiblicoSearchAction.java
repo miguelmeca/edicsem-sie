@@ -20,6 +20,7 @@ import com.edicsem.pe.sie.service.facade.DetallePaqueteService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.PaqueteService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
+import com.edicsem.pe.sie.util.FaceMessage.FaceMessage;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
@@ -218,13 +219,10 @@ objDetPaqueteSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(ge
 objDetallePaqueteService.updateDetPaquete(objDetPaqueteSie);
 
 log.info("actualizando..... ");	
-msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-	Constants.MESSAGE_INFO_TITULO, Constants.MESSAGE_ACTUALIZO_TITULO );
-			log.info("actualizado");
+
 		}
-		msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-				Constants.MESSAGE_INFO_TITULO, mensaje);
-		mensaje ="Se registró el producto correctamente";
+
+		FaceMessage.FaceMessageInfo("INFORME", "Se Actualizo correctamente");		
 		objDetPaqueteSie = new DetPaqueteSie();
 		paginaRetorno =listar();
 		
