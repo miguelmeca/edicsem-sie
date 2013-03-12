@@ -5,7 +5,6 @@
 
 package com.edicsem.pe.sie.client.action;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -21,7 +20,6 @@ import org.apache.commons.logging.LogFactory;
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.ContratoEmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
-import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.ContratoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
@@ -81,7 +79,19 @@ public class MantenimientoCargoEmpleadoFormAction extends
 		setNewRecord(true);
 		return getViewList();
 	}
-	
+	public String update() throws Exception {
+		log.info("update()" + objCargoEmpleadoSie.getIdcargoempleado());
+		
+		log.info(" id cargo " +objCargoEmpleadoSie.getIdcargoempleado() + " des "+ objCargoEmpleadoSie.getDescripcion());		
+		setIdcargoempleado(objCargoEmpleadoSie.getIdcargoempleado().toString());
+		descripcionUpdate = objCargoEmpleadoSie.getDescripcion();
+
+		setIdEstadoGeneral(objCargoEmpleadoSie.getTbEstadoGeneral().getIdestadogeneral());
+		setNewRecord(false);
+		editMode = false;
+		return getViewList();
+
+	}
 	
 	
 	public List<EmpleadoSie> getCargoempleadoList() {
@@ -96,109 +106,81 @@ public String derivarEmpleado() throws Exception {
 	ContratoEmpleadoSie em = new ContratoEmpleadoSie();
 	int parametroObtenido;
 		try {
-			if (log.isInfoEnabled()) {
-			
+			if (log.isInfoEnabled()) {			
 			}
-							
-			parametroObtenido = getIde();
-em = objContratoEmpleadoService.findContratoEmpleado(parametroObtenido);
-			
-
-for (EmpleadoSie miempleado : cargoempleadoList ) {
-	log.info("entre al forech");
-	
-	List<ContratoEmpleadoSie> lista  = objContratoEmpleadoService.listarCargoXEmp(miempleado.getIdempleado());
-	for (ContratoEmpleadoSie contratoEmpleadoSie : lista) {
+		parametroObtenido = getIde();
+		em = objContratoEmpleadoService.findContratoEmpleado(parametroObtenido);
 		
-	contratoEmpleadoSie.setTbCargoempleado(objCargoEmpleadoService.buscarCargoEmpleado(191));
-	log.info("cerca al updateContratoEmpleado");
-	objContratoEmpleadoService.updateContratoEmpleado(contratoEmpleadoSie);
-	 FaceMessage.FaceMessageError("Se Derivo correctamente","prosiga ah eliminar dicho Cargo Empleado");
-	}
-   }
-	 
-		} catch (Exception e) {
+		for (EmpleadoSie miempleado : cargoempleadoList ) {
+			log.info("entre al forech");
+	
+			List<ContratoEmpleadoSie> lista  = objContratoEmpleadoService.listarCargoXEmp(miempleado.getIdempleado());
+		for (ContratoEmpleadoSie contratoEmpleadoSie : lista) {
+		
+			contratoEmpleadoSie.setTbCargoempleado(objCargoEmpleadoService.buscarCargoEmpleado(191));
+			log.info("cerca al updateContratoEmpleado");
+			objContratoEmpleadoService.updateContratoEmpleado(contratoEmpleadoSie);
+			FaceMessage.FaceMessageError("Se Derivo correctamente","prosiga ah eliminar dicho Cargo Empleado");
+		}
+		}
+	 	} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		
 		return Constants.MANT_CARGO_EMPLEADO_FORM_LIST_PAGE;
-	
-}
-	
+		}
 	
 	
-	
-	
-	
-
-	public String update() throws Exception {
-		log.info("update()" + objCargoEmpleadoSie.getIdcargoempleado());
-		
-		log.info(" id cargo " +objCargoEmpleadoSie.getIdcargoempleado() + " des "+ objCargoEmpleadoSie.getDescripcion());		
-		setIdcargoempleado(objCargoEmpleadoSie.getIdcargoempleado().toString());
-		descripcionUpdate = objCargoEmpleadoSie.getDescripcion();
-
-		setIdEstadoGeneral(objCargoEmpleadoSie.getTbEstadoGeneral().getIdestadogeneral());
-		setNewRecord(false);
-		editMode = false;
-		return getViewList();
-
-	}
 
 	public String insertar() {
 		mensaje =null;
 		log.info("insertar() " + isNewRecord() + " desc "
-				+ objCargoEmpleadoSie.getDescripcion());	
+		+ objCargoEmpleadoSie.getDescripcion());	
 		objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(1));
 		/* Esto se setea cuando pertenece a una segunda tabla (--->) */
 		try {
-
-			log.info("aqui validadndo si existe o no" + objCargoEmpleadoSie.getDescripcion());
-			int error = 0;
-			List<CargoEmpleadoSie> lista = mantenimientoCargoEmpleadoSearch.getCargoEmpleadomodel();
-			
-			for (int i = 0; i < lista.size(); i++) {
-				log.info("2  "+ lista.get(i).getDescripcion()+"  "+objCargoEmpleadoSie.getDescripcion());
-				if(descripcionUpdate!=null){
-					if ( lista.get(i).getDescripcion().equalsIgnoreCase(objCargoEmpleadoSie.getDescripcion().trim())&&
-						(!descripcionUpdate.equalsIgnoreCase(objCargoEmpleadoSie.getDescripcion().trim()))) {
-						log.info("Error ... Ya se encuentra un cargo igual");
-						mensaje ="Ya se encuentra un cargo con el mismo nombre";
-						error = 1;
-						break;
-					}
+		log.info("aqui validadndo si existe o no" + objCargoEmpleadoSie.getDescripcion());
+		int error = 0;
+		List<CargoEmpleadoSie> lista = mantenimientoCargoEmpleadoSearch.getCargoEmpleadomodel();
+		for (int i = 0; i < lista.size(); i++) {
+		log.info("2  "+ lista.get(i).getDescripcion()+"  "+objCargoEmpleadoSie.getDescripcion());
+		if(descripcionUpdate!=null){
+			if ( lista.get(i).getDescripcion().equalsIgnoreCase(objCargoEmpleadoSie.getDescripcion().trim())&&
+				(!descripcionUpdate.equalsIgnoreCase(objCargoEmpleadoSie.getDescripcion().trim()))) {
+				log.info("Error ... Ya se encuentra un cargo igual");
+				mensaje ="Ya se encuentra un cargo con el mismo nombre";
+				error = 1;
+				break;
 				}
-				else if ( lista.get(i).getDescripcion().equalsIgnoreCase(objCargoEmpleadoSie.getDescripcion().trim())) {
-						log.info("Error ... Ya se encuentra un cargo igual");
-						mensaje ="Ya se encuentra un cargo con el mismo nombre";
-						error = 1;
-						break;
-					}
-			}
-			if (error == 0) {
+				}
+				
+		else if ( lista.get(i).getDescripcion().equalsIgnoreCase(objCargoEmpleadoSie.getDescripcion().trim())) {
+				log.info("Error ... Ya se encuentra un cargo igual");
+				mensaje ="Ya se encuentra un cargo con el mismo nombre";
+				error = 1;
+				break;
+				}
+				}
+		if (error == 0) {
 			if (isNewRecord()) {
-					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-							Constants.MESSAGE_REGISTRO_TITULO, mensaje);
-					objCargoEmpleadoSie.setDescripcion(	objCargoEmpleadoSie.getDescripcion().trim());
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				Constants.MESSAGE_REGISTRO_TITULO, mensaje);
+				objCargoEmpleadoSie.setDescripcion(	objCargoEmpleadoSie.getDescripcion().trim());
 				objCargoEmpleadoService.insertarCargoEmpleado(objCargoEmpleadoSie);
-			}
+				 }
 			else {
-
 				objCargoEmpleadoSie.setIdcargoempleado(Integer.parseInt(getIdcargoempleado()));
-
 				objCargoEmpleadoSie.setDescripcion(objCargoEmpleadoSie.getDescripcion().trim());
 				objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(getIdEstadoGeneral()));
-				
 				log.info("----->>>"
-						+ objCargoEmpleadoSie.getTbEstadoGeneral().getIdestadogeneral()+ objCargoEmpleadoSie.getDescripcion());
+				+ objCargoEmpleadoSie.getTbEstadoGeneral().getIdestadogeneral()+ objCargoEmpleadoSie.getDescripcion());
 				log.info("actualizando..... ");
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-						Constants.MESSAGE_REGISTRO_TITULO, mensaje);			
+				Constants.MESSAGE_REGISTRO_TITULO, mensaje);			
 				objCargoEmpleadoService.actualizarCargoEmpleado(objCargoEmpleadoSie);				
 				log.info("actualizando..... ");				
 				log.info("objCargoEmpleadoSie.isNewRecord() : ");	
@@ -211,25 +193,18 @@ for (EmpleadoSie miempleado : cargoempleadoList ) {
 			}
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (Exception e) {
-
 			e.printStackTrace();
 			mensaje = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
-		objCargoEmpleadoSie = new CargoEmpleadoSie();
-		return mantenimientoCargoEmpleadoSearch.listar();
-	}
+			}
+			objCargoEmpleadoSie = new CargoEmpleadoSie();
+			return mantenimientoCargoEmpleadoSearch.listar();
+			}
 	
 	
-	
-	
-	
-	
-	
-
 	public class WatermarkBean { 
 	 private String keyword;  
 	  
@@ -264,7 +239,6 @@ for (EmpleadoSie miempleado : cargoempleadoList ) {
 	 */
 	public String updateDeshabilitar() throws Exception {
 		mensaje =null;
-
 		objCargoEmpleadoSie = new CargoEmpleadoSie();
 		int parametroObtenido;
 		CargoEmpleadoSie c = new CargoEmpleadoSie();
@@ -273,76 +247,55 @@ for (EmpleadoSie miempleado : cargoempleadoList ) {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'updateDESHABILITAR()'");
 			}
-
 			parametroObtenido = getIdc();
 			log.info(" ------>>>>>>aqui cactura el parametro ID "+ parametroObtenido);
-			
-				if(verificarEmpleadoConCargo(parametroObtenido)){
-					
-					c = objCargoEmpleadoService.buscarCargoEmpleado(parametroObtenido);
-					log.info(" ------Android>" + c.getDescripcion() + " "+ c.getIdcargoempleado());
-					
-					objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(2));
-					objCargoEmpleadoSie.setIdcargoempleado(c.getIdcargoempleado());
-					objCargoEmpleadoSie.setDescripcion(c.getDescripcion());
-
-					log.info("-----ID estado general>>>"	+ objCargoEmpleadoSie.getTbEstadoGeneral().getIdestadogeneral());
-					log.info("actualizando ESTADO..... ");
-
-					objCargoEmpleadoService.actualizarCargoEmpleado(objCargoEmpleadoSie);
-					log.info("actualizando..... ");	
-					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-							Constants.MESSAGE_DESHABILITAR_TITULO, mensaje);
-					mensaje ="WDF";
+			if(verificarEmpleadoConCargo(parametroObtenido)){
+				c = objCargoEmpleadoService.buscarCargoEmpleado(parametroObtenido);
+				log.info(" ------Android>" + c.getDescripcion() + " "+ c.getIdcargoempleado());
+				objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(2));
+				objCargoEmpleadoSie.setIdcargoempleado(c.getIdcargoempleado());
+				objCargoEmpleadoSie.setDescripcion(c.getDescripcion());
+				log.info("-----ID estado general>>>"	+ objCargoEmpleadoSie.getTbEstadoGeneral().getIdestadogeneral());
+				log.info("actualizando ESTADO..... ");
+				objCargoEmpleadoService.actualizarCargoEmpleado(objCargoEmpleadoSie);
+				log.info("actualizando..... ");	
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				Constants.MESSAGE_DESHABILITAR_TITULO, mensaje);
+				mensaje ="WDF";
 				}	
-				
-				else {
-					if (verificarEmpleadoConCargo(parametroObtenido)== false) {
-
-						listarEmpleadosXcargo(parametroObtenido);
-						
-						  
-						  FaceMessage.FaceMessageError("Primero Derive los empleados de la lista haciendo clic en el boton 'DERIVAR' y luego prosiga eliminar el cargo","");
-						return Constants.MANT_CARGOEMPLEADO_FORM_LIST_PAGE;
+			else {
+				if (verificarEmpleadoConCargo(parametroObtenido)== false) {
+					listarEmpleadosXcargo(parametroObtenido);
+					FaceMessage.FaceMessageError("Primero Derive los empleados de la lista haciendo clic en el boton 'DERIVAR' y luego prosiga eliminar el cargo","");
+				return Constants.MANT_CARGOEMPLEADO_FORM_LIST_PAGE;
 					}
-					
 					FaceMessage.FaceMessageError("ALERTA", "FUCK2");
-				}	
-				FacesContext.getCurrentInstance().addMessage(null, msg);
-
-		} catch (Exception e) {
+					}	
+					FacesContext.getCurrentInstance().addMessage(null, msg);
+			} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
-		objCargoEmpleadoSie = new CargoEmpleadoSie();
-		return mantenimientoCargoEmpleadoSearch.listar();
-	}
+			}
+			objCargoEmpleadoSie = new CargoEmpleadoSie();
+			return mantenimientoCargoEmpleadoSearch.listar();
+			}
 
 	
-	
-	
-
 	private void listarEmpleadosXcargo(int parametroObtenido) {
-	
 		log.info("entrando en el bean listarEmpleadosXcargo  "+parametroObtenido);	
 		cargoempleadoList = objEmpleadoSieService.listarEmpleadoxCargo(parametroObtenido);		
 	}
 
 	private boolean verificarEmpleadoConCargo(int idcargo) {
-		// TODO Auto-generated method stub
 		return objContratoEmpleadoService.verificarEmpleadoConCargo(idcargo);
 	}
 	
-
-
-
-
 	public String getMensaje() {
-		return mensaje;
+	return mensaje;
 	}
 
 	/**
