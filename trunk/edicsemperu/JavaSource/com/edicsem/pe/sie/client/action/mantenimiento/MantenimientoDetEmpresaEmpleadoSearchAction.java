@@ -2,9 +2,9 @@ package com.edicsem.pe.sie.client.action.mantenimiento;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.EJB;
-import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -38,11 +38,13 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	private List<GrupoEmpleadoDTO> grupoVentaList;
 	private int idGrupo, idempleado;
 	private String grupoEscogido;
+	private ArrayList<MenuDTO> lstMenu ;
+	//session grupo
+	private Map<String, Object> lasession;
 	@EJB
 	private DetGrupoEmpleadoService detgrupoemplService;
 	@EJB
 	private GrupoVentaService grupoventaService;
-	private MenuModel mimenu;
 	
 	public MantenimientoDetEmpresaEmpleadoSearchAction() {
 		init();
@@ -57,7 +59,6 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 		}
 		detGrupoEmplList = new ArrayList<DetGrupoEmpleadoSie>();
 		grupoEmplList = new ArrayList<GrupoEmpleadoDTO>();
-		setMimenu(new DefaultMenuModel());
 		idGrupo=0;
 		idGrupo =0;
 		idempleado=0;
@@ -68,6 +69,8 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	 */
 	public String listar() {
 		log.info("listar() ' x grupo' " + idGrupo);
+		//
+		lasession=FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
 		grupoVentaList= new ArrayList<GrupoEmpleadoDTO>();
 		grupoEmplList = new ArrayList<GrupoEmpleadoDTO>();
 		detGrupoEmplList = detgrupoemplService.listarDetGrupoEmpleado();
@@ -80,9 +83,8 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 			g.setTbempleado(detGrupoEmplList.get(i).getTbempleado());
 			grupoEmplList.add(g);
 		}
-		setMimenu(new DefaultMenuModel());
 		MenuItem item = new MenuItem();
-		List<MenuDTO> lstMenu = new ArrayList<MenuDTO>();
+		 lstMenu = new ArrayList<MenuDTO>();
 		grupoVentasieList = grupoventaService.listarGrupoVenta();
 		for (int i = 0; i < grupoVentasieList.size(); i++) {
 			GrupoEmpleadoDTO g = new GrupoEmpleadoDTO();
@@ -95,27 +97,16 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 			lstMenu.add(e);
 		}
 		log.info("tamañito  "+lstMenu.size());
-		for (MenuDTO a : lstMenu) {
-			item = new MenuItem();
-			item.setValue(a.getNombreMenu());
-			item.setAjax(false);
-			
-			if (a.getNombreActionListener() != null && a.getNombreActionListener().isEmpty() == false) {
-				log.info("cambio "+a.getNombreActionListener());
-				item.setActionExpression(getMethod(a.getNombreActionListener()));
-				log.info("sss "+item.getActionExpression());
-				item.setUrl(null);
-			}
-			mimenu.addMenuItem(item);
-			log.info("nomb menu: "+a.getNombreMenu()+" url "+a.getUrlMenu()+" action  "+a.getNombreActionListener());
-		}
+		
 		return getViewList();
 	}
-	
-	public MethodExpression getMethod(String actionListenerName) {
-		ExpressionFactory context = FacesContext.getCurrentInstance().getApplication().getExpressionFactory();
-		MethodExpression mExp = context.createMethodExpression(FacesContext.getCurrentInstance().getELContext(), actionListenerName, String.class, new Class[]{});
-		return mExp;
+	 
+	public MethodExpressionActionListener getActionListenerExp(String actionListenerName) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		MethodExpression mExp = context.getApplication().getExpressionFactory()
+				.createMethodExpression(context.getELContext(),
+				actionListenerName, null,new Class[] { ActionEvent.class });
+		return new MethodExpressionActionListener(mExp);
 	}
 	
 	/* (non-Javadoc)
@@ -123,17 +114,23 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	 */
 	public String update(){
 		log.info("update!!! ");
-		log.info("empleado "+idempleado);
 		if(idempleado!=0){
-        	log.info("!= null  "+idempleado);
-        	List<GrupoEmpleadoDTO> listaNueva = new ArrayList<GrupoEmpleadoDTO>();
         	for (int i = 0; i < grupoEmplList.size(); i++) {
 				if(grupoEmplList.get(i).getTbempleado().getIdempleado()==idempleado){
-					log.info("encontrado ");
-					listaNueva.add(grupoEmplList.get(i));
-		        	grupoVentaList.get(0).setDetalle(listaNueva);
-		        	grupoEmplList.remove(i);
-		        	break;
+					for (int j = 0; j < grupoVentaList.size(); j++) {
+						if(grupoVentaList.get(j).getTbGrupoVenta().getDescripcion().equalsIgnoreCase(grupoEscogido)){
+							if(grupoVentaList.get(j).getDetalle()==null){
+								List<GrupoEmpleadoDTO> ltNuevo = new ArrayList<GrupoEmpleadoDTO>();
+								ltNuevo.add(grupoEmplList.get(i));
+								grupoVentaList.get(j).setDetalle(ltNuevo);
+							}else{
+								grupoVentaList.get(j).getDetalle().add(grupoEmplList.get(i));
+							}
+							grupoEmplList.remove(i);
+							break;
+				        }
+					}
+					break;
 				}
 			}
         }
@@ -204,23 +201,10 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	}
 
 	/**
-	 * @return the mimenu
-	 */
-	public MenuModel getMimenu() {
-		return mimenu;
-	}
-
-	/**
-	 * @param mimenu the mimenu to set
-	 */
-	public void setMimenu(MenuModel mimenu) {
-		this.mimenu = mimenu;
-	}
-
-	/**
 	 * @return the idempleado
 	 */
 	public int getIdempleado() {
+		log.info("idempleado *  "+idempleado );
 		return idempleado;
 	}
 
@@ -228,6 +212,7 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	 * @param idempleado the idempleado to set
 	 */
 	public void setIdempleado(int idempleado) {
+		log.info("idempleado *  "+idempleado );
 		this.idempleado = idempleado;
 	}
 
@@ -243,6 +228,34 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	 */
 	public void setGrupoEscogido(String grupoEscogido) {
 		this.grupoEscogido = grupoEscogido;
+	}
+
+	/**
+	 * @return the lasession
+	 */
+	public Map<String, Object> getLasession() {
+		return lasession;
+	}
+
+	/**
+	 * @param lasession the lasession to set
+	 */
+	public void setLasession(Map<String, Object> lasession) {
+		this.lasession = lasession;
+	}
+
+	/**
+	 * @return the lstMenu
+	 */
+	public ArrayList<MenuDTO> getLstMenu() {
+		return lstMenu;
+	}
+
+	/**
+	 * @param lstMenu the lstMenu to set
+	 */
+	public void setLstMenu(ArrayList<MenuDTO> lstMenu) {
+		this.lstMenu = lstMenu;
 	}
 	
 }
