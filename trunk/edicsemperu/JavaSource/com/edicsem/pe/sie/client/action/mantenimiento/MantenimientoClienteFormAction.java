@@ -28,6 +28,7 @@ import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.TipoCasaService;
 import com.edicsem.pe.sie.service.facade.TipoDocumentoService;
 import com.edicsem.pe.sie.service.facade.UbigeoService;
+import com.edicsem.pe.sie.util.FaceMessage.FaceMessage;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
@@ -194,17 +195,17 @@ public class MantenimientoClienteFormAction extends
 			i=i+1;
 			DomicilioPersonaList.set(j, DomicilioPersonaList.get(j));
 		}break;
-	}
+		}
 		else if(DomicilioPersonaList.get(i).getIddomiciliopersona() ==(getIdd()) && DomicilioPersonaList.get(i).getItem()=="Agregado"){
 			log.info("ALERTA WDFFFF");
 			DomicilioPersonaSie obj = new DomicilioPersonaSie();
 			obj.setIddomiciliopersona(idd);
 			log.info("DENTRO LISTA DESHABILITADO");
-			DomicilioPersonaDeshabilitado.add(obj);		
-			
-			msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
-			Constants.MESSAGE_ERROR_TELEFONO_CLIENTE,mensaje);
-			FacesContext.getCurrentInstance().addMessage(null, msg);				
+			DomicilioPersonaDeshabilitado.add(obj);	
+			FaceMessage.FaceMessageError("ALERTA", "Los Cambios se realizaran despues de hacer clic en el boton Guardar");			
+//			msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+//			Constants.MESSAGE_ERROR_TELEFONO_CLIENTE,mensaje);
+//			FacesContext.getCurrentInstance().addMessage(null, msg);				
 			}
 			}
 			}
@@ -235,9 +236,7 @@ public class MantenimientoClienteFormAction extends
 				log.info("DENTRO LISTA DESHABILITADO");				
 				TelefonoDeshabilitado.add(obj);
 		
-				msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
-				Constants.MESSAGE_ERROR_TELEFONO_CLIENTE,mensaje);
-				FacesContext.getCurrentInstance().addMessage(null, msg);				
+				FaceMessage.FaceMessageError("ALERTA", "Los Cambios se realizaran despues de hacer clic en el boton Guardar");					
 			}
 			}
 		    }
