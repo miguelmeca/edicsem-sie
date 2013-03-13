@@ -2,7 +2,6 @@ package com.edicsem.pe.sie.client.action.mantenimiento;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.el.MethodExpression;
@@ -14,14 +13,13 @@ import javax.faces.event.MethodExpressionActionListener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.primefaces.component.menuitem.MenuItem;
-import org.primefaces.model.DefaultMenuModel;
-import org.primefaces.model.MenuModel;
 
 import com.edicsem.pe.sie.beans.GrupoEmpleadoDTO;
 import com.edicsem.pe.sie.beans.MenuDTO;
 import com.edicsem.pe.sie.entity.DetGrupoEmpleadoSie;
 import com.edicsem.pe.sie.entity.GrupoVentaSie;
+import com.edicsem.pe.sie.service.facade.CobranzaService;
+import com.edicsem.pe.sie.service.facade.ContratoService;
 import com.edicsem.pe.sie.service.facade.DetGrupoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.GrupoVentaService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -39,12 +37,19 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	private int idGrupo, idempleado;
 	private String grupoEscogido;
 	private ArrayList<MenuDTO> lstMenu ;
-	//session grupo
-	private Map<String, Object> lasession;
+	
 	@EJB
 	private DetGrupoEmpleadoService detgrupoemplService;
 	@EJB
 	private GrupoVentaService grupoventaService;
+	@EJB
+	private ContratoService contratoService;
+	@EJB
+	private CobranzaService cobranzaService;
+	//cantidad de faltas
+	//cantiadd de tardanzas
+	//cantidad de entregas
+	//cantidad de facturados
 	
 	public MantenimientoDetEmpresaEmpleadoSearchAction() {
 		init();
@@ -69,8 +74,7 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	 */
 	public String listar() {
 		log.info("listar() ' x grupo' " + idGrupo);
-		//
-		lasession=FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+		
 		grupoVentaList= new ArrayList<GrupoEmpleadoDTO>();
 		grupoEmplList = new ArrayList<GrupoEmpleadoDTO>();
 		detGrupoEmplList = detgrupoemplService.listarDetGrupoEmpleado();
@@ -83,8 +87,7 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 			g.setTbempleado(detGrupoEmplList.get(i).getTbempleado());
 			grupoEmplList.add(g);
 		}
-		MenuItem item = new MenuItem();
-		 lstMenu = new ArrayList<MenuDTO>();
+		lstMenu = new ArrayList<MenuDTO>();
 		grupoVentasieList = grupoventaService.listarGrupoVenta();
 		for (int i = 0; i < grupoVentasieList.size(); i++) {
 			GrupoEmpleadoDTO g = new GrupoEmpleadoDTO();
@@ -132,6 +135,43 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 					}
 					break;
 				}
+			}
+        }
+		return null;
+    }
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
+	 */
+	public String insertar() throws Exception {
+		
+		return null;
+	}
+	
+	public String cambiarGrupo(){
+		log.info("cambiarGrupo!!! :D ");
+		if(idempleado!=0){
+        for (int i = 0; i < grupoVentaList.size(); i++) {
+        	if(grupoVentaList.get(i).getDetalle()!=null){
+			for (int m = 0; m < grupoVentaList.get(i).getDetalle().size(); m++) {
+				if(grupoVentaList.get(i).getDetalle().get(m).getTbempleado().getIdempleado()==idempleado){
+					for (int j = 0; j < grupoVentaList.size(); j++) {
+						if(grupoVentaList.get(j).getTbGrupoVenta().getDescripcion().equalsIgnoreCase(grupoEscogido)){
+							if(grupoVentaList.get(j).getDetalle()==null){
+								List<GrupoEmpleadoDTO> ltNuevo = new ArrayList<GrupoEmpleadoDTO>();
+								ltNuevo.add(grupoVentaList.get(i).getDetalle().get(m));
+								grupoVentaList.get(j).setDetalle(ltNuevo);
+							}else{
+								grupoVentaList.get(j).getDetalle().add(grupoVentaList.get(i).getDetalle().get(m));
+							}
+							grupoVentaList.get(i).getDetalle().remove(m);
+							break;
+				        }
+					}
+					break;
+				}
+				}
+        	}
 			}
         }
 		return null;
@@ -228,20 +268,6 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	 */
 	public void setGrupoEscogido(String grupoEscogido) {
 		this.grupoEscogido = grupoEscogido;
-	}
-
-	/**
-	 * @return the lasession
-	 */
-	public Map<String, Object> getLasession() {
-		return lasession;
-	}
-
-	/**
-	 * @param lasession the lasession to set
-	 */
-	public void setLasession(Map<String, Object> lasession) {
-		this.lasession = lasession;
 	}
 
 	/**

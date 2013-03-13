@@ -14,7 +14,6 @@
 			<p:messages id="message" showDetail="true" />
 			 
 			<p:fieldset legend="Resultado de Meta">
-			
 			<p:dataTable var="g" value="#{grupo.grupoEmplList}" id="data">  
 	            <p:column headerText="Grupo">
 	                <h:outputText value="#{g.tbGrupoVenta.descripcion}" />
@@ -22,9 +21,33 @@
 	            <p:column headerText="Empleado">
 	                <h:outputText value="#{g.tbempleado.nombresCompletos}" />
 	            </p:column>
+	            <p:column sortBy="#{p.tbTipoEventoVenta.descripcion}" filterBy="#{p.tbTipoEventoVenta.descripcion}" headerText="#{message['comision.venta.evento']}"  >
+						<f:facet name="header">
+							<h:outputText value="#{message['facturacion.entrega.entrega']}" />
+						</f:facet>
+						<h:outputText value="#{p.tbTipoEventoVenta.descripcion}" />
+				</p:column>
+				<p:column sortBy="#{p.rangoString}" filterBy="#{p.rangoString}" headerText="cant" >
+						<f:facet name="header">
+							<h:outputText value="#{message['facturacion.entrega.facturacion']}" />
+						</f:facet>
+						<h:outputText value="#{p.rangoString}" />
+					</p:column>
+	            <p:column sortBy="#{p.tbTipoEventoVenta.descripcion}" filterBy="#{p.tbTipoEventoVenta.descripcion}" headerText="#{message['comision.venta.evento']}"  >
+						<f:facet name="header">
+							<h:outputText value="#{message['facturacion.entrega.total.entregas']}" />
+						</f:facet>
+						<h:outputText value="#{p.tbTipoEventoVenta.descripcion}" />
+				</p:column>
+	            <p:column sortBy="#{p.rangoString}" filterBy="#{p.rangoString}" headerText="cant" >
+						<f:facet name="header">
+							<h:outputText value="#{message['facturacion.entrega.total.facturacion']}" />
+						</f:facet>
+						<h:outputText value="#{p.rangoString}" />
+				</p:column>
 	            <p:column>
 		            <f:facet name="header">
-		            	<h:outputText value="Escoger Grupo" />
+		            	<h:outputText value="#{message['facturacion.entrega.escoger']}" />
 		            </f:facet>
 		            <p:menuButton value="Escoger Grupo" >
 			        	<c:forEach items="#{grupo.lstMenu}" var="k">
@@ -38,24 +61,32 @@
             </p:dataTable>
             </p:fieldset>
             <p:fieldset id="selected" legend="Grupos Asignados" style="margin-top:20px">
-              <p:dataTable var="v" value="#{grupo.grupoVentaList}"  id="idGrupo">
-              <p:column headerText="Grupo">
-              
-              <p:dataTable var="f" value="#{v.detalle}" >
+             
+            <h:panelGrid columns="2" cellpadding="8" >
+            <c:forEach items="#{grupo.grupoVentaList}" var="v">
+             <p:dataTable var="f" value="#{v.detalle}" emptyMessage="Ningun Integrante" style="width:450px" >
 	               <f:facet name="header">
 	               			#{v.tbGrupoVenta.descripcion}
 	               </f:facet>
-	               <p:column headerText="Grupo">
-		                <h:outputText value="#{v.tbGrupoVenta.descripcion}" />
-		           </p:column>
-	              <p:column headerText="Integrante">
+	              <p:column >
 		                <h:outputText value="#{f.tbempleado.nombresCompletos}" />
 		           </p:column>
+		           <p:column>
+		            <p:menuButton value="Otro Grupo" >
+			        	<c:forEach items="#{grupo.lstMenu}" var="k">
+			                <p:menuitem  value="#{k.nombreMenu}" action="#{grupo.cambiarGrupo}" update="@form" >
+			                <f:setPropertyActionListener target="#{grupo.idempleado}" value="#{f.tbempleado.idempleado}" />
+			                <f:setPropertyActionListener target="#{grupo.grupoEscogido}" value="#{k.nombreMenu}" />
+			                </p:menuitem>
+				        </c:forEach>
+			        </p:menuButton>
+			        </p:column>
 	           </p:dataTable>
-               </p:column>
-               </p:dataTable>
-             </p:fieldset>
-         
+	           </c:forEach>
+           </h:panelGrid>
+               <p:commandButton  action="#{permiso.insertar}" value="Registrar Permisos" 
+               ajax="false" update="formPermisos" icon="ui-icon ui-icon-disk" />
+           </p:fieldset>
 	</h:form>
 	</ui:define>
 </ui:composition>
