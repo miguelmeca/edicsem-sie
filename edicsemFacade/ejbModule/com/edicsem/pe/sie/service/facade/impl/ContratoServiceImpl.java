@@ -28,7 +28,6 @@ import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.model.dao.AlmacenDAO;
-import com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.ClienteDAO;
 import com.edicsem.pe.sie.model.dao.CobranzaDAO;
 import com.edicsem.pe.sie.model.dao.ContratoDAO;
@@ -40,7 +39,6 @@ import com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
 import com.edicsem.pe.sie.model.dao.EmpresaDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
-import com.edicsem.pe.sie.model.dao.PaqueteDAO;
 import com.edicsem.pe.sie.model.dao.ProductoDAO;
 import com.edicsem.pe.sie.model.dao.TelefonoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.TipoCasaDAO;
@@ -80,15 +78,11 @@ public class ContratoServiceImpl implements ContratoService {
 	@EJB
 	private ProductoDAO objProductoDAO;
 	@EJB
-	private PaqueteDAO objPaqueteDAO;
-	@EJB
 	private AlmacenDAO objAlmacenDAO;
 	@EJB
 	private DetPaqueteDAO objDetPaqueteDAO;
 	@EJB
 	private DetContratoEmpleadoDAO objDetContratoEmpleadoDAO;
-	@EJB
-	private CargoEmpleadoDAO objCargoEmpleadoDAO;
 	@EJB
 	private ContratoEmpleadoDAO objContratoEmpleadoDAO;
 	
