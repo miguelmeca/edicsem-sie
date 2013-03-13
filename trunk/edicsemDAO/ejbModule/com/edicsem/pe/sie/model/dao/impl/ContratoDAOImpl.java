@@ -233,4 +233,26 @@ public class ContratoDAOImpl implements ContratoDAO{
 		return p;
 	}
 	
+	public Integer findcantContratoFacturadoEntregado(int idEmpleado) {
+		
+		int cantidadFact=0;
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("buscar facturados "+ idEmpleado );
+			}
+			//maximo se divide en dos cuotas (Cuota Inicial : 0 y -1 )
+			
+			Query q = em.createQuery("select p from ContratoSie p where p.tbEstadoGeneral.idestadogeneral = 25 " +
+					" and p.idCargoContrato = "+3+" and p.tbCobranzas.numletra = 0 " +
+					" and p.tbCobranzas.numletra = -1  and  p.tbCobranzas.fecpago != empty ");
+			
+			if (q.getResultList().size() > 1) {
+				cantidadFact = q.getResultList().size();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cantidadFact;
+	}
+	
 }
