@@ -47,4 +47,11 @@ public class TipoEventoVentaServiceImpl implements TipoEventoVentaService {
 		return objTipoEventoVentaDao.listarTipoEventoVenta();
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.TipoEventoVentaService#findTipoEventoVenta(java.lang.String)
+	 */
+	public TipoEventoVentaSie findTipoEventoVenta(String evento) {
+		return objTipoEventoVentaDao.findTipoEventoVenta(evento);
+	}
+	
 }
