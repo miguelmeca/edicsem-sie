@@ -11,9 +11,9 @@
 	</script>
 		<h1 class="title ui-widget-header ui-corner-all">#{message['registro.contrato.tittle']}</h1>
 		<h:form id="formManteContrato3">
-			<p:messages id="message" showDetail="true"/>
+			<p:messages id="message" showDetail="true" closable="true" />
 			<p:wizard id="wiz" widgetVar="wiz" flowListener="#{contratoForm.onFlowProcess}" nextLabel="#{message['btn.siguiente']}" backLabel="#{message['btn.atraz']}" >
-			  <p:tab title="#{message['cliente.tabpersonal']}">
+			  <p:tab title="#{message['panel.contrato.cliente']}">
 			  <p:panel header="#{message['panel.contrato.cliente']}"  >
 			  		<h:outputText value="Codigo contrato" />
 			  		<p:spacer/>
@@ -33,8 +33,15 @@
 					<p:inputText  id="apMatCliente" value="#{contratoForm.objClienteSie.apematcliente}" required="true" maxlength="45" size="30"  onkeypress="return validarLetras(event)"/>
 					<p:message for="apMatCliente" />
 					
+					<h:outputText value="#{message['empleado.genero']}" />
+					<p:selectOneRadio  value="#{contratoForm.objClienteSie.genero}" required="true" >
+						<f:selectItem itemLabel="Femenino" itemValue="F" />
+						<f:selectItem itemLabel="Masculino" itemValue="M" />
+					</p:selectOneRadio>
+					<p:spacer/>
+            
 					<h:outputText value="#{message['contrato.tipo.documento']}" />
-					<p:selectOneMenu id="tipoDoc" style="width:165px" value="#{contratoForm.idtipodoc}" required="true" 
+					<p:selectOneMenu id="tipoDoc" style="width:220px" value="#{contratoForm.idtipodoc}" required="true" 
 					requiredMessage="#{message['contrato.tipo.documento.validation']}" >
 						<f:selectItems value="#{comboAction.tipoDocumentoitems}" />
 						<p:ajax update="nrodoc"/>
@@ -51,12 +58,6 @@
 					<p:message for="nrodoc1" rendered="#{contratoForm.idtipodoc==1}" />
 					<p:message for="nrodoc2" rendered="#{contratoForm.idtipodoc==2}" />
 					
-					<h:outputText value="#{message['empleado.genero']}" />
-					<p:selectOneRadio  value="#{contratoForm.objClienteSie.genero}" required="true" >
-						<f:selectItem itemLabel="Femenino" itemValue="F" />
-						<f:selectItem itemLabel="Masculino" itemValue="M" />
-					</p:selectOneRadio>
-            
 					<h:outputText value="#{message['contrato.cliente.correo']}" />
 					<p:inputText value="#{contratoForm.objClienteSie.correo}" id="email" validatorMessage="Email incorrecto" maxlength="45" size="30"  title="para el @ presione: la tecla Alt + 64 y en laptop Alt Gr + Q">
 					 <f:validateRegex pattern="#{message['pattern.email.norequired']}" />
@@ -104,7 +105,7 @@
 				<p:message for="ubigeoDefecto" rendered="#{contratoForm.defectoUbigeo}"/>
 				
 				<h:outputText value="#{message['contrato.tipocasa']}" />
-				<p:selectOneMenu style="width:165px" required="true" id="tipocasa"
+				<p:selectOneMenu style="width:220px" required="true" id="tipocasa"
 				value="#{contratoForm.tipocasa}">
 					<f:selectItem itemLabel="Seleccione tipo casa" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.tipocasaItems}" />
@@ -482,12 +483,10 @@
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['contrato.tipo.venta']}" />
-				<p:selectOneMenu value="#{contratoForm.tipoVenta}"
-						style="width:220px"  >
-						<f:selectItem itemLabel="Punto de Venta" itemValue="2" />
-						<f:selectItem itemLabel="Venta masiva" itemValue="1" />
-						<p:ajax update="panelVenta" />
-						<p:ajax  update="grupos" />
+				<p:selectOneMenu value="#{contratoForm.tipoVenta}" style="width:220px" >
+					<f:selectItem itemLabel="Seleccione evento" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.tipoEventoVentaitems}" />
+					<p:ajax update="panelVenta" />
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['contrato.puntoVenta']}" rendered="#{contratoForm.tipoVenta==2}" />
@@ -498,7 +497,7 @@
 				
 				<h:outputText rendered="#{contratoForm.tipoVenta==1}" value="lugar" />
 				<p:inputText value="#{contratoForm.objContratoSie.lugarentrega}" style="width:220px" 
-						required="true" rendered="#{contratoForm.tipoVenta==1}"  />
+					required="true" rendered="#{contratoForm.tipoVenta==1}"  />
 				
 				<h:outputText value="Grupo"   />
 				<p:selectOneMenu id="grupos" value="#{contratoForm.idGrupo}"  required="true" style="width:220px" >
@@ -508,9 +507,8 @@
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['contrato.supervisor']}" />
-				
 				<p:dataList id="integrantes" value="#{contratoForm.detgrupoList}" var="d" itemType="square">
-				#{d.idempleado.nombresCompletos}
+					#{d.idempleado.nombresCompletos}
 				</p:dataList>
 				
 				<h:outputText value="#{message['contrato.vendedor']}" />
@@ -522,10 +520,11 @@
 				<p:selectOneMenu id="e2" value="#{contratoForm.idempleadoColaborador}" filter="true" filterMatchMode="startsWith"  style="width:220px">
 					<f:selectItems value="#{comboAction.empleadoxcargo}" />
 				</p:selectOneMenu>
+				<!-- relacionista -->
 				</h:panelGrid>
 				
-				<p:commandButton id="nuevoContrato" value="#{message['contrato.registrar']}" action="#{contratoForm.insertar}" update="message" ajax="false" title="#{message['contrato.registrar.tittle']}"
-				 icon="ui-icon ui-icon-disk"/>
+				<p:commandButton id="nuevoContrato" value="#{message['contrato.registrar']}" action="#{contratoForm.insertar}" update="message" ajax="false"
+				 title="#{message['contrato.registrar.tittle']}" icon="ui-icon ui-icon-disk"/>
 				<p:tooltip for="nuevoContrato"/>
 			</p:panel>
 		</p:tab>

@@ -14,6 +14,7 @@ import javax.faces.event.MethodExpressionActionListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.edicsem.pe.sie.beans.EmpleadoDTO;
 import com.edicsem.pe.sie.beans.GrupoEmpleadoDTO;
 import com.edicsem.pe.sie.beans.MenuDTO;
 import com.edicsem.pe.sie.entity.DetGrupoEmpleadoSie;
@@ -31,7 +32,7 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 
 	private Log log = LogFactory.getLog(MantenimientoDetEmpresaEmpleadoSearchAction.class);
 	private List<DetGrupoEmpleadoSie> detGrupoEmplList;
-	private List<GrupoEmpleadoDTO>  grupoEmplList;
+	private List<EmpleadoDTO>  grupoEmplList;
 	private List<GrupoVentaSie> grupoVentasieList;
 	private List<GrupoEmpleadoDTO> grupoVentaList;
 	private int idGrupo, idempleado;
@@ -63,7 +64,7 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 			log.info("Inicializando 'MantenimientoDetEmpresaEmpleadoSearchAction'");
 		}
 		detGrupoEmplList = new ArrayList<DetGrupoEmpleadoSie>();
-		grupoEmplList = new ArrayList<GrupoEmpleadoDTO>();
+		grupoEmplList = new ArrayList<EmpleadoDTO>();
 		idGrupo=0;
 		idGrupo =0;
 		idempleado=0;
@@ -76,14 +77,14 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 		log.info("listar() ' x grupo' " + idGrupo);
 		
 		grupoVentaList= new ArrayList<GrupoEmpleadoDTO>();
-		grupoEmplList = new ArrayList<GrupoEmpleadoDTO>();
+		grupoEmplList = new ArrayList<EmpleadoDTO>();
+		//Se debe listar los empleados con cargo de expositor 
 		detGrupoEmplList = detgrupoemplService.listarDetGrupoEmpleado();
 		if (detGrupoEmplList == null) {
 			detGrupoEmplList = new ArrayList<DetGrupoEmpleadoSie>();
 		}
 		for (int i = 0; i < detGrupoEmplList.size(); i++) {
-			GrupoEmpleadoDTO g = new GrupoEmpleadoDTO();
-			g.setTbGrupoVenta(detGrupoEmplList.get(i).getTbGrupoVenta());
+			EmpleadoDTO g = new EmpleadoDTO();
 			g.setTbempleado(detGrupoEmplList.get(i).getTbempleado());
 			grupoEmplList.add(g);
 		}
@@ -123,7 +124,7 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 					for (int j = 0; j < grupoVentaList.size(); j++) {
 						if(grupoVentaList.get(j).getTbGrupoVenta().getDescripcion().equalsIgnoreCase(grupoEscogido)){
 							if(grupoVentaList.get(j).getDetalle()==null){
-								List<GrupoEmpleadoDTO> ltNuevo = new ArrayList<GrupoEmpleadoDTO>();
+								List<EmpleadoDTO> ltNuevo = new ArrayList<EmpleadoDTO>();
 								ltNuevo.add(grupoEmplList.get(i));
 								grupoVentaList.get(j).setDetalle(ltNuevo);
 							}else{
@@ -144,7 +145,9 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
 	 */
 	public String insertar() throws Exception {
-		
+		if(grupoEmplList.size()!=0){
+		detgrupoemplService.insertDetGrupoEmpleado(grupoVentaList);
+		}
 		return null;
 	}
 	
@@ -158,7 +161,7 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 					for (int j = 0; j < grupoVentaList.size(); j++) {
 						if(grupoVentaList.get(j).getTbGrupoVenta().getDescripcion().equalsIgnoreCase(grupoEscogido)){
 							if(grupoVentaList.get(j).getDetalle()==null){
-								List<GrupoEmpleadoDTO> ltNuevo = new ArrayList<GrupoEmpleadoDTO>();
+								List<EmpleadoDTO> ltNuevo = new ArrayList<EmpleadoDTO>();
 								ltNuevo.add(grupoVentaList.get(i).getDetalle().get(m));
 								grupoVentaList.get(j).setDetalle(ltNuevo);
 							}else{
@@ -229,14 +232,14 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	/**
 	 * @return the grupoEmplList
 	 */
-	public List<GrupoEmpleadoDTO> getGrupoEmplList() {
+	public List<EmpleadoDTO> getGrupoEmplList() {
 		return grupoEmplList;
 	}
 
 	/**
 	 * @param grupoEmplList the grupoEmplList to set
 	 */
-	public void setGrupoEmplList(List<GrupoEmpleadoDTO> grupoEmplList) {
+	public void setGrupoEmplList(List<EmpleadoDTO> grupoEmplList) {
 		this.grupoEmplList = grupoEmplList;
 	}
 

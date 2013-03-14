@@ -15,35 +15,44 @@
 			 
 			<p:fieldset legend="Resultado de Meta">
 			<p:dataTable var="g" value="#{grupo.grupoEmplList}" id="data">  
-	            <p:column headerText="Grupo">
-	                <h:outputText value="#{g.tbGrupoVenta.descripcion}" />
-	            </p:column>
 	            <p:column headerText="Empleado">
 	                <h:outputText value="#{g.tbempleado.nombresCompletos}" />
 	            </p:column>
-	            <p:column sortBy="#{p.tbTipoEventoVenta.descripcion}" filterBy="#{p.tbTipoEventoVenta.descripcion}" headerText="#{message['comision.venta.evento']}"  >
+	            <p:column sortBy="#{g.entregada}" filterBy="#{g.entregada}" headerText="#{message['comision.venta.evento']}"  >
 						<f:facet name="header">
 							<h:outputText value="#{message['facturacion.entrega.entrega']}" />
 						</f:facet>
-						<h:outputText value="#{p.tbTipoEventoVenta.descripcion}" />
+						<h:outputText value="#{g.entregada}" />
 				</p:column>
-				<p:column sortBy="#{p.rangoString}" filterBy="#{p.rangoString}" headerText="cant" >
+				<p:column sortBy="#{g.facturada}" filterBy="#{g.facturada}" headerText="cant" >
 						<f:facet name="header">
 							<h:outputText value="#{message['facturacion.entrega.facturacion']}" />
 						</f:facet>
-						<h:outputText value="#{p.rangoString}" />
-					</p:column>
-	            <p:column sortBy="#{p.tbTipoEventoVenta.descripcion}" filterBy="#{p.tbTipoEventoVenta.descripcion}" headerText="#{message['comision.venta.evento']}"  >
+						<h:outputText value="#{g.facturada}" />
+				</p:column>
+	            <p:column sortBy="#{g.totalentregada}" filterBy="#{g.totalentregada}" headerText="#{message['comision.venta.evento']}"  >
 						<f:facet name="header">
 							<h:outputText value="#{message['facturacion.entrega.total.entregas']}" />
 						</f:facet>
-						<h:outputText value="#{p.tbTipoEventoVenta.descripcion}" />
+						<h:outputText value="#{g.totalentregada}" />
 				</p:column>
-	            <p:column sortBy="#{p.rangoString}" filterBy="#{p.rangoString}" headerText="cant" >
+	            <p:column sortBy="#{g.totalfacturada}" filterBy="#{g.totalfacturada}" headerText="cant" >
 						<f:facet name="header">
 							<h:outputText value="#{message['facturacion.entrega.total.facturacion']}" />
 						</f:facet>
-						<h:outputText value="#{p.rangoString}" />
+						<h:outputText value="#{g.totalfacturada}" />
+				</p:column>
+				<p:column sortBy="#{g.puntajeTotal}" filterBy="#{g.puntajeTotal}" headerText="cant" >
+						<f:facet name="header">
+							<h:outputText value="#{message['facturacion.entrega.total.facturacion']}" />
+						</f:facet>
+						<h:outputText value="#{g.puntajeTotal}" />
+				</p:column>
+				<p:column sortBy="#{g.stringFalta}" filterBy="#{g.stringFalta}" headerText="cant" filterMatchMode="contain" >
+						<f:facet name="header">
+							<h:outputText value="#{message['facturacion.entrega.total.facturacion']}" />
+						</f:facet>
+						<h:outputText value="#{g.stringFalta}" />
 				</p:column>
 	            <p:column>
 		            <f:facet name="header">

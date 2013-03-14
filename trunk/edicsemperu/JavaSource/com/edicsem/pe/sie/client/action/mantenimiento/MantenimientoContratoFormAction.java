@@ -32,6 +32,7 @@ import org.primefaces.event.FlowEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.UploadedFile;
 
+import com.edicsem.pe.sie.beans.EmpleadoDTO;
 import com.edicsem.pe.sie.beans.ReporteParams;
 import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.client.report.service.ReporteExecutionService;
@@ -652,7 +653,7 @@ public class MantenimientoContratoFormAction extends
 	public String insertar() {
 		mensaje=null;
 		String paginaRetorno = null;
-		List<Integer> detidEmpleadosList = new ArrayList<Integer>();
+		List<EmpleadoDTO> detidEmpleadosList = new ArrayList<EmpleadoDTO>();
 		HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 		EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 		try {
@@ -697,17 +698,16 @@ public class MantenimientoContratoFormAction extends
 					det.setTbEstadoGeneral(detPaqueteList.get(i).getTbEstadoGeneral());
 					detProductoContrato.add(det);
 				}
-				if(tipoVenta==1)
-				objContratoSie.setTipoventa("MAS");
-				else if(tipoVenta==2)
-					objContratoSie.setTipoventa("PNT");
-				
-				if(getIdempleadoExpositor()!=0)
-					detidEmpleadosList.add(getIdempleadoExpositor());
-				if(getIdempleadoVendedor()!=0)
-					detidEmpleadosList.add(getIdempleadoVendedor());
-				if(getIdempleadoColaborador()!=0){
-					detidEmpleadosList.add(getIdempleadoColaborador());
+				EmpleadoDTO empl= new EmpleadoDTO();
+				if(getIdempleadoExpositor()!=0){
+					empl.setIdempleado(getIdempleadoExpositor());
+					empl.setCargo("Expositor");
+				}if(getIdempleadoVendedor()!=0){
+					empl.setIdempleado(getIdempleadoVendedor());
+					empl.setCargo("Vendedor");
+				}if(getIdempleadoColaborador()!=0){
+					empl.setIdempleado(getIdempleadoColaborador());
+					empl.setCargo("Colaborador");
 				}
 				log.info("a insertar contratito");
 				if(tipopago==1){
@@ -715,7 +715,8 @@ public class MantenimientoContratoFormAction extends
 				}
 				objContratoSie.setUsuariocreacion(sessionUsuario.getUsuario());
 				objCobranzaSie.setUsuariocreacion(sessionUsuario.getUsuario());
-				objContratoService.insertContrato(idtipodoc,Tipocasa,idUbigeo, idempresa, objClienteSie, telefonoList, objDomicilioSie,  objContratoSie,detProductoContrato, cobranzaList, detidEmpleadosList);
+				objContratoService.insertContrato(idtipodoc,Tipocasa,idUbigeo, idempresa, objClienteSie, telefonoList, objDomicilioSie, 
+						objContratoSie,detProductoContrato, cobranzaList, detidEmpleadosList, tipoVenta);
 				log.info(" despues de  insertar ");
 				mensaje = "Se inserto correctamente";
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,

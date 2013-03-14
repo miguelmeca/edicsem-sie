@@ -9,8 +9,9 @@
 		<h:form id="frmMigracionForm" enctype="multipart/form-data"  >
 		<p:messages id="message" showDetail="true" closable="true" />
 		
-		<p:fileUpload fileUploadListener="#{migracion.handleFileUpload}" label="Cargar archivo"
-		allowTypes="/(\.|\/)(xls)$/" description="Seleccione archivo" multiple="false" customUI="true" 
+		<p:fileUpload fileUploadListener="#{migracion.handleFileUpload}" label="#{message['migracion.cargar.archivo']}"
+		uploadLabel="#{message['migracion.cargar.archivo']}" cancelLabel="#{message['migracion.cancelar.archivo']}" 
+		allowTypes="/(\.|\/)(xls)$/" description="#{message['miracion.select.archivo']}" multiple="false" customUI="true" 
 		update="datatablesi, message"/>
 		
 		<p:dataTable id="datatablesi" var="c" value="#{migracion.sistMig}"  paginator="true" rows="15"
@@ -44,10 +45,11 @@
 	        <p:column  headerText="#{message['migracion.numTel']}" >
 	        <h:outputText value="#{c.numTelefono}"/>
 	        </p:column>
-	        
 	    </p:dataTable>
-	    	<p:commandButton value="#{message['migracion.subirbd']}" action="#{migracion.insertar}" ajax="false"
-	    	update="message" onclick="statusDialogSI.show();" />
+	    
+	    	<p:commandButton value="#{message['migracion.subirbd']}" action="#{migracion.insertar}" 
+	    	ajax="false" update="message" onclick="statusDialogSI.show();" />
+	    	
 		</h:form>
 	</ui:define>
 </ui:composition>

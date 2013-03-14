@@ -7,83 +7,70 @@
 	<ui:define name="body">
 	<h1 class="title ui-widget-header ui-corner-all">#{message['migracion.entregasperu']}</h1>
 	<h:form id="frmEntregasperuForm" enctype="multipart/form-data" >
+	<p:messages id="message" showDetail="true" closable="true" />
 	
-<p:messages id="message" showDetail="true" closable="true" />
-
-<p:fileUpload fileUploadListener="#{FileUploadEntregasPeru.handleFileUpload}" label="Seleccionar archivo" uploadLabel="Cargar archivo" cancelLabel="Cancelar archivo"
-	allowTypes="/(\.|\/)(XLS|xls)$/" description="Seleccionar archivo"  multiple="false" customUI="true" 
-	update="datatablecampana, message" />
-		
-<p:commandButton value="#{message['entregasperu.subirbd']}"
-	action="#{FileUploadEntregasPeru.subirCreditos}"  ajax="false"
-	update="message" onclick="statusDialogEP.show();" icon="ui-icon-star"  >
-</p:commandButton>
-
-<p:dataTable id="datatablecampana" var="c" value="#{FileUploadEntregasPeru.leadsNuevos}"  paginator="true" rows="15"
- rowsPerPageTemplate="5,10,15"   emptyMessage="#{message['rsltd.empty']}"
- paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
-                   
-  	    <p:column  headerText="Nº de Contrato" id="numerodecontrato" sortBy="#{c.numerodecontrato}" filterBy="#{c.numerodecontrato}"  >
+	<p:fileUpload fileUploadListener="#{FileUploadEntregasPeru.handleFileUpload}" label="#{message['migracion.cargar.archivo']}" 
+	uploadLabel="#{message['migracion.cargar.archivo']}" cancelLabel="#{message['migracion.cancelar.archivo']}"
+	allowTypes="/(\.|\/)(XLS|xls)$/" description="#{message['miracion.select.archivo']}"  multiple="false" customUI="true" 
+	update="datatableentrega, message" />
+	
+	<p:dataTable id="datatableentrega" var="c" value="#{FileUploadEntregasPeru.leadsNuevos}"  paginator="true" rows="15"
+	rowsPerPageTemplate="5,10,15"   emptyMessage="#{message['rsltd.empty']}"
+	paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
+        
+  	    <p:column  headerText="#{message['excel.entrega.nro.contrato']}" id="numerodecontrato" sortBy="#{c.numerodecontrato}" filterBy="#{c.numerodecontrato}"  >
         <h:outputText value="#{c.numerodecontrato}"/>
         </p:column>
         
-        <p:column  headerText="Fecha" id="fechaString" sortBy="#{c.fechaString}" filterBy="#{c.fechaString}" >
+        <p:column  headerText="#{message['excel.entrega.fecha']}" id="fechaString" sortBy="#{c.fechaString}" filterBy="#{c.fechaString}" >
         <h:outputText value="#{c.fechaString}"/>
-        </p:column>	
+        </p:column>
         
-        <p:column headerText="Empresa" id="empresa" sortBy="#{c.empresa}" filterBy="#{c.empresa}" >
+        <p:column headerText="#{message['excel.entrega.empresa']}" id="empresa" sortBy="#{c.empresa}" filterBy="#{c.empresa}" >
 		<h:outputText value="#{c.empresa}"/>
 		</p:column>
 		
-		<p:column  headerText="DNI" id="dnidelcliente" sortBy="#{c.dnidelcliente}" filterBy="#{c.dnidelcliente}"  >
+		<p:column headerText="#{message['excel.entrega.documento.identidad']}" id="dnidelcliente" sortBy="#{c.dnidelcliente}" filterBy="#{c.dnidelcliente}"  >
         <h:outputText value="#{c.dnidelcliente}"/>
         </p:column>
 		
-		<p:column  headerText="Nombre de Cliente" id="nombre" sortBy="#{c.nombredecliente}" filterBy="#{c.nombredecliente}"  >
-        <h:outputText value="#{c.nombredecliente}"/>
+		<p:column  headerText="#{message['excel.entrega.cliente']}" id="nombre" sortBy="#{c.nombredecliente}" filterBy="#{c.nombredecliente}"  >
+        <h:outputText value="#{c.nombreCompletoCliente}"/>
         </p:column>
         
-        <p:column  headerText="Ape. Paterno" id="apepatcliente" sortBy="#{c.apepatcliente}" filterBy="#{c.apepatcliente}"  >
-        <h:outputText value="#{c.apepatcliente}"/>
-        </p:column>
-        
-        <p:column  headerText="Ape. Materno" id="apematcliente" sortBy="#{c.apematcliente}" filterBy="#{c.apematcliente}"  >
-        <h:outputText value="#{c.apematcliente}"/>
-        </p:column>
-        
-        <p:column  headerText="Punto de Venta" id="puntodeventa" sortBy="#{c.puntodeventa}" filterBy="#{c.puntodeventa}"  >
+        <p:column  headerText="#{message['excel.entrega.punto.venta']}" id="puntodeventa" sortBy="#{c.puntodeventa}" filterBy="#{c.puntodeventa}"  >
         <h:outputText value="#{c.puntodeventa}"/>
         </p:column>
     
-	    <p:column  headerText="Lugar de Entrega" id="lugardelaentrega" sortBy="#{c.lugardelaentrega}" filterBy="#{c.lugardelaentrega}"  >
+	    <p:column  headerText="#{message['excel.entrega.lugar.entrega']}" id="lugardelaentrega" sortBy="#{c.lugardelaentrega}" filterBy="#{c.lugardelaentrega}"  >
         <h:outputText value="#{c.lugardelaentrega}"/>
-        </p:column>    
+        </p:column>
     
-    	 <p:column  headerText="Cod. de Mercaderia" id="codigodemercaderia" sortBy="#{c.codigodemercaderia}" filterBy="#{c.codigodemercaderia}"  >
+    	<p:column  headerText="#{message['excel.entrega.cod.mercaderia']}" id="codigodemercaderia" sortBy="#{c.codigodemercaderia}" filterBy="#{c.codigodemercaderia}"  >
         <h:outputText value="#{c.codigodemercaderia}"/>
-        </p:column>    	
-            
-        <p:column  headerText="Cant. de Mercaderia" id="cantidaddemercaderia" sortBy="#{c.cantidaddemercaderia}" filterBy="#{c.cantidaddemercaderia}"  >
-        <h:outputText value="#{c.cantidaddemercaderia}"/>
         </p:column>
         
-        <p:column  headerText="Evento de Venta" id="eventodeventa" sortBy="#{c.eventodeventa}" filterBy="#{c.eventodeventa}"  >
+        <p:column  headerText="#{message['excel.entrega.evento.venta']}" id="eventodeventa" sortBy="#{c.eventodeventa}" filterBy="#{c.eventodeventa}"  >
         <h:outputText value="#{c.eventodeventa}"/>
         </p:column>
        	 
-         <p:column  headerText="Vendedor"  id="nombredelvendedor" sortBy="#{c.nombredelvendedor}" filterBy="#{c.nombredelvendedor}" >
+        <p:column  headerText="#{message['excel.entrega.vendedor']}"  id="nombredelvendedor" sortBy="#{c.nombredelvendedor}" filterBy="#{c.nombredelvendedor}" >
         <h:outputText value="#{c.nombredelvendedor}"/>
         </p:column>
         
-        <p:column  headerText="Expositor" id="nombredelexpositor" sortBy="#{c.nombredelexpositor}" filterBy="#{c.nombredelexpositor}" >
+        <p:column  headerText="#{message['excel.entrega.expositor']}" id="nombredelexpositor" sortBy="#{c.nombredelexpositor}" filterBy="#{c.nombredelexpositor}" >
         <h:outputText value="#{c.nombredelexpositor}"/>
         </p:column>
         
-        <p:column  headerText="Supervisor" id="nombredelsupervisor" sortBy="#{c.nombredelsupervisor}" filterBy="#{c.nombredelsupervisor}" >
+        <p:column  headerText="#{message['excel.entrega.supervisor']}" id="nombredelsupervisor" sortBy="#{c.nombredelsupervisor}" filterBy="#{c.nombredelsupervisor}" >
         <h:outputText value="#{c.nombredelsupervisor}"/>
         </p:column>
-        
-</p:dataTable>
-</h:form>
+       </p:dataTable>
+       
+       <p:commandButton value="#{message['entregasperu.subirbd']}" action="#{FileUploadEntregasPeru.subirBD}" 
+       ajax="false" update="message" onclick="statusDialogEP.show();" icon="ui-icon-star"  >
+       </p:commandButton>
+	
+    </h:form>
 </ui:define>
 </ui:composition>
