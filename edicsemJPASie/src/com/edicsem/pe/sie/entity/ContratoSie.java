@@ -65,7 +65,10 @@ public class ContratoSie implements Serializable {
 
 	private BigDecimal pagosubinicial;
 
-	private String tipoventa;
+	//bi-directional many-to-one association to EmpresaSie
+    @ManyToOne
+	@JoinColumn(name="tipoventa")
+	private TipoEventoVentaSie tbTipoEvento;
 	
 	private String usuariocreacion;
 
@@ -225,14 +228,6 @@ public class ContratoSie implements Serializable {
 
 	public void setPagosubinicial(BigDecimal pagosubinicial) {
 		this.pagosubinicial = pagosubinicial;
-	}
-
-	public String getTipoventa() {
-		return this.tipoventa;
-	}
-
-	public void setTipoventa(String tipoventa) {
-		this.tipoventa = tipoventa;
 	}
 
 	public String getUsuariocreacion() {
@@ -404,12 +399,17 @@ public class ContratoSie implements Serializable {
 		fechaEntregaString = DateUtil.formatoString(getFechaentrega(), "dd/MM/yyyy");
 		return fechaEntregaString;
 	}
-
-	/**
-	 * @param fechaEntregaString the fechaEntregaString to set
-	 */
+	
 	public void setFechaEntregaString(String fechaEntregaString) {
 		this.fechaEntregaString = fechaEntregaString;
+	}
+	
+	public TipoEventoVentaSie getTbTipoEvento() {
+		return tbTipoEvento;
+	}
+	
+	public void setTbTipoEvento(TipoEventoVentaSie tbTipoEvento) {
+		this.tbTipoEvento = tbTipoEvento;
 	}
 
 }
