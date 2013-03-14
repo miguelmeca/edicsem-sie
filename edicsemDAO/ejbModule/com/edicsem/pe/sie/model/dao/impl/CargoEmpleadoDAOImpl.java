@@ -123,4 +123,23 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 		return lista;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO#buscarCargoEmpleado(java.lang.String)
+	 */
+	public CargoEmpleadoSie buscarCargoEmpleado(String cargo) {
+		log.info("buscarCargoEmpleado()");
+		List lista = null;
+		CargoEmpleadoSie ca=null;
+		try {
+			Query q = em.createQuery("select c from CargoEmpleadoSie c where UPPER(c.descripcion) like '"+ cargo+"'");
+			lista = q.getResultList();
+			if(lista.size()>0)
+			ca=(CargoEmpleadoSie) lista.get(0);
+			log.info(" tamaño de lista de cargo empleado x string --->" + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ca;
+	}
+	
 }

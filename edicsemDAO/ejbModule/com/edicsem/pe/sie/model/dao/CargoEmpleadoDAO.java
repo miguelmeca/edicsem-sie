@@ -15,4 +15,5 @@ public interface CargoEmpleadoDAO {
 	public abstract CargoEmpleadoSie buscarCargoEmpleado (int id);
 	public abstract List listarCargoEmpleado ();
 	public abstract List listarCargosXEmpleado(int idEmpleado);
+	public abstract CargoEmpleadoSie buscarCargoEmpleado(String cargo);
 }

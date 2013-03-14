@@ -111,32 +111,32 @@ public class DetContratoEmpleadoDAOImpl implements DetContratoEmpleadoDAO{
 			
 			///buscamos la comision por cargo , por empresa, o es personal
 			
-			
-			for (int i = 0; i < lista.size(); i++) {
-				
-				if(lista.get(i).getIdCargoContrato()==1 ){
-					//expositor
-					 
-					cantidad+=1;
-					objExpositor=lista.get(i);
-					objExpositor.setCantContratosXCargo(cantidad);
-					log.info(" objExpositor "+objExpositor.getCantContratosXCargo());
-				}
-				else if(lista.get(i).getIdCargoContrato()==2 ){
-					//vendedor
-					cantidad2+=1;
-					objVendedor=lista.get(i);
-					objVendedor.setCantContratosXCargo(cantidad2);
-					log.info(" objVendedor "+objVendedor.getCantContratosXCargo());
-				}
-				else if(lista.get(i).getIdCargoContrato()==3 ){
-					//colaborador
-					cantidad3+=1;
-					objColaborador=lista.get(i);
-					objColaborador.setCantContratosXCargo(cantidad3);
-					log.info(" objColaborador "+objColaborador.getCantContratosXCargo());
-				}
-			}
+//			
+//			for (int i = 0; i < lista.size(); i++) {
+//				
+//				if(lista.get(i).getIdCargoContrato()==1 ){
+//					//expositor
+//					 
+//					cantidad+=1;
+//					objExpositor=lista.get(i);
+//					objExpositor.setCantContratosXCargo(cantidad);
+//					log.info(" objExpositor "+objExpositor.getCantContratosXCargo());
+//				}
+//				else if(lista.get(i).getIdCargoContrato()==2 ){
+//					//vendedor
+//					cantidad2+=1;
+//					objVendedor=lista.get(i);
+//					objVendedor.setCantContratosXCargo(cantidad2);
+//					log.info(" objVendedor "+objVendedor.getCantContratosXCargo());
+//				}
+//				else if(lista.get(i).getIdCargoContrato()==3 ){
+//					//colaborador
+//					cantidad3+=1;
+//					objColaborador=lista.get(i);
+//					objColaborador.setCantContratosXCargo(cantidad3);
+//					log.info(" objColaborador "+objColaborador.getCantContratosXCargo());
+//				}
+//			}
 			
 			if(objExpositor.getCantContratosXCargo()!=null){
 				//objExpositor.setComision();
