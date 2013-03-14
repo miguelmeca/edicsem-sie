@@ -78,9 +78,7 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 	public void InputStreamAFile(InputStream entrada, String nombreArchivo) {
 		try {
 
-			ServletContext ctx = (ServletContext) FacesContext
-					.getCurrentInstance().getExternalContext().getContext();
-
+			ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
 			String path = ctx.getRealPath("/SistemaIntegrado");
 
 			File directory = new File(path);
