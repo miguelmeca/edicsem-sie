@@ -27,7 +27,6 @@ public class TipoEventoVentaDAOImpl implements TipoEventoVentaDAO{
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.TipoEventoVentaDAO#insertTipoEventoVenta(com.edicsem.pe.sie.entity.TipoEventoVentaSie)
 	 */
-	@Override
 	public void insertTipoEventoVenta(TipoEventoVentaSie t) {
 		try {
 			if (log.isInfoEnabled()) {
@@ -83,5 +82,24 @@ public class TipoEventoVentaDAOImpl implements TipoEventoVentaDAO{
 			e.printStackTrace();
 		}
 		return lista;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.TipoEventoVentaDAO#findTipoEventoVenta(java.lang.String)
+	 */
+	public TipoEventoVentaSie findTipoEventoVenta(String evento) {
+		List  lista = null;
+		TipoEventoVentaSie tipo = null;
+		try {
+			Query q = em.createQuery("select p from TipoEventoVentaSie p where UPPER(p.descripcion) like '"+evento+"'");
+			lista =  q.getResultList();
+			log.info("tamaño lista tipo evento venta x descripcion --> " + lista.size());
+		   if(lista.size()>0){
+			   tipo= (TipoEventoVentaSie) lista.get(0);
+		   }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tipo;
 	}
 }
