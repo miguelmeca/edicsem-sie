@@ -24,6 +24,8 @@ public class EntregasPeruDTO implements Serializable {
 	
 	private String nombredecliente;
 	
+	private String nombreCompletoCliente;
+	
 	private String apepatcliente;
 	
 	private String apematcliente;
@@ -1220,7 +1222,20 @@ public class EntregasPeruDTO implements Serializable {
 	public void setLetrasectorentrega(String letrasectorentrega) {
 		this.letrasectorentrega = letrasectorentrega;
 	}
-	
-	
+
+	/**
+	 * @return the nombreCompletoCliente
+	 */
+	public String getNombreCompletoCliente() {
+		nombreCompletoCliente= getNombredecliente()+ " "+getApepatcliente()+" "+getApematcliente();
+		return nombreCompletoCliente;
+	}
+
+	/**
+	 * @param nombreCompletoCliente the nombreCompletoCliente to set
+	 */
+	public void setNombreCompletoCliente(String nombreCompletoCliente) {
+		this.nombreCompletoCliente = nombreCompletoCliente;
+	}
 	   
 }

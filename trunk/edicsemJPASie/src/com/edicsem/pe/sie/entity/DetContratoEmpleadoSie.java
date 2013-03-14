@@ -32,11 +32,6 @@ public class DetContratoEmpleadoSie implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_DET_CONTRATO_EMPLEADO_IDDETCONTRATOEMPL_GENERATOR")
 	private Integer idDetContratoEmpl;
 	
-	private Integer  idCargoContrato;
-	
-	@Transient
-	private String NombreCargo;
-	
 	@Transient
 	private Integer cantContratosXCargo;
 	
@@ -60,6 +55,11 @@ public class DetContratoEmpleadoSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idempleado")
 	private EmpleadoSie tbEmpleado;
+    
+    //bi-directional many-to-one association to EmpresaSie
+    @ManyToOne
+	@JoinColumn(name="idcargo")
+	private CargoEmpleadoSie tbCargoempleado;
 
     public DetContratoEmpleadoSie() {
     }
@@ -119,36 +119,7 @@ public class DetContratoEmpleadoSie implements Serializable {
 	public void setIdDetContratoEmpl(Integer idDetContratoEmpl) {
 		this.idDetContratoEmpl = idDetContratoEmpl;
 	}
-
-	public Integer getIdCargoContrato() {
-		return idCargoContrato;
-	}
-
-	public void setIdCargoContrato(Integer idCargoContrato) {
-		this.idCargoContrato = idCargoContrato;
-	}
-
-	/**
-	 * @return the nombreCargo
-	 */
-	public String getNombreCargo() {
-		if(idCargoContrato==1){
-			NombreCargo="Expositor";
-		}else if(idCargoContrato==2){
-			NombreCargo="Vendedor";
-		}else if(idCargoContrato==3){
-			NombreCargo="Colaborador";
-		}
-		return NombreCargo;
-	}
-
-	/**
-	 * @param nombreCargo the nombreCargo to set
-	 */
-	public void setNombreCargo(String nombreCargo) {
-		NombreCargo = nombreCargo;
-	}
-
+	
 	/**
 	 * @return the cantContratosXCargo
 	 */
@@ -177,4 +148,17 @@ public class DetContratoEmpleadoSie implements Serializable {
 		this.comision = comision;
 	}
 
+	/**
+	 * @return the tbCargoempleado
+	 */
+	public CargoEmpleadoSie getTbCargoempleado() {
+		return tbCargoempleado;
+	}
+
+	/**
+	 * @param tbCargoempleado the tbCargoempleado to set
+	 */
+	public void setTbCargoempleado(CargoEmpleadoSie tbCargoempleado) {
+		this.tbCargoempleado = tbCargoempleado;
+	}
 }
