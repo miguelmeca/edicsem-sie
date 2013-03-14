@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.edicsem.pe.sie.beans.EmpleadoDTO;
 import com.edicsem.pe.sie.beans.EntregasPeruDTO;
 import com.edicsem.pe.sie.beans.SistemaIntegradoDTO;
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
@@ -22,12 +23,13 @@ import com.edicsem.pe.sie.entity.DetPaqueteSie;
 import com.edicsem.pe.sie.entity.DetProductoContratoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.EmpresaSie;
-import com.edicsem.pe.sie.entity.PaqueteSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
+import com.edicsem.pe.sie.entity.TipoEventoVentaSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.model.dao.AlmacenDAO;
+import com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.ClienteDAO;
 import com.edicsem.pe.sie.model.dao.CobranzaDAO;
 import com.edicsem.pe.sie.model.dao.ContratoDAO;
@@ -45,10 +47,12 @@ import com.edicsem.pe.sie.model.dao.TipoCasaDAO;
 import com.edicsem.pe.sie.model.dao.TipoDocumentoDAO;
 import com.edicsem.pe.sie.model.dao.UbigeoDAO;
 import com.edicsem.pe.sie.service.facade.ContratoService;
+import com.edicsem.pe.sie.service.facade.TipoEventoVentaService;
 
 @Stateless
 public class ContratoServiceImpl implements ContratoService {
-	
+	@EJB
+	private CargoEmpleadoDAO objCargoDao;
 	@EJB
 	private ClienteDAO objClienteDao;
 	@EJB
@@ -85,14 +89,15 @@ public class ContratoServiceImpl implements ContratoService {
 	private DetContratoEmpleadoDAO objDetContratoEmpleadoDAO;
 	@EJB
 	private ContratoEmpleadoDAO objContratoEmpleadoDAO;
+	@EJB
+	private TipoEventoVentaService objTipoEventoVentaDAO;
 	
 	public static Log log = LogFactory.getLog(ContratoServiceImpl.class);
-
+	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.ContratoService#insertContrato(int, int, int, int, com.edicsem.pe.sie.entity.ClienteSie, java.util.List, com.edicsem.pe.sie.entity.DomicilioPersonaSie, com.edicsem.pe.sie.entity.ContratoSie, java.util.List, java.util.List, java.util.List)
+	 * @see com.edicsem.pe.sie.service.facade.ContratoService#insertContrato(int, int, int, int, com.edicsem.pe.sie.entity.ClienteSie, java.util.List, com.edicsem.pe.sie.entity.DomicilioPersonaSie, com.edicsem.pe.sie.entity.ContratoSie, java.util.List, java.util.List, java.util.List, int)
 	 */
-	public void insertContrato(int idtipodoc,int Tipocasa,int idUbigeo,int  idempresa, ClienteSie  cliente, List<TelefonoPersonaSie> telefonoList, DomicilioPersonaSie domicilio,  ContratoSie contrato,List<DetProductoContratoSie> detprodcont, List<CobranzaSie> cobranza, List<Integer> detidEmpleadosList) {
-		log.info(" * en insertar el contrato  ");
+	public void insertContrato(int idtipodoc,int Tipocasa,int idUbigeo,int  idempresa, ClienteSie  cliente, List<TelefonoPersonaSie> telefonoList, DomicilioPersonaSie domicilio,  ContratoSie contrato,List<DetProductoContratoSie> detprodcont, List<CobranzaSie> cobranza,  List<EmpleadoDTO>  detidEmpleadosList,int tipoVenta) {
 		cliente.setTbTipoDocumentoIdentidad(objtipoDao.buscarTipoDocumento(idtipodoc));
 		cliente.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23));
 		cliente.setTipocliente(1);
@@ -111,6 +116,7 @@ public class ContratoServiceImpl implements ContratoService {
 		contrato.setTbCliente(cliente);
 		contrato.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(25));
 		contrato.setTbEmpresa(objEmpresaDao.findEmpresa(idempresa));
+		contrato.setTbTipoEvento(objTipoEventoVentaDAO.findTipoEventoVenta(tipoVenta));
 		log.info(" INSER CLIENTE" );
 		objContratoDao.insertContrato(contrato);
 		log.info("contrato insertado!  "+contrato.getIdcontrato());
@@ -134,16 +140,8 @@ public class ContratoServiceImpl implements ContratoService {
 		DetContratoEmpleadoSie d;
 		for (int i = 0; i < detidEmpleadosList.size() ; i++) {
 			d = new DetContratoEmpleadoSie();
-			d.setTbEmpleado(objEmpleadoDao.buscarEmpleado(detidEmpleadosList.get(i)));
-			if(i==0){
-				d.setIdCargoContrato(1);
-			}
-			else if(i==1){
-				d.setIdCargoContrato(2);
-			}
-			else if(i>1){
-				d.setIdCargoContrato(3);
-			}
+			d.setTbEmpleado(objEmpleadoDao.buscarEmpleado(detidEmpleadosList.get(i).getIdempleado()));
+			d.setTbCargoempleado(objCargoDao.buscarCargoEmpleado(detidEmpleadosList.get(i).getCargo()));
 			log.info("contrato ************************** ---> !  "+contrato.getIdcontrato());
 			d.setTbContrato(objContratoDao.findContrato(contrato.getIdcontrato()));
 			d.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(31));
@@ -183,24 +181,25 @@ public class ContratoServiceImpl implements ContratoService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ContratoService#insertMigracion(java.util.List)
 	 */
-	
-	public void updateEntregasPeru(List<EntregasPeruDTO> credito) {
-
+	public String updateEntregasPeru(List<EntregasPeruDTO> credito) {
+		String mensaje=null;
 		ContratoSie con = new ContratoSie();
 		DetProductoContratoSie detprodcon = new DetProductoContratoSie();
 		DetContratoEmpleadoSie detconemp = new DetContratoEmpleadoSie();
 		CargoEmpleadoSie cargoemp = new CargoEmpleadoSie();
 		ProductoSie produc = new ProductoSie();	
-		PaqueteSie paque = new PaqueteSie();
 		PuntoVentaSie punto = new PuntoVentaSie();
 		ContratoEmpleadoSie contraemple= new ContratoEmpleadoSie();
+		TipoEventoVentaSie tipoEvento= null;
+		List<DetPaqueteSie> lista =null;
+		boolean isaddPaquete=false;
 		log.info("actualizar() *");
 		
-		for (int i = 0; i < credito.size(); i++) {	
+		for (int i = 0; i < credito.size(); i++) {
 		EntregasPeruDTO s = credito.get(i);
 		detprodcon = new DetProductoContratoSie();
 		con = objContratoDao.buscarXcodigoContrato(s.getNumerodecontrato());
-		
+		isaddPaquete=false;
 		log.info("Num-Contrato"+"--> "+con.getCodcontrato()+ "--ID DE CONTRATO"+ con.getIdcontrato());
 		con.setLugarentrega(s.getLugardelaentrega());
 		log.info("Lugarentrega"+"-->"+con.getLugarentrega());			
@@ -210,143 +209,106 @@ public class ContratoServiceImpl implements ContratoService {
 		log.info("Id-Empresa"+"-->"+con.getTbEmpresa().getIdempresa());
 		con.setTbCliente(objClienteDao.buscarIdCliente(s.getDnidelcliente()));
 		log.info("Id-Cliente"+"-->"+con.getTbCliente().getIdcliente().toString());
-			
+		
 		punto = objAlmacenDAO.buscarIdpuntoVenta(s.getPuntodeventa());
 		log.info("NOMBRE-PUNTO-VENTA"+"-->"+ punto.getDescripcion() + "ID-PUNTO-VENTA"+"-->"+punto.getIdpuntoventa());
 		if (punto!=null) {
-		con.setTbPuntoVenta(punto);
-		log.info("Dentro del If!=null"+ "-->"+ con.getTbPuntoVenta().getIdpuntoventa());			
-		}				
-			
-		if (s.getEventodeventa().trim().toUpperCase().equalsIgnoreCase("MASIVO")) {				
-		String tventaMas = s.getEventodeventa();
-		tventaMas = tventaMas.substring(0, 3);			
-		con.setTipoventa(tventaMas);
-		log.info("TIpo-Venta-MAS"+"-->"+con.getTipoventa());	
-		}else if (s.getEventodeventa().trim().toUpperCase().equalsIgnoreCase("PUNTO DE VENTA")) {				
-		con.setTipoventa("PNT");				
-		log.info("TIpo-Venta-PNT"+"-->"+con.getTipoventa());
-		}else if (s.getEventodeventa().trim().toUpperCase().equalsIgnoreCase("IGLESIAS")) {				
-		con.setTipoventa("IGL");				
-		log.info("TIpo-Venta-IGL"+"-->"+con.getTipoventa());
-		}else if (s.getEventodeventa().trim().toUpperCase().equalsIgnoreCase("Reventa") ||s.getEventodeventa().trim().toUpperCase().equalsIgnoreCase("REVENTAS") ) {				
-		con.setTipoventa("REV");				
-		log.info("TIpo-Venta-REV"+"-->"+con.getTipoventa());
-		}else if (s.getEventodeventa().trim().toUpperCase().equalsIgnoreCase("ACUERDO")) {				
-		con.setTipoventa("ACU");				
-		log.info("TIpo-Venta-ACU"+"-->"+con.getTipoventa());
-		}else if (s.getEventodeventa().trim().toUpperCase().equalsIgnoreCase("CASA")) {				
-		con.setTipoventa("CAS");				
-		log.info("TIpo-Venta-CAS"+"-->"+con.getTipoventa());
-		}else if (s.getEventodeventa().trim().toUpperCase().equalsIgnoreCase("COLEGIO")) {				
-		con.setTipoventa("COL");				
-		log.info("TIpo-Venta-COl"+"-->"+con.getTipoventa());
-		}else if (s.getEventodeventa().trim().toUpperCase().equalsIgnoreCase("Contactos")) {				
-		con.setTipoventa("CON");				
-		log.info("TIpo-Venta-COn"+"-->"+con.getTipoventa());
-		}else if (s.getEventodeventa().trim().toUpperCase().equalsIgnoreCase("DOMICILIO")) {				
-		con.setTipoventa("DOM");				
-		log.info("TIpo-Venta-DOM"+"-->"+con.getTipoventa());
-		}else if (s.getEventodeventa().trim().toUpperCase().equalsIgnoreCase("EMPRESAS")) {				
-		con.setTipoventa("EMP");				
-		log.info("TIpo-Venta-EMP"+"-->"+con.getTipoventa());
-		}else if (s.getEventodeventa().trim().toUpperCase().equalsIgnoreCase("Equipo")) {				
-		con.setTipoventa("EQU");				
-		log.info("TIpo-Venta-EQU"+"-->"+con.getTipoventa());
-		}else if (s.getEventodeventa().trim().toUpperCase().equalsIgnoreCase("EVENTO")) {				
-		con.setTipoventa("EVE");				
-		log.info("TIpo-Venta-EVE"+"-->"+con.getTipoventa());
-		}else if (s.getEventodeventa().trim().toUpperCase().equalsIgnoreCase("HOSPITAL")) {				
-		con.setTipoventa("HOS");				
-		log.info("TIpo-Venta-HOS"+"-->"+con.getTipoventa());
-		}else if (s.getEventodeventa().trim().toUpperCase().equalsIgnoreCase("Libre")) {				
-		con.setTipoventa("LIB");				
-		log.info("TIpo-Venta-LIB"+"-->"+con.getTipoventa());
-		}else if (s.getEventodeventa().trim().toUpperCase().equalsIgnoreCase("MERCADO")) {				
-		con.setTipoventa("MER");				
-		log.info("TIpo-Venta-MER"+"-->"+con.getTipoventa());
-		}else if (s.getEventodeventa().trim().toUpperCase().equalsIgnoreCase("OFICINA")) {				
-		con.setTipoventa("OFI");				
-		log.info("TIpo-Venta-OFI"+"-->"+con.getTipoventa());
-		}else if (s.getEventodeventa().trim().toUpperCase().equalsIgnoreCase("Semanal")) {				
-		con.setTipoventa("SEM");				
-		log.info("TIpo-Venta-SEM"+"-->"+con.getTipoventa());
+			con.setTbPuntoVenta(punto);
 		}
-		else {
-		con.setTipoventa("OTR");				
-		}			
+		tipoEvento = objTipoEventoVentaDAO.findTipoEventoVenta(s.getEventodeventa().trim().toUpperCase());
+		if(tipoEvento!=null){
+			con.setTbTipoEvento(tipoEvento);
+		}else{
+			mensaje="Debe registrar el tipo de evento "+s.getEventodeventa().trim().toUpperCase();
+		}
 		con.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(25));
 		objContratoDao.updateContrato(con);
-			
-/***DET_PRODUCTO_CONTRATO***/
-			
+		
+		/***DET_PRODUCTO_CONTRATO***/
+		
 		detprodcon.setTbContrato(con);
+		ProductoSie obj1 = null;
 		log.info("ID DE CONTRATO PARA DET_PRODUCTO_CONTRATO"+"-->"+ con.getIdcontrato());
 		detprodcon.setCantidad(s.getCantidaddemercaderia());
 		log.info("Cantidad de Mercaderia"+ "-->"+ detprodcon.getCantidad());
-		detprodcon.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(74));		
-		ProductoSie obj1 = objProductoDAO.buscarXcodigoProducto(s.getCodigodemercaderia());
-		if (obj1.getCodproducto()!=null) {			
-		log.info("CODIGO_PRODUCTO"+"-->  "+obj1.getCodproducto() +" -- " + "ID_PRODUCTO-->"+ obj1.getIdproducto());
-		detprodcon.setTbProducto(obj1);	
-		objDetProductoContratoDao.insertDetProductoContrato(detprodcon);
+		detprodcon.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(74));
+		obj1 = objProductoDAO.buscarXcodigoProducto(s.getCodigodemercaderia());
+		if (obj1.getCodproducto()!=null) {
+			log.info("CODIGO_PRODUCTO"+"-->  "+obj1.getCodproducto() +" -- " + "ID_PRODUCTO-->"+ obj1.getIdproducto());
+			detprodcon.setTbProducto(obj1);
+			objDetProductoContratoDao.insertDetProductoContrato(detprodcon);
+			isaddPaquete=true;
 		}
 		else{
-		List<DetPaqueteSie> lista = objDetPaqueteDAO.buscarXcodigoPaquete(s.getCodigodemercaderia());
-		for (int j = 0; j <lista.size(); j++) {
-		DetProductoContratoSie det= new DetProductoContratoSie();
-		det.setTbContrato(con);
-		log.info("ID DE CONTRATO PARA DETALLE"+"-->"+ con.getIdcontrato());
-		det.setCantidad(s.getCantidaddemercaderia());
-		log.info("Cantidad de Mercaderia"+ "-->"+ detprodcon.getCantidad());
-		det.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(74));					
-//		log.info("productos de la lista "+"-->  "+lista.get(j).getTbProducto().getIdproducto() );
-		produc= objProductoDAO.findProducto(lista.get(j).getTbProducto().getIdproducto());	 
-		det.setTbProducto(produc);	
-		objDetProductoContratoDao.insertDetProductoContrato(det);
+			lista = objDetPaqueteDAO.buscarXcodigoPaquete(s.getCodigodemercaderia());
+				for (int j = 0; j <lista.size(); j++) {
+					DetProductoContratoSie det= new DetProductoContratoSie();
+					det.setTbContrato(con);
+					log.info("ID DE CONTRATO PARA DETALLE"+"-->"+ con.getIdcontrato());
+					det.setCantidad(s.getCantidaddemercaderia());
+					log.info("Cantidad de Mercaderia"+ "-->"+ detprodcon.getCantidad());
+					det.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(74));
+					produc= objProductoDAO.findProducto(lista.get(j).getTbProducto().getIdproducto());	 
+					det.setTbProducto(produc);	
+					objDetProductoContratoDao.insertDetProductoContrato(det);
+					isaddPaquete=true;
+				}
 		}
+		if(isaddPaquete!=true){
+			mensaje="No se encontró el producto o paquete on el código '"+s.getCodigodemercaderia()+"'";
+			break;
 		}
+		/****DET_CONTRATO_EMPLEADO****/
 		
-/****DET_CONTRATO_EMPLEADO****/		
-			
 		if (s.getNombredelvendedor()!=null) {
-		detconemp = new DetContratoEmpleadoSie();
-		detconemp.setTbEmpleado(objEmpleadoDao.buscarEmpleadoVendedor(s.getNombredelvendedor()));
-		log.info("ID-VENDEDOR igual ah ID-EMPLEADO"+"--> "+ detconemp.getTbEmpleado().getIdempleado());
-		detconemp.setIdCargoContrato(1);
-		log.info("CARGO-CONTRATO-VENDEDOR-->"+"  "+ detconemp.getIdCargoContrato());
-		detconemp.setTbContrato(con);
-		log.info("ID DE CONTRATO-TB_DET_CONTRATO_EMPLEADO"+"-->"+ con.getIdcontrato()+" -- "+ con.getCodcontrato());
-		detconemp.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(58));
-		objDetContratoEmpleadoDao.insertDetContratoEmpleado(detconemp);
+			detconemp = new DetContratoEmpleadoSie();
+			detconemp.setTbEmpleado(objEmpleadoDao.buscarEmpleadoVendedor(s.getNombredelvendedor()));
+			if(detconemp.getTbEmpleado()==null){
+				mensaje="No se registró el empleado "+s.getNombredelexpositor()+" como EXPOSITOR";
+				break;
+			}else{
+				log.info("ID-VENDEDOR igual ah ID-EMPLEADO"+"--> "+ detconemp.getTbEmpleado().getIdempleado());
+				detconemp.setTbCargoempleado(objCargoDao.buscarCargoEmpleado("VENDEDOR"));
+				detconemp.setTbContrato(con);
+				log.info("ID DE CONTRATO-TB_DET_CONTRATO_EMPLEADO"+"-->"+ con.getIdcontrato()+" -- "+ con.getCodcontrato());
+				detconemp.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(58));
+				objDetContratoEmpleadoDao.insertDetContratoEmpleado(detconemp);
+			}
 		}
-		
 		
 		if (s.getNombredelexpositor()!=null) {
-		detconemp = new DetContratoEmpleadoSie();
-		detconemp.setTbEmpleado(objEmpleadoDao.buscarEmpleadoVendedor(s.getNombredelexpositor()));
-		log.info("ID-EXPOSITOR igual ah ID-EMPLEADO"+"--> "+ detconemp.getTbEmpleado().getIdempleado());
-		detconemp.setIdCargoContrato(2);
-		log.info("CARGO-CONTRATO-EXPOSITOR-->"+"  "+ detconemp.getIdCargoContrato());
-		detconemp.setTbContrato(con);
-		log.info("ID DE CONTRATO-TB_DET_CONTRATO_EMPLEADO"+"-->"+ con.getIdcontrato()+" -- "+ con.getCodcontrato());
-		detconemp.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(58));
-		objDetContratoEmpleadoDao.insertDetContratoEmpleado(detconemp);
+			detconemp = new DetContratoEmpleadoSie();
+			detconemp.setTbEmpleado(objEmpleadoDao.buscarEmpleadoVendedor(s.getNombredelexpositor()));
+			if(detconemp.getTbEmpleado()==null){
+				mensaje="No se registro el empleado "+s.getNombredelexpositor()+" como EXPOSITOR";
+				break;
+			}else{
+				log.info("ID-EXPOSITOR igual ah ID-EMPLEADO"+"--> "+ detconemp.getTbEmpleado().getIdempleado());
+				detconemp.setTbCargoempleado(objCargoDao.buscarCargoEmpleado("EXPOSITOR"));
+				detconemp.setTbContrato(con);
+				log.info("ID DE CONTRATO-TB_DET_CONTRATO_EMPLEADO"+"-->"+ con.getIdcontrato()+" -- "+ con.getCodcontrato());
+				detconemp.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(58));
+				objDetContratoEmpleadoDao.insertDetContratoEmpleado(detconemp);
+			}
 		}
-		
 		
 		if (s.getNombredelsupervisor()!=null) {
-		detconemp = new DetContratoEmpleadoSie();
-		detconemp.setTbEmpleado(objEmpleadoDao.buscarEmpleadoVendedor(s.getNombredelsupervisor()));
-		log.info("ID-SUPERVISOR igual ah ID-EMPLEADO"+"--> "+ detconemp.getTbEmpleado().getIdempleado());
-		detconemp.setIdCargoContrato(3);
-		log.info("CARGO-CONTRATO-SUPERVISOr-->"+"  "+ detconemp.getIdCargoContrato());
-		detconemp.setTbContrato(con);
-		log.info("ID DE CONTRATO-TB_DET_CONTRATO_EMPLEADO"+"-->"+ con.getIdcontrato()+" -- "+ con.getCodcontrato());
-		detconemp.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(58));
-		objDetContratoEmpleadoDao.insertDetContratoEmpleado(detconemp);	
+			detconemp = new DetContratoEmpleadoSie();
+			detconemp.setTbEmpleado(objEmpleadoDao.buscarEmpleadoVendedor(s.getNombredelsupervisor().toUpperCase()));
+			if(detconemp.getTbEmpleado()==null){
+				mensaje="No se registro el empleado "+s.getNombredelexpositor()+" como EXPOSITOR";
+				break;
+			}else{
+			log.info("ID-SUPERVISOR igual ah ID-EMPLEADO"+"--> "+ detconemp.getTbEmpleado().getIdempleado());
+			detconemp.setTbCargoempleado(objCargoDao.buscarCargoEmpleado("SUPERVISOR"));
+			detconemp.setTbContrato(con);
+			log.info("ID DE CONTRATO-TB_DET_CONTRATO_EMPLEADO"+"-->"+ con.getIdcontrato()+" -- "+ con.getCodcontrato());
+			detconemp.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(58));
+			objDetContratoEmpleadoDao.insertDetContratoEmpleado(detconemp);
+			}
 		}
-		}			
+		}
+		return mensaje;
 	}
 	
 	/* (non-Javadoc)

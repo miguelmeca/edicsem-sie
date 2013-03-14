@@ -5,12 +5,10 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import com.edicsem.pe.sie.beans.GrupoEmpleadoDTO;
 import com.edicsem.pe.sie.entity.DetGrupoEmpleadoSie;
-import com.edicsem.pe.sie.entity.PuntoVentaSie;
-import com.edicsem.pe.sie.model.dao.AlmacenDAO;
 import com.edicsem.pe.sie.model.dao.DetGrupoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
-import com.edicsem.pe.sie.service.facade.AlmacenService;
 import com.edicsem.pe.sie.service.facade.DetGrupoEmpleadoService;
 
 @Stateless
@@ -24,8 +22,12 @@ public class DetGrupoEmpleadoServiceImpl implements DetGrupoEmpleadoService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.DetGrupoEmpleadoService#insertDetGrupoEmpleado(com.edicsem.pe.sie.entity.DetGrupoEmpleadoSie)
 	 */
-	public void insertDetGrupoEmpleado(DetGrupoEmpleadoSie d) {
-		objDetGrupoDao.insertDetGrupoEmpleado(d);
+	public void insertDetGrupoEmpleado(List<GrupoEmpleadoDTO> lista) {
+		for (int i = 0; i < lista.size(); i++) {
+			lista.get(i).getDetalle();
+			
+			//objDetGrupoDao.insertDetGrupoEmpleado(d);
+		}
 	}
 
 	/* (non-Javadoc)

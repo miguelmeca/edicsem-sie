@@ -12,5 +12,5 @@ public interface TipoEventoVentaService {
 	public abstract void updateTipoEventoVenta(TipoEventoVentaSie t);
 	public abstract TipoEventoVentaSie findTipoEventoVenta (int id);
 	public abstract List  listarTipoEventoVenta();
-	
+	public abstract TipoEventoVentaSie findTipoEventoVenta(String evento);
 }
