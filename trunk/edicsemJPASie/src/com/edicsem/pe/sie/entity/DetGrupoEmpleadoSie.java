@@ -34,6 +34,8 @@ public class DetGrupoEmpleadoSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idgrupo")
 	private GrupoVentaSie tbGrupoVenta;
+    
+    private String lider;
 
     public DetGrupoEmpleadoSie() {
     }
@@ -68,5 +70,13 @@ public class DetGrupoEmpleadoSie implements Serializable {
 
 	public void setTbempleado(EmpleadoSie tbempleado) {
 		this.tbempleado = tbempleado;
+	}
+
+	public String getLider() {
+		return lider;
+	}
+
+	public void setLider(String lider) {
+		this.lider = lider;
 	}
 }

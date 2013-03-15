@@ -1,6 +1,7 @@
 package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -34,6 +36,10 @@ public class LugarVentaSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
+    
+    //bi-directional many-to-one association to ContratoSie
+  	@OneToMany(mappedBy="tbLugarVenta")
+  	private Set<ContratoSie> tbContratos;
 
     public LugarVentaSie() {
     }
@@ -60,6 +66,14 @@ public class LugarVentaSie implements Serializable {
 	
 	public void setIdlugar(Integer idlugar) {
 		this.idlugar = idlugar;
+	}
+
+	public Set<ContratoSie> getTbContratos() {
+		return tbContratos;
+	}
+
+	public void setTbContratos(Set<ContratoSie> tbContratos) {
+		this.tbContratos = tbContratos;
 	}
 	
 }
