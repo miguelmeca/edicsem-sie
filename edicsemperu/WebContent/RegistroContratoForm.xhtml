@@ -484,7 +484,6 @@
 				
 				<h:outputText value="#{message['contrato.tipo.venta']}" />
 				<p:selectOneMenu value="#{contratoForm.tipoVenta}" style="width:220px" >
-					<f:selectItem itemLabel="Seleccione evento" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.tipoEventoVentaitems}" />
 					<p:ajax update="panelVenta" />
 				</p:selectOneMenu>
@@ -495,9 +494,9 @@
 					<f:selectItems value="#{comboAction.almacenItemsXTipo}" />
 				</p:selectOneMenu>
 				
-				<h:outputText rendered="#{contratoForm.tipoVenta==1}" value="lugar" />
+				<h:outputText rendered="#{contratoForm.tipoVenta!=2}" value="lugar" />
 				<p:inputText value="#{contratoForm.objContratoSie.lugarentrega}" style="width:220px" 
-					required="true" rendered="#{contratoForm.tipoVenta==1}"  />
+					required="true" rendered="#{contratoForm.tipoVenta!=2}"  />
 				
 				<h:outputText value="Grupo"   />
 				<p:selectOneMenu id="grupos" value="#{contratoForm.idGrupo}"  required="true" style="width:220px" >
@@ -518,6 +517,11 @@
 				
 				<h:outputText value="#{message['contrato.colaborador']}" />
 				<p:selectOneMenu id="e2" value="#{contratoForm.idempleadoColaborador}" filter="true" filterMatchMode="startsWith"  style="width:220px">
+					<f:selectItems value="#{comboAction.empleadoxcargo}" />
+				</p:selectOneMenu>
+				
+				<h:outputText value="#{message['contrato.relacionista']}" />
+				<p:selectOneMenu value="#{contratoForm.idempleadoColaborador}" filter="true" filterMatchMode="startsWith"  style="width:220px">
 					<f:selectItems value="#{comboAction.empleadoxcargo}" />
 				</p:selectOneMenu>
 				<!-- relacionista -->

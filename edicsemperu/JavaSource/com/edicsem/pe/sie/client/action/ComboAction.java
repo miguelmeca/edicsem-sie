@@ -1238,11 +1238,11 @@ public class ComboAction {
 	 * @return the empleadosXEmpresaitems
 	 */
 	public Map<String, Integer> getEmpleadosXEmpresaitems() {
-		List lista = new ArrayList<EmpleadoSie>();
+		List lista = null;
 		empleadosXEmpresaitems = new HashMap<String, Integer>();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'getEmpleadoItems()' "+getIdCargo());
+				log.info("Entering my method 'getEmpleadoItems()' "+getIdEmpresa());
 			}
 			lista = objEmpleadoService.listarEmpleadoxEmpresas(getIdEmpresa());
 			if(lista!=null){
@@ -1252,6 +1252,8 @@ public class ComboAction {
 					empleadosXEmpresaitems.put(entidad.getNombresCompletos(),
 							entidad.getIdempleado());
 				}
+			}else{
+				lista = new ArrayList<EmpleadoSie>();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
