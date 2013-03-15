@@ -12,5 +12,6 @@ public interface LugarVentaService {
 	public abstract void updateLugarVenta(LugarVentaSie l);
 	public abstract LugarVentaSie findLugarVenta (int id);
 	public abstract List  listarLugarVenta();
+	public abstract LugarVentaSie findLugarVenta(String lugardelaentrega);
 	
 }

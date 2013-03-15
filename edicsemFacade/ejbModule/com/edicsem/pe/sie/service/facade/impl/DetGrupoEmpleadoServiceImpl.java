@@ -24,9 +24,14 @@ public class DetGrupoEmpleadoServiceImpl implements DetGrupoEmpleadoService {
 	 */
 	public void insertDetGrupoEmpleado(List<GrupoEmpleadoDTO> lista) {
 		for (int i = 0; i < lista.size(); i++) {
-			lista.get(i).getDetalle();
-			
-			//objDetGrupoDao.insertDetGrupoEmpleado(d);
+			for (int j = 0; j < lista.get(i).getDetalle().size(); j++) {
+				DetGrupoEmpleadoSie det = new DetGrupoEmpleadoSie();
+				det.setTbempleado(lista.get(i).getDetalle().get(j).getTbempleado());
+				det.setTbGrupoVenta(lista.get(i).getTbGrupoVenta());
+				if( lista.get(i).getDetalle().get(j).isLider())
+				det.setLider("L");
+				objDetGrupoDao.insertDetGrupoEmpleado(det);
+			}
 		}
 	}
 

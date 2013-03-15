@@ -60,4 +60,12 @@ public class CargoEmpleadoServiceImpl implements CargoEmpleadoService{
 	public List listarCargosXEmpleado(int idEmpleado){
 		return objCargoEmpleadoDao.listarCargosXEmpleado(idEmpleado);
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.CargoEmpleadoService#buscarCargoEmpleado(java.lang.String)
+	 */
+	public CargoEmpleadoSie buscarCargoEmpleado(String cargo) {
+		return objCargoEmpleadoDao.buscarCargoEmpleado(cargo);
+	}
+	
 }
