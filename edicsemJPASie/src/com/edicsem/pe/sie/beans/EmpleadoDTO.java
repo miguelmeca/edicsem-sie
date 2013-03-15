@@ -20,6 +20,7 @@ public class EmpleadoDTO implements Serializable {
 	private Integer tardanza;
 	private Integer puntajeTotal;
 	private String stringFalta;
+	private boolean lider;
 	
 	public EmpleadoDTO() {
 		
@@ -200,5 +201,19 @@ public class EmpleadoDTO implements Serializable {
 	 */
 	public void setTotalfacturada(Integer totalfacturada) {
 		this.totalfacturada = totalfacturada;
+	}
+
+	/**
+	 * @return the lider
+	 */
+	public boolean isLider() {
+		return lider;
+	}
+
+	/**
+	 * @param lider the lider to set
+	 */
+	public void setLider(boolean lider) {
+		this.lider = lider;
 	}
 }

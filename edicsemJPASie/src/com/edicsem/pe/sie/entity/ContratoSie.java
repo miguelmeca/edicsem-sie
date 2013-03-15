@@ -69,6 +69,11 @@ public class ContratoSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="tipoventa")
 	private TipoEventoVentaSie tbTipoEvento;
+    
+    //bi-directional many-to-one association to LugarVentaSie
+    @ManyToOne
+	@JoinColumn(name="lugarventa")
+	private LugarVentaSie tbLugarVenta;
 	
 	private String usuariocreacion;
 
@@ -410,6 +415,14 @@ public class ContratoSie implements Serializable {
 	
 	public void setTbTipoEvento(TipoEventoVentaSie tbTipoEvento) {
 		this.tbTipoEvento = tbTipoEvento;
+	}
+
+	public LugarVentaSie getTbLugarVenta() {
+		return tbLugarVenta;
+	}
+
+	public void setTbLugarVenta(LugarVentaSie tbLugarVenta) {
+		this.tbLugarVenta = tbLugarVenta;
 	}
 
 }
