@@ -47,4 +47,11 @@ public class LugarVentaServiceImpl implements LugarVentaService {
 		return objlugarventaDao.listarLugarVenta();
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.LugarVentaService#findLugarVenta(java.lang.String)
+	 */
+	public LugarVentaSie findLugarVenta(String lugardelaentrega) {
+		return objlugarventaDao.findLugarVenta(lugardelaentrega);
+	}
+	
 }
