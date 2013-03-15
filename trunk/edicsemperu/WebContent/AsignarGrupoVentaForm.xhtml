@@ -9,12 +9,20 @@
 	<script language="JavaScript" type="text/javascript">
 		window.history.forward(-1);
 	</script>
-		<h1 class="title ui-widget-header ui-corner-all">Asignar Grupos de Ventas</h1>
+		<h1 class="title ui-widget-header ui-corner-all">#{message['facturacion.asignar.grupo']}</h1>
 		<h:form id="formGrupo">
 			<p:messages id="message" showDetail="true" />
 			 
 			<p:fieldset legend="Resultado de Meta">
-			<p:dataTable var="g" value="#{grupo.grupoEmplList}" id="data">  
+			<p:dataTable id="data" var="g" value="#{grupo.grupoEmplList}" rowStyleClass="#{g.lider  == true ? 'amarillo' : 'aguamarina'}">  
+	            <p:column style="width:2%" >
+	            	<f:facet name="header">
+						<h:outputText value="#{message['facturacion.lider']}" />
+					</f:facet>
+					<p:selectBooleanCheckbox value="#{g.lider}" >
+					<p:ajax update="data" />
+					</p:selectBooleanCheckbox>  
+	            </p:column>
 	            <p:column headerText="Empleado">
 	                <h:outputText value="#{g.tbempleado.nombresCompletos}" />
 	            </p:column>
@@ -44,13 +52,13 @@
 				</p:column>
 				<p:column sortBy="#{g.puntajeTotal}" filterBy="#{g.puntajeTotal}" headerText="cant" >
 						<f:facet name="header">
-							<h:outputText value="#{message['facturacion.entrega.total.facturacion']}" />
+							<h:outputText value="#{message['facturacion.puntaje']}" />
 						</f:facet>
 						<h:outputText value="#{g.puntajeTotal}" />
 				</p:column>
 				<p:column sortBy="#{g.stringFalta}" filterBy="#{g.stringFalta}" headerText="cant" filterMatchMode="contain" >
 						<f:facet name="header">
-							<h:outputText value="#{message['facturacion.entrega.total.facturacion']}" />
+							<h:outputText value="#{message['facturacion.entrega.faltas.tard']}" />
 						</f:facet>
 						<h:outputText value="#{g.stringFalta}" />
 				</p:column>
@@ -58,7 +66,7 @@
 		            <f:facet name="header">
 		            	<h:outputText value="#{message['facturacion.entrega.escoger']}" />
 		            </f:facet>
-		            <p:menuButton value="Escoger Grupo" >
+		            <p:menuButton value="Grupo" >
 			        	<c:forEach items="#{grupo.lstMenu}" var="k">
 			                <p:menuitem  value="#{k.nombreMenu}" action="#{grupo.update}" update="@form" >
 			                <f:setPropertyActionListener target="#{grupo.idempleado}" value="#{g.tbempleado.idempleado}" />
@@ -73,7 +81,8 @@
              
             <h:panelGrid columns="2" cellpadding="8" >
             <c:forEach items="#{grupo.grupoVentaList}" var="v">
-             <p:dataTable var="f" value="#{v.detalle}" emptyMessage="Ningun Integrante" style="width:450px" >
+             <p:dataTable var="f" value="#{v.detalle}" emptyMessage="Ningun Integrante" style="width:450px" 
+             rowStyleClass="#{f.lider  == true ? 'amarillo' : 'aguamarina'}">
 	               <f:facet name="header">
 	               			#{v.tbGrupoVenta.descripcion}
 	               </f:facet>

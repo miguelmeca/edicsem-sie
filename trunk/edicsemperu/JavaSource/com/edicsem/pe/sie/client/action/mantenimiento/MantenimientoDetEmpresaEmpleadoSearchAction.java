@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.el.MethodExpression;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.MethodExpressionActionListener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,8 +15,10 @@ import org.apache.commons.logging.LogFactory;
 import com.edicsem.pe.sie.beans.EmpleadoDTO;
 import com.edicsem.pe.sie.beans.GrupoEmpleadoDTO;
 import com.edicsem.pe.sie.beans.MenuDTO;
+import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DetGrupoEmpleadoSie;
 import com.edicsem.pe.sie.entity.GrupoVentaSie;
+import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.CobranzaService;
 import com.edicsem.pe.sie.service.facade.ContratoService;
 import com.edicsem.pe.sie.service.facade.DetGrupoEmpleadoService;
@@ -36,9 +36,10 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	private List<GrupoVentaSie> grupoVentasieList;
 	private List<GrupoEmpleadoDTO> grupoVentaList;
 	private int idGrupo, idempleado;
-	private String grupoEscogido;
+	private String grupoEscogido, mensaje;
 	private ArrayList<MenuDTO> lstMenu ;
-	
+	@EJB
+	private CargoEmpleadoService objCargoService;
 	@EJB
 	private DetGrupoEmpleadoService detgrupoemplService;
 	@EJB
@@ -47,10 +48,6 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	private ContratoService contratoService;
 	@EJB
 	private CobranzaService cobranzaService;
-	//cantidad de faltas
-	//cantiadd de tardanzas
-	//cantidad de entregas
-	//cantidad de facturados
 	
 	public MantenimientoDetEmpresaEmpleadoSearchAction() {
 		init();
@@ -75,10 +72,10 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	 */
 	public String listar() {
 		log.info("listar() ' x grupo' " + idGrupo);
-		
+		mensaje =null;
 		grupoVentaList= new ArrayList<GrupoEmpleadoDTO>();
 		grupoEmplList = new ArrayList<EmpleadoDTO>();
-		//Se debe listar los empleados con cargo de expositor 
+		//Se debe listar los empleados con cargo de expositor
 		detGrupoEmplList = detgrupoemplService.listarDetGrupoEmpleado();
 		if (detGrupoEmplList == null) {
 			detGrupoEmplList = new ArrayList<DetGrupoEmpleadoSie>();
@@ -86,6 +83,19 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 		for (int i = 0; i < detGrupoEmplList.size(); i++) {
 			EmpleadoDTO g = new EmpleadoDTO();
 			g.setTbempleado(detGrupoEmplList.get(i).getTbempleado());
+			CargoEmpleadoSie c= objCargoService.buscarCargoEmpleado("EXPOSITOR");
+			if(c==null){
+				setMensaje("el cargo de expositor no se encuentra en la base de datos, verifiquelo");
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+				break;
+			}
+			int cargo =c.getIdcargoempleado();
+			g.setFacturada(contratoService.findcantContratoFacturadoEntregado(detGrupoEmplList.get(i).getTbempleado().getIdempleado(),cargo));
+			//g.setEntregada(entregada);
+			if(g.getEntregada()!=null)
+			g.setTotalentregada(g.getEntregada());
+			if(g.getFacturada()!=null)
+			g.setTotalfacturada(g.getFacturada()*2);
 			grupoEmplList.add(g);
 		}
 		lstMenu = new ArrayList<MenuDTO>();
@@ -96,21 +106,11 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 			grupoVentaList.add(g);
 			MenuDTO e = new MenuDTO();
 			e.setNombreMenu(grupoVentaList.get(i).getTbGrupoVenta().getDescripcion());
-			e.setNombreActionListener("#{grupo.update}");
 			log.info("grupo:  "+grupoVentaList.get(i).getTbGrupoVenta().getDescripcion());
 			lstMenu.add(e);
 		}
-		log.info("tamañito  "+lstMenu.size());
-		
+		log.info("tamañito  "+lstMenu.size()); 
 		return getViewList();
-	}
-	 
-	public MethodExpressionActionListener getActionListenerExp(String actionListenerName) {
-		FacesContext context = FacesContext.getCurrentInstance();
-		MethodExpression mExp = context.getApplication().getExpressionFactory()
-				.createMethodExpression(context.getELContext(),
-				actionListenerName, null,new Class[] { ActionEvent.class });
-		return new MethodExpressionActionListener(mExp);
 	}
 	
 	/* (non-Javadoc)
@@ -146,7 +146,9 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	 */
 	public String insertar() throws Exception {
 		if(grupoEmplList.size()!=0){
-		detgrupoemplService.insertDetGrupoEmpleado(grupoVentaList);
+			detgrupoemplService.insertDetGrupoEmpleado(grupoVentaList);
+			mensaje= Constants.MESSAGE_REGISTRO_TITULO;
+			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 		}
 		return null;
 	}
@@ -285,6 +287,20 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	 */
 	public void setLstMenu(ArrayList<MenuDTO> lstMenu) {
 		this.lstMenu = lstMenu;
+	}
+
+	/**
+	 * @return the mensaje
+	 */
+	public String getMensaje() {
+		return mensaje;
+	}
+
+	/**
+	 * @param mensaje the mensaje to set
+	 */
+	public void setMensaje(String mensaje) {
+		this.mensaje = mensaje;
 	}
 	
 }

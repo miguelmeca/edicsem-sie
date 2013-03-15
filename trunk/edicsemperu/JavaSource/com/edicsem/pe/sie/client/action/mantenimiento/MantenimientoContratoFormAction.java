@@ -74,7 +74,7 @@ public class MantenimientoContratoFormAction extends
 
 	private String mensaje;
 	public static Log log = LogFactory.getLog(MantenimientoContratoFormAction.class);
-	private int Tipocasa,idtipodoc,idUbigeo, idempresa,tipoVenta,tipopago, idpaquete, idProducto, idempleadoExpositor, idempleadoVendedor, idempleadoColaborador, idTelefono;
+	private int Tipocasa,idtipodoc,idUbigeo, idempresa,tipoVenta,idpuntoventa, tipopago, idpaquete, idProducto, idempleadoExpositor, idempleadoVendedor, idempleadoColaborador, idTelefono;
 	private String idProvincia, idDepartamento,  ubigeoDefecto,selectTelef;
 	private ProductoSie objProductoSie;
 	private ClienteSie objClienteSie;
@@ -716,7 +716,7 @@ public class MantenimientoContratoFormAction extends
 				objContratoSie.setUsuariocreacion(sessionUsuario.getUsuario());
 				objCobranzaSie.setUsuariocreacion(sessionUsuario.getUsuario());
 				objContratoService.insertContrato(idtipodoc,Tipocasa,idUbigeo, idempresa, objClienteSie, telefonoList, objDomicilioSie, 
-						objContratoSie,detProductoContrato, cobranzaList, detidEmpleadosList, tipoVenta);
+						objContratoSie,detProductoContrato, cobranzaList, detidEmpleadosList, tipoVenta, idpuntoventa);
 				log.info(" despues de  insertar ");
 				mensaje = "Se inserto correctamente";
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
@@ -1902,6 +1902,20 @@ public class MantenimientoContratoFormAction extends
 
 	public void setExistContrato(int existContrato) {
 		this.existContrato = existContrato;
+	}
+
+	/**
+	 * @return the idpuntoventa
+	 */
+	public int getIdpuntoventa() {
+		return idpuntoventa;
+	}
+
+	/**
+	 * @param idpuntoventa the idpuntoventa to set
+	 */
+	public void setIdpuntoventa(int idpuntoventa) {
+		this.idpuntoventa = idpuntoventa;
 	}
 	
 }

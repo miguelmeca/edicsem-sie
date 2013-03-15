@@ -294,7 +294,7 @@ public class FileUploadEntregasPeru extends BaseMantenimientoAbstractAction impl
 				log.info("NUM_SECTOR_TRABAJO-->"+data.get(25).toString());
 				if(!(data.get(25).toString().trim().equals(""))){
 					entrega.setNumerosectortrabajo(Integer.parseInt(getCellValueAsString(data.get(25)).toString().trim()));
-				}		
+				}
 				
 				log.info("LUGAR_ENTREGA-->"+data.get(26));
 				entrega.setLugardelaentrega(getCellValueAsString(data.get(26)));
