@@ -111,7 +111,7 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 		List lista = null;
 		log.info("por entrar al QUERY  "+ parametroObtenido);
 		try {
-			Query q = em.createQuery("SELECT e FROM EmpleadoSie e inner join e.tbDetEmpresaEmpleados f  " +
+			Query q = em.createQuery("SELECT e FROM EmpleadoSie e inner join e.tbContratoEmpleados1 f  " +
 					"inner join f.tbEmpresa g  where g.idempresa = " + parametroObtenido);
 			lista = q.getResultList();
 			log.info("despues del QUERY tamaño lista Empleados X  parametroObtenido--> " + lista.size());
@@ -145,13 +145,13 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 		List lista = null;
 		log.info("listarExpositor "+ idEmpresa);
 		try {
-			Query q = em.createQuery("SELECT e FROM EmpleadoSie e inner join e.tbDetEmpresaEmpleados f  " +
+			Query q = em.createQuery("SELECT e FROM EmpleadoSie e inner join e.tbContratoEmpleados1 f  " +
 					" inner join f.tbEmpresa g inner join e.tbContratoEmpleados1 h inner join h.tbCargoempleado i " +
 					" where  i.idcargoempleado = 3 and g.idempresa = " + idEmpresa  );
 			lista = q.getResultList();
 			log.info("tamano --> " + lista.size());
 		} catch (Exception e) {
-			e.printStackTrace();			
+			e.printStackTrace();
 		}
 		return lista;
 	}

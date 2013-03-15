@@ -233,7 +233,10 @@ public class ContratoDAOImpl implements ContratoDAO{
 		return p;
 	}
 	
-	public Integer findcantContratoFacturadoEntregado(int idEmpleado) {
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ContratoDAO#findcantContratoFacturadoEntregado(int)
+	 */
+	public Integer findcantContratoFacturadoEntregado(int idEmpleado, int cargo) {
 		
 		int cantidadFact=0;
 		try {
@@ -241,10 +244,12 @@ public class ContratoDAOImpl implements ContratoDAO{
 				log.info("buscar facturados "+ idEmpleado );
 			}
 			//maximo la primera letra: se divide en dos cuotas (Cuota Inicial : 0 y -1 ) las dos pagadas
-			//solo cerrador
+			//solo con cargo de EXPOSITOR
 			
 			Query q = em.createQuery("select p from ContratoSie p where p.tbEstadoGeneral.idestadogeneral = 25 " +
-					" and p.idCargoContrato = "+3+" and p.tbCobranzas.numletra <= 0  and  p.tbCobranzas.fecpago != empty ");
+					" and p.tbCobranzas.numletra <= 0  and  p.tbCobranzas.fecpago != empty " +
+					" and p.tbDetContratoEmpleados.tbEmpleado.idempleado = "+idEmpleado+
+					" and p.tbDetContratoEmpleados.tbCargoempleado = "+cargo);
 			
 			if (q.getResultList().size() > 1) {
 				cantidadFact = q.getResultList().size();

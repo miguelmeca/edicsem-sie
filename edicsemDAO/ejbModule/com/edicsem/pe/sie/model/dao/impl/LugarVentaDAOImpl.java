@@ -84,4 +84,23 @@ public class LugarVentaDAOImpl implements LugarVentaDAO{
 		return lista;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.LugarVentaDAO#findLugarVenta(java.lang.String)
+	 */
+	public LugarVentaSie findLugarVenta(String lugardelaentrega) {
+		List  lista = null;
+		LugarVentaSie l= null;
+		try {
+			Query q = em.createQuery("select p from LugarVentaSie p ");
+			lista =  q.getResultList();
+			if(lista.size()>0){
+				l= (LugarVentaSie) lista.get(0);
+			}
+		   log.info("lista lugar venta --> " + lista.size()+"  ");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return l;
+	}
+	
 }
