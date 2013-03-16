@@ -44,6 +44,10 @@ public class TipoEventoVentaSie implements Serializable {
   	//bi-directional many-to-one association to ContratoSie
   	@OneToMany(mappedBy="tbTipoEvento")
   	private Set<ContratoSie> tbContratos;
+  	
+  	 //bi-directional many-to-one association to GrupoVentaSie
+  	@OneToMany(mappedBy="tbTipoEventoVenta")
+  	private Set<GrupoVentaSie> tbGrupoVenta;
     
     public TipoEventoVentaSie() {
     }
@@ -98,6 +102,14 @@ public class TipoEventoVentaSie implements Serializable {
 	 */
 	public void setTbContratos(Set<ContratoSie> tbContratos) {
 		this.tbContratos = tbContratos;
+	}
+
+	public Set<GrupoVentaSie> getTbGrupoVenta() {
+		return tbGrupoVenta;
+	}
+
+	public void setTbGrupoVenta(Set<GrupoVentaSie> tbGrupoVenta) {
+		this.tbGrupoVenta = tbGrupoVenta;
 	}
 
 }
