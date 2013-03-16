@@ -76,7 +76,7 @@ public class GrupoVentaDAOImpl implements GrupoVentaDAO{
 	public List listarGrupoVenta(int tipoVenta) {
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from GrupoVentaSie p where p.tipo = "+ tipoVenta);
+			Query q = em.createQuery("select p from GrupoVentaSie p where p.tbTipoEventoVenta.idtipoevento = "+ tipoVenta);
 			lista =  q.getResultList(); 
 		   log.info("tamaño lista grupo x tipo --> " + lista.size()+"  ");
 		} catch (Exception e) {

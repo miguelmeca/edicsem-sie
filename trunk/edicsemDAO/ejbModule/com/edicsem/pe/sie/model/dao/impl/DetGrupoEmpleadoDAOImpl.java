@@ -11,8 +11,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.DetGrupoEmpleadoSie;
-import com.edicsem.pe.sie.entity.PuntoVentaSie;
-import com.edicsem.pe.sie.model.dao.AlmacenDAO;
 import com.edicsem.pe.sie.model.dao.DetGrupoEmpleadoDAO;
 
 /**
@@ -74,10 +72,10 @@ public class DetGrupoEmpleadoDAOImpl implements DetGrupoEmpleadoDAO{
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.DetGrupoEmpleadoDAO#listarDetGrupoEmpleado()
 	 */
-	public List listarDetGrupoEmpleado() {
+	public List listarDetGrupoEmpleado(int idtipoevento) {
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from DetGrupoEmpleadoSie p ");
+			Query q = em.createQuery("select p from DetGrupoEmpleadoSie p where p.tbGrupoVenta.tbTipoEventoVenta.idtipoevento ="+idtipoevento);
 			lista =  q.getResultList(); 
 		   log.info("tamaño lista grupo --> " + lista.size()+"  ");
 		} catch (Exception e) {
