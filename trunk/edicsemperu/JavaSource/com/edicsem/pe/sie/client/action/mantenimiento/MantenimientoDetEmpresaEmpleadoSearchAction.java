@@ -35,7 +35,7 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	private List<EmpleadoDTO>  grupoEmplList;
 	private List<GrupoVentaSie> grupoVentasieList;
 	private List<GrupoEmpleadoDTO> grupoVentaList;
-	private int idGrupo, idempleado;
+	private int idGrupo, idempleado, idtipoevento;
 	private String grupoEscogido, mensaje;
 	private ArrayList<MenuDTO> lstMenu ;
 	@EJB
@@ -66,40 +66,46 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 		idGrupo =0;
 		idempleado=0;
 	}
-	
+
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#listar()
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#consultar()
 	 */
-	public String listar() {
+	public String consultar() throws Exception {
 		log.info("listar() ' x grupo' " + idGrupo);
 		mensaje =null;
 		grupoVentaList= new ArrayList<GrupoEmpleadoDTO>();
 		grupoEmplList = new ArrayList<EmpleadoDTO>();
 		//Se debe listar los empleados con cargo de expositor
-		detGrupoEmplList = detgrupoemplService.listarDetGrupoEmpleado();
-		if (detGrupoEmplList == null) {
+		
+		detGrupoEmplList = detgrupoemplService.listarDetGrupoEmpleado(idtipoevento);
+		
+		if (detGrupoEmplList.size() == 0) {
 			detGrupoEmplList = new ArrayList<DetGrupoEmpleadoSie>();
+			mensaje="No hay expositores registrados en éste tipo de evento";
+			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 		}
+		else{
+			CargoEmpleadoSie c= objCargoService.buscarCargoEmpleado("EXPOSITOR");
 		for (int i = 0; i < detGrupoEmplList.size(); i++) {
 			EmpleadoDTO g = new EmpleadoDTO();
 			g.setTbempleado(detGrupoEmplList.get(i).getTbempleado());
-			CargoEmpleadoSie c= objCargoService.buscarCargoEmpleado("EXPOSITOR");
 			if(c==null){
 				setMensaje("el cargo de expositor no se encuentra en la base de datos, verifiquelo");
 				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 				break;
+			}else{
+				int cargo =c.getIdcargoempleado();
+				g.setFacturada(contratoService.findcantContratoFacturadoEntregado(detGrupoEmplList.get(i).getTbempleado().getIdempleado(),cargo));
+				//g.setEntregada(entregada);
+				if(g.getEntregada()!=null)
+				g.setTotalentregada(g.getEntregada());
+				if(g.getFacturada()!=null)
+				g.setTotalfacturada(g.getFacturada()*2);
+				grupoEmplList.add(g);
 			}
-			int cargo =c.getIdcargoempleado();
-			g.setFacturada(contratoService.findcantContratoFacturadoEntregado(detGrupoEmplList.get(i).getTbempleado().getIdempleado(),cargo));
-			//g.setEntregada(entregada);
-			if(g.getEntregada()!=null)
-			g.setTotalentregada(g.getEntregada());
-			if(g.getFacturada()!=null)
-			g.setTotalfacturada(g.getFacturada()*2);
-			grupoEmplList.add(g);
 		}
 		lstMenu = new ArrayList<MenuDTO>();
-		grupoVentasieList = grupoventaService.listarGrupoVenta();
+		grupoVentasieList = grupoventaService.listarGrupoVenta(idtipoevento);
 		for (int i = 0; i < grupoVentasieList.size(); i++) {
 			GrupoEmpleadoDTO g = new GrupoEmpleadoDTO();
 			g.setTbGrupoVenta(grupoVentasieList.get(i));
@@ -109,7 +115,11 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 			log.info("grupo:  "+grupoVentaList.get(i).getTbGrupoVenta().getDescripcion());
 			lstMenu.add(e);
 		}
+		setMensaje("Consulta realizada con exito");
+		msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+		}
 		log.info("tamañito  "+lstMenu.size()); 
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return getViewList();
 	}
 	
@@ -138,6 +148,8 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 				}
 			}
         }
+		msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return null;
     }
 	
@@ -301,6 +313,20 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	 */
 	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
+	}
+
+	/**
+	 * @return the idtipoevento
+	 */
+	public int getIdtipoevento() {
+		return idtipoevento;
+	}
+
+	/**
+	 * @param idtipoevento the idtipoevento to set
+	 */
+	public void setIdtipoevento(int idtipoevento) {
+		this.idtipoevento = idtipoevento;
 	}
 	
 }
