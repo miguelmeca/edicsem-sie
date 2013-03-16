@@ -245,11 +245,11 @@ public class ContratoDAOImpl implements ContratoDAO{
 			}
 			//maximo la primera letra: se divide en dos cuotas (Cuota Inicial : 0 y -1 ) las dos pagadas
 			//solo con cargo de EXPOSITOR
+			//estado FACTURADOand p.tbCobranzas.numletra  
 			
 			Query q = em.createQuery("select p from ContratoSie p where p.tbEstadoGeneral.idestadogeneral = 25 " +
-					" and p.tbCobranzas.numletra <= 0  and  p.tbCobranzas.fecpago != empty " +
 					" and p.tbDetContratoEmpleados.tbEmpleado.idempleado = "+idEmpleado+
-					" and p.tbDetContratoEmpleados.tbCargoempleado = "+cargo);
+					" and p.tbDetContratoEmpleados.tbCargoempleado.idcargoempleado = "+cargo);
 			
 			if (q.getResultList().size() > 1) {
 				cantidadFact = q.getResultList().size();
