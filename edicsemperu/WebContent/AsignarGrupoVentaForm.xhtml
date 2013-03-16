@@ -11,10 +11,23 @@
 	</script>
 		<h1 class="title ui-widget-header ui-corner-all">#{message['facturacion.asignar.grupo']}</h1>
 		<h:form id="formGrupo">
-			<p:messages id="message" showDetail="true" />
+			<p:messages id="message" showDetail="true" closable="true" />
 			 
-			<p:fieldset legend="Resultado de Meta">
-			<p:dataTable id="data" var="g" value="#{grupo.grupoEmplList}" rowStyleClass="#{g.lider  == true ? 'amarillo' : 'aguamarina'}">  
+			<p:fieldset legend="Consultar Tipo de Evento">
+			<h:panelGrid id="display" columns="2" cellpadding="5" >
+				<h:outputText value="Tipo de Evento" />
+				<p:selectOneMenu value="#{grupo.idtipoevento}" required="true" >
+					<f:selectItems value="#{comboAction.tipoEventoVentaitems}" />
+				</p:selectOneMenu>
+				<f:facet name="footer">
+				<p:commandButton value="Consultar" action="#{grupo.consultar}" title="Consultar facturación y entrega" 
+				update="message, data" icon="ui-icon-star" >
+				</p:commandButton>
+				</f:facet>
+			</h:panelGrid>
+			
+			<p:dataTable id="data" var="g" value="#{grupo.grupoEmplList}" rowStyleClass="#{g.lider  == true ? 'amarillo' : 'aguamarina'}"
+			emptyMessage="#{message['facturacion.empty.list']}" >  
 	            <p:column style="width:2%" >
 	            	<f:facet name="header">
 						<h:outputText value="#{message['facturacion.lider']}" />
@@ -26,43 +39,43 @@
 	            <p:column headerText="Empleado">
 	                <h:outputText value="#{g.tbempleado.nombresCompletos}" />
 	            </p:column>
-	            <p:column sortBy="#{g.entregada}" filterBy="#{g.entregada}" headerText="#{message['comision.venta.evento']}"  >
+	            <p:column style="width:80px"  >
 						<f:facet name="header">
 							<h:outputText value="#{message['facturacion.entrega.entrega']}" />
 						</f:facet>
 						<h:outputText value="#{g.entregada}" />
 				</p:column>
-				<p:column sortBy="#{g.facturada}" filterBy="#{g.facturada}" headerText="cant" >
+				<p:column style="width:80px">
 						<f:facet name="header">
 							<h:outputText value="#{message['facturacion.entrega.facturacion']}" />
 						</f:facet>
 						<h:outputText value="#{g.facturada}" />
 				</p:column>
-	            <p:column sortBy="#{g.totalentregada}" filterBy="#{g.totalentregada}" headerText="#{message['comision.venta.evento']}"  >
+	            <p:column style="width:80px" >
 						<f:facet name="header">
 							<h:outputText value="#{message['facturacion.entrega.total.entregas']}" />
 						</f:facet>
 						<h:outputText value="#{g.totalentregada}" />
 				</p:column>
-	            <p:column sortBy="#{g.totalfacturada}" filterBy="#{g.totalfacturada}" headerText="cant" >
+	            <p:column style="width:80px" >
 						<f:facet name="header">
 							<h:outputText value="#{message['facturacion.entrega.total.facturacion']}" />
 						</f:facet>
 						<h:outputText value="#{g.totalfacturada}" />
 				</p:column>
-				<p:column sortBy="#{g.puntajeTotal}" filterBy="#{g.puntajeTotal}" headerText="cant" >
+				<p:column style="width:80px">
 						<f:facet name="header">
 							<h:outputText value="#{message['facturacion.puntaje']}" />
 						</f:facet>
 						<h:outputText value="#{g.puntajeTotal}" />
 				</p:column>
-				<p:column sortBy="#{g.stringFalta}" filterBy="#{g.stringFalta}" headerText="cant" filterMatchMode="contain" >
+				<p:column headerText="cant" filterMatchMode="contain" >
 						<f:facet name="header">
 							<h:outputText value="#{message['facturacion.entrega.faltas.tard']}" />
 						</f:facet>
 						<h:outputText value="#{g.stringFalta}" />
 				</p:column>
-	            <p:column>
+	            <p:column style="width:110px">
 		            <f:facet name="header">
 		            	<h:outputText value="#{message['facturacion.entrega.escoger']}" />
 		            </f:facet>
