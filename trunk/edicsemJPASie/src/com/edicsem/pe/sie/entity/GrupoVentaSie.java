@@ -25,7 +25,10 @@ public class GrupoVentaSie implements Serializable {
 
 	private String descripcion;
 	
-	private Integer tipo;
+	//bi-directional many-to-one association to TipoEventoVentaSie
+    @ManyToOne
+	@JoinColumn(name="idtipoevento")
+	private TipoEventoVentaSie tbTipoEventoVenta;
 	
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
@@ -98,13 +101,13 @@ public class GrupoVentaSie implements Serializable {
 	public void setTbDetGrupoEmpleados(Set<DetGrupoEmpleadoSie> tbDetGrupoEmpleados) {
 		this.tbDetGrupoEmpleados = tbDetGrupoEmpleados;
 	}
-
-	public Integer getTipo() {
-		return tipo;
+	
+	public TipoEventoVentaSie getTbTipoEventoVenta() {
+		return tbTipoEventoVenta;
 	}
-
-	public void setTipo(Integer tipo) {
-		this.tipo = tipo;
+	
+	public void setTbTipoEventoVenta(TipoEventoVentaSie tbTipoEventoVenta) {
+		this.tbTipoEventoVenta = tbTipoEventoVenta;
 	}
 	
 }
