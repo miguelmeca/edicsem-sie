@@ -52,8 +52,8 @@ public class DetGrupoEmpleadoServiceImpl implements DetGrupoEmpleadoService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.DetGrupoEmpleadoService#listarDetGrupoEmpleado()
 	 */
-	public List listarDetGrupoEmpleado() {
-		return objDetGrupoDao.listarDetGrupoEmpleado();
+	public List listarDetGrupoEmpleado(int idtipoevento) {
+		return objDetGrupoDao.listarDetGrupoEmpleado(idtipoevento);
 	}
 
 	/* (non-Javadoc)
