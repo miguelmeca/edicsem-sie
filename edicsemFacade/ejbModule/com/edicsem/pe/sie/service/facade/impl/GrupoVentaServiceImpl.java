@@ -8,6 +8,7 @@ import javax.ejb.Stateless;
 import com.edicsem.pe.sie.entity.GrupoVentaSie;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
 import com.edicsem.pe.sie.model.dao.GrupoVentaDAO;
+import com.edicsem.pe.sie.model.dao.TipoEventoVentaDAO;
 import com.edicsem.pe.sie.service.facade.GrupoVentaService;
 
 @Stateless
@@ -17,19 +18,23 @@ public class GrupoVentaServiceImpl implements GrupoVentaService {
 	private  GrupoVentaDAO objGrupoDao;
 	@EJB
 	private  EstadoGeneralDAO objEstadoGeneralDao;
+	@EJB
+	private TipoEventoVentaDAO objTipoEventoDao;
 	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.GrupoVentaService#insertGrupo(com.edicsem.pe.sie.entity.GrupoVentaSie)
+	 * @see com.edicsem.pe.sie.service.facade.GrupoVentaService#insertGrupo(com.edicsem.pe.sie.entity.GrupoVentaSie, int)
 	 */
-	@Override
-	public void insertGrupo(GrupoVentaSie g) {
+	public void insertGrupo(GrupoVentaSie g,int idTipoEvento) {
+		g.setTbTipoEventoVenta(objTipoEventoDao.findTipoEventoVenta(idTipoEvento));
+		g.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(64));
 		objGrupoDao.insertGrupo(g);
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.GrupoVentaService#updateGrupo(com.edicsem.pe.sie.entity.GrupoVentaSie)
+	 * @see com.edicsem.pe.sie.service.facade.GrupoVentaService#updateGrupo(com.edicsem.pe.sie.entity.GrupoVentaSie, int)
 	 */
-	public void updateGrupo(GrupoVentaSie g) {
+	public void updateGrupo(GrupoVentaSie g, int idTipoEvento) {
+		g.setTbTipoEventoVenta(objTipoEventoDao.findTipoEventoVenta(idTipoEvento));
 		objGrupoDao.updateGrupo(g);
 	}
 	

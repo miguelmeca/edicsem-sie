@@ -23,6 +23,7 @@ import com.edicsem.pe.sie.entity.DetProductoContratoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.LugarVentaSie;
+import com.edicsem.pe.sie.entity.MetaMesSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
@@ -41,13 +42,16 @@ import com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
 import com.edicsem.pe.sie.model.dao.EmpresaDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
+import com.edicsem.pe.sie.model.dao.LugarVentaDAO;
 import com.edicsem.pe.sie.model.dao.ProductoDAO;
 import com.edicsem.pe.sie.model.dao.TelefonoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.TipoCasaDAO;
 import com.edicsem.pe.sie.model.dao.TipoDocumentoDAO;
+import com.edicsem.pe.sie.model.dao.TipoEventoVentaDAO;
 import com.edicsem.pe.sie.model.dao.UbigeoDAO;
 import com.edicsem.pe.sie.service.facade.ContratoService;
 import com.edicsem.pe.sie.service.facade.LugarVentaService;
+import com.edicsem.pe.sie.service.facade.MetaMesService;
 import com.edicsem.pe.sie.service.facade.TipoEventoVentaService;
 
 @Stateless
@@ -91,9 +95,9 @@ public class ContratoServiceImpl implements ContratoService {
 	@EJB
 	private ContratoEmpleadoDAO objContratoEmpleadoDAO;
 	@EJB
-	private TipoEventoVentaService objTipoEventoVentaDAO;
+	private TipoEventoVentaDAO objTipoEventoVentaDAO;
 	@EJB
-	private LugarVentaService objLugarVentaDAO;
+	private LugarVentaDAO objLugarVentaDAO;
 	
 	public static Log log = LogFactory.getLog(ContratoServiceImpl.class);
 	
@@ -713,10 +717,17 @@ public class ContratoServiceImpl implements ContratoService {
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.ContratoService#findcantContratoFacturadoEntregado(int, int)
+	 * @see com.edicsem.pe.sie.service.facade.ContratoService#findcantContratoFacturado(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String)
 	 */
-	public Integer findcantContratoFacturadoEntregado(int idEmpleado, int cargo) {
-		return objContratoDao.findcantContratoFacturadoEntregado(idEmpleado, cargo);
+	public Integer findcantContratoFacturado(Integer idEmpleado, Integer cargo, String fechaInicio, String fechaFin) {
+		return objContratoDao.findcantContratoFacturado(idEmpleado, cargo,fechaInicio, fechaFin);
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ContratoService#findcantContratoEntregado(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String)
+	 */
+	public Integer findcantContratoEntregado(Integer idEmpleado, Integer cargo, String fechaInicio, String fechaFin) {
+		return objContratoDao.findcantContratoEntregado(idEmpleado, cargo, fechaInicio, fechaFin);
 	}
 	
 }
