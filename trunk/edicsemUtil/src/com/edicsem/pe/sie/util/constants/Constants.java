@@ -122,6 +122,8 @@ public class Constants {
 	
 	public static final String MANT_LUGAR_FORM_LIST_PAGE = "mantenimientoLugarVentaFormList";
 	
+	public static final String MANT_GRUPO_FORM_LIST_PAGE = "mantenimientoGrupoVentaFormList";
+	
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
 	public static final String COD_ESTADO_TB_CARGO_EMPLEADO = "CE";
