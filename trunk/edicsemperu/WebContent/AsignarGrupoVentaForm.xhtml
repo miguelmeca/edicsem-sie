@@ -13,15 +13,28 @@
 		<h:form id="formGrupo">
 			<p:messages id="message" showDetail="true" closable="true" />
 			 
-			<p:fieldset legend="Consultar Tipo de Evento">
+			<p:fieldset legend="#{message['grupo.consulta.tipo.evento']}">
 			<h:panelGrid id="display" columns="2" cellpadding="5" >
 				<h:outputText value="Tipo de Evento" />
 				<p:selectOneMenu value="#{grupo.idtipoevento}" required="true" >
 					<f:selectItems value="#{comboAction.tipoEventoVentaitems}" />
 				</p:selectOneMenu>
+				
+				<h:outputText value="Mes" />
+				<p:selectOneMenu value="#{grupo.idMes}" required="true" >
+					<f:selectItems value="#{comboAction.metaMesItems}" />
+					<p:ajax update="display"  listener="#{grupo.listarFechas}"  />
+				</p:selectOneMenu>
+					
+				<h:outputLabel value="Fecha Inicial :" />
+				<p:inputText value="#{grupo.fechaInicio}" disabled="true" />
+					
+				<h:outputLabel value="Fecha Final :" />
+				<p:inputText value="#{grupo.fechaFin}" disabled="true" />
+					
 				<f:facet name="footer">
 				<p:commandButton value="Consultar" action="#{grupo.consultar}" title="Consultar facturación y entrega" 
-				update="message, data" icon="ui-icon-star" >
+				update="@form" icon="ui-icon-star" >
 				</p:commandButton>
 				</f:facet>
 			</h:panelGrid>
@@ -95,7 +108,7 @@
             <h:panelGrid columns="2" cellpadding="8" >
             <c:forEach items="#{grupo.grupoVentaList}" var="v">
              <p:dataTable var="f" value="#{v.detalle}" emptyMessage="Ningun Integrante" style="width:450px" 
-             rowStyleClass="#{f.lider  == true ? 'amarillo' : 'aguamarina'}">
+             rowStyleClass="#{f.lider  == true ? 'amarillo' : 'aguamarina'}" >
 	               <f:facet name="header">
 	               			#{v.tbGrupoVenta.descripcion}
 	               </f:facet>

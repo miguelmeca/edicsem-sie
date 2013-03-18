@@ -9,7 +9,7 @@
 <f:view >
 	<h:head>
 		<ui:insert name="title">
-			<title>Men&uacute; Principal</title>
+			<title>Men&uacute; Principal</title> 
 		</ui:insert> 
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<f:facet name="first">
@@ -625,7 +625,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	<!--  NUEVO / MODIFICA CRITERIO -->
 	<h:form id="NuevoModificaCriterio">
 		<p:dialog header="Criterio Venta" widgetVar="criterioNuevoDialog" showEffect="fade"
-			hideEffect="explode" modal="true" width="600" position="center">
+			hideEffect="explode" modal="true" width="600" position="center" resizable="false">
 			
 			<h:panelGrid id="display" columns="2" cellpadding="3" >
 				
@@ -650,10 +650,39 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:dialog>
 	</h:form>
 	
+	<!--  NUEVO / MODIFICA GRUPO -->
+	<h:form id="NuevoModificaGrupo">
+		<p:dialog header="Grupo de Venta" widgetVar="grupoNuevoDialog" showEffect="fade"
+			hideEffect="explode" modal="true" width="400" position="center" resizable="false" >
+			<p:messages id="messaj"  />
+			<h:panelGrid id="display" columns="2" cellpadding="3" >
+				
+				<h:outputText value="#{message['mantenimiento.descripcion']}" />
+				<p:inputText value="#{grupoForm.objgrupoSie.descripcion}" required="true" maxlength="30"
+					label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
+					style="font-weight:bold" onkeypress="return validarEspaciosLetrasNumeros(event)" />
+					
+				<h:outputText value="#{message['grupo.detalle']}" />
+				<p:inputTextarea value="#{grupoForm.objgrupoSie.detalle}" cols="10" rows="5" maxlength="120"
+					style="font-weight:bold" onkeypress="return validarEspaciosLetrasNumeros(event)" />
+				
+				<h:outputText value="#{message['grupo.tipo.evento']}"  />
+				<p:selectOneMenu value="#{grupoForm.idTipoEvento}" required="true">
+					<f:selectItems value="#{comboAction.tipoEventoVentaitems}" />
+				</p:selectOneMenu>
+				
+				<f:facet name="footer">
+				<p:commandButton value="Guardar" update="panel, messaj" action="#{grupoForm.insertar}" ajax="false"
+					icon="ui-icon ui-icon-disk" />
+				</f:facet>
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+	
 	<!--  NUEVO / MODIFICA LUGAR -->
 	<h:form id="NuevoModificaLugar">
 		<p:dialog header="Lugar de Venta" widgetVar="lugarNuevoDialog" showEffect="fade"
-			hideEffect="explode" modal="true" width="600" position="center">
+			hideEffect="explode" modal="true" width="600" position="center" resizable="false">
 
 			<h:panelGrid id="display" columns="2" cellpadding="3" >
 				
@@ -681,7 +710,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	<!--  NUEVO / MODIFICA EVENTO -->
 	<h:form id="NuevoModificaEvento">
 		<p:dialog header="Tipo Evento Venta" widgetVar="eventoNuevoDialog" showEffect="fade"
-			hideEffect="explode" modal="true" width="600" position="center">
+			hideEffect="explode" modal="true" width="600" position="center" resizable="false">
 
 			<h:panelGrid id="display" columns="2" cellpadding="3" >
 				
@@ -727,8 +756,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	<!--  Mantenimiento Producto Detalle -->
 	<h:form id="formManteProdDetalle">
 		<p:dialog header="Detalle Producto" widgetVar="prodDialog" id="carDlg" resizable="false" 
-			showEffect="fade" hideEffect="explode" modal="true" width="450"
-			position="center">
+			showEffect="fade" hideEffect="explode" modal="true" width="450" position="center">
 			<h:panelGrid id="display" columns="2" cellpadding="2"
 				style="margin:0 auto;">
 				<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
@@ -1123,7 +1151,6 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 	</h:form>
 	
 
-
 	<h:form id="formCarEmpList">
 		<p:dialog header="Detalle CargoEmpleado" widgetVar="carDialog" resizable="false" 
 			showEffect="fade" hideEffect="explode" modal="true" width="450"
@@ -1160,12 +1187,7 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 		</p:dialog>
 	</h:form>
 
-
-
-
-
 	<!--EN UN SOLO PUPAP NUEVO Y EDITAR CARGO EMPLEADO	  -->
-
 
 	<h:form id="NuevoModificaCargoEmpleado">
 		<p:dialog header="Registro / Modificacion de Cargo Empleado" widgetVar="carDialogNuevo"
@@ -1466,7 +1488,7 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 <!-- UBIGEOEMPLEADO -->
 	
 	<h:form id="formInsertUbigeoEmpleado">
-		<p:dialog header="Ubigeo" widgetVar="UbigeoEmpDialog" showEffect="fade"
+		<p:dialog header="Ubigeo" widgetVar="UbigeoEmpDialog" showEffect="fade" resizable="false" 
 			hideEffect="explode" modal="true" width="450" position="center">
 			<h:panelGrid id="display" columns="2" cellpadding="2">
 				<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
@@ -1510,7 +1532,7 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 				
 <!--  Mantenimiento Horario ASISTENCIA -->
 	<h:form id="formMantAsistencia">
-		<p:dialog widgetVar="asistenciaDialog" showEffect="fade"
+		<p:dialog widgetVar="asistenciaDialog" showEffect="fade" resizable="false" 
 			hideEffect="explode" modal="true" width="450" position="center">
 			<h:panelGrid id="display" columns="2" cellpadding="2"
 				style="margin:0 auto;" title="Ingresar Asistencia">
@@ -1572,7 +1594,7 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 <!-- NUEVA INCIDENCIA	   -->
 
 	<h:form id="nuevaobsinc">
-		<p:dialog header="Ingrese Observación" widgetVar="ObsIncDialog"
+		<p:dialog header="Ingrese Observación" widgetVar="ObsIncDialog" resizable="false" 
 			showEffect="fade" hideEffect="explode" modal="true" width="300"
 			position="center">	
 			<h:panelGrid id="display" columns="2" cellpadding="2"
@@ -1682,7 +1704,7 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 
 
 	<h:form id="NuevoTelefono2">
-		<p:dialog header="Ingrese Nuevo Telefono"
+		<p:dialog header="Ingrese Nuevo Telefono" resizable="false" 
 			widgetVar="carDialogNuevoTelefonoEmp" showEffect="fade"
 			hideEffect="explode" modal="true" width="700" position="center">
 
@@ -1757,7 +1779,7 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 
 
 	<h:form id="NuevoModificaempresa">
-		<p:dialog 
+		<p:dialog resizable="false" 
 			widgetVar="carDialogNuevaempresa" showEffect="fade"
 			hideEffect="explode" modal="true" width="600" position="center">
 

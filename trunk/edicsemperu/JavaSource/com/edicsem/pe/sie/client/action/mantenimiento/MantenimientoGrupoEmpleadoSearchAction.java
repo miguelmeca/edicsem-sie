@@ -1,6 +1,8 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -18,26 +20,31 @@ import com.edicsem.pe.sie.beans.MenuDTO;
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DetGrupoEmpleadoSie;
 import com.edicsem.pe.sie.entity.GrupoVentaSie;
+import com.edicsem.pe.sie.entity.MetaMesSie;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.CobranzaService;
 import com.edicsem.pe.sie.service.facade.ContratoService;
 import com.edicsem.pe.sie.service.facade.DetGrupoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.GrupoVentaService;
+import com.edicsem.pe.sie.service.facade.MetaMesService;
 import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name="grupo")
 @SessionScoped
-public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimientoAbstractAction{
+public class MantenimientoGrupoEmpleadoSearchAction extends BaseMantenimientoAbstractAction{
 
-	private Log log = LogFactory.getLog(MantenimientoDetEmpresaEmpleadoSearchAction.class);
+	private Log log = LogFactory.getLog(MantenimientoGrupoEmpleadoSearchAction.class);
 	private List<DetGrupoEmpleadoSie> detGrupoEmplList;
 	private List<EmpleadoDTO>  grupoEmplList;
 	private List<GrupoVentaSie> grupoVentasieList;
 	private List<GrupoEmpleadoDTO> grupoVentaList;
-	private int idGrupo, idempleado, idtipoevento;
-	private String grupoEscogido, mensaje;
+	private int idGrupo, idMes, idempleado, idtipoevento;
+	private String grupoEscogido, mensaje, fechaInicio, fechaFin;
 	private ArrayList<MenuDTO> lstMenu ;
+	private Calendar cal;
+	
 	@EJB
 	private CargoEmpleadoService objCargoService;
 	@EJB
@@ -48,8 +55,11 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	private ContratoService contratoService;
 	@EJB
 	private CobranzaService cobranzaService;
+	@EJB
+	private MetaMesService objMetaMesService;
 	
-	public MantenimientoDetEmpresaEmpleadoSearchAction() {
+	
+	public MantenimientoGrupoEmpleadoSearchAction() {
 		init();
 	}
 	
@@ -58,7 +68,7 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	 */
 	public void init() {
 		if (log.isInfoEnabled()) {
-			log.info("Inicializando 'MantenimientoDetEmpresaEmpleadoSearchAction'");
+			log.info("Inicializando 'MantenimientoGrupoEmpleadoSearchAction'");
 		}
 		detGrupoEmplList = new ArrayList<DetGrupoEmpleadoSie>();
 		grupoEmplList = new ArrayList<EmpleadoDTO>();
@@ -79,6 +89,9 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 		
 		detGrupoEmplList = detgrupoemplService.listarDetGrupoEmpleado(idtipoevento);
 		
+		if(detGrupoEmplList==null){
+			detGrupoEmplList= new ArrayList<DetGrupoEmpleadoSie>();
+		}
 		if (detGrupoEmplList.size() == 0) {
 			detGrupoEmplList = new ArrayList<DetGrupoEmpleadoSie>();
 			mensaje="No hay expositores registrados en éste tipo de evento";
@@ -95,12 +108,13 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 				break;
 			}else{
 				int cargo =c.getIdcargoempleado();
-				g.setFacturada(contratoService.findcantContratoFacturadoEntregado(detGrupoEmplList.get(i).getTbempleado().getIdempleado(),cargo));
-				//g.setEntregada(entregada);
+				g.setFacturada(contratoService.findcantContratoFacturado(detGrupoEmplList.get(i).getTbempleado().getIdempleado(),cargo,fechaInicio, fechaFin));
+				g.setEntregada(contratoService.findcantContratoEntregado(detGrupoEmplList.get(i).getTbempleado().getIdempleado(),cargo,fechaInicio, fechaFin));
 				if(g.getEntregada()!=null)
 				g.setTotalentregada(g.getEntregada());
 				if(g.getFacturada()!=null)
 				g.setTotalfacturada(g.getFacturada()*2);
+				g.setPuntajeTotal(g.getTotalentregada()+g.getTotalfacturada());
 				grupoEmplList.add(g);
 			}
 		}
@@ -118,7 +132,6 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 		setMensaje("Consulta realizada con exito");
 		msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 		}
-		log.info("tamañito  "+lstMenu.size()); 
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return getViewList();
 	}
@@ -193,6 +206,23 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
         }
 		return null;
     }
+	
+	public void listarFechas() throws ParseException{
+		MetaMesSie objMetaMesSie = objMetaMesService.findMetaMes(idMes);
+		cal =  DateUtil.getToday();
+		fechaInicio = objMetaMesSie.getFechainicio();
+		fechaFin = objMetaMesSie.getFechafin();
+		if(idMes<=11){
+			fechaInicio =objMetaMesSie.getFechainicio()+"/"+cal.get(Calendar.YEAR);
+			fechaFin = objMetaMesSie.getFechafin()+"/"+cal.get(Calendar.YEAR);
+			log.info(" fec i "+fechaInicio+" fec f "+fechaFin);
+		}else
+		{
+			fechaInicio = objMetaMesSie.getFechainicio()+"/"+cal.get(Calendar.YEAR);
+			fechaFin = objMetaMesSie.getFechafin()+"/"+(cal.get(Calendar.YEAR)+1);
+			log.info(" fec i "+fechaInicio+" fec f "+fechaFin);
+		}
+	}
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewList()
@@ -327,6 +357,48 @@ public class MantenimientoDetEmpresaEmpleadoSearchAction extends BaseMantenimien
 	 */
 	public void setIdtipoevento(int idtipoevento) {
 		this.idtipoevento = idtipoevento;
+	}
+
+	/**
+	 * @return the idMes
+	 */
+	public int getIdMes() {
+		return idMes;
+	}
+
+	/**
+	 * @param idMes the idMes to set
+	 */
+	public void setIdMes(int idMes) {
+		this.idMes = idMes;
+	}
+
+	/**
+	 * @return the fechaInicio
+	 */
+	public String getFechaInicio() {
+		return fechaInicio;
+	}
+
+	/**
+	 * @param fechaInicio the fechaInicio to set
+	 */
+	public void setFechaInicio(String fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+	/**
+	 * @return the fechaFin
+	 */
+	public String getFechaFin() {
+		return fechaFin;
+	}
+
+	/**
+	 * @param fechaFin the fechaFin to set
+	 */
+	public void setFechaFin(String fechaFin) {
+		this.fechaFin = fechaFin;
 	}
 	
 }
