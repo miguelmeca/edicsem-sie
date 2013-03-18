@@ -27,5 +27,6 @@ public interface ContratoService {
 	public abstract String updateEntregasPeru(List<EntregasPeruDTO> credito);
 	public abstract ContratoSie buscarXcodigoContrato (String codContrato);
 	public abstract List listarContratoEntregaLetraObsequio(String numDocumento,String codigoContrato,String nombreCliente, String apePat,String apeMat);
-	public abstract Integer findcantContratoFacturadoEntregado(int idEmpleado, int cargo);
+	public abstract Integer findcantContratoFacturado(Integer idEmpleado, Integer cargo, String fechaInicio, String fechaFin );
+	public abstract Integer findcantContratoEntregado(Integer idEmpleado, Integer cargo, String fechaInicio, String fechaFin );
 }
