@@ -25,6 +25,8 @@ public class GrupoVentaSie implements Serializable {
 
 	private String descripcion;
 	
+	private String detalle;
+	
 	//bi-directional many-to-one association to TipoEventoVentaSie
     @ManyToOne
 	@JoinColumn(name="idtipoevento")
@@ -42,6 +44,11 @@ public class GrupoVentaSie implements Serializable {
 	//bi-directional many-to-one association to DetGrupoEmpleadoSie
 	@OneToMany(mappedBy="tbGrupoVenta")
 	private Set<DetGrupoEmpleadoSie> tbDetGrupoEmpleados;
+	
+	//bi-directional many-to-one association to EstadoGeneralSie
+    @ManyToOne
+	@JoinColumn(name="idestadogeneral")
+	private EstadoGeneralSie tbEstadoGeneral;
 
     public GrupoVentaSie() {
     }
@@ -108,6 +115,34 @@ public class GrupoVentaSie implements Serializable {
 	
 	public void setTbTipoEventoVenta(TipoEventoVentaSie tbTipoEventoVenta) {
 		this.tbTipoEventoVenta = tbTipoEventoVenta;
+	}
+
+	/**
+	 * @return the tbEstadoGeneral
+	 */
+	public EstadoGeneralSie getTbEstadoGeneral() {
+		return tbEstadoGeneral;
+	}
+
+	/**
+	 * @param tbEstadoGeneral the tbEstadoGeneral to set
+	 */
+	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
+		this.tbEstadoGeneral = tbEstadoGeneral;
+	}
+
+	/**
+	 * @return the detalle
+	 */
+	public String getDetalle() {
+		return detalle;
+	}
+
+	/**
+	 * @param detalle the detalle to set
+	 */
+	public void setDetalle(String detalle) {
+		this.detalle = detalle;
 	}
 	
 }

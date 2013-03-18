@@ -56,9 +56,9 @@ public class DetContratoEmpleadoSie implements Serializable {
 	@JoinColumn(name="idempleado")
 	private EmpleadoSie tbEmpleado;
     
-    //bi-directional many-to-one association to EmpresaSie
+    //bi-directional many-to-one association to CargoEmpleadoSie
     @ManyToOne
-	@JoinColumn(name="idcargo")
+	@JoinColumn(name="idcargocontrato")
 	private CargoEmpleadoSie tbCargoempleado;
 
     public DetContratoEmpleadoSie() {

@@ -67,12 +67,12 @@ public class ContratoSie implements Serializable {
 
 	//bi-directional many-to-one association to EmpresaSie
     @ManyToOne
-	@JoinColumn(name="tipoventa")
+	@JoinColumn(name="idtipoevento")
 	private TipoEventoVentaSie tbTipoEvento;
     
     //bi-directional many-to-one association to LugarVentaSie
     @ManyToOne
-	@JoinColumn(name="lugarventa")
+	@JoinColumn(name="idlugar")
 	private LugarVentaSie tbLugarVenta;
 	
 	private String usuariocreacion;
