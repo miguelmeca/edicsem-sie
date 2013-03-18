@@ -234,10 +234,9 @@ public class ContratoDAOImpl implements ContratoDAO{
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.ContratoDAO#findcantContratoFacturadoEntregado(int)
+	 * @see com.edicsem.pe.sie.model.dao.ContratoDAO#findcantContratoFacturado(int, int, java.lang.String, java.lang.String)
 	 */
-	public Integer findcantContratoFacturadoEntregado(int idEmpleado, int cargo) {
-		
+	public Integer findcantContratoFacturado(int idEmpleado, int cargo, String fechaInicio, String fechaFin) {
 		int cantidadFact=0;
 		try {
 			if (log.isInfoEnabled()) {
@@ -245,12 +244,44 @@ public class ContratoDAOImpl implements ContratoDAO{
 			}
 			//maximo la primera letra: se divide en dos cuotas (Cuota Inicial : 0 y -1 ) las dos pagadas
 			//solo con cargo de EXPOSITOR
-			//estado FACTURADOand p.tbCobranzas.numletra  
+			//estado FACTURADO = 93 o CANCELADO = 94, ENTREGA LETRA = 95
 			
-			Query q = em.createQuery("select p from ContratoSie p where p.tbEstadoGeneral.idestadogeneral = 25 " +
-					" and p.tbDetContratoEmpleados.tbEmpleado.idempleado = "+idEmpleado+
-					" and p.tbDetContratoEmpleados.tbCargoempleado.idcargoempleado = "+cargo);
+			Query q = em.createQuery("select p from ContratoSie p inner join p.tbDetContratoEmpleados m where " +
+					" p.tbEstadoGeneralEntrega.idestadogeneral = 93 or  " +
+					" p.tbEstadoGeneralEntrega.idestadogeneral = 94 or " +
+					" p.tbEstadoGeneralEntrega.idestadogeneral = 95 " +
+					" and m.tbEmpleado.idempleado = "+idEmpleado + 
+					" and m.tbCargoempleado.idcargoempleado = "+cargo + 
+					" and p.tbEstadoGeneral.idestadogeneral = 3 "+
+					" and Date(p.fechaentrega) between Date('"+fechaInicio +"')  and Date('"+fechaFin +"')");
 			
+			if (q.getResultList().size() > 1) {
+				cantidadFact = q.getResultList().size();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cantidadFact;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ContratoDAO#findcantContratoEntregado(int, int, java.lang.String, java.lang.String)
+	 */
+	public Integer findcantContratoEntregado(int idEmpleado, int cargo, String fechaInicio, String fechaFin) {
+		int cantidadFact=0;
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("buscar entregados "+ idEmpleado );
+			}
+			//maximo la primera letra: se divide en dos cuotas (Cuota Inicial : 0 y -1 ) las dos pagadas
+			//solo con cargo de EXPOSITOR
+			//estado ENRTEGADO = 92 , FACTURADO = 93 , CANCELADO = 94 , ENTREGA LETRA = 95
+			
+			Query q = em.createQuery("select p from ContratoSie p inner join p.tbDetContratoEmpleados m where " +
+					" p.tbEstadoGeneralEntrega.idestadogeneral = 92 "+
+					" and m.tbEmpleado.idempleado = "+idEmpleado +
+					" and m.tbCargoempleado.idcargoempleado = "+cargo+
+					" and Date(p.fechaentrega) between Date('"+fechaInicio +"')  and Date('"+fechaFin +"')");
 			if (q.getResultList().size() > 1) {
 				cantidadFact = q.getResultList().size();
 			}
