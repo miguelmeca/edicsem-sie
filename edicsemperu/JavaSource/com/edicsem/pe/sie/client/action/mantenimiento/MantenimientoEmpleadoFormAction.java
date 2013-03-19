@@ -439,7 +439,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		comboManager.setUbigeoDistriItems(null);
 		selectTelef= "";
 		operadorTelefonico=1;
-		TipoDocumento=1;
 		TipoTelef=1;
 		//para inicializar los campos de nuevo telefono
 		nuevoTelef.setTelefono("");
@@ -466,6 +465,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		
 		//validar DNI
 		dniList =  objEmpleadoService.listarDni();
+		TipoDocumento=1;
 		return getViewMant();
 	}
 

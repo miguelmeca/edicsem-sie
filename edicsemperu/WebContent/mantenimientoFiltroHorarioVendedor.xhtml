@@ -40,13 +40,13 @@
 				
 				<h:outputText value="#{message['horario.personal.fechaDesde']}" />
 				<h:panelGroup>
-					<p:calendar value="#{filtroHorarioVendedorForm.objFiltroHorario.diainicio}" id="desdecl"  pattern="dd/MM/yyyy" required="true" requiredMessage="#{message['horario.personal.fechaDesde.validation']}" mindate="today" />
+					<p:calendar value="#{filtroHorarioVendedorForm.objFiltroHorario.diainicio}" id="desdecl"  pattern="dd/MM/yyyy" required="true" requiredMessage="#{message['horario.personal.fechaDesde.validation']}" mindate="today" size="10" />
 					<p:message for="desdecl" />
 				</h:panelGroup>
 				
 				<h:outputText value="#{message['horario.personal.fechaHasta']}" />
 				<h:panelGroup>
-					<p:calendar value="#{filtroHorarioVendedorForm.objFiltroHorario.diafin}" requiredMessage="#{message['horario.personal.fechaHasta.validation']}" mindate="today"  pattern="dd/MM/yyyy"  />
+					<p:calendar value="#{filtroHorarioVendedorForm.objFiltroHorario.diafin}" requiredMessage="#{message['horario.personal.fechaHasta.validation']}" mindate="today"  pattern="dd/MM/yyyy" size="10" />
 				</h:panelGroup>
 				
 				<h:outputText value="#{message['horario.personal.horaEntrada']}"  />

@@ -184,7 +184,7 @@ public class PagoVentaAction  extends BaseMantenimientoAbstractAction {
 			log.info("-->   "+patrocinadosList.get(i).getTbEmpleado2().getNombresCompletos()+" "+  patrocinadosList.get(i).getCantContratoXPatrocinado());
 		}
 		detsancion = objDetSancionempleadoService.listarDetSancionEmpleado(objEmpleado.getIdempleado(), fechaInicio, fechaFin);
-		List<CobranzaSie> cobranzaList =  objCobranzaService.calcularEfectividad(objEmpleado.getIdempleado());
+		List<CobranzaSie> cobranzaList =  objCobranzaService.calcularEfectividad(objEmpleado.getIdempleado(), fechaInicio, fechaFin);
 		for (int i = 0; i < cobranzaList.size(); i++) {
 			BigDecimal importeTotal = cobranzaList.get(i).getImpcobrado();
 		}

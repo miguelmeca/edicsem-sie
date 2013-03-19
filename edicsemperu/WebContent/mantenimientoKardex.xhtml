@@ -45,11 +45,11 @@
 				 
 				<h:outputText value="#{message['kardex.desde']}" />
 				<p:calendar pattern="dd/MM/yyyy"  locale="br" effect="explode" 
-				value="#{kardexAction.fechaDesde}" maxdate="today" />
+				value="#{kardexAction.fechaDesde}" maxdate="today" size="10" />
 				
 				<h:outputText value="#{message['kardex.hasta']}" />
 				<p:calendar pattern="dd/MM/yyyy"  locale="br" effect="explode" maxdate="today"
-				value="#{kardexAction.fechaHasta}"  />
+				value="#{kardexAction.fechaHasta}"  maxlength="10" />
 				<p:spacer/>
 				<p:spacer/>
 				

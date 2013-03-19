@@ -18,13 +18,16 @@ import com.edicsem.pe.sie.beans.EmpleadoDTO;
 import com.edicsem.pe.sie.beans.GrupoEmpleadoDTO;
 import com.edicsem.pe.sie.beans.MenuDTO;
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
+import com.edicsem.pe.sie.entity.CobranzaSie;
 import com.edicsem.pe.sie.entity.DetGrupoEmpleadoSie;
+import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.GrupoVentaSie;
 import com.edicsem.pe.sie.entity.MetaMesSie;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.CobranzaService;
 import com.edicsem.pe.sie.service.facade.ContratoService;
 import com.edicsem.pe.sie.service.facade.DetGrupoEmpleadoService;
+import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.GrupoVentaService;
 import com.edicsem.pe.sie.service.facade.MetaMesService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -40,10 +43,14 @@ public class MantenimientoGrupoEmpleadoSearchAction extends BaseMantenimientoAbs
 	private List<EmpleadoDTO>  grupoEmplList;
 	private List<GrupoVentaSie> grupoVentasieList;
 	private List<GrupoEmpleadoDTO> grupoVentaList;
+	
+	/*** Lista Efectividad*/
+	private List<EmpleadoDTO> listaEmpleado;
 	private int idGrupo, idMes, idempleado, idtipoevento;
 	private String grupoEscogido, mensaje, fechaInicio, fechaFin;
 	private ArrayList<MenuDTO> lstMenu ;
 	private Calendar cal;
+	private MetaMesSie objMetaMesSie;
 	
 	@EJB
 	private CargoEmpleadoService objCargoService;
@@ -57,7 +64,8 @@ public class MantenimientoGrupoEmpleadoSearchAction extends BaseMantenimientoAbs
 	private CobranzaService cobranzaService;
 	@EJB
 	private MetaMesService objMetaMesService;
-	
+	@EJB
+	private EmpleadoSieService objEmpleadoService;
 	
 	public MantenimientoGrupoEmpleadoSearchAction() {
 		init();
@@ -81,7 +89,7 @@ public class MantenimientoGrupoEmpleadoSearchAction extends BaseMantenimientoAbs
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#consultar()
 	 */
 	public String consultar() throws Exception {
-		log.info("listar() ' x grupo' " + idGrupo);
+		log.info("consultar() ' x grupo' " + idGrupo);
 		mensaje =null;
 		grupoVentaList= new ArrayList<GrupoEmpleadoDTO>();
 		grupoEmplList = new ArrayList<EmpleadoDTO>();
@@ -134,6 +142,70 @@ public class MantenimientoGrupoEmpleadoSearchAction extends BaseMantenimientoAbs
 		}
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return getViewList();
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#listar()
+	 */
+	public String listar() {
+		log.info("listar() ");
+		mensaje=null;
+		EmpleadoDTO e = null;
+		
+		//Busqueda del Gerente como Punto de Efectividad base -- 100%
+		EmpleadoSie gerente = objEmpleadoService.buscarEmpleadoVendedor(Constants.NOMBRE_GERENTE);
+		if(gerente==null){
+			mensaje = "No existe el trabajador "+Constants.NOMBRE_GERENTE;
+			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+		}else{
+			List<CobranzaSie> lstCobranza = cobranzaService.calcularEfectividad(gerente.getIdempleado(), fechaInicio, fechaFin);
+			for (int i = 0; i < lstCobranza.size(); i++) {
+				CobranzaSie c = lstCobranza.get(i);
+				e= new EmpleadoDTO();
+				e.setCobro(lstCobranza.get(i).getImpcobrado().doubleValue());
+				e.setDeberiaCobrar(lstCobranza.get(i).getImportemasmora().doubleValue());
+				e.setPorcentajeRecuperado(e.getCobro()/e.getDeberiaCobrar());
+				e.setPerdidaEfectiva(0.0);
+				e.setPerdidaSoles(0.0);
+				listaEmpleado.add(e);
+			}
+			//buscar expositores
+			CargoEmpleadoSie car = objCargoService.buscarCargoEmpleado(Constants.CARGO_EXPOSITOR);
+			if(car==null){
+				mensaje = "No existe el cargo "+Constants.CARGO_EXPOSITOR;
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			}else {
+				List<EmpleadoSie> lstExpositores= objEmpleadoService.listarEmpleadosXCargo(car.getIdcargoempleado());
+				if(lstExpositores.size()==0){
+					mensaje = "Csonulta realizada, No se encontraron expositores regitrados";
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+				}
+				for (int j = 0; j < lstExpositores.size(); j++) {
+					MetaMesSie objMetaMes = objMetaMesService.fechasEfectividad(idMes);
+					List<CobranzaSie> lstCobranzaEx = cobranzaService.calcularEfectividad(lstExpositores.get(j).getIdempleado(), fechaInicio, fechaFin);
+					EmpleadoDTO e2 = new EmpleadoDTO();
+					for (int i = 0; i < lstCobranzaEx.size(); i++){
+						CobranzaSie c = lstCobranzaEx.get(i);
+						e2.setCobro(e2.getCobro()+c.getImpcobrado().doubleValue());
+						e2.setDeberiaCobrar(e2.getDeberiaCobrar()+ c.getImportemasmora().doubleValue());
+						
+						if(i+1==lstCobranzaEx.size()){
+							e2.setPorcentajeRecuperado(e2.getCobro()/e2.getDeberiaCobrar());
+							e2.setPerdidaEfectiva(e.getPorcentajeRecuperado() - e2.getPorcentajeRecuperado());
+							e2.setPerdidaSoles(e2.getDeberiaCobrar()*e2.getPerdidaEfectiva());
+							listaEmpleado.add(e2);
+						}
+					}
+				}
+			}
+		}
+		if(mensaje==null){
+			setMensaje("Consulta realizada con exito");
+			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+		}
+		
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		return null;
 	}
 	
 	/* (non-Javadoc)
@@ -208,20 +280,11 @@ public class MantenimientoGrupoEmpleadoSearchAction extends BaseMantenimientoAbs
     }
 	
 	public void listarFechas() throws ParseException{
-		MetaMesSie objMetaMesSie = objMetaMesService.findMetaMes(idMes);
-		cal =  DateUtil.getToday();
+		objMetaMesSie = objMetaMesService.fechasEfectividad(idMes);
+		log.info("fecha ini* "+objMetaMesSie.getFechainicio()+" fech fin "+objMetaMesSie.getFechafin());
 		fechaInicio = objMetaMesSie.getFechainicio();
 		fechaFin = objMetaMesSie.getFechafin();
-		if(idMes<=11){
-			fechaInicio =objMetaMesSie.getFechainicio()+"/"+cal.get(Calendar.YEAR);
-			fechaFin = objMetaMesSie.getFechafin()+"/"+cal.get(Calendar.YEAR);
-			log.info(" fec i "+fechaInicio+" fec f "+fechaFin);
-		}else
-		{
-			fechaInicio = objMetaMesSie.getFechainicio()+"/"+cal.get(Calendar.YEAR);
-			fechaFin = objMetaMesSie.getFechafin()+"/"+(cal.get(Calendar.YEAR)+1);
-			log.info(" fec i "+fechaInicio+" fec f "+fechaFin);
-		}
+		
 	}
 	
 	/* (non-Javadoc)
@@ -400,5 +463,19 @@ public class MantenimientoGrupoEmpleadoSearchAction extends BaseMantenimientoAbs
 	public void setFechaFin(String fechaFin) {
 		this.fechaFin = fechaFin;
 	}
-	
+
+	/**
+	 * @return the listaEmpleado
+	 */
+	public List<EmpleadoDTO> getListaEmpleado() {
+		return listaEmpleado;
+	}
+
+	/**
+	 * @param listaEmpleado the listaEmpleado to set
+	 */
+	public void setListaEmpleado(List<EmpleadoDTO> listaEmpleado) {
+		this.listaEmpleado = listaEmpleado;
+	}
+
 }

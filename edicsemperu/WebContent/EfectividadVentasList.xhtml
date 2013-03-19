@@ -6,79 +6,70 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
-		<h1 class="title ui-widget-header ui-corner-all">Efectividad Ventas</h1>
+		<h1 class="title ui-widget-header ui-corner-all">#{message['grupo.efectividad']}</h1>
 		<h:form id="frmEfectividadList">
 			<p:growl id="message" showDetail="true" />
 			<p:fieldset legend="#{message['grupo.consulta.tipo.evento']}">
 			<h:panelGrid id="display" columns="2" cellpadding="5" >
-				<h:outputText value="Tipo de Evento" />
-				<p:selectOneMenu value="#{grupo.idtipoevento}" required="true" >
-					<f:selectItems value="#{comboAction.tipoEventoVentaitems}" />
-				</p:selectOneMenu>
 				
-				<h:outputText value="Mes" />
+				<h:outputText value="#{message['grupo.mes']}" />
 				<p:selectOneMenu value="#{grupo.idMes}" required="true" >
 					<f:selectItems value="#{comboAction.metaMesItems}" />
 					<p:ajax update="display"  listener="#{grupo.listarFechas}"  />
 				</p:selectOneMenu>
 					
-				<h:outputLabel value="Fecha Inicial :" />
+				<h:outputLabel value="#{message['grupo.fecha.inicial']}" />
 				<p:inputText value="#{grupo.fechaInicio}" disabled="true" />
 					
-				<h:outputLabel value="Fecha Final :" />
+				<h:outputLabel value="#{message['grupo.fecha.final']}" />
 				<p:inputText value="#{grupo.fechaFin}" disabled="true" />
 				
 				<f:facet name="footer">
-				<p:commandButton value="Consultar" action="#{grupo.listar}" title="Consultar facturación y entrega" 
-				update="@form" icon="ui-icon-star" />
+				<p:commandButton value="#{message['grupo.consultar']}" action="#{grupo.listar}" 
+				title="#{message['grupo.consultar.efectividad']}" update="@form" icon="ui-icon-star" />
 				</f:facet>
 			</h:panelGrid>
 			</p:fieldset>
 			
-			<p:dataTable value="#{grupo.listaVentas}" var="c">
-				<f:facet name="footer">
-					<h:outputText value="CUADRO EN BASE A VENTAS REALIZADAS DESDE #{c.descripcion} 
-					HASTA #{c.descripcion} SIN TOMAR EN CUENTA DEVOLUCIONES Y DEPOSITOS" />
+			<p:dataTable value="#{grupo.listaEmpleado}" var="c">
+				<f:facet name="header">
+					<h:outputText value="CUADRO EN BASE A VENTAS REALIZADAS DESDE  #{grupo.fechaInicio}
+					HASTA #{grupo.fechaFin} SIN TOMAR EN CUENTA DEVOLUCIONES Y DEPOSITOS" />
 				</f:facet>
-				<p:column headerText="VENDEDORES IMPORTANTES" >
-					<h:outputText value="#{c.descripcion}" />
+				<p:column headerText="Expositor" >
+					<h:outputText value="#{c.tbempleado.nombresCompletos}" />
 				</p:column>
 				
 				<p:column headerText="COBRADO" >
-					<h:outputText value="#{c.detalle}" />
+					<h:outputText value="#{c.cobro}" />
 				</p:column>
 				
 				<p:column headerText="DEBERIAMOS HABER COBRADO A LA FECHA" >
-					<h:outputText value="#{c.detalle}" />
-				</p:column>
-				
-				<p:column headerText="DEBERIAMOS HABER COBRADO A LA FECHA" >
-					<h:outputText value="#{c.detalle}" />
+					<h:outputText value="#{c.deberiaCobrar}" />
 				</p:column>
 				
 				<p:column headerText="PORCENTAJE DE RECUPERACIÓN" >
-					<h:outputText value="#{c.detalle}" />
+					<h:outputText value="#{c.porcentajeRecuperado}" />
 				</p:column>
 				
 				<p:column headerText="PÉRDIDA EFECTIVA" >
-					<h:outputText value="#{c.detalle}" />
+					<h:outputText value="#{c.perdidaEfectiva}" />
 				</p:column>
 				
 				<p:column headerText="PÉRDIDA EN SOLES" >
-					<h:outputText value="#{c.detalle}" />
+					<h:outputText value="#{c.perdidaSoles}" />
 				</p:column>
 				
-				<p:column headerText="Editar">
-					<p:commandButton value="Editar" action="#{SancionForm.update}" 
-					 icon="ui-icon ui-icon-pencil" >
+			<!--  <p:column headerText="Exportar">
+					<p:commandButton value="Exportar" action="#{grupo.exportar}" icon="ui-icon ui-icon-pencil" >
 						<f:setPropertyActionListener value="#{c}" target="#{SancionForm.objSancionSie}" />
 					</p:commandButton>
-				</p:column>
+				</p:column>-->
 				
 				<f:facet name="footer">
-				<div align="left">
-				
-				</div>
+					<div align="left">
+						
+					</div>
 				</f:facet>
 			</p:dataTable>
 		</h:form>

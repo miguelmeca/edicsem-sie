@@ -1453,7 +1453,7 @@ public class ComboAction {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'getExpositorItems()' ");
 			}
-			lista = objEmpleadoService.listarExpositor(idEmpresa);
+			lista = objEmpleadoService.listarEmpleadosXCargo(idCargo);
 
 			for (int i = 0; i < lista.size(); i++) {
 				EmpleadoSie entidad = new EmpleadoSie();
