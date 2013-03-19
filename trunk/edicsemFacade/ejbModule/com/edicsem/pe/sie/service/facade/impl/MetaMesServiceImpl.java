@@ -47,8 +47,14 @@ public class MetaMesServiceImpl implements MetaMesService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.EmpresaService#findProducto(java.lang.String)
 	 */
-	 
 	public MetaMesSie findMetaMes(int id) {
 		return objMetaMesDao.findMetaMes(id); 
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.MetaMesService#fechasEfectividad(int)
+	 */
+	public MetaMesSie fechasEfectividad(int idMes) {
+		return objMetaMesDao.fechasEfectividad(idMes);
 	}
 }
