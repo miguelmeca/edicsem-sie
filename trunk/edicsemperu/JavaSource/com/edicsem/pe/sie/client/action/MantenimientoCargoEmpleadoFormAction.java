@@ -287,7 +287,7 @@ public String derivarEmpleado() throws Exception {
 	
 	private void listarEmpleadosXcargo(int parametroObtenido) {
 		log.info("entrando en el bean listarEmpleadosXcargo  "+parametroObtenido);	
-		cargoempleadoList = objEmpleadoSieService.listarEmpleadoxCargo(parametroObtenido);		
+		cargoempleadoList = objEmpleadoSieService.listarEmpleadosXCargo(parametroObtenido);		
 	}
 
 	private boolean verificarEmpleadoConCargo(int idcargo) {

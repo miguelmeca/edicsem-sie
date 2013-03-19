@@ -163,7 +163,7 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 			}else {
 				log.info("usuario incorrecto!! ...  ");
 				msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-						Constants.MESSAGE_ERROR_TITULO, "usuario y/o contraseña incorrecta");
+						Constants.MESSAGE_ERROR_FATAL_TITULO, "usuario y/o contraseña incorrecta");
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 				redireccion = Constants.LOGIN_PAGE;
 				
@@ -222,7 +222,7 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 			
 		} catch (Exception e) {
 			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					Constants.MESSAGE_ERROR_TITULO, e.getMessage());
+					Constants.MESSAGE_ERROR_FATAL_TITULO, e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 	}

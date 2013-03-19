@@ -66,7 +66,7 @@
 					<p:message for="email" />
 					
 					<h:outputText value="#{message['contrato.fechanac']}" />
-					<p:calendar  id="fecnac" value="#{contratoForm.objClienteSie.fecnacimiento}" required="true" pattern="dd/MM/yyyy" size="30" locale="es"
+					<p:calendar  id="fecnac" value="#{contratoForm.objClienteSie.fecnacimiento}" required="true" pattern="dd/MM/yyyy" maxlength="10" locale="es"
 					pagedate="01/01/1990" maxdate="#{contratoForm.dValidoFecNac}" />
 					<p:message for="fecnac" />
 					
@@ -388,7 +388,7 @@
 				
 				<h:outputText value="#{message['contrato.Fecha.pago.inicial']}" />
 				<p:calendar id="fechPagoInicial" value="#{contratoForm.objContratoSie.fechacuotainicial}" 
-				pattern="dd/MM/yyyy" effect="explode" required="true" mindate="today" />
+				pattern="dd/MM/yyyy" effect="explode" required="true" mindate="today" size="10" />
 				
 				<h:outputText value="#{message['contrato.producto.precio']}" />
 				<p:spinner id="precioProd" value="#{contratoForm.precioProducto}" required="true" min="1"  />
@@ -398,7 +398,7 @@
 				value="#{contratoForm.objContratoSie.numcuotas}" />
 				
 				<h:outputText value="#{message['contrato.fechEntrega']}" />
-				<p:calendar id="fechaentrega1" value="#{contratoForm.objContratoSie.fechaentrega}" pattern="dd/MM/yyyy" maxdate="today" label="fecha entrega"  required="true" />
+				<p:calendar id="fechaentrega1" value="#{contratoForm.objContratoSie.fechaentrega}" pattern="dd/MM/yyyy" maxdate="today" label="fecha entrega" maxlength="10" required="true" />
 				
 				</h:panelGrid>
 				<h:panelGrid columns="4"  rendered="#{contratoForm.tipopago==2}" cellpadding="4" >
@@ -407,7 +407,7 @@
 				<p:spinner id="precioProd2" value="#{contratoForm.precioProducto}" required="true" min="1"  />
 				
 				<h:outputText value="#{message['contrato.fechEntrega']}" />
-				<p:calendar id="fechaentrega" value="#{contratoForm.objContratoSie.fechaentrega}" pattern="dd/MM/yyyy" maxdate="today" label="fecha entrega"  required="true" />
+				<p:calendar id="fechaentrega" value="#{contratoForm.objContratoSie.fechaentrega}" pattern="dd/MM/yyyy" maxdate="today" label="fecha entrega" maxlength="10" required="true" />
 				
 				</h:panelGrid>
 				<p:commandButton value="Registrar Pago(s)" action="#{contratoForm.insertarCobranza}" update="panel2"
@@ -454,7 +454,7 @@
                     <h:outputText value="#{c.fechaVencimientoString}"  />
                 </f:facet>
                 <f:facet name="input">
-                  <p:calendar   value="#{c.fecvencimiento}" pattern="dd/MM/yyyy" />
+                  <p:calendar   value="#{c.fecvencimiento}" pattern="dd/MM/yyyy" maxlength="10"/>
                 </f:facet>
             </p:cellEditor>
         </p:column>

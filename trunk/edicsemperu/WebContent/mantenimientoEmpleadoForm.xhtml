@@ -36,9 +36,8 @@
 			<h:outputText value="#{message['empleado.confcontra']}" />
 			<p:password id="confcontra" value="#{mantenimientoEmpleadoFormAction.confcontra}" required="true" label="Confcontra"
 			requiredMessage="#{message['empleado.confcontra.validation']}"/>
-			<h:outputText value="Tipo de Doc. :" id="tipoL"  />
+			<h:outputText value="Tipo de Doc " id="tipoL"  />
             <p:selectOneMenu id="tipo" value="#{mantenimientoEmpleadoFormAction.tipoDocumento}" required="true" >
-            <f:selectItem itemLabel="Seleccione Tipo" itemValue="#{null}" />
             <f:selectItems  value="#{comboAction.tipoDocumentoitems}" />
             <p:ajax update="nrodoc"/>
             </p:selectOneMenu>
@@ -46,16 +45,15 @@
             <h:panelGroup id="nrodoc" >
 			<p:inputMask value="#{mantenimientoEmpleadoFormAction.objEmpleado.numdocumento}" mask="99999999"
 					rendered="#{mantenimientoEmpleadoFormAction.tipoDocumento==1}"
-					required="true" label="nrodoc"
-					requiredMessage="#{message['empleado.nrodoc.validation']}" />
+					required="true" requiredMessage="#{message['empleado.nrodoc.validation']}" />
 					
 			<p:inputMask value="#{mantenimientoEmpleadoFormAction.objEmpleado.numdocumento}" mask="99999999999"
-					required="true"  rendered="#{mantenimientoEmpleadoFormAction.tipoDocumento==2}"/>
+					required="true" rendered="#{mantenimientoEmpleadoFormAction.tipoDocumento==2}"/>
             </h:panelGroup>
                           
             <h:outputText value="#{message['empleado.fechanac']}" />
 			<p:calendar pagedate="-8380" maxdate="today" value="#{mantenimientoEmpleadoFormAction.objEmpleado.fechanacimiento}" id="fechanac" showButtonPanel="true" required="true"  pattern="dd/MM/yyyy"
-			label="Fecha de nacimiento" requiredMessage="#{message['empleado.fechanac.validation']}"/>                  
+			label="Fecha de nacimiento" requiredMessage="#{message['empleado.fechanac.validation']}" size="10" />                  
             
             <h:outputText value="#{message['contrato.cliente.correo']}" />
 					<p:inputText value="#{mantenimientoEmpleadoFormAction.objEmpleado.correo}"   title="para el @ presione: la tecla Alt + 64 y en laptop Alt Gr + Q" required="true" requiredMessage="#{message['contrato.cliente.email.validation']}" id="email" validatorMessage="Email incorrecto" maxlength="45" >
@@ -208,7 +206,7 @@
             </p:selectOneMenu>
             
             <h:outputText value="#{message['empleado.fecInicio']}" />
-            <p:calendar value="#{mantenimientoEmpleadoFormAction.fechaInicioContrato}" pattern="dd/MM/yyyy" style="width:300px" />
+            <p:calendar value="#{mantenimientoEmpleadoFormAction.fechaInicioContrato}" pattern="dd/MM/yyyy" style="width:300px" size="10" />
             <h:outputText value="#{message['empleado.cargo']}" />
             <p:selectOneMenu value="#{mantenimientoEmpleadoFormAction.idCargo}" label="Seleccione" filter="true" filterText="Filter" filterMatchMode="startsWith"  >  
             <f:selectItems value="#{comboAction.cargoEmpleadoItems}" />

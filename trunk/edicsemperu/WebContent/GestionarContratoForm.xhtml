@@ -240,7 +240,7 @@
 				<p:spinner value="#{contratoForm.precioMensual}" size="4"   min="1"  />
 				
 				<h:outputText value="#{message['contrato.producto.fecha.mensual']}" />
-				<p:calendar value="#{contratoForm.fechaMensual}" pattern="dd/MM/yyyy" />
+				<p:calendar value="#{contratoForm.fechaMensual}" pattern="dd/MM/yyyy" size="10" />
 				
 				<p:commandButton value="#{message['gestion.add.cuota']}" action="#{contratoForm.addCuota}" update="listaCobranzasEdit,messages" ajax="false" icon="ui-icon-plus"/>
 				</h:panelGrid>

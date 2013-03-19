@@ -205,9 +205,9 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			<p:messages id="msj" showDetail="true"  />
 				<h:panelGrid id="display" columns="2" cellpadding="5" >
 					<h:outputText value="Desde" />
-					<p:calendar value="#{control.fechaDesde}" required="true" size="10" pattern="dd/MM/yyyy"  />
+					<p:calendar value="#{control.fechaDesde}" required="true" maxlength="10" pattern="dd/MM/yyyy"  />
 					<h:outputText value="Hasta" />
-					<p:calendar value="#{control.fechaHasta}" required="true" size="10" pattern="dd/MM/yyyy" />
+					<p:calendar value="#{control.fechaHasta}" required="true" maxlength="10" pattern="dd/MM/yyyy" />
 					<f:facet name="footer">
 					<p:commandButton update="msj,lstProducto" value="Consultar" action="#{control.consultar}" icon="ui-icon-search">
 						<f:setPropertyActionListener value="v" target="#{control.actionConsultar}" />
@@ -808,13 +808,13 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				
 				<h:outputText value="#{message['horario.personal.fechaDesde']}" />
 				<h:panelGroup >
-					<p:calendar id="desdecl" value="#{horarioPersonal.objHorarioPersonal.diainicio}" required="true" requiredMessage="#{message['horario.personal.fechaDesde.validation']}"   pattern="dd/MM/yyyy"  />
+					<p:calendar id="desdecl" value="#{horarioPersonal.objHorarioPersonal.diainicio}" required="true" requiredMessage="#{message['horario.personal.fechaDesde.validation']}" maxlength="10" pattern="dd/MM/yyyy"  />
 					<p:message for="desdecl" />
 				</h:panelGroup>
 				
 				<h:outputText value="#{message['horario.personal.fechaHasta']}" />
 				<h:panelGroup>
-					<p:calendar id="fechasta" value="#{horarioPersonal.objHorarioPersonal.diafin}" required="true" requiredMessage="#{message['horario.personal.fechaHasta.validation']}"   pattern="dd/MM/yyyy"   />
+					<p:calendar id="fechasta" value="#{horarioPersonal.objHorarioPersonal.diafin}" required="true" requiredMessage="#{message['horario.personal.fechaHasta.validation']}"  maxlength="10" pattern="dd/MM/yyyy"   />
 					<p:message for="fechasta" />
 				</h:panelGroup>
 				
@@ -1114,14 +1114,14 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 				
 				<h:outputText value="#{message['horario.pv.fechaDesde']}" />
 				<h:panelGroup >
-					<p:calendar id="desdepv" required="true" requiredMessage="#{message['horario.pv.fechaDesde.validation']}" value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diainicio}"
+					<p:calendar id="desdepv" required="true" requiredMessage="#{message['horario.pv.fechaDesde.validation']}" value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diainicio}" maxlength="10"
 					 pattern="dd/MM/yyyy" />
 					<p:message for="desdepv" />
 				</h:panelGroup>
 				
 				<h:outputText value="#{message['horario.pv.fechaHasta']}" />
 				<h:panelGroup >
-					<p:calendar id="hastapv" value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diafin}" required="true"  requiredMessage="#{message['horario.pv.fechaHasta.validation']}" pattern="dd/MM/yyyy" />
+					<p:calendar id="hastapv" value="#{MantenimientoHorarioPuntoVentaSearchAction.objHorarioPuntoVentaSie.diafin}" required="true"  requiredMessage="#{message['horario.pv.fechaHasta.validation']}" pattern="dd/MM/yyyy" maxlength="10"/>
 					<p:message for="hastapv" />
 				</h:panelGroup>
 			
@@ -1223,39 +1223,21 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 						onkeypress="return  validarLetras(event)"
 						 title="nombre del cargo de empleado"/>
 
-					
-
 				</h:panelGroup>
-				
-<p:spacer height="30px" ></p:spacer>
+				<p:spacer height="30px" />
 				<h:panelGroup>
-					
-					
-					<p:commandButton
-					 id="btn"
-					 value="Guardar"
-					 update="panel"
-					 action="#{mantenimientoCargoEmpleadoFormAction.insertar}"
+				
+				<p:commandButton id="btn" value="Guardar"
+					 update="panel" action="#{mantenimientoCargoEmpleadoFormAction.insertar}"
 					 ajax="false" icon="ui-icon ui-icon-disk" />
-
 				</h:panelGroup>
-
 			</h:panelGrid>
 			</p:fieldset>
-
 		</p:dialog>
-
 	</h:form>
-	<!-- FIN PUPAP NUEVO Y EDITAR  CARGO EMPLEDO-->
-
-
-	
-	
 	
 	<!--	  INICIO DESACTIVAR	CARGO EMPLEADO   -->
-
 	<h:form>
-
 		<p:confirmDialog id="confirmDeshabilitar1"
 			message="Esta seguro de deshabilitar este Cargo Empleado?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
@@ -1268,18 +1250,12 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 				update=":manteCargoEmpleado:listaPersonas">
 			</p:commandButton>
 
-			<p:commandButton value="No" onclick="confirmation24.hide()"
-				type="button" />
-
+			<p:commandButton value="No" onclick="confirmation24.hide()" type="button" />
 		</p:confirmDialog>
-
 	</h:form>
-
-	<!-- 	FIN DESACTICAR (ESTADOS)  -->
-		<!--	  INICIO DESACTIVAR	Horario P.Venta   -->
-
+	
+	<!--	  INICIO DESACTIVAR	Horario P.Venta   -->
 	<h:form>
-
 		<p:confirmDialog id="confirmDeshabilitarHpv"
 			message="Esta seguro de deshabilitar este horario?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
@@ -1292,19 +1268,13 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 				update="panel, :horarioPuntoVentaList">
 			</p:commandButton>
 
-			<p:commandButton value="No" onclick="confirmationHpv.hide()"
-				type="button" />
+			<p:commandButton value="No" onclick="confirmationHpv.hide()" type="button" />
 
 		</p:confirmDialog>
-
 	</h:form>
-
-	<!-- 	FIN DESACTICAR Horario P.Venta -->
 	
 	<!--	  INICIO DESACTIVAR	PAQUETE BIBLICO   -->
-
 	<h:form>
-
 		<p:confirmDialog id="confirmDeshabilitar1"
 			message="Esta seguro de deshabilitar este Paquete Biblico?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
@@ -1317,14 +1287,10 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 				oncomplete="confirmationPaquete.hide()" ajax="false">
 			</p:commandButton>
 
-			<p:commandButton value="No" onclick="confirmationPaquete.hide()"
-				type="button" />
-
+			<p:commandButton value="No" onclick="confirmationPaquete.hide()" type="button" />
 		</p:confirmDialog>
-
 	</h:form>
 
-	<!-- 	FIN DESACTICAR PAQUETE BIBLICO (ESTADOS)  -->
 	
 		<!--EN UN SOLO PUPAP NUEVO Y EDITAR TIPO PRODUCTO	  -->
 	<h:form id="NuevoModificaTipoProd">
@@ -1369,7 +1335,7 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 					</p:inputText>
 				</h:panelGroup>
 				<h:panelGroup>
-					<p:spacer height="20px"></p:spacer>
+					<p:spacer height="20px"/>
 					<p:commandButton id="btn" value="Guardar" update="display"
 						action="#{mantenimientoTipoProductoFormAction.insertar}"
 						ajax="false" icon="ui-icon ui-icon-disk" />
@@ -1377,12 +1343,9 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
-	<!-- FIN PUPAP NUEVO Y EDITAR  TIPO PRODUCTO-->
 	
 	<!--	  INICIO DESACTIVAR	TIPO PRODUCTO  -->
-
 	<h:form>
-
 		<p:confirmDialog id="confirmDeshabilitartipoProducto"
 			message="Esta seguro de deshabilitar este tipo de producto?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
@@ -1395,23 +1358,13 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 				oncomplete="confirmationTipoProd.hide()" ajax="false">
 			</p:commandButton>
 
-			<p:commandButton value="No" onclick="confirmationTipoProd.hide()"
-				type="button" />
+			<p:commandButton value="No" onclick="confirmationTipoProd.hide()" type="button" />
 
 		</p:confirmDialog>
-
 	</h:form>
-
 	
-	
-	
-
-
-	
-		<!--	  INICIO DESACTIVAR	 TELEFONO DE EMPLEADO  -->
-
-<h:form>
-
+	<!--	  INICIO DESACTIVAR	 TELEFONO DE EMPLEADO  -->
+	<h:form>
 		<p:confirmDialog id="confirmDeshabilitarTelEmp"
 			message="Los cambios se realizaran despues de hacer clic en Guardar?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
@@ -1603,7 +1556,7 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
             <h:outputText value="#{message['incidencia.observacion']}" />	
             <p:inputTextarea maxlength="500" required="true" value="#{mantenimientoIncidenciaForm.objObsIncidencia.observacion}" requiredMessage="#{message['incidencia.observacion.validation']}" /> 
             <h:outputText value="#{message['incidencia.fecha']}" />				
-            <p:calendar id="fechafin"   pattern="dd/MM/yyyy"  
+            <p:calendar id="fechafin"   pattern="dd/MM/yyyy" maxlength="10"
             value="#{mantenimientoIncidenciaForm.fechafin}" requiredMessage="#{message['incidencia.fecha.validation']}" required="true" />
             <p:commandButton 
 					    value="Guardar" 
@@ -1960,58 +1913,31 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 			<h:panelGrid id="display" columns="3" cellpadding="2"
 				style="margin:0 auto;">
 
-				<h:outputText value="#{message['Metames.fechainicial']}"
-					for="fechainicial"/>
-					
-					
-				<p:calendar  value="#{metaMesSearchAction.date1}"
-							 id="fechainicial"
-							 required="true" 
-							 pattern="dd/MM/yyyy"
-							 requiredMessage="#{message['Metames.fechainicial.validation']}" />
-							 <p:message for="fechainicial" />  
+				<h:outputText value="#{message['Metames.fechainicial']}" for="fechainicial"/>
+				<p:calendar  value="#{metaMesSearchAction.date1}" id="fechainicial" maxlength="10"
+				required="true" pattern="dd/MM/yyyy" requiredMessage="#{message['Metames.fechainicial.validation']}" />
+				<p:message for="fechainicial" />  
 				
-				
-					 	
-				<h:outputText value="#{message['Metames.fechafinal']}"
-					for="fechafinal"  />				
-			
-				<p:calendar value="#{metaMesSearchAction.date2}"
-							id="fechafinal"
-							required="true" 
-							pattern="dd/MM/yyyy"
-							 requiredMessage="#{message['Metames.fechafinal.validation']}"/>
-							 <p:message for="fechafinal" /> 
-				
-				
+				<h:outputText value="#{message['Metames.fechafinal']}" for="fechafinal"  />				
+				<p:calendar value="#{metaMesSearchAction.date2}" id="fechafinal" required="true" 
+				pattern="dd/MM/yyyy" maxlength="10" requiredMessage="#{message['Metames.fechafinal.validation']}"/>
+				<p:message for="fechafinal" /> 
 				
 				<h:panelGroup>
-
-					<p:spacer height="20px"></p:spacer>
-					<p:commandButton id="btn" value="Guardar" update="metames"
-						actionListener="#{metaMesSearchAction.insertar}" ajax="false"
-						icon="ui-icon ui-icon-disk" />
-
+					<p:spacer height="20px"/>
+					<p:commandButton id="btn" value="Guardar" update="metames" actionListener="#{metaMesSearchAction.insertar}" 
+						ajax="false" icon="ui-icon ui-icon-disk" />
 				</h:panelGroup>
 			</h:panelGrid>
-
 		</p:dialog>
-
 	</h:form>
-
-
-	<!-- FIN PUPAP NUEVO Y EDITAR META -->
-
-<!-- NUEVO DOMICILIO  CLIENTE -->
-<h:form >
+	<!-- NUEVO DOMICILIO  CLIENTE -->
+	<h:form >
 		<p:dialog header="Nuevo Domiclio" widgetVar="newDomicilio"
 			showEffect="fade" hideEffect="explode" modal="true" width="500" height="500" resizable="false" 
 			position="center">
-<h:panelGrid columns="3" id="panelCliente"  cellpadding="5" >
-
-
-
-<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
+			<h:panelGrid columns="3" id="panelCliente"  cellpadding="5" >
+			<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
 					<p:selectOneMenu size="1" value="#{MantenimientoClienteFormAction.idDepartamento}"
 					required="true" style="width:220px"  id="departamento"
 					requiredMessage="#{message['contrato.ubigeo.departamento.validation']}">
@@ -2044,48 +1970,26 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 				<h:outputText value="Ubigeo " />
 				<h:outputText id="ubigeoDefecto" value="#{MantenimientoClienteFormAction.ubigeoDefecto}" />
 				<p:message for="ubigeoDefecto" rendered="#{MantenimientoClienteFormAction.defectoUbigeo}"/>
-
-
-
-</h:panelGrid>
-
+			</h:panelGrid>
 	</p:dialog>
 	</h:form>
-
- <!-- FIN DOMICILIO CLIENTE -->
- 
  
  <!--	  INICIO ELIMINAR TIPO DE PRODUCTO  -->
 
 	<h:form>
-
-<p:confirmDialog id="confirmTipoProducto"
-			     message="esta seguro de eliminar este Tipo de Producto?" 
-			     width="325"
-				 height="100" showEffect="explode" hideEffect="explode"
-			     header="Confirmacion" severity="alert" widgetVar="confirmationTipoProducto"
-				 position="center">
-
-<p:commandButton type="submit"
-				 value="Si"
-				 action="#{mantenimientoTipoProductoFormAction.Eliminar}" 
-				 oncomplete="confirmationTipoProducto.hide()"
-				 update=":frmTipoProdFormList" 					 		
-	             ajax="false"
-/>
-
-<p:commandButton value="No" onclick="confirmationTipoProducto.hide()"
-					type="button" />
-
-		</p:confirmDialog>
-
+	
+	<p:confirmDialog id="confirmTipoProducto" message="esta seguro de eliminar este Tipo de Producto?" 
+	width="325" height="100" showEffect="explode" hideEffect="explode" header="Confirmacion" severity="alert" widgetVar="confirmationTipoProducto" position="center">
+	
+	<p:commandButton type="submit" value="Si" action="#{mantenimientoTipoProductoFormAction.Eliminar}" 
+	oncomplete="confirmationTipoProducto.hide()" update=":frmTipoProdFormList" ajax="false" />
+	
+	<p:commandButton value="No" onclick="confirmationTipoProducto.hide()" type="button" />
+	
+	</p:confirmDialog>
 	</h:form>
 
-					<!-- 	FIN ELIMINAR TIPO DE DPRODUCTO  -->
-					
-					
-					<!--	  INICIO DESACTIVAR	 TELEFONO y DOMICLIO DE CLIENTE  -->
-
+<!--	  INICIO DESACTIVAR	 TELEFONO y DOMICLIO DE CLIENTE  -->
 <h:form>
 
 		<p:confirmDialog id="confirmDeshabilitarTelCli"
@@ -2127,10 +2031,9 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 		</p:confirmDialog>
 
 	</h:form>
-	
+		
 					
-					
-							<!--NUEVO DOMICILIO CLIENTE  -->
+	<!--NUEVO DOMICILIO CLIENTE  -->
 	<h:form id="ClienteDomicilio">
 		<p:dialog header="Nuevo Domicilio de Cliente" widgetVar="carDialogNuevoDomicli"
 			showEffect="fade" hideEffect="explode" modal="true" width="800" resizable="false" 
@@ -2171,8 +2074,6 @@ value="#{MantenimientoClienteFormAction.tipocasanuevo}">
 					<p:ajax update="dist" listener="#{MantenimientoClienteFormAction.cambiar24}" />
 				</p:selectOneMenu>
 				
-				
-					
 				<h:outputText value="#{message['cliente.ubigeo.distrito']}" rendered="#{MantenimientoClienteFormAction.defectoUbigeo24}" />
 				<p:selectOneMenu id="dist" value="#{MantenimientoClienteFormAction.idUbigeo}" 
 					rendered="#{MantenimientoClienteFormAction.defectoUbigeo24}" required="true"   effect="fade"
@@ -2182,30 +2083,16 @@ value="#{MantenimientoClienteFormAction.tipocasanuevo}">
 					<p:ajax update="ubigeoDefecto1" listener="#{MantenimientoClienteFormAction.ingresarUbigeo24}"/>
 				</p:selectOneMenu>
 				
-				
 				<h:outputText value="#{message['cliente.ubigeo']}" />
 				<h:outputText id="ubigeoDefecto1" value="#{MantenimientoClienteFormAction.ubigeoDefecto24}" style="width:320px"/>
 				<p:message for="ubigeoDefecto1" rendered="#{MantenimientoClienteFormAction.defectoUbigeo24}"/>					
-
-
-					
-						  
-<h:panelGroup>
-<p:commandButton id="btnDomicilio" value="Guardar" 
-					update=":listarDomicilio"
+			<h:panelGroup>
+			<p:commandButton id="btnDomicilio" value="Guardar" update=":listarDomicilio"
 					action="#{MantenimientoClienteFormAction.domicilioAgregar}" ajax="false"
-					icon="ui-icon ui-icon-disk"
-					title="verifique bien los datos, antes de hacer clic en Guardar" />
-</h:panelGroup>			  
-
-
-
-
-	<!-- 	FIN DOMICILIO DE CLIENTE    -->
-
-
-</h:panelGrid>
-</p:fieldset>
+					icon="ui-icon ui-icon-disk" title="verifique bien los datos, antes de hacer clic en Guardar" />
+			</h:panelGroup>
+		</h:panelGrid>
+	</p:fieldset>
 </p:dialog>
 </h:form>
 	
