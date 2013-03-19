@@ -21,6 +21,11 @@ public class EmpleadoDTO implements Serializable {
 	private Integer puntajeTotal;
 	private String stringFalta;
 	private boolean lider;
+	private double deberiaCobrar;
+	private double cobro;
+	private double porcentajeRecuperado;
+	private double perdidaEfectiva;
+	private double perdidaSoles;
 	
 	public EmpleadoDTO() {
 		
@@ -215,5 +220,75 @@ public class EmpleadoDTO implements Serializable {
 	 */
 	public void setLider(boolean lider) {
 		this.lider = lider;
+	}
+
+	/**
+	 * @return the deberiaCobrar
+	 */
+	public double getDeberiaCobrar() {
+		return deberiaCobrar;
+	}
+
+	/**
+	 * @param deberiaCobrar the deberiaCobrar to set
+	 */
+	public void setDeberiaCobrar(double deberiaCobrar) {
+		this.deberiaCobrar = deberiaCobrar;
+	}
+
+	/**
+	 * @return the cobro
+	 */
+	public double getCobro() {
+		return cobro;
+	}
+
+	/**
+	 * @param cobro the cobro to set
+	 */
+	public void setCobro(double cobro) {
+		this.cobro = cobro;
+	}
+
+	/**
+	 * @return the porcentajeRecuperado
+	 */
+	public double getPorcentajeRecuperado() {
+		return porcentajeRecuperado;
+	}
+
+	/**
+	 * @param porcentajeRecuperado the porcentajeRecuperado to set
+	 */
+	public void setPorcentajeRecuperado(double porcentajeRecuperado) {
+		this.porcentajeRecuperado = porcentajeRecuperado;
+	}
+
+	/**
+	 * @return the perdidaEfectiva
+	 */
+	public double getPerdidaEfectiva() {
+		return perdidaEfectiva;
+	}
+
+	/**
+	 * @param perdidaEfectiva the perdidaEfectiva to set
+	 */
+	public void setPerdidaEfectiva(double perdidaEfectiva) {
+		this.perdidaEfectiva = perdidaEfectiva;
+	}
+
+	/**
+	 * @return the perdidaSoles
+	 */
+	public double getPerdidaSoles() {
+		return perdidaSoles;
+	}
+
+	/**
+	 * @param perdidaSoles the perdidaSoles to set
+	 */
+	public void setPerdidaSoles(double perdidaSoles) {
+		this.perdidaSoles = perdidaSoles;
 	}
 }
