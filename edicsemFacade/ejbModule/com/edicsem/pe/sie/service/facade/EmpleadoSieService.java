@@ -21,8 +21,6 @@ public interface EmpleadoSieService {
 	public abstract List listarEmpleadosXCargo(int idCargo);
 	// MANTENIMIENTO EMPRESA VALIDACION DE EMPLEADO Y PRODUCTO
 	public abstract List listarEmpleadoxEmpresas(int parametroObtenido);
-	public abstract List listarEmpleadoxCargo(int parametroObtenido);
-	public abstract List listarExpositor(int idEmpresa);
 	public abstract List listarDni();
 	public abstract List listarUsuario();
 	public abstract EmpleadoSie buscarEmpleadoVendedor (String nombreCompleto);

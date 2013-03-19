@@ -15,6 +15,6 @@ public interface CobranzaService {
 	public abstract CobranzaSie findCobranza (int id);
 	public abstract List<CobranzaSie>  listarCobranzas();
 	public abstract List  listarCobranzasXidcontrato(int idcontrato);
-	public abstract List  calcularEfectividad(int idEmpleado);
+	public abstract List  calcularEfectividad(int idEmpleado,String fechaInicio, String fechaFin);
 	public abstract String MigrarRecaudacion(List<RecaudacionDTO> lst);
 }

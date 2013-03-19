@@ -187,16 +187,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#listarEmpleadoxCargo(int)
 	 */
 	public List listarEmpleadoxCargo(int parametroObtenido) {
-		log.info("dentro del servicio listar Empleado x Cargo ");
-		
-		return objEmpleadoDao.listarEmpleadoxCargo(parametroObtenido);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#listarExpositor(int)
-	 */
-	public List listarExpositor(int idEmpresa) {
-		return objEmpleadoDao.listarExpositor(idEmpresa);
+		return objEmpleadoDao.listarEmpleadosXCargo(parametroObtenido);
 	}
 
 	/* (non-Javadoc)

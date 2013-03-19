@@ -13,4 +13,5 @@ public interface MetaMesService {
 	public abstract void updateMetaMes(MetaMesSie metames);
 	public abstract MetaMesSie findMetaMes (int id);
 	public abstract List<MetaMesSie>  listarMetaMeses();
+	public abstract MetaMesSie  fechasEfectividad(int idMes); 
 }
