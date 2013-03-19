@@ -131,7 +131,7 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 		List lista = null;
 		CargoEmpleadoSie ca=null;
 		try {
-			Query q = em.createQuery("select c from CargoEmpleadoSie c where UPPER(c.descripcion) like '"+ cargo+"'");
+			Query q = em.createQuery("select c from CargoEmpleadoSie c where UPPER(c.descripcion) like UPPER('"+ cargo+"')");
 			lista = q.getResultList();
 			if(lista.size()>0)
 			ca=(CargoEmpleadoSie) lista.get(0);
