@@ -16,12 +16,10 @@ public class Constants {
 	public static final String MESSAGE_DESHABILITO_TITULO = "Se deshabilitó correctamente";
 	public static final String MESSAGE_DESHABILITAR_TITULO = "Se deshabilito correctamente";
 	public static final String MESSAGE_ERROR_FATAL_TITULO = "Mensaje de Error";
-	public static final String MESSAGE_ERROR_FATAL_TITULO_DETALLE = "Seleccione un Paquete Biblico para poder agregar producto";
-	public static final String MESSAGE_ERROR_FATAL_TITULO2 = "Mensaje de Error2";
+	public static final String MESSAGE_ERROR_FATAL_TITULO_DETALLE = "Seleccione un Paquete Bíblico para poder agregar producto";
 	public static final String MESSAGE_ERROR_META_MES_FATAL_TITULO = "debe Seleccionar un Mes para poder ingresar la meta";
 	public static final String MESSAGE_ERROR_ID_COBRANZA = "Seleccione una Cobranza para continuar";
 	public static final String MESSAGE_ERROR_ID_NOT_FOUND = "No se encuentra el Id";
-	public static final String MESSAGE_ERROR_TITULO = "Mensaje de Error";
 	public static final String ESQUEMA_SIE_POSTGRE = "sie";
 	public static final String MESSAGE_ERROR_TELEFONO_CLIENTE = "Los Cambios se realizaran despues de hacer clic en el boton Guardar";
 	//Tablas
@@ -134,6 +132,11 @@ public class Constants {
 	public static final String COD_ESTADO_TB_PUNTO_ALMACEN =  "PA";
 	public static final String COD_ESTADO_TB_DET_CONTRATO_PRODUCTO ="PRC0";
 	public static final String COD_ESTADO_TB_CONTRATO = "CON";
+	
+	public static final String NOMBRE_GERENTE = "GABRIEL ANTONIO ROJAS SACIN";
+	
+	public static final String CARGO_EXPOSITOR = "EXPOSITOR";
+	public static final String CARGO_CERRADOR = "CERRADOR";
 	
 	//aviso mensaje "las contraseñas no coinciden"
 	public static final String MESSAGE_PASSWORDS_DESIGUALES = "Contraseñas no coinciden";
