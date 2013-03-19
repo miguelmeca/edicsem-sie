@@ -14,7 +14,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.CobranzaSie;
-import com.edicsem.pe.sie.entity.MetaMesSie;
 import com.edicsem.pe.sie.model.dao.CobranzaDAO;
 import com.edicsem.pe.sie.model.dao.ContratoDAO;
 import com.edicsem.pe.sie.model.dao.MetaMesDAO;
@@ -122,17 +121,21 @@ public class CobranzaDAOImpl implements CobranzaDAO{
 		return lista;
 	}
 	
-	public List calcularEfectividad(int idEmpleado) {
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.CobranzaDAO#calcularEfectividad(int)
+	 */
+	public List calcularEfectividad(int idEmpleado,String fechaInicio, String fechaFin) {
 		List  lista = null;
 		try {
 			/* cantidad de contratos pagados de un personal como expositor entre fechas correspondientes 
 			 * que son los 6 meses anteriores*/
-			MetaMesSie objMetaMes = metaMesDao.fechasEfectividad();
 			
 			Query q = em.createQuery("select a from CobranzaSie a inner join a.tbContrato b " +
 					" inner join b.tbDetContratoEmpleados c where c.tbEmpleado.idempleado = "+ idEmpleado+ 
-					" and DATE(c.tbContrato.fechaentrega) between DATE('" + objMetaMes.getFechainicio() +
-					"') and  DATE('" + objMetaMes.getFechafin() +"') and a.tbEstadoGeneral.idestadogeneral = 27 ");
+					" and DATE(c.tbContrato.fechaentrega) between DATE('" + fechaInicio +"') " +
+					" and DATE('" + fechaFin +"')  and a.tbEstadoGeneral.idestadogeneral = 27 "+
+					" and DATE(a.fecvencimiento) between DATE('" + fechaInicio +"') " +
+					" and DATE('" + fechaFin +"') ");
 			lista =  q.getResultList();
 			log.info("tamaño lista Cobranza --> " + lista.size() );
 		} catch (Exception e) {

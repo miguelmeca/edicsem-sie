@@ -60,10 +60,10 @@ public  class MetaMesDAOImpl implements MetaMesDAO {
 			e.printStackTrace();
 		}
 	}
+	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.EmpresaDAO#findProducto(java.lang.String)
+	 * @see com.edicsem.pe.sie.model.dao.MetaMesDAO#findMetaMes(int)
 	 */
-	 
 	public MetaMesSie findMetaMes(int id) {
 		MetaMesSie metames = new MetaMesSie();
 		try {
@@ -98,27 +98,41 @@ public  class MetaMesDAOImpl implements MetaMesDAO {
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.MetaMesDAO#fechasEfectividad()
+	 * @see com.edicsem.pe.sie.model.dao.MetaMesDAO#fechasEfectividad(int)
 	 */
-	public MetaMesSie fechasEfectividad() {
+	public MetaMesSie fechasEfectividad(int idMes) {
 		List<MetaMesSie> lista = null;
 		MetaMesSie objMetaMes = new MetaMesSie();
 		try {
 			Calendar cal =	DateUtil.getToday();
+			Calendar cal2 =	DateUtil.getToday();
 			int MesInicial =0, Mesfinal=0;
-			log.info(" "+cal.get(Calendar.MONTH)+"  ");
-			MesInicial= cal.get(Calendar.MONTH)-6;
-			if(MesInicial<0){
-				MesInicial= MesInicial*-1;
-			}
-			Mesfinal =MesInicial+6;
+			
+			MetaMesSie obj = findMetaMes(idMes);
+			log.info(" FECHA FIN!  "+obj.getFechafin());
+			cal2.setTime(DateUtil.convertStringToDate(obj.getFechafin()+"/"+cal2.get(Calendar.YEAR)));
+			log.info(" mess! "+cal2.get(Calendar.MONTH));
+			Mesfinal = cal2.get(Calendar.MONTH);
+			if(Mesfinal==0)Mesfinal=12;
+			log.info("messs  "+cal2.getTime());
+			cal2.add(Calendar.MONTH, -6);
+			log.info("messs  "+cal2.getTime());
+			MesInicial =cal2.get(Calendar.MONTH)+1;
 			log.info("mes inicial "+ MesInicial +"  mes final "+ Mesfinal);
-			Query q = em.createQuery("select m from MetaMesSie m where m.codmes =" + MesInicial );
+			
+			Query q = em.createQuery("select m from MetaMesSie m where m.codmes =" + Mesfinal );
 			lista = q.getResultList();
-			objMetaMes.setFechainicio(lista.get(0).getFechainicio()+"/2012");
-			Query q2 = em.createQuery("select m from MetaMesSie m where  m.codmes = "+ Mesfinal);
+			objMetaMes.setFechafin(lista.get(0).getFechafin()+"/"+cal.get(Calendar.YEAR));
+			
+			Query q2 = em.createQuery("select m from MetaMesSie m where  m.codmes = "+ MesInicial);
 			lista = q2.getResultList();
-			objMetaMes.setFechafin(lista.get(0).getFechafin()+"/2012");
+			
+			if(Mesfinal<=4){
+				int anio =cal.get(Calendar.YEAR)-1;
+				objMetaMes.setFechainicio(lista.get(0).getFechainicio()+"/"+anio);
+			}else{
+				objMetaMes.setFechainicio(lista.get(0).getFechainicio()+"/"+cal.get(Calendar.YEAR));
+			}
 			log.info("f inicial "+ objMetaMes.getFechainicio() +"  f final "+ objMetaMes.getFechafin());
 			log.info("tamaño de fechasEfectividad--->" + lista.size());
 			}catch (Exception e) {
