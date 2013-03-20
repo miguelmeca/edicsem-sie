@@ -64,16 +64,6 @@ public class ContratoSie implements Serializable {
 	private BigDecimal pagomensual;
 
 	private BigDecimal pagosubinicial;
-
-	//bi-directional many-to-one association to EmpresaSie
-    @ManyToOne
-	@JoinColumn(name="idtipoevento")
-	private TipoEventoVentaSie tbTipoEvento;
-    
-    //bi-directional many-to-one association to LugarVentaSie
-    @ManyToOne
-	@JoinColumn(name="idlugar")
-	private LugarVentaSie tbLugarVenta;
 	
 	private String usuariocreacion;
 
@@ -109,6 +99,16 @@ public class ContratoSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
+    
+	//bi-directional many-to-one association to TipoEventoVentaSie
+    @ManyToOne
+	@JoinColumn(name="idtipoevento")
+	private TipoEventoVentaSie tbTipoEvento;
+    
+    //bi-directional many-to-one association to LugarVentaSie
+    @ManyToOne
+	@JoinColumn(name="idlugar")
+	private LugarVentaSie tbLugarVenta;
 
 	//bi-directional many-to-one association to RutaArchivoEscaneadoSie
 	@OneToMany(mappedBy="tbContrato")
