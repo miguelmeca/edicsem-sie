@@ -86,6 +86,33 @@ public class MantenimientoGrupoEmpleadoSearchAction extends BaseMantenimientoAbs
 	}
 
 	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
+	 */
+	public String agregar() {
+		fechaFin=null;
+		fechaInicio =null;
+		objMetaMesSie = new MetaMesSie();
+		return getViewList();
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
+	 */
+	public String agregar2() {
+		fechaFin=null;
+		fechaInicio =null;
+		objMetaMesSie = new MetaMesSie();
+		return getViewMant();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewMant()
+	 */
+	public String getViewMant() {
+		return Constants.MANT_EFECTIVIDAD_FORM;
+	}
+
+	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#consultar()
 	 */
 	public String consultar() throws Exception {
@@ -150,25 +177,27 @@ public class MantenimientoGrupoEmpleadoSearchAction extends BaseMantenimientoAbs
 	public String listar() {
 		log.info("listar() ");
 		mensaje=null;
-		EmpleadoDTO e = null;
 		
+		//EmpleadoDTO e = null;
 		//Busqueda del Gerente como Punto de Efectividad base -- 100%
-		EmpleadoSie gerente = objEmpleadoService.buscarEmpleadoVendedor(Constants.NOMBRE_GERENTE);
-		if(gerente==null){
-			mensaje = "No existe el trabajador "+Constants.NOMBRE_GERENTE;
-			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-		}else{
-			List<CobranzaSie> lstCobranza = cobranzaService.calcularEfectividad(gerente.getIdempleado(), fechaInicio, fechaFin);
-			for (int i = 0; i < lstCobranza.size(); i++) {
-				CobranzaSie c = lstCobranza.get(i);
-				e= new EmpleadoDTO();
-				e.setCobro(lstCobranza.get(i).getImpcobrado().doubleValue());
-				e.setDeberiaCobrar(lstCobranza.get(i).getImportemasmora().doubleValue());
-				e.setPorcentajeRecuperado(e.getCobro()/e.getDeberiaCobrar());
-				e.setPerdidaEfectiva(0.0);
-				e.setPerdidaSoles(0.0);
-				listaEmpleado.add(e);
-			}
+		//EmpleadoSie gerente = objEmpleadoService.buscarEmpleadoVendedor(Constants.NOMBRE_GERENTE);
+//		if(gerente==null){
+//			mensaje = "No existe el trabajador "+Constants.NOMBRE_GERENTE;
+//			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+//		}else{
+//			List<CobranzaSie> lstCobranza = cobranzaService.calcularEfectividad(gerente.getIdempleado(), fechaInicio, fechaFin);
+//			for (int i = 0; i < lstCobranza.size(); i++) {
+//				CobranzaSie c = lstCobranza.get(i);
+//				e= new EmpleadoDTO();
+//				e.setCobro(lstCobranza.get(i).getImpcobrado().doubleValue());
+//				e.setDeberiaCobrar(lstCobranza.get(i).getImportemasmora().doubleValue());
+//				e.setPorcentajeRecuperado(e.getCobro()/e.getDeberiaCobrar());
+//				e.setPerdidaEfectiva(0.0);
+//				e.setPerdidaSoles(0.0);
+//				listaEmpleado.add(e);
+//			}
+		
+		//Cambio MES FEBRERO
 			//buscar expositores
 			CargoEmpleadoSie car = objCargoService.buscarCargoEmpleado(Constants.CARGO_EXPOSITOR);
 			if(car==null){
@@ -191,14 +220,15 @@ public class MantenimientoGrupoEmpleadoSearchAction extends BaseMantenimientoAbs
 						
 						if(i+1==lstCobranzaEx.size()){
 							e2.setPorcentajeRecuperado(e2.getCobro()/e2.getDeberiaCobrar());
-							e2.setPerdidaEfectiva(e.getPorcentajeRecuperado() - e2.getPorcentajeRecuperado());
+							//e2.setPerdidaEfectiva(e.getPorcentajeRecuperado() - e2.getPorcentajeRecuperado());
+							e2.setPerdidaEfectiva(0.75 - e2.getPorcentajeRecuperado());
 							e2.setPerdidaSoles(e2.getDeberiaCobrar()*e2.getPerdidaEfectiva());
 							listaEmpleado.add(e2);
 						}
 					}
 				}
 			}
-		}
+		
 		if(mensaje==null){
 			setMensaje("Consulta realizada con exito");
 			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
@@ -279,12 +309,27 @@ public class MantenimientoGrupoEmpleadoSearchAction extends BaseMantenimientoAbs
 		return null;
     }
 	
-	public void listarFechas() throws ParseException{
+	public void listarFechasEfectividad() throws ParseException{
 		objMetaMesSie = objMetaMesService.fechasEfectividad(idMes);
 		log.info("fecha ini* "+objMetaMesSie.getFechainicio()+" fech fin "+objMetaMesSie.getFechafin());
 		fechaInicio = objMetaMesSie.getFechainicio();
 		fechaFin = objMetaMesSie.getFechafin();
-		
+	}
+	
+	public void listarFechas() throws ParseException{
+		cal= DateUtil.getToday();
+		objMetaMesSie = objMetaMesService.findMetaMes(idMes);
+		log.info(" " +objMetaMesSie.getFechainicio() );
+			if(idMes<=11){
+				fechaInicio =objMetaMesSie.getFechainicio()+"/"+cal.get(Calendar.YEAR);
+				fechaFin = objMetaMesSie.getFechafin()+"/"+cal.get(Calendar.YEAR);
+				log.info(" fec i "+fechaInicio+" fec f "+fechaFin);
+			}else
+			{
+				fechaInicio = objMetaMesSie.getFechainicio()+"/"+cal.get(Calendar.YEAR);
+				fechaFin = objMetaMesSie.getFechafin()+"/"+(cal.get(Calendar.YEAR)+1);
+				log.info(" fec i "+fechaInicio+" fec f "+fechaFin);
+			}
 	}
 	
 	/* (non-Javadoc)
@@ -477,5 +522,4 @@ public class MantenimientoGrupoEmpleadoSearchAction extends BaseMantenimientoAbs
 	public void setListaEmpleado(List<EmpleadoDTO> listaEmpleado) {
 		this.listaEmpleado = listaEmpleado;
 	}
-
 }

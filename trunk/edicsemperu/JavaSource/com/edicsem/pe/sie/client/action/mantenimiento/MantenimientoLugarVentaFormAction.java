@@ -24,14 +24,14 @@ public class MantenimientoLugarVentaFormAction extends BaseMantenimientoAbstract
 	private LugarVentaSie objlugarSie;
 	private boolean newRecord = false;
 	
-	@ManagedProperty(value = "#{eventoSearch}")
-	private MantenimientoEventoSearchAction eventoSearch;
+	@ManagedProperty(value = "#{lugarSearch}")
+	private MantenimientoLugarVentaSearchAction lugarSearch;
 	
 	@EJB
 	private LugarVentaService objLugaVentaService;
 
 	public MantenimientoLugarVentaFormAction() {
-		log.info("inicializando constructor MantenimientoProducto");
+		log.info("inicializando constructor MantenimientoLugarVentaFormAction");
 		init();
 	}
 
@@ -63,7 +63,7 @@ public class MantenimientoLugarVentaFormAction extends BaseMantenimientoAbstract
 	public String update() throws Exception {
 		log.info("update()" );
 		setNewRecord(false);
-		return eventoSearch.getViewMant();
+		return lugarSearch.getViewMant();
 	}
 	
 	/*
@@ -81,17 +81,17 @@ public class MantenimientoLugarVentaFormAction extends BaseMantenimientoAbstract
 			if (isNewRecord()) {
 				objLugaVentaService.insertLugarVenta(objlugarSie);
 				objlugarSie = new LugarVentaSie();
-				paginaRetorno = eventoSearch.listar();
+				paginaRetorno = lugarSearch.listar();
 				mensaje =Constants.MESSAGE_REGISTRO_TITULO;
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 			} else {
 				objLugaVentaService.updateLugarVenta(objlugarSie);
 				objlugarSie = new LugarVentaSie();
-				paginaRetorno = eventoSearch.listar();
+				paginaRetorno = lugarSearch.listar();
 				mensaje =Constants.MESSAGE_ACTUALIZO_TITULO;
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 			}
-			FacesContext.getCurrentInstance().addMessage(null, msg);
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -100,6 +100,7 @@ public class MantenimientoLugarVentaFormAction extends BaseMantenimientoAbstract
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 		log.info("pagina retorno " +paginaRetorno);
 		return paginaRetorno;
 	}
@@ -135,20 +136,6 @@ public class MantenimientoLugarVentaFormAction extends BaseMantenimientoAbstract
 	}
 
 	/**
-	 * @return the eventoSearch
-	 */
-	public MantenimientoEventoSearchAction getEventoSearch() {
-		return eventoSearch;
-	}
-
-	/**
-	 * @param eventoSearch the eventoSearch to set
-	 */
-	public void setEventoSearch(MantenimientoEventoSearchAction eventoSearch) {
-		this.eventoSearch = eventoSearch;
-	}
-
-	/**
 	 * @return the mensaje
 	 */
 	public String getMensaje() {
@@ -174,6 +161,20 @@ public class MantenimientoLugarVentaFormAction extends BaseMantenimientoAbstract
 	 */
 	public void setObjlugarSie(LugarVentaSie objlugarSie) {
 		this.objlugarSie = objlugarSie;
+	}
+
+	/**
+	 * @return the lugarSearch
+	 */
+	public MantenimientoLugarVentaSearchAction getLugarSearch() {
+		return lugarSearch;
+	}
+
+	/**
+	 * @param lugarSearch the lugarSearch to set
+	 */
+	public void setLugarSearch(MantenimientoLugarVentaSearchAction lugarSearch) {
+		this.lugarSearch = lugarSearch;
 	}
 	
 }

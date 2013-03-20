@@ -28,7 +28,7 @@ public class MantenimientoComisionFormAction extends BaseMantenimientoAbstractAc
 	private Log log = LogFactory.getLog(MantenimientoComisionFormAction.class);
 	private int idcargo, idcriterio, option, idevento;
 	private ComisionVentaSie objcomisionSie;
-	private boolean newRecord = false;
+	private boolean newRecord = false, rangomayor;
 	
 	@ManagedProperty(value = "#{comisionSearch}")
 	private MantenimientoComisionSearchAction comisionSearch;
@@ -77,6 +77,7 @@ public class MantenimientoComisionFormAction extends BaseMantenimientoAbstractAc
 	public String update() throws Exception {
 		log.info("update()");
 		idcargo = objcomisionSie.getTbCargoempleado().getIdcargoempleado();
+		if(objcomisionSie.getTbTipoEventoVenta()!=null)
 		idevento = objcomisionSie.getTbTipoEventoVenta().getIdtipoevento();
 		if(objcomisionSie.getRangoinicial()!=null){
 			option=1;
@@ -102,25 +103,26 @@ public class MantenimientoComisionFormAction extends BaseMantenimientoAbstractAc
 		EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 		
 		try {
-			if(objcomisionSie.getRangofinal()!=null){
-				if(objcomisionSie.getRangofinal()==0){
-					objcomisionSie.setRangofinal(null);
-				}
+			if(objcomisionSie.getRangofinal()< objcomisionSie.getRangoinicial()){
+				mensaje = "El rango incial ebe ser menor al rango final de ventas";
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 			}
-			if(isNewRecord()){
+			else{
+				if(isNewRecord()){
 				objcomisionSie.setUsuariocreacion(sessionUsuario.getUsuario());
 				objComisionService.insertComisionVenta(objcomisionSie, idcargo,idcriterio,idevento);
 				objcomisionSie = new ComisionVentaSie();
 				paginaRetorno = comisionSearch.listar();
 				mensaje=Constants.MESSAGE_REGISTRO_TITULO;
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
-			}
-			else{
-				objcomisionSie.setUsuariomodifica(sessionUsuario.getUsuario());
-				objComisionService.updateComisionVenta(objcomisionSie, idcargo,idcriterio,idevento);
-				mensaje=Constants.MESSAGE_ACTUALIZO_TITULO;
-				paginaRetorno = comisionSearch.listar();
-				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+				}
+				else{
+					objcomisionSie.setUsuariomodifica(sessionUsuario.getUsuario());
+					objComisionService.updateComisionVenta(objcomisionSie, idcargo,idcriterio,idevento);
+					mensaje=Constants.MESSAGE_ACTUALIZO_TITULO;
+					paginaRetorno = comisionSearch.listar();
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+				}
 			}
 			
 			FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -290,6 +292,26 @@ public class MantenimientoComisionFormAction extends BaseMantenimientoAbstractAc
 	 */
 	public void setIdevento(int idevento) {
 		this.idevento = idevento;
+	}
+
+	/**
+	 * @return the rangomayor
+	 */
+	public boolean isRangomayor() {
+		if(rangomayor){
+			objcomisionSie.setRangofinal(null);
+		}
+		return rangomayor;
+	}
+
+	/**
+	 * @param rangomayor the rangomayor to set
+	 */
+	public void setRangomayor(boolean rangomayor) {
+		if(rangomayor){
+			objcomisionSie.setRangofinal(null);
+		}
+		this.rangomayor = rangomayor;
 	}
 	
 }

@@ -99,7 +99,7 @@ public class MantenimientoContratoFormAction extends
 	private BigDecimal totalacumulado;
 	private int idGrupo;
 	private List<DetGrupoEmpleadoSie> detgrupoList;
-	private int estadoRefinan,existContrato;
+	private int estadoRefinan,existContrato, idLugar;
 	
 	//Consultar
 	private String numDniCliente,codigoContrato,apePatCliente,apeMatCliente,nombreCliente;
@@ -399,8 +399,8 @@ public class MantenimientoContratoFormAction extends
 			detq.setItem(i+1);
 			detPaqueteList.add(detq);
 			log.info("tamaño lista detalle paquete "+ detPaqueteList.size());
-		}
-		setPrecioProducto(objPaqueteService.findPaquete(getIdpaquete()).getPrecioventa().doubleValue());
+			setPrecioProducto(objPaqueteService.findPaquete(getIdpaquete()).getPrecioventa().doubleValue());
+			}
 		}
 	}
 
@@ -468,10 +468,6 @@ public class MantenimientoContratoFormAction extends
 		}
 		idCobranza=0;
     }
-    
-	public void limpiarDatosTelefono(){
-		nuevoTelef = new TelefonoPersonaSie();
-	}
 	
 	public void insertarCobranza() throws Exception{
 		log.info(" insertarCobranza  :d "+objContratoSie.getNumcuotas()+" precio "+ precioProducto +"  fec ven  "+ objContratoSie.getFechacuotainicial());
@@ -603,7 +599,6 @@ public class MantenimientoContratoFormAction extends
 				log.info(cobranzaList.get(i).getDiasretraso() + "  * 0.3 =  "+pr);
 				
 				double imp = cobranzaList.get(i).getImpinicial().doubleValue()+pr;
-				log.info(" imp  "+imp);
 				
 				BigDecimal g = new BigDecimal(imp);
 				g=g.setScale(2, RoundingMode.HALF_UP);
@@ -614,7 +609,16 @@ public class MantenimientoContratoFormAction extends
 			log.info("suma bigdecimal "+	totalacumulado);
 		}
     }
-    
+	
+	public void onEdit1(RowEditEvent event) {
+		log.info("en onedit()");
+		totalacumulado = new BigDecimal(0);
+		for (int i = 0; i < cobranzaList.size(); i++) {
+			totalacumulado = totalacumulado.add(cobranzaList.get(i).getImpinicial());
+			log.info("suma bigdecimal "+	totalacumulado);
+		}
+    }
+	
     public void onCancel(RowEditEvent event) {
     	
     }
@@ -1916,6 +1920,20 @@ public class MantenimientoContratoFormAction extends
 	 */
 	public void setIdpuntoventa(int idpuntoventa) {
 		this.idpuntoventa = idpuntoventa;
+	}
+
+	/**
+	 * @return the idLugar
+	 */
+	public int getIdLugar() {
+		return idLugar;
+	}
+
+	/**
+	 * @param idLugar the idLugar to set
+	 */
+	public void setIdLugar(int idLugar) {
+		this.idLugar = idLugar;
 	}
 	
 }
