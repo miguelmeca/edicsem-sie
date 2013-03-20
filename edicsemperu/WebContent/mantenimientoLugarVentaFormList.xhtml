@@ -12,7 +12,7 @@
 		<h:form id="formManteProdLista" >
 		<p:messages id="message" showDetail="true" />
 			<p:dataTable value="#{lugarSearch.lugarList}" var="p" 
-					id="listaEvento" paginator="true" rows="10"
+					id="lista" paginator="true" rows="10"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15" widgetVar="table"
 					emptyMessage="#{message['rsltd.empty']}">
@@ -46,7 +46,7 @@
 						</div>
 					</f:facet>
 				</p:dataTable>
-				<p:blockUI block="listaEvento" trigger="listaEvento">cargando<br />
+				<p:blockUI block="lista" trigger="lista">cargando<br />
 				<p:graphicImage   value="/images/ajax_loader.gif"  style="width:60px; heigth:60px" /></p:blockUI>
 		</h:form>
 	</ui:define>

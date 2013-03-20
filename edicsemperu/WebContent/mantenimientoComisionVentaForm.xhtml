@@ -13,51 +13,63 @@
 		<h:form id="formComisionform">
 		<p:messages id="message" showDetail="true" closable="true" />
 		<p:panel>
-			<h:panelGrid columns="2" cellpadding="5" id="pg" >
+			<h:panelGrid columns="3" cellpadding="5" id="pg" >
 				<p:selectOneRadio  value="#{comisionForm.option}" >  
 			        <f:selectItem itemLabel="Por rango de venta" itemValue="1"/>
 			        <f:selectItem itemLabel="Por criterio comisión" itemValue="2" />
 			        <p:ajax update="pg" />
 		        </p:selectOneRadio>
 		        <p:spacer/>
+		        <p:spacer/>
 		        
 				<h:outputText value="#{message['comision.venta.criterio']}" rendered="#{comisionForm.option==2}"/>
 				<p:selectOneMenu value="#{comisionForm.idcriterio}" required="true" rendered="#{comisionForm.option==2}" style="width:250px">
 					<f:selectItem itemValue="#{null}" itemLabel="Seleccionar criterio" />
 					<f:selectItems value="#{comboAction.criterioComisionitems}" />
-				</p:selectOneMenu>
+				</p:selectOneMenu><p:spacer rendered="#{comisionForm.option==2}"/>
 				
 				<h:outputText value="#{message['comision.venta.rango.inicial']}" rendered="#{comisionForm.option==1}"/>
 				<p:spinner value="#{comisionForm.objcomisionSie.rangoinicial}" required="true" min="1" rendered="#{comisionForm.option==1}" size="25"/>
+				<p:spacer rendered="#{comisionForm.option==1}"/>
 				
 				<h:outputText value="#{message['comision.venta.rango.final']}" rendered="#{comisionForm.option==1}"/>
-				<p:spinner value="#{comisionForm.objcomisionSie.rangofinal}" rendered="#{comisionForm.option==1}" size="25" />
+				<p:spinner id="idcheck" value="#{comisionForm.objcomisionSie.rangofinal}" rendered="#{comisionForm.option==1}" size="25" disabled="#{comisionForm.rangomayor!=true? false:true}"/> 
+				<h:panelGroup  rendered="#{comisionForm.option==1}" >
+				<p:selectBooleanCheckbox value="#{comisionForm.rangomayor}" rendered="#{comisionForm.option==1}">
+				<p:ajax update="idcheck" />
+				</p:selectBooleanCheckbox>
+				<h:outputText value="Rango mayor indefinido (+)" rendered="#{comisionForm.option==1}"/>
+				</h:panelGroup>
 				
 				<h:outputText value="#{message['comision.venta.cargo']}"   />
-				<p:selectOneMenu value="#{comisionForm.idcargo}" style="width:250px">
+				<p:selectOneMenu value="#{comisionForm.idcargo}" style="width:220px">
 					<f:selectItem itemValue="#{null}" itemLabel="Seleccionar cargo" />
 					<f:selectItems value="#{comboAction.cargoEmpleadoItems}" />
 				</p:selectOneMenu>
+				<p:spacer/>
 				
 				<h:outputText value="#{message['comision.venta.evento']}" />
-				<p:selectOneMenu value="#{comisionForm.idevento}" style="width:250px" >
+				<p:selectOneMenu value="#{comisionForm.idevento}" style="width:220px" >
 					<f:selectItem itemValue="#{null}" itemLabel="Cualquier evento" />
 					<f:selectItems value="#{comboAction.tipoEventoVentaitems}" />
 				</p:selectOneMenu>
+				<p:spacer/>
 				
 				<h:outputText value="#{message['comision.venta.base']}" />
 				<p:spinner value="#{comisionForm.objcomisionSie.base}" required="true" min="1" size="25" >
 				<p:ajax update="porcentaj" event="change" listener="#{comisionForm.consultar}" />
-				</p:spinner>
+				</p:spinner><p:spacer/>
 				
 				<h:outputText value="#{message['comision.ejemplo690']}" />
-				<p:spacer/>
+				<p:spacer/><p:spacer/>
 				
 				<h:outputText value="#{message['comision.venta.porcentaje']}" />
 				<p:spinner id="porcentaj" value="#{comisionForm.objcomisionSie.porcentaje}" required="true" size="25" readonly="true" />
+				<p:spacer/>
 				
 				<h:outputText value="#{message['comision.venta.pagoinmediato']}" />
 				<p:spinner value="#{comisionForm.objcomisionSie.pagoinmediato}" min="1" size="25"/>
+				<p:spacer/>
 				
 				<p:commandButton id="btnRegistrar" value="Registrar" action="#{comisionForm.insertar}" ajax="false" icon="ui-icon ui-icon-disk" />
                 

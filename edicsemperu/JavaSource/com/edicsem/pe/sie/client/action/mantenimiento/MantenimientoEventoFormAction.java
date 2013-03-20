@@ -104,7 +104,6 @@ public class MantenimientoEventoFormAction extends BaseMantenimientoAbstractActi
 		return paginaRetorno;
 	}
 	
-
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewList()
 	 */

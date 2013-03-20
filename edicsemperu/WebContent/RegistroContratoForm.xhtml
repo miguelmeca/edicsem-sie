@@ -180,7 +180,6 @@
 						style="width:165px"  >
 						<f:selectItem itemLabel="Fijo" itemValue="1" />
 						<f:selectItem itemLabel="Celular" itemValue="2" />
-						<p:ajax update="panelTlf" listener="#{contratoForm.limpiarDatosTelefono}" ></p:ajax>
 				</p:selectOneMenu>
 				<p:spacer />
 					
@@ -423,7 +422,7 @@
             Editar Cobranzas
         </f:facet>
 
-        <p:ajax event="rowEdit" listener="#{contratoForm.onEdit}"  update="listaCobranzas"/>
+        <p:ajax event="rowEdit" listener="#{contratoForm.onEdit1}"  update="listaCobranzas"/>
         <p:ajax event="rowEditCancel" listener="#{contratoForm.onCancel}" update="listaCobranzas" />
 
         <p:column headerText="#{message['contrato.numero.letra']}" style="width:125px">
@@ -443,7 +442,7 @@
                     <h:outputText value="#{c.impinicial}" />
                 </f:facet>
                 <f:facet name="input">
-                    <p:spinner value="#{c.impinicial}"/>
+                    <p:spinner value="#{c.impinicial}" min="0" />
                 </f:facet>
             </p:cellEditor>
         </p:column>
@@ -475,7 +474,7 @@
 			<p:panel header="#{message['panel.contrato.producto']}">
 			<h:panelGrid columns="4" id="panelVenta" cellpadding="5" >
 				<h:outputText value="#{message['contrato.empresa']}" />
-				<p:selectOneMenu size="1" id="idempresa" required="true"
+				<p:selectOneMenu id="idempresa" required="true"
 					style="width:220px"  value="#{contratoForm.idempresa}">
 					<f:selectItem itemLabel="Seleccione Empresa" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.empresaitems}" />
@@ -490,7 +489,7 @@
 				
 				<h:outputText value="#{message['contrato.puntoVenta']}" rendered="#{contratoForm.tipoVenta==2}" />
 				<p:selectOneMenu   required="true" rendered="#{contratoForm.tipoVenta==2}" style="width:220px" >
-					<f:selectItem itemLabel="Seleccione almacen" itemValue="#{null}" />
+					<f:selectItem itemLabel="Seleccione punto venta" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.almacenItemsXTipo}" />
 				</p:selectOneMenu>
 				
@@ -502,12 +501,12 @@
 				<p:selectOneMenu id="grupos" value="#{contratoForm.idGrupo}"  required="true" style="width:220px" >
 					<f:selectItem itemLabel="Seleccione grupo" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.grupoItems}" />
-					<p:ajax  update="integrantes,e1,e2" />
+					<p:ajax  update="panelVenta" />
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['contrato.supervisor']}" />
 				<p:dataList id="integrantes" value="#{contratoForm.detgrupoList}" var="d" itemType="square">
-					#{d.idempleado.nombresCompletos}
+					#{d.tbempleado.nombresCompletos}
 				</p:dataList>
 				
 				<h:outputText value="#{message['contrato.vendedor']}" />
@@ -522,9 +521,8 @@
 				
 				<h:outputText value="#{message['contrato.relacionista']}" />
 				<p:selectOneMenu value="#{contratoForm.idempleadoColaborador}" filter="true" filterMatchMode="startsWith"  style="width:220px">
-					<f:selectItems value="#{comboAction.empleadoxcargo}" />
+					<f:selectItems value="#{comboAction.relacionistaItems}" />
 				</p:selectOneMenu>
-				<!-- relacionista -->
 				</h:panelGrid>
 				
 				<p:commandButton id="nuevoContrato" value="#{message['contrato.registrar']}" action="#{contratoForm.insertar}" update="message" ajax="false"

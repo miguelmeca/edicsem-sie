@@ -118,6 +118,7 @@ public class ComboAction {
 	private Map<String, Integer> expositorItems = new HashMap<String, Integer>();
 	private Map<String, Integer> vendedorItems  = new HashMap<String, Integer>();
 	private Map<String, Integer> colaboradorItems  = new HashMap<String, Integer>();
+	private Map<String, Integer> relacionistaItems  = new HashMap<String, Integer>();
 	private Map<String, Integer> tipollamada = new HashMap<String, Integer>();
 	private Map<String, Integer> empleadoxcargo = new HashMap<String, Integer>();
 	private Map<String, Integer> diasItems = new HashMap<String, Integer>();
@@ -203,6 +204,7 @@ public class ComboAction {
 		tipollamada = new HashMap<String, Integer>();
 		empleadoxcargo = new HashMap<String, Integer>();
 		tipoalmacenitems = new HashMap<String, Integer>();
+		relacionistaItems = new HashMap<String, Integer>();
 	}
 
 	public void cambiar() {
@@ -1414,21 +1416,7 @@ public class ComboAction {
 	public void setProductoPaqueteItems(Map<String, Integer> productoPaqueteItems) {
 		this.productoPaqueteItems = productoPaqueteItems;
 	}
-
-	/**
-	 * @return the colaboradorItems
-	 */
-	public Map<String, Integer> getColaboradorItems() {
-		return colaboradorItems;
-	}
-
-	/**
-	 * @param colaboradorItems the colaboradorItems to set
-	 */
-	public void setColaboradorItems(Map<String, Integer> colaboradorItems) {
-		this.colaboradorItems = colaboradorItems;
-	}
-
+	
 	/**
 	 * @return the vendedorItems
 	 */
@@ -1693,6 +1681,33 @@ public class ComboAction {
 	 */
 	public void setTipoEventoVentaitems(Map<String, Integer> tipoEventoVentaitems) {
 		this.tipoEventoVentaitems = tipoEventoVentaitems;
+	}
+
+	/**
+	 * @return the relacionistaItems
+	 */
+	public Map<String, Integer> getRelacionistaItems() {
+		relacionistaItems = new HashMap<String, Integer>();
+		List listaP = new ArrayList<EmpleadoSie>();
+		CargoEmpleadoSie ca = objCargoEmpleadoService.buscarCargoEmpleado(Constants.CARGO_RELACIONISTA);
+		cargoEmpleado =ca.getIdcargoempleado();
+		listaP = (List<EmpleadoSie>) objContratoEmpleadoService.listarxCargo(cargoEmpleado);
+		if(listaP==null)listaP = new ArrayList<EmpleadoSie>();
+		log.info("tamaño empleado X cargo --> " + listaP.size());
+		for (int i = 0; i < listaP.size(); i++) {
+			EmpleadoSie c = new EmpleadoSie();
+			c = (EmpleadoSie) listaP.get(i);
+			relacionistaItems.put(c.getNombresCompletos(),
+					c.getIdempleado());
+		}
+		return relacionistaItems;
+	}
+
+	/**
+	 * @param relacionistaItems the relacionistaItems to set
+	 */
+	public void setRelacionistaItems(Map<String, Integer> relacionistaItems) {
+		this.relacionistaItems = relacionistaItems;
 	}
 	
 }

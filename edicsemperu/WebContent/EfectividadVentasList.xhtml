@@ -15,7 +15,7 @@
 				<h:outputText value="#{message['grupo.mes']}" />
 				<p:selectOneMenu value="#{grupo.idMes}" required="true" >
 					<f:selectItems value="#{comboAction.metaMesItems}" />
-					<p:ajax update="display"  listener="#{grupo.listarFechas}"  />
+					<p:ajax update="display"  listener="#{grupo.listarFechasEfectividad}"  />
 				</p:selectOneMenu>
 					
 				<h:outputLabel value="#{message['grupo.fecha.inicial']}" />

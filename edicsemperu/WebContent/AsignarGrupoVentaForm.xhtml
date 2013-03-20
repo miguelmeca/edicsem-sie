@@ -41,7 +41,11 @@
 			
 			<p:dataTable id="data" var="g" value="#{grupo.grupoEmplList}" rowStyleClass="#{g.lider  == true ? 'amarillo' : 'aguamarina'}"
 			emptyMessage="#{message['facturacion.empty.list']}" >  
-	            <p:column style="width:2%" >
+	           <f:facet name="header">
+					<h:outputText value="CUADRO EN BASE A VENTAS REALIZADAS DESDE  #{grupo.fechaInicio}
+					HASTA #{grupo.fechaFin} " />
+				</f:facet>
+	           <p:column style="width:2%" >
 	            	<f:facet name="header">
 						<h:outputText value="#{message['facturacion.lider']}" />
 					</f:facet>
