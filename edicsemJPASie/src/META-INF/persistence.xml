@@ -58,7 +58,6 @@
 		<class>com.edicsem.pe.sie.entity.TipoPuntoVentaSie</class>
 		<class>com.edicsem.pe.sie.entity.DetPermisoEmpleadoSie</class>
 		<class>com.edicsem.pe.sie.entity.AuditoriaUsuarioSie</class>
-		<class>com.edicsem.pe.sie.entity.Personalead</class>
 		<class>com.edicsem.pe.sie.entity.DetGrupoEmpleadoSie</class>
 		<class>com.edicsem.pe.sie.entity.GrupoVentaSie</class>
 		<class>com.edicsem.pe.sie.entity.MotivoSie</class>
