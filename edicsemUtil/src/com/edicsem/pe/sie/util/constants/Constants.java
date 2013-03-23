@@ -137,6 +137,7 @@ public class Constants {
 	
 	public static final String CARGO_EXPOSITOR = "EXPOSITOR";
 	public static final String CARGO_CERRADOR = "CERRADOR";
+	public static final String CARGO_VENDEDOR = "VENDEDOR";
 	
 	//aviso mensaje "las contraseñas no coinciden"
 	public static final String MESSAGE_PASSWORDS_DESIGUALES = "Contraseñas no coinciden";
