@@ -192,6 +192,18 @@ public class EstadoGeneralSie implements Serializable {
 	//bi-directional many-to-one association to GrupoVentaSie
 	@OneToMany(mappedBy="tbEstadoGeneral")
 	private Set<GrupoVentaSie> tbGrupoVentas;
+	
+	//bi-directional many-to-one association to CarroSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<CarroSie> tbCarros;
+	
+	//bi-directional many-to-one association to TurnoSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<TurnoSie> tbTurnos;
+	
+	//bi-directional many-to-one association to DetTurnoEmplSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<DetTurnoEmplSie> tbDetTurnoEmpls;
 
 	public EstadoGeneralSie() {
     }
@@ -562,6 +574,30 @@ public class EstadoGeneralSie implements Serializable {
 	 */
 	public void setTbGrupoVentas(Set<GrupoVentaSie> tbGrupoVentas) {
 		this.tbGrupoVentas = tbGrupoVentas;
+	}
+
+	public Set<CarroSie> getTbCarros() {
+		return tbCarros;
+	}
+
+	public void setTbCarros(Set<CarroSie> tbCarros) {
+		this.tbCarros = tbCarros;
+	}
+
+	public Set<TurnoSie> getTbTurnos() {
+		return tbTurnos;
+	}
+
+	public void setTbTurnos(Set<TurnoSie> tbTurnos) {
+		this.tbTurnos = tbTurnos;
+	}
+
+	public Set<DetTurnoEmplSie> getTbDetTurnoEmpls() {
+		return tbDetTurnoEmpls;
+	}
+
+	public void setTbDetTurnoEmpls(Set<DetTurnoEmplSie> tbDetTurnoEmpls) {
+		this.tbDetTurnoEmpls = tbDetTurnoEmpls;
 	}
 	
 }
