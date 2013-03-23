@@ -72,6 +72,10 @@
 		<class>com.edicsem.pe.sie.entity.CriterioComisionSie</class>
 		<class>com.edicsem.pe.sie.entity.TipoEventoVentaSie</class>
 		<class>com.edicsem.pe.sie.entity.LugarVentaSie</class>
+		<class>com.edicsem.pe.sie.entity.TipoAsistenciaSie</class>
+		<class>com.edicsem.pe.sie.entity.CarroSie</class>
+		<class>com.edicsem.pe.sie.entity.TurnoSie</class>
+		<class>com.edicsem.pe.sie.entity.DetTurnoEmplSie</class>
 		
 		<properties>
 			<property name="eclipselink.jdbc.driver" value="org.postgresql.Driver" />
@@ -83,5 +87,5 @@
 				value="java:/sieSoftJPAEntityManagerFactory" />
 		</properties>
 		
-		</persistence-unit>
+	</persistence-unit>
 </persistence>

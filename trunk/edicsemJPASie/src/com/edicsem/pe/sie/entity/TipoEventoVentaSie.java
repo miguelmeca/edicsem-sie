@@ -17,7 +17,7 @@ import com.edicsem.pe.sie.util.constants.Constants;
 
 
 /**
- * The persistent class for the tb_auditoria_usuario database table.
+ * The persistent class for the tb_tipo_evento_venta database table.
  * 
  */
 @Entity
