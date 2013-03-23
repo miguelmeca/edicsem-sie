@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+	<script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
+		<h1 class="title ui-widget-header ui-corner-all">#{message['distribucion.grupo.horario']}</h1>
+		<h:form id="formGrupo">
+			<p:messages id="message" showDetail="true" closable="true" />
+			 
+			<p:fieldset legend="#{message['grupo.consulta.tipo.evento']}">
+			<h:panelGrid id="display" columns="2" cellpadding="5" >
+				<h:outputText value="Expositor" />
+				<p:selectManyCheckbox value="#{distribucion.idexpositor}" required="true" >
+					<f:selectItems value="#{comboAction.expositorItems}" />
+				</p:selectManyCheckbox>
+				
+				<h:outputText value="Cerrador" />
+				<p:selectManyCheckbox value="#{distribucion.idexpositor}" required="true" >
+					<f:selectItems value="#{comboAction.vendedorItems}" />
+				</p:selectManyCheckbox>
+				
+				<h:outputText value="Mes" />
+				<p:selectOneMenu value="#{grupo.idMes}" required="true" >
+					<f:selectItems value="#{comboAction.metaMesItems}" />
+					<p:ajax update="display"  listener="#{grupo.listarFechas}"  />
+				</p:selectOneMenu>
+				
+				<h:outputLabel value="Fecha Inicial :" />
+				<p:inputText value="#{grupo.fechaInicio}" readonly="true" />
+				
+				<h:outputLabel value="Fecha Final :" />
+				<p:inputText value="#{grupo.fechaFin}" readonly="true" />
+				
+				<f:facet name="footer">
+				<p:commandButton value="Consultar" action="#{grupo.consultar}" title="Consultar facturación y entrega" 
+				update="@form" icon="ui-icon-star" />
+				</f:facet>
+			</h:panelGrid>
+			
+			<p:dataTable id="data" var="g" value="#{grupo.grupoEmplList}" >  
+	           <f:facet name="header">
+					<h:outputText value="Distribución horario masivo" />
+				</f:facet>
+	            <p:column headerText="Empleado">
+	                <h:outputText value="#{g.tbempleado.nombresCompletos}" />
+	            </p:column>
+	            <p:column style="width:80px" >
+					<f:facet name="header">
+						<h:outputText value="#{message['facturacion.entrega.total.facturacion']}" />
+					</f:facet>
+					<h:outputText value="#{g.totalfacturada}" />
+				</p:column>
+            </p:dataTable>
+         </p:fieldset>
+	</h:form>
+	</ui:define>
+</ui:composition>

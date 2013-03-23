@@ -36,8 +36,10 @@ import com.edicsem.pe.sie.beans.EmpleadoDTO;
 import com.edicsem.pe.sie.beans.ReporteParams;
 import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.client.report.service.ReporteExecutionService;
+import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.CobranzaSie;
+import com.edicsem.pe.sie.entity.ContratoEmpleadoSie;
 import com.edicsem.pe.sie.entity.ContratoSie;
 import com.edicsem.pe.sie.entity.DetGrupoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DetPaqueteSie;
@@ -49,8 +51,10 @@ import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.SeguimientoContratoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
+import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.ClienteService;
 import com.edicsem.pe.sie.service.facade.CobranzaService;
+import com.edicsem.pe.sie.service.facade.ContratoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.ContratoService;
 import com.edicsem.pe.sie.service.facade.DetGrupoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.DetProductoContratoService;
@@ -112,7 +116,8 @@ public class MantenimientoContratoFormAction extends
 	
 	//Reporte
 	private String ContentType;
-	
+	@EJB
+	private CargoEmpleadoService objCargoService;
 	@EJB
 	private ProductoService objProductoService;
 	@EJB
@@ -143,6 +148,8 @@ public class MantenimientoContratoFormAction extends
 	private SeguimientoContratoService objSeguimientoContratoService;
 	@EJB
 	private ReporteExecutionService objReporteService;
+	@EJB 
+	private ContratoEmpleadoService objContratoEmpleadoService;
 	
 	@ManagedProperty(value = "#{comboAction}")
 	private ComboAction comboManager;
@@ -1285,6 +1292,48 @@ public class MantenimientoContratoFormAction extends
 	public void setTipoVenta(int tipoVenta) {
 		comboManager.setTipoVenta(tipoVenta);
 		comboManager.setTipoAlmacen(tipoVenta);
+		Map<String, Integer> vendedorxcargo = new HashMap<String, Integer>();
+		Map<String, Integer> expositorxcargo = new HashMap<String, Integer>();
+		
+		CargoEmpleadoSie ccerrador =  objCargoService.buscarCargoEmpleado(Constants.CARGO_CERRADOR);
+		CargoEmpleadoSie cexpositor =  objCargoService.buscarCargoEmpleado(Constants.CARGO_CERRADOR);
+		int cerrador = ccerrador.getIdcargoempleado();
+		int expositor= cexpositor.getIdcargoempleado();
+		comboManager.setVendedorItems(null);
+		comboManager.setExpositorItems(null);
+		/** Cargo: 
+			* si selecciona MASIVO:
+			se cargan cerrador masivo y expositores como vendedor(cerrador),  al seleccionarlo se añadirán los campos supervisor y grupo
+			* si selecciona PUNTO DE VENTA:
+			se cargan vendedor punto de venta, al seleccionarlo se añadirán los campos supervisor y grupo
+			* si selecciona IGLESIA:
+			se cargan los vendedores y expositores como (vendedor y expositor) */
+		if(tipoVenta==1||tipoVenta==2){
+			
+		}else if(tipoVenta>2){
+			//Iglesia u eventos
+			log.info("hey!!  ");
+			//listar todos los cerradores
+			List<EmpleadoSie> listaempleados = objEmpleadoService.listarEmpleadosXCargo(cerrador);
+			vendedorxcargo = new HashMap<String, Integer>();
+			for (int i = 0; i < listaempleados.size(); i++) {
+				EmpleadoSie c = new EmpleadoSie();
+				c = (EmpleadoSie) listaempleados.get(i);
+				vendedorxcargo.put(c.getNombresCompletos(), c.getIdempleado());
+			}
+			comboManager.setVendedorItems(vendedorxcargo);
+			
+			//listar todos los expositores
+			expositorxcargo =  new HashMap<String, Integer>();
+			listaempleados = objEmpleadoService.listarEmpleadosXCargo(expositor);
+			for (int i = 0; i < listaempleados.size(); i++) {
+				EmpleadoSie c = new EmpleadoSie();
+				c = (EmpleadoSie) listaempleados.get(i);
+				expositorxcargo.put(c.getNombresCompletos(), c.getIdempleado());
+			}
+			comboManager.setExpositorItems(expositorxcargo);
+		}
+		
 		this.tipoVenta = tipoVenta;
 	}
 
@@ -1805,9 +1854,48 @@ public class MantenimientoContratoFormAction extends
 		comboManager.setCargoEmpleado(2);
 		comboManager.setIdGrupo(idGrupo);
 		detgrupoList = objDetGrupoService.listarEmpleadosXGrupo(idGrupo);
+		
+		List listaP = new ArrayList<EmpleadoSie>();
+		Map<String, Integer> vendedorxcargo = new HashMap<String, Integer>();
+		Map<String, Integer> expositorxcargo = new HashMap<String, Integer>();
+		comboManager.setExpositorItems(null);
+		comboManager.setVendedorItems(null);
+		CargoEmpleadoSie ccerrador =  objCargoService.buscarCargoEmpleado(Constants.CARGO_CERRADOR);
+		CargoEmpleadoSie cexpositor =  objCargoService.buscarCargoEmpleado(Constants.CARGO_CERRADOR);
+		CargoEmpleadoSie cvendedor =  objCargoService.buscarCargoEmpleado(Constants.CARGO_VENDEDOR);
+		int cerrador =ccerrador.getIdcargoempleado();
+		int expositor= cexpositor.getIdcargoempleado();
+		int vendedor= cvendedor.getIdcargoempleado();
+		//buscar expositor
+		listaP = (List<ContratoEmpleadoSie>) objContratoEmpleadoService.listarxCargoxgrupo(expositor,idGrupo);
+		expositorxcargo = new HashMap<String, Integer>();
+		for (int i = 0; i < listaP.size(); i++) {
+			ContratoEmpleadoSie c = new ContratoEmpleadoSie();
+			c = (ContratoEmpleadoSie) listaP.get(i);
+			expositorxcargo.put(c.getTbEmpleado1().getNombresCompletos(),
+					c.getTbEmpleado1().getIdempleado());
+		}
+		comboManager.setExpositorItems(expositorxcargo);
+		
+		if(tipoVenta==1){//Masivo
+			//busca cerradores
+			listaP = (List<ContratoEmpleadoSie>) objContratoEmpleadoService.listarxCargoxgrupo(cerrador,idGrupo);
+		}
+		else if(tipoVenta==2){//Punto de Venta
+			//busca vendedores
+			listaP = (List<ContratoEmpleadoSie>) objContratoEmpleadoService.listarxCargoxgrupo(vendedor,idGrupo);
+		}
+			vendedorxcargo = new HashMap<String, Integer>();
+			for (int i = 0; i < listaP.size(); i++) {
+				ContratoEmpleadoSie c = new ContratoEmpleadoSie();
+				c = (ContratoEmpleadoSie) listaP.get(i);
+				vendedorxcargo.put(c.getTbEmpleado1().getNombresCompletos(),
+						c.getTbEmpleado1().getIdempleado());
+			}
+			comboManager.setVendedorItems(vendedorxcargo);
 		this.idGrupo = idGrupo;
 	}
-
+	
 	/**
 	 * @return the estadoRefinan
 	 */
