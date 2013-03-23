@@ -39,7 +39,7 @@
 						<f:selectItem itemLabel="Masculino" itemValue="M" />
 					</p:selectOneRadio>
 					<p:spacer/>
-            
+					
 					<h:outputText value="#{message['contrato.tipo.documento']}" />
 					<p:selectOneMenu id="tipoDoc" style="width:220px" value="#{contratoForm.idtipodoc}" required="true" 
 					requiredMessage="#{message['contrato.tipo.documento.validation']}" >
@@ -381,13 +381,13 @@
 				<p:spacer/> 
 				<h:panelGrid columns="4" rendered="#{contratoForm.tipopago==1}" cellpadding="4" >
 				<h:outputText value="#{message['contrato.pagosubinicial']}" />
-				<p:spinner id="subinicial" value="#{contratoForm.objContratoSie.pagosubinicial}" min="0" >
+				<p:spinner id="subinicial" value="#{contratoForm.objContratoSie.pagosubinicial}" min="0"  >
 				<f:validateDoubleRange minimum="0.0"  />
 				</p:spinner>
 				
-				<h:outputText value="#{message['contrato.Fecha.pago.inicial']}" />
-				<p:calendar id="fechPagoInicial" value="#{contratoForm.objContratoSie.fechacuotainicial}" 
-				pattern="dd/MM/yyyy" effect="explode" required="true" mindate="today" size="10" />
+				<h:outputText value="#{message['contrato.fechEntrega']}" />
+				<p:calendar id="fechaentrega1" value="#{contratoForm.objContratoSie.fechaentrega}" pattern="dd/MM/yyyy" 
+				maxdate="today" label="fecha entrega" maxlength="10" required="true" />
 				
 				<h:outputText value="#{message['contrato.producto.precio']}" />
 				<p:spinner id="precioProd" value="#{contratoForm.precioProducto}" required="true" min="1"  />
@@ -396,8 +396,9 @@
 				<p:spinner id="spinnerE" size="2" min="1" required="true" 
 				value="#{contratoForm.objContratoSie.numcuotas}" />
 				
-				<h:outputText value="#{message['contrato.fechEntrega']}" />
-				<p:calendar id="fechaentrega1" value="#{contratoForm.objContratoSie.fechaentrega}" pattern="dd/MM/yyyy" maxdate="today" label="fecha entrega" maxlength="10" required="true" />
+				<h:outputText value="#{message['contrato.Fecha.pago.inicial']}" />
+				<p:calendar id="fechPagoInicial" value="#{contratoForm.objContratoSie.fechacuotainicial}" 
+				pattern="dd/MM/yyyy" effect="explode" required="true" mindate="today" maxlength="10"/>
 				
 				</h:panelGrid>
 				<h:panelGrid columns="4"  rendered="#{contratoForm.tipopago==2}" cellpadding="4" >
@@ -483,12 +484,13 @@
 				
 				<h:outputText value="#{message['contrato.tipo.venta']}" />
 				<p:selectOneMenu value="#{contratoForm.tipoVenta}" style="width:220px" >
+				<f:selectItem itemLabel="Seleccione tipo de venta" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.tipoEventoVentaitems}" />
 					<p:ajax update="panelVenta" />
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['contrato.puntoVenta']}" rendered="#{contratoForm.tipoVenta==2}" />
-				<p:selectOneMenu   required="true" rendered="#{contratoForm.tipoVenta==2}" style="width:220px" >
+				<p:selectOneMenu required="true" rendered="#{contratoForm.tipoVenta==2}" style="width:220px" >
 					<f:selectItem itemLabel="Seleccione punto venta" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.almacenItemsXTipo}" />
 				</p:selectOneMenu>
@@ -509,14 +511,14 @@
 					#{d.tbempleado.nombresCompletos}
 				</p:dataList>
 				
-				<h:outputText value="#{message['contrato.vendedor']}" />
-				<p:selectOneMenu id="e1" value="#{contratoForm.idempleadoVendedor}" required="true" filter="true" filterMatchMode="startsWith"  style="width:220px">
-					<f:selectItems value="#{comboAction.empleadoxcargo}" />
+				<h:outputText value="#{message['contrato.expositor']}" rendered="#{contratoForm.tipoVenta!=2}"/>
+				<p:selectOneMenu id="e1" value="#{contratoForm.idempleadoExpositor}" rendered="#{contratoForm.tipoVenta!=2}" required="true" filter="true" filterMatchMode="startsWith"  style="width:220px">
+					<f:selectItems value="#{comboAction.expositorItems}" />
 				</p:selectOneMenu>
 				
-				<h:outputText value="#{message['contrato.colaborador']}" />
-				<p:selectOneMenu id="e2" value="#{contratoForm.idempleadoColaborador}" filter="true" filterMatchMode="startsWith"  style="width:220px">
-					<f:selectItems value="#{comboAction.empleadoxcargo}" />
+				<h:outputText value="#{message['contrato.vendedor']}" />
+				<p:selectOneMenu id="e2" value="#{contratoForm.idempleadoVendedor}" filter="true" filterMatchMode="startsWith"  style="width:220px">
+					<f:selectItems value="#{comboAction.vendedorItems}" />
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['contrato.relacionista']}" />

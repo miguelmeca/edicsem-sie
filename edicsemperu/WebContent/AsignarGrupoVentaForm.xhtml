@@ -27,10 +27,10 @@
 				</p:selectOneMenu>
 					
 				<h:outputLabel value="Fecha Inicial :" />
-				<p:inputText value="#{grupo.fechaInicio}" disabled="true" />
+				<p:inputText value="#{grupo.fechaInicio}" readonly="true" />
 					
 				<h:outputLabel value="Fecha Final :" />
-				<p:inputText value="#{grupo.fechaFin}" disabled="true" />
+				<p:inputText value="#{grupo.fechaFin}" readonly="true" />
 					
 				<f:facet name="footer">
 				<p:commandButton value="Consultar" action="#{grupo.consultar}" title="Consultar facturación y entrega" 
@@ -132,8 +132,8 @@
 	           </p:dataTable>
 	           </c:forEach>
            </h:panelGrid>
-               <p:commandButton  action="#{permiso.insertar}" value="Registrar Permisos" 
-               ajax="false" update="formPermisos" icon="ui-icon ui-icon-disk" />
+               <p:commandButton  action="#{grupo.insertar}" value="Registrar Grupos" 
+               ajax="false" update="formGrupo" icon="ui-icon ui-icon-disk" />
            </p:fieldset>
 	</h:form>
 	</ui:define>
