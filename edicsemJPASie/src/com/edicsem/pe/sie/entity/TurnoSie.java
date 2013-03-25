@@ -57,6 +57,11 @@ public class TurnoSie implements Serializable {
 
 	private String usuariomodifica;
     
+    //bi-directional many-to-one association to TipoTurnoSie
+    @ManyToOne
+	@JoinColumn(name="idtipoturno")
+	private TipoTurnoSie tbTipoTurno;
+    
     //bi-directional many-to-one association to EstadoGeneralSie
     @ManyToOne
 	@JoinColumn(name="idestadogeneral")
@@ -155,6 +160,14 @@ public class TurnoSie implements Serializable {
 
 	public void setTbDetTurnoEmpl(Set<DetTurnoEmplSie> tbDetTurnoEmpl) {
 		this.tbDetTurnoEmpl = tbDetTurnoEmpl;
+	}
+
+	public TipoTurnoSie getTbTipoTurno() {
+		return tbTipoTurno;
+	}
+
+	public void setTbTipoTurno(TipoTurnoSie tbTipoTurno) {
+		this.tbTipoTurno = tbTipoTurno;
 	}
 	
 }
