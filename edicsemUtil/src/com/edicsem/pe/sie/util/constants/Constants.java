@@ -121,6 +121,8 @@ public class Constants {
 	public static final String MANT_LUGAR_FORM_LIST_PAGE = "mantenimientoLugarVentaFormList";
 	
 	public static final String MANT_GRUPO_FORM_LIST_PAGE = "mantenimientoGrupoVentaFormList";
+
+	public static final String MANT_DISTRIBUCION_HORARIO_PERSONAL = "AsignarHorarioVentaMasivoForm";
 	
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
