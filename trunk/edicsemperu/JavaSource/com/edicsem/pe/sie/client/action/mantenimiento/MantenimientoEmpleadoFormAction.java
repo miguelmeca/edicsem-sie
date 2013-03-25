@@ -51,7 +51,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	/*variables para telefono*/
 	private List<TelefonoPersonaSie> TelefonoPersonaList,TelefonoDeshabilitado;
 	private TelefonoPersonaSie nuevoTelef;
-	private int TipoTelef, operadorTelefonico;
+	private int tipoTelef, operadorTelefonico;
 	private int idc,iddom, iddomicilio;
 	private String mensaje;
 	private int estado,idTipoPago;
@@ -130,7 +130,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		nuevoTelef = new TelefonoPersonaSie();
 		nuevoTelef.setTipoTelef("");
 		selectTelef="";
-		TipoTelef=1;
+		tipoTelef=1;
 		TelefonoDeshabilitado = new ArrayList<TelefonoPersonaSie>();
 		ContratoDeshabilitado =  new ArrayList<ContratoEmpleadoSie>();
 		TelefonoPersonaList = new ArrayList<TelefonoPersonaSie>();
@@ -208,7 +208,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		log.info("telefono agregar " + nuevoTelef.getTelefono());
 		boolean verifica = false;
 		mensaje = null;
-		if (TipoTelef == 1)
+		if (tipoTelef == 1)
 			nuevoTelef.setTipotelefono("F");
 		else
 			nuevoTelef.setTipotelefono("C");
@@ -439,7 +439,6 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		comboManager.setUbigeoDistriItems(null);
 		selectTelef= "";
 		operadorTelefonico=1;
-		TipoTelef=1;
 		//para inicializar los campos de nuevo telefono
 		nuevoTelef.setTelefono("");
 		//fin para inicializar los campos de nuevo telefono
@@ -448,6 +447,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 		objEmpleado = new EmpleadoSie();
 		objEmpleado.setGenero("F");
 		objTelefono = new TelefonoPersonaSie();
+		tipoTelef=1;
 		setTipo(0);
 		objDomicilio = new DomicilioPersonaSie();
 		comboManager.setUbigeoDeparItems(null);
@@ -1112,21 +1112,7 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	public void setNuevoTelef(TelefonoPersonaSie nuevoTelef) {
 		this.nuevoTelef = nuevoTelef;
 	}
-
-	/**
-	 * @return the tipoTelef
-	 */
-	public int getTipoTelef() {
-		return TipoTelef;
-	}
-
-	/**
-	 * @param tipoTelef the tipoTelef to set
-	 */
-	public void setTipoTelef(int tipoTelef) {
-		TipoTelef = tipoTelef;
-	}
-
+	
 	/**
 	 * @return the operadorTelefonico
 	 */
@@ -1280,6 +1266,20 @@ public class MantenimientoEmpleadoFormAction extends BaseMantenimientoAbstractAc
 	public void setContratoDeshabilitado(
 			List<ContratoEmpleadoSie> contratoDeshabilitado) {
 		ContratoDeshabilitado = contratoDeshabilitado;
+	}
+
+	/**
+	 * @return the tipoTelef
+	 */
+	public int getTipoTelef() {
+		return tipoTelef;
+	}
+
+	/**
+	 * @param tipoTelef the tipoTelef to set
+	 */
+	public void setTipoTelef(int tipoTelef) {
+		this.tipoTelef = tipoTelef;
 	}
 }
 

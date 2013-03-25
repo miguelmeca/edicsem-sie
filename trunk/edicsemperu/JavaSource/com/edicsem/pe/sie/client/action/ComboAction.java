@@ -42,6 +42,8 @@ import com.edicsem.pe.sie.entity.TipoLlamadaSie;
 import com.edicsem.pe.sie.entity.TipoPagoSie;
 import com.edicsem.pe.sie.entity.TipoProductoSie;
 import com.edicsem.pe.sie.entity.TipoPuntoVentaSie;
+import com.edicsem.pe.sie.entity.TipoTurnoSie;
+import com.edicsem.pe.sie.entity.TurnoSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.service.facade.AlmacenService;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
@@ -71,6 +73,8 @@ import com.edicsem.pe.sie.service.facade.TipoLLamadaService;
 import com.edicsem.pe.sie.service.facade.TipoPagoService;
 import com.edicsem.pe.sie.service.facade.TipoProductoService;
 import com.edicsem.pe.sie.service.facade.TipoPuntoVentaService;
+import com.edicsem.pe.sie.service.facade.TipoTurnoService;
+import com.edicsem.pe.sie.service.facade.TurnoService;
 import com.edicsem.pe.sie.service.facade.UbigeoService;
 import com.edicsem.pe.sie.util.constants.Constants;
 
@@ -128,6 +132,9 @@ public class ComboAction {
 	private Map<String, Integer> tipoImporteItems = new HashMap<String, Integer>();
 	private Map<String, Integer> importeItems = new HashMap<String, Integer>();
 	private Map<String, Integer> tipoPagoItems = new HashMap<String, Integer>();
+	private Map<String, Integer> tipoturnoItems = new HashMap<String, Integer>();
+	@EJB
+	private TipoTurnoService objTipoTurnoService;
 	@EJB
 	private CriterioComisionService objCriterioComisionService;
 	@EJB
@@ -1708,6 +1715,42 @@ public class ComboAction {
 	 */
 	public void setRelacionistaItems(Map<String, Integer> relacionistaItems) {
 		this.relacionistaItems = relacionistaItems;
+	}
+	
+	/**
+	 * @return
+	 */
+	public Map<String, Integer> getTipoturnoItems() {
+		tipoturnoItems = new HashMap<String, Integer>();
+		List lista = new ArrayList<TipoTurnoSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getTipoturnoItems()'");
+			}
+			lista = objTipoTurnoService.listarTipoTurno();
+			
+			for (int i = 0; i < lista.size(); i++) {
+				TipoTurnoSie t = new TipoTurnoSie();
+				t = (TipoTurnoSie) lista.get(i);
+				tipoturnoItems.put(t.getDescripcion(),
+						t.getIdtipoturno());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return tipoturnoItems;
+	}
+
+	/**
+	 * @param tipoturnoItems
+	 */
+	public void setTipoturnoItems(Map<String, Integer> tipoturnoItems) {
+		this.tipoturnoItems = tipoturnoItems;
 	}
 	
 }

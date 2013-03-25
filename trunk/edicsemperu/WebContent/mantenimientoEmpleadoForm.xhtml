@@ -8,7 +8,7 @@
 	<ui:define name="body">
 		<h:form id="form">
 		<p:messages id="message" showDetail="true"/>
-		<p:panel header="Registrar Empleado"  id="panel">
+		<p:panel header="#{message['empleado.registrar']}"  id="panel">
 	    <p:wizard id="wiz" widgetVar="wiz" flowListener="#{mantenimientoEmpleadoFormAction.onFlowProcess}" nextLabel="#{message['btn.siguiente']}" backLabel="#{message['btn.atraz']}">
 	    <p:tab title="#{message['empleado.tabpersonal']}">
 	    <p:panel header="Datos Personales"> 
@@ -79,76 +79,62 @@
 				</p:selectOneMenu>
 				<p:spacer />
 					
-					<h:outputText value="#{message['contrato.operadorTelefonico']}" />
-					<p:selectOneMenu id="operadorTelefonico" required="true" value="#{mantenimientoEmpleadoFormAction.operadorTelefonico}" rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==1}"
-						style="width:165px" requiredMessage="#{message['contrato.operadorTelefonico.validation']}" >
-						<f:selectItem itemLabel="Seleccione Operador" itemValue="#{null}" />
-						<f:selectItem itemLabel="Claro" itemValue="1" />
-						<f:selectItem itemLabel="Telefónica" itemValue="2" />
-					</p:selectOneMenu>
-					<p:message for="operadorTelefonico" rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==1}" />
+				<h:outputText value="#{message['contrato.operadorTelefonico']}" />
+				<p:selectOneMenu id="operadorTelefonico" required="true" value="#{mantenimientoEmpleadoFormAction.operadorTelefonico}" rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==1}"
+					style="width:165px" requiredMessage="#{message['contrato.operadorTelefonico.validation']}" >
+					<f:selectItem itemLabel="Seleccione Operador" itemValue="#{null}" />
+					<f:selectItem itemLabel="Claro" itemValue="1" />
+					<f:selectItem itemLabel="Telefónica" itemValue="2" />
+				</p:selectOneMenu>
+				<p:message for="operadorTelefonico" rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==1}" />
 					
-					<p:selectOneMenu id="operadorCelular" required="true" value="#{mantenimientoEmpleadoFormAction.operadorTelefonico}" rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==2}"
-						style="width:165px" requiredMessage="#{message['contrato.operadorTelefonico.validation']}" >
-						<f:selectItem itemLabel="Seleccione Operador" itemValue="#{null}" />
-						<f:selectItem itemLabel="Claro" itemValue="1" />
-						<f:selectItem itemLabel="Movistar" itemValue="2" />
-						<f:selectItem itemLabel="Nextel" itemValue="3" />
-					</p:selectOneMenu>
-					<p:message for="operadorCelular" rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==2}" />
+				<p:selectOneMenu id="operadorCelular" required="true" value="#{mantenimientoEmpleadoFormAction.operadorTelefonico}" rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==2}"
+					style="width:165px" requiredMessage="#{message['contrato.operadorTelefonico.validation']}" >
+					<f:selectItem itemLabel="Seleccione Operador" itemValue="#{null}" />
+					<f:selectItem itemLabel="Claro" itemValue="1" />
+					<f:selectItem itemLabel="Movistar" itemValue="2" />
+					<f:selectItem itemLabel="Nextel" itemValue="3" />
+				</p:selectOneMenu>
+				<p:message for="operadorCelular" rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==2}" />
 					
-					<h:outputText value="#{message['contrato.telefono']}" rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==1}" />
-					<p:inputMask id="numTelef" mask="999-9999" value="#{mantenimientoEmpleadoFormAction.nuevoTelef.telefono}"
-						requiredMessage="#{message['contrato.telefono.casa.validation']}"  rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==1}"/>
-					<p:message for="numTelef" rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==1}"/>
+				<h:outputText value="#{message['contrato.telefono']}" rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==1}" />
+				<p:inputMask id="numTelef" mask="999-9999" value="#{mantenimientoEmpleadoFormAction.nuevoTelef.telefono}"
+					requiredMessage="#{message['contrato.telefono.casa.validation']}"  rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==1}"/>
+				<p:message for="numTelef" rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==1}"/>
 					
-						<h:outputText value="#{message['contrato.celular']}"  rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==2}"/>
-						<p:inputMask mask="999-999999" value="#{mantenimientoEmpleadoFormAction.nuevoTelef.telefono}" id="numCelular"
-							requiredMessage="#{message['contrato.celular.validation']}"  rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==2}"/>
-						<p:message for="numCelular"  rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==2}"/>
+				<h:outputText value="#{message['contrato.celular']}"  rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==2}"/>
+				<p:inputMask mask="999-999999" value="#{mantenimientoEmpleadoFormAction.nuevoTelef.telefono}" id="numCelular"
+					requiredMessage="#{message['contrato.celular.validation']}"  rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==2}"/>
+				<p:message for="numCelular"  rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==2}"/>
 						
-						<h:outputText value="#{message['contrato.telefono.descripcion']}" />
-						<p:inputText value="#{mantenimientoEmpleadoFormAction.nuevoTelef.descTelefono}" />
-						<p:spacer />
-						
-						<p:commandButton value="Agregar Telefono Referencia"  icon="ui-icon ui-icon-check" 
-						actionListener="#{mantenimientoEmpleadoFormAction.telefonoAgregar}" update="listarTelefonos, messaget" > 
-						</p:commandButton>
-						
+				<h:outputText value="#{message['contrato.telefono.descripcion']}" />
+				<p:inputText value="#{mantenimientoEmpleadoFormAction.nuevoTelef.descTelefono}" />
+				<p:spacer />
+					
+				<p:commandButton value="Agregar Telefono Referencia"  icon="ui-icon ui-icon-check" 
+				actionListener="#{mantenimientoEmpleadoFormAction.telefonoAgregar}" update="listarTelefonos, messaget" />
+				
 				</h:panelGrid>
-						<p:dataTable value="#{mantenimientoEmpleadoFormAction.telefonoPersonaList}" id="listarTelefonos" var="o" style="width:600px" 
-							 rowStyleClass="#{o.operadorTelefonico eq 'Claro' ? 'colorRojo': (o.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }"   >
-	
-							<f:facet name="header">
-								<h:outputLabel value="Telefonos de Referencia" />
-							</f:facet>
-							
-							<p:column headerText="Observación" style="width:270px">
-		                    	<h:outputText value="#{o.tipoTelef}, #{o.operadorTelefonico}, #{o.telefono}" />
-		                    </p:column>
-		                    
-		                    <p:column headerText="Detalle" style="width:125px">
-		                    	<h:outputText value="#{o.descTelefono}" />
-		                    </p:column>
-		                    
-	                        <p:column headerText="Eliminar" style="width:125px">
-		                    <p:commandButton id="showConfirmDeshabilitarTelEmp" 
-				            value="Eliminar"  
-				            icon="ui-icon ui-icon-close"
-				            onclick="confirmationTelEmp.show()"> 
-	 							
-                            <f:setPropertyActionListener
-		                    value="#{o.telefono}"
-		                    target="#{mantenimientoEmpleadoFormAction.idt}" />
-
-                            </p:commandButton>
-		                    </p:column>
-	 
-						</p:dataTable>
-					
+				<p:dataTable value="#{mantenimientoEmpleadoFormAction.telefonoPersonaList}" id="listarTelefonos" var="o" style="width:600px" 
+					rowStyleClass="#{o.operadorTelefonico eq 'Claro' ? 'colorRojo': (o.operadorTelefonico eq 'Movistar' ? 'color2': 'color3') }"   >
+					<f:facet name="header">
+						<h:outputLabel value="Telefonos de Referencia" />
+					</f:facet>
+					<p:column headerText="Observación" style="width:270px">
+		                 <h:outputText value="#{o.tipoTelef}, #{o.operadorTelefonico}, #{o.telefono}" />
+		            </p:column>
+		            <p:column headerText="Detalle" style="width:125px">
+		                 <h:outputText value="#{o.descTelefono}" />
+		            </p:column>
+		            <p:column headerText="Eliminar" style="width:125px">
+		                 <p:commandButton id="showConfirmDeshabilitarTelEmp" value="Eliminar"  
+				            icon="ui-icon ui-icon-close" onclick="confirmationTelEmp.show()"> 
+	 					<f:setPropertyActionListener value="#{o.telefono}" target="#{mantenimientoEmpleadoFormAction.idt}" />
+	 				</p:commandButton>
+		            </p:column>
+		        </p:dataTable>
 				</p:panel>
-				</p:tab>    
-    
+				</p:tab>
         <p:tab title="#{message['empleado.tabdireccion']}">
         <p:panel header="Dirección">
         <h:messages errorClass="error"/>  
