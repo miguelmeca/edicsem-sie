@@ -15,48 +15,54 @@
 			 
 			<p:fieldset legend="#{message['grupo.consulta.tipo.evento']}">
 			<h:panelGrid id="display" columns="2" cellpadding="5" >
-				<h:outputText value="Expositor" />
-				<p:selectManyCheckbox value="#{distribucion.idexpositor}" required="true" >
-					<f:selectItems value="#{comboAction.expositorItems}" />
-				</p:selectManyCheckbox>
-				
-				<h:outputText value="Cerrador" />
-				<p:selectManyCheckbox value="#{distribucion.idexpositor}" required="true" >
-					<f:selectItems value="#{comboAction.vendedorItems}" />
-				</p:selectManyCheckbox>
-				
-				<h:outputText value="Mes" />
-				<p:selectOneMenu value="#{grupo.idMes}" required="true" >
-					<f:selectItems value="#{comboAction.metaMesItems}" />
-					<p:ajax update="display"  listener="#{grupo.listarFechas}"  />
+				<h:outputText value="#{message['contrato.tipo.venta']}" />
+				<p:selectOneMenu value="#{distribucion.tipoVenta}" style="width:220px" >
+				<f:selectItem itemLabel="Seleccione tipo de venta" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.tipoEventoVentaitems}" />
+					<p:ajax update="display" />
 				</p:selectOneMenu>
 				
-				<h:outputLabel value="Fecha Inicial :" />
-				<p:inputText value="#{grupo.fechaInicio}" readonly="true" />
+				<h:outputText value="#{message['distribucion.grupo.expositor']}" />
+				<p:autoComplete value="#{distribucion.cerradorList}" completeMethod="#{distribucion.complete}" multiple="true"  />  
 				
-				<h:outputLabel value="Fecha Final :" />
-				<p:inputText value="#{grupo.fechaFin}" readonly="true" />
+				<h:outputText value="#{message['distribucion.grupo.turno']}" />
+				<p:selectOneMenu value="#{distribucion.idturno}" required="true" >
+					<f:selectItem itemLabel="Seleccione turno" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.tipoturnoItems}" />
+				</p:selectOneMenu>
 				
-				<f:facet name="footer">
-				<p:commandButton value="Consultar" action="#{grupo.consultar}" title="Consultar facturación y entrega" 
-				update="@form" icon="ui-icon-star" />
-				</f:facet>
+				<h:outputText value="#{message['horario.personal.dia']}" />
+				<p:selectCheckboxMenu required="true" value="#{distribucion.diaList}" filter="true" 
+				filterMatchMode="startsWith" style="width:200px" >
+					<f:selectItems value="#{comboAction.diasItems}" />
+				</p:selectCheckboxMenu>
+				
+				<h:outputText value="#{message['distribucion.grupo.mes']}" />
+				<p:selectOneMenu value="#{distribucion.idMes}" required="true" >
+					<f:selectItem itemLabel="Seleccione mes" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.metaMesItems}" />
+					<p:ajax update="out"  listener="#{distribucion.listarFechas}"  />
+				</p:selectOneMenu>
 			</h:panelGrid>
 			
-			<p:dataTable id="data" var="g" value="#{grupo.grupoEmplList}" >  
-	           <f:facet name="header">
-					<h:outputText value="Distribución horario masivo" />
+			<p:outputPanel  id="out">
+				<h:panelGrid columns="2" cellpadding="5" >
+				<h:outputLabel value="#{message['distribucion.grupo.fechaIni']}" />
+				<p:inputText  value="#{distribucion.fechaInicio}" readonly="true" />
+				
+				<h:outputLabel value="#{message['distribucion.grupo.fechaFin']}" />
+				<p:inputText value="#{distribucion.fechaFin}" readonly="true" />
+				
+				<f:facet name="footer">
+				<p:commandButton value="#{message['distribucion.grupo.agregar']}" action="#{distribucion.agregar}" 
+				title="#{message['distribucion.grupo.agregar.title']}" update="@form" icon="ui-icon-star" />
 				</f:facet>
-	            <p:column headerText="Empleado">
-	                <h:outputText value="#{g.tbempleado.nombresCompletos}" />
-	            </p:column>
-	            <p:column style="width:80px" >
-					<f:facet name="header">
-						<h:outputText value="#{message['facturacion.entrega.total.facturacion']}" />
-					</f:facet>
-					<h:outputText value="#{g.totalfacturada}" />
-				</p:column>
-            </p:dataTable>
+				</h:panelGrid>
+			</p:outputPanel>
+         </p:fieldset>
+         
+         <p:fieldset legend="#{message['distribucion.grupo.horario.visualizar']}" style="margin-top:20px"   >
+         	<p:schedule value="#{horarioPersonal.eventModel}" draggable="false" resizable="false" locale="tr" />  
          </p:fieldset>
 	</h:form>
 	</ui:define>

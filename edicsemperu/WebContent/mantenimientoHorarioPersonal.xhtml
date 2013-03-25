@@ -7,79 +7,71 @@
   <ui:define name="body">
   <script language="JavaScript" type="text/javascript">
 		window.history.forward(-1);
-	</script>
-  <h1 class="title ui-widget-header ui-corner-all">Horario del Personal</h1>
-<h:form id="horarioPersonal">
-<p:messages showDetail="true" />
-<p:fieldset legend="Buscar Personal" style="margin-top:20px">
-<h:panelGrid columns="2"  >
-<p:outputLabel value="Cargo :" for="cargo" />
-<p:selectOneMenu id="cargo" value="#{comboAction.cargoEmpleado}">
-<f:selectItems  value="#{comboAction.cargoEmpleadoItems}" />
- <p:ajax update="empleado"  listener="#{comboAction.cambiar2}" />  
-</p:selectOneMenu>
-<p:outputLabel value="Empleado :" for="empleado" />
-<p:selectOneMenu id="empleado" value="#{horarioPersonal.idempleado}"  >
-<f:selectItems  value="#{comboAction.empleadoxcargo}" />
-</p:selectOneMenu>
-<p:commandButton value="Buscar" ajax="false" icon="ui-icon-search" action="#{horarioPersonal.mostrar}" />
-</h:panelGrid>
-</p:fieldset>
-
-	<p:fieldset legend="Horario Personal : #{horarioPersonal.objHorarioPersonal.tbEmpleado.nombresCompletos}" style="margin-top:20px" >
-
-<p:commandButton  value="Registrar nuevo Horario" action="#{horarioPersonal.agregarhorario}"
-icon="ui-icon-star"  
-oncomplete="horarioDialog.show()"  update=":formManteHorarioPers:display"  />
-<p:spacer></p:spacer>
-<p:dataTable var="h" value="#{horarioPersonal.listaHorario}" id="horarioPersonalList" editable="true"  
- rowStyleClass="#{h.diainicio le horarioPersonal.dhoy ? null: 'colorPlomo' }"  >
+  </script>
+  <h1 class="title ui-widget-header ui-corner-all">#{message['horario.personal']}</h1>
+  <h:form id="horarioPersonal">
+  <p:messages showDetail="true" />
+  <p:fieldset legend="#{message['horario.personal.buscar']}" style="margin-top:20px">
+	  <h:panelGrid columns="2" cellpadding="5" >
+	  <p:outputLabel value="#{message['horario.personal.cargo']} " for="cargo" />
+	  <p:selectOneMenu id="cargo" value="#{comboAction.cargoEmpleado}">
+	  <f:selectItem itemLabel="Seleccione cargo" itemValue="#{null}" />
+	  <f:selectItems  value="#{comboAction.cargoEmpleadoItems}" />
+	  <p:ajax update="empleado"  listener="#{comboAction.cambiar2}" />  
+	  </p:selectOneMenu>
+	  <p:outputLabel value="#{message['horario.personal.empleado']}" for="empleado" />
+	  <p:selectOneMenu id="empleado" value="#{horarioPersonal.idempleado}"  >
+	  <f:selectItems  value="#{comboAction.empleadoxcargo}" />
+	  </p:selectOneMenu>
+	  <p:commandButton value="#{message['horario.personal.btn.buscar']}" ajax="false" 
+	  icon="ui-icon-search" action="#{horarioPersonal.mostrar}" />
+	  </h:panelGrid>
+  </p:fieldset>
+  
+  <p:fieldset legend="#{message['horario.personal.detail']}  #{horarioPersonal.objHorarioPersonal.tbEmpleado.nombresCompletos}" style="margin-top:20px" >
+ 
+  <p:dataTable var="h" value="#{horarioPersonal.listaHorario}" id="horarioPersonalList" editable="true" rows="5" paginator="true"
+  rowStyleClass="#{h.diainicio le horarioPersonal.dhoy ? null: 'colorPlomo' }" style="margin-top:20px" emptyMessage="#{message['rsltd.empty']}" >
 		
-			<p:column headerText="Dia">
+			<p:column headerText="#{message['horario.personal.dia']}">
 				<h:outputText value="#{h.tbFecha.dia}" />
 			</p:column>
-			<p:column headerText="Entrada">
+			<p:column headerText="#{message['horario.personal.horaEntrada']}">
 				<h:outputText value="#{h.horaIngreso}" />
 			</p:column>
-			<p:column headerText="Salida">
+			<p:column headerText="#{message['horario.personal.horaSalida']}">
 				<h:outputText value="#{h.horaSalida}" />
 			</p:column>
-			<p:column headerText="Dia inicio">
-				<h:outputText value="#{h.diainicio}" />
+			<p:column headerText="#{message['horario.personal.diainicio']}">
+				<h:outputText value="#{h.diainicio}"  />
 			</p:column>
-			<p:column headerText="Dia Fin">
+			<p:column headerText="#{message['horario.personal.diafin']}">
 				<h:outputText value="#{h.diafin}" />
 			</p:column>
-			  <p:column headerText="Editar">
+			<p:column headerText="#{message['horario.personal.editar']}">
 			  <center>
-	    <p:commandButton 
-		 action="#{horarioPersonal.update}" 
-		 oncomplete="horarioDialog.show()" 
-		icon=" ui-icon-pencil"
- 
-		  update=":formManteHorarioPers:display"  >
-		 <f:setPropertyActionListener value="#{h}"  
-		  target="#{horarioPersonal.objHorarioPersonal}" />
-		</p:commandButton>
-		</center>
-	   </p:column>
-	   
-	     <p:column headerText="Deshabilitar">
-	     <center>
-	    <p:commandButton id="showConfirmHorarioPersonal12"
-						 onclick="confirmDeshabilitarHorario.show()"    
-						  icon="ui-icon ui-icon-close"	>
-						  
-		 <f:setPropertyActionListener value="#{h.idhorariopersonal}"  
-		  target="#{horarioPersonal.idhorario}" />
-		</p:commandButton>
-		</center>
-	   </p:column>
+			  <p:commandButton action="#{horarioPersonal.update}" oncomplete="horarioDialog.show()" 
+			  icon=" ui-icon-pencil" update=":formManteHorarioPers:display" >
+			  <f:setPropertyActionListener value="#{h}" target="#{horarioPersonal.objHorarioPersonal}" />
+			  </p:commandButton>
+			  </center>
+			</p:column>
+			<p:column headerText="#{message['horario.personal.deshabilitar']}">
+		     <center>
+			     <p:commandButton id="showConfirmHorarioPersonal12" onclick="confirmDeshabilitarHorario.show()" icon="ui-icon ui-icon-close"	>
+			     <f:setPropertyActionListener value="#{h.idhorariopersonal}" target="#{horarioPersonal.idhorario}" />
+			     </p:commandButton>
+		     </center>
+		    </p:column>
+		    <f:facet name="footer">
+		     <p:commandButton  value="#{message['horario.personal.nuevo']}" action="#{horarioPersonal.agregarhorario}" icon="ui-icon-star" 
+		     title="#{message['horario.personal.nuevo.tittle']}" oncomplete="horarioDialog.show()" update=":formManteHorarioPers:display" />
+		     </f:facet>
 		</p:dataTable>
-</p:fieldset>
-<p:fieldset legend="Visualizar Horario" style="margin-top:20px">
-    <p:schedule value="#{horarioPersonal.eventModel}" draggable="false" resizable="false" locale="tr"  />  
-</p:fieldset>
+	</p:fieldset>
+	<p:fieldset legend="#{message['horario.personal.visualizar']}" style="margin-top:20px">
+		<p:schedule value="#{horarioPersonal.eventModel}" draggable="false" resizable="false" locale="tr"  />  
+    </p:fieldset>
 </h:form>
 </ui:define>
 </ui:composition>
