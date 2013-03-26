@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+  <ui:define name="body">
+  <script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+  </script>
+  <h1 class="title ui-widget-header ui-corner-all">#{message['horario.turno']}</h1>
+  <h:form id="horarioTurno">
+  <p:messages showDetail="true" />
+  	<p:dataTable var="h" value="#{turno.listaTurno}" editable="true" rows="5" paginator="true"
+  	style="margin-top:20px" emptyMessage="#{message['rsltd.empty']}" >
+			<p:column headerText="#{message['horario.turno.descripcion']}" >
+				<h:outputText value="#{h.descripcion}"  />
+			</p:column>
+			<p:column headerText="#{message['horario.personal.horaEntrada']}">
+				<h:outputText value="#{h.horaInicio}" />
+			</p:column>
+			<p:column headerText="#{message['horario.personal.horaSalida']}">
+				<h:outputText value="#{h.horaFin}" />
+			</p:column>
+			<p:column headerText="#{message['horario.personal.editar']}">
+			  <p:commandButton action="#{turno.update}" oncomplete="horarioTurnoDialog.show()" 
+			  icon=" ui-icon-pencil" update=":formManteHorarioturno:display" >
+			  <f:setPropertyActionListener value="#{h}" target="#{turno.objTurnoSie}" />
+			  </p:commandButton>
+			</p:column>
+			<f:facet name="footer">
+				<div align="left">
+					<p:commandButton id="btnNuevo" value="Nuevo Turno"  update=":formManteHorarioturno:display" action="#{turno.agregar}"
+					oncomplete="horarioTurnoDialog.show()" title="Ingresar un turno" icon="ui-icon-star"/>
+					<p:tooltip for="btnNuevo"/>
+				</div>
+			</f:facet>
+	</p:dataTable>
+</h:form>
+</ui:define>
+</ui:composition>

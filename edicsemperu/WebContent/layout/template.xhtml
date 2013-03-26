@@ -707,6 +707,29 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:dialog>
 	</h:form>
 	
+	<!--  Mantenimiento Horario Turno -->
+	<h:form id="formManteHorarioturno">
+		<p:dialog widgetVar="horarioTurnoDialog" showEffect="fade" resizable="false" header="#{message['horario.turno.dialog']}"
+			hideEffect="explode" modal="true" width="450" position="center">
+			<p:messages id="msj" showDetail="true" />
+			<h:panelGrid id="display" columns="2" cellpadding="2" >
+				
+				<h:outputText value="#{message['horario.turno.descripcion']}" />
+				<p:inputText value="#{turno.objTurnoSie.descripcion}" maxlength="20"/>
+				
+				<h:outputText value="#{message['horario.personal.horaEntrada']}"  />
+				<p:calendar  id="horaIng" required="true" requiredMessage="#{message['horario.personal.horaEntrada.validation']}" 
+				value="#{turno.horaIngreso}" pattern="HH:mm" timeOnly="true" maxlength="5" />
+				 
+				<h:outputText value="#{message['horario.personal.horaSalida']}" />
+				<p:calendar id="horaSal" required="true" requiredMessage="#{message['horario.personal.horaSalida.validation']}"	
+				value="#{turno.horaSalida}" pattern="HH:mm" timeOnly="true" maxlength="5" />
+				
+				<p:commandButton value="Guardar" update="display, msj" action="#{turno.insertar}" ajax="false" icon="ui-icon ui-icon-disk" />
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+	
 	<!--  NUEVO / MODIFICA EVENTO -->
 	<h:form id="NuevoModificaEvento">
 		<p:dialog header="Tipo Evento Venta" widgetVar="eventoNuevoDialog" showEffect="fade"
@@ -784,7 +807,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:dialog>
 	</h:form>
 	
-<!--  Mantenimiento Horario Empleado -->
+	<!--  Mantenimiento Horario Empleado -->
 	<h:form id="formManteHorarioPers">
 		<p:dialog widgetVar="horarioDialog" showEffect="fade" resizable="false" 
 			hideEffect="explode" modal="true" width="450" position="center">

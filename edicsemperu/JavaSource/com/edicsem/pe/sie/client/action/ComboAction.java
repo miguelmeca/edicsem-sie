@@ -42,7 +42,6 @@ import com.edicsem.pe.sie.entity.TipoLlamadaSie;
 import com.edicsem.pe.sie.entity.TipoPagoSie;
 import com.edicsem.pe.sie.entity.TipoProductoSie;
 import com.edicsem.pe.sie.entity.TipoPuntoVentaSie;
-import com.edicsem.pe.sie.entity.TipoTurnoSie;
 import com.edicsem.pe.sie.entity.TurnoSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.service.facade.AlmacenService;
@@ -73,7 +72,6 @@ import com.edicsem.pe.sie.service.facade.TipoLLamadaService;
 import com.edicsem.pe.sie.service.facade.TipoPagoService;
 import com.edicsem.pe.sie.service.facade.TipoProductoService;
 import com.edicsem.pe.sie.service.facade.TipoPuntoVentaService;
-import com.edicsem.pe.sie.service.facade.TipoTurnoService;
 import com.edicsem.pe.sie.service.facade.TurnoService;
 import com.edicsem.pe.sie.service.facade.UbigeoService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -132,9 +130,10 @@ public class ComboAction {
 	private Map<String, Integer> tipoImporteItems = new HashMap<String, Integer>();
 	private Map<String, Integer> importeItems = new HashMap<String, Integer>();
 	private Map<String, Integer> tipoPagoItems = new HashMap<String, Integer>();
-	private Map<String, Integer> tipoturnoItems = new HashMap<String, Integer>();
+	private Map<String, Integer> turnoItems = new HashMap<String, Integer>();
+	
 	@EJB
-	private TipoTurnoService objTipoTurnoService;
+	private TurnoService objTurnoService;
 	@EJB
 	private CriterioComisionService objCriterioComisionService;
 	@EJB
@@ -1442,28 +1441,6 @@ public class ComboAction {
 	 * @return the expositorItems
 	 */
 	public Map<String, Integer> getExpositorItems() {
-		List lista = new ArrayList<EmpleadoSie>();
-		expositorItems = new HashMap<String, Integer>();
-		try {
-			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'getExpositorItems()' ");
-			}
-			lista = objEmpleadoService.listarEmpleadosXCargo(idCargo);
-
-			for (int i = 0; i < lista.size(); i++) {
-				EmpleadoSie entidad = new EmpleadoSie();
-				entidad = (EmpleadoSie) lista.get(i);
-				expositorItems.put(entidad.getNombresCompletos(),
-						entidad.getIdempleado());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			mensaje = e.getMessage();
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-			log.error(e.getMessage());
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
 		return expositorItems;
 	}
 
@@ -1718,22 +1695,22 @@ public class ComboAction {
 	}
 	
 	/**
-	 * @return
+	 * @return the turnoItems
 	 */
-	public Map<String, Integer> getTipoturnoItems() {
-		tipoturnoItems = new HashMap<String, Integer>();
-		List lista = new ArrayList<TipoTurnoSie>();
+	public Map<String, Integer> getTurnoItems() {
+		turnoItems = new HashMap<String, Integer>();
+		List lista = new ArrayList<TurnoSie>();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'getTipoturnoItems()'");
+				log.info("Entering my method 'getTurnoItems()'");
 			}
-			lista = objTipoTurnoService.listarTipoTurno();
+			lista = objTurnoService.listarTurno();
 			
 			for (int i = 0; i < lista.size(); i++) {
-				TipoTurnoSie t = new TipoTurnoSie();
-				t = (TipoTurnoSie) lista.get(i);
-				tipoturnoItems.put(t.getDescripcion(),
-						t.getIdtipoturno());
+				TurnoSie t = new TurnoSie();
+				t = (TurnoSie) lista.get(i);
+				turnoItems.put(t.getDescripcion(),
+						t.getIdturno());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1743,14 +1720,14 @@ public class ComboAction {
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		return tipoturnoItems;
+		return turnoItems;
 	}
 
 	/**
-	 * @param tipoturnoItems
+	 * @param turnoItems the turnoItems to set
 	 */
-	public void setTipoturnoItems(Map<String, Integer> tipoturnoItems) {
-		this.tipoturnoItems = tipoturnoItems;
+	public void setTurnoItems(Map<String, Integer> turnoItems) {
+		this.turnoItems = turnoItems;
 	}
 	
 }
