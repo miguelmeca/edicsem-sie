@@ -16,23 +16,26 @@
 			<p:fieldset legend="#{message['grupo.consulta.tipo.evento']}">
 			<h:panelGrid id="display" columns="2" cellpadding="5" >
 				<h:outputText value="#{message['contrato.tipo.venta']}" />
-				<p:selectOneMenu value="#{distribucion.tipoVenta}" style="width:220px" >
-				<f:selectItem itemLabel="Seleccione tipo de venta" itemValue="#{null}" />
+				<p:selectOneMenu value="#{distribucion.tipoVenta}" style="width:220px" required="true">
+					<f:selectItem itemLabel="Seleccione tipo de venta" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.tipoEventoVentaitems}" />
 					<p:ajax update="display" />
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['distribucion.grupo.expositor']}" rendered="#{distribucion.tipoVenta!=2}"/>
-				<p:autoComplete value="#{distribucion.expositorList}" completeMethod="#{distribucion.completeExpo}" rendered="#{distribucion.tipoVenta!=2}"
-				multiple="true" />
+				<p:autoComplete value="#{distribucion.expositorList}" completeMethod="#{distribucion.completeExpo}" rendered="#{distribucion.tipoVenta!=2}" multiple="true" />
 				
-				<h:outputText value="Cerrador" />
-				<p:autoComplete value="#{distribucion.cerradorList}" completeMethod="#{distribucion.complete}" 
-				multiple="true" />
+				<h:outputText value="Cerrador" rendered="#{distribucion.tipoVenta!=2}"/>
+				<p:autoComplete value="#{distribucion.cerradorList}" completeMethod="#{distribucion.completeCerrad}" multiple="true" rendered="#{distribucion.tipoVenta!=2}"/>
 				
-				<h:outputText value="#{message['contrato.vendedor']}" />
-				<p:autoComplete value="#{distribucion.vendedorList}" completeMethod="#{distribucion.completeVend}" 
-				multiple="true" />
+				<h:outputText value="#{message['contrato.vendedor']}" rendered="#{distribucion.tipoVenta==2}"/>
+				<p:autoComplete value="#{distribucion.vendedorList}" completeMethod="#{distribucion.completeVend}" multiple="true" rendered="#{distribucion.tipoVenta==2}"/>
+				
+				<h:outputText value="#{message['horario.personal.dia']}" />
+				<p:selectCheckboxMenu required="true" value="#{distribucion.diaList}" filter="true" requiredMessage="Debe seleccionar el día para la asistencia de dicho horario"
+				filterMatchMode="startsWith" style="width:200px" >
+					<f:selectItems value="#{comboAction.diasItems}" />
+				</p:selectCheckboxMenu>
 				
 				<h:outputText value="#{message['distribucion.grupo.turno']}" />
 				<h:panelGroup>
@@ -43,12 +46,6 @@
 				</p:selectOneMenu>
 				<h:outputText id="rango" value="#{distribucion.rangoTurno}" style="font-weight:bold"/>
 				</h:panelGroup>
-				
-				<h:outputText value="#{message['horario.personal.dia']}" />
-				<p:selectCheckboxMenu required="true" value="#{distribucion.diaList}" filter="true" 
-				filterMatchMode="startsWith" style="width:200px" >
-					<f:selectItems value="#{comboAction.diasItems}" />
-				</p:selectCheckboxMenu>
 				
 				<h:outputText value="#{message['distribucion.grupo.mes']}" />
 				<h:panelGroup>
@@ -64,6 +61,7 @@
 				<p:commandButton value="#{message['distribucion.grupo.agregar']}" action="#{distribucion.agregarhorario}" 
 				title="#{message['distribucion.grupo.agregar.title']}" update="@form" icon="ui-icon-star" />
 				</f:facet>
+				
 			</h:panelGrid>
          </p:fieldset>
          
