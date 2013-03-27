@@ -119,7 +119,7 @@ public class ComboAction {
 	private Map<String, Integer> empleadoItems = new HashMap<String, Integer>();
 	private Map<String, Integer> expositorItems = new HashMap<String, Integer>();
 	private Map<String, Integer> vendedorItems  = new HashMap<String, Integer>();
-	private Map<String, Integer> colaboradorItems  = new HashMap<String, Integer>();
+	private Map<String, Integer> cerradorItems  = new HashMap<String, Integer>();
 	private Map<String, Integer> relacionistaItems  = new HashMap<String, Integer>();
 	private Map<String, Integer> tipollamada = new HashMap<String, Integer>();
 	private Map<String, Integer> empleadoxcargo = new HashMap<String, Integer>();
@@ -1728,6 +1728,20 @@ public class ComboAction {
 	 */
 	public void setTurnoItems(Map<String, Integer> turnoItems) {
 		this.turnoItems = turnoItems;
+	}
+
+	/**
+	 * @return the cerradorItems
+	 */
+	public Map<String, Integer> getCerradorItems() {
+		return cerradorItems;
+	}
+
+	/**
+	 * @param cerradorItems the cerradorItems to set
+	 */
+	public void setCerradorItems(Map<String, Integer> cerradorItems) {
+		this.cerradorItems = cerradorItems;
 	}
 	
 }
