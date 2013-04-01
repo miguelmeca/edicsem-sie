@@ -1,6 +1,5 @@
 package com.edicsem.pe.sie.service.facade.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -15,7 +14,6 @@ import com.edicsem.pe.sie.model.dao.DetPermisoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
 import com.edicsem.pe.sie.model.dao.PermisoDAO;
-import com.edicsem.pe.sie.model.dao.impl.DetPermisoEmpleadoDAOImpl;
 import com.edicsem.pe.sie.service.facade.DetPermisoEmpleadoService;
 
 @Stateless
