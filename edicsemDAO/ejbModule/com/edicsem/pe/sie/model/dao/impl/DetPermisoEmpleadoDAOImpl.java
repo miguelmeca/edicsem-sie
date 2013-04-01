@@ -98,10 +98,10 @@ public class DetPermisoEmpleadoDAOImpl implements DetPermisoEmpleadoDAO{
 		MenuDTO objMenu;
 		log.info("  usuar "+usuario );
 		try {
-			Query q = em.createQuery("select p from DetPermisoEmpleadoSie p inner join  p.tbEmpleado q where q.usuario = '"+ usuario+"' and " +
-					"p.tbEstadoGeneral.idestadogeneral = "+62);
-			lista =  q.getResultList(); 						
-		   log.info("tamaño lista DetPermisoEmpleado DAOIMPL --> " + lista.size()+"  ");
+			Query q = em.createQuery("select p from DetPermisoEmpleadoSie p inner join  p.tbEmpleado q inner join p.tbPermisos pe where q.usuario = '"+ usuario+"' and " +
+					"p.tbEstadoGeneral.idestadogeneral = "+62 +" and pe.tbEstadoGeneral.idestadogeneral = "+68);
+			lista =  q.getResultList();
+		   log.info("tamaño lista DetPermisoEmpleado DAOIMPL -->* " + lista.size()+"  ");
 		   miMenu = new ArrayList<MenuDTO>();
 		   
 			for (DetPermisoEmpleadoSie p : lista) {
