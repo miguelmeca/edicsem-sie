@@ -158,7 +158,8 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	}
 	
 	public List<String> completeExpo(String query){
-		log.info(" completeExpo() "+query+"  "+comboManager.getExpositorItems().size());
+		log.info(" completeExpo() "+query+"  ");
+		log.info(" completeExpo() "+comboManager.getExpositorItems().size());
 		List<String> results = new ArrayList<String>();
 		
 		for (int j = 0; j < comboManager.getExpositorItems().size(); j++) {

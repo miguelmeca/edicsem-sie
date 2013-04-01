@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 
 import javax.ejb.EJB;
 import javax.el.ExpressionFactory;
@@ -34,7 +33,6 @@ import com.edicsem.pe.sie.service.facade.ModuloOpcionService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
-import com.edicsem.pe.sie.util.property.PropertyFile;
 import com.edicsem.pe.sie.util.security.SecurityLogin;
 import com.edicsem.pe.sie.util.sessions.SessionsSie;
 
@@ -45,7 +43,7 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 	private EmpleadoSie objLogin = new EmpleadoSie();
 	private EmpleadoSie objEmpleado;
 	private static Log log = LogFactory.getLog(LoginAction.class);
-	private Properties property ;
+//	private Properties property ;
 	private String usuario, passActual, passConfirma1, passConfirma2;
 	private String contrasenia;
 	private MenuModel mimenu;
@@ -73,7 +71,7 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 	public void init() {
 		log.info("init ...");
 		mimenu = new DefaultMenuModel();
-		property = new PropertyFile().getProperties();
+//		
 		cargo=new ArrayList<CargoEmpleadoSie>();
 	}
 	

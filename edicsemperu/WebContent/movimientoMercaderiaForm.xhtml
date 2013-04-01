@@ -17,9 +17,7 @@
 					<h:panelGroup>
 					<h:outputText value="#{message['movimiento.tipo']}   " />
 					<p:spacer width="20px" />
-					<p:selectOneMenu id="idtipokardex" required="true"   
-						value="#{movimientoMercaderia.idtipokardexproducto}"  style="width:175px" >
-						 
+					<p:selectOneMenu id="idtipokardex" required="true" value="#{movimientoMercaderia.idtipokardexproducto}" style="width:175px" >
 						<f:selectItems id="tipokardex" value="#{comboAction.tipoKardexItems}"  />
 						<p:ajax update="panel" listener="#{movimientoMercaderia.cambiar}" />
 					</p:selectOneMenu>
@@ -28,7 +26,7 @@
 					 
 					<p:spacer/>
 					</h:panelGroup>
-					<p:fieldset legend="Datos Producto">
+					<p:fieldset legend="#{message['movimiento.datos.producto']}">
 					<h:panelGrid columns="2" cellpadding="4" >
 						<h:outputText id="ide" value="#{message['mantenimiento.producto.cantidadEnt']}"   rendered="#{!movimientoMercaderia.editMode}" />
 						<p:spinner id="spinnerE" size="7" min="1"  required="true" requiredMessage="#{message['movimiento.cantEntrada.validation']}" 
@@ -86,7 +84,7 @@
 					</p:fieldset>
 					 
 					 <h:panelGroup  rendered="#{movimientoMercaderia.idtipokardexproducto==1}" >
-					<p:fieldset legend="Datos Comprobante" rendered="#{login.objEmpleado.cargo==1}"  cellpadding="4">
+					<p:fieldset legend="#{message['movimiento.datos.comprobante']}" rendered="#{login.objEmpleado.cargo==1}"  cellpadding="4">
 					<h:panelGrid   columns="3"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}" >
 					<h:outputText value="#{message['movimiento.proveedor.nombreempresa']}"  rendered="#{movimientoMercaderia.idtipokardexproducto==1}"/>
 					<p:selectOneMenu size="1" rendered="#{movimientoMercaderia.idtipokardexproducto==1}" style="width:165px" 
@@ -120,7 +118,7 @@
 				rowsPerPageTemplate="5,10,15" widgetVar="table" emptyMessage="No se encontro registros">
 					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Nro Kardex" />
+							<h:outputText value="#{message['movimiento.nro.movi']}" />
 						</f:facet>
 						<h:outputText value="#{d.idkardex}" />
 					</p:column>
