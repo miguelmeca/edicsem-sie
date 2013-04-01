@@ -6,17 +6,12 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.LogFactory;
 
-import com.edicsem.pe.sie.entity.IncidenciaSie;
 import com.edicsem.pe.sie.entity.ObservacionIncidenciaSie;
-import com.edicsem.pe.sie.entity.UbigeoSie;
-import com.edicsem.pe.sie.model.dao.IncidenciaDAO;
 import com.edicsem.pe.sie.model.dao.ObsIncidenciaDAO;
-import com.edicsem.pe.sie.model.dao.UbigeoDAO; 
-import com.edicsem.pe.sie.service.facade.IncidenciaService;
 import com.edicsem.pe.sie.service.facade.ObsIncidenciaService;
-import com.edicsem.pe.sie.service.facade.UbigeoService;
+
 @Stateless
 public class ObsIncidenciaServiceImpl implements ObsIncidenciaService{
 	
