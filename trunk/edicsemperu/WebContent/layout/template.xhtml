@@ -415,8 +415,26 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:dialog>
 	</h:form>
 	
-		<!--  Mantenimiento HORARIO VENDEDOR -->
-
+	<!--  Mantenimiento ASIGNACION HORARIO -->
+	<h:form id="formHorarioVenta">
+		<p:dialog header="Registro/Modificación horario Vendedor" widgetVar="horarioVentaDialog" showEffect="fade"
+			hideEffect="explode" modal="true" width="550" position="center" resizable="false"  >
+			
+			<h:panelGrid id="display" columns="2" cellpadding="4">
+			
+			<h:outputText value="Cerrador" rendered="#{distribucion.tipoVenta!=2}"/>
+			<p:autoComplete value="#{distribucion.cerradorList}" completeMethod="#{distribucion.completeCerrad}" multiple="true" rendered="#{distribucion.tipoVenta!=2}"/>
+			
+			<p:commandButton type="reset" value="Limpiar" />
+			<p:commandButton value="Grabar" actionListener="#{distribucion.agregarCerrador}" oncomplete="horarioVentaDialog.hide();" update="@all" >
+			<f:setPropertyActionListener target="#{distribucion.event.title}" value="#{distribucion.tittle}" />
+			</p:commandButton>
+			
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+	
+	<!--  Mantenimiento HORARIO VENDEDOR -->
 	<h:form id="formHorarioVendedor">
 		<p:dialog header="Registro/Modificación horario Vendedor" widgetVar="horarioVendedorDialog" showEffect="fade"
 			hideEffect="explode" modal="true" width="450" position="center" resizable="false" >
@@ -433,7 +451,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
             </p:inputMask>
             
             <h:outputLabel value="Hasta " />  
-            <p:inputMask value="#{horarioVendedorForm.event.endDate}" required="true" mask="99/99/9999  99:99">  
+            <p:inputMask value="#{horarioVendedorForm.event.endDate}" required="true" mask="99/99/9999 99:99">  
                 <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />  
             </p:inputMask>
             
