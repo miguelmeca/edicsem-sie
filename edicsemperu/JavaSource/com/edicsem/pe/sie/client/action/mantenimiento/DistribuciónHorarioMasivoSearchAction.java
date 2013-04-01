@@ -17,11 +17,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.primefaces.event.ScheduleEntrySelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
+import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
 import com.edicsem.pe.sie.client.action.ComboAction;
@@ -71,6 +74,9 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	private EmpleadoSie objEmpleadoSie;
 	private int cerrador, expositor, vendedor;
 	private TurnoSie objTurno;
+	String expo="";
+	private String tittle;
+	private ScheduleEvent event = new DefaultScheduleEvent();
 	
 	@ManagedProperty(value = "#{comboAction}")
 	private ComboAction comboManager;
@@ -122,6 +128,7 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		diaList = new  ArrayList<String>();
 		listaDetTurnoEmpl = new ArrayList<DetTurnoEmplSie>();
 		listaHorario = new ArrayList<HorarioPersonalSie>();
+		event = new DefaultScheduleEvent();
 		fechaInicio = "";
 		fechaFin = "";
 		CargoEmpleadoSie ccerrador =  objCargoService.buscarCargoEmpleado(Constants.CARGO_CERRADOR);
@@ -205,25 +212,30 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	}
 	
 	public String agregarhorario() throws Exception{
-		log.info("agregarhorario()");
-		
+		log.info("agregarhorario() :)");
+		expo=null;
+		listaHorario = new ArrayList<HorarioPersonalSie>();
 		if(tipoVenta==1||tipoVenta>2){//Masivo
-			for (int i = 0; i < expositorList.size(); i++) {//expositores
+			
 				objHorarioPersonal= new HorarioPersonalSie();
 				objHorarioPersonal.setHoraIngreso(objTurno.getHoraInicio());
 				objHorarioPersonal.setHoraSalida(objTurno.getHoraFin());
+				objHorarioPersonal.setDiainicio(DateUtil.convertStringToDate(fechaInicio));
+				objHorarioPersonal.setDiafin(DateUtil.convertStringToDate(fechaFin));
+				listaHorario.add(objHorarioPersonal);
+				for (int i = 0; i < expositorList.size(); i++) {//expositores
 				DetTurnoEmplSie det = new DetTurnoEmplSie();
 				det.setTbTurno(objTurnoService.findTurno(idturno));
 				det.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoVendedor(expositorList.get(i)));
 				det.setTbCargoempleado(objCargoService.buscarCargoEmpleado(expositor));
 				listaDetTurnoEmpl.add(det);
-				objHorarioPersonal.setTbEmpleado(det.getTbEmpleado());
-				objHorarioPersonal.setDiainicio(DateUtil.convertStringToDate(fechaInicio));
-				objHorarioPersonal.setDiafin(DateUtil.convertStringToDate(fechaFin));
-				for (int j = 0; j < diaList.size(); j++) {
-					//objHorarioPersonal.setTbFecha(objFechaService.findFecha(diaList.get(j)));
-					listaHorario.add(objHorarioPersonal);
-				}
+				
+				log.info(expositorList+" -- >  "+expositorList.get(i));
+            	if(expo==null){
+            		expo =" \n - "+expositorList.get(i);
+            	}else{
+            		expo = expo+" \n - "+expositorList.get(i);
+            	}
 			}
 //			 actualizando grupos add cerradores
 //			for (int i = 0; i < vendedorList.size(); i++) {//cerradores
@@ -249,10 +261,12 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	public String mostrar() throws Exception {
 		log.info(" eventModel --->");
 		eventModel = new DefaultScheduleModel();
+		
 		log.info("listarHorario del personal "+listaHorario.size());
 				if (listaHorario == null) {
 					listaHorario = new ArrayList<HorarioPersonalSie>();
 				}
+				
 				for(int i=0;i < listaHorario.size(); i++){
 					objHorarioPersonal= listaHorario.get(i);
 	               
@@ -271,7 +285,7 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	                	log.info(" ***   getime  " + cal.getTime());
 	                for (int j = 0; j < diaList.size() ; j++) {
 	                	log.info(" ***   dia numerico " +Integer.parseInt(diaList.get(j)));
-		              if(cal.get(Calendar.DAY_OF_WEEK) == Integer.parseInt(diaList.get(j))) {
+	                	if(cal.get(Calendar.DAY_OF_WEEK) == Integer.parseInt(diaList.get(j))) {
 		                	log.info("en el seggundo  while");
 		                	dDate = cal.getTime();
 		                	Calendar cal0 = new GregorianCalendar();
@@ -289,16 +303,18 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		 	            	dDate2 = cal33.getTime();
 		 	                log.info(" dia 1 " +dDate);
 		 	                log.info(" dia 2 " +dDate2);
-		 	               objHorarioPersonal.setDescripcion(" Horario ");
-		 	                eventModel.addEvent(new DefaultScheduleEvent(objHorarioPersonal.getDescripcion()+" de "+ objHorarioPersonal.getHoraIngreso()+" hasta "+ objHorarioPersonal.getHoraSalida(), dDate, dDate2));  
+		 	               
+		 	                objHorarioPersonal.setDescripcion("\n Expositores:" +	expo);
+		 	                
+		 	                log.info(objHorarioPersonal.getDescripcion());
+		 	                eventModel.addEvent(new DefaultScheduleEvent(objHorarioPersonal.getDescripcion() , dDate, dDate2));  
 		                }
-		              cal.add(Calendar.DAY_OF_WEEK,1);
+	                } cal.add(Calendar.DAY_OF_WEEK,1);
 		              cal3.add(Calendar.DAY_OF_WEEK,1);
-	                }
-	                }
+	               }
 				}
 		objHorarioPersonal = new HorarioPersonalSie();
-		return getViewList();
+		return null;
 	}
 	
 	/* (non-Javadoc)
@@ -313,6 +329,55 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		setHoraSalida(objHorarioPersonal.getHoraSalida());
 		return getViewList();
 	}
+	
+	/**
+	 * @param Event 'selectEvent'
+	 */
+	public void onEventSelect(ScheduleEntrySelectEvent selectEvent) {  
+		 log.info("onEventSelect ");
+		 cerradorList= new ArrayList<String>();
+		 event = selectEvent.getScheduleEvent();
+		 log.info(event.getTitle());
+			tittle= event.getTitle();
+		 String rr[]=event.getTitle().split("Cerradores:");
+		 if(rr.length>=2){ log.info(" rr0 "+rr[0]);
+		 
+		 log.info(" rr1 "+rr[1]);
+		 String rr2[] = rr[1].split("[\\n-]");
+		 for (int i = 0; i < rr2.length; i++) {
+			 //si ya tiene seleccionados los cerradores
+			 log.info(" -->"+rr2[i]);
+			 //si aún no selecciona los cerradores
+			 
+//			 Iterator it = cerradorList.iterator();
+//			 while (it.hasNext()) {
+//				Map.Entry e = (Map.Entry) it.next();
+//				log.info("key " + e.getKey() + " value " + e.getValue());
+//				if (e.getKey().toString().equals(rr[i])) {
+//					log.info(" "+i+" " + rr[i]);
+//				//	cerradorList.add(e.getValue().toString());
+//					break;
+//				}
+//			}
+		}
+		 }
+	    newRecord=false;
+	}
+	
+	/**
+	 * @return 'agregarCerrador'
+	 */
+	public String agregarCerrador(ActionEvent actionEvent) {
+		log.info("agregarCerrador() ");
+		log.info("tittle "+tittle);
+        if(event.getId() == null)
+            eventModel.addEvent(event);
+        else
+            eventModel.updateEvent(event);  
+          
+        event = new DefaultScheduleEvent();
+        return getViewList();
+    }
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
@@ -683,9 +748,17 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	 * @param cerradorList the cerradorList to set
 	 */
 	public void setCerradorList(List<String> cerradorList) {
+		tittle =tittle+"\nCerradores:";
+		if(cerradorList!=null){
+			//cambiar
+			for (int i = 0; i < cerradorList.size(); i++) {
+				tittle =tittle +"\n-"+cerradorList.get(i);
+			}
+		}
+		log.info("tittle "+tittle );
 		this.cerradorList = cerradorList;
 	}
-
+	
 	/**
 	 * @return the objMetaMesSie
 	 */
@@ -993,6 +1066,34 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	 */
 	public void setListaDetTurnoEmpl(List<DetTurnoEmplSie> listaDetTurnoEmpl) {
 		this.listaDetTurnoEmpl = listaDetTurnoEmpl;
+	}
+
+	/**
+	 * @return the event
+	 */
+	public ScheduleEvent getEvent() {
+		return event;
+	}
+
+	/**
+	 * @param event the event to set
+	 */
+	public void setEvent(ScheduleEvent event) {
+		this.event = event;
+	}
+
+	/**
+	 * @return the tittle
+	 */
+	public String getTittle() {
+		return tittle;
+	}
+
+	/**
+	 * @param tittle the tittle to set
+	 */
+	public void setTittle(String tittle) {
+		this.tittle = tittle;
 	}
 
 }

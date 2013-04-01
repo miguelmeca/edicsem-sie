@@ -57,16 +57,16 @@
 				<h:outputText id="out"  value="#{distribucion.rangoFecha}" style="font-weight:bold"/>
 				</h:panelGroup>
 				
-				<f:facet name="footer">
 				<p:commandButton value="#{message['distribucion.grupo.agregar']}" action="#{distribucion.agregarhorario}" 
-				title="#{message['distribucion.grupo.agregar.title']}" update="@form" icon="ui-icon-star" />
-				</f:facet>
+				title="#{message['distribucion.grupo.agregar.title']}" update="@all" icon="ui-icon-star" />
 				
 			</h:panelGrid>
          </p:fieldset>
          
          <p:fieldset legend="#{message['distribucion.grupo.horario.visualizar']}" style="margin-top:20px" >
-         	<p:schedule value="#{horarioPersonal.eventModel}" draggable="false" resizable="false" locale="es_PE" />  
+         	<p:schedule value="#{distribucion.eventModel}" draggable="false" resizable="false" locale="es_PE" allDaySlot="false" >
+         	 <p:ajax event="eventSelect" listener="#{distribucion.onEventSelect}" update=":formHorarioVenta:display" oncomplete="horarioVentaDialog.show()" />
+         	</p:schedule> 
          </p:fieldset>
 	</h:form>
 	</ui:define>
