@@ -21,6 +21,7 @@ import javax.faces.event.ActionEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.ScheduleEntrySelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
@@ -368,15 +369,19 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	 * @return 'agregarCerrador'
 	 */
 	public String agregarCerrador(ActionEvent actionEvent) {
+		 RequestContext context = RequestContext.getCurrentInstance();
 		log.info("agregarCerrador() ");
+		log.info("GETID "+event.getId());
 		log.info("tittle "+tittle);
+		
         if(event.getId() == null)
             eventModel.addEvent(event);
         else
             eventModel.updateEvent(event);  
           
+        context.update("formGrupo");
         event = new DefaultScheduleEvent();
-        return getViewList();
+        return null;
     }
 	
 	/* (non-Javadoc)
