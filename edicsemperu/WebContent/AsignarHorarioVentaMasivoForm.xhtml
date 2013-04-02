@@ -25,9 +25,6 @@
 				<h:outputText value="#{message['distribucion.grupo.expositor']}" rendered="#{distribucion.tipoVenta!=2}"/>
 				<p:autoComplete value="#{distribucion.expositorList}" completeMethod="#{distribucion.completeExpo}" rendered="#{distribucion.tipoVenta!=2}" multiple="true" />
 				
-				<h:outputText value="Cerrador" rendered="#{distribucion.tipoVenta!=2}"/>
-				<p:autoComplete value="#{distribucion.cerradorList}" completeMethod="#{distribucion.completeCerrad}" multiple="true" rendered="#{distribucion.tipoVenta!=2}"/>
-				
 				<h:outputText value="#{message['contrato.vendedor']}" rendered="#{distribucion.tipoVenta==2}"/>
 				<p:autoComplete value="#{distribucion.vendedorList}" completeMethod="#{distribucion.completeVend}" multiple="true" rendered="#{distribucion.tipoVenta==2}"/>
 				
@@ -57,8 +54,8 @@
 				<h:outputText id="out"  value="#{distribucion.rangoFecha}" style="font-weight:bold"/>
 				</h:panelGroup>
 				
-				<p:commandButton value="#{message['distribucion.grupo.agregar']}" action="#{distribucion.agregarhorario}" 
-				title="#{message['distribucion.grupo.agregar.title']}" update="@all" icon="ui-icon-star" />
+				<p:commandButton value="#{message['distribucion.grupo.agregar']}" actionListener="#{distribucion.agregarhorario}" 
+				title="#{message['distribucion.grupo.agregar.title']}" update="@form" icon="ui-icon-star" />
 				
 			</h:panelGrid>
          </p:fieldset>

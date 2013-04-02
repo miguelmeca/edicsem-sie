@@ -17,7 +17,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -62,9 +61,8 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	private Calendar cal;
 	private String fechaInicio, fechaFin;
 	private int idMes, tipoVenta, idturno;
-    /*schedule*/
 	private ScheduleModel eventModel;
-	/*fin schedule*/
+	private List<ScheduleEvent> eventos;
 	private Date  horaIngreso,horaSalida;
 	private int idhorario;
 	private String mensaje, rangoTurno, rangoFecha;
@@ -122,16 +120,22 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		log.info("agregar()");
 		idMes=0;
 		idempleado=0;
+		eventos = new ArrayList<ScheduleEvent>();
 		expositorList = new ArrayList<String>();
 		cerradorList = new ArrayList<String>();
+		vendedorList = new ArrayList<String>();
 		objMetaMesSie = new MetaMesSie();
 		eventModel = new DefaultScheduleModel();
 		diaList = new  ArrayList<String>();
 		listaDetTurnoEmpl = new ArrayList<DetTurnoEmplSie>();
 		listaHorario = new ArrayList<HorarioPersonalSie>();
 		event = new DefaultScheduleEvent();
+		idturno=0;
+		idMes=0;
 		fechaInicio = "";
 		fechaFin = "";
+		rangoTurno="";
+		rangoFecha="";
 		CargoEmpleadoSie ccerrador =  objCargoService.buscarCargoEmpleado(Constants.CARGO_CERRADOR);
 		CargoEmpleadoSie cvendedor =  objCargoService.buscarCargoEmpleado(Constants.CARGO_VENDEDOR);
 		CargoEmpleadoSie cexpositor =  objCargoService.buscarCargoEmpleado(Constants.CARGO_EXPOSITOR);
@@ -238,14 +242,6 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
             		expo = expo+" \n - "+expositorList.get(i);
             	}
 			}
-//			 actualizando grupos add cerradores
-//			for (int i = 0; i < vendedorList.size(); i++) {//cerradores
-//				DetTurnoEmplSie det = new DetTurnoEmplSie();
-//				det.setTbTurno(objTurnoService.findTurno(idturno));
-//				det.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoVendedor(vendedorList.get(i)));
-//				det.setTbCargoempleado(objCargoService.buscarCargoEmpleado(cerrador));
-//				listaDetTurnoEmpl.add(det);
-//			}
 		}else if(tipoVenta==2){//Punto de Venta
 			for (int i = 0; i < vendedorList.size(); i++) {//vendedores
 				DetTurnoEmplSie det = new DetTurnoEmplSie();
@@ -261,13 +257,14 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	/**lista los horarios del trabajador**/
 	public String mostrar() throws Exception {
 		log.info(" eventModel --->");
-		eventModel = new DefaultScheduleModel();
+		//eventModel = new DefaultScheduleModel();
 		
 		log.info("listarHorario del personal "+listaHorario.size());
 				if (listaHorario == null) {
 					listaHorario = new ArrayList<HorarioPersonalSie>();
 				}
-				
+
+                
 				for(int i=0;i < listaHorario.size(); i++){
 					objHorarioPersonal= listaHorario.get(i);
 	               
@@ -308,14 +305,45 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		 	                objHorarioPersonal.setDescripcion("\n Expositores:" +	expo);
 		 	                
 		 	                log.info(objHorarioPersonal.getDescripcion());
-		 	                eventModel.addEvent(new DefaultScheduleEvent(objHorarioPersonal.getDescripcion() , dDate, dDate2));  
+		 	                boolean existeMismoHorario =false;
+		 	                
+		 	                //Comprobar si el expositor ya se encuentra en un horario de dicha fecha
+		 	                
+	 						log.info("cantidad "+eventModel.getEventCount()+"  cant "+eventModel.getEvents().size());
+		 					for (int m = 0; m < eventModel.getEventCount(); m++) {
+		 						for (int k = 0; k < expositorList.size(); k++) {
+			 						log.info("e "+expositorList.get(k)+ " H "+eventModel.getEvents().get(m).getStartDate()+" "+
+			 								dDate+" "+eventModel.getEvents().get(m).getEndDate()+" "+dDate2);
+		 							if( eventModel.getEvents().get(m).getTitle().contains(expositorList.get(k))){
+		 								log.info("equals");
+		 								if( eventModel.getEvents().get(m).getStartDate().equals(dDate) && 
+		 									eventModel.getEvents().get(m).getEndDate().equals(dDate2)){
+			 								log.info(" TRUE ");
+					 						existeMismoHorario=true;
+					 						break;
+				 						}
+		 							}
+								}
+		 	                }
+		 					
+		 					if(existeMismoHorario){
+		 						mensaje="Dicho expositor ya se encuentra en el mismo horario";
+		 						msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
+		 						break;
+		 					}else{
+		 						eventModel.addEvent(new DefaultScheduleEvent(objHorarioPersonal.getDescripcion(), dDate, dDate2));
+			 					mensaje="Horario agregado correctamente ";
+			 					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+		 					}
 		                }
 	                } cal.add(Calendar.DAY_OF_WEEK,1);
 		              cal3.add(Calendar.DAY_OF_WEEK,1);
 	               }
 				}
 		objHorarioPersonal = new HorarioPersonalSie();
-		return null;
+		
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		return getViewList();
 	}
 	
 	/* (non-Javadoc)
@@ -341,46 +369,36 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		 log.info(event.getTitle());
 			tittle= event.getTitle();
 		 String rr[]=event.getTitle().split("Cerradores:");
-		 if(rr.length>=2){ log.info(" rr0 "+rr[0]);
-		 
-		 log.info(" rr1 "+rr[1]);
-		 String rr2[] = rr[1].split("[\\n-]");
-		 for (int i = 0; i < rr2.length; i++) {
-			 //si ya tiene seleccionados los cerradores
-			 log.info(" -->"+rr2[i]);
-			 //si aún no selecciona los cerradores
-			 
-//			 Iterator it = cerradorList.iterator();
-//			 while (it.hasNext()) {
-//				Map.Entry e = (Map.Entry) it.next();
-//				log.info("key " + e.getKey() + " value " + e.getValue());
-//				if (e.getKey().toString().equals(rr[i])) {
-//					log.info(" "+i+" " + rr[i]);
-//				//	cerradorList.add(e.getValue().toString());
-//					break;
-//				}
-//			}
+		 if(rr.length>=2){
+			 log.info(" rr0 "+rr[0]);
+			 log.info(" rr1 "+rr[1]);
+			 String rr2[] = rr[1].split("\n-");
+			 for (int i = 1; i < rr2.length; i++) {
+				//si ya tiene seleccionados los cerradores
+				log.info(" -->"+rr2[i]);
+				cerradorList.add(rr2[i]);
+			}
 		}
-		 }
 	    newRecord=false;
 	}
 	
 	/**
 	 * @return 'agregarCerrador'
 	 */
-	public String agregarCerrador(ActionEvent actionEvent) {
-		 RequestContext context = RequestContext.getCurrentInstance();
+	public String agregarCerrador() {
+		RequestContext context = RequestContext.getCurrentInstance();
 		log.info("agregarCerrador() ");
 		log.info("GETID "+event.getId());
 		log.info("tittle "+tittle);
 		
-        if(event.getId() == null)
-            eventModel.addEvent(event);
-        else
-            eventModel.updateEvent(event);  
-          
-        context.update("formGrupo");
-        event = new DefaultScheduleEvent();
+		for (int i = 0; i < eventos.size(); i++) {
+			if(event.getId() != null){
+				log.info("tittle--->* "+eventos.get(i).getTitle());
+				eventModel.updateEvent(eventos.get(i));
+			}
+		}
+		context.execute("horarioVentaDialog.hide()");
+        context.update("@all");
         return null;
     }
 	
@@ -753,14 +771,48 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	 * @param cerradorList the cerradorList to set
 	 */
 	public void setCerradorList(List<String> cerradorList) {
-		tittle =tittle+"\nCerradores:";
-		if(cerradorList!=null){
-			//cambiar
-			for (int i = 0; i < cerradorList.size(); i++) {
-				tittle =tittle +"\n-"+cerradorList.get(i);
+		//capturar los eventos del schedule que tengan la misma fecha de inicio y fin.
+		//setear sus tittle's
+		eventos = new ArrayList<ScheduleEvent>();
+		log.info("total de eventos "+eventModel.getEvents().size()+" canti "+eventModel.getEventCount());
+		for (int i = 0; i < eventModel.getEvents().size(); i++) {
+			//buscar los eventos que esten en el mismo horario (fecha de inicio y fecha final)
+			Calendar calEvent= new GregorianCalendar();
+			calEvent.setTime(event.getStartDate());
+			
+			Calendar calEventE= new GregorianCalendar();
+			calEventE.setTime(event.getEndDate());
+			
+			Calendar calS= new GregorianCalendar();
+			calS.setTime(eventModel.getEvents().get(i).getStartDate());
+			
+			Calendar calE= new GregorianCalendar();
+			calE.setTime(eventModel.getEvents().get(i).getEndDate());
+			//El mismo día (lunes, etc) y misma hora de inicio y fin
+			//Con los mismos expositores
+			if( calEvent.get(Calendar.DAY_OF_WEEK)==calS.get(Calendar.DAY_OF_WEEK) &&
+				calEventE.get(Calendar.DAY_OF_WEEK)==calE.get(Calendar.DAY_OF_WEEK) &&
+				calEvent.get(Calendar.HOUR)==calS.get(Calendar.HOUR) &&
+				calEventE.get(Calendar.HOUR)==calE.get(Calendar.HOUR)&&
+				eventModel.getEvents().get(i).getTitle().equalsIgnoreCase(event.getTitle())){
+				log.info("agregar");
+				eventos.add(eventModel.getEvents().get(i));
 			}
 		}
-		log.info("tittle "+tittle );
+		if(event.getTitle() != null){
+			if(event.getTitle().contains("Cerradores:")==true){
+				String rr[] = event.getTitle().split("\nCerradores:");
+				if(rr.length>=2){
+					tittle =rr[0];
+				}
+			}
+			setTittle(tittle+"\nCerradores:");
+			for (int i = 0; i < cerradorList.size(); i++) {
+				setTittle(tittle +"\n-"+cerradorList.get(i));
+			}
+			log.info("tittle "+tittle );
+		}
+		
 		this.cerradorList = cerradorList;
 	}
 	
@@ -1098,7 +1150,22 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	 * @param tittle the tittle to set
 	 */
 	public void setTittle(String tittle) {
+		log.info("eventos size  "+eventos.size()+" tittle "+tittle);
 		this.tittle = tittle;
+	}
+
+	/**
+	 * @return the eventos
+	 */
+	public List<ScheduleEvent> getEventos() {
+		return eventos;
+	}
+
+	/**
+	 * @param eventos the eventos to set
+	 */
+	public void setEventos(List<ScheduleEvent> eventos) {
+		this.eventos = eventos;
 	}
 
 }
