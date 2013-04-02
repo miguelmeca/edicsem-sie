@@ -417,19 +417,20 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	
 	<!--  Mantenimiento ASIGNACION HORARIO -->
 	<h:form id="formHorarioVenta">
-		<p:dialog header="Registro/Modificación horario Vendedor" widgetVar="horarioVentaDialog" showEffect="fade"
+		<p:dialog header="Asignar cerrador" widgetVar="horarioVentaDialog" showEffect="fade"
 			hideEffect="explode" modal="true" width="550" position="center" resizable="false"  >
 			
 			<h:panelGrid id="display" columns="2" cellpadding="4">
 			
 			<h:outputText value="Cerrador" rendered="#{distribucion.tipoVenta!=2}"/>
-			<p:autoComplete value="#{distribucion.cerradorList}" completeMethod="#{distribucion.completeCerrad}" multiple="true" rendered="#{distribucion.tipoVenta!=2}"/>
+			<p:autoComplete value="#{distribucion.cerradorList}" completeMethod="#{distribucion.completeCerrad}" 
+			multiple="true" rendered="#{distribucion.tipoVenta!=2}"/>
 			
-			<p:commandButton type="reset" value="Limpiar" />
-			<p:commandButton value="Grabar" actionListener="#{distribucion.agregarCerrador}" oncomplete="horarioVentaDialog.hide();" update="@all" >
-			<f:setPropertyActionListener target="#{distribucion.event.title}" value="#{distribucion.tittle}" />
+			<p:commandButton value="Grabar" actionListener="#{distribucion.agregarCerrador}" ajax="false"  >
+				<c:forEach items="#{distribucion.eventos}" var="g" >
+					<f:setPropertyActionListener target="#{g.title}" value="#{distribucion.tittle}" />
+				</c:forEach>
 			</p:commandButton>
-			
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
