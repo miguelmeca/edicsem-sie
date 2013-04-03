@@ -51,6 +51,7 @@ public class MantenimientoGrupoEmpleadoSearchAction extends BaseMantenimientoAbs
 	private ArrayList<MenuDTO> lstMenu ;
 	private Calendar cal;
 	private MetaMesSie objMetaMesSie;
+	private String titletable;
 	
 	@EJB
 	private CargoEmpleadoService objCargoService;
@@ -120,21 +121,21 @@ public class MantenimientoGrupoEmpleadoSearchAction extends BaseMantenimientoAbs
 		mensaje =null;
 		grupoVentaList= new ArrayList<GrupoEmpleadoDTO>();
 		grupoEmplList = new ArrayList<EmpleadoDTO>();
-		//Se debe listar los empleados con cargo de expositor
+		//Se debe listar los empleados con cargo de expositor(Masivo) o vendedor(Punto de Venta)
 		
 		detGrupoEmplList = detgrupoemplService.listarDetGrupoEmpleado(idtipoevento);
-		
+		//Además los nuevos expositores
 		if(detGrupoEmplList==null){
 			detGrupoEmplList= new ArrayList<DetGrupoEmpleadoSie>();
 		}
 		if (detGrupoEmplList.size() == 0) {
 			detGrupoEmplList = new ArrayList<DetGrupoEmpleadoSie>();
-			mensaje="No hay expositores registrados en éste tipo de evento";
+			mensaje="No hay expositores o vendedores registrados en éste tipo de evento";
 			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 		}
 		else{
 			CargoEmpleadoSie c= objCargoService.buscarCargoEmpleado("EXPOSITOR");
-		for (int i = 0; i < detGrupoEmplList.size(); i++) {
+			for (int i = 0; i < detGrupoEmplList.size(); i++) {
 			EmpleadoDTO g = new EmpleadoDTO();
 			g.setTbempleado(detGrupoEmplList.get(i).getTbempleado());
 			if(c==null){
@@ -164,6 +165,7 @@ public class MantenimientoGrupoEmpleadoSearchAction extends BaseMantenimientoAbs
 			log.info("grupo:  "+grupoVentaList.get(i).getTbGrupoVenta().getDescripcion());
 			lstMenu.add(e);
 		}
+		titletable ="CUADRO EN BASE A VENTAS REALIZADAS DESDE "+fechaInicio +" HASTA "+ fechaFin;
 		setMensaje("Consulta realizada con exito");
 		msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 		}
@@ -521,5 +523,19 @@ public class MantenimientoGrupoEmpleadoSearchAction extends BaseMantenimientoAbs
 	 */
 	public void setListaEmpleado(List<EmpleadoDTO> listaEmpleado) {
 		this.listaEmpleado = listaEmpleado;
+	}
+
+	/**
+	 * @return the titletable
+	 */
+	public String getTitletable() {
+		return titletable;
+	}
+
+	/**
+	 * @param titletable the titletable to set
+	 */
+	public void setTitletable(String titletable) {
+		this.titletable = titletable;
 	}
 }

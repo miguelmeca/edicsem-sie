@@ -15,26 +15,26 @@
 			 
 			<p:fieldset legend="#{message['grupo.consulta.tipo.evento']}">
 			<h:panelGrid id="display" columns="2" cellpadding="5" >
-				<h:outputText value="Tipo de Evento" />
+				<h:outputText value="#{message['asignar.tipo.evento']}" />
 				<p:selectOneMenu value="#{grupo.idtipoevento}" required="true" >
 					<f:selectItems value="#{comboAction.tipoEventoVentaitems}" />
 				</p:selectOneMenu>
 				
-				<h:outputText value="Mes" />
+				<h:outputText value="#{message['asignar.mes']}" />
 				<p:selectOneMenu value="#{grupo.idMes}" required="true" >
 					<f:selectItems value="#{comboAction.metaMesItems}" />
 					<p:ajax update="display"  listener="#{grupo.listarFechas}"  />
 				</p:selectOneMenu>
 					
-				<h:outputLabel value="Fecha Inicial :" />
+				<h:outputLabel value="#{message['asignar.fecha.inicial']}" />
 				<p:inputText value="#{grupo.fechaInicio}" readonly="true" />
 					
-				<h:outputLabel value="Fecha Final :" />
+				<h:outputLabel value="#{message['asignar.fecha.final']}" />
 				<p:inputText value="#{grupo.fechaFin}" readonly="true" />
 					
 				<f:facet name="footer">
-				<p:commandButton value="Consultar" action="#{grupo.consultar}" title="Consultar facturación y entrega" 
-				update="@form" icon="ui-icon-star" >
+				<p:commandButton value="#{message['asignar.consultar']}" action="#{grupo.consultar}" 
+				title="#{message['asignar.consultar.title']}" update="@form" icon="ui-icon-star" >
 				</p:commandButton>
 				</f:facet>
 			</h:panelGrid>
@@ -42,8 +42,7 @@
 			<p:dataTable id="data" var="g" value="#{grupo.grupoEmplList}" rowStyleClass="#{g.lider  == true ? 'amarillo' : 'aguamarina'}"
 			emptyMessage="#{message['facturacion.empty.list']}" >  
 	           <f:facet name="header">
-					<h:outputText value="CUADRO EN BASE A VENTAS REALIZADAS DESDE  #{grupo.fechaInicio}
-					HASTA #{grupo.fechaFin} " />
+					<h:outputText value="#{grupo.titletable}" />
 				</f:facet>
 	           <p:column style="width:2%" >
 	            	<f:facet name="header">
@@ -53,7 +52,7 @@
 					<p:ajax update="data" />
 					</p:selectBooleanCheckbox>  
 	            </p:column>
-	            <p:column headerText="Empleado">
+	            <p:column headerText="#{message['asignar.empleado']}">
 	                <h:outputText value="#{g.tbempleado.nombresCompletos}" />
 	            </p:column>
 	            <p:column style="width:80px"  >
@@ -107,7 +106,7 @@
 	            </p:column>
             </p:dataTable>
             </p:fieldset>
-            <p:fieldset id="selected" legend="Grupos Asignados" style="margin-top:20px">
+            <p:fieldset id="selected" legend="#{message['asignar.grupos']}" style="margin-top:20px">
              
             <h:panelGrid columns="2" cellpadding="8" >
             <c:forEach items="#{grupo.grupoVentaList}" var="v">
@@ -120,7 +119,7 @@
 		                <h:outputText value="#{f.tbempleado.nombresCompletos}" />
 		           </p:column>
 		           <p:column>
-		            <p:menuButton value="Otro Grupo" >
+		            <p:menuButton value="#{message['asignar.otro.grupo']}" >
 			        	<c:forEach items="#{grupo.lstMenu}" var="k">
 			                <p:menuitem  value="#{k.nombreMenu}" action="#{grupo.cambiarGrupo}" update="@form" >
 			                <f:setPropertyActionListener target="#{grupo.idempleado}" value="#{f.tbempleado.idempleado}" />
@@ -132,7 +131,7 @@
 	           </p:dataTable>
 	           </c:forEach>
            </h:panelGrid>
-               <p:commandButton  action="#{grupo.insertar}" value="Registrar Grupos" 
+               <p:commandButton  action="#{grupo.insertar}" value="#{message['asignar.registrar']}" 
                ajax="false" update="formGrupo" icon="ui-icon ui-icon-disk" />
            </p:fieldset>
 	</h:form>

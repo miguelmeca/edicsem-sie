@@ -65,7 +65,7 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	private List<ScheduleEvent> eventos;
 	private Date  horaIngreso,horaSalida;
 	private int idhorario;
-	private String mensaje, rangoTurno, rangoFecha;
+	private String mensaje, rangoTurno, rangoFecha, dias;
 	private int idempleado;
 	private boolean newRecord =false;
 	private int ide;
@@ -120,7 +120,6 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		log.info("agregar()");
 		idMes=0;
 		idempleado=0;
-		tipoVenta=0;
 		eventos = new ArrayList<ScheduleEvent>();
 		expositorList = new ArrayList<String>();
 		cerradorList = new ArrayList<String>();
@@ -133,10 +132,12 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		event = new DefaultScheduleEvent();
 		idturno=0;
 		idMes=0;
+		dias="";
 		fechaInicio = "";
 		fechaFin = "";
 		rangoTurno="";
 		rangoFecha="";
+		tipoVenta=0;
 		CargoEmpleadoSie ccerrador =  objCargoService.buscarCargoEmpleado(Constants.CARGO_CERRADOR);
 		CargoEmpleadoSie cvendedor =  objCargoService.buscarCargoEmpleado(Constants.CARGO_VENDEDOR);
 		CargoEmpleadoSie cexpositor =  objCargoService.buscarCargoEmpleado(Constants.CARGO_EXPOSITOR);
@@ -145,7 +146,6 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		vendedor= cvendedor.getIdcargoempleado();
 		return getViewList();
 	}
-	
 	
 	public List<String> completeVend(String query){
 		log.info(" completeVend() "+query+"  "+comboManager.getVendedorItems().size());
@@ -221,35 +221,41 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		log.info("agregarhorario() :)");
 		expo=null;
 		listaHorario = new ArrayList<HorarioPersonalSie>();
-		if(tipoVenta==1||tipoVenta>2){//Masivo
 			
+		if(tipoVenta>=1){//Masivo	
 				objHorarioPersonal= new HorarioPersonalSie();
 				objHorarioPersonal.setHoraIngreso(objTurno.getHoraInicio());
 				objHorarioPersonal.setHoraSalida(objTurno.getHoraFin());
 				objHorarioPersonal.setDiainicio(DateUtil.convertStringToDate(fechaInicio));
 				objHorarioPersonal.setDiafin(DateUtil.convertStringToDate(fechaFin));
 				listaHorario.add(objHorarioPersonal);
+				
 				for (int i = 0; i < expositorList.size(); i++) {//expositores
 				DetTurnoEmplSie det = new DetTurnoEmplSie();
 				det.setTbTurno(objTurnoService.findTurno(idturno));
 				det.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoVendedor(expositorList.get(i)));
 				det.setTbCargoempleado(objCargoService.buscarCargoEmpleado(expositor));
 				listaDetTurnoEmpl.add(det);
-				
 				log.info(expositorList+" -- >  "+expositorList.get(i));
-            	if(expo==null){
-            		expo =" \n - "+expositorList.get(i);
-            	}else{
-            		expo = expo+" \n - "+expositorList.get(i);
-            	}
-			}
-		}else if(tipoVenta==2){//Punto de Venta
-			for (int i = 0; i < vendedorList.size(); i++) {//vendedores
+	            	if(expo==null){
+	            		expo =" \n - "+expositorList.get(i);
+	            	}else{
+	            		expo = expo+" \n - "+expositorList.get(i);
+	            	}
+				}
+				
+				for (int i = 0; i < vendedorList.size(); i++) {//vendedores
 				DetTurnoEmplSie det = new DetTurnoEmplSie();
 				det.setTbTurno(objTurnoService.findTurno(idturno));
 				det.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoVendedor(vendedorList.get(i)));
 				det.setTbCargoempleado(objCargoService.buscarCargoEmpleado(vendedor));
 				listaDetTurnoEmpl.add(det);
+				log.info(expositorList+" -- >  "+vendedorList.get(i));
+            	if(expo==null){
+            		expo =" \n - "+vendedorList.get(i);
+            	}else{
+            		expo = expo+" \n - "+vendedorList.get(i);
+            	}
 			}
 		}
 		return mostrar();
@@ -258,13 +264,11 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	/**lista los horarios del trabajador**/
 	public String mostrar() throws Exception {
 		log.info(" eventModel --->");
-		//eventModel = new DefaultScheduleModel();
 		
 		log.info("listarHorario del personal "+listaHorario.size());
 				if (listaHorario == null) {
 					listaHorario = new ArrayList<HorarioPersonalSie>();
 				}
-
                 
 				for(int i=0;i < listaHorario.size(); i++){
 					objHorarioPersonal= listaHorario.get(i);
@@ -325,6 +329,19 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 				 						}
 		 							}
 								}
+		 						for (int k = 0; k < vendedorList.size(); k++) {
+			 						log.info("e "+vendedorList.get(k)+ " H "+eventModel.getEvents().get(m).getStartDate()+" "+
+			 								dDate+" "+eventModel.getEvents().get(m).getEndDate()+" "+dDate2);
+		 							if( eventModel.getEvents().get(m).getTitle().contains(vendedorList.get(k))){
+		 								log.info("equals");
+		 								if( eventModel.getEvents().get(m).getStartDate().equals(dDate) && 
+		 									eventModel.getEvents().get(m).getEndDate().equals(dDate2)){
+			 								log.info(" TRUE ");
+					 						existeMismoHorario=true;
+					 						break;
+				 						}
+		 							}
+								}
 		 	                }
 		 					
 		 					if(existeMismoHorario){
@@ -341,9 +358,10 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		              cal3.add(Calendar.DAY_OF_WEEK,1);
 	               }
 				}
-		objHorarioPersonal = new HorarioPersonalSie();
 		
 		FacesContext.getCurrentInstance().addMessage(null, msg);
+		objHorarioPersonal = new HorarioPersonalSie();
+		
 		return getViewList();
 	}
 	
@@ -398,8 +416,10 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 				eventModel.updateEvent(eventos.get(i));
 			}
 		}
-		context.execute("horarioVentaDialog.hide()");
-        context.update("@all");
+		
+	        context.execute("horarioVentaDialog.hide()");
+			context.update("formGrupo");
+		
         return null;
     }
 	
@@ -613,6 +633,24 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	 * @param diaList the diaList to set
 	 */
 	public void setDiaList(List<String> diaList) {
+		setDias("( ");
+		for (int i = 0; i < diaList.size(); i++) {
+			 Iterator it = comboManager.getDiasItems().entrySet().iterator();
+		     while(it.hasNext()){
+		    	 Map.Entry m =(Map.Entry)it.next();
+		    	 String value=(String)m.getKey();
+		    	 if(m.getValue().toString().equals(diaList.get(i))){
+		    	 if(i==0)
+		    		 setDias(dias+value);
+		    	 else
+		    		 setDias(dias+", "+value);
+		    	 }
+		      }
+		}
+		setDias(dias+" )");
+		if(diaList.size()==0){
+			setDias("");
+		}
 		this.diaList = diaList;
 	}
 
@@ -800,20 +838,27 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 				eventos.add(eventModel.getEvents().get(i));
 			}
 		}
-		if(event.getTitle() != null){
-			if(event.getTitle().contains("Cerradores:")==true){
-				String rr[] = event.getTitle().split("\nCerradores:");
-				if(rr.length>=2){
-					tittle =rr[0];
+		if(cerradorList!=null){
+			if(event.getTitle() != null){
+				if(event.getTitle().contains("Cerradores:")==true){
+					String rr[] = event.getTitle().split("\nCerradores:");
+					if(rr.length>=2){
+						tittle =rr[0];
+					}
+				}
+				if(cerradorList.size()==0||cerradorList==null){
+					setTittle(tittle);
+					log.info("tittlex "+tittle );
+				}
+				else{
+					setTittle(tittle+"\nCerradores:");
+				for (int i = 0; i < cerradorList.size(); i++) {
+					setTittle(tittle +"\n-"+cerradorList.get(i));
+				}
+				log.info("tittle "+tittle );
 				}
 			}
-			setTittle(tittle+"\nCerradores:");
-			for (int i = 0; i < cerradorList.size(); i++) {
-				setTittle(tittle +"\n-"+cerradorList.get(i));
-			}
-			log.info("tittle "+tittle );
 		}
-		
 		this.cerradorList = cerradorList;
 	}
 	
@@ -989,6 +1034,16 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		comboManager.setVendedorItems(null);
 		comboManager.setExpositorItems(null);
 		comboManager.setCerradorItems(null);
+		cerradorList = new ArrayList<String>();
+		vendedorList= new ArrayList<String>();
+		expositorList= new ArrayList<String>();
+		diaList= new ArrayList<String>();
+		eventModel = new DefaultScheduleModel();
+		idturno=0;
+		idMes=0;
+		rangoTurno="";
+		rangoFecha="";
+		dias="";
 		Map<String, Integer> vendedorxcargo = new HashMap<String, Integer>();
 		Map<String, Integer> expositorxcargo = new HashMap<String, Integer>();
 		List listaP = new ArrayList<EmpleadoSie>();
@@ -1167,6 +1222,20 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	 */
 	public void setEventos(List<ScheduleEvent> eventos) {
 		this.eventos = eventos;
+	}
+
+	/**
+	 * @return the dias
+	 */
+	public String getDias() {
+		return dias;
+	}
+
+	/**
+	 * @param dias the dias to set
+	 */
+	public void setDias(String dias) {
+		this.dias = dias;
 	}
 
 }
