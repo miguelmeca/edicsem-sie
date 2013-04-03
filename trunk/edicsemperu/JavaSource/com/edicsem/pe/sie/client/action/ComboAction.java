@@ -1022,6 +1022,7 @@ public class ComboAction {
 	 */
 	public Map<String, Integer> getDiasItems() {
 		List lista = new ArrayList<FechaSie>();
+		diasItems = new HashMap<String, Integer>();
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'getDiasItems()'");
@@ -1034,6 +1035,7 @@ public class ComboAction {
 				diasItems.put(entidad.getDia(),
 						entidad.getIdFecha());
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -1042,6 +1044,7 @@ public class ComboAction {
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
+		
 		return diasItems;
 	}
 

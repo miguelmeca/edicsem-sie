@@ -1,4 +1,4 @@
-
+<?xml version="1.0" encoding="UTF-8"?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -6,14 +6,13 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui">
-<f:view >
+<f:view contentType="text/html">
 	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<ui:insert name="title">
 			<title>Men&uacute; Principal</title> 
-		</ui:insert> 
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		</ui:insert>  
 		<f:facet name="first">
-			
 			<title>Ediciones Sembrando</title>
 		</f:facet>
 		<link type="text/css" rel="stylesheet"
@@ -105,6 +104,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 <!--  FIN Validar los Datos de un Formulario -->
 	</h:head>
+	<h:body>
 	<p:dialog modal="true" widgetVar="statusDialogEP" closeOnEscape="false" resizable="false"
 		header="Migrando Entregas Peru" draggable="false" closable="false">
 		<p:graphicImage value="/images/ajaxloadingbar.gif" />
@@ -119,6 +119,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	</p:dialog>
 	<f:loadBundle var="message"
 		basename="com.edicsem.pe.sie.client.properties.ApplicationResources" />
+		
 	<p:layout fullPage="true">
 		<p:layoutUnit position="north" size="110">
 			<div id="header" class="ui-widget ui-widget-header">
@@ -417,19 +418,19 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	
 	<!--  Mantenimiento ASIGNACION HORARIO -->
 	<h:form id="formHorarioVenta">
-		<p:dialog header="Asignar cerrador" widgetVar="horarioVentaDialog" showEffect="fade"
+		<p:dialog header="#{message['asignar.cerrador']}" widgetVar="horarioVentaDialog" showEffect="fade"
 			hideEffect="explode" modal="true" width="550" position="center" resizable="false"  >
 			
 			<h:panelGrid id="display" columns="2" cellpadding="4">
 			<p:messages id="msj" showDetail="true" closable="true" />
 			 
 			<h:outputText value="Cerrador" rendered="#{distribucion.tipoVenta!=2}"/>
-			<p:autoComplete value="#{distribucion.cerradorList}" completeMethod="#{distribucion.completeCerrad}" required="true"
-			multiple="true" rendered="#{distribucion.tipoVenta!=2}" requiredMessage="Debe seleccionar cerradores" />
+			<p:autoComplete value="#{distribucion.cerradorList}" completeMethod="#{distribucion.completeCerrad}" 
+			multiple="true" rendered="#{distribucion.tipoVenta!=2}"/>
 			
-			<p:commandButton value="Grabar" actionListener="#{distribucion.agregarCerrador}" ajax="false" update="msj" >
-				<c:forEach items="#{distribucion.eventos}" var="g" >
-					<f:setPropertyActionListener target="#{g.title}" value="#{distribucion.tittle}" />
+			<p:commandButton value="Grabar" action="#{distribucion.agregarCerrador}"  >
+				<c:forEach items="#{distribucion.eventos}" var="e" >
+					<f:setPropertyActionListener target="#{e.title}" value="#{distribucion.tittle}" />
 				</c:forEach>
 			</p:commandButton>
 			</h:panelGrid>
@@ -2138,6 +2139,6 @@ value="#{MantenimientoClienteFormAction.tipocasanuevo}">
 	</p:fieldset>
 </p:dialog>
 </h:form>
-	
+</h:body>
 </f:view>
 </html>
