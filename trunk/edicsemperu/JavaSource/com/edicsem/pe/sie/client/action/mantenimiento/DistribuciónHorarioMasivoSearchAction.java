@@ -120,6 +120,7 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		log.info("agregar()");
 		idMes=0;
 		idempleado=0;
+		tipoVenta=0;
 		eventos = new ArrayList<ScheduleEvent>();
 		expositorList = new ArrayList<String>();
 		cerradorList = new ArrayList<String>();

@@ -421,12 +421,13 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			hideEffect="explode" modal="true" width="550" position="center" resizable="false"  >
 			
 			<h:panelGrid id="display" columns="2" cellpadding="4">
-			
+			<p:messages id="msj" showDetail="true" closable="true" />
+			 
 			<h:outputText value="Cerrador" rendered="#{distribucion.tipoVenta!=2}"/>
-			<p:autoComplete value="#{distribucion.cerradorList}" completeMethod="#{distribucion.completeCerrad}" 
-			multiple="true" rendered="#{distribucion.tipoVenta!=2}"/>
+			<p:autoComplete value="#{distribucion.cerradorList}" completeMethod="#{distribucion.completeCerrad}" required="true"
+			multiple="true" rendered="#{distribucion.tipoVenta!=2}" requiredMessage="Debe seleccionar cerradores" />
 			
-			<p:commandButton value="Grabar" actionListener="#{distribucion.agregarCerrador}" ajax="false"  >
+			<p:commandButton value="Grabar" actionListener="#{distribucion.agregarCerrador}" ajax="false" update="msj" >
 				<c:forEach items="#{distribucion.eventos}" var="g" >
 					<f:setPropertyActionListener target="#{g.title}" value="#{distribucion.tittle}" />
 				</c:forEach>
