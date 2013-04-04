@@ -76,7 +76,8 @@
 		<class>com.edicsem.pe.sie.entity.CarroSie</class>
 		<class>com.edicsem.pe.sie.entity.TurnoSie</class>
 		<class>com.edicsem.pe.sie.entity.DetTurnoEmplSie</class>
-		
+		<class>com.edicsem.pe.sie.entity.CitaSie</class>
+		<class>com.edicsem.pe.sie.entity.HistoricoObservacionesSie</class>
 		<properties>
 			<property name="eclipselink.jdbc.driver" value="org.postgresql.Driver" />
 			<property name="eclipselink.jdbc.url" value="jdbc:postgres://localhost:5432/bd_sie" />
