@@ -406,12 +406,9 @@ function validarEspaciosLetrasNumeros(e) { // 1
 					requiredMessage="#{message['contrato.ubigeo.distrito.validation']}">
 					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
-
 				</p:selectOneMenu>
-				<p:commandButton value="Insertar Ubigeo:"
-					action="#{contratoForm.ingresarUbigeo}"
-					oncomplete="UbigeoDialog.hide()" >
-				</p:commandButton>
+				<p:commandButton value="Insertar Ubigeo:" action="#{contratoForm.ingresarUbigeo}" 
+				oncomplete="UbigeoDialog.hide()" />
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
@@ -420,10 +417,8 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	<h:form id="formHorarioVenta">
 		<p:dialog header="#{message['asignar.cerrador']}" widgetVar="horarioVentaDialog" showEffect="fade"
 			hideEffect="explode" modal="true" width="550" position="center" resizable="false"  >
-			
-			<h:panelGrid id="display" columns="2" cellpadding="4">
 			<p:messages id="msj" showDetail="true" closable="true" />
-			 
+			<h:panelGrid id="display" columns="2" cellpadding="4">
 			<h:outputText value="Cerrador" rendered="#{distribucion.tipoVenta!=2}"/>
 			<p:autoComplete value="#{distribucion.cerradorList}" completeMethod="#{distribucion.completeCerrad}" 
 			multiple="true" rendered="#{distribucion.tipoVenta!=2}"/>
@@ -439,36 +434,36 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	
 	<!--  Mantenimiento HORARIO VENDEDOR -->
 	<h:form id="formHorarioVendedor">
-		<p:dialog header="Registro/Modificación horario Vendedor" widgetVar="horarioVendedorDialog" showEffect="fade"
+		<p:dialog header="#{message['horario.personal.dialog.title']}" widgetVar="horarioVendedorDialog" showEffect="fade"
 			hideEffect="explode" modal="true" width="450" position="center" resizable="false" >
 			<h:panelGrid id="display" columns="2" cellpadding="2">
 			
-			<h:outputLabel value="Vendedor " />  
+			<h:outputLabel value="#{message['horario.personal.vendedor']}" />  
             <p:selectCheckboxMenu value="#{horarioVendedorForm.vendedorList}" required="true" filter="true" filterText="Filter" filterMatchMode="startsWith">
             <f:selectItems value="#{comboAction.empleadoxcargo}" />
             </p:selectCheckboxMenu>
             
-			<h:outputLabel value="Desde " />
+			<h:outputLabel value="#{message['horario.personal.desde']}" />  
             <p:inputMask value="#{horarioVendedorForm.event.startDate}" required="true" mask="99/99/9999 99:99">  
                 <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />  
             </p:inputMask>
             
-            <h:outputLabel value="Hasta " />  
+            <h:outputLabel value="#{message['horario.personal.hasta']}" />   
             <p:inputMask value="#{horarioVendedorForm.event.endDate}" required="true" mask="99/99/9999 99:99">  
                 <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />  
             </p:inputMask>
             
+            <f:facet name="footer">
 				<p:commandButton type="reset" value="Limpiar" />
-				<p:commandButton value="Grabar" action="#{horarioVendedorForm.insertar}"
+				<p:commandButton value="#{message['horario.personal.registrar']}" action="#{horarioVendedorForm.insertar}"
 					 oncomplete="horarioVendedorDialog.hide();" update="@all">
 				</p:commandButton>
-				
+			</f:facet>
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
 	
 	<!--  Mantenimiento MOTIVO (Registrar , actualizar)-->
-
 	<h:form id="NuevoModificamotivo">
 		<p:dialog header="Ingrese Nuevo Motivo"
 			widgetVar="carDialogNuevomotivo" showEffect="fade"
@@ -513,62 +508,6 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:confirmDialog>
 	</h:form>
 	
-	<h:form id="NuevoModificaPunto">
-		<p:dialog header="Ingrese Nuevo Punto de Venta/Almacen" resizable="false" 
-			widgetVar="carDialogNuevoPunto" showEffect="fade"
-			hideEffect="explode" modal="true" width="350" position="center">
-
-			<h:panelGrid id="display">
-
-				<h:outputText value="#{message['almacen.descripcion']}" />
-				<p:inputText value="#{almacenForm.objAlmacenSie.descripcion}" required="true"
-						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" />
-					
-				<h:outputText value="#{message['almacen.ubigeo']}" />
-			</h:panelGrid>
-			<h:panelGrid columns="2" id="panel">
-				<h:outputText value="Lima (defecto)" />
-				<p:selectBooleanCheckbox id="sel"
-					value="#{almacenForm.defectoUbigeo}">
-					<p:ajax update="panel,ubigeoDefecto"
-						oncomplete="if(#{almacenForm.defectoUbigeo}) UbigeoAlmacenDialog.show()"></p:ajax>
-				</p:selectBooleanCheckbox>
-
-				<h:outputText value="#{message['contrato.ubigeo.distrito']}"
-					rendered="#{almacenForm.defectoUbigeo}" />
-				<p:selectOneMenu value="#{almacenForm.idUbigeo}"
-					rendered="#{almacenForm.defectoUbigeo}" required="true"
-					style="width:200px"
-					requiredMessage="#{message['contrato.ubigeo.distrito.validation']}">
-					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
-					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
-					<p:ajax update="panel" listener="#{almacenForm.cambioUbica}"></p:ajax>
-				</p:selectOneMenu>
-
-				<h:outputText value="Ubigeo " />
-				<h:outputText id="ubigeoDefecto"
-					value="#{almacenForm.ubigeoDefecto}" />
-			</h:panelGrid>
-			<h:panelGrid columns="2" id="panel2">
-				<h:outputText value="#{message['almacen.direccion']}" />
-				<p:inputText value="#{almacenForm.objAlmacenSie.direccion}"
-					required="true" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-					style="font-weight:bold"  />
-				<h:outputText value="#{message['almacen.tipo']}" />
-				<p:selectOneMenu value="#{almacenForm.objTipoPv.idtipopuntoventa}">
-					<f:selectItems value="#{comboAction.tipoalmacenitems}" />
-				</p:selectOneMenu>
-				
-				<h:panelGroup>
-					<p:commandButton id="btn" value="Guardar" update="panel"
-						action="#{almacenForm.insertar}" ajax="false"
-						icon="ui-icon ui-icon-disk" />
-				</h:panelGroup>
-			</h:panelGrid>
-		</p:dialog>
-	</h:form>
-	
 	<!-- Eliminar Producto  -->
 	<h:form>
 		<p:confirmDialog message="Esta seguro de eliminar dicho Producto de la lista?"
@@ -578,12 +517,10 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 			<p:commandButton type="submit" value="Si" action="#{verifica.eliminarProducto}" 
 			update=":lstProducto" oncomplete="confirmationProductoVerifica.hide()" ajax="false"/>
-
 			<p:commandButton value="No" onclick="confirmationProductoVerifica.hide()" type="button" />
 			
 		</p:confirmDialog>
 	</h:form>
-	
 	
 	<h:form>
 		<p:confirmDialog id="confirmDeshabilitarAlmacen" 
@@ -611,15 +548,10 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			header="Confirm" severity="alert" widgetVar="confirmationTelEmp"
 			position="center">
 
-			<p:commandButton type="submit" value="Si"
-				action="#{mantenimientoEmpleadoFormAction.telefonoElimina}"
-				update=":form:panelTlf:o"
-				oncomplete="confirmationTelEmp.hide()" ajax="false">
-			</p:commandButton>
-
-			<p:commandButton value="No" onclick="confirmationTelEmp.hide()"
-				type="button" />
-
+			<p:commandButton type="submit" value="Si" action="#{mantenimientoEmpleadoFormAction.telefonoElimina}"
+				update=":form:panelTlf:o" oncomplete="confirmationTelEmp.hide()" ajax="false" />
+			<p:commandButton value="No" onclick="confirmationTelEmp.hide()" type="button" />
+			
 		</p:confirmDialog>
 	</h:form>
 	
@@ -631,14 +563,10 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			header="Confirm" severity="alert" widgetVar="confirmationProductoContrato"
 			position="center">
 
-			<p:commandButton type="submit" value="Si"
-				action="#{contratoForm.eliminarProducto}"
-				update=":detPaqueteList"
-				oncomplete="confirmationProductoContrato.hide()" ajax="false">
-			</p:commandButton>
+			<p:commandButton type="submit" value="Si" action="#{contratoForm.eliminarProducto}"
+				update=":detPaqueteList" oncomplete="confirmationProductoContrato.hide()" ajax="false" />
 
-			<p:commandButton value="No" onclick="confirmationProductoContrato.hide()"
-				type="button" />
+			<p:commandButton value="No" onclick="confirmationProductoContrato.hide()" type="button" />
 
 		</p:confirmDialog>
 	</h:form>

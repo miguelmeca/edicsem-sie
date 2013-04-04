@@ -37,7 +37,6 @@ import com.edicsem.pe.sie.entity.TurnoSie;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.ContratoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
-import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.FechaService;
 import com.edicsem.pe.sie.service.facade.HorarioPersonalService;
 import com.edicsem.pe.sie.service.facade.MetaMesService;
@@ -85,8 +84,6 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	private MetaMesService objMetaMesService;
 	@EJB
 	private HorarioPersonalService objHorarioPersonalService;
-	@EJB
-	private EstadogeneralService objEstadoGeneralService;
 	@EJB
 	private EmpleadoSieService objEmpleadoSieService;
 	@EJB
@@ -242,7 +239,7 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	            	}else{
 	            		expo = expo+" \n - "+expositorList.get(i);
 	            	}
-				}
+				}	
 				
 				for (int i = 0; i < vendedorList.size(); i++) {//vendedores
 				DetTurnoEmplSie det = new DetTurnoEmplSie();
@@ -407,7 +404,6 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	public String agregarCerrador() {
 		RequestContext context = RequestContext.getCurrentInstance();
 		log.info("agregarCerrador() ");
-		log.info("GETID "+event.getId());
 		log.info("tittle "+tittle);
 		
 		for (int i = 0; i < eventos.size(); i++) {
@@ -416,9 +412,8 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 				eventModel.updateEvent(eventos.get(i));
 			}
 		}
-		
-	        context.execute("horarioVentaDialog.hide()");
-			context.update("formGrupo");
+		context.execute("horarioVentaDialog.hide()");
+		context.update("formGrupo");
 		
         return null;
     }
@@ -428,18 +423,17 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	 */
 	public String insertar() throws Exception {
 		mensaje=null;
-		log.info("entrando a insertar");
+		log.info("insertar()");
 		
-		objHorarioPersonal.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(36));
 		objHorarioPersonal.setHoraIngreso(new Time(horaIngreso.getTime()));
 		objHorarioPersonal.setHoraSalida(new Time(horaSalida.getTime()));
 		
 		try {
-					
+			
 			//para que no hayan cruces de horario 
 			for (int j = 0; j < diaList.size();j++) {
 				for (int i = 0; i < listaHorario.size(); i++) {
-					log.info("  verificando ");
+					log.info("  verificando horario de punto de venta ");
 					if( listaHorario.get(i).getTbFecha().getIdFecha()== Integer.parseInt(diaList.get(j))
 						 && (objHorarioPersonal.getDiainicio().after(listaHorario.get(i).getDiainicio()) && 
 								 objHorarioPersonal.getDiainicio().before(listaHorario.get(i).getDiafin() ) ||
@@ -449,13 +443,11 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 								 objHorarioPersonal.getDiafin().equals(listaHorario.get(i).getDiainicio())||
 								 objHorarioPersonal.getDiainicio().equals(listaHorario.get(i).getDiafin())||
 								 objHorarioPersonal.getDiainicio().equals(listaHorario.get(i).getDiainicio()))){
-						log.info("fechas con horario registrado   ");
 						 
 						log.info(" hora ingreso "+objHorarioPersonal.getHoraIngreso());
 						log.info(" hora ingreso "+objHorarioPersonal.getHoraSalida());
 						log.info(" hora 2 "+listaHorario.get(i).getHoraIngreso());
 						log.info(" hora sal "+listaHorario.get(i).getHoraSalida());
-						log.info(" hora 2 "+listaHorario.get(i).getHoraIngreso());
 						if(	objHorarioPersonal.getHoraIngreso().equals(listaHorario.get(i).getHoraIngreso()) ||
 								objHorarioPersonal.getHoraIngreso().after(listaHorario.get(i).getHoraIngreso())
 								&& objHorarioPersonal.getHoraIngreso().before(listaHorario.get(i).getHoraSalida())){
@@ -490,15 +482,9 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 					objHorarioPersonal.setDiafin(objHorarioPersonal.getDiafin());
 					objHorarioPersonal.setTbEmpleado(objEmpleadoSie);
 					objHorarioPersonal.setDescripcion(objHorarioPersonal.getDescripcion().trim());
-					log.info("APUNTO DE INSERTAR");
-		
 					objHorarioPersonalService.insertHorarioPersonal(objHorarioPersonal,diaList, idempleado);
-					
-					 log.info("insertando..... ");
-					 mensaje ="Se Registró el horario Correctamente";
-					 msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
-					 FacesContext.getCurrentInstance().addMessage(null, msg);
-				
+					mensaje = Constants.MESSAGE_REGISTRO_TITULO;
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
 				}
 			else if (isNewRecord()==false){
 					log.info("actualizando " + getHoraIngreso()+"  hora salida  "+getHoraSalida() );
@@ -511,10 +497,10 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 					
 					objHorarioPersonalService.updateHorarioPersonal(objHorarioPersonal);
 					
-					mensaje ="Se Actualiazó el horario Correctamente";
+					mensaje = Constants.MESSAGE_ACTUALIZO_TITULO;
 					 msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 							 Constants.MESSAGE_INFO_TITULO, mensaje);
-					 FacesContext.getCurrentInstance().addMessage(null, msg);
+					
 				}
 				
 		} catch (Exception e) {
@@ -525,8 +511,8 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		
-		return mostrar();
+		 FacesContext.getCurrentInstance().addMessage(null, msg);
+		return getViewList();
 	}
 	
 	public void listarFechas() throws ParseException{
@@ -960,22 +946,7 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 			HorarioPersonalService objHorarioPersonalService) {
 		this.objHorarioPersonalService = objHorarioPersonalService;
 	}
-
-	/**
-	 * @return the objEstadoGeneralService
-	 */
-	public EstadogeneralService getObjEstadoGeneralService() {
-		return objEstadoGeneralService;
-	}
-
-	/**
-	 * @param objEstadoGeneralService the objEstadoGeneralService to set
-	 */
-	public void setObjEstadoGeneralService(
-			EstadogeneralService objEstadoGeneralService) {
-		this.objEstadoGeneralService = objEstadoGeneralService;
-	}
-
+	
 	/**
 	 * @return the objEmpleadoSieService
 	 */

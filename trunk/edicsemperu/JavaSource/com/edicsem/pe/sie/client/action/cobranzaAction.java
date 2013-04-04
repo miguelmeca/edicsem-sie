@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.DualListModel;
 
 import com.edicsem.pe.sie.entity.CobranzaSie;
@@ -176,7 +177,7 @@ public class cobranzaAction extends BaseMantenimientoAbstractAction {
 	 */
 	public String insertar() throws Exception {
 		mensaje=null;
-	
+		RequestContext context = RequestContext.getCurrentInstance();
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()' " );
@@ -196,6 +197,7 @@ public class cobranzaAction extends BaseMantenimientoAbstractAction {
 			mensaje="Se generó la lista correctamente";
 			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 			}
+			context.execute("statusDialogCob.hide()");
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();

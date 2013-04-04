@@ -186,7 +186,8 @@
 					</p:dataTable>
 				</p:fieldset>
 			</h:panelGrid>
-			<p:fieldset legend="#{message['cobranza.registro']}" style="margin-top:20px; width:70%"   >
+			<h:panelGrid columns="2">
+			<p:fieldset legend="#{message['cobranza.registro']}" style="margin-top:20px"   >
 				<h:panelGrid columns="2">
 					<p:outputLabel value="#{message['operadora.tipollamada']}" for="tipo" />
 					<p:selectOneMenu id="tipo" filter="true" required="true"
@@ -201,7 +202,7 @@
 					<p:inputTextarea id="observacion"
 						value="#{mantenimientoCobranzaOperaSearchAction.objCobranzaOpera.observaciones}"
 						requiredMessage="#{message['operadora.observacion.validation']}"
-						rows="3" cols="60" maxlength="500" required="true" label="Correo"
+						rows="3" cols="50" maxlength="500" required="true" label="Correo"
 						autoResize="false" />
 					<h:outputText value="#{message['cobranza.sistema']}" />
 					<p:selectBooleanCheckbox value="#{mantenimientoCobranzaOperaSearchAction.enviarMensaje}"/>
@@ -210,6 +211,22 @@
 						ajax="false" icon="ui-icon-comment" />
 				</h:panelGrid>
 			</p:fieldset>
+			<p:fieldset legend="#{message['cobranza.historico.observaciones']}" style="margin-top:20px"   >
+				<h:panelGrid columns="2"> 
+				<!-- Lista de Historial -->
+				
+					<div  class="ui-messages-info ui-corner-all"  >
+					
+					<div  class="ui-messages-info-summary"  >karen:</div>
+					<div  class="ui-messages-info-detail"  >Mensaje </div>
+					</div>
+					 
+					<p:commandButton   value="#{message['cobranza.guardar']}" 
+						action="#{mantenimientoCobranzaOperaSearchAction.insertar}"
+						ajax="false" icon="ui-icon-comment" />
+				</h:panelGrid>
+			</p:fieldset>
+			</h:panelGrid>
 		</h:form>
 	</ui:define>
 </ui:composition>
