@@ -83,4 +83,19 @@ public class HitoricoObservacionesDAOImpl implements HistoricoObbservacionesDAO{
 		}
 		return lista;
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.HistoricoObbservacionesDAO#listarHistorial(int)
+	 */
+	public List listarHistorial(int idcontrato) {
+		List  lista = null;
+		try {
+			Query q = em.createQuery("select p from HistoricoObservacionesSie p where p.tbContrato.idcontrato = "+idcontrato);
+			lista =  q.getResultList(); 
+		   log.info("tamaño lista HistoricoObservaciones pro contrato --> " + lista.size()+"  ");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 }
