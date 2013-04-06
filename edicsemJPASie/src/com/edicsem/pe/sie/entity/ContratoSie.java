@@ -130,6 +130,10 @@ public class ContratoSie implements Serializable {
   	@OneToMany(mappedBy="tbContrato")
   	private Set<SeguimientoContratoSie> tbSeguimientoContrato;
   	
+  	//bi-directional many-to-one association to HistoricoObservacionesSie
+  	@OneToMany(mappedBy="tbContrato")
+  	private Set<HistoricoObservacionesSie> tbHistoricoObservacion;
+  	
   	@Transient
 	private String fechaCreacionString;
   	
@@ -423,6 +427,20 @@ public class ContratoSie implements Serializable {
 
 	public void setTbLugarVenta(LugarVentaSie tbLugarVenta) {
 		this.tbLugarVenta = tbLugarVenta;
+	}
+
+	/**
+	 * @return the tbHistoricoObservacion
+	 */
+	public Set<HistoricoObservacionesSie> getTbHistoricoObservacion() {
+		return tbHistoricoObservacion;
+	}
+
+	/**
+	 * @param tbHistoricoObservacion the tbHistoricoObservacion to set
+	 */
+	public void setTbHistoricoObservacion(Set<HistoricoObservacionesSie> tbHistoricoObservacion) {
+		this.tbHistoricoObservacion = tbHistoricoObservacion;
 	}
 
 }

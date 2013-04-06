@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 @Table(name="tb_historico_observaciones", schema = Constants.ESQUEMA_SIE_POSTGRE)
 public class HistoricoObservacionesSie implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@SequenceGenerator(name="TB_HISTORICO_OBSERVACIONES_CONTRATO_IDHISTORICOOBSERVACIONES_GENERATOR", sequenceName="SIE.TB_HISTORICO_OBSERVACIONES_CONTRATO_IDHISTORICOOBSERVACIONES_SEQ", initialValue=1, allocationSize =1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_HISTORICO_OBSERVACIONES_CONTRATO_IDHISTORICOOBSERVACIONES_GENERATOR")

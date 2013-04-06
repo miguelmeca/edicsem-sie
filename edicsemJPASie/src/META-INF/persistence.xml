@@ -78,6 +78,7 @@
 		<class>com.edicsem.pe.sie.entity.DetTurnoEmplSie</class>
 		<class>com.edicsem.pe.sie.entity.CitaSie</class>
 		<class>com.edicsem.pe.sie.entity.HistoricoObservacionesSie</class>
+		<class>com.edicsem.pe.sie.entity.HistorialParametroSistemaSie</class>
 		<properties>
 			<property name="eclipselink.jdbc.driver" value="org.postgresql.Driver" />
 			<property name="eclipselink.jdbc.url" value="jdbc:postgres://localhost:5432/bd_sie" />
