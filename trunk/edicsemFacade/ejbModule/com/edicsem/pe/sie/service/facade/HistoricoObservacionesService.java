@@ -12,5 +12,6 @@ public interface HistoricoObservacionesService {
 	public abstract void updateHistoricoObservaciones(HistoricoObservacionesSie c);
 	public abstract HistoricoObservacionesSie findHistoricoObservaciones (int id);
 	public abstract List  listarHistoricoObservaciones();
+	public abstract List listarHistorial(int idcontrato);
 	
 }
