@@ -5,44 +5,42 @@
   xmlns:ui="http://java.sun.com/jsf/facelets"
   xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
    <ui:define name="body">
-    <h1 class="title ui-widget-header ui-corner-all">Parámetros del Sistema</h1>
+    <h1 class="title ui-widget-header ui-corner-all">#{message['parametro.title']}</h1>
      <h:form id="parametrosList" prependId="false">
 	 <p:messages showDetail="true" />
 	  <p:dataTable value="#{mantenimientoParametroSearchAction.parametroList}" var="p"
 	   id="listaPersonas" paginator="true" rows="10"
        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	   rowsPerPageTemplate="5,10,15" widgetVar="table"
-	   emptyMessage="No se encontro registros">
-	   <f:facet name="header">Parámetros del Sistema</f:facet>
+	   emptyMessage="#{message['rsltd.empty']}">
+	   <f:facet name="header">#{message['parametro.table.title']}</f:facet>
 	   <f:facet name="header">
 	    <p:outputPanel>
-		 <h:outputText value="Buscar :"/>
+		 <h:outputText value="#{message['rsltd.buscar']}"/>
 		 <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px; align=Left; "/>
 		</p:outputPanel>
 	   </f:facet>
-       <p:column sortBy="#{p.descripcion}" id="codigo" filterBy="#{p.codproveedor}" headerText="Codigo" footerText="startsWith">
+       <p:column sortBy="#{p.descripcion}" id="codigo" filterBy="#{p.codproveedor}" headerText="Codigo" >
 	    <f:facet name="header">
-		 <h:outputText value="Descripción" />
+		 <h:outputText value="#{message['parametro.descripcion']}" />
 		</f:facet>
 		<h:outputText value="#{p.descripcion}" />
 	   </p:column>
 	   <p:column>
 		<f:facet name="header">
-		 <h:outputText value="Valor" />
+		 <h:outputText value="#{message['parametro.valor']}" />
 		</f:facet>
 		<h:outputText value="#{p.valor}" />
 	   </p:column>
 	   <p:column>
 		<f:facet name="header">
-		 <h:outputText value="Area" />
+		 <h:outputText value="#{message['parametro.area']}" />
 		</f:facet>
 		<h:outputText value="#{p.areasistema}" />
 	   </p:column>
 	   <p:column headerText="Editar">
-	    <p:commandButton value="Editar" ajax="false" 
-		 action="#{mantenimientoParametroFormAction.update}">
-		 <f:setPropertyActionListener value="#{p}"  
-		  target="#{mantenimientoParametroFormAction.objParametro}" />
+	    <p:commandButton value="Editar" ajax="false" action="#{mantenimientoParametroFormAction.update}">
+		 <f:setPropertyActionListener value="#{p}" target="#{mantenimientoParametroFormAction.objParametro}" />
 		</p:commandButton>  
 	   </p:column>
 	  </p:dataTable>		

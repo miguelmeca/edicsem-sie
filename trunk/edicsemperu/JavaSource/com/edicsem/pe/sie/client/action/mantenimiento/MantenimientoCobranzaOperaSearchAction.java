@@ -22,12 +22,14 @@ import com.edicsem.pe.sie.entity.CobranzaSie;
 import com.edicsem.pe.sie.entity.ContratoSie;
 import com.edicsem.pe.sie.entity.DetProductoContratoSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
+import com.edicsem.pe.sie.entity.HistoricoObservacionesSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.service.facade.ClienteService;
 import com.edicsem.pe.sie.service.facade.CobranzaOperaService;
 import com.edicsem.pe.sie.service.facade.CobranzaService;
 import com.edicsem.pe.sie.service.facade.ContratoService;
 import com.edicsem.pe.sie.service.facade.DetProductoContratoService;
+import com.edicsem.pe.sie.service.facade.HistoricoObservacionesService;
 import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.TipoLLamadaService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -56,6 +58,7 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private int ide;
 	private int idcontrato;
 	private ContratoSie objContrato;
+	private List<HistoricoObservacionesSie> lstHistorico;
 	HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 	EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 	
@@ -73,6 +76,8 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private TipoLLamadaService objTipoLLamadaService;
 	@EJB
 	private DetProductoContratoService objProductoContratoService;
+	@EJB
+	private HistoricoObservacionesService objHistoricoService;
 	
 	public static Log log = LogFactory.getLog(MantenimientoCobranzaOperaSearchAction.class);
 	
@@ -89,6 +94,7 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 		objCobranzaOpera = new CobranzaOperadoraSie();
 		objcliente = new ClienteSie();
 		objtelefono = new TelefonoPersonaSie();
+		lstHistorico = new ArrayList<HistoricoObservacionesSie>();
 		enviarMensaje=false;
 		idcontrato=0;
 		log.info("despues de inicializar  ");
@@ -104,6 +110,17 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 		if (cobranzaOperaList == null) {
 			cobranzaOperaList = new ArrayList<CobranzaOperadoraSie>();
 		}
+		//Mostramos el historial
+		lstHistorico = objHistoricoService.listarHistorial(idcontrato);
+//		log.info(" Listando historial *** ");
+//		lstHistorico= new ArrayList<HistoricoObservacionesSie>();
+//		for (int i = 0; i < 10; i++) {
+//			HistoricoObservacionesSie h = new HistoricoObservacionesSie();
+//			h.setUsuariocreacion("Kgil "+i);
+//			h.setObservacion("Cliente no vive en casa, persona que se encontro dice no vovler a llamar");
+//			lstHistorico.add(h);
+//		}
+		
 		return getViewList();
 	}
 	
@@ -432,6 +449,20 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	public void setProductoContratoList(
 			List<DetProductoContratoSie> productoContratoList) {
 		this.productoContratoList = productoContratoList;
+	}
+
+	/**
+	 * @return the lstHistorico
+	 */
+	public List<HistoricoObservacionesSie> getLstHistorico() {
+		return lstHistorico;
+	}
+
+	/**
+	 * @param lstHistorico the lstHistorico to set
+	 */
+	public void setLstHistorico(List<HistoricoObservacionesSie> lstHistorico) {
+		this.lstHistorico = lstHistorico;
 	}
 		
 }
