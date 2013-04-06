@@ -46,4 +46,11 @@ public class HistoricoObservacionesServiceImpl implements HistoricoObservaciones
 		return objHistoricoObservacionesDao.listarHistoricoObservaciones();
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.HistoricoObservacionesService#listarHistorial(int)
+	 */
+	public List listarHistorial(int idcontrato) {
+		return objHistoricoObservacionesDao.listarHistorial(idcontrato);
+	}
+	
 }
