@@ -261,7 +261,6 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	/**lista los horarios del trabajador**/
 	public String mostrar() throws Exception {
 		log.info(" eventModel --->");
-		
 		log.info("listarHorario del personal "+listaHorario.size());
 				if (listaHorario == null) {
 					listaHorario = new ArrayList<HorarioPersonalSie>();
@@ -346,6 +345,7 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		 						msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
 		 						break;
 		 					}else{
+		 						event = new DefaultScheduleEvent();
 		 						eventModel.addEvent(new DefaultScheduleEvent(objHorarioPersonal.getDescripcion(), dDate, dDate2));
 			 					mensaje="Horario agregado correctamente ";
 			 					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
@@ -412,6 +412,7 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 				eventModel.updateEvent(eventos.get(i));
 			}
 		}
+		event = new DefaultScheduleEvent(); 
 		context.execute("horarioVentaDialog.hide()");
 		context.update("formGrupo");
 		

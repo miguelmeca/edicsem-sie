@@ -3,6 +3,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
 		<h1 class="title ui-widget-header ui-corner-all">#{message['cobranza.seguimiento']}</h1>
@@ -186,9 +187,9 @@
 					</p:dataTable>
 				</p:fieldset>
 			</h:panelGrid>
-			<h:panelGrid columns="2">
+			<h:panelGrid columns="2" cellpadding="5">
 			<p:fieldset legend="#{message['cobranza.registro']}" style="margin-top:20px"   >
-				<h:panelGrid columns="2">
+				<h:panelGrid columns="2" cellpadding="4">
 					<p:outputLabel value="#{message['operadora.tipollamada']}" for="tipo" />
 					<p:selectOneMenu id="tipo" filter="true" required="true"
 						value="#{mantenimientoCobranzaOperaSearchAction.tipollamada}"
@@ -212,17 +213,15 @@
 				</h:panelGrid>
 			</p:fieldset>
 			<p:fieldset legend="#{message['cobranza.historico.observaciones']}" style="margin-top:20px"   >
-				<h:panelGrid columns="2"> 
-				<!-- Lista de Historial -->
-				
-					<div  class="ui-messages-info ui-corner-all"  >
-					
-					<div  class="ui-messages-info-summary"  >karen:</div>
-					<div  class="ui-messages-info-detail"  >Mensaje </div>
-					</div>
-					 
-					<p:commandButton   value="#{message['cobranza.guardar']}" 
-						action="#{mantenimientoCobranzaOperaSearchAction.insertar}"
+				<h:panelGrid >
+					<p:dataTable value="#{mantenimientoCobranzaOperaSearchAction.lstHistorico}" var="k" paginator="true" rows="3"  >
+						<p:column style="width:2%" ><div  class="ui-messages-info ui-corner-all">
+						<div  class="ui-messages-info-summary"  >#{k.usuariocreacion}</div>
+						<div  class="ui-messages-info-detail"  >#{k.observacion} </div>
+						</div>
+						</p:column>
+						</p:dataTable>
+					<p:commandButton   value="#{message['cobranza.guardar']}" action="#{mantenimientoCobranzaOperaSearchAction.insertar}"
 						ajax="false" icon="ui-icon-comment" />
 				</h:panelGrid>
 			</p:fieldset>
