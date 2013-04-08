@@ -44,10 +44,7 @@
 	           <f:facet name="header">
 					<h:outputText value="#{grupo.titletable}" />
 				</f:facet>
-	           <p:column style="width:2%" >
-	            	<f:facet name="header">
-						<h:outputText value="#{message['facturacion.lider']}" />
-					</f:facet>
+	           <p:column style="width:2%" headerText="#{message['facturacion.lider']}">
 					<p:selectBooleanCheckbox value="#{g.lider}" >
 					<p:ajax update="data" />
 					</p:selectBooleanCheckbox>  
@@ -55,46 +52,25 @@
 	            <p:column headerText="#{message['asignar.empleado']}">
 	                <h:outputText value="#{g.tbempleado.nombresCompletos}" />
 	            </p:column>
-	            <p:column style="width:80px"  >
-						<f:facet name="header">
-							<h:outputText value="#{message['facturacion.entrega.entrega']}" />
-						</f:facet>
+	            <p:column style="width:80px" headerText="#{message['facturacion.entrega.entrega']}">
 						<h:outputText value="#{g.entregada}" />
 				</p:column>
-				<p:column style="width:80px">
-						<f:facet name="header">
-							<h:outputText value="#{message['facturacion.entrega.facturacion']}" />
-						</f:facet>
+				<p:column style="width:80px" headerText="#{message['facturacion.entrega.facturacion']}">
 						<h:outputText value="#{g.facturada}" />
 				</p:column>
-	            <p:column style="width:80px" >
-						<f:facet name="header">
-							<h:outputText value="#{message['facturacion.entrega.total.entregas']}" />
-						</f:facet>
+	            <p:column style="width:80px" headerText="#{message['facturacion.entrega.total.entregas']}">
 						<h:outputText value="#{g.totalentregada}" />
 				</p:column>
-	            <p:column style="width:80px" >
-						<f:facet name="header">
-							<h:outputText value="#{message['facturacion.entrega.total.facturacion']}" />
-						</f:facet>
+	            <p:column style="width:80px" headerText="#{message['facturacion.entrega.total.facturacion']}">
 						<h:outputText value="#{g.totalfacturada}" />
 				</p:column>
-				<p:column style="width:80px">
-						<f:facet name="header">
-							<h:outputText value="#{message['facturacion.puntaje']}" />
-						</f:facet>
+				<p:column style="width:80px" headerText="#{message['facturacion.puntaje']}">
 						<h:outputText value="#{g.puntajeTotal}" />
 				</p:column>
-				<p:column headerText="cant" filterMatchMode="contain" >
-						<f:facet name="header">
-							<h:outputText value="#{message['facturacion.entrega.faltas.tard']}" />
-						</f:facet>
+				<p:column headerText="#{message['facturacion.entrega.faltas.tard']}" filterMatchMode="contain" >
 						<h:outputText value="#{g.stringFalta}" />
 				</p:column>
-	            <p:column style="width:110px">
-		            <f:facet name="header">
-		            	<h:outputText value="#{message['facturacion.entrega.escoger']}" />
-		            </f:facet>
+	            <p:column style="width:110px" headerText="#{message['facturacion.entrega.escoger']}">
 		            <p:menuButton value="Grupo" >
 			        	<c:forEach items="#{grupo.lstMenu}" var="k">
 			                <p:menuitem  value="#{k.nombreMenu}" action="#{grupo.update}" update="@form" >
