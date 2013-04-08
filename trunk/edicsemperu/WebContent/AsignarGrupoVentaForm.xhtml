@@ -107,8 +107,7 @@
 	           </p:dataTable>
 	           </c:forEach>
            </h:panelGrid>
-               <p:commandButton  action="#{grupo.insertar}" value="#{message['asignar.registrar']}" 
-               ajax="false" update="formGrupo" icon="ui-icon ui-icon-disk" />
+               <p:commandButton  action="#{grupo.insertar}" value="#{message['asignar.registrar']}" update="message" icon="ui-icon ui-icon-disk" />
            </p:fieldset>
 	</h:form>
 	</ui:define>
