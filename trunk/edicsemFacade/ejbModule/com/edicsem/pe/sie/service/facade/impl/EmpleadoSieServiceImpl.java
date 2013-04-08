@@ -203,10 +203,11 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	public List listarUsuario() {
 		return objEmpleadoDao.listarUsuario();
 	}
-
-
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#buscarEmpleadoVendedor(java.lang.String)
+	 */
 	public EmpleadoSie buscarEmpleadoVendedor(String nombreCompleto) {
-log.info("dentro del servicio en busca del nombre y Id empleado--> SERVICEIMPLE-->"+ nombreCompleto);
 		return objEmpleadoDao.buscarEmpleadoVendedor(nombreCompleto);
 	}
 }
