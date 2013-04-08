@@ -59,9 +59,9 @@ public class SMTPConfig extends BaseMantenimientoAbstractAction {
 	   System.out.println(e.getMessage());
 	   e.printStackTrace();
 	   
-	  }finally{
-	   return envio;
 	  }
+	  
+	  return envio;
 	 }
 	
 }

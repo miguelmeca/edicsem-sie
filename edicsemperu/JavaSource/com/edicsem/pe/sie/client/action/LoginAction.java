@@ -126,9 +126,9 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 								if (a.getNombreActionListener() != null && a.getNombreActionListener().isEmpty() == false) {
 									item.setActionExpression(getMethod(a.getNombreActionListener()));
 									item.setUrl(null);
-								}else if(a.getUrlMenu()!= null && a.getUrlMenu().isEmpty() == false){
+								}/*else if(a.getUrlMenu()!= null && a.getUrlMenu().isEmpty() == false){
 									item.setUrl(a.getUrlMenu());
-								}
+								}*/
 								log.info(" action: "+a.getNombreActionListener());
 								log.info("nomb menu: "+a.getNombreMenu()+" url: "+a.getUrlMenu());
 								submenu.getChildren().add(item);
@@ -154,7 +154,7 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 						auditoriaService.insertAuditoriaUsuario(a);
 					}
 					
-					fechaHoraIngreso = DateUtil.getDateTime("dd/MM/yyyy HH:mm:ss", n);
+					fechaHoraIngreso = DateUtil.getDateTime("dd/MM/yyyy", n);
 					log.info(" fecha hora " + fechaHoraIngreso);
 					
 					
@@ -248,18 +248,6 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 	public String getViewMant() {
 		return "index";
 	}
-	
-//	
-//	public MethodExpressionActionListener getActionListenerExp(String actionListenerName) {
-//		FacesContext context = FacesContext.getCurrentInstance();
-//		MethodExpression mExp = context
-//				.getApplication()
-//				.getExpressionFactory()
-//				.createMethodExpression(context.getELContext(),
-//						actionListenerName, null,
-//						new Class[] { ActionEvent.class });
-//		return new MethodExpressionActionListener(mExp);
-//	}
 	
 	/**
 	 * @return the objLogin
