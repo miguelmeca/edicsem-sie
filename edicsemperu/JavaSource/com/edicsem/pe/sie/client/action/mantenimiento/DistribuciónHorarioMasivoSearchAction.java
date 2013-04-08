@@ -243,9 +243,9 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 				listaDetTurnoEmpl.add(det);
 				log.info(expositorList+" -- >  "+expositorList.get(i));
 	            	if(expo==null){
-	            		expo =" \n - "+expositorList.get(i);
+	            		expo ="\n-"+expositorList.get(i);
 	            	}else{
-	            		expo = expo+" \n - "+expositorList.get(i);
+	            		expo = expo+"\n-"+expositorList.get(i);
 	            	}
 				}	
 				
@@ -257,9 +257,9 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 				listaDetTurnoEmpl.add(det);
 				log.info(expositorList+" -- >  "+vendedorList.get(i));
             	if(expo==null){
-            		expo =" \n - "+vendedorList.get(i);
+            		expo ="\n - "+vendedorList.get(i);
             	}else{
-            		expo = expo+" \n - "+vendedorList.get(i);
+            		expo = expo+"\n - "+vendedorList.get(i);
             	}
 			}
 				return mostrar();
@@ -315,7 +315,7 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		 	                log.info(" dia 1 " +dDate);
 		 	                log.info(" dia 2 " +dDate2);
 		 	               
-		 	                objHorarioPersonal.setDescripcion("\n Expositores:" +	expo);
+		 	                objHorarioPersonal.setDescripcion("\nExpositores:" + expo);
 		 	                
 		 	                log.info(objHorarioPersonal.getDescripcion());
 		 	                boolean existeMismoHorario =false;
@@ -447,18 +447,15 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 					objHorarioPersonal.setHoraIngreso(new Time(eventModel.getEvents().get(j).getStartDate().getTime()));
 					objHorarioPersonal.setHoraSalida(new Time(eventModel.getEvents().get(j).getEndDate().getTime()));
 					log.info("title "+eventModel.getEvents().get(j).getTitle());
-					if(eventModel.getEvents().get(j).getTitle().contains("Expositores:")==true){
+					//buscando los expositores y los cerradores
+					if(eventModel.getEvents().get(j).getTitle().contains("\nExpositores:")==true){
 						
 						String rr[]= eventModel.getEvents().get(j).getTitle().split("Expositores:");
-						log.info(" dentro de expositore "+rr[0]);
-						log.info(" dentro de expositore "+rr[1]);
 						if(rr.length>0){
-							 String rr2[] = rr[1].split("\n- ");
-							 log.info(" "+rr2.length);
-							  
-							for (int i = 1; i < rr2.length; i++) {
+							 String rr2[] = rr[0].split("-");
+							for (int i = 0; i < rr2.length; i++) {
 								log.info(" --->"+rr2[i]);
-//							objHorarioPersonal.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoVendedor(rr2[i]));
+							objHorarioPersonal.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoVendedor(rr2[i]));
 //							objHorarioPersonalService.insertHorarioPersonal(objHorarioPersonal,diaList, idempleado);
 							}
 						 }
@@ -469,8 +466,8 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 							 String rr2[] = rr3[1].split("\n-");
 							 for (int i = 1; i < rr2.length; i++) {
 								log.info(" -->"+rr2[i]);
-//								objHorarioPersonal.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoVendedor(rr2[i]));
-//								objHorarioPersonalService.insertHorarioPersonal(objHorarioPersonal,diaList, idempleado);
+								objHorarioPersonal.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoVendedor(rr2[i]));
+								objHorarioPersonalService.insertHorarioPersonal(objHorarioPersonal,diaList, idempleado);
 							}
 						}
 					}
