@@ -182,7 +182,7 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 		EmpleadoSie obj = null;
 		try {
 			Query q = em.createQuery("SELECT e FROM EmpleadoSie e " +
-					"where  UPPER(e.nombreemp)||' '||UPPER(e.apepatemp)||' '||UPPER(e.apematemp) like '" +nombreCompleto+"'");
+					"where  UPPER(e.nombreemp)||' '||UPPER(e.apepatemp)||' '||UPPER(e.apematemp) like '" +nombreCompleto.toUpperCase()+"'");
 			lista = q.getResultList();
 			if(lista.size()==1){
 				obj= (EmpleadoSie) lista.get(0);
