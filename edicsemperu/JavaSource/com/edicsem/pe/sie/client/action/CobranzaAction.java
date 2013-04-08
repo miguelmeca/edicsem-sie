@@ -25,7 +25,7 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 
 @ManagedBean(name = "cobranza")
 @SessionScoped
-public class cobranzaAction extends BaseMantenimientoAbstractAction {
+public class CobranzaAction extends BaseMantenimientoAbstractAction {
 	
 	/**
 	 * @return the teleoperadoras
@@ -111,7 +111,7 @@ public class cobranzaAction extends BaseMantenimientoAbstractAction {
 		this.targets = targets;
 	}
 
-	private Log log = LogFactory.getLog(cobranzaAction.class);
+	private Log log = LogFactory.getLog(CobranzaAction.class);
 	
 	private String mensaje;
 	private boolean editMode;
@@ -132,7 +132,7 @@ public class cobranzaAction extends BaseMantenimientoAbstractAction {
 	@EJB
 	private EmpleadoSieService objEmpleadoService;
 	
-	public cobranzaAction() {
+	public CobranzaAction() {
 		log.info("inicializando constructor cobranzaAction");
 		init();
 	}
