@@ -45,13 +45,17 @@ public class MantenimientoParametroFormAction extends BaseMantenimientoAbstractA
 		log.info("inicializando mi constructor");
 		init();
 	}
-
-	/*inicializamos los  objetos utilizados*/
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#init()
+	 */
 	public void init() {
 		log.info("init()");
-	} 
-
-	/*método que se ejecuta al hacer click en el botón EDITAR de la lista*/
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
+	 */
 	public String update() throws Exception {
 	    log.info("actualizar");
 		valorAnterior= objParametro.getValor();

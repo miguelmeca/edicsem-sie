@@ -100,6 +100,9 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		init();
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#init()
+	 */
 	public void init() {
 		log.info("init()");
 		idMes=0;
@@ -117,6 +120,8 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		log.info("agregar()");
 		idMes=0;
 		idempleado=0;
+		newRecord=true;
+		objHorarioPersonal  = new HorarioPersonalSie();
 		eventos = new ArrayList<ScheduleEvent>();
 		expositorList = new ArrayList<String>();
 		cerradorList = new ArrayList<String>();
@@ -216,10 +221,13 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	
 	public String agregarhorario() throws Exception{
 		log.info("agregarhorario() :)");
+		mensaje=null;
 		expo=null;
 		listaHorario = new ArrayList<HorarioPersonalSie>();
-			
-		if(tipoVenta>=1){//Masivo	
+		if(expositorList.size()==0&&vendedorList.size()==0){
+			mensaje="Debe seleccionar mínimo un vendedor o expositor";
+		}
+		if(tipoVenta>=1&& mensaje==null){//Masivo	
 				objHorarioPersonal= new HorarioPersonalSie();
 				objHorarioPersonal.setHoraIngreso(objTurno.getHoraInicio());
 				objHorarioPersonal.setHoraSalida(objTurno.getHoraFin());
@@ -254,8 +262,12 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
             		expo = expo+" \n - "+vendedorList.get(i);
             	}
 			}
+				return mostrar();
+		}else{
+			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			return null;
 		}
-		return mostrar();
 	}
 	
 	/**lista los horarios del trabajador**/
@@ -357,7 +369,6 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 				}
 		
 		FacesContext.getCurrentInstance().addMessage(null, msg);
-		objHorarioPersonal = new HorarioPersonalSie();
 		
 		return getViewList();
 	}
@@ -412,10 +423,11 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 				eventModel.updateEvent(eventos.get(i));
 			}
 		}
+		log.info("total de eventos * "+eventModel.getEvents().size()+" canti "+eventModel.getEventCount());
 		event = new DefaultScheduleEvent(); 
 		context.execute("horarioVentaDialog.hide()");
 		context.update("formGrupo");
-		
+		log.info("total de eventos 2* "+eventModel.getEvents().size()+" canti "+eventModel.getEventCount());
         return null;
     }
 	
@@ -423,88 +435,50 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
 	 */
 	public String insertar() throws Exception {
-		mensaje=null;
 		log.info("insertar()");
-		
-		objHorarioPersonal.setHoraIngreso(new Time(horaIngreso.getTime()));
-		objHorarioPersonal.setHoraSalida(new Time(horaSalida.getTime()));
-		
+		mensaje=null;
+		log.info("total de eventos "+eventModel.getEvents().size()+" canti "+eventModel.getEventCount());
 		try {
-			
-			//para que no hayan cruces de horario 
-			for (int j = 0; j < diaList.size();j++) {
-				for (int i = 0; i < listaHorario.size(); i++) {
-					log.info("  verificando horario de punto de venta ");
-					if( listaHorario.get(i).getTbFecha().getIdFecha()== Integer.parseInt(diaList.get(j))
-						 && (objHorarioPersonal.getDiainicio().after(listaHorario.get(i).getDiainicio()) && 
-								 objHorarioPersonal.getDiainicio().before(listaHorario.get(i).getDiafin() ) ||
-								 objHorarioPersonal.getDiafin().after(listaHorario.get(i).getDiainicio()) && 
-								 objHorarioPersonal.getDiafin().before(listaHorario.get(i).getDiafin() ) ||
-								 objHorarioPersonal.getDiafin().equals(listaHorario.get(i).getDiafin()) ||
-								 objHorarioPersonal.getDiafin().equals(listaHorario.get(i).getDiainicio())||
-								 objHorarioPersonal.getDiainicio().equals(listaHorario.get(i).getDiafin())||
-								 objHorarioPersonal.getDiainicio().equals(listaHorario.get(i).getDiainicio()))){
-						 
-						log.info(" hora ingreso "+objHorarioPersonal.getHoraIngreso());
-						log.info(" hora ingreso "+objHorarioPersonal.getHoraSalida());
-						log.info(" hora 2 "+listaHorario.get(i).getHoraIngreso());
-						log.info(" hora sal "+listaHorario.get(i).getHoraSalida());
-						if(	objHorarioPersonal.getHoraIngreso().equals(listaHorario.get(i).getHoraIngreso()) ||
-								objHorarioPersonal.getHoraIngreso().after(listaHorario.get(i).getHoraIngreso())
-								&& objHorarioPersonal.getHoraIngreso().before(listaHorario.get(i).getHoraSalida())){
-							log.info(objHorarioPersonal.getHoraIngreso() +" --->  getHoraIngreso "+ listaHorario.get(i).getHoraIngreso());
-							mensaje = "La hora de Ingreso es errónea del día "+ listaHorario.get(i).getTbFecha().getDia();
-							msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
-									Constants.MESSAGE_INFO_TITULO, mensaje);
-							FacesContext.getCurrentInstance().addMessage(null, msg);
-							break;
-						}else if(objHorarioPersonal.getHoraSalida().equals(listaHorario.get(i).getHoraSalida()) ||
-								objHorarioPersonal.getHoraSalida().after(listaHorario.get(i).getHoraIngreso())
-								&& objHorarioPersonal.getHoraSalida().before(listaHorario.get(i).getHoraSalida())){
-							log.info(objHorarioPersonal.getHoraSalida()+" --->  getHoraSalida "+listaHorario.get(i).getHoraSalida());
-							mensaje = "La hora de Salida es errónea del día "+ listaHorario.get(i).getTbFecha().getDia();
-							msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
-									Constants.MESSAGE_INFO_TITULO, mensaje);
-							FacesContext.getCurrentInstance().addMessage(null, msg);
-							break;
+			if(mensaje==null){
+				for (int j = 0; j < eventModel.getEventCount();j++) {
+					objHorarioPersonal.setDescripcion("Horario");
+					objHorarioPersonal.setDiainicio(eventModel.getEvents().get(j).getStartDate());
+					objHorarioPersonal.setDiafin(eventModel.getEvents().get(j).getEndDate());
+					objHorarioPersonal.setHoraIngreso(new Time(eventModel.getEvents().get(j).getStartDate().getTime()));
+					objHorarioPersonal.setHoraSalida(new Time(eventModel.getEvents().get(j).getEndDate().getTime()));
+					log.info("title "+eventModel.getEvents().get(j).getTitle());
+					if(eventModel.getEvents().get(j).getTitle().contains("Expositores:")==true){
+						
+						String rr[]= eventModel.getEvents().get(j).getTitle().split("Expositores:");
+						log.info(" dentro de expositore "+rr[0]);
+						log.info(" dentro de expositore "+rr[1]);
+						if(rr.length>0){
+							 String rr2[] = rr[1].split("\n- ");
+							 log.info(" "+rr2.length);
+							  
+							for (int i = 1; i < rr2.length; i++) {
+								log.info(" --->"+rr2[i]);
+//							objHorarioPersonal.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoVendedor(rr2[i]));
+//							objHorarioPersonalService.insertHorarioPersonal(objHorarioPersonal,diaList, idempleado);
+							}
+						 }
+					}
+					if(eventModel.getEvents().get(j).getTitle().contains("Cerradores:")==true){
+						String rr3[]= eventModel.getEvents().get(j).getTitle().split("\nCerradores:");
+						 if(rr3.length>=2){
+							 String rr2[] = rr3[1].split("\n-");
+							 for (int i = 1; i < rr2.length; i++) {
+								log.info(" -->"+rr2[i]);
+//								objHorarioPersonal.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoVendedor(rr2[i]));
+//								objHorarioPersonalService.insertHorarioPersonal(objHorarioPersonal,diaList, idempleado);
 							}
 						}
 					}
-				}	
-			
-					if(isNewRecord()&& mensaje==null){
-					Time hora1 = new Time(getHoraIngreso().getTime());
-					Time hora2= new Time(getHoraSalida().getTime());
-					
-					objHorarioPersonal.setHoraIngreso(hora1);
-					objHorarioPersonal.setHoraSalida(hora2);
-					
-					objHorarioPersonal.setDiainicio(objHorarioPersonal.getDiainicio());
-					objHorarioPersonal.setDiafin(objHorarioPersonal.getDiafin());
-					objHorarioPersonal.setTbEmpleado(objEmpleadoSie);
-					objHorarioPersonal.setDescripcion(objHorarioPersonal.getDescripcion().trim());
-					objHorarioPersonalService.insertHorarioPersonal(objHorarioPersonal,diaList, idempleado);
-					mensaje = Constants.MESSAGE_REGISTRO_TITULO;
-					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
 				}
-			else if (isNewRecord()==false){
-					log.info("actualizando " + getHoraIngreso()+"  hora salida  "+getHoraSalida() );
-					Time hora1 = new Time( getHoraIngreso().getTime());
-					Time hora2= new Time( getHoraSalida().getTime());
-					log.info(" g   "+ hora1);
-					objHorarioPersonal.setHoraIngreso(hora1);
-					objHorarioPersonal.setHoraSalida(hora2);
-					objHorarioPersonal.setDescripcion(objHorarioPersonal.getDescripcion().trim());
-					
-					objHorarioPersonalService.updateHorarioPersonal(objHorarioPersonal);
-					
-					mensaje = Constants.MESSAGE_ACTUALIZO_TITULO;
-					 msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-							 Constants.MESSAGE_INFO_TITULO, mensaje);
-					
-				}
-				
-		} catch (Exception e) {
+				mensaje = Constants.MESSAGE_REGISTRO_TITULO;
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
+			}
+		}catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
@@ -512,7 +486,7 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		 FacesContext.getCurrentInstance().addMessage(null, msg);
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return getViewList();
 	}
 	
@@ -687,6 +661,7 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	 * @return the eventModel
 	 */
 	public ScheduleModel getEventModel() {
+		log.info("GetEventModel!!  XD ");
 		return eventModel;
 	}
 
@@ -694,6 +669,7 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	 * @param eventModel the eventModel to set
 	 */
 	public void setEventModel(ScheduleModel eventModel) {
+		log.info("seteando EventModel!! ** ");
 		this.eventModel = eventModel;
 	}
 
@@ -825,6 +801,7 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 				eventos.add(eventModel.getEvents().get(i));
 			}
 		}
+		log.info("total de eventos 2 "+eventModel.getEvents().size()+" canti "+eventModel.getEventCount());
 		if(cerradorList!=null){
 			if(event.getTitle() != null){
 				if(event.getTitle().contains("Cerradores:")==true){
@@ -839,13 +816,14 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 				}
 				else{
 					setTittle(tittle+"\nCerradores:");
-				for (int i = 0; i < cerradorList.size(); i++) {
-					setTittle(tittle +"\n-"+cerradorList.get(i));
-				}
-				log.info("tittle "+tittle );
+					for (int i = 0; i < cerradorList.size(); i++) {
+						setTittle(tittle +"\n-"+cerradorList.get(i));
+					}
+					log.info("tittle "+tittle );
 				}
 			}
 		}
+		log.info("total de eventos 3 "+eventModel.getEvents().size()+" canti "+eventModel.getEventCount());
 		this.cerradorList = cerradorList;
 	}
 	
@@ -1001,6 +979,7 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	 * @param tipoVenta the tipoVenta to set
 	 */
 	public void setTipoVenta(int tipoVenta) {
+		log.info("SetTipoVenta");
 		comboManager.setTipoVenta(tipoVenta);
 		comboManager.setTipoAlmacen(tipoVenta);
 		comboManager.setVendedorItems(null);
@@ -1009,8 +988,7 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		cerradorList = new ArrayList<String>();
 		vendedorList= new ArrayList<String>();
 		expositorList= new ArrayList<String>();
-		diaList= new ArrayList<String>();
-		eventModel = new DefaultScheduleModel();
+		diaList= new ArrayList<String>(); 
 		idturno=0;
 		idMes=0;
 		rangoTurno="";
