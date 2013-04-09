@@ -47,7 +47,7 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 
 @ManagedBean(name="distribucion")
 @SessionScoped
-public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbstractAction {
+public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbstractAction {
 	/*variables*/
 	private HorarioPersonalSie objHorarioPersonal;
 	private List<DetTurnoEmplSie> listaDetTurnoEmpl;
@@ -93,9 +93,9 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	@EJB 
 	private ContratoEmpleadoService objContratoEmpleadoService;
 	
-	public static Log log = LogFactory.getLog(DistribuciónHorarioMasivoSearchAction.class);
+	public static Log log = LogFactory.getLog(DistribucionHorarioMasivoSearchAction.class);
 	
-	public DistribuciónHorarioMasivoSearchAction() {
+	public DistribucionHorarioMasivoSearchAction() {
 		log.info("inicializando mi constructor");
 		init();
 	}
@@ -220,19 +220,19 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	}
 	
 	public String agregarhorario() throws Exception{
-		log.info("agregarhorario() :)");
+		log.info("agregarhorario()");
 		mensaje=null;
 		expo=null;
 		listaHorario = new ArrayList<HorarioPersonalSie>();
 		if(expositorList.size()==0&&vendedorList.size()==0){
 			mensaje="Debe seleccionar mínimo un vendedor o expositor";
 		}
-		if(tipoVenta>=1&& mensaje==null){//Masivo	
+		if(tipoVenta>=1&& mensaje==null){//Masivo
 				objHorarioPersonal= new HorarioPersonalSie();
 				objHorarioPersonal.setHoraIngreso(objTurno.getHoraInicio());
 				objHorarioPersonal.setHoraSalida(objTurno.getHoraFin());
 				objHorarioPersonal.setDiainicio(DateUtil.convertStringToDate(fechaInicio));
-				objHorarioPersonal.setDiafin(DateUtil.convertStringToDate(fechaFin));
+				objHorarioPersonal.setDiafin(DateUtil.convertStringToDate(fechaFin)); 
 				listaHorario.add(objHorarioPersonal);
 				
 				for (int i = 0; i < expositorList.size(); i++) {//expositores
@@ -243,11 +243,11 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 				listaDetTurnoEmpl.add(det);
 				log.info(expositorList+" -- >  "+expositorList.get(i));
 	            	if(expo==null){
-	            		expo ="\n-"+expositorList.get(i);
+	            		expo ="\n - "+expositorList.get(i);
 	            	}else{
-	            		expo = expo+"\n-"+expositorList.get(i);
+	            		expo = expo+"\n - "+expositorList.get(i);
 	            	}
-				}	
+				}
 				
 				for (int i = 0; i < vendedorList.size(); i++) {//vendedores
 				DetTurnoEmplSie det = new DetTurnoEmplSie();
@@ -367,7 +367,6 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		              cal3.add(Calendar.DAY_OF_WEEK,1);
 	               }
 				}
-		
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
 		return getViewList();
@@ -377,7 +376,7 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
 	 */
 	public String update() throws Exception {
-		log.info("update() **");
+		log.info("update()");
 		diaList= new  ArrayList<String>();
 		newRecord=false;	
 		diaList.add("" + objHorarioPersonal.getTbFecha().getIdFecha());
@@ -446,17 +445,16 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 					objHorarioPersonal.setDiafin(eventModel.getEvents().get(j).getEndDate());
 					objHorarioPersonal.setHoraIngreso(new Time(eventModel.getEvents().get(j).getStartDate().getTime()));
 					objHorarioPersonal.setHoraSalida(new Time(eventModel.getEvents().get(j).getEndDate().getTime()));
-					log.info("title "+eventModel.getEvents().get(j).getTitle());
+					 
 					//buscando los expositores y los cerradores
 					if(eventModel.getEvents().get(j).getTitle().contains("\nExpositores:")==true){
-						
-						String rr[]= eventModel.getEvents().get(j).getTitle().split("Expositores:");
-						if(rr.length>0){
-							 String rr2[] = rr[0].split("-");
-							for (int i = 0; i < rr2.length; i++) {
+						String rr[]= eventModel.getEvents().get(j).getTitle().split("\nExpositores:");
+						if(rr.length>=2){
+							String rr2[] = rr[1].split("\n - ");
+							for (int i = 1; i < rr2.length; i++) {
 								log.info(" --->"+rr2[i]);
-							objHorarioPersonal.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoVendedor(rr2[i]));
-//							objHorarioPersonalService.insertHorarioPersonal(objHorarioPersonal,diaList, idempleado);
+								objHorarioPersonal.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoVendedor(rr2[i]));
+//								objHorarioPersonalService.insertHorarioPersonal(objHorarioPersonal,diaList, objHorarioPersonal.getTbEmpleado().getIdempleado());
 							}
 						 }
 					}
@@ -467,11 +465,12 @@ public class DistribuciónHorarioMasivoSearchAction extends BaseMantenimientoAbst
 							 for (int i = 1; i < rr2.length; i++) {
 								log.info(" -->"+rr2[i]);
 								objHorarioPersonal.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoVendedor(rr2[i]));
-								objHorarioPersonalService.insertHorarioPersonal(objHorarioPersonal,diaList, idempleado);
+								objHorarioPersonalService.insertHorarioPersonal(objHorarioPersonal,diaList, objHorarioPersonal.getTbEmpleado().getIdempleado());
 							}
 						}
 					}
 				}
+				objHorarioPersonalService.insertHorarioVenta(listaHorario);
 				mensaje = Constants.MESSAGE_REGISTRO_TITULO;
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
 			}

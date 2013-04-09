@@ -223,7 +223,8 @@ public class MantenimientoGrupoEmpleadoSearchAction extends BaseMantenimientoAbs
 						if(i+1==lstCobranzaEx.size()){
 							e2.setPorcentajeRecuperado(e2.getCobro()/e2.getDeberiaCobrar());
 							//e2.setPerdidaEfectiva(e.getPorcentajeRecuperado() - e2.getPorcentajeRecuperado());
-							e2.setPerdidaEfectiva(0.75 - e2.getPorcentajeRecuperado());
+							double efectBase =  Double.parseDouble(Constants.PARAM_EFECTIVIDAD_VENTAS);
+							e2.setPerdidaEfectiva(efectBase - e2.getPorcentajeRecuperado());
 							e2.setPerdidaSoles(e2.getDeberiaCobrar()*e2.getPerdidaEfectiva());
 							listaEmpleado.add(e2);
 						}
