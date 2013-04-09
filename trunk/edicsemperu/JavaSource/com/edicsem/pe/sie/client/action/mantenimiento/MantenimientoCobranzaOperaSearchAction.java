@@ -112,7 +112,7 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 		}
 		//Mostramos el historial
 		lstHistorico = objHistoricoService.listarHistorial(idcontrato);
-//		log.info(" Listando historial *** ");
+//		log.info(" Listando historial *** ejemplo ");
 //		lstHistorico= new ArrayList<HistoricoObservacionesSie>();
 //		for (int i = 0; i < 10; i++) {
 //			HistoricoObservacionesSie h = new HistoricoObservacionesSie();
