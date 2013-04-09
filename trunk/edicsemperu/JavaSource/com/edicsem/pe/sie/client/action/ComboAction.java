@@ -258,6 +258,7 @@ public class ComboAction {
 			productositems.put(producto.getDescripcionproducto(),
 					producto.getIdproducto());
 		}
+		productositems = sortByComparator(productositems);
 		return productositems;
 	}
 
@@ -299,6 +300,7 @@ public class ComboAction {
 					break;
 				}
 			}
+			almacenItems = sortByComparator(almacenItems);
 			log.info("finalizacion del metodo 'getAlmacenItems'  ");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -337,7 +339,7 @@ public class ComboAction {
 				tipoitems.put(tipo.getNombretipoproducto(),
 						tipo.getIdtipoproducto());
 			}
-
+			tipoitems = sortByComparator(tipoitems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -376,7 +378,7 @@ public class ComboAction {
 				estadoitems.put(entidad.getDescripcion(),
 						entidad.getIdestadogeneral());
 			}
-
+			estadoitems = sortByComparator(estadoitems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -413,7 +415,7 @@ public class ComboAction {
 				empresaitems.put(entidad.getRazonsocial(),
 						entidad.getIdempresa());
 			}
-
+			empresaitems = sortByComparator(empresaitems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -449,7 +451,7 @@ public class ComboAction {
 				tipoDocumentoItems.put(entidad.getDescripcion(),
 						entidad.getIdtipodocumentoidentidad());
 			}
-
+			tipoDocumentoItems = sortByComparator(tipoDocumentoItems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -485,7 +487,7 @@ public class ComboAction {
 				tipollamada.put(entidad.getDescripcionabreviado(),
 						entidad.getIdtipoLlamada());
 			}
-
+			tipollamada = sortByComparator(tipollamada);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -521,7 +523,7 @@ public class ComboAction {
 				cargoEmpleadoItems.put(entidad.getDescripcion(),
 						entidad.getIdcargoempleado());
 			}
-
+			cargoEmpleadoItems = sortByComparator(cargoEmpleadoItems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -548,11 +550,9 @@ public class ComboAction {
 			for (int i = 0; i < lista.size(); i++) {
 				ProductoSie producto = new ProductoSie();
 				producto = (ProductoSie) lista.get(i);
-				productoPaqueteItems.put(producto.getDescripcionproducto(),
-						producto.getIdproducto());
-				
+				productoPaqueteItems.put(producto.getDescripcionproducto(),producto.getIdproducto());
 			}
-
+			productoPaqueteItems = sortByComparator(productoPaqueteItems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -565,11 +565,6 @@ public class ComboAction {
 		return productoPaqueteItems;
 	}
 	
-	
-	
-	
-	
-
 	/**
 	 * @param estadoitems
 	 *            the estadoitems to set
@@ -596,7 +591,7 @@ public class ComboAction {
 				proveedoritems.put(entidad.getNombreempresa(),
 						entidad.getIdproveedor());
 			}
-
+			proveedoritems = sortByComparator(proveedoritems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -634,7 +629,7 @@ public class ComboAction {
 				tipoKardexItems.put(entidad.getDescripcion(),
 						entidad.getIdtipokardexproducto());
 			}
-
+			tipoKardexItems = sortByComparator(tipoKardexItems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -670,7 +665,7 @@ public class ComboAction {
 				tipocasaItems.put(lista.get(i).getDescripcion(),
 						lista.get(i).getIdtipocasa());
 			}
-
+			tipocasaItems = sortByComparator(tipocasaItems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -699,9 +694,9 @@ public class ComboAction {
 			}
 			lista = objUbigeoService.listarUbigeoDepartamentos();
 			for (int i = 0; i < lista.size(); i++) {
-				ubigeoDeparItems.put(lista.get(i).getNombre(),
-						lista.get(i).getCoddepartamento());
+				ubigeoDeparItems.put(lista.get(i).getNombre(),lista.get(i).getCoddepartamento());
 			}
+			ubigeoDeparItems = sortByComparator(ubigeoDeparItems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -766,7 +761,7 @@ public class ComboAction {
 				ubigeoProvinItems.put(lista.get(i).getNombre(),
 						lista.get(i).getCodprovincia());
 			}
-			
+			ubigeoProvinItems = sortByComparator(ubigeoProvinItems);
 			log.info(" ubigeoProvinItems  " );
 			log.info(" ubigeoProvinItems  " +ubigeoProvinItems);
 			
@@ -815,7 +810,7 @@ public class ComboAction {
 				ubigeoDistriItems.put(entidad.getNombre(),
 						entidad.getIdubigeo());
 			}
-
+			ubigeoDistriItems = sortByComparator(ubigeoDistriItems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -857,7 +852,6 @@ public class ComboAction {
 	public Map<String, Integer> getMetaMesItems() {
 		MetaMesItems = new HashMap<String, Integer>();
 		List<MetaMesSie> lista = new ArrayList<MetaMesSie>();
-		Map<String, Integer> mapSorting = new HashMap<String, Integer>();
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'getMetaMesItems()'");
@@ -870,7 +864,7 @@ public class ComboAction {
 				MetaMesItems.put(entidad.getMes(), entidad.getIdmetames());
 			}
 			
-			mapSorting = sortByComparator(MetaMesItems);
+			MetaMesItems = sortByComparatorId(MetaMesItems);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -880,7 +874,7 @@ public class ComboAction {
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		return mapSorting;
+		return MetaMesItems;
 	}
 
 	/**
@@ -907,7 +901,7 @@ public class ComboAction {
 				PaqueteItems.put(entidad.getCodpaquete(),
 						entidad.getIdpaquete());
 			}
-
+			PaqueteItems = sortByComparator(PaqueteItems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -958,6 +952,7 @@ public class ComboAction {
 				empleadoItems.put(entidad.getNombresCompletos(),
 						entidad.getIdempleado());
 			}
+			empleadoItems = sortByComparator(empleadoItems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -1000,7 +995,7 @@ public class ComboAction {
 			empleadoxcargo.put(c.getTbEmpleado1().getNombresCompletos(),
 					c.getTbEmpleado1().getIdempleado());
 		}
-		
+		empleadoxcargo = sortByComparator(empleadoxcargo);
 		return empleadoxcargo;
 	}
 
@@ -1043,7 +1038,7 @@ public class ComboAction {
 				diasItems.put(entidad.getDia(),
 						entidad.getIdFecha());
 			}
-			
+			diasItems = sortByComparatorId(diasItems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -1080,6 +1075,7 @@ public class ComboAction {
 				tipoFiltroItems.put(entidad.getDescripcion(),
 						entidad.getIdtipofiltro());
 			}
+			tipoFiltroItems = sortByComparator(tipoFiltroItems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -1114,6 +1110,7 @@ public class ComboAction {
 				factorSancionItems.put(entidad.getDescripcion(),
 						entidad.getIdfactor());
 			}
+			factorSancionItems = sortByComparator(factorSancionItems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -1150,6 +1147,7 @@ public class ComboAction {
 			s =  (SancionSie) lista.get(i);
 			sancionItems.put(s.getDescripcion(),s.getIdsancion());
 		}
+		sancionItems = sortByComparator(sancionItems);
 		return sancionItems;
 	}
 
@@ -1190,6 +1188,7 @@ public class ComboAction {
 			s =  (TipoImporteSie) lista.get(i);
 			tipoImporteItems.put(s.getDescripcion(),s.getIdtipoimporte());
 		}
+		tipoImporteItems = sortByComparator(tipoImporteItems);
 		return tipoImporteItems;
 	}
 
@@ -1215,6 +1214,7 @@ public class ComboAction {
 			s =  (ImporteSie) lista.get(i);
 			importeItems.put(s.getDescripcion(),s.getIdimporte());
 		}
+		importeItems = sortByComparator(importeItems);
 		return importeItems;
 	}
 
@@ -1271,6 +1271,7 @@ public class ComboAction {
 					empleadosXEmpresaitems.put(entidad.getNombresCompletos(),
 							entidad.getIdempleado());
 				}
+				empleadosXEmpresaitems = sortByComparator(empleadosXEmpresaitems);
 			}else{
 				lista = new ArrayList<EmpleadoSie>();
 			}
@@ -1288,8 +1289,7 @@ public class ComboAction {
 	/**
 	 * @param empleadosXEmpresaitems the empleadosXEmpresaitems to set
 	 */
-	public void setEmpleadosXEmpresaitems(
-			Map<String, Integer> empleadosXEmpresaitems) {
+	public void setEmpleadosXEmpresaitems(Map<String, Integer> empleadosXEmpresaitems) {
 		this.empleadosXEmpresaitems = empleadosXEmpresaitems;
 	}
 
@@ -1311,6 +1311,7 @@ public class ComboAction {
 				tipoPagoItems.put(entidad.getDescripcion(),
 						entidad.getIdtipopago());
 			}
+			tipoPagoItems = sortByComparator(tipoPagoItems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -1352,6 +1353,7 @@ public class ComboAction {
 					break;
 				}
 			}
+			almacenItemsXTipo = sortByComparator(almacenItemsXTipo);
 			log.info("finalizacion del metodo 'getAlmacenItemsXTipo'  ");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1389,7 +1391,7 @@ public class ComboAction {
 				tipoalmacenitems.put(tipo.getDescripcion(),
 						tipo.getIdtipopuntoventa());
 			}
-
+			tipoalmacenitems = sortByComparator(tipoalmacenitems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -1485,6 +1487,7 @@ public class ComboAction {
 					break;
 				}
 			}
+			grupoItems = sortByComparator(grupoItems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -1549,6 +1552,7 @@ public class ComboAction {
 				tipoClienteItems.put(entidad.getDescripcion(),
 						entidad.getIdtipocliente());
 			}
+			tipoClienteItems = sortByComparator(tipoClienteItems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -1585,6 +1589,7 @@ public class ComboAction {
 				motivoitems.put(entidad.getDescripcion(),
 						entidad.getIdmotivo());
 			}
+			motivoitems = sortByComparator(motivoitems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -1621,7 +1626,7 @@ public class ComboAction {
 				criterioComisionitems.put(tipo.getDescripcion(),
 						tipo.getIdcriterio());
 			}
-
+			criterioComisionitems = sortByComparator(criterioComisionitems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -1644,7 +1649,7 @@ public class ComboAction {
 	 * @return the tipoEventoVentaitems
 	 */
 	public Map<String, Integer> getTipoEventoVentaitems() {
-		
+		Map<String, Integer>  map= new HashMap<String, Integer>();
 		tipoEventoVentaitems = new HashMap<String, Integer>();
 		List lista = new ArrayList<TipoEventoVentaSie>();
 		try {
@@ -1659,7 +1664,7 @@ public class ComboAction {
 				tipoEventoVentaitems.put(tipo.getDescripcion(),
 						tipo.getIdtipoevento());
 			}
-			
+			map = sortByComparator(tipoEventoVentaitems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -1668,7 +1673,7 @@ public class ComboAction {
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-		return tipoEventoVentaitems;
+		return map;
 	}
 
 	/**
@@ -1695,6 +1700,7 @@ public class ComboAction {
 			relacionistaItems.put(c.getNombresCompletos(),
 					c.getIdempleado());
 		}
+		relacionistaItems = sortByComparator(relacionistaItems);
 		return relacionistaItems;
 	}
 
@@ -1723,6 +1729,7 @@ public class ComboAction {
 				turnoItems.put(t.getDescripcion(),
 						t.getIdturno());
 			}
+			turnoItems = sortByComparator(turnoItems);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -1757,6 +1764,28 @@ public class ComboAction {
 	
 	@SuppressWarnings({"unchecked", "rawtypes" })
 	private Map sortByComparator(Map unsortMap) {
+		 
+		List list = new LinkedList(unsortMap.entrySet());
+ 
+		// sort list based on comparator
+		Collections.sort(list, new Comparator() {
+			public int compare(Object o1, Object o2) {
+				return ((Comparable) ((Map.Entry) (o1)).getKey())
+                                       .compareTo(((Map.Entry) (o2)).getKey());
+			}
+		});
+ 
+		// put sorted list into map again
+                //LinkedHashMap make sure order in which keys were inserted
+		Map sortedMap = new LinkedHashMap();
+		for (Iterator it = list.iterator(); it.hasNext();) {
+			Map.Entry entry = (Map.Entry) it.next();
+			sortedMap.put(entry.getKey(), entry.getValue());
+		}
+		return sortedMap;
+	}
+	@SuppressWarnings({"unchecked", "rawtypes" })
+	private Map sortByComparatorId(Map unsortMap) {
 		 
 		List list = new LinkedList(unsortMap.entrySet());
  
