@@ -23,6 +23,7 @@ import com.edicsem.pe.sie.entity.DetGrupoEmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.GrupoVentaSie;
 import com.edicsem.pe.sie.entity.MetaMesSie;
+import com.edicsem.pe.sie.entity.ParametroSistemaSie;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.CobranzaService;
 import com.edicsem.pe.sie.service.facade.ContratoService;
@@ -30,6 +31,7 @@ import com.edicsem.pe.sie.service.facade.DetGrupoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.GrupoVentaService;
 import com.edicsem.pe.sie.service.facade.MetaMesService;
+import com.edicsem.pe.sie.service.facade.ParametroService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
@@ -67,6 +69,8 @@ public class MantenimientoGrupoEmpleadoSearchAction extends BaseMantenimientoAbs
 	private MetaMesService objMetaMesService;
 	@EJB
 	private EmpleadoSieService objEmpleadoService;
+	@EJB
+	private ParametroService objParametroService;
 	
 	public MantenimientoGrupoEmpleadoSearchAction() {
 		init();
@@ -215,23 +219,28 @@ public class MantenimientoGrupoEmpleadoSearchAction extends BaseMantenimientoAbs
 					MetaMesSie objMetaMes = objMetaMesService.fechasEfectividad(idMes);
 					List<CobranzaSie> lstCobranzaEx = cobranzaService.calcularEfectividad(lstExpositores.get(j).getIdempleado(), fechaInicio, fechaFin);
 					EmpleadoDTO e2 = new EmpleadoDTO();
-					for (int i = 0; i < lstCobranzaEx.size(); i++){
-						CobranzaSie c = lstCobranzaEx.get(i);
-						e2.setCobro(e2.getCobro()+c.getImpcobrado().doubleValue());
-						e2.setDeberiaCobrar(e2.getDeberiaCobrar()+ c.getImportemasmora().doubleValue());
-						
-						if(i+1==lstCobranzaEx.size()){
-							e2.setPorcentajeRecuperado(e2.getCobro()/e2.getDeberiaCobrar());
-							//e2.setPerdidaEfectiva(e.getPorcentajeRecuperado() - e2.getPorcentajeRecuperado());
-							double efectBase =  Double.parseDouble(Constants.PARAM_EFECTIVIDAD_VENTAS);
-							e2.setPerdidaEfectiva(efectBase - e2.getPorcentajeRecuperado());
-							e2.setPerdidaSoles(e2.getDeberiaCobrar()*e2.getPerdidaEfectiva());
-							listaEmpleado.add(e2);
+					ParametroSistemaSie pa = objParametroService.buscarPorDescripcion(Constants.PARAM_EFECTIVIDAD_VENTAS);
+					if(pa==null){
+						mensaje="No se encontró el Parámetro 'PARAM_EFECTIVIDAD_VENTAS' consultar con el administrador";
+						msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, Constants.MESSAGE_INFO_TITULO, mensaje);
+						break;
+					}else{
+						for (int i = 0; i < lstCobranzaEx.size(); i++){
+							CobranzaSie c = lstCobranzaEx.get(i);
+							e2.setCobro(e2.getCobro()+c.getImpcobrado().doubleValue());
+							e2.setDeberiaCobrar(e2.getDeberiaCobrar()+ c.getImportemasmora().doubleValue());
+							
+							if(i+1==lstCobranzaEx.size()){
+								e2.setPorcentajeRecuperado(e2.getCobro()/e2.getDeberiaCobrar());
+								double efectBase =  Double.parseDouble(pa.getValor());
+								e2.setPerdidaEfectiva(efectBase - e2.getPorcentajeRecuperado());
+								e2.setPerdidaSoles(e2.getDeberiaCobrar()*e2.getPerdidaEfectiva());
+								listaEmpleado.add(e2);
+							}
 						}
 					}
 				}
 			}
-		
 		if(mensaje==null){
 			setMensaje("Consulta realizada con exito");
 			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
