@@ -47,28 +47,22 @@ public class HorarioPersonalServiceImpl implements HorarioPersonalService{
 	 */
 	public void insertHorarioPersonal(HorarioPersonalSie horariopersonal, List<String> diaList, int idEmpleado) {
 		log.info("  insertar HorarioPERSONAL en el servicio" + diaList);
-	for (String d : diaList) {
-		
-		log.info(" dia "+d);
-		HorarioPersonalSie auxi = new HorarioPersonalSie();
-		auxi.setDiafin(horariopersonal.getDiafin());
-		auxi.setDiainicio(horariopersonal.getDiainicio());
-		auxi.setHoraIngreso(horariopersonal.getHoraIngreso());
-		auxi.setHoraSalida(horariopersonal.getHoraSalida());
-		auxi.setTbEstadoGeneral(horariopersonal.getTbEstadoGeneral());
-		EmpleadoSie emple =(objEmpleadoDao.buscarEmpleado(idEmpleado));
-		auxi.setTbEmpleado(emple);
-		
-		FechaSie fec= objFechaDao.findFecha(Integer.parseInt(d));
-		auxi.setTbFecha(fec);
-		log.info(" dia "+fec.getDia());
-		
-		objHorarioPersonalDao.insertHorarioPersonal(auxi);
-		
-		
-	}
-		
-	
+		for (String d : diaList) {
+			log.info(" dia "+d);
+			HorarioPersonalSie auxi = new HorarioPersonalSie();
+			auxi.setDiafin(horariopersonal.getDiafin());
+			auxi.setDiainicio(horariopersonal.getDiainicio());
+			auxi.setHoraIngreso(horariopersonal.getHoraIngreso());
+			auxi.setHoraSalida(horariopersonal.getHoraSalida());
+			auxi.setTbEstadoGeneral(horariopersonal.getTbEstadoGeneral());
+			EmpleadoSie emple =(objEmpleadoDao.buscarEmpleado(idEmpleado));
+			auxi.setTbEmpleado(emple);
+			
+			FechaSie fec= objFechaDao.findFecha(Integer.parseInt(d));
+			auxi.setTbFecha(fec);
+			log.info(" dia "+fec.getDia());
+			objHorarioPersonalDao.insertHorarioPersonal(auxi);
+		}
 	}
 	
 	/* (non-Javadoc)

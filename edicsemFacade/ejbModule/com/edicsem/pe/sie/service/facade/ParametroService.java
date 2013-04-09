@@ -14,5 +14,6 @@ public interface ParametroService {
 	public abstract void eliminarParametro (int id);
 	public abstract ParametroSistemaSie findParametro (int id);
 	public abstract List listarParametros ();
+	public abstract ParametroSistemaSie buscarPorDescripcion(String paramEfectividadVentas);
 }
 

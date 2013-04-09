@@ -1,7 +1,5 @@
 package com.edicsem.pe.sie.service.facade.impl;
 
-import java.sql.Timestamp;
-import java.text.ParseException;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -16,10 +14,10 @@ import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
 import com.edicsem.pe.sie.model.dao.HistorialParametroSistemaDAO;
 import com.edicsem.pe.sie.model.dao.ParametroDAO;
 import com.edicsem.pe.sie.service.facade.ParametroService;
-import com.edicsem.pe.sie.util.constants.DateUtil;
+
 @Stateless
 public class ParametroServiceImpl implements ParametroService{
-	//llamo a mi EJB y redirecciono todo al DAO
+	
 	public static Log log = LogFactory.getLog(ParametroServiceImpl.class);
 	@EJB
 	private ParametroDAO objParametroDao;
@@ -71,6 +69,13 @@ public class ParametroServiceImpl implements ParametroService{
 	 */
 	public List listarParametros() {
 		return objParametroDao.listarParametros();
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ParametroService#buscarPorDescripcion(java.lang.String)
+	 */
+	public ParametroSistemaSie buscarPorDescripcion(String paramEfectividadVentas) {
+		return objParametroDao.buscarPorDescripcion(paramEfectividadVentas);
 	}
 	
 }
