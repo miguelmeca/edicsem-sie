@@ -90,4 +90,23 @@ public class ParametroDAOImpl implements ParametroDAO{
 		return lista;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ParametroDAO#buscarPorDescripcion(java.lang.String)
+	 */
+	public ParametroSistemaSie buscarPorDescripcion(String paramEfectividadVentas) {
+		ParametroSistemaSie obj = null;
+		List lista = null;
+		try {
+			Query q = em.createQuery("select p from ParametroSistemaSie p where p.descripcion like '"+paramEfectividadVentas+"'");
+			lista = q.getResultList();
+			if(lista.size()==1){
+				obj =(ParametroSistemaSie) lista.get(0);
+			}
+			log.info("tamaño lista parametro x descripcion --> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return obj;
+	}
+	
 }
