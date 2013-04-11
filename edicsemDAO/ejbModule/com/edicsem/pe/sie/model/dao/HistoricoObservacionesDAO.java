@@ -7,7 +7,7 @@ import javax.ejb.Local;
 import com.edicsem.pe.sie.entity.HistoricoObservacionesSie;
  
 @Local
-public interface HistoricoObbservacionesDAO {
+public interface HistoricoObservacionesDAO {
 	
 	public abstract void insertHistoricoObservaciones(HistoricoObservacionesSie c);
 	public abstract void updateHistoricoObservaciones(HistoricoObservacionesSie c);
