@@ -7,14 +7,14 @@ import javax.ejb.Stateless;
 
 import com.edicsem.pe.sie.entity.HistoricoObservacionesSie;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
-import com.edicsem.pe.sie.model.dao.HistoricoObbservacionesDAO;
+import com.edicsem.pe.sie.model.dao.HistoricoObservacionesDAO;
 import com.edicsem.pe.sie.service.facade.HistoricoObservacionesService;
 
 @Stateless
 public class HistoricoObservacionesServiceImpl implements HistoricoObservacionesService {
 	
 	@EJB
-	private  HistoricoObbservacionesDAO objHistoricoObservacionesDao;
+	private  HistoricoObservacionesDAO objHistoricoObservacionesDao;
 	@EJB
 	private  EstadoGeneralDAO objEstadoGeneralDao;
 	
