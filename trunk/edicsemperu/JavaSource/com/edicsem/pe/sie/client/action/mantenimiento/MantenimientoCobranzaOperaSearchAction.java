@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,7 +54,9 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private int tipollamada; 
 	private boolean editMode;
 	private boolean enviarMensaje;
-	private String nombre;
+	private boolean programarLlamada;
+	private Date fechaProgramada;
+	private String mensaje;
 	private boolean newRecord =false;
 	private int ide;
 	private int idcontrato;
@@ -106,21 +109,17 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	public String listar() {
 		log.info("listarcobranzaopera 'MantenimientoCobranzaOperadoraSieSearchAction' ");
 		log.info(" session  "+sessionUsuario.getUsuario());
+		objCobranza = new CobranzaSie();
+		objCobranzaOpera = new CobranzaOperadoraSie();
+		objcliente = new ClienteSie();
+		objtelefono = new TelefonoPersonaSie();
+		lstHistorico = new ArrayList<HistoricoObservacionesSie>();
+		enviarMensaje=false;
+		idcontrato=0;
 		cobranzaOperaList = objCobranzaOperaService.listarCobranzasOpera(sessionUsuario.getUsuario());
 		if (cobranzaOperaList == null) {
 			cobranzaOperaList = new ArrayList<CobranzaOperadoraSie>();
 		}
-		//Mostramos el historial
-		lstHistorico = objHistoricoService.listarHistorial(idcontrato);
-//		log.info(" Listando historial *** ejemplo ");
-//		lstHistorico= new ArrayList<HistoricoObservacionesSie>();
-//		for (int i = 0; i < 10; i++) {
-//			HistoricoObservacionesSie h = new HistoricoObservacionesSie();
-//			h.setUsuariocreacion("Kgil "+i);
-//			h.setObservacion("Cliente no vive en casa, persona que se encontro dice no vovler a llamar");
-//			lstHistorico.add(h);
-//		}
-		
 		return getViewList();
 	}
 	
@@ -143,47 +142,46 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 		}
 		//productos del contrato
 		productoContratoList =objProductoContratoService.listarDetProductoContratoXContrato(idcontrato);
-		
+		//Mostramos el historial
+		lstHistorico = objHistoricoService.listarHistorial(idcontrato);
 		return getViewList();
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
+	 */
 	public String insertar() throws Exception {
 		try {
-			 if(idcontrato!=0){ 
-			
-			if(enviarMensaje==true){
-			
-			if(SMTPConfig.sendMail("Seguimiento del cliente",objCobranzaOpera.getObservaciones(),"geraldine8513@gmail.com")){
-				   
-				   log.info("envío Correcto");
-				  }else {
-			       log.info("envío Fallido");
-				 }
-			}	
-				objCobranzaOpera.setObservaciones(objCobranzaOpera.getObservaciones());
+			if(idcontrato!=0){
+				if(enviarMensaje==true){
+					if(SMTPConfig.sendMail("Seguimiento del cliente",objCobranzaOpera.getObservaciones(),"geraldine8513@gmail.com")){
+					   log.info("envío Correcto");
+					  }else {
+				       log.info("envío Fallido");
+				       mensaje ="Dicho correo no pudo ser enviado satisfactoriamente, por favor comuniquese con el administrador del sistema";
+					 }
+				}
 				objCobranzaOpera.setTbTipoLlamada(objTipoLLamadaService.findTipoLLamada(tipollamada));
-					log.info("actualizando..... ");
-					objCobranzaOperaService.updateCobranzaOpera(objCobranzaOpera);
-					log.info("insertando..... ");
-					//mensaje
-					nombre ="";
-					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-							Constants.MESSAGE_REGISTRO_TITULO, nombre);
-					FacesContext.getCurrentInstance().addMessage(null, msg);
-			 }else{
-			   nombre = "";
-			   msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-						Constants.MESSAGE_ERROR_ID_COBRANZA, nombre);
-			   FacesContext.getCurrentInstance().addMessage(null, msg);  
-			 }
-		} catch (Exception e) {
+				if(fechaProgramada!=null){
+					objCobranzaOpera.setFechaprogramada(new Timestamp(fechaProgramada.getTime()));
+				}
+				//Actualizar la Cobranza de la operadora
+				objCobranzaOperaService.updateCobranzaOpera(objCobranzaOpera);
+				mensaje =Constants.MESSAGE_REGISTRO_TITULO;
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_REGISTRO_TITULO, mensaje);				
+			}else{
+				//No seleciono ningun contrato
+				mensaje = Constants.MESSAGE_ERROR_ID_COBRANZA;
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_REGISTRO_TITULO, mensaje);
+			}
+		}catch (Exception e) {
 			e.printStackTrace();
-			nombre = e.getMessage();
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, nombre);
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return getViewList();
 	}
 	
@@ -232,20 +230,6 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	 */
 	public void setCobranzaOperaList(List<CobranzaOperadoraSie> cobranzaOperaList) {
 		this.cobranzaOperaList = cobranzaOperaList;
-	}
-
-	/**
-	 * @return the nombre
-	 */
-	public String getNombre() {
-		return nombre;
-	}
-
-	/**
-	 * @param nombre the nombre to set
-	 */
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
 	}
 
 	/**
@@ -463,6 +447,48 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	 */
 	public void setLstHistorico(List<HistoricoObservacionesSie> lstHistorico) {
 		this.lstHistorico = lstHistorico;
+	}
+
+	/**
+	 * @return the mensaje
+	 */
+	public String getMensaje() {
+		return mensaje;
+	}
+
+	/**
+	 * @param mensaje the mensaje to set
+	 */
+	public void setMensaje(String mensaje) {
+		this.mensaje = mensaje;
+	}
+
+	/**
+	 * @return the programarLlamada
+	 */
+	public boolean isProgramarLlamada() {
+		return programarLlamada;
+	}
+
+	/**
+	 * @param programarLlamada the programarLlamada to set
+	 */
+	public void setProgramarLlamada(boolean programarLlamada) {
+		this.programarLlamada = programarLlamada;
+	}
+
+	/**
+	 * @return the fechaProgramada
+	 */
+	public Date getFechaProgramada() {
+		return fechaProgramada;
+	}
+
+	/**
+	 * @param fechaProgramada the fechaProgramada to set
+	 */
+	public void setFechaProgramada(Date fechaProgramada) {
+		this.fechaProgramada = fechaProgramada;
 	}
 		
 }
