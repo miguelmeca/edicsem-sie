@@ -11,14 +11,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.HistoricoObservacionesSie;
-import com.edicsem.pe.sie.model.dao.HistoricoObbservacionesDAO;
+import com.edicsem.pe.sie.model.dao.HistoricoObservacionesDAO;
 
 /**
  * @author karen
  *
  */
 @Stateless
-public class HitoricoObservacionesDAOImpl implements HistoricoObbservacionesDAO{
+public class HitoricoObservacionesDAOImpl implements HistoricoObservacionesDAO{
 
 	@PersistenceContext(name="edicsemJPASie")
 	private EntityManager em;
