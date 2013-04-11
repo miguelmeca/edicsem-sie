@@ -18,9 +18,9 @@ public class HistoricoObservacionesSie implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@SequenceGenerator(name="TB_HISTORICO_OBSERVACIONES_CONTRATO_IDHISTORICOOBSERVACIONES_GENERATOR", sequenceName="SIE.TB_HISTORICO_OBSERVACIONES_CONTRATO_IDHISTORICOOBSERVACIONES_SEQ", initialValue=1, allocationSize =1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_HISTORICO_OBSERVACIONES_CONTRATO_IDHISTORICOOBSERVACIONES_GENERATOR")
-	private Integer idsegcontrato;
+	@SequenceGenerator(name="TB_HISTORICO_OBSERVACIONES_IDHISTORICOOBS_GENERATOR", sequenceName="SIE.TB_HISTORICO_OBSERVACIONES_IDHISTORICOOBS_SEQ", initialValue=1, allocationSize =1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_HISTORICO_OBSERVACIONES_IDHISTORICOOBS_GENERATOR")
+	private Integer idhistoricoobs;
 
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
@@ -46,15 +46,7 @@ public class HistoricoObservacionesSie implements Serializable {
 
     public HistoricoObservacionesSie() {
     }
-
-	public Integer getIdsegcontrato() {
-		return this.idsegcontrato;
-	}
-
-	public void setIdsegcontrato(Integer idsegcontrato) {
-		this.idsegcontrato = idsegcontrato;
-	}
-
+    
 	public Timestamp getFechacreacion() {
 		return this.fechacreacion;
 	}
@@ -117,6 +109,14 @@ public class HistoricoObservacionesSie implements Serializable {
 
 	public void setTbContrato(ContratoSie tbContrato) {
 		this.tbContrato = tbContrato;
+	}
+
+	public Integer getIdhistoricoobs() {
+		return idhistoricoobs;
+	}
+
+	public void setIdhistoricoobs(Integer idhistoricoobs) {
+		this.idhistoricoobs = idhistoricoobs;
 	}
 	
 }
