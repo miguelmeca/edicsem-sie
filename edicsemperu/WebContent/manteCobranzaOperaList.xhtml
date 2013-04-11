@@ -8,7 +8,7 @@
 	<ui:define name="body">
 		<h1 class="title ui-widget-header ui-corner-all">#{message['cobranza.seguimiento']}</h1>
 		<h:form id="parametrosList" prependId="false">
-			<p:messages showDetail="true" />
+			<p:messages id="message" showDetail="true" />
 			
 			<p:fieldset legend="#{message['cobranza.lista']}">
 				<p:dataTable id="listaPersonas" var="p"
@@ -36,11 +36,11 @@
 						</f:facet>
 						<h:outputText value="#{p.tbCobranza.tbCliente.nombresCompletos}" />
 					</p:column>
-					<p:column filterBy="#{p.tbCobranza.cantcuotas}">
+					<p:column filterBy="#{p.tbCobranza.numletra}">
 						<f:facet name="header">
 							<h:outputText value="#{message['cobranza.num.cuota']}" />
 						</f:facet>
-						<h:outputText value="#{p.tbCobranza.cantcuotas}" />
+						<h:outputText value="#{p.tbCobranza.numletra}" />
 					</p:column>
 					<p:column filterBy="#{p.tbCobranza.tbCliente.numdocumento}">
 						<f:facet name="header">
@@ -73,6 +73,10 @@
 						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.apepatcliente}"  style="font-weight:bold"/>
 						<h:outputText value="#{message['cobranza.apemat']}" />
 						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.apematcliente}"  style="font-weight:bold"/>
+						<h:outputText value="#{message['cobranza.tipoDoc']}" />
+						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.tbTipoDocumentoIdentidad.descripcion}" style="font-weight:bold"/>
+						<h:outputText value="#{message['cobranza.numeroDocumento']}" />
+						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.numdocumento}"  style="font-weight:bold"/>
 						<h:outputText value="#{message['cobranza.correo']}" />
 						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.correo}" />
 						<h:outputText value="#{message['cobranza.direccion']}" />
@@ -205,24 +209,27 @@
 						requiredMessage="#{message['operadora.observacion.validation']}"
 						rows="3" cols="50" maxlength="500" required="true" label="Correo"
 						autoResize="false" />
+						
 					<h:outputText value="#{message['cobranza.sistema']}" />
 					<p:selectBooleanCheckbox value="#{mantenimientoCobranzaOperaSearchAction.enviarMensaje}"/>
-					<p:commandButton id="btn" value="#{message['cobranza.guardar']}" update="panel"
-						action="#{mantenimientoCobranzaOperaSearchAction.insertar}"
-						ajax="false" icon="ui-icon-comment" />
+					<p:selectBooleanCheckbox value="#{mantenimientoCobranzaOperaSearchAction.programarLlamada}"/>
+					<h:outputText value="#{message['operadora.fechaProgramada']}" />
+					<p:calendar value="#{mantenimientoCobranzaOperaSearchAction.fechaProgramada}" 
+						rendered="#{mantenimientoCobranzaOperaSearchAction.programarLlamada==true}" />
+					<p:commandButton id="btn" value="#{message['cobranza.guardar']}" update="listaPersonas, message"
+						action="#{mantenimientoCobranzaOperaSearchAction.insertar}" ajax="false" icon="ui-icon-comment" />
 				</h:panelGrid>
 			</p:fieldset>
 			<p:fieldset legend="#{message['cobranza.historico.observaciones']}" style="margin-top:20px"   >
 				<h:panelGrid >
 					<p:dataTable value="#{mantenimientoCobranzaOperaSearchAction.lstHistorico}" var="k" paginator="true" rows="3"  >
-						<p:column style="width:2%" ><div  class="ui-messages-info ui-corner-all">
-						<div  class="ui-messages-info-summary"  >#{k.usuariocreacion}</div>
-						<div  class="ui-messages-info-detail"  >#{k.observacion} </div>
+						<p:column style="width:2%" >
+						<div  class="ui-messages-info ui-corner-all">
+							<div  class="ui-messages-info-summary"  >#{k.usuariocreacion}</div>
+							<div  class="ui-messages-info-detail"  >#{k.observacion} </div>
 						</div>
 						</p:column>
 						</p:dataTable>
-					<p:commandButton   value="#{message['cobranza.guardar']}" action="#{mantenimientoCobranzaOperaSearchAction.insertar}"
-						ajax="false" icon="ui-icon-comment" />
 				</h:panelGrid>
 			</p:fieldset>
 			</h:panelGrid>
