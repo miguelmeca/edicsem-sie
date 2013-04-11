@@ -46,7 +46,7 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 	
 	public static Log log = LogFactory.getLog(Migracion.class);
 	private String nombreArchivo;
-	private List<SistemaIntegradoDTO> sistMig;
+	private List<SistemaIntegradoDTO> sistMig, sisMigUpdate;
 	List<List<HSSFCell>> listaContratosManual;
 	private String mensaje ;
 	
@@ -62,7 +62,8 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 	 */
 	public String agregar() {
 		nombreArchivo="";
-		sistMig=new ArrayList<SistemaIntegradoDTO>();
+		sistMig = new ArrayList<SistemaIntegradoDTO>();
+		sisMigUpdate = new ArrayList<SistemaIntegradoDTO>();
 		listaContratosManual = new ArrayList<List<HSSFCell>>();
 		mensaje ="";
 		return getViewMant();
@@ -115,13 +116,13 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 		RequestContext context = RequestContext.getCurrentInstance();
 		HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 		EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
-		log.info("subirBD()");
+		log.info("insertar()");
 		
 		if(sistMig.size()==0){
 			mensaje = "Debe subir el excel a importar";
 			msg = new FacesMessage(FacesMessage.SEVERITY_WARN,Constants.MESSAGE_INFO_TITULO,mensaje);
 		}else{
-			mensaje = objContratoService.insertMigracion(sistMig, sessionUsuario.getUsuario());
+			mensaje = objContratoService.insertMigracion(sistMig, sisMigUpdate, sessionUsuario.getUsuario());
 			if(mensaje ==null){
 				mensaje=  "Se realizó la migración exitosamente";
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO,mensaje);
@@ -143,7 +144,7 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 			try {
 				InputStreamAFile(file.getInputstream(), file.getFileName());
 			} catch (IOException e1) {
-				e1.printStackTrace();
+				log.info("Mesaje> "+e1.getMessage()+" cause: "+e1.getCause());
 			}
 			SistemaIntegradoDTO sis = new SistemaIntegradoDTO();
 			nombreArchivo = file.getFileName();
@@ -185,13 +186,11 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 							if (data.get(0)!=null) {
 								sis.setCodContrato(getCellValueAsString(data.get(5)));
 								//buscar codigo de contrato 
-								ContratoSie contrato = objContratoService.buscarXcodigoContrato(sis.getCodContrato());
-								if(contrato!=null){
-									sistMig= new ArrayList<SistemaIntegradoDTO>();
-									mensaje ="El contrato con el código  '"+contrato.getCodcontrato()+"' ya existe";
-									msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO,mensaje);
+								if(sis.getCodContrato().trim().equalsIgnoreCase("")){
+									log.info("ya no hay contratos ");
 									break;
 								}
+								ContratoSie contrato = objContratoService.buscarXcodigoContrato(sis.getCodContrato());
 								
 								sis.setEmpresa(getCellValueAsString(data.get(0)));
 								if(!data.get(5).toString().isEmpty()){
@@ -244,7 +243,9 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 								if(!(data.get(25).toString().trim().equals(""))){
 									sis.setCantMercaderia(Integer.parseInt(getCellValueAsString(data.get(25)).toString().trim()));
 								}
-								sis.setTipoMercaderia(getCellValueAsString(data.get(26)));
+								if(data.get(26)!=null){
+								sis.setTipoMercaderia(getCellValueAsString(data.get(26))+"");
+								}
 								sis.setCantCuotas(Integer.parseInt(getCellValueAsString(data.get(27))));
 								sis.setNumLetra(getCellValueAsString(data.get(28)));
 								sis.setImporteInicial(Double.parseDouble(getCellValueAsString(data.get(29))));
@@ -264,9 +265,13 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 									}
 								}
 								String diasRetrazo =getCellValueAsString(data.get(59));
-								sis.setDiasRetraso(Integer.parseInt(diasRetrazo));
+								if(diasRetrazo.matches("([0-9]+)")){
+									sis.setDiasRetraso(Integer.parseInt(diasRetrazo));
+								}else if(diasRetrazo.equalsIgnoreCase("Falso")){
+									sis.setDiasRetraso(0);
+								}
 								//dependiendo de los dias de retrazo se analiza el tipo de cliente.
-								//volver a calificar al cliente : Puntual , regular,  mmoroso, extremo
+								//volver a calificar al cliente : Puntual , regular, moroso, extremo
 								sis.setInfocorp(getCellValueAsString(data.get(63)));
 								if(data.get(64)!=null){
 									if(!(data.get(64).toString().isEmpty()||data.get(64).toString().equals("")||data.get(64).toString().trim().equals(""))){
@@ -288,18 +293,23 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 								}
 								sis.setCalificacionCliente(getCellValueAsString(data.get(69)));
 								
-								if(palabra.length==3){
-									sis.setNombrecliente(palabra[0]);
-									sis.setApepatcliente(palabra[1]);
-									sis.setApematcliente(palabra[2]);
-									
-									sistMig.add(sis);
+								if(contrato!=null){
+									//Si el contrato existe se debe actualizar el contrato
+									sisMigUpdate.add(sis);
 									sheetData.add(data);
 								}else{
-									listaContratosManual.add(data);
+									if(palabra.length==3){
+										//Si el cliente tiene un nombre, un apellido paterno y un apellido materno
+										sis.setNombrecliente(palabra[0]);
+										sis.setApepatcliente(palabra[1]);
+										sis.setApematcliente(palabra[2]);
+										sistMig.add(sis);
+										sheetData.add(data);
+									}else{
+										listaContratosManual.add(data);
+									}
 								}
-								
-							}else {
+							}else{
 								log.info(data.get(0));
 							}
 						}
@@ -313,10 +323,9 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 					}
 					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO,mensaje);
 				}
-				
-				FacesContext.getCurrentInstance().addMessage(null, msg);
-				}
+			}
 			catch (Exception e) {
+				log.info("Mensaje "+e.getMessage()+"cause "+e.getCause()+" contrato "+sis.getCodContrato());
 				mensaje = " Contrato: "+sis.getCodContrato()+",    "+e.getMessage()+", causa: "+e.getCause();
 				msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error Formato EXCEL", mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -332,6 +341,7 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 			}
 	    }
 		log.info("cantidad registros pase Manual " +listaContratosManual.size() +" Cantidad registros subido a BD"+ sistMig.size());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return null;
 	    }
 	    
@@ -384,6 +394,14 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 		 */
 		public void setSistMig(List<SistemaIntegradoDTO> sistMig) {
 			this.sistMig = sistMig;
+		}
+
+		public List<SistemaIntegradoDTO> getSisMigUpdate() {
+			return sisMigUpdate;
+		}
+
+		public void setSisMigUpdate(List<SistemaIntegradoDTO> sisMigUpdate) {
+			this.sisMigUpdate = sisMigUpdate;
 		}
 		
 		

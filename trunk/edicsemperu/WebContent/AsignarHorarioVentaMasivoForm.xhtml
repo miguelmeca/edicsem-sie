@@ -58,7 +58,7 @@
 				<h:outputText id="out"  value="#{distribucion.rangoFecha}" style="font-weight:bold"/>
 				</h:panelGroup>
 				
-				<p:commandButton value="#{message['distribucion.grupo.agregar']}" actionListener="#{distribucion.agregarhorario}" 
+				<p:commandButton value="#{message['distribucion.grupo.agregar']}" action="#{distribucion.agregarhorario}" 
 				title="#{message['distribucion.grupo.agregar.title']}" update="fldshedule,message" icon="ui-icon-star" />
 				
 			</h:panelGrid>
