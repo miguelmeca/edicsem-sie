@@ -479,13 +479,14 @@ public class ContratoServiceImpl implements ContratoService {
 				log.info("  insertando contrato * "+con.getCodcontrato());
 				
 				//insertar el historial
+				if(s.getHistoria()!=null||s.getHistoria().trim().equals("")){
 				HistoricoObservacionesSie h = new HistoricoObservacionesSie();
 				h.setObservacion(s.getHistoria());
 				h.setTbContrato(con);
 				h.setUsuariocreacion(usuariocreacion);
 				h.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(98));
 				objHistorialDao.insertHistoricoObservaciones(h);
-				
+				}
 				dom = new DomicilioPersonaSie();
 				dom.setDomicilio(s.getDireccion());
 				dom.setTbTipoCasa(objTipoCasaDao.findTipoCasa(1));
