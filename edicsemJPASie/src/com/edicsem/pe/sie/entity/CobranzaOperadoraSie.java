@@ -35,6 +35,8 @@ public class CobranzaOperadoraSie implements Serializable {
 	
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
+	
+	private Timestamp fechaprogramada;
 
 	//bi-directional many-to-one association to CobranzaDTO
     @ManyToOne
@@ -110,6 +112,14 @@ public class CobranzaOperadoraSie implements Serializable {
 	 */
 	public void setFechacreacion(Timestamp fechacreacion) {
 		this.fechacreacion = fechacreacion;
+	}
+
+	public Timestamp getFechaprogramada() {
+		return fechaprogramada;
+	}
+
+	public void setFechaprogramada(Timestamp fechaprogramada) {
+		this.fechaprogramada = fechaprogramada;
 	}
 	
 }

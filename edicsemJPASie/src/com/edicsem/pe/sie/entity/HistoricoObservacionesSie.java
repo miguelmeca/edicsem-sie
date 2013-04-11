@@ -38,8 +38,6 @@ public class HistoricoObservacionesSie implements Serializable {
 
 	private String observacion;
 
-	private String rutaarchivo;
-
 	private String usuariocreacion;
 
 	private String usuariomodifica;
@@ -69,14 +67,6 @@ public class HistoricoObservacionesSie implements Serializable {
 
 	public void setObservacion(String observacion) {
 		this.observacion = observacion;
-	}
-
-	public String getRutaarchivo() {
-		return this.rutaarchivo;
-	}
-
-	public void setRutaarchivo(String rutaarchivo) {
-		this.rutaarchivo = rutaarchivo;
 	}
 
 	public String getUsuariocreacion() {
