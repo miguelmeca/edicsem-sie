@@ -22,8 +22,8 @@ import com.edicsem.pe.sie.entity.DetPaqueteSie;
 import com.edicsem.pe.sie.entity.DetProductoContratoSie;
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.EmpresaSie;
+import com.edicsem.pe.sie.entity.HistoricoObservacionesSie;
 import com.edicsem.pe.sie.entity.LugarVentaSie;
-import com.edicsem.pe.sie.entity.MetaMesSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
@@ -50,9 +50,7 @@ import com.edicsem.pe.sie.model.dao.TipoDocumentoDAO;
 import com.edicsem.pe.sie.model.dao.TipoEventoVentaDAO;
 import com.edicsem.pe.sie.model.dao.UbigeoDAO;
 import com.edicsem.pe.sie.service.facade.ContratoService;
-import com.edicsem.pe.sie.service.facade.LugarVentaService;
-import com.edicsem.pe.sie.service.facade.MetaMesService;
-import com.edicsem.pe.sie.service.facade.TipoEventoVentaService;
+import com.edicsem.pe.sie.service.facade.HistoricoObservacionesService;
 
 @Stateless
 public class ContratoServiceImpl implements ContratoService {
@@ -98,6 +96,8 @@ public class ContratoServiceImpl implements ContratoService {
 	private TipoEventoVentaDAO objTipoEventoVentaDAO;
 	@EJB
 	private LugarVentaDAO objLugarVentaDAO;
+	@EJB
+	private HistoricoObservacionesService objHistorialDao;
 	
 	public static Log log = LogFactory.getLog(ContratoServiceImpl.class);
 	
@@ -224,8 +224,11 @@ public class ContratoServiceImpl implements ContratoService {
 				con.setTbLugarVenta(lugar);
 				con.setLugarentrega(s.getPuntodeventa());
 			}else{
-				mensaje="No se encontró el lugar '"+s.getLugardelaentrega()+"', por favor insertarlo";
-				break;
+				//insertamos el lugar de entrega
+				LugarVentaSie lu = new LugarVentaSie();
+				objLugarVentaDAO.insertLugarVenta(lu);
+				con.setTbLugarVenta(lu);
+				con.setLugarentrega(s.getPuntodeventa());
 			}
 		}
 		con.setFechaentrega(s.getFecha());
@@ -335,7 +338,7 @@ public class ContratoServiceImpl implements ContratoService {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ContratoService#insertMigracion(java.util.List, java.lang.String)
 	 */
-	public String insertMigracion(List<SistemaIntegradoDTO> sistMig, String usuariocreacion) {
+	public String insertMigracion(List<SistemaIntegradoDTO> sistMig, List<SistemaIntegradoDTO> sisMigUpdate, String usuariocreacion) {
 		log.info("insertMigracion()");
 		String mensaje=null;
 		ClienteSie cli = new ClienteSie();
@@ -464,7 +467,7 @@ public class ContratoServiceImpl implements ContratoService {
 				if(empr!=null){
 					con.setTbEmpresa(empr);
 				}else{
-					mensaje="No se encontró la empresa '"+s.getEmpresa()+"'";
+					mensaje="No se encontró la empresa '"+s.getEmpresa()+"' en la base de datos, por favor consultar al administrador";
 					break;
 				}
 				
@@ -474,6 +477,15 @@ public class ContratoServiceImpl implements ContratoService {
 				con.setUsuariocreacion(usuariocreacion);
 				objContratoDao.insertContrato(con);
 				log.info("  insertando contrato * "+con.getCodcontrato());
+				
+				//insertar el historial
+				HistoricoObservacionesSie h = new HistoricoObservacionesSie();
+				h.setObservacion(s.getHistoria());
+				h.setTbContrato(con);
+				h.setUsuariocreacion(usuariocreacion);
+				h.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(98));
+				objHistorialDao.insertHistoricoObservaciones(h);
+				
 				dom = new DomicilioPersonaSie();
 				dom.setDomicilio(s.getDireccion());
 				dom.setTbTipoCasa(objTipoCasaDao.findTipoCasa(1));
@@ -674,9 +686,8 @@ public class ContratoServiceImpl implements ContratoService {
 			
 			if(con.getCodcontrato()!=codigoContr){
 				for (int j2 = 0; j2 < telList.size(); j2++) {
-						objTelefonoDao.insertarTelefonoEmpleado(telList.get(j2));
-						log.info("contrato: "+con.getCodcontrato()+" opera "+telList.get(j2).getOperadorTelefonico()+" telefono  "+telList.get(j2).getTelefono()+" desc "+telList.get(j2).getDescTelefono()+" tipo "+telList.get(j2).getTipotelefono());
-				
+					objTelefonoDao.insertarTelefonoEmpleado(telList.get(j2));
+					log.info("contrato: "+con.getCodcontrato()+" opera "+telList.get(j2).getOperadorTelefonico()+" telefono  "+telList.get(j2).getTelefono()+" desc "+telList.get(j2).getDescTelefono()+" tipo "+telList.get(j2).getTipotelefono());
 				}
 				log.info("tamaño domic  "+domList.size());
 				for (int g = 0; g< domList.size(); g++) {
@@ -687,8 +698,279 @@ public class ContratoServiceImpl implements ContratoService {
 			}
 		}
 		
+		//  *************** Contratos a actualizar  ***********************************
+		for (int i = 0; i < sisMigUpdate.size(); i++) {
+			con = objContratoDao.buscarXcodigoContrato(sisMigUpdate.get(i).getCodContrato());
+			SistemaIntegradoDTO s = sistMig.get(i);
+			if(s.getDistrito().trim().equalsIgnoreCase("S.J.L.")){
+				s.setDistrito("SAN JUAN DE LURIGANCHO");
+			}
+			else if(s.getDistrito().trim().equalsIgnoreCase("SURCO")){
+				s.setDistrito("SANTIAGO DE SURCO");
+			}
+			else if(s.getDistrito().trim().equalsIgnoreCase("V.E.S.")||
+					s.getDistrito().trim().equalsIgnoreCase("V.E.S")){
+				s.setDistrito("VILLA EL SALVADOR");
+			}
+			else if(s.getDistrito().trim().equalsIgnoreCase("V.M.T.")){
+				s.setDistrito("VILLA MARIA DEL TRIUNFO");
+			}
+			else if(s.getDistrito().trim().equalsIgnoreCase("S.J.M.")){
+				s.setDistrito("SAN JUAN DE MIRAFLORES");
+			}
+			else if(s.getDistrito().trim().equalsIgnoreCase("S.M.P.")){
+				s.setDistrito("SAN MARTIN DE PORRES");
+			}
+			else if(s.getDistrito().trim().equalsIgnoreCase("Ate")){
+				s.setDistrito("ATE");
+			}
+			else if(s.getDistrito().trim().equalsIgnoreCase("Lurigancho")){
+				s.setDistrito("SAN JUAN DE LURIGANCHO");
+			}
+			telList= new ArrayList<TelefonoPersonaSie>();
+			domList= new ArrayList<DomicilioPersonaSie>();
+			//buscar cliente de dicho contrato
+			cli = objClienteDao.findCliente(con.getTbCliente().getIdcliente());
+			//buscar telefonos
+			telList = objTelefonoDao.listarTelefonoEmpleadosXidcliente(con.getTbCliente().getIdcliente());
+			//buscar domicilios
+			domList =objDomicilioDao.listarDomicilioCliente(con.getTbCliente().getIdcliente());
+			
+			if(!s.getCodContrato().equals(codigoContr)){
+				telefonoString = new ArrayList<String>();
+				domicilioString = new ArrayList<String>();
+				//actualizar cliente
+				cli.setApematcliente(s.getApematcliente());
+				cli.setApepatcliente(s.getApepatcliente());
+				cli.setNombrecliente(s.getNombrecliente());
+				cli.setNumdocumento(s.getNumdocumento());
+				cli.setCorreo(s.getCorreo());
+				cli.setEmpresatrabajo(s.getEmpresatrabajo());
+				cli.setCargotrabajo(s.getCargotrabajo());
+				cli.setDirectrabajo(s.getDirectrabajo());
+				cli.setPlanoTrabajo(s.getPlanoTrabajo());
+				cli.setLetraTrabajo(s.getLetraSectorTrabajo());
+				cli.setSectorTrabajo(s.getNumSectorTrabajo());
+				cli.setFecnacimiento(s.getFecnacimiento());
+				
+				String [ ] telTraba = s.getTelftrabajo().trim().split("([\\s-+(]+)");
+				if(telTraba.length==1){
+					cli.setTelftrabajo(telTraba[0]);
+				}
+				if(telTraba.length>1){
+					for (int j = 0; j < telTraba.length; j++) {
+						
+						if(telTraba[j].trim().matches("([0-9]+)")){
+							tel.setTelefono(telTraba[j].toString().trim());
+							if(telTraba.length>j+1){
+								if(telTraba[j+1].toString().trim().matches("([a-zA-Z(]//s)+") ){
+									tel.setDescTelefono(telTraba[j+1].toString().trim());
+								}
+							}
+						}
+						if(telTraba[j].toString().trim().matches("([a-zA-Z(]//s)+") ){
+							tel.setDescTelefono(telTraba[j].toString().trim());
+							if(telTraba.length>j+1){
+								if(telTraba[j+1].trim().matches("([0-9]+)")){
+									tel.setTelefono(telTraba[j+1].toString().trim());
+								}
+							}
+						}
+						if(tel.getTelefono()!=null ){
+							if(tel.getTelefono().matches("\\d{9}")){
+								log.info("telefono ");
+								tel.setTipotelefono("C");
+							}else {
+								tel.setTipotelefono("F");
+							}
+						tel.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(17));
+						tel.setIdcliente(cli);
+						if(tel.getDescTelefono()==null){
+							tel.setDescTelefono("Trabajo");
+						}
+						telList.add(tel);
+						tel= new TelefonoPersonaSie();
+						}
+					}
+				}
+				cli.setTitulartelefono(s.getTitulartelefono());
+				cli.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23)); 
+				cli.setTbTipoDocumentoIdentidad(objtipoDao.buscarTipoDocumento(1));
+				cli.setTipocliente(1);
+				cli.setUsuariomodifica(usuariocreacion);
+				objClienteDao.updateCliente(cli);
+				con.setFechaentrega(s.getFechaEntrega());
+				con.setNumcuotas(s.getCantCuotas());
+				con.setPagosubinicial(new  BigDecimal(s.getImporteInicial()));
+				EmpresaSie empr = objEmpresaDao.findEmpresaXdescripcion(s.getEmpresa());
+				if(empr!=null){
+					con.setTbEmpresa(empr);
+				}else{
+					mensaje="No se encontró la empresa '"+s.getEmpresa()+"' en la base de datos, por favor consultar al administrador";
+					break;
+				}
+				//insertar contrato
+				con.setUsuariomodifica(usuariocreacion);
+				objContratoDao.updateContrato(con);
+				//buscando domicilio
+				dom = new DomicilioPersonaSie();
+				dom.setDomicilio(s.getDireccion());
+				dom.setTbTipoCasa(objTipoCasaDao.findTipoCasa(1));
+				ubi = objUbigeoDao.findUbigeoXDescripcion(s.getDistrito().toUpperCase());
+				if(ubi.size()==0){
+					dom.setUbicacion(s.getDistrito().toUpperCase());
+				}else{
+					dom.setTbUbigeo(ubi.get(0));
+				}
+				dom.setIdcliente(cli);
+				dom.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(15));
+				dom.setPlanoDomicilio(s.getPlanoDistrito());
+				dom.setSectorDomicilio(s.getNumSector());
+				dom.setLetraDomicilio(s.getLetraSector());
+				domList.add(dom);
+			}
+			String [ ] telefono = s.getNumTelefono().trim().split("([\\s(-])+");
+	 
+			for (int j = 0; j < telefono.length; j++) {
+				telefono[j]= telefono[j].toString().replaceAll("([(-)])", " "); 
+			}
+			
+			for (int j = 0; j < telefono.length; j++) { 
+				 tel = new TelefonoPersonaSie();
+				 
+				 if(telefono[j].toString().trim().equalsIgnoreCase("C")||telefono[j].toString().trim().equalsIgnoreCase("(CLARO)")||telefono[j].toString().trim().equalsIgnoreCase("claro")){
+						tel.setOperadorTelefonico("Claro");
+					}
+					else if(telefono[j].toString().trim().equalsIgnoreCase("M")){
+						tel.setOperadorTelefonico("Movistar");
+					}
+					else if(telefono[j].toString().trim().equalsIgnoreCase("N")){
+						tel.setOperadorTelefonico("Nextel");
+					}
+					else if(telefono[j].matches("[a-zA-Z(]+")){
+						tel.setDescTelefono(telefono[j].toString().trim());
+						if(telefono.length>j+1){
+							if(telefono[j+1].toString().trim().matches("[a-zA-Z(]+") ){
+								tel.setDescTelefono(tel.getDescTelefono()+" "+telefono[j+1].toString().trim());
+								if(telefono.length>j+2){
+									if(telefono[j+2].trim().matches("([0-9]+)")&&tel.getTelefono()==null){
+										tel.setTelefono(telefono[j+2].toString().trim());
+										isadd=true;
+									}
+								}
+							}
+						}else{
+							isadd=true;
+						}
+					}
+					else if(telefono[j].trim().matches("([0-9]+)")){
+						tel.setTelefono(telefono[j].toString().trim());
+						if(tel.getTelefono().length()< 4 && telefono.length>j+1){
+							tel.setTelefono(tel.getTelefono()+" "+telefono[j+1].toString().trim());
+							j=j+1;
+						}
+					}
+					if(telefono.length>j+1 && isadd==false){
+						if(telefono[j+1]!=null){
+							if(telefono[j+1].toString().trim().equalsIgnoreCase("C")||telefono[j+1].toString().trim().equalsIgnoreCase("(CLARO)")||telefono[j+1].toString().trim().equalsIgnoreCase("claro")){
+								tel.setOperadorTelefonico("Claro");
+							}
+							else if(telefono[j+1].toString().trim().equalsIgnoreCase("M")){
+								tel.setOperadorTelefonico("Movistar");
+							}
+							else if(telefono[j+1].toString().trim().equalsIgnoreCase("N")){
+								tel.setOperadorTelefonico("Nextel");
+							}
+							else if(telefono[j+1].toString().trim().matches("[a-zA-Z(]+") && tel.getDescTelefono()==null){
+								tel.setDescTelefono(telefono[j+1].toString().trim());
+								//nombre + apellido analizamos si el nombre es compuesto en la descripcion
+								if(telefono.length>j+2){
+									if(telefono[j+2].toString().trim().matches("[a-zA-Z(]+") ){
+										tel.setDescTelefono(tel.getDescTelefono()+" "+telefono[j+2].toString().trim());
+									}
+								}
+							}
+							else if(telefono[j+1].trim().matches("([0-9]+)")&&tel.getTelefono()==null){
+								tel.setTelefono(telefono[j+1].toString().trim());
+							}
+						}
+					}
+					
+				if(tel.getTelefono()!=null && !telefonoString.contains(tel.getTelefono())){
+					//definir tipo telefono
+					if(tel.getTelefono()!=null ){
+						if(tel.getTelefono().matches("\\d{9}")){
+							log.info("telefono ");
+							tel.setTipotelefono("C");
+						}else {
+							tel.setTipotelefono("F");
+						}
+					}
+					telefonoString.add(tel.getTelefono());
+					log.info("telefono: "+tel.getTelefono());
+					tel.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(17));
+					tel.setIdcliente(cli);
+					telList.add(tel);
+					isadd=false;
+				}
+			}
+			for (int j = 0; j < domList.size(); j++) {
+				domicilioString.add(domList.get(j).getDomicilio());
+			}
+			//Actualizar Domicilio
+			if(!domicilioString.contains(s.getDireccion())){
+				log.info("nuevo domi  " + s.getDireccion());
+				dom = new DomicilioPersonaSie();
+				dom.setDomicilio(s.getDireccion());
+				dom.setTbTipoCasa(objTipoCasaDao.findTipoCasa(1));
+				ubi = objUbigeoDao.findUbigeoXDescripcion(s.getDistrito().toUpperCase());
+				if( ubi.size()==0){
+					dom.setUbicacion(s.getDistrito().toUpperCase());
+				}else{
+					dom.setTbUbigeo(ubi.get(0));
+				}
+				dom.setIdcliente(cli);
+				dom.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(15));
+				dom.setPlanoDomicilio(s.getPlanoDistrito());
+				dom.setSectorDomicilio(s.getNumSector());
+				dom.setLetraDomicilio(s.getLetraSector());
+				domList.add(dom);
+				objDomicilioDao.insertarDomicilioEmpleado(dom);
+			}
+			//buscar cobranza
+			CobranzaSie cob = new CobranzaSie();
+			cob.setCantcuotas(s.getCantCuotas().toString());
+			cob.setFecpago(s.getFehaPago());
+			cob.setNumletra(s.getNumLetra());
+			cob.setFecvencimiento(s.getFechaVencimiento());
+			cob.setRegistroreniec(s.getRegistroReniec());
+			cob.setImpinicial(new BigDecimal(s.getImporteInicial()));
+			cob.setImpcobrado(new BigDecimal(s.getImporteCobrado()));
+			cob.setImportemasmora(new BigDecimal(s.getImportemasmora()));
+			cob.setDiasretraso(s.getDiasRetraso());
+			cob.setIdcliente(cli.getIdcliente());
+			cob.setIdcontrato(con.getIdcontrato());
+			cob.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(27));
+			cob.setTbContrato(con);
+			cob.setTbCliente(cli);
+			
+			//actualizar cobranza
+			cob.setUsuariomodifica(usuariocreacion);
+			objCobranzaDao.updateCobranza(cob);
+			
+			if(con.getCodcontrato()!=codigoContr){
+				for (int j2 = 0; j2 < telList.size(); j2++) {
+					objTelefonoDao.insertarTelefonoEmpleado(telList.get(j2));
+				}
+				for (int g = 0; g< domList.size(); g++) {
+					objDomicilioDao.insertarDomicilioEmpleado(domList.get(g));
+				}
+				codigoContr=  con.getCodcontrato();
+			}
+		}
+		
 		} catch (Exception e) {
-			mensaje =e.getMessage()+"Error en el contrato "+con.getCodcontrato();
+			mensaje ="Mensaje: "+e.getMessage()+"Error en el contrato "+con.getCodcontrato()+", Causa: "+e.getMessage();
 		}
 		
 		return mensaje;
