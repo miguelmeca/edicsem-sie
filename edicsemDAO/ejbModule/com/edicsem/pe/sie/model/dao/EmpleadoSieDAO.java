@@ -16,5 +16,6 @@ public interface EmpleadoSieDAO {
 	public abstract List listarEmpleadoxEmpresas(int parametroObtenido);
 	public abstract List listarDni();
 	public abstract List listarUsuario();
-	public abstract EmpleadoSie buscarEmpleadoVendedor (String nombreCompleto);
+	public abstract EmpleadoSie buscarEmpleadoPorNombreCompleto(String nombreCompleto);
+	public abstract EmpleadoSie buscarEmpleadosPorUsuario(String usuario);
 }

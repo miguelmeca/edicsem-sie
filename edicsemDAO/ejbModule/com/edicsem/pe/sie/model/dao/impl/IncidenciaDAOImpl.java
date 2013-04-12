@@ -11,9 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.IncidenciaSie;
-import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.model.dao.IncidenciaDAO;
-import com.edicsem.pe.sie.model.dao.UbigeoDAO;
 
 @Stateless
 public class IncidenciaDAOImpl implements IncidenciaDAO {
@@ -76,7 +74,7 @@ public class IncidenciaDAOImpl implements IncidenciaDAO {
 		IncidenciaSie u = new IncidenciaSie();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("buscar Incidencia");
+				log.info("buscar Incidencia "+ id);
 			}
 			u = em.find(IncidenciaSie.class, id);
 		} catch (Exception ex) {
@@ -86,13 +84,15 @@ public class IncidenciaDAOImpl implements IncidenciaDAO {
 	}
 
 	public List listarIncidencia() {
+		log.info("listarIncidencia()");
 		List lista = null;
 		try {
-
-			Query q = em.createQuery("select p from IncidenciaSie p where p.tbEstadoGeneral.idestadogeneral = "+42+"or p.tbEstadoGeneral.idestadogeneral = "+43+"or p.tbEstadoGeneral.idestadogeneral = "+44+"or p.tbEstadoGeneral.idestadogeneral = "+45);
-			lista = q.getResultList();
-			log.info("tamaño lista Incidencia  --> " + lista.size()+ "  ");
-			
+			Query q = em.createQuery("select p from IncidenciaSie p where p.tbEstadoGeneral.idestadogeneral between" +
+					" 40 and 45 ");
+			if(q.getResultList().size()>0){
+				lista = q.getResultList();
+				log.info("tamaño lista Incidencia  --> " + lista.size()+ "  ");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

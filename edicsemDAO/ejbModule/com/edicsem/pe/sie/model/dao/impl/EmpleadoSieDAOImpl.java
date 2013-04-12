@@ -175,14 +175,14 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.EmpleadoSieDAO#buscarEmpleadoVendedor(java.lang.String)
+	 * @see com.edicsem.pe.sie.model.dao.EmpleadoSieDAO#buscarEmpleadoPorNombreCompleto(java.lang.String)
 	 */
-	public EmpleadoSie buscarEmpleadoVendedor(String nombreCompleto) {
+	public EmpleadoSie buscarEmpleadoPorNombreCompleto(String nombreCompleto) {
 		List lista = null;
 		EmpleadoSie obj = null;
 		try {
 			Query q = em.createQuery("SELECT e FROM EmpleadoSie e " +
-					"where  UPPER(e.nombreemp)||' '||UPPER(e.apepatemp)||' '||UPPER(e.apematemp) like '" +nombreCompleto.toUpperCase()+"'");
+					"where  UPPER(e.nombreemp)||' '||UPPER(e.apepatemp)||' '||UPPER(e.apematemp) like '" +nombreCompleto.toUpperCase().trim()+"'");
 			lista = q.getResultList();
 			if(lista.size()==1){
 				obj= (EmpleadoSie) lista.get(0);
@@ -191,6 +191,27 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 			log.info("BUSQUEDA DE EMPLEADO en el DAOIMPLE --> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();			
+		}
+		return obj;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.EmpleadoSieDAO#buscarEmpleadosPorUsuario(java.lang.String)
+	 */
+	public EmpleadoSie buscarEmpleadosPorUsuario(String usuario) {
+		List lista = null;
+		EmpleadoSie obj = null;
+		try {
+			Query q = em.createQuery("SELECT e FROM EmpleadoSie e " +
+					" where UPPER(e.usuario) like '" +usuario.toUpperCase().trim()+"'");
+			lista = q.getResultList();
+			if(lista.size()==1){
+				 obj = (EmpleadoSie) lista.get(0);
+			}
+			
+			log.info("BUSQUEDA DE EMPLEADO en el DAOIMPLE --> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return obj;
 	}
