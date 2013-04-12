@@ -1,6 +1,5 @@
 package com.edicsem.pe.sie.service.facade.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -205,9 +204,16 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#buscarEmpleadoVendedor(java.lang.String)
+	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#buscarEmpleadoPorNombreCompleto(java.lang.String)
 	 */
-	public EmpleadoSie buscarEmpleadoVendedor(String nombreCompleto) {
-		return objEmpleadoDao.buscarEmpleadoVendedor(nombreCompleto);
+	public EmpleadoSie buscarEmpleadoPorNombreCompleto(String nombreCompleto) {
+		return objEmpleadoDao.buscarEmpleadoPorNombreCompleto(nombreCompleto);
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#buscarEmpleadosPorUsuario(java.lang.String)
+	 */
+	public EmpleadoSie buscarEmpleadosPorUsuario(String usuario) {
+		return objEmpleadoDao.buscarEmpleadosPorUsuario(usuario);
 	}
 }

@@ -39,6 +39,7 @@ public class ConfigCorreosIncidenteServiceImpl implements ConfigCorreosIncidente
 	public ConfigCorrreosIncidenteSie findConfigCorreo(int id) {
 		return objConfigCorreoDao.findConfigCorreo(id);
 	}
+	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ConfigCorreosIncidenteService#listarConfigCorreos()
 	 */

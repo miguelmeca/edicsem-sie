@@ -62,8 +62,8 @@ public class DetPermisoEmpleadoServiceImpl implements DetPermisoEmpleadoService 
 					det.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(63));
 					objPermisoEmpleadoDao.updateDetPermisoEmpleado(det);
 					}
-			}
-		}
+				}
+	}
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.DetPermisoEmpleadoService#updateDetPermisoEmpleado(com.edicsem.pe.sie.entity.DetPermisoEmpleadoSie)

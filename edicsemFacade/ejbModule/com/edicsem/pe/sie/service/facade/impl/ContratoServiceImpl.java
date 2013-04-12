@@ -286,7 +286,7 @@ public class ContratoServiceImpl implements ContratoService {
 		
 		if (s.getNombredelvendedor()!=null) {
 			detconemp = new DetContratoEmpleadoSie();
-			detconemp.setTbEmpleado(objEmpleadoDao.buscarEmpleadoVendedor(s.getNombredelvendedor()));
+			detconemp.setTbEmpleado(objEmpleadoDao.buscarEmpleadoPorNombreCompleto(s.getNombredelvendedor()));
 			if(detconemp.getTbEmpleado()==null){
 				mensaje="No se registró el empleado "+s.getNombredelexpositor()+" como EXPOSITOR";
 				break;
@@ -302,7 +302,7 @@ public class ContratoServiceImpl implements ContratoService {
 		
 		if (s.getNombredelexpositor()!=null) {
 			detconemp = new DetContratoEmpleadoSie();
-			detconemp.setTbEmpleado(objEmpleadoDao.buscarEmpleadoVendedor(s.getNombredelexpositor()));
+			detconemp.setTbEmpleado(objEmpleadoDao.buscarEmpleadoPorNombreCompleto(s.getNombredelexpositor()));
 			if(detconemp.getTbEmpleado()==null){
 				mensaje="No se registro el empleado "+s.getNombredelexpositor()+" como EXPOSITOR";
 				break;
@@ -318,7 +318,7 @@ public class ContratoServiceImpl implements ContratoService {
 		
 		if (s.getNombredelsupervisor()!=null) {
 			detconemp = new DetContratoEmpleadoSie();
-			detconemp.setTbEmpleado(objEmpleadoDao.buscarEmpleadoVendedor(s.getNombredelsupervisor().toUpperCase()));
+			detconemp.setTbEmpleado(objEmpleadoDao.buscarEmpleadoPorNombreCompleto(s.getNombredelsupervisor().toUpperCase()));
 			if(detconemp.getTbEmpleado()==null){
 				mensaje="No se registro el empleado "+s.getNombredelexpositor()+" como EXPOSITOR";
 				break;
