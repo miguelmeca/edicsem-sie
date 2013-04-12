@@ -48,7 +48,6 @@ public class IncidenciaServiceImpl implements IncidenciaService{
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.EstadogeneralService#findEstadogeneral(int)
 	 */
-
 	public IncidenciaSie findIncidencia(int id) {
 		return objIncidenciaDao.findIncidencia(id);
 	}
@@ -57,7 +56,6 @@ public class IncidenciaServiceImpl implements IncidenciaService{
 	 * @see com.edicsem.pe.sie.service.facade.UbigeoService#listarUbigeoDepartamentos()
 	 */
 	public List listarIncidencia() {
-		log.info("En el servicio incidencia ");
 		return objIncidenciaDao.listarIncidencia();
 	}
 	
