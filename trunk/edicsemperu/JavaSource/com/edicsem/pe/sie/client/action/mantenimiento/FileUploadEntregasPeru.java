@@ -314,7 +314,7 @@ public class FileUploadEntregasPeru extends BaseMantenimientoAbstractAction impl
 				log.info("NOMB_VENDEDOR-->"+data.get(32));
 				if (data.get(32)!=null) {
 				entrega.setNombredelvendedor(getCellValueAsString(data.get(32)));	
-				EmpleadoSie obj4 = objEmpleadoService.buscarEmpleadoVendedor(entrega.getNombredelvendedor());
+				EmpleadoSie obj4 = objEmpleadoService.buscarEmpleadoPorNombreCompleto(entrega.getNombredelvendedor());
 				
 				if (obj4==null) {
 					log.info("VENDEDOR: "+ "-->"+ entrega.getNombredelvendedor());
@@ -330,7 +330,7 @@ public class FileUploadEntregasPeru extends BaseMantenimientoAbstractAction impl
 				log.info("NOMB_EXPOSITOR-->"+data.get(33));
 				if (data.get(33)!=null) {
 				entrega.setNombredelexpositor(getCellValueAsString(data.get(33)));
-				EmpleadoSie obj5 = objEmpleadoService.buscarEmpleadoVendedor(entrega.getNombredelexpositor());
+				EmpleadoSie obj5 = objEmpleadoService.buscarEmpleadoPorNombreCompleto(entrega.getNombredelexpositor());
 				if (obj5==null) {
 					log.info("EXPOSITOR: "+ "-->"+ entrega.getNombredelexpositor());
 					FaceMessage.FaceMessageError("ALERTA","Este Nombre de Expositor No Existe --- "+ entrega.getNombredelexpositor()+"	  "+"Del Contrato: "+"		"+ entrega.getNumerodecontrato());
@@ -345,7 +345,7 @@ public class FileUploadEntregasPeru extends BaseMantenimientoAbstractAction impl
 				log.info("NOMB_SUPERVISOR-->"+data.get(34));
 				if (data.get(34)!=null) {
 				entrega.setNombredelsupervisor(getCellValueAsString(data.get(34)));
-				EmpleadoSie obj6 = objEmpleadoService.buscarEmpleadoVendedor(entrega.getNombredelsupervisor());
+				EmpleadoSie obj6 = objEmpleadoService.buscarEmpleadoPorNombreCompleto(entrega.getNombredelsupervisor());
 				if (obj6==null) {
 					log.info("SUPERVISOR: "+ "-->"+ entrega.getNombredelsupervisor());
 					FaceMessage.FaceMessageError("ALERTA","Este Nombre de Supervisor No Existe --- "+ entrega.getNombredelsupervisor()+"	  "+"Del Contrato: "+"		"+ entrega.getNumerodecontrato());

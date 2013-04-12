@@ -27,90 +27,6 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 @SessionScoped
 public class CobranzaAction extends BaseMantenimientoAbstractAction {
 	
-	/**
-	 * @return the teleoperadoras
-	 */
-	public DualListModel<EmpleadoSie> getTeleoperadoras() {
-		return teleoperadoras;
-	}
-
-	/**
-	 * @param teleoperadoras the teleoperadoras to set
-	 */
-	public void setTeleoperadoras(DualListModel<EmpleadoSie> teleoperadoras) {
-		this.teleoperadoras = teleoperadoras;
-	}
-
-	/**
-	 * @return the teleoperadorasString
-	 */
-	public DualListModel<String> getTeleoperadorasString() {
-		return teleoperadorasString;
-	}
-
-	/**
-	 * @param teleoperadorasString the teleoperadorasString to set
-	 */
-	public void setTeleoperadorasString(DualListModel<String> teleoperadorasString) {
-		this.teleoperadorasString = teleoperadorasString;
-	}
-
-	/**
-	 * @return the source
-	 */
-	public List<EmpleadoSie> getSource() {
-		return source;
-	}
-
-	/**
-	 * @param source the source to set
-	 */
-	public void setSource(List<EmpleadoSie> source) {
-		this.source = source;
-	}
-
-	/**
-	 * @return the target
-	 */
-	public List<EmpleadoSie> getTarget() {
-		return target;
-	}
-
-	/**
-	 * @param target the target to set
-	 */
-	public void setTarget(List<EmpleadoSie> target) {
-		this.target = target;
-	}
-
-	/**
-	 * @return the sources
-	 */
-	public List<String> getSources() {
-		return sources;
-	}
-
-	/**
-	 * @param sources the sources to set
-	 */
-	public void setSources(List<String> sources) {
-		this.sources = sources;
-	}
-
-	/**
-	 * @return the targets
-	 */
-	public List<String> getTargets() {
-		return targets;
-	}
-
-	/**
-	 * @param targets the targets to set
-	 */
-	public void setTargets(List<String> targets) {
-		this.targets = targets;
-	}
-
 	private Log log = LogFactory.getLog(CobranzaAction.class);
 	
 	private String mensaje;
@@ -251,6 +167,90 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 		this.editMode = editMode;
 	}
 
+	/**
+	 * @return the teleoperadoras
+	 */
+	public DualListModel<EmpleadoSie> getTeleoperadoras() {
+		return teleoperadoras;
+	}
+
+	/**
+	 * @param teleoperadoras the teleoperadoras to set
+	 */
+	public void setTeleoperadoras(DualListModel<EmpleadoSie> teleoperadoras) {
+		this.teleoperadoras = teleoperadoras;
+	}
+
+	/**
+	 * @return the teleoperadorasString
+	 */
+	public DualListModel<String> getTeleoperadorasString() {
+		return teleoperadorasString;
+	}
+
+	/**
+	 * @param teleoperadorasString the teleoperadorasString to set
+	 */
+	public void setTeleoperadorasString(DualListModel<String> teleoperadorasString) {
+		this.teleoperadorasString = teleoperadorasString;
+	}
+
+	/**
+	 * @return the source
+	 */
+	public List<EmpleadoSie> getSource() {
+		return source;
+	}
+
+	/**
+	 * @param source the source to set
+	 */
+	public void setSource(List<EmpleadoSie> source) {
+		this.source = source;
+	}
+
+	/**
+	 * @return the target
+	 */
+	public List<EmpleadoSie> getTarget() {
+		return target;
+	}
+
+	/**
+	 * @param target the target to set
+	 */
+	public void setTarget(List<EmpleadoSie> target) {
+		this.target = target;
+	}
+
+	/**
+	 * @return the sources
+	 */
+	public List<String> getSources() {
+		return sources;
+	}
+
+	/**
+	 * @param sources the sources to set
+	 */
+	public void setSources(List<String> sources) {
+		this.sources = sources;
+	}
+
+	/**
+	 * @return the targets
+	 */
+	public List<String> getTargets() {
+		return targets;
+	}
+
+	/**
+	 * @param targets the targets to set
+	 */
+	public void setTargets(List<String> targets) {
+		this.targets = targets;
+	}
+	
 	/**
 	 * @return the cobranzaList
 	 */

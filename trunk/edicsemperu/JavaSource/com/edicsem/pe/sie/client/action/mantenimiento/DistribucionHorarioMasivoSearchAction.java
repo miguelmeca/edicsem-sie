@@ -238,7 +238,7 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 				for (int i = 0; i < expositorList.size(); i++) {//expositores
 				DetTurnoEmplSie det = new DetTurnoEmplSie();
 				det.setTbTurno(objTurnoService.findTurno(idturno));
-				det.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoVendedor(expositorList.get(i)));
+				det.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoPorNombreCompleto(expositorList.get(i)));
 				det.setTbCargoempleado(objCargoService.buscarCargoEmpleado(expositor));
 				listaDetTurnoEmpl.add(det);
 				log.info(expositorList+" -- >  "+expositorList.get(i));
@@ -252,7 +252,7 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 				for (int i = 0; i < vendedorList.size(); i++) {//vendedores
 				DetTurnoEmplSie det = new DetTurnoEmplSie();
 				det.setTbTurno(objTurnoService.findTurno(idturno));
-				det.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoVendedor(vendedorList.get(i)));
+				det.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoPorNombreCompleto(vendedorList.get(i)));
 				det.setTbCargoempleado(objCargoService.buscarCargoEmpleado(vendedor));
 				listaDetTurnoEmpl.add(det);
 				log.info(expositorList+" -- >  "+vendedorList.get(i));
@@ -453,7 +453,7 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 							String rr2[] = rr[1].split("\n - ");
 							for (int i = 1; i < rr2.length; i++) {
 								log.info(" --->"+rr2[i]);
-								objHorarioPersonal.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoVendedor(rr2[i]));
+								objHorarioPersonal.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoPorNombreCompleto(rr2[i]));
 //								objHorarioPersonalService.insertHorarioPersonal(objHorarioPersonal,diaList, objHorarioPersonal.getTbEmpleado().getIdempleado());
 							}
 						 }
@@ -464,7 +464,7 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 							 String rr2[] = rr3[1].split("\n-");
 							 for (int i = 1; i < rr2.length; i++) {
 								log.info(" -->"+rr2[i]);
-								objHorarioPersonal.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoVendedor(rr2[i]));
+								objHorarioPersonal.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoPorNombreCompleto(rr2[i]));
 								objHorarioPersonalService.insertHorarioPersonal(objHorarioPersonal,diaList, objHorarioPersonal.getTbEmpleado().getIdempleado());
 							}
 						}
