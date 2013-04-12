@@ -27,7 +27,9 @@ public class IncidenciaSie implements Serializable {
 	private String descripcion;
 
 	private String detalle;
-
+	
+	private String usuariosenviomsj;
+	
 	private Timestamp fechacreacion;
 
     @Temporal( TemporalType.DATE)
@@ -143,6 +145,14 @@ public class IncidenciaSie implements Serializable {
 
 	public void setTbContrato(ContratoSie tbContrato) {
 		this.tbContrato = tbContrato;
+	}
+
+	public String getUsuariosenviomsj() {
+		return usuariosenviomsj;
+	}
+
+	public void setUsuariosenviomsj(String usuariosenviomsj) {
+		this.usuariosenviomsj = usuariosenviomsj;
 	}
 	
 }
