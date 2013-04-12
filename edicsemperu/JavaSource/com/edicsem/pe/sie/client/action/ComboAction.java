@@ -29,6 +29,7 @@ import com.edicsem.pe.sie.entity.FactorSancionSie;
 import com.edicsem.pe.sie.entity.FechaSie;
 import com.edicsem.pe.sie.entity.GrupoVentaSie;
 import com.edicsem.pe.sie.entity.ImporteSie;
+import com.edicsem.pe.sie.entity.IncidenciaSie;
 import com.edicsem.pe.sie.entity.MetaMesSie;
 import com.edicsem.pe.sie.entity.MotivoSie;
 import com.edicsem.pe.sie.entity.PaqueteSie;
@@ -60,6 +61,7 @@ import com.edicsem.pe.sie.service.facade.FactorSancionService;
 import com.edicsem.pe.sie.service.facade.FechaService;
 import com.edicsem.pe.sie.service.facade.GrupoVentaService;
 import com.edicsem.pe.sie.service.facade.ImporteService;
+import com.edicsem.pe.sie.service.facade.IncidenciaService;
 import com.edicsem.pe.sie.service.facade.MetaMesService;
 import com.edicsem.pe.sie.service.facade.MotivoService;
 import com.edicsem.pe.sie.service.facade.PaqueteService;
@@ -105,6 +107,7 @@ public class ComboAction {
 	private Map<String, Integer> motivoitems = new HashMap<String, Integer>();
 	private Map<String, Integer> criterioComisionitems = new HashMap<String, Integer>();
 	private Map<String, Integer> tipoEventoVentaitems = new HashMap<String, Integer>();
+	private Map<String, Integer> incidenteitems = new HashMap<String, Integer>();
 	private int tipoVenta;
 	private int tipoProducto,tipoAlmacen;
 	private int cargoEmpleado;
@@ -197,6 +200,8 @@ public class ComboAction {
 	private GrupoVentaService objGrupoService;
 	@EJB
 	private TipoEventoVentaService objTipoEventoVentaService;
+	@EJB
+	private IncidenciaService objIncidenteService;
 	
 	public ComboAction() {
 		log.info("inicializando constructor");
@@ -1762,6 +1767,42 @@ public class ComboAction {
 		this.cerradorItems = cerradorItems;
 	}
 	
+	/**
+	 * @return the incidenteitems
+	 */
+	public Map<String, Integer> getIncidenteitems() {
+		incidenteitems = new HashMap<String, Integer>();
+		List lista = new ArrayList<TurnoSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getIncidenteitems()'");
+			}
+			lista = objIncidenteService.listarIncidencia();
+			
+			for (int i = 0; i < lista.size(); i++) {
+				IncidenciaSie t = new IncidenciaSie();
+				t = (IncidenciaSie) lista.get(i);
+				incidenteitems.put(t.getDescripcion(),t.getIdincidencia());
+			}
+			incidenteitems = sortByComparator(incidenteitems);
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return incidenteitems;
+	}
+
+	/**
+	 * @param incidenteitems the incidenteitems to set
+	 */
+	public void setIncidenteitems(Map<String, Integer> incidenteitems) {
+		this.incidenteitems = incidenteitems;
+	}
+	
 	@SuppressWarnings({"unchecked", "rawtypes" })
 	private Map sortByComparator(Map unsortMap) {
 		 
@@ -1784,6 +1825,7 @@ public class ComboAction {
 		}
 		return sortedMap;
 	}
+	
 	@SuppressWarnings({"unchecked", "rawtypes" })
 	private Map sortByComparatorId(Map unsortMap) {
 		 
@@ -1806,4 +1848,5 @@ public class ComboAction {
 		}
 		return sortedMap;
 	}
+	
 }
