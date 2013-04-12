@@ -182,5 +182,6 @@ public class Constants {
 	public static final String RUTA_IMAGEN_DEFECTO = "E:\\Producto\\Images\\bibliaXDefecto.png";
 	public static final String CARGO_RELACIONISTA = "RELACIONISTA";
 	public static final String MANT_EFECTIVIDAD_FORM = "EfectividadVentasList";
+	public static final String ASIGNAR_CORREOS_INCIDENTE_FORM_PAGE = "AsignarCorreosIncidenteForm";
 	
 	}
