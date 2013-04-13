@@ -128,6 +128,12 @@ public class Constants {
 	public static final String MANT_DISTRIBUCION_HORARIO_PERSONAL = "AsignarHorarioVentaMasivoForm";
 
 	public static final String MANT_HORARIO_TURNO = "mantenimientoHorarioTurnoForm";
+
+	public static final String MANT_EFECTIVIDAD_FORM = "EfectividadVentasList";
+	
+	public static final String ASIGNAR_CORREOS_INCIDENTE_FORM_PAGE = "AsignarCorreosIncidenteForm";
+	
+	public static final String MANT_TIPO_CLIENTE_FORM_LIST_PAGE = "MantenimientoTipoClienteForm";
 	
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
@@ -145,6 +151,7 @@ public class Constants {
 	public static final String CARGO_EXPOSITOR = "EXPOSITOR";
 	public static final String CARGO_CERRADOR = "CERRADOR";
 	public static final String CARGO_VENDEDOR = "VENDEDOR";
+	public static final String CARGO_RELACIONISTA = "RELACIONISTA";
 	
 	//aviso mensaje "las contraseñas no coinciden"
 	public static final String MESSAGE_PASSWORDS_DESIGUALES = "Contraseñas no coinciden";
@@ -180,8 +187,5 @@ public class Constants {
 	public static final String RUTA_IMAGENES_PRODUCTO = "E:\\Producto\\Images" ;
 	public static final String RUTA_DOC_SUSTENTARIO = "E:\\Images\\Docs";
 	public static final String RUTA_IMAGEN_DEFECTO = "E:\\Producto\\Images\\bibliaXDefecto.png";
-	public static final String CARGO_RELACIONISTA = "RELACIONISTA";
-	public static final String MANT_EFECTIVIDAD_FORM = "EfectividadVentasList";
-	public static final String ASIGNAR_CORREOS_INCIDENTE_FORM_PAGE = "AsignarCorreosIncidenteForm";
 	
 	}
