@@ -656,6 +656,35 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:dialog>
 	</h:form>
 	
+	<!--  NUEVO / MODIFICA TIPO CLIENTE -->
+	<h:form id="NuevoModificaTipoCliente">
+		<p:dialog header="Tipo de Cliente" widgetVar="tipoClienteNuevoDialog" showEffect="fade"
+			hideEffect="explode" modal="true" width="600" position="center" resizable="false">
+			
+			<h:panelGrid id="display" columns="2" cellpadding="3" >
+				
+				<h:outputText value="#{message['mantenimiento.descripcion']}" for="descripcion" />
+				<p:inputText id="descripcion1" value="#{tipoClienteForm.objTipoClienteSie.descripcion}" required="true"
+				label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}" style="font-weight:bold"
+				rendered="#{tipoClienteForm.newRecord}" onkeypress="return validarEspaciosLetrasNumeros(event)" />
+				
+				<h:outputText value="#{message['tipo.cliente.retrazo.inicial']}"  />
+				<p:inputText  value="#{tipoClienteForm.objTipoClienteSie.diasretrazoini}" required="true" style="font-weight:bold" />
+				
+				<h:outputText value="#{message['tipo.cliente.retrazo.final']}" />
+				<p:inputText  value="#{tipoClienteForm.objTipoClienteSie.diasretrazofin}" required="true" style="font-weight:bold" />
+				
+				<h:outputText value="#{message['tipo.cliente.retrazo.cantcuotas']}" />
+				<p:inputText  value="#{tipoClienteForm.objTipoClienteSie.cantcuotaretrazo}" required="true" style="font-weight:bold" />
+				
+				<f:facet name="footer">
+				<p:commandButton value="Guardar" update="panel" action="#{tipoClienteForm.insertar}" ajax="false"
+					icon="ui-icon ui-icon-disk" />
+				</f:facet>
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+	
 	<!--  Mantenimiento Horario Turno -->
 	<h:form id="formManteHorarioturno">
 		<p:dialog widgetVar="horarioTurnoDialog" showEffect="fade" resizable="false" header="#{message['horario.turno.dialog']}"

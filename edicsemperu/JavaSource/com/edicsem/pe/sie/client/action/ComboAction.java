@@ -1549,7 +1549,7 @@ public class ComboAction {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'getTipoClienteItems()'");
 			}
-			lista = objTipoClienteService.listarCliente();
+			lista = objTipoClienteService.listarTipoCliente();
 			
 			for (int i = 0; i < lista.size(); i++) {
 				TipoClienteSie entidad = new TipoClienteSie();
