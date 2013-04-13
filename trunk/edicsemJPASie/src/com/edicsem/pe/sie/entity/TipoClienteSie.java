@@ -21,7 +21,15 @@ public class TipoClienteSie implements Serializable {
 	private Integer idtipocliente;
 
 	private String descripcion;
-
+	
+	private Integer diasretrazoini;
+	
+	private Integer diasretrazofin;
+	
+	private Integer cantcuotaretrazo;
+	
+	private Integer criterio;
+	
     public TipoClienteSie() {
     }
 
@@ -39,6 +47,38 @@ public class TipoClienteSie implements Serializable {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public Integer getDiasretrazoini() {
+		return diasretrazoini;
+	}
+
+	public void setDiasretrazoini(Integer diasretrazoini) {
+		this.diasretrazoini = diasretrazoini;
+	}
+
+	public Integer getDiasretrazofin() {
+		return diasretrazofin;
+	}
+
+	public void setDiasretrazofin(Integer diasretrazofin) {
+		this.diasretrazofin = diasretrazofin;
+	}
+
+	public Integer getCantcuotaretrazo() {
+		return cantcuotaretrazo;
+	}
+
+	public void setCantcuotaretrazo(Integer cantcuotaretrazo) {
+		this.cantcuotaretrazo = cantcuotaretrazo;
+	}
+
+	public Integer getCriterio() {
+		return criterio;
+	}
+
+	public void setCriterio(Integer criterio) {
+		this.criterio = criterio;
 	}
 
 }
