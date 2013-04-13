@@ -11,13 +11,13 @@
 	</script>
 		<h1 class="title ui-widget-header ui-corner-all">Asignar involucrados por incidente</h1>
 		<h:form id="formConfigCorreos">
-			<p:messages id="message" showDetail="true" />
+			<p:messages id="message" showDetail="true" closable="true" />
 			<p:panel>
 				<p:fieldset legend="Busqueda de Incidente">
 					<h:panelGrid columns="6">
 					
 					<p:outputLabel value="Incidente" for="c"/>
-					<p:selectOneMenu value="#{configcorreos.idincidente}" id="c" >
+					<p:selectOneMenu value="#{configcorreos.idincidente}" id="c" required="true" >
 					<f:selectItem itemLabel="Seleccione incidente" itemValue="#{null}" />
 					<f:selectItems  value="#{comboAction.incidenteitems}" />
 					</p:selectOneMenu>
@@ -28,7 +28,6 @@
 					</h:panelGrid>
 					
 					<p:spacer width="40px" />
-					<!--  Asignar los involucrados (Empleados)  -->
 					<p:pickList id="pojoPickList1" value="#{configcorreos.empleadosString}" 
 					var="p" itemLabel="#{p}" itemValue="#{p}" />
 					<br/>
