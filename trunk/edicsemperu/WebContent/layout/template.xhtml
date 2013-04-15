@@ -292,7 +292,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 					<p:selectOneMenu size="1"
 						rendered="#{kardexAction.objKardexSie.tbEmpresa.idempresa >= 0}"
 						value="#{kardexAction.objKardexSie.tbEmpresa.idempresa}">
-						<f:selectItem itemLabel="Seleccione Empresasi" itemValue="0" />
+						<f:selectItem itemLabel="Seleccione Empresas" itemValue="0" />
 						<f:selectItems value="#{comboAction.empresaitems}" />
 					</p:selectOneMenu>
 					<p:selectOneMenu rendered="#{kardexAction.objKardexSie.tbEmpresa.idempresa == null}"
@@ -306,7 +306,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				</h:panelGroup>
 				<h:panelGroup>
 				<p:commandButton id="id" actionListener="#{kardexAction.insertar}" ajax="false"
-					rendered="#{!kardexAction.editMode}" value="#{message.}"  />
+					rendered="#{!kardexAction.editMode}" value="#{message['kardex.registrar']}"  />
 				</h:panelGroup>
 			</h:panelGrid>
 		</p:dialog>
