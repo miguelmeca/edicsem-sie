@@ -197,27 +197,39 @@
 					<p:outputLabel value="#{message['operadora.tipollamada']}" for="tipo" />
 					<p:selectOneMenu id="tipo" filter="true" required="true"
 						value="#{mantenimientoCobranzaOperaSearchAction.tipollamada}"
-						requiredMessage="#{message['operadora.tipollamada.validation']}"
-						styleClass="required" title="El tipo es obligatorio!">
+						requiredMessage="#{message['operadora.tipollamada.validation']}">
 						<f:selectItem itemValue="#{null}" itemLabel="Seleccione una opción" />
 						<f:selectItems value="#{comboAction.tipollamada}" />
 					</p:selectOneMenu>
 					
 					<p:outputLabel value="#{message['operadora.observacion']}" for="observacion" />
-					<p:inputTextarea id="observacion"
-						value="#{mantenimientoCobranzaOperaSearchAction.objCobranzaOpera.observaciones}"
+					<p:inputTextarea id="observacion" value="#{mantenimientoCobranzaOperaSearchAction.objCobranzaOpera.observaciones}"
 						requiredMessage="#{message['operadora.observacion.validation']}"
-						rows="3" cols="50" maxlength="500" required="true" label="Correo"
-						autoResize="false" />
-						
-					<h:outputText value="#{message['cobranza.sistema']}" />
-					<p:selectBooleanCheckbox value="#{mantenimientoCobranzaOperaSearchAction.enviarMensaje}"/>
-					<p:selectBooleanCheckbox value="#{mantenimientoCobranzaOperaSearchAction.programarLlamada}"/>
-					<h:outputText value="#{message['operadora.fechaProgramada']}" />
-					<p:calendar value="#{mantenimientoCobranzaOperaSearchAction.fechaProgramada}" 
-						rendered="#{mantenimientoCobranzaOperaSearchAction.programarLlamada==true}" />
-					<p:commandButton id="btn" value="#{message['cobranza.guardar']}" update="listaPersonas, message"
+						rows="3" cols="50" maxlength="500" required="true" label="Correo" autoResize="false" />
+					
+					<p:outputLabel value="#{message['operadora.incidencia']}" for="incidencia" />
+					<p:selectOneMenu id="incidencia" filter="true" required="true"
+						value="#{mantenimientoCobranzaOperaSearchAction.idincidencia}" >
+						<f:selectItem itemValue="#{null}" itemLabel="Seleccione una incidencia" />
+						<f:selectItems value="#{comboAction.incidenteitems}" />
+					</p:selectOneMenu>
+					
+					<h:outputText value="#{message['cobranza.programar.cita']}" />
+					<p:selectBooleanCheckbox value="#{mantenimientoCobranzaOperaSearchAction.programarLlamada}" >
+						<p:ajax update="outCita" />
+					</p:selectBooleanCheckbox>
+					<p:outputPanel id="outCita" >
+					<p:fieldset legend="Programar Cita" rendered="#{mantenimientoCobranzaOperaSearchAction.programarLlamada==true}" >
+						<h:panelGrid columns="2" cellpadding="3" >
+						<h:outputText value="#{message['operadora.fechaProgramada']}" />
+						<p:calendar value="#{mantenimientoCobranzaOperaSearchAction.fechaProgramada}" pattern="dd/mm/yyyy HH:mm" />
+					</h:panelGrid>
+					</p:fieldset>
+					</p:outputPanel>
+					<f:facet name="footer">
+						<p:commandButton id="btn" value="#{message['cobranza.guardar']}" update="listaPersonas, message"
 						action="#{mantenimientoCobranzaOperaSearchAction.insertar}" ajax="false" icon="ui-icon-comment" />
+					</f:facet>
 				</h:panelGrid>
 			</p:fieldset>
 			<p:fieldset legend="#{message['cobranza.historico.observaciones']}" style="margin-top:20px"   >

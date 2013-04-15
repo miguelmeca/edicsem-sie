@@ -102,6 +102,28 @@ function validarEspaciosLetrasNumeros(e) { // 1
 } 
 </script>
 
+<script type="text/javascript">
+    PrimeFaces.locales['pe'] = {
+        closeText: 'cerrar',
+        prevText: 'previo',
+        nextText: 'próximo',
+        currentText: 'Hoy',
+        monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+        monthNamesShort: ['Ene','Febr','Mar','Abr','May','Jun','Jul','Agos','Sept','Oct','Nov','dic'],
+        dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
+        dayNamesShort: ['Dom','Lun','Mart','Mierc','Juev','Vier','Sáb'],
+        dayNamesMin: ['Dom','Lun','Mart','Mierc','Juev','Vier','Sáb'],
+        weekHeader: 'Hf',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: '',
+        month: 'Mes',
+        week: 'Semana',
+        day: 'Día',
+        allDayText : 'Todos los días'
+    };
+</script>
 
 <!--  FIN Validar los Datos de un Formulario -->
 	</h:head>
@@ -370,7 +392,25 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
-
+	
+	<!-- DISTRIBUCION HORARIO GRUPO VNTA - SELECCIONAR EXPOSITOR / VENDEDOR -->
+	<h:form id="formInsertExpoVendhorario">
+		<p:dialog header="Seleccionar Empleado" widgetVar="inserexpovendDialog" resizable="false" 
+			showEffect="fade" hideEffect="explode" modal="true" width="450" position="center">
+			<h:panelGrid id="display" columns="2" cellpadding="2">
+				<p:dataTable value="#{comboAction.expositorItems}" var="d" paginator="true" rows="5">
+					<f:facet name="header">
+						<h:outputLabel value="Empleado" />
+					</f:facet>
+					<p:column >
+		                 <h:outputText value="#{d}" />
+		            </p:column>
+		         </p:dataTable>
+				<p:commandButton value="Seleccionar Empleado" oncomplete="inserexpovendDialog.hide()" />
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+	
 	<!--  Mantenimiento CONTRATO -->
 	<h:form id="formInsertUbigeoContrato">
 		<p:dialog header="Ubigeo" widgetVar="UbigeoDialog" showEffect="fade" resizable="false" 

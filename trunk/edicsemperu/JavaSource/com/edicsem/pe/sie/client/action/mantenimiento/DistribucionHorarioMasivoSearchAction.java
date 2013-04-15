@@ -506,7 +506,7 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	/*GETs Y SETs*/
 	
 	public String getViewList() {
-		return Constants.MANT_DISTRIBUCION_HORARIO_PERSONAL;
+		return Constants.MANT_DISTRIBUCION_HORARIO_VENTA;
 	}
 	
 	/**
@@ -657,7 +657,6 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	 * @return the eventModel
 	 */
 	public ScheduleModel getEventModel() {
-		log.info("GetEventModel!!  XD ");
 		return eventModel;
 	}
 
@@ -665,7 +664,6 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	 * @param eventModel the eventModel to set
 	 */
 	public void setEventModel(ScheduleModel eventModel) {
-		log.info("seteando EventModel!! ** ");
 		this.eventModel = eventModel;
 	}
 
