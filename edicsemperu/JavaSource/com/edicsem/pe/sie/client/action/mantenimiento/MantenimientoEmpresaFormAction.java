@@ -13,7 +13,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.client.action.ComboAction;
-import com.edicsem.pe.sie.entity.ContratoEmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
@@ -37,7 +36,6 @@ public class MantenimientoEmpresaFormAction extends
 	
 	private EmpresaSie objEmpresaSie;
 	private boolean newRecord = false;
-	private boolean editMode;
 	private int ide, idEstadoGeneral;
 	public String razonsocial;
 	private List<EmpresaSie> lista;	
@@ -53,9 +51,6 @@ public class MantenimientoEmpresaFormAction extends
 	//PRODUCTO
 	private ProductoSie objProductoSie;
 	private List<ProductoSie> productoList;
-
-
-	
 	
 	@ManagedProperty(value = "#{comboAction}")
 	private ComboAction comboManagerEmpresa;
@@ -110,12 +105,15 @@ public class MantenimientoEmpresaFormAction extends
 
 	public String agregar() {
 		log.info("agregar()");
-		editMode = true;
 		objEmpresaSie = new EmpresaSie();
 		setNewRecord(true);
 		
 		return getViewList();
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
+	 */
 	public String update() throws Exception {
 		log.info("update()" + objEmpresaSie.getIdempresa());
 
@@ -126,13 +124,12 @@ public class MantenimientoEmpresaFormAction extends
 		setIdempresa(objEmpresaSie.getIdempresa());
 		setIdEstadoGeneral(objEmpresaSie.getTbEstadoGeneral().getIdestadogeneral());
 		setNewRecord(false);
-		editMode = false;
 		return getViewList();
-
 	}
-
 	
-
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
+	 */
 	public String insertar() {
 
 		log.info("insertar() " + isNewRecord() + " desc "	+ objEmpresaSie.getDescripcion() +"  "+ " razon social" +"  "+ "ruc" + objEmpresaSie.getNumruc()	+ objEmpresaSie.getRazonsocial() +"  "+ "EMail"	+ objEmpresaSie.getEmail()  );
@@ -219,20 +216,12 @@ public class MantenimientoEmpresaFormAction extends
 		return mantenimientoEmpresaSearch.listar();
 	}
 
-	
-//	public String getViewList() {
-//		return Constants.MANT_EMPRESA_FORM_LIST_PAGE;
-//	}
-//	
-	
-
 	public String Eliminarempresa() throws Exception {
 		mensaje = null;
 		objEmpresaSie = new EmpresaSie();
 		int parametroObtenido;
 		EmpresaSie em = new EmpresaSie();
-		 
-
+		
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'updateDESHABILITAR()'" + getIde());
@@ -261,9 +250,6 @@ if((verificarEmpleadoConEmpresa(parametroObtenido)) == (verificarProductoConEmpr
 
 			log.info("-----Android1>>>"+ objEmpresaSie.getTbEstadoGeneral().getIdestadogeneral());
 			log.info("actualizando ESTADO..... ");
-
-			
-			
 			
 			empresaService.updateEmpresa(objEmpresaSie);
 			
@@ -324,14 +310,14 @@ FacesContext.getCurrentInstance().addMessage(null, msg);
 
 	
 	private void listarProductoXempresa(int parametroObtenido) {
-		// TODO Auto-generated method stub
 		log.info("captura idParametro para poder listar PRODUCTO X EMPRESA en el Bean dentro del metodo Eliminar "+parametroObtenido);
 		productoList = objProductoService.listarProductoxEmpresas(parametroObtenido);
 	}
+	
 	private void listarEmpleadosXempresa(int parametroObtenido) {
 		log.info("captura idParametro para poder listar EMPLEADOS X EMPRESA en el Bean dentro del metodo Eliminar  "+parametroObtenido);
 		empleadoList = objEmpleadoSieService.listarEmpleadoxEmpresas(parametroObtenido);
-		}
+	}
 	
 	private boolean verificarEmpleadoConEmpresa(int idcargo) {
 		// Aqui verificaremos si esta empresa pertenece a un empleado en la TB.DetalleEmpresaEmpleado
@@ -458,17 +444,7 @@ FacesContext.getCurrentInstance().addMessage(null, msg);
 		log.info("aqui--->>" + Constants.COD_ESTADO_TB_EMPRESA);
 		this.comboManagerEmpresa = comboManagerEmpresa;
 	}
-
-	public boolean isEditMode() {
-		return editMode;
-	}
-
-	public void setEditMode(boolean editMode) {
-		this.editMode = editMode;
-	}
-
-
-
+	
 	/**
 	 * @return the ide
 	 */

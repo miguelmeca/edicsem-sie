@@ -4,13 +4,13 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:pe="http://primefaces.org/ui/extensions"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
 	<script language="JavaScript" type="text/javascript">
 		window.history.forward(-1);
 	</script>
-		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
-			Producto </h1>
+		<h1 class="title ui-widget-header ui-corner-all">#{message['mantenimiento.producto.panel']}</h1>
 		<h:form id="formManteProducto" >
 			<p:messages id="message" showDetail="true" closable="true" />
 			<h:panelGrid columns="3" cellpadding="5"  >
@@ -21,7 +21,7 @@
 					size="10" required="true" maxlength="10"
 					requiredMessage="#{message['mantenimiento.producto.codigo.validation']}">
 					<f:validateLength minimum="1" maximum="10"/>
-					</p:inputText>
+				</p:inputText>
 				<p:message for="codigoProducto" />
 				<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
 				<h:panelGroup>
@@ -31,23 +31,20 @@
 					<f:selectItem itemValue="#{null}" itemLabel="Seleccionar tipo" />
 					<f:selectItems value="#{comboAction.tipoitems}" />
 				</p:selectOneMenu>
-				 
 				</h:panelGroup>
 				<p:message for="tipoproducto1" />
-				<h:outputText
-					value="#{message['mantenimiento.producto.descripcion']}" />
-				<p:inputText id="desc_prod" maxlength="50"
+				<h:outputText value="#{message['mantenimiento.producto.descripcion']}" />
+				<p:inputText id="desc_prod" maxlength="50" size="25" required="true" 
 					value="#{productoForm.objProductoSie.descripcionproducto}"
-					size="25" required="true" onkeypress="return validarLetras(event)"
 					requiredMessage="#{message['mantenimiento.producto.descripcion.validation']}">
 				</p:inputText>
+				<pe:keyFilter for="text1" mask="alpha"/>
 				<p:message for="desc_prod" />
 				<h:outputText value="#{message['mantenimiento.producto.detalle']}" />
 				<p:inputTextarea id="detalle" size="10" autoResize="false" 
 					value="#{productoForm.objProductoSie.detalleproducto}"
 					rows="8" cols="50" required="true" maxlength="120"
 					requiredMessage="#{message['mantenimiento.producto.detalle.validation']}" />
-					
 				<p:message for="detalle" />
 				
 				<h:outputText value="#{message['mantenimiento.producto.unidad']}" rendered="#{productoForm.newRecord!=true}" />
@@ -57,35 +54,29 @@
 					requiredMessage="#{message['mantenimiento.producto.unidad.validation']}" rendered="#{productoForm.newRecord!=true}" />
 				<p:message for="unidadProducto" rendered="#{productoForm.newRecord!=true}" />
 				
-				<h:outputText
-					value="#{message['mantenimiento.producto.stock.minimo']}" />
-				<p:inputText id="stock_minimo_producto" size="10" onkeypress="return validarNumeros(event)"
+				<h:outputText value="#{message['mantenimiento.producto.stock.minimo']}" />
+				<p:inputText id="stock_minimo_producto" size="10" required="true"
 					value="#{productoForm.objProductoSie.stkminimoproducto}"
-					required="true" 
 					requiredMessage="#{message['mantenimiento.producto.stockmin.validation']}" />
+				<pe:keyFilter for="stock_minimo_producto" mask="num"/>
 				<p:message for="stock_minimo_producto" />
 				
-				<h:outputText
-					value="#{message['mantenimiento.producto.stock.maximo']}" />
-				<p:inputText id="stock_mximo_producto" size="10" onkeypress="return validarNumeros(event)"
-					value="#{productoForm.objProductoSie.stkmaximo}"
-					required="true"
-					requiredMessage="#{message['mantenimiento.producto.stockmax.validation']}"
-					maxlength="10">
-					<f:validateLength minimum="1" />
-				</p:inputText>
+				<h:outputText value="#{message['mantenimiento.producto.stock.maximo']}" />
+				<p:inputText id="stock_mximo_producto" value="#{productoForm.objProductoSie.stkmaximo}"
+					required="true" maxlength="10" size="10" 
+					requiredMessage="#{message['mantenimiento.producto.stockmax.validation']}" />
+				<pe:keyFilter for="stock_mximo_producto" mask="num"/>
 				<p:message for="stock_mximo_producto" />
 				
 				<p:outputPanel autoUpdate="true" >  
 				<p:graphicImage id="imgFotoInserta"  value="#{productoForm.image}" cache="false" style="height:90px;width:90px; align:center" >
 				 <f:param value="#{productoForm.idFoto}" />
 				</p:graphicImage>
-				  
 				</p:outputPanel>
 				 
-				<p:commandButton value="Insertar Imagen " icon="ui-icon-image"  update=":formInsertImageProduc:display"
+				<p:commandButton value="#{message['mantenimiento.producto.inserta.imagen']}" icon="ui-icon-image"  update=":formInsertImageProduc:display"
 					oncomplete="imageProducDialog.show()" title="Ingresar imagen"/>
-					<p:spacer/> 
+				<p:spacer/> 
 				
 				<p:commandButton value="Registrar" action="#{productoForm.insertar}"  ajax = "false" 
 					icon="ui-icon ui-icon-disk" />
@@ -93,6 +84,6 @@
                 <p:commandButton value="Regresar" action="#{productoSearch.listar}" immediate="true" ajax= "false" update="message"
                     icon="ui-icon-circle-arrow-w" />
 		</h:panelGrid>
-		 </h:form>
+		</h:form>
 	</ui:define>
 </ui:composition>
