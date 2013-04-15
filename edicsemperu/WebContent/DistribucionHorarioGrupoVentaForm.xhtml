@@ -23,11 +23,18 @@
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['distribucion.grupo.expositor']}" rendered="#{distribucion.tipoVenta!=2}"/>
+				<h:panelGroup>
 				<p:autoComplete value="#{distribucion.expositorList}" completeMethod="#{distribucion.completeExpo}" rendered="#{distribucion.tipoVenta!=2}" multiple="true" />
+				<p:commandButton value="Seleccionar"   oncomplete="inserexpovendDialog.show()"
+				  update=":formInsertExpoVendhorario" icon="ui-icon-search" title="Seleccionar expositor" />
+				</h:panelGroup>
 				
 				<h:outputText value="#{message['contrato.vendedor']}" rendered="#{distribucion.tipoVenta==2}"/>
-				<p:autoComplete value="#{distribucion.vendedorList}" completeMethod="#{distribucion.completeVend}" multiple="true" rendered="#{distribucion.tipoVenta==2}"/>
-				
+				<h:panelGroup rendered="#{distribucion.tipoVenta==2}">
+				<p:autoComplete value="#{distribucion.vendedorList}" completeMethod="#{distribucion.completeVend}" multiple="true" />
+				<p:commandButton value="Seleccionar"  
+				  update=":formInsertExpoVendhorario" icon="ui-icon-search" title="Seleccionar vendedor" />
+				</h:panelGroup>
 				<h:outputText value="#{message['horario.personal.dia']}" />
 				<h:panelGroup>
 				<p:selectCheckboxMenu required="true" value="#{distribucion.diaList}" filter="true" requiredMessage="Debe seleccionar el día para la asistencia de dicho horario"
@@ -65,7 +72,7 @@
          </p:fieldset>
          
          <p:fieldset id="fldshedule" legend="#{message['distribucion.grupo.horario.visualizar']}" style="margin-top:20px" >
-         	<p:schedule value="#{distribucion.eventModel}" draggable="false" resizable="false" locale="es_PE" allDaySlot="false" >
+         	<p:schedule value="#{distribucion.eventModel}" draggable="false" resizable="false"  locale="pe" allDaySlot="false" >
          	 <p:ajax event="eventSelect" listener="#{distribucion.onEventSelect}" update=":formHorarioVenta:display" 
          	 oncomplete="horarioVentaDialog.show()" disabled="#{distribucion.tipoVenta==2}" />
          	</p:schedule> 

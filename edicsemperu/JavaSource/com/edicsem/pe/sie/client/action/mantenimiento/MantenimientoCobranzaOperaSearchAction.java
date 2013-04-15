@@ -24,13 +24,17 @@ import com.edicsem.pe.sie.entity.ContratoSie;
 import com.edicsem.pe.sie.entity.DetProductoContratoSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.HistoricoObservacionesSie;
+import com.edicsem.pe.sie.entity.IncidenciaSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.service.facade.ClienteService;
 import com.edicsem.pe.sie.service.facade.CobranzaOperaService;
 import com.edicsem.pe.sie.service.facade.CobranzaService;
 import com.edicsem.pe.sie.service.facade.ContratoService;
 import com.edicsem.pe.sie.service.facade.DetProductoContratoService;
+import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.HistoricoObservacionesService;
+import com.edicsem.pe.sie.service.facade.IncidenciaService;
+import com.edicsem.pe.sie.service.facade.ParametroService;
 import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.TipoLLamadaService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -53,13 +57,13 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private Date fechoy;
 	private int tipollamada; 
 	private boolean editMode;
-	private boolean enviarMensaje;
 	private boolean programarLlamada;
 	private Date fechaProgramada;
 	private String mensaje;
 	private boolean newRecord =false;
 	private int ide;
 	private int idcontrato;
+	private int idincidencia;
 	private ContratoSie objContrato;
 	private List<HistoricoObservacionesSie> lstHistorico;
 	HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
@@ -81,6 +85,12 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private DetProductoContratoService objProductoContratoService;
 	@EJB
 	private HistoricoObservacionesService objHistoricoService;
+	@EJB
+	private IncidenciaService objIncidenciaService;
+	@EJB
+	private EmpleadoSieService objEmpleadoService;
+	@EJB
+	private ParametroService objParametroService;
 	
 	public static Log log = LogFactory.getLog(MantenimientoCobranzaOperaSearchAction.class);
 	
@@ -89,8 +99,10 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 		log.info("inicializando mi constructor");
 		init();
 	}
-
-	/*inicializamos los  objetos utilizados*/
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#init()
+	 */
 	public void init() {
 		log.info("init()");
 		objCobranza = new CobranzaSie();
@@ -98,7 +110,6 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 		objcliente = new ClienteSie();
 		objtelefono = new TelefonoPersonaSie();
 		lstHistorico = new ArrayList<HistoricoObservacionesSie>();
-		enviarMensaje=false;
 		idcontrato=0;
 		log.info("despues de inicializar  ");
 	}
@@ -107,15 +118,15 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#listar()
 	 */
 	public String listar() {
-		log.info("listarcobranzaopera 'MantenimientoCobranzaOperadoraSieSearchAction' ");
+		log.info("listar() 'MantenimientoCobranzaOperadoraSieSearchAction' ");
 		log.info(" session  "+sessionUsuario.getUsuario());
 		objCobranza = new CobranzaSie();
 		objCobranzaOpera = new CobranzaOperadoraSie();
 		objcliente = new ClienteSie();
 		objtelefono = new TelefonoPersonaSie();
-		lstHistorico = new ArrayList<HistoricoObservacionesSie>();
-		enviarMensaje=false;
+		lstHistorico = new ArrayList<HistoricoObservacionesSie>(); 
 		idcontrato=0;
+		idincidencia=0;
 		cobranzaOperaList = objCobranzaOperaService.listarCobranzasOpera(sessionUsuario.getUsuario());
 		if (cobranzaOperaList == null) {
 			cobranzaOperaList = new ArrayList<CobranzaOperadoraSie>();
@@ -151,17 +162,40 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
 	 */
 	public String insertar() throws Exception {
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+		EmpleadoSie sessionUsuario = (EmpleadoSie) session.getAttribute(Constants.USER_KEY);
+		
 		try {
 			if(idcontrato!=0){
-				if(enviarMensaje==true){
-					if(SMTPConfig.sendMail("Seguimiento del cliente",objCobranzaOpera.getObservaciones(),"geraldine8513@gmail.com")){
-					   log.info("envío Correcto");
-					  }else {
-				       log.info("envío Fallido");
-				       mensaje ="Dicho correo no pudo ser enviado satisfactoriamente, por favor comuniquese con el administrador del sistema";
-					 }
-				}
+				
 				objCobranzaOpera.setTbTipoLlamada(objTipoLLamadaService.findTipoLLamada(tipollamada));
+				
+				if(idincidencia!=0){
+				IncidenciaSie in = objIncidenciaService.findIncidencia(idincidencia);
+				
+				//Enviar mensaje dependiendo del incidente encontrado
+				if(in.getUsuariosenviomsj()!=null){
+					String[] usuario = in.getUsuariosenviomsj().split(",");
+					for (int j = 0; j < usuario.length; j++) {
+						EmpleadoSie emp = objEmpleadoService.buscarEmpleadosPorUsuario(usuario[j]);
+						
+						if(SMTPConfig.sendMail(in.getDescripcion(),objCobranzaOpera.getObservaciones(),emp.getCorreo())){
+							  log.info("envío Correcto");
+						}else {
+						       log.info("envío Fallido, será enviado al administrador del sistema ");
+						       objParametroService.buscarPorDescripcion(Constants.PARAM_ADMINISTRADOR_SISTEMA);
+						       mensaje ="El siguiente correo no pudo ser enviado satisfactoriamente, por favor corregir dicho error: \n";
+						       mensaje +="Para: "+emp.getCorreo();
+						       mensaje +="De: "+sessionUsuario.getCorreo();
+						       mensaje +="Mensaje : "+ objCobranzaOpera.getObservaciones();
+						       
+						       if(SMTPConfig.sendMail(in.getDescripcion(),mensaje,emp.getCorreo())){
+						    	   mensaje=null;
+						       }
+						}
+					}
+				}
+				}
 				if(fechaProgramada!=null){
 					objCobranzaOpera.setFechaprogramada(new Timestamp(fechaProgramada.getTime()));
 				}
@@ -179,7 +213,6 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 			mensaje = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
-			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return getViewList();
@@ -346,20 +379,6 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	}
 
 	/**
-	 * @return the enviarMensaje
-	 */
-	public boolean isEnviarMensaje() {
-		return enviarMensaje;
-	}
-
-	/**
-	 * @param enviarMensaje the enviarMensaje to set
-	 */
-	public void setEnviarMensaje(boolean enviarMensaje) {
-		this.enviarMensaje = enviarMensaje;
-	}
-
-	/**
 	 * @return the idcontrato
 	 */
 	public int getIdcontrato() {
@@ -489,6 +508,20 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	 */
 	public void setFechaProgramada(Date fechaProgramada) {
 		this.fechaProgramada = fechaProgramada;
+	}
+
+	/**
+	 * @return the idincidencia
+	 */
+	public int getIdincidencia() {
+		return idincidencia;
+	}
+
+	/**
+	 * @param idincidencia the idincidencia to set
+	 */
+	public void setIdincidencia(int idincidencia) {
+		this.idincidencia = idincidencia;
 	}
 		
 }

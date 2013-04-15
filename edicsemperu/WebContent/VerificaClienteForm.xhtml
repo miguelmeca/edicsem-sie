@@ -36,7 +36,7 @@
 			
 			<h:outputText value="#{message['verifica.fecha.nacimiento']} " rendered="#{verifica.idtipodoc>1}"/>
 			<p:calendar value="#{contratoForm.objClienteSie.fecnacimiento}" required="true" pattern="dd/MM/yyyy" 
-			size="30" maxlength="10" locale="es" pagedate="01/01/1990" maxdate="#{contratoForm.dValidoFecNac}" rendered="#{verifica.idtipodoc>1}"/>
+			size="30" maxlength="10"  locale="pe" pagedate="01/01/1990" maxdate="#{contratoForm.dValidoFecNac}" rendered="#{verifica.idtipodoc>1}"/>
 			</h:panelGrid>
 			</p:fieldset>
 			</p:tab>
@@ -174,7 +174,7 @@
 					</p:selectOneMenu>
 					
 					<h:outputText value="#{message['verifica.observaciones']}" />
-					<p:inputTextarea value="#{verifica.objverificaclienteSie.observaciones}" maxlength="40" 
+					<p:inputTextarea vbalue="#{verifica.objverificaclienteSie.observaciones}" maxlength="40" 
 					rows="3" style="width:220px" />
 					<f:facet name="footer">
 					<p:commandButton id="nuevoVerifica" value="#{message['verifica.registrar']}" action="#{verifica.insertar}" 
