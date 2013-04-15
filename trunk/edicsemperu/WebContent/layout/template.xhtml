@@ -12,7 +12,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<ui:insert name="title">
 			<title>Men&uacute; Principal</title> 
-		</ui:insert>  
+		</ui:insert>
 		<f:facet name="first">
 			<title>Ediciones Sembrando</title>
 		</f:facet>
@@ -238,8 +238,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	<h:form id="formManteKardexList">
 		<p:dialog widgetVar="kardexDialog" showEffect="fade" resizable="false" 
 			hideEffect="explode" modal="true" width="450" position="center">
-			<h:panelGrid id="display" columns="2" cellpadding="2"
-				style="margin:0 auto;" title="Kardex ">
+			<h:panelGrid id="display" columns="2" cellpadding="2" title="Kardex ">
 
 				<h:outputText value="#{message['kardex.idKardex']}" id="idKardex" />
 				<h:panelGroup>
@@ -269,8 +268,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 						style="font-weight:bold" />
 				</h:panelGroup>
 
-				<h:outputText
-					value="#{message['mantenimiento.producto.cantidadEnt']}" />
+				<h:outputText value="#{message['mantenimiento.producto.cantidadEnt']}" />
 				<h:panelGroup>
 					<h:outputText value="#{kardexAction.objKardexSie.cantentrada}"
 						style="font-weight:bold" disabled="true" />
@@ -297,20 +295,18 @@ function validarEspaciosLetrasNumeros(e) { // 1
 						<f:selectItem itemLabel="Seleccione Empresasi" itemValue="0" />
 						<f:selectItems value="#{comboAction.empresaitems}" />
 					</p:selectOneMenu>
-					<p:selectOneMenu size="1"
-						rendered="#{kardexAction.objKardexSie.tbEmpresa.idempresa == null}"
+					<p:selectOneMenu rendered="#{kardexAction.objKardexSie.tbEmpresa.idempresa == null}"
 						value="#{kardexAction.idempresa}">
 						<f:selectItem itemLabel="Seleccione Empresa" itemValue="0" />
 						<f:selectItems value="#{comboAction.empresaitems}" />
 					</p:selectOneMenu>
 					<h:outputText rendered="#{kardexAction.editMode}"
-						value="#{kardexAction.idempresa}">
-					</h:outputText>
+						value="#{kardexAction.idempresa}"/>
 
 				</h:panelGroup>
 				<h:panelGroup>
-				<p:commandButton id="id" actionListener="#{kardexAction.insertar}"  ajax="false"
-					rendered="#{!kardexAction.editMode}" value="Actualizar kardex"  />
+				<p:commandButton id="id" actionListener="#{kardexAction.insertar}" ajax="false"
+					rendered="#{!kardexAction.editMode}" value="#{message.}"  />
 				</h:panelGroup>
 			</h:panelGrid>
 		</p:dialog>
@@ -336,7 +332,6 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	
 	
 	<!--  Mantenimiento ALMACEN -->
-
 	<h:form id="formInsertUbigeoAlmacen">
 		<p:dialog header="Ubigeo" widgetVar="UbigeoAlmacenDialog" resizable="false" 
 			showEffect="fade" hideEffect="explode" modal="true" width="450"
@@ -377,7 +372,6 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	</h:form>
 
 	<!--  Mantenimiento CONTRATO -->
-
 	<h:form id="formInsertUbigeoContrato">
 		<p:dialog header="Ubigeo" widgetVar="UbigeoDialog" showEffect="fade" resizable="false" 
 			hideEffect="explode" modal="true" width="450" position="center">
@@ -492,17 +486,14 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	
 	<!-- Deshabilitar Motivo  -->
 	<h:form>
-		<p:confirmDialog id="confirmDeshabilitarMotivo" 
+		<p:confirmDialog id="confirmDeshabilitarMotivo" position="center"
 			message="#{message['motivo.deshabilitar.message']}"
 			width="325" height="100" showEffect="explode" hideEffect="explode"
-			header="Confirm" severity="alert" widgetVar="confirmationMotivo"
-			position="center">
+			header="Confirm" severity="alert" widgetVar="confirmationMotivo" >
 
-			<p:commandButton value="Si"
-				action="#{motivoSearch.delete}"
+			<p:commandButton value="Si" action="#{motivoSearch.delete}"
 				update=":frmMotivoFormList:motivoTable,:frmMotivoFormList:messages "
-				oncomplete="confirmationMotivo.hide()" ajax="false">
-			</p:commandButton>
+				oncomplete="confirmationMotivo.hide()" ajax="false" />
 
 			<p:commandButton value="No" onclick="confirmationMotivo.hide()"/>
 
@@ -523,6 +514,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:confirmDialog>
 	</h:form>
 	
+	<!-- Deshabilitar Almacen  -->
 	<h:form>
 		<p:confirmDialog id="confirmDeshabilitarAlmacen" 
 			message="#{message['almacen.deshabilitar.message']}"
@@ -533,8 +525,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			<p:commandButton type="submit" value="Si"
 				action="#{almacenForm.DeshabilitarPunto}"
 				update=":frmAlmacenFormList:almacenTable"
-				oncomplete="confirmationAlmacen.hide()" ajax="false">
-			</p:commandButton>
+				oncomplete="confirmationAlmacen.hide()" ajax="false"/>
 
 			<p:commandButton value="No" onclick="confirmation.hide()"
 				type="button" />
@@ -542,12 +533,12 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:confirmDialog>
 	</h:form>
 	
+	<!-- Deshabilitar telefono empleado  -->
 	<h:form>
-		<p:confirmDialog id="confirmationTelefonoelimina2"
+		<p:confirmDialog id="confirmationTelefonoelimina2" position="center"
 			message="Esta seguro de eliminar dicho teléfono ?"
 			width="325" height="100" showEffect="explode" hideEffect="explode"
-			header="Confirm" severity="alert" widgetVar="confirmationTelEmp"
-			position="center">
+			header="Confirm" severity="alert" widgetVar="confirmationTelEmp">
 
 			<p:commandButton type="submit" value="Si" action="#{mantenimientoEmpleadoFormAction.telefonoElimina}"
 				update=":form:panelTlf:o" oncomplete="confirmationTelEmp.hide()" ajax="false" />
@@ -558,11 +549,10 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	
 	<!-- Registro Contrato  -->
 	<h:form>
-		<p:confirmDialog id="confirmEliminarProductoLista"
+		<p:confirmDialog id="confirmEliminarProductoLista" position="center"
 			message="Esta seguro de eliminar dicho Producto de la lista?"
 			width="325" height="100" showEffect="explode" hideEffect="explode"
-			header="Confirm" severity="alert" widgetVar="confirmationProductoContrato"
-			position="center">
+			header="Confirm" severity="alert" widgetVar="confirmationProductoContrato">
 
 			<p:commandButton type="submit" value="Si" action="#{contratoForm.eliminarProducto}"
 				update=":detPaqueteList" oncomplete="confirmationProductoContrato.hide()" ajax="false" />
@@ -580,15 +570,11 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			<h:panelGrid id="display" columns="2" cellpadding="3" >
 				
 				<h:outputText value="#{message['mantenimiento.descripcion']}" for="descripcion" />
-				<h:panelGroup>
-					<p:inputText id="descripcion1" value="#{criterioForm.objcriterioSie.descripcion}" required="true"
-						label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" rendered="#{criterioForm.newRecord}" />
-						<pe:keyFilter for="descripcion1" mask="alphanum"/>  
+				<h:panelGroup>  
 					<p:inputText id="descripcion2" value="#{criterioForm.objcriterioSie.descripcion}" required="true" 
 						label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" rendered="#{!criterioForm.newRecord}" />
-						<pe:keyFilter for="descripcion2" mask="alphanum"/>  
+						style="font-weight:bold" />
+					<pe:keyFilter for="descripcion2" mask="alphanum"/>  
 				</h:panelGroup>
 				
 				<f:facet name="footer">
@@ -637,14 +623,10 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				
 				<h:outputText value="#{message['mantenimiento.descripcion']}" for="descripcion" />
 				<h:panelGroup>
-					<p:inputText id="descripcion1" value="#{lugarForm.objlugarSie.descripcion}" required="true"
+					<p:inputText id="descripcion" value="#{lugarForm.objlugarSie.descripcion}" required="true"
 						label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" rendered="#{lugarForm.newRecord}" />
-						<pe:keyFilter for="descripcion1" mask="alphanum"/> 
-					<p:inputText id="descripcion2" value="#{lugarForm.objlugarSie.descripcion}" required="true" 
-						label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" rendered="#{!lugarForm.newRecord}" />
-						<pe:keyFilter for="descripcion2" mask="alphanum"/>
+						style="font-weight:bold" />
+					<pe:keyFilter for="descripcion" mask="alphanum"/>
 				</h:panelGroup>
 				
 				<f:facet name="footer">
@@ -663,10 +645,11 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			<h:panelGrid id="display" columns="2" cellpadding="3" >
 				
 				<h:outputText value="#{message['mantenimiento.descripcion']}" for="descripcion" />
+				<h:panelGroup>
 				<p:inputText id="descripcion1" value="#{tipoClienteForm.objTipoClienteSie.descripcion}" required="true"
-				label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}" style="font-weight:bold"
-				rendered="#{tipoClienteForm.newRecord}" />
+				label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}" style="font-weight:bold"/>
 				<pe:keyFilter for="descripcion1" mask="alpha"/> 
+				</h:panelGroup>
 				
 				<h:outputText value="#{message['tipo.cliente.retrazo.inicial']}"  />
 				<p:inputText  value="#{tipoClienteForm.objTipoClienteSie.diasretrazoini}" required="true" style="font-weight:bold" />
@@ -719,12 +702,8 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				<h:panelGroup>
 					<p:inputText id="descripcion1" value="#{eventoForm.objeventoSie.descripcion}" required="true"
 						label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" rendered="#{eventoForm.newRecord}" />
-						<pe:keyFilter for="descripcion1" mask="alpha"/> 
-					<p:inputText id="descripcion2" value="#{eventoForm.objeventoSie.descripcion}" required="true" 
-						label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" rendered="#{!eventoForm.newRecord}" />
-						<pe:keyFilter for="descripcion2" mask="alpha"/> 
+						style="font-weight:bold" />
+					<pe:keyFilter for="descripcion1" mask="alpha"/>
 				</h:panelGroup>
 				
 				<f:facet name="footer">
@@ -735,8 +714,9 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:dialog>
 	</h:form>
 	
+	<!-- Eliminar Producto de lista  -->
 	<h:form>
-		<p:confirmDialog message="Esta seguro de eliminar dicho Producto de la lista?"
+		<p:confirmDialog message="Esta seguro de eliminar dicho telefono de la lista?"
 			width="325" height="100" showEffect="explode" hideEffect="explode"
 			header="Confirm" severity="alert" widgetVar="confirmationTelefonoContrato"
 			position="center">
@@ -868,13 +848,12 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			<h:outputText 	value="#{message['Paquetebiblico.codigopaquete']}" />
 			<h:panelGroup>
 			<p:inputText value="#{mantenimientoPaqueteBiblicoFormAction.objPaqueteSie.codpaquete}"
-			id="codigo"	title="el codigo debe ser entre 6 a 10 digitos" 
-			required="true" requiredMessage="#{message['Paquetebiblico.codigo.validation']}"
+			id="codigo"	required="true" requiredMessage="#{message['Paquetebiblico.codigo.validation']}"
 			maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRecord}" >
-			<f:validateLength minimum="6" maximum="10"></f:validateLength>
 			<p:ajax update="msgCodigo" event="keyup" />
 			</p:inputText>
-			<pe:keyFilter for="codigo" mask="alphanum"/> 
+			<pe:keyFilter for="codigo" mask="alphanum"/>
+			
 			<p:message  for="codigo" id="msgCodigo" display="icon"/>
 			<p:inputText  value="#{mantenimientoPaqueteBiblicoFormAction.objPaqueteSie.codpaquete}" 
 			required="true" requiredMessage="#{message['Paquetebiblico.codigo.validation']}"
@@ -1162,40 +1141,20 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		<p:dialog header="Registro / Modificacion de Cargo Empleado" widgetVar="carDialogNuevo"
 			showEffect="fade" hideEffect="explode" modal="true" width="500" resizable="false" 
 			position="center">
-<p:fieldset >
-			<h:panelGrid id="display" columns="2" cellpadding="2"
-				style="margin:0 auto;">
-
-				<h:outputText value="#{message['cargo.empleado.descripcion']}"
-					for="descripcion" />
-
+			<p:fieldset>
+			<h:panelGrid id="display" columns="2" cellpadding="2" >
+				<h:outputText value="#{message['cargo.empleado.descripcion']}" for="descripcion" />
 				<h:panelGroup>
-
-					<p:inputText id="descripcion1"
+					<p:inputText id="descripcion2" size="30"
 						value="#{mantenimientoCargoEmpleadoFormAction.objCargoEmpleadoSie.descripcion}"
 						required="true" label="descripcion"
 						requiredMessage="#{message['Cargoempleado.descripcion.validation']}"
-						style="font-weight:bold"
-						size="30"
-						rendered="#{mantenimientoCargoEmpleadoFormAction.editMode}" 
-						onkeypress="return validarLetras(event)"
-						 title="nombre del cargo de empleado"/>
-						  
-
-					<p:inputText id="descripcion2"
-						value="#{mantenimientoCargoEmpleadoFormAction.objCargoEmpleadoSie.descripcion}"
-						required="true" label="descripcion"
-						requiredMessage="#{message['Cargoempleado.descripcion.validation']}"
-						style="font-weight:bold"
-						size="30"
-						rendered="#{!mantenimientoCargoEmpleadoFormAction.editMode}" 
-						onkeypress="return  validarLetras(event)"
-						 title="nombre del cargo de empleado"/>
-
+						style="font-weight:bold" title="nombre del cargo de empleado" />
+					<pe:keyFilter for="descripcion2" mask="alpha"/>  
 				</h:panelGroup>
 				<p:spacer height="30px" />
-				<h:panelGroup>
 				
+				<h:panelGroup>
 				<p:commandButton id="btn" value="Guardar"
 					 update="panel" action="#{mantenimientoCargoEmpleadoFormAction.insertar}"
 					 ajax="false" icon="ui-icon ui-icon-disk" />
@@ -1568,46 +1527,26 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		<!--	  INICIO DESACTIVAR	 Lista de CARGO EMPLEADOS  -->
 
 	<h:form>
+	<p:confirmDialog id="confirmDeshabilitarCargo" position="center"
+		message="esta seguro de DERIVAR estos Cargos?" 
+		width="325" height="100" showEffect="explode" hideEffect="explode"
+		header="Confirmar" severity="alert" widgetVar="confirmationCargo" >
+	<p:commandButton type="submit" value="Si"
+		action="#{mantenimientoCargoEmpleadoFormAction.derivarEmpleado}" 
+		oncomplete="confirmationCargo.hide()" update=":cargoEmpleFormList" ajax="false" />
+	<p:commandButton value="No" onclick="confirmationCargo.hide()" type="button" />
 
-<p:confirmDialog id="confirmDeshabilitarCargo"
-			     message="esta seguro de DERIVAR estos Cargos?" 
-			     width="325"
-				 height="100" showEffect="explode" hideEffect="explode"
-			     header="Confirmar" severity="alert" widgetVar="confirmationCargo"
-				 position="center">
-
-<p:commandButton type="submit"
-				 value="Si"
-				 action="#{mantenimientoCargoEmpleadoFormAction.derivarEmpleado}" 
-				 oncomplete="confirmationCargo.hide()"
-				 update=":cargoEmpleFormList" 		
-				 		
-	             ajax="false"
-/>
-
-<p:commandButton value="No" onclick="confirmationCargo.hide()"
-					type="button" />
-
-		</p:confirmDialog>
-
+	</p:confirmDialog>
 	</h:form>
-
-	<!-- 	FIN DESACTICAR Lista de CARGO EMPLEADOS  -->
-	
-	
 	
 <!--NUEVO TELEFONO DE EMPLEADO -->
-
-
 	<h:form id="NuevoTelefono2">
 		<p:dialog header="Ingrese Nuevo Telefono" resizable="false" 
 			widgetVar="carDialogNuevoTelefonoEmp" showEffect="fade"
 			hideEffect="explode" modal="true" width="700" position="center">
 
-			<h:panelGrid id="display23" columns="4" cellpadding="0"
-				style="margin:0 auto;">
-
-<!-- TIPO DE TELEFONO-->			
+			<h:panelGrid id="display23" columns="4" cellpadding="0">
+		
  				<h:outputText value="#{message['contrato.tipo.telefono']}" />
 					<p:selectOneMenu  value="#{mantenimientoEmpleadoFormAction.tipoTelef}"
 						style="width:165px"  >
@@ -1615,8 +1554,6 @@ function validarEspaciosLetrasNumeros(e) { // 1
 						<f:selectItem itemLabel="Celular" itemValue="2" />
 						<p:ajax update="display23" listener="#{mantenimientoEmpleadoFormAction.limpiarDatosTelefono}" ></p:ajax>
 					</p:selectOneMenu>
-					
-<!--OPERADOR-->					
 					
 					<h:outputText value="#{message['contrato.operadorTelefonico']}" />
 					<p:selectOneMenu id="operadorTelefonico1" required="true" value="#{mantenimientoEmpleadoFormAction.operadorTelefonico}" rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==1}"
@@ -1636,8 +1573,6 @@ function validarEspaciosLetrasNumeros(e) { // 1
 					</p:selectOneMenu>
 					<p:message for="operadorCelular1" rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==2}" />
 					
-	<!-- N TELEFONICO-->
-					
 					<h:outputText value="#{message['contrato.telefono']}" rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==1}" />
 					<p:inputMask id="numTelef1" mask="999-9999" value="#{mantenimientoEmpleadoFormAction.nuevoTelef.telefono}"
 						requiredMessage="#{message['contrato.telefono.casa.validation']}"  rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==1}"/>
@@ -1648,61 +1583,33 @@ function validarEspaciosLetrasNumeros(e) { // 1
 						requiredMessage="#{message['contrato.celular.validation']}"  rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==2}"/>
 					<p:message for="numCelular1"  rendered="#{mantenimientoEmpleadoFormAction.tipoTelef==2}"/>
 				
-
-				<!-- BOTON GUARDAR -->
 				<h:panelGroup>
-
-					<p:spacer height="80px" width="80"></p:spacer>
-					<p:commandButton 
-						id="btn2" value="Guardar" 
-						update="display23"
-						action="#{mantenimientoEmpleadoFormAction.telefonoAgregar}"
-						ajax="false"
-						icon="ui-icon ui-icon-disk" />	
-
+					<p:spacer height="80px" width="80"/>
+					<p:commandButton id="btn2" value="Guardar" 
+						update="display23" ajax="false" icon="ui-icon ui-icon-disk" 
+						action="#{mantenimientoEmpleadoFormAction.telefonoAgregar}" />	
 				</h:panelGroup>
-
 			</h:panelGrid>
-
 		</p:dialog>
-
 	</h:form>
 	
-	<!-- FIN TELEFONO DE EMPLEADO -->		
-	
-	
-	<!--EN UN SOLO PUPAP NUEVO Y EDITAR EMPRESA -->
-
-
+	<!-- NUEVO Y EDITAR EMPRESA -->
 	<h:form id="NuevoModificaempresa">
-		<p:dialog resizable="false" 
-			widgetVar="carDialogNuevaempresa" showEffect="fade"
+		<p:dialog resizable="false" widgetVar="carDialogNuevaempresa" showEffect="fade"
 			hideEffect="explode" modal="true" width="600" position="center">
 
-			<h:panelGrid id="display" columns="3" cellpadding="0"
-				style="margin:0 auto;">
+			<h:panelGrid id="display" columns="3" cellpadding="3" >
 
-				<!-- RAZON SOCIAL -->
-
-				<h:outputText value="#{message['mantenimiento.razonSocial']}"
-					for="razonSocial" />
-
+				<h:outputText value="#{message['mantenimiento.razonSocial']}" for="razonSocial" />
 				<h:panelGroup>
-
-					<p:inputText id="razonSocial1"
-						value="#{empresaForm.objEmpresaSie.razonsocial}" required="true"
-						label="razonsocial" style="font-weight:bold" 
-						requiredMessage="#{message['mantenimiento.razonSocial.validation']}" />
+					<p:inputText id="razonSocial1" value="#{empresaForm.objEmpresaSie.razonsocial}" 
+					required="true"	label="razonsocial" style="font-weight:bold" 
+					requiredMessage="#{message['mantenimiento.razonSocial.validation']}" />
 					<pe:keyFilter for="razonSocial1" mask="alphanum"/>
 					<p:message for="razonSocial1" />
-
 				</h:panelGroup>
 
-				<!-- DESCRIPCION -->
-
-				<h:outputText value="#{message['mantenimiento.descripcion']}"
-					for="descripcion" />
-
+				<h:outputText value="#{message['mantenimiento.descripcion']}" for="descripcion" />
 				<h:panelGroup>
 				<p:inputText id="descripcion2" value="#{empresaForm.objEmpresaSie.descripcion}"
 					required="true" label="descripcion"
@@ -1712,20 +1619,15 @@ function validarEspaciosLetrasNumeros(e) { // 1
 					<p:message for="descripcion2" />
 				</h:panelGroup>
 				
-				
-				<!-- CUENTA -->
 				<h:outputText value="#{message['mantenimiento.numerocuenta']}"	for="numerocuenta" />
 				<h:panelGroup>
 					<p:inputMask  id="numerocuenta" value="#{empresaForm.objEmpresaSie.numcuenta}"
-					 	required="true"	label="numerocuenta" mask="9999"
-						requiredMessage="#{message['mantenimiento.numerocuenta.validation']}"
-						style="font-weight:bold" />
+					required="true"	label="numerocuenta" mask="9999" style="font-weight:bold"
+					requiredMessage="#{message['mantenimiento.numerocuenta.validation']}" />
 					<p:message for="numerocuenta" />
 				</h:panelGroup>
 				
-				<!--N° RUC -->
 				<h:outputText value="#{message['mantenimiento.numruc']}" for="ruc" />
-
 				<h:panelGroup>
 					<p:inputMask id="ruc1" value="#{empresaForm.objEmpresaSie.numruc}"
 						required="true" label="ruc" mask="99999999999"
@@ -1733,16 +1635,13 @@ function validarEspaciosLetrasNumeros(e) { // 1
 						style="font-weight:bold"  />
 					<p:message for="ruc1" />
 				</h:panelGroup>
-
-				<!--N° TELEFONICO -->
-				<h:outputText value="#{message['mantenimiento.numtel']}"
-					for="telefono" />
+				
+				<h:outputText value="#{message['mantenimiento.numtel']}" for="telefono" />
 				<p:inputMask id="telefono1" value="#{empresaForm.objEmpresaSie.numtelefono}" 
 				mask="999-9999" required="true" label="telefono"
 				requiredMessage="#{message['mantenimiento.numtel.validation']}"
 				style="font-weight:bold"/>
-
-				<!--N° EMail -->
+				
 				<h:outputText value="#{message['mantenimiento.email']}" for="email" />
 				<h:panelGroup>
 				<p:inputText id="email1" value="#{empresaForm.objEmpresaSie.email}"
@@ -1751,25 +1650,18 @@ function validarEspaciosLetrasNumeros(e) { // 1
        			<f:validateRegex pattern="#{message['pattern.email.norequired']}" />
 				</p:inputText>
 				</h:panelGroup>
-
+				
 				<!-- BOTON GUARDAR -->
 				<h:panelGroup>
 					<p:spacer height="20px" width="80"/>
 					<p:commandButton id="btn" value="Guardar" update="panel"
-						action="#{empresaForm.insertar}" ajax="false"
-						icon="ui-icon ui-icon-disk"
-						title="verifique bien los datos, antes de hacer clic en Guardar" />
+					action="#{empresaForm.insertar}" ajax="false"
+					icon="ui-icon ui-icon-disk" title="verifique bien los datos, antes de hacer clic en Guardar" />
 				</h:panelGroup>
 			</h:panelGrid>
 		</p:dialog>
-
 	</h:form>
-	<!-- FIN PUPAP NUEVO Y EDITAR EMPRESA -->
 	
-	<!-- FIN PUPAP NUEVO Y EDITAR META MES -->
-	<!--EN UN SOLO PUPAP NUEVO Y EDITAR META -->
-
-
 	<h:form id="editarMeta2">
 		<p:dialog header="Ingrese nueva meta mes" widgetVar="carDialog2" resizable="false"
 			showEffect="fade" hideEffect="explode" modal="true" width="400"
@@ -1791,7 +1683,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				<h:panelGroup>
 					<p:spacer height="20px"/>
 					<p:commandButton id="btn" value="Guardar" update="metames" actionListener="#{metaMesSearchAction.insertar}" 
-						ajax="false" icon="ui-icon ui-icon-disk" />
+					ajax="false" icon="ui-icon ui-icon-disk" />
 				</h:panelGroup>
 			</h:panelGrid>
 		</p:dialog>
@@ -1804,14 +1696,14 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			position="center">
 			<h:panelGrid columns="3" id="panelCliente"  cellpadding="5" >
 			<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
-					<p:selectOneMenu size="1" value="#{MantenimientoClienteFormAction.idDepartamento}"
-					required="true" style="width:220px"  id="departamento"
-					requiredMessage="#{message['contrato.ubigeo.departamento.validation']}">
+				<p:selectOneMenu size="1" value="#{MantenimientoClienteFormAction.idDepartamento}"
+				required="true" style="width:220px"  id="departamento"
+				requiredMessage="#{message['contrato.ubigeo.departamento.validation']}">
 					<f:selectItem itemLabel="Seleccione Departamento" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
 					<p:ajax update="prov,dist" listener="#{MantenimientoClienteFormAction.cambiar}" />
-					</p:selectOneMenu>
-					<p:spacer/>
+				</p:selectOneMenu>
+				<p:spacer/>
 
 				<h:outputText value="#{message['contrato.ubigeo.provincia']}" />
 				<p:selectOneMenu id="prov" value="#{MantenimientoClienteFormAction.idProvincia}"
@@ -1841,9 +1733,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	</h:form>
  
  <!--	  INICIO ELIMINAR TIPO DE PRODUCTO  -->
-
 	<h:form>
-	
 	<p:confirmDialog id="confirmTipoProducto" message="esta seguro de eliminar este Tipo de Producto?" 
 	width="325" height="100" showEffect="explode" hideEffect="explode" header="Confirmacion" severity="alert" widgetVar="confirmationTipoProducto" position="center">
 	
@@ -1857,11 +1747,10 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 <!--	  INICIO DESACTIVAR	 TELEFONO y DOMICLIO DE CLIENTE  -->
 <h:form>
-		<p:confirmDialog id="confirmDeshabilitarTelCli"
+		<p:confirmDialog id="confirmDeshabilitarTelCli" position="center"
 			message="Los cambios  de Teléfono se realizaran despues de hacer clic en Guardar?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
-			header="Confirm" severity="alert" widgetVar="confirmationTelCli"
-			position="center">
+			header="Confirm" severity="alert" widgetVar="confirmationTelCli" >
 
 			<p:commandButton type="submit" value="Si"
 				action="#{MantenimientoClienteFormAction.telefonoElimina}"
@@ -1874,25 +1763,22 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 		</p:confirmDialog>
 	</h:form>
-<h:form>
-
+	
+	<h:form>
 		<p:confirmDialog widgetVar="confirmationDomiCli" position="center"
 			message="Los cambios  de Domicilio se realizaran despues de hacer clic en Guardar?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
 			header="Confirmar" severity="alert" >
 
-			<p:commandButton type="submit" value="Si"
+			<p:commandButton type="submit" value="Si" update="@all"
 				action="#{MantenimientoClienteFormAction.domicilioElimina}"
-				update="@all"
-				oncomplete="confirmationDomiCli.hide()" ajax="false">
-			</p:commandButton>
+				oncomplete="confirmationDomiCli.hide()" ajax="false" />
 
 			<p:commandButton value="No" onclick="confirmationDomiCli.hide()"
 				type="button" />
 		</p:confirmDialog>
 	</h:form>
-		
-					
+	
 	<!--NUEVO DOMICILIO CLIENTE  -->
 	<h:form id="ClienteDomicilio">
 		<p:dialog header="Nuevo Domicilio de Cliente" widgetVar="carDialogNuevoDomicli"
@@ -1907,8 +1793,8 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			<h:outputText value="#{message['cliente.dimicilio.tipoCasa']}" />
 			<p:selectOneMenu style="width:165px" required="true" id="tipocasa"
 			value="#{MantenimientoClienteFormAction.tipocasanuevo}">
-			<f:selectItem itemLabel="Seleccione tipo casa" itemValue="#{null}" />
-			<f:selectItems value="#{comboAction.tipocasaItems}" />
+				<f:selectItem itemLabel="Seleccione tipo casa" itemValue="#{null}" />
+				<f:selectItems value="#{comboAction.tipocasaItems}" />
 			</p:selectOneMenu>
 			<h:outputText value="#{message['cliente.ubigeo.departamento']}" />
 			<p:selectOneMenu size="1" value="#{MantenimientoClienteFormAction.idDepartamento24}"
