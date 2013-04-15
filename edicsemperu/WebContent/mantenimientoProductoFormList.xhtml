@@ -44,11 +44,8 @@
 								title="Vea datos del producto">
 								<f:setPropertyActionListener target="#{productoForm.selectedProducto}" value="#{p}"/>
 							</p:commandButton>
-						</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="#{message['mantenimiento.productoList.modificar']}" />
-						</f:facet>
+					</p:column>
+					<p:column headerText="#{message['mantenimiento.productoList.modificar']}">
 						<p:commandButton update=":formManteProdDetalle:display"
 							  icon="ui-icon ui-icon-pencil"
 							title="#{message['mantenimiento.productoList.editarDatos']}" action="#{productoForm.update}" >
