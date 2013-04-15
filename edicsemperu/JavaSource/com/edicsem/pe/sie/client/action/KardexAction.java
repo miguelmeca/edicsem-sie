@@ -59,6 +59,7 @@ public class KardexAction extends BaseMantenimientoAbstractAction {
 	@EJB
 	private EmpresaService objEmpresaService;
 	
+	
 	public KardexAction() {
 		log.info("inicializando constructor MantenimientoKardex");
 		init();
@@ -128,36 +129,37 @@ public class KardexAction extends BaseMantenimientoAbstractAction {
 				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 			}else{
-			if (fechaDesde != null && fechaHasta == null){
-				//la fecha hasta será la actual
-				fechaHasta= DateUtil.getToday().getTime();
-			}
-			if (fechaDesde == null){
-				fechaD = "";
-			}if (fechaHasta == null){
-				fechaH = "";
-			}else if (fechaDesde != null && fechaHasta != null){
-				fechaD = "" + sdf.format(fechaDesde);
-				fechaH = "" + sdf.format(fechaHasta);
-			}log.info("con ");
-			kardexList = objKardexService.ConsultaProductos(getIdproducto(), getIdalmacen(), fechaD, fechaH);
-
-			if(kardexList.size()==0){
-				kardexList = new ArrayList<KardexSie>();
-				stockActual=0;
-				setMensaje(" consulta realizada ");
-				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
-				FacesContext.getCurrentInstance().addMessage(null, msg);
-			}else{ 
-				
-				log.info("cantidad existente :D "+ kardexList.get(kardexList.size() - 1).getCantexistencia());
-				stockActual = kardexList.get(kardexList.size() - 1).getCantexistencia();
-				valorActual = kardexList.get(kardexList.size() - 1).getValorunitarioexistencia();
-				log.info("nuevo stock actual " + getStockActual());
-				setMensaje(" consulta realizada ");
-				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
-				FacesContext.getCurrentInstance().addMessage(null, msg);
-			}
+				if (fechaDesde != null && fechaHasta == null){
+					//la fecha hasta será la actual
+					fechaHasta= DateUtil.getToday().getTime();
+				}
+				if (fechaDesde == null){
+					fechaD = "";
+				}if (fechaHasta == null){
+					fechaH = "";
+				}else if (fechaDesde != null && fechaHasta != null){
+					fechaD = "" + sdf.format(fechaDesde);
+					fechaH = "" + sdf.format(fechaHasta);
+				}log.info("con ");
+				kardexList = objKardexService.ConsultaProductos(getIdproducto(), getIdalmacen(), fechaD, fechaH);
+	
+				if (kardexList != null && kardexList.size() > 0) {
+					if(kardexList.size()==0){
+						log.info("cantidad existente :D "+ kardexList.get(kardexList.size() - 1).getCantexistencia());
+						stockActual = kardexList.get(kardexList.size() - 1).getCantexistencia();
+						valorActual = kardexList.get(kardexList.size() - 1).getValorunitarioexistencia();
+						log.info("nuevo stock actual " + getStockActual());
+						//setMensaje(" consulta realizada ");
+						//msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+						FacesContext.getCurrentInstance().addMessage(null, null);
+					}
+				}else{
+					kardexList = new ArrayList<KardexSie>();
+					stockActual=0;
+					setMensaje(" No se encontraron Datos ");
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+					FacesContext.getCurrentInstance().addMessage(null, msg);
+				}
 			}
 		return getViewList();
 	}
