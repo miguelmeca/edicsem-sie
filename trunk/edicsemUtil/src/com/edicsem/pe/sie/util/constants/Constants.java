@@ -41,6 +41,7 @@ public class Constants {
 	public static final String PARAM_MORA_ACTUAL="MORA_ACTUAL";
 	public static final String PARAM_EFECTIVIDAD_VENTAS="EFECTIVIDAD_VENTAS";
 	public static final String PARAM_CANT_MES_VENDEDORES_INICIALES="CANT_MES_VENDEDORES_INICIALES";
+	public static final String PARAM_ADMINISTRADOR_SISTEMA = "Administrador del Sistema";
 	
 	public static final String MANT_CLIENTE_FORM_LIST_PAGE = "mantenimientoClienteFormList";
 	public static final String MANT_CLIENTE_FORM_PAGE = "mantenimientoClienteForm";
@@ -125,7 +126,7 @@ public class Constants {
 	
 	public static final String MANT_GRUPO_FORM_LIST_PAGE = "mantenimientoGrupoVentaFormList";
 
-	public static final String MANT_DISTRIBUCION_HORARIO_PERSONAL = "AsignarHorarioVentaMasivoForm";
+	public static final String MANT_DISTRIBUCION_HORARIO_VENTA = "DistribucionHorarioGrupoVentaForm";
 
 	public static final String MANT_HORARIO_TURNO = "mantenimientoHorarioTurnoForm";
 
