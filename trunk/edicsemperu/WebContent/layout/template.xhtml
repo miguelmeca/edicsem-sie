@@ -5,6 +5,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pe="http://primefaces.org/ui/extensions"
 	xmlns:p="http://primefaces.org/ui">
 <f:view contentType="text/html">
 	<h:head>
@@ -475,10 +476,10 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				<p:inputText id="descripcion"
 						value="#{motivoSearch.motivo.descripcion}" required="true"
 						label="descripcion" requiredMessage="FALTA DESCRIPCION"
-						style="font-weight:bold" maxlength="30"
-						onkeypress="return validarEspaciosLetrasNumeros(event)"  />
+						style="font-weight:bold" maxlength="30" />
+				<h:panelGroup><pe:keyFilter for="descripcion" mask="alphanum"/>  
 				<p:message for="descripcion" />
-				
+				</h:panelGroup>
 				<h:panelGroup>
 					<p:spacer height="20px"/>
 					<p:commandButton value="Guardar" update="message"
@@ -582,13 +583,12 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				<h:panelGroup>
 					<p:inputText id="descripcion1" value="#{criterioForm.objcriterioSie.descripcion}" required="true"
 						label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" rendered="#{criterioForm.newRecord}"
-						onkeypress="return validarEspaciosLetrasNumeros(event)" />
-						
+						style="font-weight:bold" rendered="#{criterioForm.newRecord}" />
+						<pe:keyFilter for="descripcion1" mask="alphanum"/>  
 					<p:inputText id="descripcion2" value="#{criterioForm.objcriterioSie.descripcion}" required="true" 
 						label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" rendered="#{!criterioForm.newRecord}" 
-						onkeypress="return validarEspaciosLetrasNumeros(event)" />
+						style="font-weight:bold" rendered="#{!criterioForm.newRecord}" />
+						<pe:keyFilter for="descripcion2" mask="alphanum"/>  
 				</h:panelGroup>
 				
 				<f:facet name="footer">
@@ -608,13 +608,13 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				
 				<h:outputText value="#{message['mantenimiento.descripcion']}" />
 				<p:inputText value="#{grupoForm.objgrupoSie.descripcion}" required="true" maxlength="30"
-					label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-					style="font-weight:bold" onkeypress="return validarEspaciosLetrasNumeros(event)" />
-					
+					id="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
+					style="font-weight:bold" />
+				<pe:keyFilter for="descripcion" mask="alpha"/> 
 				<h:outputText value="#{message['grupo.detalle']}" />
-				<p:inputTextarea value="#{grupoForm.objgrupoSie.detalle}" cols="10" rows="5" maxlength="120"
-					style="font-weight:bold" onkeypress="return validarEspaciosLetrasNumeros(event)" />
-				
+				<p:inputTextarea id="detalle" value="#{grupoForm.objgrupoSie.detalle}" cols="10" rows="5" maxlength="120"
+					style="font-weight:bold" />
+				<pe:keyFilter for="detalle" mask="alpha"/> 
 				<h:outputText value="#{message['grupo.tipo.evento']}"  />
 				<p:selectOneMenu value="#{grupoForm.idTipoEvento}" required="true">
 					<f:selectItems value="#{comboAction.tipoEventoVentaitems}" />
@@ -639,18 +639,17 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				<h:panelGroup>
 					<p:inputText id="descripcion1" value="#{lugarForm.objlugarSie.descripcion}" required="true"
 						label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" rendered="#{lugarForm.newRecord}"
-						onkeypress="return validarEspaciosLetrasNumeros(event)" />
-						
+						style="font-weight:bold" rendered="#{lugarForm.newRecord}" />
+						<pe:keyFilter for="descripcion1" mask="alphanum"/> 
 					<p:inputText id="descripcion2" value="#{lugarForm.objlugarSie.descripcion}" required="true" 
 						label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" rendered="#{!lugarForm.newRecord}" 
-						onkeypress="return validarEspaciosLetrasNumeros(event)" />
+						style="font-weight:bold" rendered="#{!lugarForm.newRecord}" />
+						<pe:keyFilter for="descripcion2" mask="alphanum"/>
 				</h:panelGroup>
 				
 				<f:facet name="footer">
-				<p:commandButton value="Guardar" update="panel" action="#{lugarForm.insertar}" ajax="false"
-					icon="ui-icon ui-icon-disk" />
+				<p:commandButton value="Guardar" update="panel" action="#{lugarForm.insertar}"
+				ajax="false" icon="ui-icon ui-icon-disk" />
 				</f:facet>
 			</h:panelGrid>
 		</p:dialog>
@@ -666,7 +665,8 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				<h:outputText value="#{message['mantenimiento.descripcion']}" for="descripcion" />
 				<p:inputText id="descripcion1" value="#{tipoClienteForm.objTipoClienteSie.descripcion}" required="true"
 				label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}" style="font-weight:bold"
-				rendered="#{tipoClienteForm.newRecord}" onkeypress="return validarEspaciosLetrasNumeros(event)" />
+				rendered="#{tipoClienteForm.newRecord}" />
+				<pe:keyFilter for="descripcion1" mask="alpha"/> 
 				
 				<h:outputText value="#{message['tipo.cliente.retrazo.inicial']}"  />
 				<p:inputText  value="#{tipoClienteForm.objTipoClienteSie.diasretrazoini}" required="true" style="font-weight:bold" />
@@ -719,13 +719,12 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				<h:panelGroup>
 					<p:inputText id="descripcion1" value="#{eventoForm.objeventoSie.descripcion}" required="true"
 						label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" rendered="#{eventoForm.newRecord}"
-						onkeypress="return validarEspaciosLetrasNumeros(event)" />
-						
+						style="font-weight:bold" rendered="#{eventoForm.newRecord}" />
+						<pe:keyFilter for="descripcion1" mask="alpha"/> 
 					<p:inputText id="descripcion2" value="#{eventoForm.objeventoSie.descripcion}" required="true" 
 						label="descripcion" requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" rendered="#{!eventoForm.newRecord}" 
-						onkeypress="return validarEspaciosLetrasNumeros(event)" />
+						style="font-weight:bold" rendered="#{!eventoForm.newRecord}" />
+						<pe:keyFilter for="descripcion2" mask="alpha"/> 
 				</h:panelGroup>
 				
 				<f:facet name="footer">
@@ -790,8 +789,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		<p:dialog widgetVar="horarioDialog" showEffect="fade" resizable="false" 
 			hideEffect="explode" modal="true" width="450" position="center">
 			
-			<h:panelGrid id="display" columns="2" cellpadding="2"
-				style="margin:0 auto;" title="Horario ">
+			<h:panelGrid id="display" columns="2" cellpadding="2" title="Horario ">
 
 				<h:outputText value="#{message['horario.personal.dia']}"  />
 				<h:panelGroup rendered="#{horarioPersonal.newRecord==true}" >
@@ -865,62 +863,37 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	  <p:messages id="msgs"/>
 		<p:dialog header="Registro/Modificacion Paquete Biblico" widgetVar="PaqueteBiblico" showEffect="fade"
 			hideEffect="explode" modal="true" position="center" width="500" resizable="false" >
-			<p:fieldset  >
+			<p:fieldset>
 			<h:panelGrid id="display" columns="2"  >
-			
-			
-<h:outputText 	value="#{message['Paquetebiblico.codigopaquete']}"  ></h:outputText>
-<h:panelGroup>
-							
-<p:inputText value="#{mantenimientoPaqueteBiblicoFormAction.objPaqueteSie.codpaquete}"				
-onkeypress="return validarEspaciosLetrasNumeros(event)"
-id="codigo"	title="el codigo debe ser entre 6 a 10 digitos" 
-required="true"
-requiredMessage="#{message['Paquetebiblico.codigo.validation']}"
-maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRecord}" >
-<f:validateLength minimum="6" maximum="10"></f:validateLength>
-<p:ajax update="msgCodigo" event="keyup" ></p:ajax>
-</p:inputText>
- <p:message  for="codigo" id="msgCodigo" display="icon"></p:message>
- 
-
- <p:inputText  value="#{mantenimientoPaqueteBiblicoFormAction.objPaqueteSie.codpaquete}" 
- required="true"
- requiredMessage="#{message['Paquetebiblico.codigo.validation']}"
- rendered="#{!mantenimientoPaqueteBiblicoFormAction.newRecord}"
- readonly="true" ></p:inputText>
-			
-		</h:panelGroup>			
-							
-		 	
-				<h:outputText
-				 value="#{message['Paquetebiblico.descripciondePaquete']}"
-				 for="descripciondePaquete"></h:outputText>
-									
-				<p:inputTextarea
-				
-				value="#{mantenimientoPaqueteBiblicoFormAction.objPaqueteSie.descripcionpaquete}"
-				onkeypress="return validarEspaciosLetrasNumeros(event)"
-				id="descripciondePaquete" 
-				maxlength="500"
+			<h:outputText 	value="#{message['Paquetebiblico.codigopaquete']}" />
+			<h:panelGroup>
+			<p:inputText value="#{mantenimientoPaqueteBiblicoFormAction.objPaqueteSie.codpaquete}"
+			id="codigo"	title="el codigo debe ser entre 6 a 10 digitos" 
+			required="true" requiredMessage="#{message['Paquetebiblico.codigo.validation']}"
+			maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRecord}" >
+			<f:validateLength minimum="6" maximum="10"></f:validateLength>
+			<p:ajax update="msgCodigo" event="keyup" />
+			</p:inputText>
+			<pe:keyFilter for="codigo" mask="alphanum"/> 
+			<p:message  for="codigo" id="msgCodigo" display="icon"/>
+			<p:inputText  value="#{mantenimientoPaqueteBiblicoFormAction.objPaqueteSie.codpaquete}" 
+			required="true" requiredMessage="#{message['Paquetebiblico.codigo.validation']}"
+			rendered="#{!mantenimientoPaqueteBiblicoFormAction.newRecord}" readonly="true" />
+			</h:panelGroup>			
+			<h:outputText value="#{message['Paquetebiblico.descripciondePaquete']}"
+			for="descripciondePaquete"/>
+			<p:inputTextarea value="#{mantenimientoPaqueteBiblicoFormAction.objPaqueteSie.descripcionpaquete}"
+				id="descripciondePaquete" maxlength="500" required="true"
 				title="defina una descripcion hasta un maximo de 500 caracteres"
-				required="true"
 				requiredMessage="#{message['Paquetebiblico.descripcion.validation']}"
-				style="width:95%"
-				></p:inputTextarea>
-				 <p:message for="descripciondePaquete" display="icon"></p:message>
-				
+				style="width:95%" />
+			<pe:keyFilter for="descripciondePaquete" mask="alpha"/>  
+			<p:message for="descripciondePaquete" display="icon"></p:message>
 			
-	
-				
-				<p:commandButton
-				id="savepaquete" 
-				value="Grabar" 
+			<p:commandButton id="savepaquete" value="Grabar" 
 				action="#{mantenimientoPaqueteBiblicoFormAction.insertar}" 
-				icon="ui-icon-disk"
-				ajax="false"
-				update="panel" />
-				</h:panelGrid>
+				icon="ui-icon-disk" ajax="false" update="panel" />
+			</h:panelGrid>
 			</p:fieldset>
 		</p:dialog>
 	</h:form>
@@ -966,12 +939,7 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 		</p:dialog>
 	</h:form>
 	
-	
-	
 	<!--  Mantenimiento Detalle Paquete Biblico -->
-	
-	
-	
 	<h:form id="formDetPaqueteBiblico">
 	 
 		<p:dialog header="Registro/Modificacion Detalle Paquete Biblico" widgetVar="DetPaqueteBiblico" showEffect="fade"
@@ -1301,40 +1269,18 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 			<h:panelGrid id="display" columns="2" cellpadding="4">
 				<h:outputText value="#{message['codigo.tipoProducto']}" />
 				<h:panelGroup>
-					<p:inputMask mask="aa999" id="codigo"
-						value="#{mantenimientoTipoProductoFormAction.objTipoProductoSie.codtipoproducto}"
-						required="true" label="codigo"
-						requiredMessage="#{message['codigo.tipoProducto.validation']}"
-						style="font-weight:bold" rendered="#{mantenimientoTipoProductoFormAction.editMode}"
-						onkeypress="return validarEspaciosLetrasNumeros(event)"
-						/>
-					<p:inputMask mask="aa999" id="codigo2"
-						value="#{mantenimientoTipoProductoFormAction.objTipoProductoSie.codtipoproducto}"
-						required="true" label="codigo"
-						requiredMessage="#{message['codigo.tipoProducto.validation']}"
-						style="font-weight:bold" rendered="#{!mantenimientoTipoProductoFormAction.editMode}"
-						onkeypress="return validarEspaciosLetrasNumeros(event)"
-						/>	
+					<p:inputMask mask="aa999" id="codigo" required="true" label="codigo"
+					value="#{mantenimientoTipoProductoFormAction.objTipoProductoSie.codtipoproducto}"
+					requiredMessage="#{message['codigo.tipoProducto.validation']}"
+					style="font-weight:bold" />
+					<pe:keyFilter for="codigo" mask="alphanum"/>
 				</h:panelGroup>
 				<h:outputText value="#{message['nombre.tipoProducto']}" />
-				<h:panelGroup>
-					<p:inputText id="nombre"
-						value="#{mantenimientoTipoProductoFormAction.objTipoProductoSie.nombretipoproducto}"
-						required="true" label="tipoProducto"
-						requiredMessage="#{message['nombre.tipoProducto.validation']}"
-						style="font-weight:bold" rendered="#{mantenimientoTipoProductoFormAction.editMode}"
-						onkeypress="return validarEspaciosLetrasNumeros(event)">
-					<f:validateLength maximum="50"></f:validateLength>
-					</p:inputText>
-					<p:inputText id="nombre2"
-						value="#{mantenimientoTipoProductoFormAction.objTipoProductoSie.nombretipoproducto}"
-						required="true" label="tipoProducto"
-						requiredMessage="#{message['nombre.tipoProducto.validation']}"
-						style="font-weight:bold" rendered="#{!mantenimientoTipoProductoFormAction.editMode}"
-						onkeypress="return validarEspaciosLetrasNumeros(event)">
-					<f:validateLength maximum="50"></f:validateLength>
-					</p:inputText>
-				</h:panelGroup>
+				<p:inputText id="nombre2" maxlength="50" style="font-weight:bold" 
+					value="#{mantenimientoTipoProductoFormAction.objTipoProductoSie.nombretipoproducto}"
+					required="true" label="tipoProducto"
+					requiredMessage="#{message['nombre.tipoProducto.validation']}" />
+					<pe:keyFilter for="nombre2" mask="alphanum"/>
 				<h:panelGroup>
 					<p:spacer height="20px"/>
 					<p:commandButton id="btn" value="Guardar" update="display"
@@ -1479,11 +1425,7 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
-<!--	  FIN  UBIGEOEMPLEADO	   -->
-
-
-		
-				
+	
 <!--  Mantenimiento Horario ASISTENCIA -->
 	<h:form id="formMantAsistencia">
 		<p:dialog widgetVar="asistenciaDialog" showEffect="fade" resizable="false" 
@@ -1749,18 +1691,9 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 
 					<p:inputText id="razonSocial1"
 						value="#{empresaForm.objEmpresaSie.razonsocial}" required="true"
-						label="razonsocial"
-						requiredMessage="#{message['mantenimiento.razonSocial.validation']}"
-						style="font-weight:bold" rendered="#{empresaForm.editMode}"
-						onkeypress="return validarLetras(event)" 
-						/>
-
-					<p:inputText id="razonSocial2" value="#{empresaForm.objEmpresaSie.razonsocial}"
-						required="true" label="razonsocial"
-						requiredMessage="#{message['mantenimiento.razonSocial.validation']}"
-						style="font-weight:bold" rendered="#{!empresaForm.editMode}" 
-						onkeypress="return validarLetras(event)"
-						/>
+						label="razonsocial" style="font-weight:bold" 
+						requiredMessage="#{message['mantenimiento.razonSocial.validation']}" />
+					<pe:keyFilter for="razonSocial1" mask="alphanum"/>
 					<p:message for="razonSocial1" />
 
 				</h:panelGroup>
@@ -1771,132 +1704,63 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 					for="descripcion" />
 
 				<h:panelGroup>
-
-					<p:inputText id="descripcion1"
-						value="#{empresaForm.objEmpresaSie.descripcion}" required="true"
-						label="descripcion"
-						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" rendered="#{empresaForm.editMode}"
-						onkeypress="return validarEspaciosLetrasNumeros(event)" 
-						 />
-
-					<p:inputText id="descripcion2" value="#{empresaForm.objEmpresaSie.descripcion}"
-						required="true" label="descripcion"
-						requiredMessage="#{message['mantenimiento.descripcion.validation']}"
-						style="font-weight:bold" rendered="#{!empresaForm.editMode}" 
-						onkeypress="return validarEspaciosLetrasNumeros(event)"
-						 />
-					<p:message for="descripcion1" />
+				<p:inputText id="descripcion2" value="#{empresaForm.objEmpresaSie.descripcion}"
+					required="true" label="descripcion"
+					requiredMessage="#{message['mantenimiento.descripcion.validation']}"
+					style="font-weight:bold"  />
+					<pe:keyFilter for="descripcion2" mask="alphanum"/>  
+					<p:message for="descripcion2" />
 				</h:panelGroup>
 				
 				
 				<!-- CUENTA -->
 				<h:outputText value="#{message['mantenimiento.numerocuenta']}"	for="numerocuenta" />
-					
-			<h:panelGroup>
-
-					<p:inputMask  id="numerocuenta1" value="#{empresaForm.objEmpresaSie.numcuenta}"
+				<h:panelGroup>
+					<p:inputMask  id="numerocuenta" value="#{empresaForm.objEmpresaSie.numcuenta}"
 					 	required="true"	label="numerocuenta" mask="9999"
 						requiredMessage="#{message['mantenimiento.numerocuenta.validation']}"
-						style="font-weight:bold" rendered="#{empresaForm.editMode}"					
-						 />
-
-					<p:inputMask  id="numerocuenta2" value="#{empresaForm.objEmpresaSie.numcuenta}"
-						required="true" label="numerocuenta" mask="9999"
-						requiredMessage="#{message['mantenimiento.numerocuenta.validation']}"
-						style="font-weight:bold" rendered="#{!empresaForm.editMode}"  />
-						
-					<p:message for="numerocuenta1" />
+						style="font-weight:bold" />
+					<p:message for="numerocuenta" />
 				</h:panelGroup>
-					
-					
-
+				
 				<!--N° RUC -->
 				<h:outputText value="#{message['mantenimiento.numruc']}" for="ruc" />
 
 				<h:panelGroup>
-
 					<p:inputMask id="ruc1" value="#{empresaForm.objEmpresaSie.numruc}"
 						required="true" label="ruc" mask="99999999999"
 						requiredMessage="#{message['mantenimiento.numruc.validation']}"
-						style="font-weight:bold" rendered="#{empresaForm.editMode}" />
-
-					<p:inputMask id="ruc2" value="#{empresaForm.objEmpresaSie.numruc}"
-						required="true" label="descripcion" mask="99999999999"
-						requiredMessage="#{message['mantenimiento.numruc.validation']}"
-						style="font-weight:bold" rendered="#{!empresaForm.editMode}" />
+						style="font-weight:bold"  />
 					<p:message for="ruc1" />
-
 				</h:panelGroup>
 
 				<!--N° TELEFONICO -->
-
 				<h:outputText value="#{message['mantenimiento.numtel']}"
 					for="telefono" />
-
-				<h:panelGroup>
-
-					<p:inputMask id="telefono1"
-						value="#{empresaForm.objEmpresaSie.numtelefono}" mask="999-9999"
-						required="true" label="telefono"
-						requiredMessage="#{message['mantenimiento.numtel.validation']}"
-						style="font-weight:bold" rendered="#{empresaForm.editMode}" 
-						 />
-
-					<p:inputMask id="telefono2" value="#{empresaForm.objEmpresaSie.numtelefono}"
-						required="true" label="telefono" mask="999-9999"
-						requiredMessage="#{message['mantenimiento.numtel.validation']}"
-						style="font-weight:bold" rendered="#{!empresaForm.editMode}"
-						 />
-					<p:message for="telefono1" />
-
-				</h:panelGroup>
+				<p:inputMask id="telefono1" value="#{empresaForm.objEmpresaSie.numtelefono}" 
+				mask="999-9999" required="true" label="telefono"
+				requiredMessage="#{message['mantenimiento.numtel.validation']}"
+				style="font-weight:bold"/>
 
 				<!--N° EMail -->
-
 				<h:outputText value="#{message['mantenimiento.email']}" for="email" />
-
 				<h:panelGroup>
-
-					<p:inputText id="email1" 
-								 value="#{empresaForm.objEmpresaSie.email}"
-								 label="email1"
-								 title="para el @ presione: la tecla Alt + 64 y en laptop Alt Gr + Q"
-								 validatorMessage="correo electronico incorrecto"					
-								 rendered="#{empresaForm.editMode}"
-								 maxlength="45"
-								 >
+				<p:inputText id="email1" value="#{empresaForm.objEmpresaSie.email}"
+				label="email1" title="para el @ presione: la tecla Alt + 64 y en laptop Alt Gr + Q"
+				validatorMessage="correo electronico incorrecto" maxlength="45" >
        			<f:validateRegex pattern="#{message['pattern.email.norequired']}" />
-						</p:inputText>
-						
-
-			<p:inputText id="email2"
-						 value="#{empresaForm.objEmpresaSie.email}"	
-						 label="email2"
-						 title="para el @ presione: la tecla Alt + 64 y en laptop Alt Gr + Q"
-						 validatorMessage="correo electronico incorrecto"				
-						 rendered="#{!empresaForm.editMode}" 
-						 maxlength="45"
-						 >
-		<f:validateRegex pattern="#{message['pattern.email.norequired']}" />
-						</p:inputText>
-					
+				</p:inputText>
 				</h:panelGroup>
 
 				<!-- BOTON GUARDAR -->
 				<h:panelGroup>
-
-					<p:spacer height="20px" width="80"></p:spacer>
+					<p:spacer height="20px" width="80"/>
 					<p:commandButton id="btn" value="Guardar" update="panel"
 						action="#{empresaForm.insertar}" ajax="false"
 						icon="ui-icon ui-icon-disk"
 						title="verifique bien los datos, antes de hacer clic en Guardar" />
-						
-
 				</h:panelGroup>
-
 			</h:panelGrid>
-
 		</p:dialog>
 
 	</h:form>
@@ -1932,6 +1796,7 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
+	
 	<!-- NUEVO DOMICILIO  CLIENTE -->
 	<h:form >
 		<p:dialog header="Nuevo Domiclio" widgetVar="newDomicilio"
@@ -1992,7 +1857,6 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 
 <!--	  INICIO DESACTIVAR	 TELEFONO y DOMICLIO DE CLIENTE  -->
 <h:form>
-
 		<p:confirmDialog id="confirmDeshabilitarTelCli"
 			message="Los cambios  de Teléfono se realizaran despues de hacer clic en Guardar?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
@@ -2009,16 +1873,13 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 				type="button" />
 
 		</p:confirmDialog>
-
 	</h:form>
-
 <h:form>
 
-		<p:confirmDialog 
+		<p:confirmDialog widgetVar="confirmationDomiCli" position="center"
 			message="Los cambios  de Domicilio se realizaran despues de hacer clic en Guardar?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
-			header="Confirmar" severity="alert" widgetVar="confirmationDomiCli"
-			position="center">
+			header="Confirmar" severity="alert" >
 
 			<p:commandButton type="submit" value="Si"
 				action="#{MantenimientoClienteFormAction.domicilioElimina}"
@@ -2028,9 +1889,7 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 
 			<p:commandButton value="No" onclick="confirmationDomiCli.hide()"
 				type="button" />
-
 		</p:confirmDialog>
-
 	</h:form>
 		
 					
@@ -2039,58 +1898,49 @@ maxlength="10" size="30" rendered="#{mantenimientoPaqueteBiblicoFormAction.newRe
 		<p:dialog header="Nuevo Domicilio de Cliente" widgetVar="carDialogNuevoDomicli"
 			showEffect="fade" hideEffect="explode" modal="true" width="800" resizable="false" 
 			position="center">
-<p:fieldset >
-<h:panelGrid columns="2" id="panel3">
-
-<h:outputLabel value="#{message['cliente.domicilio.direccion']}" for="domicilio" />
-<p:inputText id="domicilio" value="#{MantenimientoClienteFormAction.domicilio}"  style="width:220%" />
-
-<h:outputLabel value="#{message['cliente.domicilio.referencia']}" for="referencia" />
-<p:inputText id="referencia" value="#{MantenimientoClienteFormAction.referencia}"  style="width:220%" />
-			  
-<h:outputText value="#{message['cliente.dimicilio.tipoCasa']}" />
-<p:selectOneMenu style="width:165px" required="true" id="tipocasa"
-value="#{MantenimientoClienteFormAction.tipocasanuevo}">
-<f:selectItem itemLabel="Seleccione tipo casa" itemValue="#{null}" />
-<f:selectItems value="#{comboAction.tipocasaItems}" />
-</p:selectOneMenu>
-					
-					
-	<h:outputText value="#{message['cliente.ubigeo.departamento']}" />
-					<p:selectOneMenu size="1" value="#{MantenimientoClienteFormAction.idDepartamento24}"
-					required="true" style="width:220px" id="departamento24"
-					requiredMessage="#{message['cliente.ubigeo.departamento.validation']}">
-					<f:selectItem itemLabel="Seleccione Departamento" itemValue="#{null}" />
-					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
-					<p:ajax update="prov,dist" listener="#{MantenimientoClienteFormAction.cambiarnew}" />
-					</p:selectOneMenu>
-					
-				
-				<h:outputText value="#{message['cliente.ubigeo.provincia']}" />
-				<p:selectOneMenu id="prov" value="#{MantenimientoClienteFormAction.idProvincia24}"
-					required="true" style="width:220px"
-					requiredMessage="#{message['cliente.ubigeo.provincia.validation']}">
-					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
-					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
-					<p:ajax update="dist" listener="#{MantenimientoClienteFormAction.cambiar24}" />
-				</p:selectOneMenu>
-				
-				<h:outputText value="#{message['cliente.ubigeo.distrito']}" rendered="#{MantenimientoClienteFormAction.defectoUbigeo24}" />
-				<p:selectOneMenu id="dist" value="#{MantenimientoClienteFormAction.idUbigeo}" 
-					rendered="#{MantenimientoClienteFormAction.defectoUbigeo24}" required="true"   effect="fade"
-					style="width:220px">
-					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
-					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
-					<p:ajax update="ubigeoDefecto1" listener="#{MantenimientoClienteFormAction.ingresarUbigeo24}"/>
-				</p:selectOneMenu>
-				
-				<h:outputText value="#{message['cliente.ubigeo']}" />
+			<p:fieldset >
+			<h:panelGrid columns="2" id="panel3">
+			<h:outputLabel value="#{message['cliente.domicilio.direccion']}" for="domicilio" />
+			<p:inputText id="domicilio" value="#{MantenimientoClienteFormAction.domicilio}"  style="width:220%" />
+			<h:outputLabel value="#{message['cliente.domicilio.referencia']}" for="referencia" />
+			<p:inputText id="referencia" value="#{MantenimientoClienteFormAction.referencia}"  style="width:220%" />
+			<h:outputText value="#{message['cliente.dimicilio.tipoCasa']}" />
+			<p:selectOneMenu style="width:165px" required="true" id="tipocasa"
+			value="#{MantenimientoClienteFormAction.tipocasanuevo}">
+			<f:selectItem itemLabel="Seleccione tipo casa" itemValue="#{null}" />
+			<f:selectItems value="#{comboAction.tipocasaItems}" />
+			</p:selectOneMenu>
+			<h:outputText value="#{message['cliente.ubigeo.departamento']}" />
+			<p:selectOneMenu size="1" value="#{MantenimientoClienteFormAction.idDepartamento24}"
+				required="true" style="width:220px" id="departamento24"
+				requiredMessage="#{message['cliente.ubigeo.departamento.validation']}">
+				<f:selectItem itemLabel="Seleccione Departamento" itemValue="#{null}" />
+				<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
+				<p:ajax update="prov,dist" listener="#{MantenimientoClienteFormAction.cambiarnew}" />
+			</p:selectOneMenu>
+			<h:outputText value="#{message['cliente.ubigeo.provincia']}" />
+			<p:selectOneMenu id="prov" value="#{MantenimientoClienteFormAction.idProvincia24}"
+				required="true" style="width:220px"
+				requiredMessage="#{message['cliente.ubigeo.provincia.validation']}">
+				<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
+				<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
+				<p:ajax update="dist" listener="#{MantenimientoClienteFormAction.cambiar24}" />
+			</p:selectOneMenu>
+			<h:outputText value="#{message['cliente.ubigeo.distrito']}" rendered="#{MantenimientoClienteFormAction.defectoUbigeo24}" />
+			<p:selectOneMenu id="dist" value="#{MantenimientoClienteFormAction.idUbigeo}" 
+				rendered="#{MantenimientoClienteFormAction.defectoUbigeo24}" required="true"   effect="fade"
+				style="width:220px">
+				<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+				<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+				<p:ajax update="ubigeoDefecto1" listener="#{MantenimientoClienteFormAction.ingresarUbigeo24}"/>
+			</p:selectOneMenu>
+			<h:outputText value="#{message['cliente.ubigeo']}" />
 				<h:outputText id="ubigeoDefecto1" value="#{MantenimientoClienteFormAction.ubigeoDefecto24}" style="width:320px"/>
 				<p:message for="ubigeoDefecto1" rendered="#{MantenimientoClienteFormAction.defectoUbigeo24}"/>					
 			<h:panelGroup>
 			<p:commandButton id="btnDomicilio" value="Guardar" update=":listarDomicilio"
-					action="#{MantenimientoClienteFormAction.domicilioAgregar}" ajax="false"
-					icon="ui-icon ui-icon-disk" title="verifique bien los datos, antes de hacer clic en Guardar" />
+				action="#{MantenimientoClienteFormAction.domicilioAgregar}" ajax="false"
+				icon="ui-icon ui-icon-disk" title="verifique bien los datos, antes de hacer clic en Guardar" />
 			</h:panelGroup>
 		</h:panelGrid>
 	</p:fieldset>

@@ -10,103 +10,71 @@
 		window.history.forward(-1);
 	</script>
 		<h1 class="title ui-widget-header ui-corner-all">#{message['mantenimiento.empresa.tittle']}</h1>
-			
 		<h:form id="frmEmpresaFormList" prependId="false">
-	<p:messages showDetail="true"/>
-		
-			
-<p:dataTable value="#{empresaSearch.empresaList}" var="empresa"
-id="empresaTable" paginator="true" rows="10"
-paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-rowsPerPageTemplate="5,10,15" widgetVar="table"
-emptyMessage="No se encontraron registros">
+			<p:messages showDetail="true" closable="true" />
+			<p:dataTable value="#{empresaSearch.empresaList}" var="empresa"
+				id="empresaTable" paginator="true" rows="10"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" widgetVar="table"
+				emptyMessage="#{message['rsltd.empty']}">
 
+				<p:column headerText="razonsocial" id="razonsocial"
+					sortBy="#{empresa.razonsocial}" filterBy="#{empresa.razonsocial}">
+					<h:outputText value="#{empresa.razonsocial}" />
+				</p:column>
+
+				<p:column headerText="descripcion" id="descripcion"
+					sortBy="#{empresa.descripcion}" filterBy="#{empresa.descripcion}">
+					<h:outputText value="#{empresa.descripcion}" />
+				</p:column>
+
+				<p:column headerText="Número de Cuenta" id="cuenta"
+					sortBy="#{empresa.numcuenta}" filterBy="#{empresa.numcuenta}">
+					<h:outputText value="#{empresa.numcuenta}" />
+				</p:column>
+
+				<p:column headerText="N° de RUC" id="numruc"
+					sortBy="#{empresa.numruc}" filterBy="#{empresa.numruc}">
+					<h:outputText value="#{empresa.numruc}" />
+				</p:column>
+
+				<p:column headerText="Email" id="email" sortBy="#{empresa.email}"
+					filterBy="#{empresa.email}">
+					<h:outputText value="#{empresa.email}" />
+				</p:column>
 				
-<p:column headerText="razonsocial"  id="razonsocial" sortBy="#{empresa.razonsocial}" filterBy="#{empresa.razonsocial}">
-<h:outputText value="#{empresa.razonsocial}" />
-</p:column>
-								
-<p:column headerText="descripcion"  id="descripcion" sortBy="#{empresa.descripcion}" filterBy="#{empresa.descripcion}">
-<h:outputText value="#{empresa.descripcion}" />
-</p:column>	
-
-<p:column headerText="Número de Cuenta"  id="cuenta" sortBy="#{empresa.numcuenta}" filterBy="#{empresa.numcuenta}">
-<h:outputText value="#{empresa.numcuenta}" />
-</p:column>	
+				<p:column headerText="Editar">
+					<center>
+						<p:commandButton oncomplete="carDialogNuevaempresa.show()"
+							action="#{empresaForm.update}"
+							update=":NuevoModificaempresa:display"
+							icon="ui-icon ui-icon-pencil">
+						<f:setPropertyActionListener value="#{empresa}" target="#{empresaForm.objEmpresaSie}" />
+						</p:commandButton>
+					</center>
+				</p:column>
 				
-<p:column headerText="N° de RUC"  id="numruc" sortBy="#{empresa.numruc}" filterBy="#{empresa.numruc}">
-<h:outputText value="#{empresa.numruc}" />
-</p:column>	
-        	
-        		
-<p:column headerText="Email"  id="email" sortBy="#{empresa.email}"  filterBy="#{empresa.email}">
-<h:outputText value="#{empresa.email}" />	 
-</p:column>	
-				
-        		
-        		<!--********** BOTON EDITAR **********-->
-		
-	<p:column headerText="Editar">
-	<center>
-<p:commandButton
+				<p:column headerText="Deshabilitar">
+					<center>
+						<p:commandButton id="showConfirmDeshabilitarEmpresa"
+							icon="ui-icon ui-icon-close" onclick="confirmationEmpresa.show()">
+						<f:setPropertyActionListener value="#{empresa.idempresa}" target="#{empresaForm.ide}" />
+						</p:commandButton>
+					</center>
+				</p:column>
 
-oncomplete="carDialogNuevaempresa.show()"
-action="#{empresaForm.update}"
-update=":NuevoModificaempresa:display"
-icon="ui-icon ui-icon-pencil"
-			                    
-			  >
-			                    
-<f:setPropertyActionListener value="#{empresa}" 
-target="#{empresaForm.objEmpresaSie}" />
-			 
-			</p:commandButton>
-			</center>
-					
-	</p:column>
- 
- <!--**********FIN EDITAR**********-->
- 
-<!--**********INICIO 	DESACTIVAR**********-->
-
-<p:column headerText="Deshabilitar">
-<center>	
-<p:commandButton id="showConfirmDeshabilitarEmpresa" 
-				  
-				 icon="ui-icon ui-icon-close"
-				 onclick="confirmationEmpresa.show()"> 
-	 							
-<f:setPropertyActionListener
-		 value="#{empresa.idempresa}"
-		 target="#{empresaForm.ide}" 
-/>
-
-
-</p:commandButton>
-</center>				
-		</p:column>
-		
-		<f:facet name="footer">
-<div align="left">
-		
-		<!--********** BOTON NUEVO **********-->
-		
-		
-		<p:commandButton value="Nueva Empresa"  update=":NuevoModificaempresa:display" 
-				
-				action="#{empresaForm.agregar}"
-				oncomplete="carDialogNuevaempresa.show()" 	title="Ingresar la Nueva Empresa"
-				icon="ui-icon-star"
->
-</p:commandButton>
-</div>
-
-
-</f:facet>
-
-						<!--**********FIN 	DESACTIVAR**********-->	
+				<f:facet name="footer">
+					<div align="left">
+						<p:commandButton value="Nueva Empresa"
+							update=":NuevoModificaempresa:display"
+							action="#{empresaForm.agregar}"
+							oncomplete="carDialogNuevaempresa.show()"
+							title="Ingresar la Nueva Empresa" icon="ui-icon-star">
+						</p:commandButton>
+					</div>
+				</f:facet>
 			</p:dataTable>
-			
+
 		</h:form>
 	</ui:define>
 </ui:composition>

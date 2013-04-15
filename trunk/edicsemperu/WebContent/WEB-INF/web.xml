@@ -62,4 +62,8 @@
     <exception-type>javax.faces.application.ViewExpiredException</exception-type>
     <location>/sessionexpired.xhtml</location>
   </error-page>
+   <context-param>
+    <param-name>org.primefaces.extensions.DELIVER_UNCOMPRESSED_RESOURCES</param-name>
+    <param-value>false</param-value>
+</context-param>
 </web-app>

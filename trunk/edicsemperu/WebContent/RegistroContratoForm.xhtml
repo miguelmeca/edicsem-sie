@@ -4,6 +4,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:pe="http://primefaces.org/ui/extensions"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
 		<script language="JavaScript" type="text/javascript">
@@ -22,17 +23,24 @@
 				<h:panelGrid columns="6" id="panelCliente"  cellpadding="5" >
 
 					<h:outputText value="#{message['contrato.nombre']}" />
-					<p:inputText id="nombreCliente" value="#{contratoForm.objClienteSie.nombrecliente}" required="true" maxlength="45" size="30"  onkeypress="return validarLetras(event)"/>
+					<p:inputText id="nombreCliente" value="#{contratoForm.objClienteSie.nombrecliente}" required="true" maxlength="45" size="30" />
+					<h:panelGroup>
+					<pe:keyFilter for="nombreCliente" mask="alpha"/>  
 					<p:message for="nombreCliente" />
-					
+					</h:panelGroup>
 					<h:outputText value="#{message['contrato.apepaterno']}" />
-					<p:inputText id="apPatCliente" value="#{contratoForm.objClienteSie.apepatcliente}" required="true" maxlength="45" size="30"  onkeypress="return validarLetras(event)"/>
+					<p:inputText id="apPatCliente" value="#{contratoForm.objClienteSie.apepatcliente}" required="true" maxlength="45" size="30" />
+					<h:panelGroup>
+					<pe:keyFilter for="apPatCliente" mask="alpha"/>
 					<p:message for="apPatCliente" />
+					</h:panelGroup>
 					
 					<h:outputText value="#{message['contrato.apematerno']}" />
-					<p:inputText  id="apMatCliente" value="#{contratoForm.objClienteSie.apematcliente}" required="true" maxlength="45" size="30"  onkeypress="return validarLetras(event)"/>
+					<p:inputText  id="apMatCliente" value="#{contratoForm.objClienteSie.apematcliente}" required="true" maxlength="45" size="30" />
+					<h:panelGroup>
+					<pe:keyFilter for="apMatCliente" mask="alpha"/>
 					<p:message for="apMatCliente" />
-					
+					</h:panelGroup>
 					<h:outputText value="#{message['empleado.genero']}" />
 					<p:selectOneRadio  value="#{contratoForm.objClienteSie.genero}" required="true" >
 						<f:selectItem itemLabel="Femenino" itemValue="F" />
