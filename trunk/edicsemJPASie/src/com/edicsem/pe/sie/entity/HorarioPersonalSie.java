@@ -3,6 +3,7 @@ package com.edicsem.pe.sie.entity;
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,8 +16,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 
 
 /**
@@ -61,11 +64,19 @@ public class HorarioPersonalSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idfecha")
 	private FechaSie tbFecha;
-
+    
+    @Transient
+    private String diaInicioString;
+    
+    @Transient
+    private String diaFinString;
+    
+    @Transient
+    private List<String> diaString;
+    
     public HorarioPersonalSie() {
     }
     
-
 	public Time getHoraIngreso() {
 		return this.horaIngreso;
 	}
@@ -130,14 +141,38 @@ public class HorarioPersonalSie implements Serializable {
 		this.tbFecha = tbFecha;
 	}
 
-
 	public Integer getIdhorariopersonal() {
 		return idhorariopersonal;
 	}
-
-
+	
 	public void setIdhorariopersonal(Integer idhorariopersonal) {
 		this.idhorariopersonal = idhorariopersonal;
+	}
+	
+	public String getDiaInicioString() {
+		diaInicioString = DateUtil.formatoString(getDiainicio(), "dd/MM/yyyy");
+		return diaInicioString;
+	}
+	
+	public void setDiaInicioString(String diaInicioString) {
+		this.diaInicioString = diaInicioString;
+	}
+	
+	public String getDiaFinString() {
+		diaFinString = DateUtil.formatoString(getDiafin(), "dd/MM/yyyy");
+		return diaFinString;
+	}
+	
+	public void setDiaFinString(String diaFinString) {
+		this.diaFinString = diaFinString;
+	}
+
+	public List<String> getDiaString() {
+		return diaString;
+	}
+
+	public void setDiaString(List<String> diaString) {
+		this.diaString = diaString;
 	}
 	
 }
