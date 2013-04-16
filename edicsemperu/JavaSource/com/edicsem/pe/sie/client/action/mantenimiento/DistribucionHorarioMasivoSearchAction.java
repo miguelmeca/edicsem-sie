@@ -737,7 +737,7 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	 * @param expositorList the expositorList to set
 	 */
 	public void setExpositorList(List<String> expositorList) {
-		for (int i = 0; i < cerradorList.size(); i++) {
+		for (int i = 0; i < expositorList.size(); i++) {
 			if(i==0)
 				expositorElegido =expositorList.get(i);
 			else
