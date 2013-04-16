@@ -42,6 +42,8 @@ public class EmpleadoSie implements Serializable {
 
 	private String contrasena;
 	
+	private String contrasenacorreo;
+	
 	private String genero;
 	
 	@Transient
@@ -426,6 +428,14 @@ public class EmpleadoSie implements Serializable {
 
 	public void setTbDetTurnoEmpl(Set<DetTurnoEmplSie> tbDetTurnoEmpl) {
 		this.tbDetTurnoEmpl = tbDetTurnoEmpl;
+	}
+
+	public String getContrasenacorreo() {
+		return contrasenacorreo;
+	}
+
+	public void setContrasenacorreo(String contrasenacorreo) {
+		this.contrasenacorreo = contrasenacorreo;
 	}
 
 }
