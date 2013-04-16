@@ -222,7 +222,7 @@
 					<p:fieldset legend="Programar Cita" rendered="#{mantenimientoCobranzaOperaSearchAction.programarLlamada==true}" >
 						<h:panelGrid columns="2" cellpadding="3" >
 						<h:outputText value="#{message['operadora.fechaProgramada']}" />
-						<p:calendar value="#{mantenimientoCobranzaOperaSearchAction.fechaProgramada}" pattern="dd/mm/yyyy HH:mm" />
+						<p:calendar value="#{mantenimientoCobranzaOperaSearchAction.fechaProgramada}" pattern="dd/mm/yyyy HH:mm" locale="pe"/>
 					</h:panelGrid>
 					</p:fieldset>
 					</p:outputPanel>
