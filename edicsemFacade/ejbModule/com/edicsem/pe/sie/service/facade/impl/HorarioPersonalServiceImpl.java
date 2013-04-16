@@ -7,7 +7,6 @@ import javax.ejb.Stateless;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.velocity.runtime.directive.Foreach;
 
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.FechaSie;
@@ -50,11 +49,12 @@ public class HorarioPersonalServiceImpl implements HorarioPersonalService{
 		for (String d : diaList) {
 			log.info(" dia "+d);
 			HorarioPersonalSie auxi = new HorarioPersonalSie();
+			auxi.setDescripcion(horariopersonal.getDescripcion());
 			auxi.setDiafin(horariopersonal.getDiafin());
 			auxi.setDiainicio(horariopersonal.getDiainicio());
 			auxi.setHoraIngreso(horariopersonal.getHoraIngreso());
 			auxi.setHoraSalida(horariopersonal.getHoraSalida());
-			auxi.setTbEstadoGeneral(horariopersonal.getTbEstadoGeneral());
+			auxi.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(36));
 			EmpleadoSie emple =(objEmpleadoDao.buscarEmpleado(idEmpleado));
 			auxi.setTbEmpleado(emple);
 			
