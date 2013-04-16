@@ -23,22 +23,26 @@
 				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['distribucion.grupo.expositor']}" rendered="#{distribucion.tipoVenta!=2}"/>
-				<h:panelGroup>
-				<p:autoComplete value="#{distribucion.expositorList}" completeMethod="#{distribucion.completeExpo}" rendered="#{distribucion.tipoVenta!=2}" multiple="true" />
-				<p:commandButton value="Seleccionar"   oncomplete="inserexpovendDialog.show()"
-				  update=":formInsertExpoVendhorario" icon="ui-icon-search" title="Seleccionar expositor" />
+				<h:panelGroup  rendered="#{distribucion.tipoVenta!=2}">
+				<p:selectCheckboxMenu label="Expositores.." required="true"  value="#{distribucion.expositorList}" filter="true" requiredMessage="Debe seleccionar como mínimo un expositor"
+				filterMatchMode="startsWith" style="width:200px" >
+					<f:selectItems value="#{comboAction.expositorItems}" />
+					<p:ajax update="expo"/>
+				</p:selectCheckboxMenu>
+				<h:outputText id="expo" value="#{distribucion.expositorElegido}" style="font-weight:bold"/>
 				</h:panelGroup>
 				
 				<h:outputText value="#{message['contrato.vendedor']}" rendered="#{distribucion.tipoVenta==2}"/>
 				<h:panelGroup rendered="#{distribucion.tipoVenta==2}">
-				<p:autoComplete value="#{distribucion.vendedorList}" completeMethod="#{distribucion.completeVend}" multiple="true" />
-				<p:commandButton value="Seleccionar"  
-				  update=":formInsertExpoVendhorario" icon="ui-icon-search" title="Seleccionar vendedor" />
+				<p:selectCheckboxMenu label="Vendedores .." required="true" value="#{distribucion.vendedorList}" filter="true" requiredMessage="Debe seleccionar como mínimo un vendedor"
+				filterMatchMode="startsWith" style="width:200px" >
+					<f:selectItems value="#{comboAction.vendedorItems}" />
+				</p:selectCheckboxMenu>
 				</h:panelGroup>
 				<h:outputText value="#{message['horario.personal.dia']}" />
 				<h:panelGroup>
-				<p:selectCheckboxMenu required="true" value="#{distribucion.diaList}" filter="true" requiredMessage="Debe seleccionar el día para la asistencia de dicho horario"
-				filterMatchMode="startsWith" style="width:200px" >
+				<p:selectCheckboxMenu label="Dias.." required="true" value="#{distribucion.diaList}" filter="true" requiredMessage="Debe seleccionar el día para la asistencia de dicho horario"
+				filterMatchMode="startsWith" style="width:200px"  >
 					<f:selectItems value="#{comboAction.diasItems}" />
 					<p:ajax update="dias" />
 				</p:selectCheckboxMenu>

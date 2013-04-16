@@ -19,7 +19,6 @@ import org.apache.commons.logging.LogFactory;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
-import com.edicsem.pe.sie.util.security.SecurityLogin;
 
 @ManagedBean(name = "SMTPConfig")
 @SessionScoped
@@ -35,6 +34,7 @@ public class SMTPConfig extends BaseMantenimientoAbstractAction {
 	 */
 
 	public static synchronized boolean sendMail(String titulo, String mensaje, String paraEmail) {
+		log.info("sendMail!! .. mail ");
 		boolean envio = false;
 		// Capturando el empleado en session
 		HttpSession session1 = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
@@ -42,12 +42,12 @@ public class SMTPConfig extends BaseMantenimientoAbstractAction {
 		
 		try {
 			Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
-
+			
 			// Propiedades de la conexion
 			Properties propiedades = new Properties();
-			propiedades.put("mail.smtp.host", "smtp.edicsem.com");
-			propiedades.put("mail.smtp.port", "587");
-			propiedades.setProperty("mail.smtp.starttls.enable", "true");
+			propiedades.put("mail.smtp.host", "mail.edicsem.com");
+			propiedades.put("mail.smtp.port", "25");
+			propiedades.setProperty("mail.smtp.starttls.enable", "false");
 			propiedades.setProperty("mail.smtp.auth", "true");
 			propiedades.setProperty("mail.smtp.user", sessionUsuario.getCorreo());
 
@@ -63,14 +63,15 @@ public class SMTPConfig extends BaseMantenimientoAbstractAction {
 
 			// envío del mensaje
 			Transport transporte = session.getTransport("smtp");
-			transporte.connect(sessionUsuario.getCorreo(), SecurityLogin.getMD5(sessionUsuario.getContrasena()));
+			log.info("correo: "+sessionUsuario.getCorreo()+" contraseña: "+ sessionUsuario.getContrasenacorreo());
+			transporte.connect(sessionUsuario.getCorreo(), sessionUsuario.getContrasenacorreo());
 			transporte.sendMessage(message, message.getAllRecipients());
 			transporte.close();
 			envio = true;
 
-		} catch (Throwable e) {
+		} catch (Exception e) {
+			log.info("Mensaje: "+e.getMessage()+" Causa: "+e.getMessage());
 			envio = false;
-			log.info(e.getMessage());
 			e.printStackTrace();
 		}
 		return envio;

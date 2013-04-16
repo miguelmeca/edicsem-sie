@@ -35,7 +35,6 @@ import com.edicsem.pe.sie.entity.HorarioPersonalSie;
 import com.edicsem.pe.sie.entity.MetaMesSie;
 import com.edicsem.pe.sie.entity.TurnoSie;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
-import com.edicsem.pe.sie.service.facade.ContratoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.FechaService;
 import com.edicsem.pe.sie.service.facade.HorarioPersonalService;
@@ -74,6 +73,7 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	private TurnoSie objTurno;
 	String expo="";
 	private String tittle;
+	private String expositorElegido;
 	private ScheduleEvent event = new DefaultScheduleEvent();
 	
 	@ManagedProperty(value = "#{comboAction}")
@@ -90,8 +90,6 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	private FechaService objFechaService;
 	@EJB
 	private TurnoService objTurnoService;
-	@EJB 
-	private ContratoEmpleadoService objContratoEmpleadoService;
 	
 	public static Log log = LogFactory.getLog(DistribucionHorarioMasivoSearchAction.class);
 	
@@ -149,52 +147,7 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		return getViewList();
 	}
 	
-	public List<String> completeVend(String query){
-		log.info(" completeVend() "+query+"  "+comboManager.getVendedorItems().size());
-		List<String> results = new ArrayList<String>();
-		
-		for (int j = 0; j < comboManager.getVendedorItems().size(); j++) {
-			log.info(""+comboManager.getVendedorItems());
-		}
-        Iterator it=comboManager.getVendedorItems().entrySet().iterator();
-        
-        while(it.hasNext()){
-            Map.Entry m =(Map.Entry)it.next();
-            log.info("Key :"+m.getKey()+"  Value :"+m.getValue());
-            int key=(Integer)m.getValue();
-            String value=(String)m.getKey();
-            log.info("Key :"+key+"  Value :"+value);
-            if((value.toUpperCase()).startsWith(query.toUpperCase().trim())){
-            	log.info("Key--> :"+key+"  Value :"+value);
-            	results.add(value);
-            }
-        }
-	    return results;
-	}
 	
-	public List<String> completeExpo(String query){
-		log.info(" completeExpo() "+query+"  ");
-		log.info(" completeExpo() "+comboManager.getExpositorItems().size());
-		List<String> results = new ArrayList<String>();
-		
-		for (int j = 0; j < comboManager.getExpositorItems().size(); j++) {
-			log.info(""+comboManager.getExpositorItems());
-		}
-        Iterator it=comboManager.getExpositorItems().entrySet().iterator();
-        
-        while(it.hasNext()){
-            Map.Entry m =(Map.Entry)it.next();
-            log.info("Key :"+m.getKey()+"  Value :"+m.getValue());
-            int key=(Integer)m.getValue();
-            String value=(String)m.getKey();
-            log.info("Key :"+key+"  Value :"+value);
-            if((value.toUpperCase()).startsWith(query.toUpperCase().trim())){
-            	log.info("Key--> :"+key+"  Value :"+value);
-            	results.add(value);
-            }
-        }
-	    return results;
-	}
 	
 	public List<String> completeCerrad(String query){
 		log.info(" completeCerrad() "+query+"  "+comboManager.getCerradorItems().size());
@@ -242,11 +195,24 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 				det.setTbCargoempleado(objCargoService.buscarCargoEmpleado(expositor));
 				listaDetTurnoEmpl.add(det);
 				log.info(expositorList+" -- >  "+expositorList.get(i));
-	            	if(expo==null){
-	            		expo ="\n - "+expositorList.get(i);
-	            	}else{
-	            		expo = expo+"\n - "+expositorList.get(i);
-	            	}
+				
+				Iterator it=comboManager.getExpositorItems().entrySet().iterator();
+			     
+			    while(it.hasNext()){
+			            Map.Entry m =(Map.Entry)it.next();
+			            log.info("Key :"+m.getKey()+"  Value :"+m.getValue());
+			            int key=(Integer)m.getValue();
+			            String value=(String)m.getKey();
+			            log.info("Key :"+key+"  Value :"+value);
+			            log.info("-->expo elegido  "+expositorList.get(i));
+			            if(expositorList.get(i).equalsIgnoreCase(key+"")){
+				            if(expo==null){
+			            		expo ="\n - "+value;
+			            	}else{
+			            		expo = expo+"\n - "+value;
+			            	}
+			            }	
+			        }
 				}
 				
 				for (int i = 0; i < vendedorList.size(); i++) {//vendedores
@@ -256,11 +222,22 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 				det.setTbCargoempleado(objCargoService.buscarCargoEmpleado(vendedor));
 				listaDetTurnoEmpl.add(det);
 				log.info(expositorList+" -- >  "+vendedorList.get(i));
-            	if(expo==null){
-            		expo ="\n - "+vendedorList.get(i);
-            	}else{
-            		expo = expo+"\n - "+vendedorList.get(i);
-            	}
+				 Iterator it=comboManager.getVendedorItems().entrySet().iterator();
+			        
+			        while(it.hasNext()){
+			            Map.Entry m =(Map.Entry)it.next();
+			            log.info("Key :"+m.getKey()+"  Value :"+m.getValue());
+			            int key=(Integer)m.getValue();
+			            String value=(String)m.getKey();
+			            log.info("Key :"+key+"  Value :"+value);
+			            if(vendedorList.get(i).equalsIgnoreCase(key+"")){
+		            	if(expo==null){
+		            		expo ="\n - "+value;
+		            	}else{
+		            		expo = expo+"\n - "+value;
+		            	}
+			            }
+			        }
 			}
 				return mostrar();
 		}else{
@@ -269,7 +246,7 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 			return null;
 		}
 	}
-	
+
 	/**lista los horarios del trabajador**/
 	public String mostrar() throws Exception {
 		log.info(" eventModel --->");
@@ -321,25 +298,32 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		 	                boolean existeMismoHorario =false;
 		 	                
 		 	                //Comprobar si el expositor ya se encuentra en un horario de dicha fecha
-		 	                
-	 						log.info("cantidad "+eventModel.getEventCount()+"  cant "+eventModel.getEvents().size());
 		 					for (int m = 0; m < eventModel.getEventCount(); m++) {
 		 						for (int k = 0; k < expositorList.size(); k++) {
-			 						log.info("e "+expositorList.get(k)+ " H "+eventModel.getEvents().get(m).getStartDate()+" "+
-			 								dDate+" "+eventModel.getEvents().get(m).getEndDate()+" "+dDate2);
-		 							if( eventModel.getEvents().get(m).getTitle().contains(expositorList.get(k))){
-		 								log.info("equals");
-		 								if( eventModel.getEvents().get(m).getStartDate().equals(dDate) && 
-		 									eventModel.getEvents().get(m).getEndDate().equals(dDate2)){
-			 								log.info(" TRUE ");
-					 						existeMismoHorario=true;
-					 						break;
-				 						}
-		 							}
+		 							
+		 							Iterator it=comboManager.getExpositorItems().entrySet().iterator();
+		 						     
+		 						    while(it.hasNext()){
+		 						    	Map.Entry o =(Map.Entry)it.next();
+		 						    	log.info("Key :"+o.getKey()+"  Value :"+o.getValue());
+		 						    	int key=(Integer)o.getValue();
+		 						    	String value=(String)o.getKey();
+		 						    	log.info("Key :"+key+"  Value :"+value);
+		 						        if(expositorList.get(i).equalsIgnoreCase(key+"")){
+		 						        	log.info("expo "+value);
+		 						        	if( eventModel.getEvents().get(m).getTitle().contains(value)){
+		 			 							log.info("equals");
+		 			 							if( eventModel.getEvents().get(m).getStartDate().equals(dDate) && 
+		 			 								eventModel.getEvents().get(m).getEndDate().equals(dDate2)){
+		 				 							log.info(" TRUE ");
+		 						 					existeMismoHorario=true;
+		 						 					break;
+		 					 					}
+		 			 						}
+		 						        }
+		 						    }
 								}
 		 						for (int k = 0; k < vendedorList.size(); k++) {
-			 						log.info("e "+vendedorList.get(k)+ " H "+eventModel.getEvents().get(m).getStartDate()+" "+
-			 								dDate+" "+eventModel.getEvents().get(m).getEndDate()+" "+dDate2);
 		 							if( eventModel.getEvents().get(m).getTitle().contains(vendedorList.get(k))){
 		 								log.info("equals");
 		 								if( eventModel.getEvents().get(m).getStartDate().equals(dDate) && 
@@ -753,6 +737,12 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	 * @param expositorList the expositorList to set
 	 */
 	public void setExpositorList(List<String> expositorList) {
+		for (int i = 0; i < cerradorList.size(); i++) {
+			if(i==0)
+				expositorElegido =expositorList.get(i);
+			else
+				expositorElegido +=","+expositorList.get(i);
+		}
 		this.expositorList = expositorList;
 	}
 
@@ -1180,6 +1170,14 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	 */
 	public void setDias(String dias) {
 		this.dias = dias;
+	}
+
+	public String getExpositorElegido() {
+		return expositorElegido;
+	}
+
+	public void setExpositorElegido(String expositorElegido) {
+		this.expositorElegido = expositorElegido;
 	}
 
 }
