@@ -83,7 +83,6 @@ public class MantenimientoHorarioPersonalSearchAction extends BaseMantenimientoA
 		log.info(" eventModel --->");
 		eventModel = new DefaultScheduleModel(); 
 		log.info("mostrar horario de PUNTO DE VENTA   "+ objHorarioPersonal.getDiainicio());
-		log.info("mostrar horario de empleados");
 				log.info("listarHorario del personal");
 				listaHorario = objHorarioPersonalService.listarHorarioPersonalXempleado(idempleado);
 				if (listaHorario == null) {
@@ -104,7 +103,6 @@ public class MantenimientoHorarioPersonalSearchAction extends BaseMantenimientoA
 	                log.info(" fecha  " + cal.getTime() +"  time fin "+cal4.getTime());
 	                
 	                while (cal.before(cal4)||cal.equals(cal4)){
-	                	log.info("en el primer while  fecha inicio ");
 	                	log.info(" ***   getime  " + cal.getTime());
 		              if(cal.get(Calendar.DAY_OF_WEEK) == objHorarioPersonal.getTbFecha().getIdFecha()) {
 		                	log.info("en el seggundo  while");
@@ -129,7 +127,7 @@ public class MantenimientoHorarioPersonalSearchAction extends BaseMantenimientoA
 		                objHorarioPersonal.getHoraSalida(), dDate, dDate2));  
 		                }
 		              cal.add(Calendar.DAY_OF_WEEK,1);
-	                	cal3.add(Calendar.DAY_OF_WEEK,1);
+		              cal3.add(Calendar.DAY_OF_WEEK,1);
 	                }
 				}
 				objHorarioPersonal = new HorarioPersonalSie();
@@ -250,12 +248,9 @@ public class MantenimientoHorarioPersonalSearchAction extends BaseMantenimientoA
 							}
 						}
 					}
-				}	
-			
-				
+				}
 					if(isNewRecord()&& mensaje==null){
-						
-			
+					
 					Time hora1 = new Time(getHoraIngreso().getTime());
 					Time hora2= new Time(getHoraSalida().getTime());
 					

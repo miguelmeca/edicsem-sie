@@ -126,9 +126,9 @@ public class LoginAction extends BaseMantenimientoAbstractAction{
 								if (a.getNombreActionListener() != null && a.getNombreActionListener().isEmpty() == false) {
 									item.setActionExpression(getMethod(a.getNombreActionListener()));
 									item.setUrl(null);
-								}/*else if(a.getUrlMenu()!= null && a.getUrlMenu().isEmpty() == false){
+								}else if(a.getUrlMenu()!= null && a.getUrlMenu().isEmpty() == false){
 									item.setUrl(a.getUrlMenu());
-								}*/
+								}
 								log.info(" action: "+a.getNombreActionListener());
 								log.info("nomb menu: "+a.getNombreMenu()+" url: "+a.getUrlMenu());
 								submenu.getChildren().add(item);
