@@ -396,8 +396,8 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	 * @return 'agregarCerrador'
 	 */
 	public String agregarCerrador() {
-		RequestContext context = RequestContext.getCurrentInstance();
 		log.info("agregarCerrador() ");
+		RequestContext context = RequestContext.getCurrentInstance();
 		log.info("tittle "+tittle);
 		
 		for (int i = 0; i < eventos.size(); i++) {
@@ -406,11 +406,9 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 				eventModel.updateEvent(eventos.get(i));
 			}
 		}
-		log.info("total de eventos * "+eventModel.getEvents().size()+" canti "+eventModel.getEventCount());
 		event = new DefaultScheduleEvent(); 
 		context.execute("horarioVentaDialog.hide()");
 		context.update("formGrupo");
-		log.info("total de eventos 2* "+eventModel.getEvents().size()+" canti "+eventModel.getEventCount());
         return null;
     }
 	
@@ -422,25 +420,73 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		mensaje=null;
 		log.info("total de eventos "+eventModel.getEvents().size()+" canti "+eventModel.getEventCount());
 		listaHorario = new ArrayList<HorarioPersonalSie>();
+		objHorarioPersonal = new HorarioPersonalSie();
+		boolean insert =false;
+		diaList = new ArrayList<String>();
 		try {
-			Date auxiliar;  
-		      int[] arregloOrdenado; 
+			ScheduleEvent auxiliar = null;
 			for (int i = 0; i < eventModel.getEventCount(); i++) {
 				//Comparando, buscar fechas límites menor y  mayor fecha
+				
 				for (int j = 0; j < eventModel.getEventCount(); j++) {
+					
 					if(eventModel.getEvents().get(i).getTitle()==eventModel.getEvents().get(j).getTitle()){
+						log.info("entro!");
+						Calendar cal = new GregorianCalendar();
+						cal.setTime(eventModel.getEvents().get(i).getStartDate());
+						Calendar cal2 = new GregorianCalendar();
+						cal.setTime(eventModel.getEvents().get(j).getStartDate());
+						
+						log.info("-- "+cal.get(Calendar.DAY_OF_WEEK)+" -- "+cal2.get(Calendar.DAY_OF_WEEK));
+						log.info("entro! 2 "+diaList+" "+diaList.contains(cal.get(Calendar.DAY_OF_WEEK)));
+						if(!diaList.contains(cal.get(Calendar.DAY_OF_WEEK)+"")){
+							log.info("add! ");
+							diaList.add(cal.get(Calendar.DAY_OF_WEEK)+"");
+						}
+						objHorarioPersonal.setDescripcion(eventModel.getEvents().get(j).getTitle());
 						objHorarioPersonal.setHoraIngreso(new Time(eventModel.getEvents().get(j).getStartDate().getTime()));
 						objHorarioPersonal.setHoraSalida(new Time(eventModel.getEvents().get(j).getEndDate().getTime()));
-						 if(eventModel.getEvents().get(i).getStartDate().after(eventModel.getEvents().get(j).getStartDate()) ){  
-				            auxiliar = eventModel.getEvents().get(j).getStartDate();
-				         }
-						objHorarioPersonal.setDiainicio(eventModel.getEvents().get(j).getStartDate());
-						objHorarioPersonal.setDiafin(eventModel.getEvents().get(j).getEndDate());
+						
+						if(eventModel.getEvents().get(j).getStartDate().before(eventModel.getEvents().get(i).getStartDate())){
+							auxiliar = eventModel.getEvents().get(i);
+							eventModel.getEvents().set(i, eventModel.getEvents().get(j));
+							eventModel.getEvents().set(j, auxiliar);
+						}
+						
+						objHorarioPersonal.setDiaString(diaList);
+						log.info("start "+eventModel.getEvents().get(0).getStartDate()+" end "+eventModel.getEvents().get(eventModel.getEventCount()-1).getEndDate());
+						objHorarioPersonal.setDiainicio(eventModel.getEvents().get(0).getStartDate());
+						objHorarioPersonal.setDiafin(eventModel.getEvents().get(eventModel.getEventCount()-1).getEndDate());
+						insert =true;
+					}
+				}
+				if(insert==true){
+					//verificar que no haya ningun obj con la misma persona en el mismo horario y fecha
+					if(listaHorario.size()==0 && objHorarioPersonal!=null){
+						log.info("-- insertando --");
+						listaHorario.add(objHorarioPersonal);
+						diaList = new ArrayList<String>();
+					}
+					for (int j = 0; j < listaHorario.size(); j++) {
+						if(listaHorario.get(j).getHoraIngreso().equals(objHorarioPersonal.getHoraIngreso())&&
+							listaHorario.get(j).getHoraSalida().equals(objHorarioPersonal.getHoraSalida())&&
+							listaHorario.get(j).getDescripcion().equals(objHorarioPersonal.getDescripcion())&&
+							listaHorario.get(j).getDiainicio().equals(objHorarioPersonal.getDiainicio())&&
+							listaHorario.get(j).getDiafin().equals(objHorarioPersonal.getDiafin())){
+							//seteo los días que faltan agregar
+							
+							if(!listaHorario.get(j).getDiaString().contains(objHorarioPersonal.getDiaString().get(0))){
+								log.info("seteando dias ");
+								listaHorario.get(j).getDiaString().add(objHorarioPersonal.getDiaString().get(0));
+							}
+						}else{
+							listaHorario.add(objHorarioPersonal);
+						}
 					}
 				}
 			}
-			
 			if(mensaje==null){
+				log.info(" tamañitooo "+listaHorario.size());
 				for (int j = 0; j < listaHorario.size();j++) {
 					objHorarioPersonal = listaHorario.get(j);
 					//buscando los expositores y los cerradores
@@ -451,7 +497,7 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 							for (int i = 1; i < rr2.length; i++) {
 								log.info(" --->"+rr2[i]);
 								objHorarioPersonal.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoPorNombreCompleto(rr2[i]));
-								objHorarioPersonalService.insertHorarioPersonal(objHorarioPersonal,diaList, objHorarioPersonal.getTbEmpleado().getIdempleado());
+								objHorarioPersonalService.insertHorarioPersonal(objHorarioPersonal,objHorarioPersonal.getDiaString(), objHorarioPersonal.getTbEmpleado().getIdempleado());
 							}
 						}
 					}
@@ -462,12 +508,11 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 							 for (int i = 1; i < rr2.length; i++) {
 								log.info(" -->"+rr2[i]);
 								objHorarioPersonal.setTbEmpleado(objEmpleadoSieService.buscarEmpleadoPorNombreCompleto(rr2[i]));
-								objHorarioPersonalService.insertHorarioPersonal(objHorarioPersonal,diaList, objHorarioPersonal.getTbEmpleado().getIdempleado());
+								objHorarioPersonalService.insertHorarioPersonal(objHorarioPersonal,objHorarioPersonal.getDiaString(), objHorarioPersonal.getTbEmpleado().getIdempleado());
 							}
 						}
 					}
 				}
-//				objHorarioPersonalService.insertHorarioVenta(listaHorario);
 				mensaje = Constants.MESSAGE_REGISTRO_TITULO;
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
 			}
