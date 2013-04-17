@@ -49,7 +49,7 @@ public class HorarioPersonalServiceImpl implements HorarioPersonalService{
 		for (String d : diaList) {
 			log.info(" dia "+d);
 			HorarioPersonalSie auxi = new HorarioPersonalSie();
-			auxi.setDescripcion(horariopersonal.getDescripcion());
+			auxi.setDescripcion("Ho");
 			auxi.setDiafin(horariopersonal.getDiafin());
 			auxi.setDiainicio(horariopersonal.getDiainicio());
 			auxi.setHoraIngreso(horariopersonal.getHoraIngreso());
