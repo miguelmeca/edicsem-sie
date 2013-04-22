@@ -37,6 +37,8 @@ public class CobranzaOperadoraSie implements Serializable {
 	private Timestamp fechacreacion;
 	
 	private Timestamp fechaprogramada;
+	
+	private Timestamp fechaexpira;
 
 	//bi-directional many-to-one association to CobranzaDTO
     @ManyToOne
@@ -120,6 +122,14 @@ public class CobranzaOperadoraSie implements Serializable {
 
 	public void setFechaprogramada(Timestamp fechaprogramada) {
 		this.fechaprogramada = fechaprogramada;
+	}
+
+	public Timestamp getFechaexpira() {
+		return fechaexpira;
+	}
+
+	public void setFechaexpira(Timestamp fechaexpira) {
+		this.fechaexpira = fechaexpira;
 	}
 	
 }

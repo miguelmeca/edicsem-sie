@@ -204,7 +204,27 @@ public class EstadoGeneralSie implements Serializable {
 	//bi-directional many-to-one association to DetTurnoEmplSie
 	@OneToMany(mappedBy="tbEstadoGeneral")
 	private Set<DetTurnoEmplSie> tbDetTurnoEmpls;
+	
+	//bi-directional many-to-one association to RefinanciarPagoSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<RefinanciarPagoSie> tbRefinanciarPago;
+	
+	//bi-directional many-to-one association to CalificacionEquifaxSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<CalificacionEquifaxSie> tbCalificacionEquifax;
+	
+	//bi-directional many-to-one association to HistoricoCalificacionEquifaxSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<HistoricoCalificacionEquifaxSie> tbHistoricoCalificaEquifax;
 
+	//bi-directional many-to-one association to TipoCobranzaSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<TipoCobranzaSie> tbTipoCobranza;
+	
+	//bi-directional many-to-one association to ConfigCobranzaOperaSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<ConfigCobranzaOperaSie> tbConfigCobranza;
+	
 	public EstadoGeneralSie() {
     }
 
@@ -598,6 +618,47 @@ public class EstadoGeneralSie implements Serializable {
 
 	public void setTbDetTurnoEmpls(Set<DetTurnoEmplSie> tbDetTurnoEmpls) {
 		this.tbDetTurnoEmpls = tbDetTurnoEmpls;
+	}
+
+	public Set<RefinanciarPagoSie> getTbRefinanciarPago() {
+		return tbRefinanciarPago;
+	}
+
+	public void setTbRefinanciarPago(Set<RefinanciarPagoSie> tbRefinanciarPago) {
+		this.tbRefinanciarPago = tbRefinanciarPago;
+	}
+
+	public Set<CalificacionEquifaxSie> getTbCalificacionEquifax() {
+		return tbCalificacionEquifax;
+	}
+
+	public void setTbCalificacionEquifax(Set<CalificacionEquifaxSie> tbCalificacionEquifax) {
+		this.tbCalificacionEquifax = tbCalificacionEquifax;
+	}
+
+	public Set<HistoricoCalificacionEquifaxSie> getTbHistoricoCalificaEquifax() {
+		return tbHistoricoCalificaEquifax;
+	}
+
+	public void setTbHistoricoCalificaEquifax(
+			Set<HistoricoCalificacionEquifaxSie> tbHistoricoCalificaEquifax) {
+		this.tbHistoricoCalificaEquifax = tbHistoricoCalificaEquifax;
+	}
+
+	public Set<TipoCobranzaSie> getTbTipoCobranza() {
+		return tbTipoCobranza;
+	}
+
+	public void setTbTipoCobranza(Set<TipoCobranzaSie> tbTipoCobranza) {
+		this.tbTipoCobranza = tbTipoCobranza;
+	}
+
+	public Set<ConfigCobranzaOperaSie> getTbConfigCobranza() {
+		return tbConfigCobranza;
+	}
+
+	public void setTbConfigCobranza(Set<ConfigCobranzaOperaSie> tbConfigCobranza) {
+		this.tbConfigCobranza = tbConfigCobranza;
 	}
 	
 }
