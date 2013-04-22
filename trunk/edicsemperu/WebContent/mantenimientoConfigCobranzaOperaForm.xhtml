@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h:form id="form">
+	<p:panel header="Registrar Configuracion Cobranza Operadora"  id="panel">
+	        <p:messages showDetail="true"/>	
+			<p:panelGrid columns="2" cellpadding="5">						
+			
+			<p:outputLabel  value="Dias" for="fech" />
+            <p:selectOneMenu id="fech"  value="#{configCobranzaOperaFormAction.diasList}" required="true" >
+            <f:selectItem itemLabel="Seleccione una opción" itemValue="#{null}" />
+            <f:selectItems  value="#{comboAction.diasItems}" />
+            </p:selectOneMenu>
+            
+			<p:outputLabel value="Tipo de Cobranza" for="tipo" />
+            <p:selectOneMenu id="tipo"  value="#{configCobranzaOperaFormAction.idtipocobranza}" required="true" >
+            <f:selectItem itemLabel="Seleccione una opción" itemValue="#{null}" />
+            <f:selectItems  value="#{comboAction.tipoCobranzaItems}" />
+            </p:selectOneMenu>
+            
+            <p:outputLabel value="Tipo Cliente" for="tipocli" />
+            <p:selectOneMenu id="tipocli" value="#{configCobranzaOperaFormAction.idtipocliente}" required="true" >
+            <f:selectItem itemLabel="Seleccione una opción" itemValue="#{null}" />
+            <f:selectItems  value="#{comboAction.tipoClienteItems}" />
+            </p:selectOneMenu>
+            
+		    <f:facet name="footer">
+            <p:commandButton id="btn" value="Guardar" update="panel" action="#{configCobranzaOperaFormAction.insertar}" ajax="false" icon="ui-icon-check"/>
+            <p:commandButton value="Regresar" action="#{configCobranzaOperaSearchAction.listar}" immediate="true" ajax = "false"  icon="ui-icon-circle-arrow-w"/>
+            </f:facet>				
+		</p:panelGrid>	
+	</p:panel>	            
+</h:form>
+	</ui:define>
+</ui:composition>

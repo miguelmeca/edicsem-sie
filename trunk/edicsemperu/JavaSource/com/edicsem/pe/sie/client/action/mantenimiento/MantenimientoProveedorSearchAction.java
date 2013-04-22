@@ -9,6 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import com.edicsem.pe.sie.entity.ProveedorSie;
 import com.edicsem.pe.sie.service.facade.ProveedorService;
+import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name="mantenimientoProveedorSearchAction")
@@ -16,7 +17,6 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 public class MantenimientoProveedorSearchAction extends BaseMantenimientoAbstractAction {
     
 	/*variables*/
-	private int tipoDocumento;
 	private ProveedorSie objProveedor;
 	private List<ProveedorSie> proveedorList;
 	private boolean editMode;
@@ -27,24 +27,22 @@ public class MantenimientoProveedorSearchAction extends BaseMantenimientoAbstrac
 	public static Log log = LogFactory.getLog(MantenimientoProveedorSearchAction.class);
 	
 	public MantenimientoProveedorSearchAction() {
-		log.info("ESTOY EN MI CONSTRUCTOR");
 		log.info("inicializando mi constructor");
 		init();
 	}
-
-	/*inicializamos los  objetos utilizados*/
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#init()
+	 */
 	public void init() {
 		log.info("init()");
 		// Colocar valores inicializados
-		objProveedor = new ProveedorSie();
-		log.info("despues de inicializar  ");		
+		objProveedor = new ProveedorSie();	
 	}
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#listar()
 	 */
-	
-	/*método que lista al hacer click en el menú del template*/
 	public String listar() {
 		log.info("listarProveedor 'MantenimientoProveedorSearchAction' ");
 		proveedorList = objProveedorService.listarProveedores();
@@ -57,21 +55,7 @@ public class MantenimientoProveedorSearchAction extends BaseMantenimientoAbstrac
 	/*GETs Y SETs*/
 	
 	public String getViewList() {
-		return "mantenimientoProveedorList";
-	}
-
-	/**
-	 * @return the tipoDocumento
-	 */
-	public int getTipoDocumento() {
-		return tipoDocumento;
-	}
-
-	/**
-	 * @param tipoDocumento the tipoDocumento to set
-	 */
-	public void setTipoDocumento(int tipoDocumento) {
-		this.tipoDocumento = tipoDocumento;
+		return Constants.MANT_PROVEEDOR_FORM_LIST_PAGE;
 	}
 
 	/**

@@ -1,9 +1,12 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -25,6 +28,7 @@ import com.edicsem.pe.sie.entity.DetProductoContratoSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.entity.HistoricoObservacionesSie;
 import com.edicsem.pe.sie.entity.IncidenciaSie;
+import com.edicsem.pe.sie.entity.RefinanciarPagoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
 import com.edicsem.pe.sie.service.facade.ClienteService;
 import com.edicsem.pe.sie.service.facade.CobranzaOperaService;
@@ -35,13 +39,14 @@ import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.service.facade.HistoricoObservacionesService;
 import com.edicsem.pe.sie.service.facade.IncidenciaService;
 import com.edicsem.pe.sie.service.facade.ParametroService;
+import com.edicsem.pe.sie.service.facade.RefinanciarPagoService;
 import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.TipoLLamadaService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
-@ManagedBean(name="mantenimientoCobranzaOperaSearchAction")
+@ManagedBean(name="seguimientoCobranzaOpera")
 @SessionScoped
 public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbstractAction {
     /*variables*/
@@ -52,6 +57,7 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private List<CobranzaOperadoraSie> cobranzaOperaList;
 	private List<CobranzaOperadoraSie> filtrarCobranza;
 	private List<CobranzaSie> detallePagos;
+	private List<CobranzaSie> detallePagosRefinan;
 	private List<TelefonoPersonaSie> listatelefono;
 	private List<DetProductoContratoSie> productoContratoList;
 	private Date fechoy;
@@ -65,7 +71,13 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private int idcontrato;
 	private int idincidencia;
 	private ContratoSie objContrato;
+	private BigDecimal totalacumulado;
 	private List<HistoricoObservacionesSie> lstHistorico;
+	private RefinanciarPagoSie objRefinanPago;
+	private int cantcuotasrest;
+	private BigDecimal montoRestantes;
+	private Date fechaProgramRest;
+	
 	HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 	EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 	
@@ -91,12 +103,13 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private EmpleadoSieService objEmpleadoService;
 	@EJB
 	private ParametroService objParametroService;
+	@EJB
+	private RefinanciarPagoService objRefinanciarPagoService;
 	
 	public static Log log = LogFactory.getLog(MantenimientoCobranzaOperaSearchAction.class);
 	
 	public MantenimientoCobranzaOperaSearchAction() {
-		log.info("ESTOY EN MI CONSTRUCTOR");
-		log.info("inicializando mi constructor");
+		log.info("inicializando 'MantenimientoCobranzaOperaSearchAction'");
 		init();
 	}
 	
@@ -111,7 +124,6 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 		objtelefono = new TelefonoPersonaSie();
 		lstHistorico = new ArrayList<HistoricoObservacionesSie>();
 		idcontrato=0;
-		log.info("despues de inicializar  ");
 	}
 	
 	/* (non-Javadoc)
@@ -119,14 +131,15 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	 */
 	public String listar() {
 		log.info("listar() 'MantenimientoCobranzaOperadoraSieSearchAction' ");
-		log.info(" session  "+sessionUsuario.getUsuario());
 		objCobranza = new CobranzaSie();
 		objCobranzaOpera = new CobranzaOperadoraSie();
 		objcliente = new ClienteSie();
 		objtelefono = new TelefonoPersonaSie();
 		lstHistorico = new ArrayList<HistoricoObservacionesSie>(); 
+		detallePagosRefinan = new ArrayList<CobranzaSie>();
 		idcontrato=0;
 		idincidencia=0;
+		objRefinanPago = new RefinanciarPagoSie();
 		cobranzaOperaList = objCobranzaOperaService.listarCobranzasOpera(sessionUsuario.getUsuario());
 		if (cobranzaOperaList == null) {
 			cobranzaOperaList = new ArrayList<CobranzaOperadoraSie>();
@@ -134,19 +147,33 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 		return getViewList();
 	}
 	
+	/**
+	 * @return
+	 * @throws Exception
+	 */
 	public String mostrar() throws Exception {
 		log.info("mostrar()");
 		idcontrato = objCobranzaOpera.getTbCobranza().getTbContrato().getIdcontrato();
 		// comenzamos a mostrar el detalles
-			log.info("listarDetalleDePagos 'MantenimientoCobranzasPorCuotasSearchAction' ");
-			detallePagos = objCobranzaService.listarCobranzasXidcontrato(idcontrato);
+		log.info("listarDetalleDePagos 'MantenimientoCobranzasPorCuotasSearchAction' ");
+		detallePagos = objCobranzaService.listarCobranzasXidcontrato(idcontrato);
 			if (detallePagos == null) {
 				detallePagos = new ArrayList<CobranzaSie>();
+			}else{
+				totalacumulado= BigDecimal.ZERO;
+				for (int i = 0; i < detallePagos.size(); i++) {
+					//seteamos  el precio a pagar
+					log.info("fec "+detallePagos.get(i).getFecpago());
+					if(detallePagos.get(i).getFecpago()==null){
+						log.info("fec "+detallePagos.get(i).getImportemasmora());
+						totalacumulado = totalacumulado.add(detallePagos.get(i).getImportemasmora());
+					}
+				}
 			}
 		objContrato = objContratoService.findContrato(idcontrato);
 	    // mostramos los datos del cliente
 		objcliente = objClienteService.findCliente(objCobranzaOpera.getTbCobranza().getIdcliente());
-		log.info("listartelefonos x idcliente");
+		log.info("listartelefonos x idcliente "+totalacumulado);
 		listatelefono = objTelefonoService.listarTelefonoEmpleadosXidcliente(objcliente.getIdcliente());
 		if (listatelefono == null) {
 			listatelefono = new ArrayList<TelefonoPersonaSie>();
@@ -155,7 +182,49 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 		productoContratoList =objProductoContratoService.listarDetProductoContratoXContrato(idcontrato);
 		//Mostramos el historial
 		lstHistorico = objHistoricoService.listarHistorial(idcontrato);
+		
 		return getViewList();
+	}
+	
+	/**
+	 * Registrar la refinanciacion
+	 */
+	public void registrarRefinanciacion(){
+		log.info("registrarRefinanciacion");
+		detallePagosRefinan= new ArrayList<CobranzaSie>();
+		/*Primera cuota*/
+		CobranzaSie cob = new CobranzaSie();
+		cob.setImpinicial(objRefinanPago.getImpapagar());
+		cob.setFecvencimiento(objRefinanPago.getFechaprogramada());
+		cob.setNumletra("0");
+		detallePagosRefinan.add(cob);
+		/*Cuotas restantes*/
+		for (int i = 0; i < cantcuotasrest; i++) {
+			cob = new CobranzaSie();
+			cob.setImpinicial(montoRestantes);
+			Calendar c = new GregorianCalendar();
+			c.setTime(fechaProgramRest);
+			c.add(Calendar.MONTH, i);
+			cob.setNumletra(i+"");
+			cob.setFecvencimiento(c.getTime());
+			detallePagosRefinan.add(cob);
+		}
+		
+		String antiguoPago="", refinanPago="";
+		for (int i = 0; i < detallePagos.size(); i++) {
+			antiguoPago+=detallePagos.get(i).getNumletra();
+			antiguoPago+=","+detallePagos.get(i).getImpinicial();
+			antiguoPago+=","+detallePagos.get(i).getFechaVencimientoString()+";";
+		}
+		for (int i = 0; i < detallePagosRefinan.size(); i++) {
+			refinanPago+=detallePagos.get(i).getNumletra();
+			refinanPago+=","+detallePagos.get(i).getImpinicial();
+			refinanPago+=","+detallePagos.get(i).getFechaVencimientoString()+";";
+		}
+		
+		objRefinanPago.setAntiguoPago(antiguoPago);
+		objRefinanPago.setRefinanciadoPago(refinanPago);
+		objRefinanPago.setTbContrato(objContrato);
 	}
 	
 	/* (non-Javadoc)
@@ -202,7 +271,11 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 				//Actualizar la Cobranza de la operadora
 				objCobranzaOperaService.updateCobranzaOpera(objCobranzaOpera);
 				mensaje =Constants.MESSAGE_REGISTRO_TITULO;
-				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_REGISTRO_TITULO, mensaje);				
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_REGISTRO_TITULO, mensaje);	
+				//Insertando la refinanciacion acordada
+				if(objRefinanPago!=null){
+					objRefinanciarPagoService.insertRefinanPago(objRefinanPago);
+				}
 			}else{
 				//No seleciono ningun contrato
 				mensaje = Constants.MESSAGE_ERROR_ID_COBRANZA;
@@ -523,5 +596,88 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	public void setIdincidencia(int idincidencia) {
 		this.idincidencia = idincidencia;
 	}
-		
+
+	/**
+	 * @return the detallePagosRefinan
+	 */
+	public List<CobranzaSie> getDetallePagosRefinan() {
+		return detallePagosRefinan;
+	}
+
+	/**
+	 * @param detallePagosRefinan the detallePagosRefinan to set
+	 */
+	public void setDetallePagosRefinan(List<CobranzaSie> detallePagosRefinan) {
+		this.detallePagosRefinan = detallePagosRefinan;
+	}
+
+	/**
+	 * @return the totalacumulado
+	 */
+	public BigDecimal getTotalacumulado() {
+		return totalacumulado;
+	}
+
+	/**
+	 * @param totalacumulado the totalacumulado to set
+	 */
+	public void setTotalacumulado(BigDecimal totalacumulado) {
+		this.totalacumulado = totalacumulado;
+	}
+	
+	/**
+	 * @return the objRefinanPago
+	 */
+	public RefinanciarPagoSie getObjRefinanPago() {
+		return objRefinanPago;
+	}
+
+	/**
+	 * @param objRefinanPago the objRefinanPago to set
+	 */
+	public void setObjRefinanPago(RefinanciarPagoSie objRefinanPago) {
+		this.objRefinanPago = objRefinanPago;
+	}
+
+	/**
+	 * @return the cantcuotasrest
+	 */
+	public int getCantcuotasrest() {
+		return cantcuotasrest;
+	}
+
+	/**
+	 * @param cantcuotasrest the cantcuotasrest to set
+	 */
+	public void setCantcuotasrest(int cantcuotasrest) {
+		this.cantcuotasrest = cantcuotasrest;
+	}
+
+	/**
+	 * @return the montoRestantes
+	 */
+	public BigDecimal getMontoRestantes() {
+		return montoRestantes;
+	}
+
+	/**
+	 * @param montoRestantes the montoRestantes to set
+	 */
+	public void setMontoRestantes(BigDecimal montoRestantes) {
+		this.montoRestantes = montoRestantes;
+	}
+
+	/**
+	 * @return the fechaProgramRest
+	 */
+	public Date getFechaProgramRest() {
+		return fechaProgramRest;
+	}
+
+	/**
+	 * @param fechaProgramRest the fechaProgramRest to set
+	 */
+	public void setFechaProgramRest(Date fechaProgramRest) {
+		this.fechaProgramRest = fechaProgramRest;
+	}
 }

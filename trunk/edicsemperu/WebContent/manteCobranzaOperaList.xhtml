@@ -4,6 +4,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pe="http://primefaces.org/ui/extensions"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
 		<h1 class="title ui-widget-header ui-corner-all">#{message['cobranza.seguimiento']}</h1>
@@ -12,9 +13,9 @@
 			
 			<p:fieldset legend="#{message['cobranza.lista']}">
 				<p:dataTable id="listaPersonas" var="p"
-					value="#{mantenimientoCobranzaOperaSearchAction.cobranzaOperaList}"
-					widgetVar="cobranzatable" emptyMessage="No se encontro registros"
-					filteredValue="#{mantenimientoCobranzaOperaSearchAction.filtrarCobranza}"
+					value="#{seguimientoCobranzaOpera.cobranzaOperaList}"
+					widgetVar="cobranzatable" emptyMessage="#{message['rsltd.empty']}"
+					filteredValue="#{seguimientoCobranzaOpera.filtrarCobranza}"
 					paginator="true" rows="10"  rowsPerPageTemplate="5,10,15"  
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 					<f:facet name="header">
@@ -55,9 +56,9 @@
 					</p:column>
 					<p:column headerText="#{message['cobranza.seleccionar']}">
 						<p:commandButton value="#{message['cobranza.mostrar']}" ajax="false"
-							action="#{mantenimientoCobranzaOperaSearchAction.mostrar}">
+							action="#{seguimientoCobranzaOpera.mostrar}">
 							<f:setPropertyActionListener value="#{p}"
-								target="#{mantenimientoCobranzaOperaSearchAction.objCobranzaOpera}" />
+								target="#{seguimientoCobranzaOpera.objCobranzaOpera}" />
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>
@@ -68,30 +69,30 @@
 				<p:fieldset legend="#{message['cobranza.datos.cliente']}" style="margin-top:20px">
 					<h:panelGrid columns="2" cellpadding="5" >
 						<h:outputText value="#{message['cobranza.nombre.completo']}" />
-						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.nombrecliente}"  style="font-weight:bold"/>
+						<h:outputText value="#{seguimientoCobranzaOpera.objcliente.nombrecliente}"  style="font-weight:bold"/>
 						<h:outputText value="#{message['cobranza.apepat']}" />
-						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.apepatcliente}"  style="font-weight:bold"/>
+						<h:outputText value="#{seguimientoCobranzaOpera.objcliente.apepatcliente}"  style="font-weight:bold"/>
 						<h:outputText value="#{message['cobranza.apemat']}" />
-						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.apematcliente}"  style="font-weight:bold"/>
+						<h:outputText value="#{seguimientoCobranzaOpera.objcliente.apematcliente}"  style="font-weight:bold"/>
 						<h:outputText value="#{message['cobranza.tipoDoc']}" />
-						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.tbTipoDocumentoIdentidad.descripcion}" style="font-weight:bold"/>
+						<h:outputText value="#{seguimientoCobranzaOpera.objcliente.tbTipoDocumentoIdentidad.descripcion}" style="font-weight:bold"/>
 						<h:outputText value="#{message['cobranza.numeroDocumento']}" />
-						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.numdocumento}"  style="font-weight:bold"/>
+						<h:outputText value="#{seguimientoCobranzaOpera.objcliente.numdocumento}"  style="font-weight:bold"/>
 						<h:outputText value="#{message['cobranza.correo']}" />
-						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.correo}" />
+						<h:outputText value="#{seguimientoCobranzaOpera.objcliente.correo}" />
 						<h:outputText value="#{message['cobranza.direccion']}" />
-						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.directrabajo}" />
+						<h:outputText value="#{seguimientoCobranzaOpera.objcliente.directrabajo}" />
 						<h:outputText value="#{message['cobranza.distrito']}" />
-						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.telftrabajo}" />
+						<h:outputText value="#{seguimientoCobranzaOpera.objcliente.telftrabajo}" />
 						<h:outputText value="#{message['cobranza.empresa']}" />
-						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.empresatrabajo}" />
+						<h:outputText value="#{seguimientoCobranzaOpera.objcliente.empresatrabajo}" />
 						<h:outputText value="#{message['cobranza.cargo']}" />
-						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objcliente.cargotrabajo}" />
+						<h:outputText value="#{seguimientoCobranzaOpera.objcliente.cargotrabajo}" />
 						<h:outputText value="#{message['cobranza.telefonos']}" />
 						<p:spacer/>
 						</h:panelGrid>
 						<p:dataTable
-							value="#{mantenimientoCobranzaOperaSearchAction.listatelefono}" var="t"
+							value="#{seguimientoCobranzaOpera.listatelefono}" var="t"
 							rowStyleClass="#{t.operadorTelefonico eq 'Claro' ? 'colorRojo': (t.operadorTelefonico eq 'Movistar' ? 'colorCeleste': 'color3') }"
 							id="DetalleTelefono"  widgetVar="telefonotable" 
 							emptyMessage="#{message['rsltd.empty']}">
@@ -126,15 +127,14 @@
 				<p:fieldset legend="#{message['cobranza.pagos']}" style="margin-top:20px">
 					<h:panelGrid columns="2"  cellpadding="4" >
 						<h:outputText value="#{message['cobranza.empresa']}" />
-						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objContrato.tbEmpresa.descripcion}" style="font-weight:bold"  />
+						<h:outputText value="#{seguimientoCobranzaOpera.objContrato.tbEmpresa.descripcion}" style="font-weight:bold"  />
 						<h:outputText value="#{message['cobranza.num.cuenta']}" />
-						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objContrato.tbEmpresa.numcuenta}"  style="font-weight:bold; font-size: x-large "/>
+						<h:outputText value="#{seguimientoCobranzaOpera.objContrato.tbEmpresa.numcuenta}"  style="font-weight:bold; font-size: x-large "/>
 						<h:outputText value="#{message['cobranza.empresa.telefonos']}" />
-						<h:outputText value="#{mantenimientoCobranzaOperaSearchAction.objContrato.tbEmpresa.numtelefono}" style="font-weight:bold" />
+						<h:outputText value="#{seguimientoCobranzaOpera.objContrato.tbEmpresa.numtelefono}" style="font-weight:bold" />
 					</h:panelGrid>
-					<p:dataTable
-						value="#{mantenimientoCobranzaOperaSearchAction.detallePagos}" var="p"
-						rowStyleClass="#{mantenimientoCobranzaOperaSearchAction.fechoy le  p.fecvencimiento  ? null: (empty p.fecpago? 'colorRojo' : 'colorVerde')}"
+					<p:dataTable value="#{seguimientoCobranzaOpera.detallePagos}" var="p"
+						rowStyleClass="#{seguimientoCobranzaOpera.fechoy le  p.fecvencimiento  ? null: (empty p.fecpago? 'colorRojo' : 'colorVerde')}"
 						id="DetallePagos"  widgetVar="pagostable"
 						emptyMessage="#{message['rsltd.empty']}">
 						<f:facet name="header"/>
@@ -152,6 +152,12 @@
 						</p:column>
 						<p:column>
 							<f:facet name="header">
+								<h:outputText value="Importe + Mora" />
+							</f:facet>
+							<h:outputText value="#{p.importemasmora}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
 								<h:outputText value="#{message['cobranza.fec.vencimiento']}" />
 							</f:facet>
 							<h:outputText value="#{p.fechaVencimientoString}" />
@@ -160,13 +166,16 @@
 							<f:facet name="header">
 								<h:outputText value="#{message['cobranza.fec.pago']}" />
 							</f:facet>
-							<h:outputText value="#{p.fecpago}" />
+							<h:outputText value="#{p.fechaPagoString}" />
 						</p:column>
 					</p:dataTable>
+			        <h:outputText value="#{message['cobranza.total.apagar']}" />
+			        <p:inputText value="#{seguimientoCobranzaOpera.totalacumulado}" readonly="true" />
+		       
 				</p:fieldset>
 				<p:fieldset legend="#{message['cobranza.productos']}" style="margin-top:20px">
 					<p:dataTable
-						value="#{mantenimientoCobranzaOperaSearchAction.productoContratoList}" var="r"
+						value="#{seguimientoCobranzaOpera.productoContratoList}" var="r"
 						widgetVar="pagostable" rowStyleClass="#{r.tbEstadoGeneral.idestadogeneral ==70 ? 'colorRojo':  'null' }" 
 						emptyMessage="#{message['rsltd.empty']}">
 						<f:facet name="header"/>
@@ -196,45 +205,45 @@
 				<h:panelGrid columns="2" cellpadding="4">
 					<p:outputLabel value="#{message['operadora.tipollamada']}" for="tipo" />
 					<p:selectOneMenu id="tipo" filter="true" required="true"
-						value="#{mantenimientoCobranzaOperaSearchAction.tipollamada}"
+						value="#{seguimientoCobranzaOpera.tipollamada}"
 						requiredMessage="#{message['operadora.tipollamada.validation']}">
 						<f:selectItem itemValue="#{null}" itemLabel="Seleccione una opción" />
 						<f:selectItems value="#{comboAction.tipollamada}" />
 					</p:selectOneMenu>
 					
 					<p:outputLabel value="#{message['operadora.observacion']}" for="observacion" />
-					<p:inputTextarea id="observacion" value="#{mantenimientoCobranzaOperaSearchAction.objCobranzaOpera.observaciones}"
+					<p:inputTextarea id="observacion" value="#{seguimientoCobranzaOpera.objCobranzaOpera.observaciones}"
 						requiredMessage="#{message['operadora.observacion.validation']}"
 						rows="3" cols="50" maxlength="500" required="true" label="Correo" autoResize="false" />
 					
 					<p:outputLabel value="#{message['operadora.incidencia']}" for="incidencia" />
 					<p:selectOneMenu id="incidencia" filter="true" required="true"
-						value="#{mantenimientoCobranzaOperaSearchAction.idincidencia}" >
+						value="#{seguimientoCobranzaOpera.idincidencia}" >
 						<f:selectItem itemValue="#{null}" itemLabel="Seleccione una incidencia" />
 						<f:selectItems value="#{comboAction.incidenteitems}" />
 					</p:selectOneMenu>
 					
 					<h:outputText value="#{message['cobranza.programar.cita']}" />
-					<p:selectBooleanCheckbox value="#{mantenimientoCobranzaOperaSearchAction.programarLlamada}" >
+					<p:selectBooleanCheckbox value="#{seguimientoCobranzaOpera.programarLlamada}" >
 						<p:ajax update="outCita" />
 					</p:selectBooleanCheckbox>
 					<p:outputPanel id="outCita" >
-					<p:fieldset legend="Programar Cita" rendered="#{mantenimientoCobranzaOperaSearchAction.programarLlamada==true}" >
+					<p:fieldset legend="Programar Cita" rendered="#{seguimientoCobranzaOpera.programarLlamada==true}" >
 						<h:panelGrid columns="2" cellpadding="3" >
 						<h:outputText value="#{message['operadora.fechaProgramada']}" />
-						<p:calendar value="#{mantenimientoCobranzaOperaSearchAction.fechaProgramada}" pattern="dd/mm/yyyy HH:mm" locale="pe"/>
+						<p:calendar value="#{seguimientoCobranzaOpera.fechaProgramada}" pattern="dd/mm/yyyy HH:mm" locale="pe"/>
 					</h:panelGrid>
 					</p:fieldset>
 					</p:outputPanel>
 					<f:facet name="footer">
 						<p:commandButton id="btn" value="#{message['cobranza.guardar']}" update="listaPersonas, message"
-						action="#{mantenimientoCobranzaOperaSearchAction.insertar}" ajax="false" icon="ui-icon-comment" />
+						action="#{seguimientoCobranzaOpera.insertar}" ajax="false" icon="ui-icon-comment" />
 					</f:facet>
 				</h:panelGrid>
 			</p:fieldset>
 			<p:fieldset legend="#{message['cobranza.historico.observaciones']}" style="margin-top:20px"   >
 				<h:panelGrid >
-					<p:dataTable value="#{mantenimientoCobranzaOperaSearchAction.lstHistorico}" var="k" paginator="true" rows="3"  >
+					<p:dataTable value="#{seguimientoCobranzaOpera.lstHistorico}" var="k" paginator="true" rows="3"  >
 						<p:column style="width:2%" >
 						<div  class="ui-messages-info ui-corner-all">
 							<div  class="ui-messages-info-summary"  >#{k.usuariocreacion}</div>
@@ -242,6 +251,50 @@
 						</div>
 						</p:column>
 						</p:dataTable>
+				</h:panelGrid>
+			</p:fieldset>
+			<p:fieldset legend="#{message['cobranza.historico.refinanciado']}" style="margin-top:20px"   >
+				<h:panelGrid columns="2">
+				<h:panelGrid columns="2" cellpadding="4">
+					<h:outputText value="#{message['cobranza.primera.cuota']}" />
+					<p:inputText value="#{seguimientoCobranzaOpera.objRefinanPago.impapagar}" required="true"/>
+					<h:outputText value="#{message['cobranza.fecha.programada']}" />
+					<p:calendar value="#{seguimientoCobranzaOpera.objRefinanPago.fechaprogramada}" required="true"/>
+					
+					<h:outputText value="#{message['cobranza.cuotas.restantes']}" />
+					<p:inputText value="#{seguimientoCobranzaOpera.cantcuotasrest}" required="true"/>
+					<h:outputText value="#{message['cobranza.monto']}" />
+					<p:inputText value="#{seguimientoCobranzaOpera.montoRestantes}" required="true"/>
+					<h:outputText value="#{message['cobranza.fecha.cuotas.restantes']}" />
+					<p:calendar value="#{seguimientoCobranzaOpera.fechaProgramRest}" required="true"/>
+					
+					<p:commandButton value="#{message['cobranza.guardar']}" update="listaRefinancio, message"
+					action="#{seguimientoCobranzaOpera.registrarRefinanciacion}" ajax="false" />
+				</h:panelGrid>
+				
+				<p:dataTable value="#{seguimientoCobranzaOpera.detallePagosRefinan}" var="p" id="listaRefinancio"
+						rowStyleClass="#{seguimientoCobranzaOpera.fechoy le  p.fecvencimiento  ? null: (empty p.fecpago? 'colorRojo' : 'colorVerde')}"
+						widgetVar="pagostable" emptyMessage="#{message['rsltd.empty']}">
+						<f:facet name="header"/>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="#{message['cobranza.cuotas']}" />
+							</f:facet>
+							<h:outputText value="#{p.numletra}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="#{message['cobranza.monto']}" />
+							</f:facet>
+							<h:outputText value="#{p.impinicial}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="#{message['cobranza.fec.vencimiento']}" />
+							</f:facet>
+							<h:outputText value="#{p.fechaVencimientoString}" />
+						</p:column>
+					</p:dataTable>
 				</h:panelGrid>
 			</p:fieldset>
 			</h:panelGrid>
