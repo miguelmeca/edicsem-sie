@@ -71,7 +71,7 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	private EmpleadoSie objEmpleadoSie;
 	private int cerrador, expositor, vendedor;
 	private TurnoSie objTurno;
-	String expo="";
+	private String expo="";
 	private String tittle;
 	private String expositorElegido;
 	private ScheduleEvent event = new DefaultScheduleEvent();
@@ -126,7 +126,7 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		vendedorList = new ArrayList<String>();
 		objMetaMesSie = new MetaMesSie();
 		eventModel = new DefaultScheduleModel();
-		diaList = new  ArrayList<String>();
+		diaList = new  ArrayList<String>(); 
 		listaDetTurnoEmpl = new ArrayList<DetTurnoEmplSie>();
 		listaHorario = new ArrayList<HorarioPersonalSie>();
 		event = new DefaultScheduleEvent();
@@ -146,8 +146,6 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		vendedor= cvendedor.getIdcargoempleado();
 		return getViewList();
 	}
-	
-	
 	
 	public List<String> completeCerrad(String query){
 		log.info(" completeCerrad() "+query+"  "+comboManager.getCerradorItems().size());
@@ -418,73 +416,46 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	public String insertar() throws Exception {
 		log.info("insertar()");
 		mensaje=null;
-		log.info("total de eventos "+eventModel.getEvents().size()+" canti "+eventModel.getEventCount());
+		log.info("total de eventos "+eventModel.getEvents().size());
 		listaHorario = new ArrayList<HorarioPersonalSie>();
 		objHorarioPersonal = new HorarioPersonalSie();
-		boolean insert =false;
 		diaList = new ArrayList<String>();
 		try {
-			ScheduleEvent auxiliar = null;
+			if(eventModel.getEventCount()==0){
+				mensaje="Debe agregar horario a los empleados de venta";
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN,Constants.MESSAGE_INFO_TITULO, mensaje);
+			}
 			for (int i = 0; i < eventModel.getEventCount(); i++) {
-				//Comparando, buscar fechas límites menor y  mayor fecha
+				diaList = new ArrayList<String>();
+				objHorarioPersonal=new HorarioPersonalSie();
+				Calendar cal = new GregorianCalendar();
+				cal.setTime(eventModel.getEvents().get(i).getStartDate());
+				diaList.add(cal.get(Calendar.DAY_OF_WEEK)+"");
 				
-				for (int j = 0; j < eventModel.getEventCount(); j++) {
+					objHorarioPersonal.setDescripcion(eventModel.getEvents().get(i).getTitle());
+					objHorarioPersonal.setHoraIngreso(new Time(eventModel.getEvents().get(i).getStartDate().getTime()));
+					objHorarioPersonal.setHoraSalida(new Time(eventModel.getEvents().get(i).getEndDate().getTime()));
+					objHorarioPersonal.setDiaString(diaList);
+					objHorarioPersonal.setDiainicio(DateUtil.convertStringToDate(fechaInicio));
+					objHorarioPersonal.setDiafin(DateUtil.convertStringToDate(fechaFin));
 					
-					if(eventModel.getEvents().get(i).getTitle()==eventModel.getEvents().get(j).getTitle()){
-						log.info("entro!");
-						Calendar cal = new GregorianCalendar();
-						cal.setTime(eventModel.getEvents().get(i).getStartDate());
-						Calendar cal2 = new GregorianCalendar();
-						cal.setTime(eventModel.getEvents().get(j).getStartDate());
-						
-						log.info("-- "+cal.get(Calendar.DAY_OF_WEEK)+" -- "+cal2.get(Calendar.DAY_OF_WEEK));
-						log.info("entro! 2 "+diaList+" "+diaList.contains(cal.get(Calendar.DAY_OF_WEEK)));
-						if(!diaList.contains(cal.get(Calendar.DAY_OF_WEEK)+"")){
-							log.info("add! ");
-							diaList.add(cal.get(Calendar.DAY_OF_WEEK)+"");
-						}
-						objHorarioPersonal.setDescripcion(eventModel.getEvents().get(j).getTitle());
-						objHorarioPersonal.setHoraIngreso(new Time(eventModel.getEvents().get(j).getStartDate().getTime()));
-						objHorarioPersonal.setHoraSalida(new Time(eventModel.getEvents().get(j).getEndDate().getTime()));
-						
-						if(eventModel.getEvents().get(j).getStartDate().before(eventModel.getEvents().get(i).getStartDate())){
-							auxiliar = eventModel.getEvents().get(i);
-							eventModel.getEvents().set(i, eventModel.getEvents().get(j));
-							eventModel.getEvents().set(j, auxiliar);
-						}
-						
-						objHorarioPersonal.setDiaString(diaList);
-						log.info("start "+eventModel.getEvents().get(0).getStartDate()+" end "+eventModel.getEvents().get(eventModel.getEventCount()-1).getEndDate());
-						objHorarioPersonal.setDiainicio(eventModel.getEvents().get(0).getStartDate());
-						objHorarioPersonal.setDiafin(eventModel.getEvents().get(eventModel.getEventCount()-1).getEndDate());
-						insert =true;
-					}
-				}
-				if(insert==true){
-					//verificar que no haya ningun obj con la misma persona en el mismo horario y fecha
-					if(listaHorario.size()==0 && objHorarioPersonal!=null){
-						log.info("-- insertando --");
-						listaHorario.add(objHorarioPersonal);
-						diaList = new ArrayList<String>();
-					}
+					boolean agregar=true;
 					for (int j = 0; j < listaHorario.size(); j++) {
-						if(listaHorario.get(j).getHoraIngreso().equals(objHorarioPersonal.getHoraIngreso())&&
-							listaHorario.get(j).getHoraSalida().equals(objHorarioPersonal.getHoraSalida())&&
-							listaHorario.get(j).getDescripcion().equals(objHorarioPersonal.getDescripcion())&&
-							listaHorario.get(j).getDiainicio().equals(objHorarioPersonal.getDiainicio())&&
-							listaHorario.get(j).getDiafin().equals(objHorarioPersonal.getDiafin())){
+						if((listaHorario.get(j).getHoraIngreso().toString()).equals(objHorarioPersonal.getHoraIngreso().toString())&&
+								(listaHorario.get(j).getHoraSalida().toString()).equals(objHorarioPersonal.getHoraSalida().toString())&&
+							listaHorario.get(j).getDescripcion().equals(objHorarioPersonal.getDescripcion())){
 							//seteo los días que faltan agregar
-							
 							if(!listaHorario.get(j).getDiaString().contains(objHorarioPersonal.getDiaString().get(0))){
-								log.info("seteando dias ");
 								listaHorario.get(j).getDiaString().add(objHorarioPersonal.getDiaString().get(0));
 							}
-						}else{
-							listaHorario.add(objHorarioPersonal);
+							agregar=false;
+							break;
 						}
 					}
+					if(agregar==true){
+						listaHorario.add(objHorarioPersonal);
+					}
 				}
-			}
 			if(mensaje==null){
 				log.info(" tamañitooo "+listaHorario.size());
 				for (int j = 0; j < listaHorario.size();j++) {
@@ -795,14 +766,25 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 	 * @param expositorList the expositorList to set
 	 */
 	public void setExpositorList(List<String> expositorList) {
+		setExpositorElegido("( ");
 		for (int i = 0; i < expositorList.size(); i++) {
-			if(i==0)
-				expositorElegido =expositorList.get(i);
-			else
-				expositorElegido +=","+expositorList.get(i);
+			 Iterator it = comboManager.getExpositorItems().entrySet().iterator();
+		     while(it.hasNext()){
+		    	 Map.Entry m =(Map.Entry)it.next();
+		    	 String value=(String)m.getKey();
+		    	 if(m.getValue().toString().equals(expositorList.get(i))){
+		    	 if(i==0)
+		    		 setExpositorElegido(expositorElegido+value);
+		    	 else
+		    		 setExpositorElegido(expositorElegido+", "+value);
+		    	 }
+		      }
+		}
+		setExpositorElegido(expositorElegido+" )");
+		if(expositorList.size()==0){
+			setExpositorElegido("");
 		}
 		this.expositorList = expositorList;
-		 getExpositorList();
 	}
 	
 	/**
@@ -1031,7 +1013,8 @@ public class DistribucionHorarioMasivoSearchAction extends BaseMantenimientoAbst
 		cerradorList = new ArrayList<String>();
 		vendedorList= new ArrayList<String>();
 		expositorList= new ArrayList<String>();
-		diaList= new ArrayList<String>(); 
+		diaList= new ArrayList<String>();
+		eventModel = new DefaultScheduleModel();
 		idturno=0;
 		idMes=0;
 		rangoTurno="";

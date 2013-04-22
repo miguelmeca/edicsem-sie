@@ -1512,37 +1512,20 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
-
-<!-- fin NUEVA OBSINCIDENCIA	   -->
 				
 <!--	  DESACTIVAR PROVEEDOR	   -->
-
 <h:form>
-
 	<p:confirmDialog id="confirmDeshabilitarPro" message="Esta seguro de deshabilitar dicho proveedor?" width="325" height="100" showEffect="explode" 
-				hideEffect="explode"  header="Confirm" severity="alert" widgetVar="confirmation" position="center">
-					   
-       			 <p:commandButton 
-       			 type="submit" 
-       			 value="Si"  
-       			 action="#{mantenimientoProveedorFormAction.deshabilitar}"  
-       			 update=":manteProList:listaPersonas" 
-       			 oncomplete="confirmation.hide()" 
-       			 ajax="false">
-      			 </p:commandButton>  
-        
-        		<p:commandButton value="No" onclick="confirmation.hide()" type="button" />  
-        		
+		hideEffect="explode"  header="Confirm" severity="alert" widgetVar="confirmation" position="center">
+		<p:commandButton type="submit" value="Si" action="#{mantenimientoProveedorFormAction.deshabilitar}"  
+       	 update=":manteProList:listaPersonas" oncomplete="confirmation.hide()" ajax="false" />  
+        <p:commandButton value="No" onclick="confirmation.hide()" type="button" />  		
     </p:confirmDialog>
     
 </h:form>
 
-	<!-- 	FIN DESACTIVAR PROVEEDOR  -->
-
-	<!--	  INICIO DESACTIVAR	 EMPRESA  -->
-
-	<h:form>
-
+<!--	  INICIO DESACTIVAR	 EMPRESA  -->
+<h:form>
 <p:confirmDialog id="confirmDeshabilitarEmpresa"
 			     message="esta seguro de eliminar esta empresa?" 
 			     width="325"

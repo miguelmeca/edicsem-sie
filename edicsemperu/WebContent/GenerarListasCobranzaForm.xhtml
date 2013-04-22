@@ -6,17 +6,17 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
-		<h1 class="title ui-widget-header ui-corner-all">Generar Listas Cobranzas</h1>
+		<h1 class="title ui-widget-header ui-corner-all">#{message['generar.lista.panel']}</h1>
 		<h:form id="formGenerarCobranza">
 			<p:messages id="message" showDetail="true" />
 			<p:panel header="#{message['panel.generar.cobranza']}">
 				<h:panelGrid columns="2" cellpadding="4" >
-					<h:outputText value="Empleados" />
+				<h:outputText value="#{message['generar.lista.empleados']}" />
 					
-					<p:pickList  value="#{cobranza.teleoperadorasString}" var="p" itemLabel="#{p}" itemValue="#{p}" />
+				<p:pickList  value="#{cobranza.teleoperadorasString}" var="p" itemLabel="#{p}" itemValue="#{p}" />
 					
-					<p:commandButton actionListener="#{cobranza.insertar}" value="generar"
-					onclick="statusDialogCob.show();" update="message"/>
+				<p:commandButton actionListener="#{cobranza.insertar}" value="#{message['generar.listar.generar']}"
+				onclick="statusDialogCob.show();" update="message"/>
 				</h:panelGrid>
 			</p:panel>
 		</h:form>

@@ -74,7 +74,7 @@
 </h:panelGrid>
 </p:fieldset>
        <p:fieldset legend="Detalle de Pagos" style="margin-top:20px">  
-	  <p:dataTable value="#{mantenimientoCobranzaOperaSearchAction.detallePagos}" var="p" rowStyleClass="#{p.fecpago == mantenimientoCobranzaOperaSearchAction.fecPagoNull ? 'colorRojo' : 'colorVerde'}"
+	  <p:dataTable value="#{seguimientoCobranzaOpera.detallePagos}" var="p" rowStyleClass="#{p.fecpago == seguimientoCobranzaOpera.fecPagoNull ? 'colorRojo' : 'colorVerde'}"
 	   id="DetallePagos" paginator="false" rows="10"
        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	   rowsPerPageTemplate="5,10,15" widgetVar="table"

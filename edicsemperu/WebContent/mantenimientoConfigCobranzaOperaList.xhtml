@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Configuracion Cobranza Operadora</h1>
+		<h:form id="manteProList" prependId="false">
+			<p:messages showDetail="true" />
+			<p:dataTable value="#{configCobranzaOperaSearchAction.configList}" var="p"
+				id="listaPersonas" paginator="true" rows="10"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" widgetVar="table"
+				emptyMessage="#{message['rsltd.empty']}">
+				<f:facet name="header">Mantenimiento Configuracion </f:facet>
+				<f:facet name="header">
+					<p:outputPanel>
+						<h:outputText value="Buscar :" />
+						<p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px; align=Left; " />
+					</p:outputPanel>
+				</f:facet>
+				<p:column sortBy="#{p.diasprogramados}" filterBy="#{p.diasprogramados}" headerText="dias programados">
+					<f:facet name="header">
+						<h:outputText value="Dias programados" />
+					</f:facet>
+					<h:outputText value="#{p.diasprogramados}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Tipo de Cliente" />
+					</f:facet>
+					<h:outputText value="#{p.tbTipoCliente.descripcion}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Tipo de Cobranza" />
+					</f:facet>
+					<h:outputText value="#{p.tbTipoCobranza.descripcion}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Dias" />
+					</f:facet>
+					<h:outputText value="#{p.tbTipoCobranza.descripcion}" />
+				</p:column>
+				<p:column headerText="Editar">
+					<p:commandButton value="Editar" ajax="false" action="#{configCobranzaOperaFormAction.update}">
+						<f:setPropertyActionListener value="#{p}" target="#{configCobranzaOperaFormAction.objConfig}" />
+					</p:commandButton>
+				</p:column>
+				<f:facet name="footer">
+					<div align="left">
+						<p:commandButton id="btnNuevo" value="#{message['config.cobranza.nuevo']}" title="#{message['config.cobranza.tittle ']}" 
+						action="#{configCobranzaOperaFormAction.agregar}" icon="ui-icon-star" />
+						<p:tooltip for="btnNuevo" />
+					</div>
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -39,6 +39,7 @@ import com.edicsem.pe.sie.entity.PuntoVentaSie;
 import com.edicsem.pe.sie.entity.SancionSie;
 import com.edicsem.pe.sie.entity.TipoCasaSie;
 import com.edicsem.pe.sie.entity.TipoClienteSie;
+import com.edicsem.pe.sie.entity.TipoCobranzaSie;
 import com.edicsem.pe.sie.entity.TipoDocumentoIdentidadSie;
 import com.edicsem.pe.sie.entity.TipoEventoVentaSie;
 import com.edicsem.pe.sie.entity.TipoFiltroSie;
@@ -70,6 +71,7 @@ import com.edicsem.pe.sie.service.facade.ProveedorService;
 import com.edicsem.pe.sie.service.facade.SancionService;
 import com.edicsem.pe.sie.service.facade.TipoCasaService;
 import com.edicsem.pe.sie.service.facade.TipoClienteService;
+import com.edicsem.pe.sie.service.facade.TipoCobranzaService;
 import com.edicsem.pe.sie.service.facade.TipoDocumentoService;
 import com.edicsem.pe.sie.service.facade.TipoEventoVentaService;
 import com.edicsem.pe.sie.service.facade.TipoFiltroService;
@@ -101,6 +103,7 @@ public class ComboAction {
 	private Map<String, Integer> almacenItemsXTipo = new HashMap<String, Integer>();
 	private Map<String, Integer> tipoDocumentoItems = new HashMap<String, Integer>();
 	private Map<String, Integer> tipoClienteItems = new HashMap<String, Integer>();
+	private Map<String, Integer> tipoCobranzaItems = new HashMap<String, Integer>();
 	private Map<String, Integer> cargoEmpleadoItems = new HashMap<String, Integer>();
 	private Map<String, Integer> productoPaqueteItems = new HashMap<String, Integer>();
 	private Map<String, Integer> grupoItems = new HashMap<String, Integer>();
@@ -160,6 +163,8 @@ public class ComboAction {
 	private TipoDocumentoService objTipoDocumentoService;
 	@EJB
 	private TipoClienteService objTipoClienteService;
+	@EJB
+	private TipoCobranzaService objTipoCobranzaService;
 	@EJB
 	private CargoEmpleadoService objCargoEmpleadoService;
 	@EJB
@@ -1430,11 +1435,6 @@ public class ComboAction {
 	}
 
 	/**
-	 * @return the productoPaqueteItems
-	 */
-	
-
-	/**
 	 * @param productoPaqueteItems the productoPaqueteItems to set
 	 */
 	public void setProductoPaqueteItems(Map<String, Integer> productoPaqueteItems) {
@@ -1452,6 +1452,8 @@ public class ComboAction {
 	 * @param vendedorItems the vendedorItems to set
 	 */
 	public void setVendedorItems(Map<String, Integer> vendedorItems) {
+		if(vendedorItems==null)
+		vendedorItems = sortByComparator(vendedorItems);
 		this.vendedorItems = vendedorItems;
 	}
 
@@ -1459,6 +1461,8 @@ public class ComboAction {
 	 * @return the expositorItems
 	 */
 	public Map<String, Integer> getExpositorItems() {
+		if(expositorItems==null)
+		expositorItems = sortByComparator(expositorItems);
 		return expositorItems;
 	}
 
@@ -1757,6 +1761,7 @@ public class ComboAction {
 	 * @return the cerradorItems
 	 */
 	public Map<String, Integer> getCerradorItems() {
+		cerradorItems = sortByComparator(cerradorItems);
 		return cerradorItems;
 	}
 
@@ -1847,6 +1852,43 @@ public class ComboAction {
 			sortedMap.put(entry.getKey(), entry.getValue());
 		}
 		return sortedMap;
+	}
+
+	/**
+	 * @return the tipoCobranzaItems
+	 */
+	public Map<String, Integer> getTipoCobranzaItems() {
+		tipoCobranzaItems = new HashMap<String, Integer>();
+		List lista = new ArrayList<TipoCobranzaSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getTipoCobranzaItems()'");
+			}
+			lista = objTipoCobranzaService.listarTipoCobranza();
+			
+			for (int i = 0; i < lista.size(); i++) {
+				TipoCobranzaSie entidad = new TipoCobranzaSie();
+				entidad = (TipoCobranzaSie) lista.get(i);
+				tipoCobranzaItems.put(entidad.getDescripcion(),
+						entidad.getIdtipocobranza());
+			}
+			tipoCobranzaItems = sortByComparator(tipoCobranzaItems);
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return tipoCobranzaItems;
+	}
+
+	/**
+	 * @param tipoCobranzaItems the tipoCobranzaItems to set
+	 */
+	public void setTipoCobranzaItems(Map<String, Integer> tipoCobranzaItems) {
+		this.tipoCobranzaItems = tipoCobranzaItems;
 	}
 	
 }

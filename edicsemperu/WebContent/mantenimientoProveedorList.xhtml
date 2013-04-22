@@ -59,14 +59,13 @@
 	   <p:column headerText="Editar">
 	    <p:commandButton value="Editar" ajax="false" 
 		 action="#{mantenimientoProveedorFormAction.update}">
-		 <f:setPropertyActionListener value="#{p}"  
-		  target="#{mantenimientoProveedorFormAction.objProveedor}" />
+		 <f:setPropertyActionListener value="#{p}" target="#{mantenimientoProveedorFormAction.objProveedor}" />
 		</p:commandButton>
 	   </p:column>
 	   <p:column headerText="Deshabilitar">
 		<p:commandButton id="showConfirmDeshabilitar" value="Deshabilitar" icon="ui-icon ui-icon-close" 
 		    onclick="confirmation.show()">
-		 <f:setPropertyActionListener value="#{p.idproveedor}" target="#{mantenimientoProveedorFormAction.ide}" />	
+		 <f:setPropertyActionListener  value="#{p}" target="#{mantenimientoProveedorFormAction.objProveedor}" />
 		</p:commandButton>
 	   </p:column>
 	   <f:facet name="footer">

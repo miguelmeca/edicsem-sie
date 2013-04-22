@@ -26,13 +26,9 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 	private ProveedorSie objProveedor;
 	/*variables*/
 	private String mensaje;
-	private String nombre;
 	private int TipoDocumento;
-	private int estado;
-	/*variable bolean necesaria*/
+	/*variable boolean necesaria*/
 	private boolean newRecord =false;
-	/*variable que capta el id del proveedor*/
-	private int ide;
 	private  List<ProveedorSie> lista;
 		
 	@ManagedProperty(value = "#{mantenimientoProveedorSearchAction}")
@@ -48,22 +44,19 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 	public static Log log = LogFactory.getLog(MantenimientoProveedorFormAction.class);
 	
 	public MantenimientoProveedorFormAction() {
-		log.info("ESTOY EN MI CONSTRUCTOR");
 		log.info("inicializando mi constructor");
 		init();
 	}
-
-	/*inicializamos los  objetos utilizados*/
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#init()
+	 */
 	public void init() {
 		log.info("init()");
-		objProveedor = new ProveedorSie();
-		//TipoDocumento=1;
 	} 
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
-	 */
-	/*método que se ejecuta haciendo click en el link NUEVO de la lista*/
+	 */ 
 	public String agregar() {
 		log.info("insertar");
 		setTipoDocumento(0);
@@ -72,115 +65,75 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 		return getViewMant();
 	}
 	
-	/*método que se ejecuta al hacer click en el botón EDITAR de la lista*/
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
+	 */
 	public String update() throws Exception {
-	    log.info("actualizar");
 		log.info("update()" + objProveedor.getIdproveedor());
-		/*busca el proveedor*/
-		ProveedorSie p = objProveedorService.findProveedor(objProveedor.getIdproveedor());
-		log.info(" id " + p.getIdproveedor()+ " nombre " + p.getCodproveedor()); 
-		/*Seteo para mostrar los datos en el form*/
-        setTipoDocumento(p.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad()); 
-        setEstado(9);
-        /*método bolean necesario para actualizar que retorna al form */  
+        setTipoDocumento(objProveedor.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad()); 
 		setNewRecord(false);
-//		
-//		lista = mantenimientoProveedorSearch.getProveedorList();
-//		
-//		for (int i = 0; i < lista.size(); i++) {
-//			ProveedorSie c = lista.get(i);
-//			log.info(c.getCodproveedor());
-//		}		
-//		
 		return getViewMant();
 	}
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#delete()
 	 */
-	
-	/*método del botón DESHABILITAR(deshabilita al proveedor)*/
 	public String deshabilitar() throws Exception {
-		objProveedor = new ProveedorSie();
-		int parametroObtenido;
-		ProveedorSie p = new ProveedorSie();
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'DESHABILITAR()'");
 			}
-			parametroObtenido = getIde();
-			log.info(" ------>>>>>>aqui captura el parametro ID "+ parametroObtenido);
-			p = objProveedorService.findProveedor(parametroObtenido);
-			/*seteo proveedor*/
-		    objProveedor.setIdproveedor(p.getIdproveedor());
-		    objProveedor.setCodproveedor(p.getCodproveedor());
-		    objProveedor.setNombreempresa(p.getNombreempresa());
-		    objProveedor.setPersonacontacto(p.getPersonacontacto());
-		    setTipoDocumento(p.getTbTipoDocumentoIdentidad().getIdtipodocumentoidentidad());
-		    objProveedor.setNumdocumentoproveedor(p.getNumdocumentoproveedor());
-		    objProveedor.setDireccion(p.getDireccion());
-		    log.info("-----Id estado del proveedor>>>"	+ getEstado());
-			log.info("actualizando ESTADO..... ");
-			objProveedor.setTbTipoDocumentoIdentidad(objTipoDocService.buscarTipoDocumento(TipoDocumento));
 			/*Estado del Proveedor: deshabilitado(10)*/
 			objProveedor.setTbEstadoGeneral(objEstadoService.findEstadogeneral(10));
 			objProveedorService.actualizarProveedor(objProveedor);
-			log.info("actualizando..... ");
-			log.info("deshabilitando..... ");
 		} catch (Exception e2) {
 			e2.printStackTrace();
-			nombre = e2.getMessage();
+			mensaje = e2.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, nombre);
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e2.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 		objProveedor = new ProveedorSie();
 		return mantenimientoProveedorSearch.listar();
 	}
-
-	/*método del botón GUARDAR(inserta o actualiza el proveedor)*/
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
+	 */
 	public String insertar() throws Exception {
 		String paginaRetorno="";
 		mensaje=null;
 		objProveedor.setTbTipoDocumentoIdentidad(objTipoDocService.buscarTipoDocumento(TipoDocumento));
-		/*Estado del Proveedor: habilitado(9)*/
-		objProveedor.setTbEstadoGeneral(objEstadoService.findEstadogeneral(9));
+		
 		try {
-				
-			log.info("inicio validar codigo de proveedor");
 			lista = mantenimientoProveedorSearch.getProveedorList();
 			int error = 0;
 			if (isNewRecord()) {
-			for (int i = 0; i < lista.size(); i++) {
-				log.info(lista.get(i).getCodproveedor()+" y "+objProveedor.getCodproveedor());
-				if (lista.get(i).getCodproveedor().equalsIgnoreCase(objProveedor.getCodproveedor())) { 
+				for (int i = 0; i < lista.size(); i++) {
 					log.info(lista.get(i).getCodproveedor()+" y "+objProveedor.getCodproveedor());
-					log.info("Error ... Ya se encuentra un código igual");
-					mensaje ="El código se encuentra asignado con otro proveedor";
-					paginaRetorno =mantenimientoProveedorSearch.getViewMant();
-					error = 1;
-					break;
+					if (lista.get(i).getCodproveedor().equalsIgnoreCase(objProveedor.getCodproveedor())) { 
+						log.info(lista.get(i).getCodproveedor()+" y "+objProveedor.getCodproveedor());
+						log.info("Error ... Ya se encuentra un código igual");
+						mensaje ="El código se encuentra asignado con otro proveedor";
+						paginaRetorno =mantenimientoProveedorSearch.getViewMant();
+						error = 1;
+						break;
+					}
 				}
 			}
-			}
 				if (error == 0) {
-				if (isNewRecord()) {					
-					log.info("insertando..... ");
+					if (isNewRecord()) {
 					objProveedorService.insertarProveedor(objProveedor);
-					log.info("insertando..... ");
-					setNewRecord(false);
 					mensaje ="Se registró el proveedor correctamente";
 					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 							Constants.MESSAGE_INFO_TITULO, mensaje);
-				} else {
-					log.info("actualizando..... ");
-					objProveedorService.actualizarProveedor(objProveedor);
-					log.info("insertando..... ");
-					mensaje ="Se atualizó el proveedor correctamente";
-					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-							Constants.MESSAGE_INFO_TITULO, mensaje);
-				}
+					}else {
+						objProveedorService.actualizarProveedor(objProveedor);
+						mensaje ="Se atualizó el proveedor correctamente";
+						msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+								Constants.MESSAGE_INFO_TITULO, mensaje);
+					}
 				objProveedor = new ProveedorSie();
 				paginaRetorno =mantenimientoProveedorSearch.listar();
 		}else{
@@ -189,27 +142,24 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 			msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
 					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 		}
-		FacesContext.getCurrentInstance().addMessage(null, msg);			
 		}
 		 catch (Exception e) {
 			e.printStackTrace();
-			nombre = e.getMessage();
+			mensaje = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
 					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
-			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
+
+		FacesContext.getCurrentInstance().addMessage(null, msg);	
 		return paginaRetorno;
 	}
-
-	/*métodos GET y SET*/
 	
-	public String getViewList() {
-		return "mantenimientoProveedorList";
-	}
-	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewMant()
+	 */
 	public String getViewMant() {
-		return "mantenimientoProveedorForm";
+		return Constants.MANT_PROVEEDOR_FORM_PAGE;
 	}
 	
 	/**
@@ -225,21 +175,7 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 	public void setObjProveedor(ProveedorSie objProveedor) {
 		this.objProveedor = objProveedor;
 	}
-
-	/**
-	 * @return the nombre
-	 */
-	public String getNombre() {
-		return nombre;
-	}
-
-	/**
-	 * @param nombre the nombre to set
-	 */
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
+	
 	/**
 	 * @return the tipoDocumento
 	 */
@@ -282,48 +218,6 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 			MantenimientoProveedorSearchAction mantenimientoProveedorSearch) {
 		this.mantenimientoProveedorSearch = mantenimientoProveedorSearch;
 	}
-	
-	/**
-	 * @return the log
-	 */
-	public static Log getLog() {
-		return log;
-	}
-
-	/**
-	 * @param log the log to set
-	 */
-	public static void setLog(Log log) {
-		MantenimientoProveedorSearchAction.log = log;
-	}
-
-	/**
-	 * @return the ide
-	 */
-	public int getIde() {
-		return ide;
-	}
-
-	/**
-	 * @param ide the ide to set
-	 */
-	public void setIde(int ide) {
-		this.ide = ide;
-	}
-
-	/**
-	 * @return the estado
-	 */
-	public int getEstado() {
-		return estado;
-	}
-
-	/**
-	 * @param estado the estado to set
-	 */
-	public void setEstado(int estado) {
-		this.estado = estado;
-	}
 
 	/**
 	 * @return the mensaje
@@ -352,7 +246,5 @@ public class MantenimientoProveedorFormAction extends BaseMantenimientoAbstractA
 	public void setLista(List<ProveedorSie> lista) {
 		this.lista = lista;
 	}
-	
-	
 	
 }

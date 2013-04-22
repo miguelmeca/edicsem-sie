@@ -103,15 +103,15 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 			
 			int cantContratos =objCobranzaOperaService.verificargeneracionDiaria();
 			if(cantContratos>0){
-				log.info(" se registro anteriormente " );
+				log.info(" se genero anteriormente la lista de cobranzas" );
 				mensaje="Ya se registro una lista anteriormente";
 				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
 				
 			}else{
-			/** Insertamos las listas de cobranzas para cada teleoperadora asignada */
-			objCobranzaOperaService.insertCobranzaOpera(teleoperadorasString.getTarget());
-			mensaje="Se generó la lista correctamente";
-			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+				/** Insertamos las listas de cobranzas para cada teleoperadora asignada */
+				objCobranzaOperaService.insertCobranzaOpera(teleoperadorasString.getTarget());
+				mensaje="Se generó la lista correctamente";
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 			}
 			context.execute("statusDialogCob.hide()");
 		} catch (Exception e) {
