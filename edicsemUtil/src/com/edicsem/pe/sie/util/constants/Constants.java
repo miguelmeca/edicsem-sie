@@ -120,6 +120,9 @@ public class Constants {
 	public static final String MANT_EVENTO_FORM_LIST_PAGE = "mantenimientoEventoFormList";
 	public static final String MANT_EVENTO_FORM_PAGE = "mantenimientoEventoForm";
 
+	public static final String MANT_PROVEEDOR_FORM_LIST_PAGE = "mantenimientoProveedorList";
+	public static final String MANT_PROVEEDOR_FORM_PAGE = "mantenimientoProveedorForm";
+	
 	public static final String MANT_CRITERIO_FORM_LIST_PAGE = "mantenimientoCriterioFormList";
 	
 	public static final String MANT_LUGAR_FORM_LIST_PAGE = "mantenimientoLugarVentaFormList";
@@ -135,6 +138,8 @@ public class Constants {
 	public static final String ASIGNAR_CORREOS_INCIDENTE_FORM_PAGE = "AsignarCorreosIncidenteForm";
 	
 	public static final String MANT_TIPO_CLIENTE_FORM_LIST_PAGE = "MantenimientoTipoClienteForm";
+
+	public static final String MANT_CONFIG_COBRANZA_OPERA = "MantenimientoConfigCobranzaOperaList";
 	
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
