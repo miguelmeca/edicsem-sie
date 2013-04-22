@@ -88,9 +88,9 @@ public class CobranzaDAOImpl implements CobranzaDAO{
 			
 			//cobranzas que estan vencidas o por vencer en dos días (como recordatorio)
 			log.info("tamaño lista Cobranza --> "+ DateUtil.getDate(DateUtil.getToday().getTime()));
-			Query q = em.createQuery("select p  " +
-					" from CobranzaSie p  where p.fecpago IS null and p.diasretraso > 0  or  " +
-			" DATE(p.fecvencimiento) - DATE('"+ DateUtil.getDate(DateUtil.getToday().getTime())  + "')  <= 2 and p.fecpago IS null ");
+			Query q = em.createQuery("select p from CobranzaSie p  where p.fecpago IS null and " +
+			" p.diasretraso > 0  or  DATE(p.fecvencimiento) - DATE('"+ DateUtil.getDate(DateUtil.getToday().getTime())
+			+ "')  <= 2 and p.fecpago IS null ");
 			
 			lista = new ArrayList<CobranzaSie>(q.getResultList());
 			log.info("tamaño lista Cobranza --> " + lista.size()+"  ");
