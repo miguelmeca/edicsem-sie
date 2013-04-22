@@ -14,6 +14,7 @@ import com.edicsem.pe.sie.entity.CobranzaOperadoraSie;
 import com.edicsem.pe.sie.entity.CobranzaSie;
 import com.edicsem.pe.sie.model.dao.CobranzaDAO;
 import com.edicsem.pe.sie.model.dao.CobranzaOperaDAO;
+import com.edicsem.pe.sie.model.dao.ConfigCobranzaDAO;
 import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
 import com.edicsem.pe.sie.model.dao.impl.CobranzaDAOImpl;
 import com.edicsem.pe.sie.service.facade.CobranzaOperaService;
@@ -29,6 +30,8 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 	private  CobranzaOperaDAO objCobranzaOperaDao;
 	@EJB
 	private  EmpleadoSieDAO objEmpleadoDao;
+	@EJB
+	private  ConfigCobranzaDAO objConfigCobranzaDao;
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.CobranzaService#insertCobranza(com.edicsem.pe.sie.entity.CobranzaSie)
