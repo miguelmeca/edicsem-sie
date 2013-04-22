@@ -80,6 +80,11 @@
 		<class>com.edicsem.pe.sie.entity.HistoricoObservacionesSie</class>
 		<class>com.edicsem.pe.sie.entity.HistorialParametroSistemaSie</class>
 		<class>com.edicsem.pe.sie.entity.ConfigCorrreosIncidenteSie</class>
+		<class>com.edicsem.pe.sie.entity.CalificacionEquifaxSie</class>
+		<class>com.edicsem.pe.sie.entity.HistoricoCalificacionEquifaxSie</class>
+		<class>com.edicsem.pe.sie.entity.RefinanciarPagoSie</class>
+		<class>com.edicsem.pe.sie.entity.ConfigCobranzaOperaSie</class>
+		<class>com.edicsem.pe.sie.entity.TipoCobranzaSie</class>
 		<properties>
 			<property name="eclipselink.jdbc.driver" value="org.postgresql.Driver" />
 			<property name="eclipselink.jdbc.url" value="jdbc:postgres://localhost:5432/bd_sie" />

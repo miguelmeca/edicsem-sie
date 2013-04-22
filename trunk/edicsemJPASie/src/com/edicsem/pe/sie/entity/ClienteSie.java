@@ -103,6 +103,10 @@ public class ClienteSie implements Serializable {
 	@OneToMany(mappedBy="tbCliente")
 	private Set<ContratoSie> tbContratos;
 	
+	//bi-directional many-to-one association to HistoricoCalificacionEquifaxSie
+  	@OneToMany(mappedBy="tbCliente")
+  	private Set<HistoricoCalificacionEquifaxSie> tbHistoricoCalifica;
+  	
 	private String usuariocreacion;
 
 	private String usuariomodifica;
@@ -428,5 +432,13 @@ public class ClienteSie implements Serializable {
 
 	public void setUsuariomodifica(String usuariomodifica) {
 		this.usuariomodifica = usuariomodifica;
+	}
+
+	public Set<HistoricoCalificacionEquifaxSie> getTbHistoricoCalifica() {
+		return tbHistoricoCalifica;
+	}
+
+	public void setTbHistoricoCalifica(Set<HistoricoCalificacionEquifaxSie> tbHistoricoCalifica) {
+		this.tbHistoricoCalifica = tbHistoricoCalifica;
 	}
 }

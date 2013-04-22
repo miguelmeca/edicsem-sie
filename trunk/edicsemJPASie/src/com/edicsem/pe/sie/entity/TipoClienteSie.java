@@ -1,6 +1,8 @@
 package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
+import java.util.Set;
+
 import javax.persistence.*;
 
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -29,6 +31,10 @@ public class TipoClienteSie implements Serializable {
 	private Integer cantcuotaretrazo;
 	
 	private Integer criterio;
+	
+	//bi-directional many-to-one association to ConfigCobranzaOperaSie
+	@OneToMany(mappedBy="tbTipoCliente")
+	private Set<ConfigCobranzaOperaSie> tbConfigCobranza;
 	
     public TipoClienteSie() {
     }
@@ -79,6 +85,14 @@ public class TipoClienteSie implements Serializable {
 
 	public void setCriterio(Integer criterio) {
 		this.criterio = criterio;
+	}
+
+	public Set<ConfigCobranzaOperaSie> getTbConfigCobranza() {
+		return tbConfigCobranza;
+	}
+
+	public void setTbConfigCobranza(Set<ConfigCobranzaOperaSie> tbConfigCobranza) {
+		this.tbConfigCobranza = tbConfigCobranza;
 	}
 
 }
