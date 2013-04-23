@@ -67,8 +67,6 @@ public class ClienteSie implements Serializable {
 
 	private String titulartelefono;
 	
-	private Integer tipocliente;
-	
 	private String planoTrabajo;
 
 	private String letraTrabajo;
@@ -89,6 +87,11 @@ public class ClienteSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idtipodocumentoidentidad")
 	private TipoDocumentoIdentidadSie tbTipoDocumentoIdentidad;
+    
+    //bi-directional many-to-one association to TipoClienteSie
+    @ManyToOne
+	@JoinColumn(name="idtipocliente")
+	private TipoClienteSie tbTipoCliente;
     
 	//bi-directional many-to-one association to EstadoGeneralSie
     @ManyToOne
@@ -119,9 +122,6 @@ public class ClienteSie implements Serializable {
 	
 	@Transient
 	private int item;
-
-	@Transient
-	private String tipoClienteString;
 
     public ClienteSie() {
     }
@@ -308,21 +308,7 @@ public class ClienteSie implements Serializable {
 	public void setNombresCompletos(String nombresCompletos) {
 		this.nombresCompletos = nombresCompletos;
 	}
-
-	/**
-	 * @return the tipocliente
-	 */
-	public Integer getTipocliente() {
-		return tipocliente;
-	}
-
-	/**
-	 * @param tipocliente the tipocliente to set
-	 */
-	public void setTipocliente(Integer tipocliente) {
-		this.tipocliente = tipocliente;
-	}
-
+	
 	/**
 	 * @return the item
 	 */
@@ -350,32 +336,6 @@ public class ClienteSie implements Serializable {
 	 */
 	public void setFechaNacimientoString(String fechaNacimientoString) {
 		this.fechaNacimientoString = fechaNacimientoString;
-	}
-
-	public String getTipoClienteString() {
-		
-		if(tipocliente==null){
-			tipoClienteString="";
-		}
-		else if(tipocliente==1){
-			tipoClienteString="Puntual";
-		}
-		else if(tipocliente==2){
-			tipoClienteString="Regular";
-		}
-		else if(tipocliente==3){
-			tipoClienteString="Moroso";
-		}
-		else if(tipocliente==4){
-			tipoClienteString="Extremo";
-		}else{
-			tipoClienteString="";
-		}
-		return tipoClienteString;
-	}
-
-	public void setTipoClienteString(String tipoClienteString) {
-		this.tipoClienteString = tipoClienteString;
 	}
 
 	public String getPlanoTrabajo() {
@@ -440,5 +400,13 @@ public class ClienteSie implements Serializable {
 
 	public void setTbHistoricoCalifica(Set<HistoricoCalificacionEquifaxSie> tbHistoricoCalifica) {
 		this.tbHistoricoCalifica = tbHistoricoCalifica;
+	}
+
+	public TipoClienteSie getTbTipoCliente() {
+		return tbTipoCliente;
+	}
+
+	public void setTbTipoCliente(TipoClienteSie tbTipoCliente) {
+		this.tbTipoCliente = tbTipoCliente;
 	}
 }
