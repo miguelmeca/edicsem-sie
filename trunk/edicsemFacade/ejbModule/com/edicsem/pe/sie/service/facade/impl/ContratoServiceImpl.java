@@ -34,7 +34,6 @@ import com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.ClienteDAO;
 import com.edicsem.pe.sie.model.dao.CobranzaDAO;
 import com.edicsem.pe.sie.model.dao.ContratoDAO;
-import com.edicsem.pe.sie.model.dao.ContratoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.DetContratoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.DetPaqueteDAO;
 import com.edicsem.pe.sie.model.dao.DetProductoContratoDAO;
@@ -51,6 +50,7 @@ import com.edicsem.pe.sie.model.dao.TipoEventoVentaDAO;
 import com.edicsem.pe.sie.model.dao.UbigeoDAO;
 import com.edicsem.pe.sie.service.facade.ContratoService;
 import com.edicsem.pe.sie.service.facade.HistoricoObservacionesService;
+import com.edicsem.pe.sie.service.facade.TipoClienteService;
 
 @Stateless
 public class ContratoServiceImpl implements ContratoService {
@@ -89,15 +89,13 @@ public class ContratoServiceImpl implements ContratoService {
 	@EJB
 	private DetPaqueteDAO objDetPaqueteDAO;
 	@EJB
-	private DetContratoEmpleadoDAO objDetContratoEmpleadoDAO;
-	@EJB
-	private ContratoEmpleadoDAO objContratoEmpleadoDAO;
-	@EJB
 	private TipoEventoVentaDAO objTipoEventoVentaDAO;
 	@EJB
 	private LugarVentaDAO objLugarVentaDAO;
 	@EJB
 	private HistoricoObservacionesService objHistorialDao;
+	@EJB
+	private TipoClienteService objTipoClienteDao;
 	
 	public static Log log = LogFactory.getLog(ContratoServiceImpl.class);
 	
@@ -107,7 +105,7 @@ public class ContratoServiceImpl implements ContratoService {
 	public void insertContrato(int idtipodoc,int Tipocasa,int idUbigeo,int  idempresa, ClienteSie  cliente, List<TelefonoPersonaSie> telefonoList, DomicilioPersonaSie domicilio,  ContratoSie contrato,List<DetProductoContratoSie> detprodcont, List<CobranzaSie> cobranza,  List<EmpleadoDTO>  detidEmpleadosList,int tipoVenta, int idpuntoventa) {
 		cliente.setTbTipoDocumentoIdentidad(objtipoDao.buscarTipoDocumento(idtipodoc));
 		cliente.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23));
-		cliente.setTipocliente(1);
+		cliente.setTbTipoCliente(objTipoClienteDao.findTipoCliente(1));
 		objClienteDao.insertCliente(cliente);
 		for (TelefonoPersonaSie telefonoPersonaSie : telefonoList) {
 			telefonoPersonaSie.setIdcliente(cliente);
@@ -455,7 +453,7 @@ public class ContratoServiceImpl implements ContratoService {
 				cli.setTitulartelefono(s.getTitulartelefono());
 				cli.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23)); 
 				cli.setTbTipoDocumentoIdentidad(objtipoDao.buscarTipoDocumento(1));
-				cli.setTipocliente(1);
+				cli.setTbTipoCliente(objTipoClienteDao.findTipoCliente(1));
 				
 				log.info(" insertando cliente:  "+ cli.getNombrecliente()+" ape. pat "+cli.getApepatcliente() );
 				cli.setUsuariocreacion(usuariocreacion);
@@ -797,7 +795,7 @@ public class ContratoServiceImpl implements ContratoService {
 				cli.setTitulartelefono(s.getTitulartelefono());
 				cli.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(23)); 
 				cli.setTbTipoDocumentoIdentidad(objtipoDao.buscarTipoDocumento(1));
-				cli.setTipocliente(1);
+				cli.setTbTipoCliente(objTipoClienteDao.findTipoCliente(1));
 				cli.setUsuariomodifica(usuariocreacion);
 				objClienteDao.updateCliente(cli);
 				con.setFechaentrega(s.getFechaEntrega());
