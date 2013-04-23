@@ -57,4 +57,11 @@ public class ConfigCobranzaServiceImpl implements ConfigCobranzaService {
 		return objConfigCobranzaDao.listarConfigCobranza();
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ConfigCobranzaService#buscarConfigCobranza(int)
+	 */
+	public List buscarConfigCobranza(int tipoCobranza) {
+		return objConfigCobranzaDao.buscarConfigCobranza(tipoCobranza);
+	}
+	
 }

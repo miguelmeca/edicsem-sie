@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.service.facade.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -10,6 +11,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.beans.MenuDTO;
 import com.edicsem.pe.sie.entity.DetPermisoEmpleadoSie;
+import com.edicsem.pe.sie.entity.PermisoSie;
 import com.edicsem.pe.sie.model.dao.DetPermisoEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.EmpleadoSieDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
@@ -29,12 +31,16 @@ public class DetPermisoEmpleadoServiceImpl implements DetPermisoEmpleadoService 
 	private  EmpleadoSieDAO objEmpleadoDao;
 	
 	private static Log log = LogFactory.getLog(DetPermisoEmpleadoServiceImpl.class);
+	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.DetPermisoEmpleadoService#insertDetPermisoEmpleado(java.util.List, int)
 	 */
 	public void insertDetPermisoEmpleado(List<String> p, int idEmpleado) {
-		 
-		List<String> listaPermisosActual= objPermisoDao.listarPermisosXEmpleado(idEmpleado);
+		List<PermisoSie> listaPermiso = objPermisoDao.listarPermisosXEmpleado(idEmpleado);
+		List<String> listaPermisosActual=new ArrayList<String>();
+		for (int i = 0; i < listaPermiso.size(); i++) {
+			listaPermisosActual.add(listaPermiso.get(i).getNombrePermiso());
+		}
 		
 				for (int i = 0; i < p.size(); i++) {
 					log.info(" Permiso "+ p.get(i));

@@ -34,4 +34,11 @@ public class TipoClienteServiceImpl implements TipoClienteService{
 	public void updateTipoCliente(TipoClienteSie objTipoClienteSie) {
 		objTipoClienteDao.updateTipoCliente(objTipoClienteSie);
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.TipoClienteService#findTipoCliente(int)
+	 */
+	public TipoClienteSie findTipoCliente(int id) {
+		return objTipoClienteDao.findTipoCliente(id);
+	}
 }

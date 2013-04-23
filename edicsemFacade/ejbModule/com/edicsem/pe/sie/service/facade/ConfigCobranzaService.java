@@ -12,4 +12,5 @@ public interface ConfigCobranzaService {
 	public abstract void updateConfigCobranza(ConfigCobranzaOperaSie c, int idtipocobranza,int idtipocliente);
 	public abstract ConfigCobranzaOperaSie findConfigCobranza(int id);
 	public abstract List  listarConfigCobranza();
+	public abstract List  buscarConfigCobranza(int tipoCobranza);
 }
