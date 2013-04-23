@@ -49,6 +49,23 @@ public class TipoClienteDAOImpl implements TipoClienteDAO{
 	}
 	
 	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.TipoClienteDAO#findTipoCliente(int)
+	 */
+	public TipoClienteSie findTipoCliente(int id) {
+		TipoClienteSie t= new TipoClienteSie();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("buscar tipo de cliente "+ id);
+			}
+			t =	em.find(TipoClienteSie.class, id);
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return t;
+	}
+	
+	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.TipoClienteDAO#listarTipoCliente()
 	 */
 	public List listarTipoCliente() {

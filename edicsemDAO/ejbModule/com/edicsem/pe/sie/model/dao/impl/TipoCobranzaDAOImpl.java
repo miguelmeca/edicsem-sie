@@ -75,9 +75,9 @@ public class TipoCobranzaDAOImpl implements TipoCobranzaDAO{
 	public List listarTipoCobranza() {
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from TipoCobranzaSie p where p.tbEstadoGeneral.idestadogeneral = "+ 85);
+			Query q = em.createQuery("select p from TipoCobranzaSie p where p.tbEstadoGeneral.idestadogeneral = "+ 102);
 			lista =  q.getResultList(); 
-		   log.info("tamaño lista Almacen --> " + lista.size()+"  ");
+		   log.info("tamaño lista Cobranza --> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

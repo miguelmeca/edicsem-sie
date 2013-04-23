@@ -12,5 +12,5 @@ public interface TipoClienteDAO {
 	public abstract List listarTipoCliente();
 	public abstract void insertTipoCliente(TipoClienteSie objTipoClienteSie);
 	public abstract void updateTipoCliente(TipoClienteSie objTipoClienteSie);
-	
+	public abstract TipoClienteSie findTipoCliente(int id);
 }
