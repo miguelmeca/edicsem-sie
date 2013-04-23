@@ -90,6 +90,8 @@ public class CobranzaOperaDAOImpl implements CobranzaOperaDAO{
 		int tamano=0;
 		List  lista = null;
 		try {
+			//Las listas son repartidas en dos turnos
+			//Verificar si ya se generó lista anteriormente
 			Query q = em.createQuery("select p from CobranzaOperadoraSie p where " +
 					" DATE(p.fechacreacion) = DATE('"+DateUtil.getToday().getTime()+"')");
 			lista =  q.getResultList();
@@ -99,6 +101,6 @@ public class CobranzaOperaDAOImpl implements CobranzaOperaDAO{
 			e.printStackTrace();
 		}
 		return tamano;
-	}	
+	}
 
 }

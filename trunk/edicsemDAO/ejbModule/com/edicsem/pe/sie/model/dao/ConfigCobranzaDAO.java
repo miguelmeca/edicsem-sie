@@ -13,5 +13,5 @@ public interface ConfigCobranzaDAO {
 	public abstract void updateConfigCobranza(ConfigCobranzaOperaSie c);
 	public abstract ConfigCobranzaOperaSie findConfigCobranza(int id);
 	public abstract List  listarConfigCobranza();
-	
+	public abstract List  buscarConfigCobranza(int tipoCobranza);
 }

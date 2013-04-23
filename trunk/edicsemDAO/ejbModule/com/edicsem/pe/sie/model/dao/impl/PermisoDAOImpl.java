@@ -75,8 +75,10 @@ public class PermisoDAOImpl implements PermisoDAO{
 		log.info(" permisooo "+ permiso );
 		PermisoSie p = null;
 		try {
-			Query q = em.createQuery("select p from PermisoSie p where  p.tbEstadoGeneral.idestadogeneral = "+ 68 +" and p.nombrePermiso ='"+permiso+"'");
-			p =  (PermisoSie) q.getSingleResult();
+			Query q = em.createQuery("select p from PermisoSie p where  p.tbEstadoGeneral.idestadogeneral = "+ 68 +" and p.nombrePermiso like '"+permiso+"'");
+			if(q.getResultList().size()>0){
+				p =  (PermisoSie) q.getResultList().get(0);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -89,8 +91,8 @@ public class PermisoDAOImpl implements PermisoDAO{
 	public List listarPermiso() {
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p.nombrePermiso from PermisoSie p where  p.tbEstadoGeneral.idestadogeneral = "+ 68 );
-			lista =  q.getResultList(); 						
+			Query q = em.createQuery("select p from PermisoSie p where  p.tbEstadoGeneral.idestadogeneral = "+ 68 );
+			lista =  q.getResultList();
 		   log.info("tamaño lista Permiso DAOIMPL --> " + lista.size()+"  ");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -105,7 +107,7 @@ public class PermisoDAOImpl implements PermisoDAO{
 		List lista = null;
 		log.info("  idEmpleado "+idEmpleado );
 		try {
-			Query q = em.createQuery("select p.nombrePermiso from PermisoSie p inner join p.tbDetEmpleadoEmpleados q " +
+			Query q = em.createQuery("select p from PermisoSie p inner join p.tbDetEmpleadoEmpleados q " +
 					" inner join q.tbEmpleado r where r.idempleado  = "+ idEmpleado+" and q.tbEstadoGeneral.idestadogeneral = 62");
 			lista =  q.getResultList();
 		   log.info("tamaño lista listarPermisosXEmpleado --> " + lista.size());

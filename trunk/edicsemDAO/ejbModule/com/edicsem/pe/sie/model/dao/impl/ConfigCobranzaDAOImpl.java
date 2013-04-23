@@ -1,5 +1,7 @@
 package com.edicsem.pe.sie.model.dao.impl;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -78,6 +80,25 @@ public class ConfigCobranzaDAOImpl implements ConfigCobranzaDAO{
 			Query q = em.createQuery("select p from ConfigCobranzaOperaSie p ");
 			lista =  q.getResultList(); 
 		   log.info("tamaño lista config cobranza  --> " + lista.size()+"  ");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ConfigCobranzaDAO#buscarConfigCobranza(int)
+	 */
+	public List buscarConfigCobranza(int tipoCobranza) {
+		List  lista = null;
+		Calendar cal = new GregorianCalendar();
+		try {
+			Query q = em.createQuery("select p from ConfigCobranzaOperaSie p " +
+					" where p.dias like '%"+ cal.get(Calendar.DAY_OF_WEEK) +"%' " +
+					" and p.tbTipoCobranza.idtipocobranza = "+tipoCobranza+
+					" and p.tbEstadoGeneral.idestadogeneral = 104");
+			lista =  q.getResultList();
+			log.info("tamaño lista config cobranza  --> " + lista.size()+"  ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
