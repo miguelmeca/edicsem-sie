@@ -22,7 +22,7 @@ public class TipoCobranzaServiceImpl implements TipoCobranzaService {
 	 * @see com.edicsem.pe.sie.service.facade.TipoCobranzaService#insertTipoCobranza(com.edicsem.pe.sie.entity.TipoCobranzaSie)
 	 */
 	public void insertTipoCobranza(TipoCobranzaSie t) {
-		t.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(85));
+		t.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(102));
 		objTipoCobranzaDao.insertTipoCobranza(t);
 	}
 	
