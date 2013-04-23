@@ -84,7 +84,7 @@ public class Constants {
 	public static final String MANT_SANCION_FORM_PAGE  = "mantenimientoSancionForm";
 	
 	public static final String MANT_PAQUETEBIBLICO_FORM_LIST_PAGE = "mantenimientoPaqueteBiblicoList";
-//	public static final String MANT_DETALLEPAQUETEBIBLICO_FORM_LIST_PAGE = "mantenimientoDetallePaqueteBiblicoList";
+	
 	public static final String MANT_DETALLEPAQUETEBIBLICO_FORM_PAGE  = "mantenimientoDetallePaqueteBiblicoForm";
 																		 
 	public static final String MANT_PAGO_VENDEDOR_FORM_PAGE = "mantenimientoPagoVentaForm";
@@ -95,21 +95,21 @@ public class Constants {
 	
 	public static final String MANT_MOTIVO_FORM_LIST_PAGE = "mantenimientoMotivoFormList";
 	
-	public static final String ASIGNAR_PERMISOS_FORM_PAGE = "AsignarPermisosForm";
+	public static final String ASIGNAR_PERMISOS_FORM_PAGE = "asignarPermisosForm";
 	
 	public static final String GENERAR_LISTAS_COBRANZA_FORM_PAGE = "GenerarListasCobranzaForm";
 
 	public static final String CONSULTA_CONTRATO_FORM_PAGE = "ConsultaContratoForm";
 	public static final String MIGRAR_SISTEMA_INTEGRADO = "MigracionSistemaIntegrado";
 	public static final String MIGRAR_ENTREGAS_PERU = "excelEntregasPeru";
-	public static final String MIGRAR_SISTEMA_RECAUDACION="MigracionSistemaRecaudacion";
+	public static final String MIGRAR_SISTEMA_RECAUDACION = "MigracionSistemaRecaudacion";
 	public static final String GESTIONAR_CONTRATO_FORM_PAGE = "GestionarContratoForm";
 
-	public static final String CONTROL_MERCADERIA_FORM = "ControlMercaderiaForm";
+	public static final String CONTROL_MERCADERIA_FORM = "controlMercaderiaForm";
 
 	public static final String VERIFICA_CLIENTE_FORM = "VerificaClienteForm";
 	
-	public static final String MANT_ASIGNAR_GRUPO_VENTA = "AsignarGrupoVentaForm";
+	public static final String MANT_ASIGNAR_GRUPO_VENTA = "asignarGrupoVentaForm";
 
 	public static final String MANT_ENTREGA_LETRAS = "EntregaLetrasContratoForm";
 	
@@ -135,11 +135,12 @@ public class Constants {
 
 	public static final String MANT_EFECTIVIDAD_FORM = "EfectividadVentasList";
 	
-	public static final String ASIGNAR_CORREOS_INCIDENTE_FORM_PAGE = "AsignarCorreosIncidenteForm";
+	public static final String ASIGNAR_CORREOS_INCIDENTE_FORM_PAGE = "asignarCorreosIncidenteForm";
 	
-	public static final String MANT_TIPO_CLIENTE_FORM_LIST_PAGE = "MantenimientoTipoClienteForm";
+	public static final String MANT_TIPO_CLIENTE_FORM_LIST_PAGE = "mantenimientoTipoClienteFormList";
 
-	public static final String MANT_CONFIG_COBRANZA_OPERA = "MantenimientoConfigCobranzaOperaList";
+	public static final String MANT_CONFIG_COBRANZA_OPERA_LIST = "mantenimientoConfigCobranzaOperaList";
+	public static final String MANT_CONFIG_COBRANZA_OPERA_FORM = "mantenimientoConfigCobranzaOperaForm";
 	
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
