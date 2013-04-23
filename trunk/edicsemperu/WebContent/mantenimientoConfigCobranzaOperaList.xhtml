@@ -20,11 +20,17 @@
 						<p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px; align=Left; " />
 					</p:outputPanel>
 				</f:facet>
-				<p:column sortBy="#{p.diasprogramados}" filterBy="#{p.diasprogramados}" headerText="dias programados">
+				<p:column sortBy="#{p.descripcion}" filterBy="#{p.descripcion}" headerText="Descripcion">
 					<f:facet name="header">
 						<h:outputText value="Dias programados" />
 					</f:facet>
-					<h:outputText value="#{p.diasprogramados}" />
+					<h:outputText value="#{p.descripcion}" />
+				</p:column>
+				<p:column sortBy="#{p.diasProgramados}" filterBy="#{p.diasProgramados}" headerText="dias ">
+					<f:facet name="header">
+						<h:outputText value="Dias programados" />
+					</f:facet>
+					<h:outputText value="#{p.diasProgramados}" />
 				</p:column>
 				<p:column>
 					<f:facet name="header">
@@ -42,7 +48,7 @@
 					<f:facet name="header">
 						<h:outputText value="Dias" />
 					</f:facet>
-					<h:outputText value="#{p.tbTipoCobranza.descripcion}" />
+					<h:outputText value="#{p.fechaString}" />
 				</p:column>
 				<p:column headerText="Editar">
 					<p:commandButton value="Editar" ajax="false" action="#{configCobranzaOperaFormAction.update}">
@@ -51,7 +57,7 @@
 				</p:column>
 				<f:facet name="footer">
 					<div align="left">
-						<p:commandButton id="btnNuevo" value="#{message['config.cobranza.nuevo']}" title="#{message['config.cobranza.tittle ']}" 
+						<p:commandButton id="btnNuevo" value="#{message['config.cobranza.nuevo']}" title="#{message['config.cobranza.tittle']}" 
 						action="#{configCobranzaOperaFormAction.agregar}" icon="ui-icon-star" />
 						<p:tooltip for="btnNuevo" />
 					</div>

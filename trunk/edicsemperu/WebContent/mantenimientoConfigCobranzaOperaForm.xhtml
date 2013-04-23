@@ -6,18 +6,24 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/layout/template.xhtml">
 	<ui:define name="body">
-		<h:form id="form">
+	<h:form id="form">
 	<p:panel header="Registrar Configuracion Cobranza Operadora"  id="panel">
 	        <p:messages showDetail="true"/>	
-			<p:panelGrid columns="2" cellpadding="5">						
+			<h:panelGrid columns="2" cellpadding="5">						
+			
+			<p:outputLabel  value="Descripcion" for="desc" />
+			<p:inputText id="desc" maxlength="20" value="#{configCobranzaOperaFormAction.objConfig.descripcion}" required="true" />
+			
+			<p:outputLabel  value="Dias programados" for="dp" />
+			<p:spinner id="dp" value="#{configCobranzaOperaFormAction.objConfig.diasProgramados}" required="true" />
 			
 			<p:outputLabel  value="Dias" for="fech" />
-            <p:selectOneMenu id="fech"  value="#{configCobranzaOperaFormAction.diasList}" required="true" >
+            <p:selectCheckboxMenu id="fech"  value="#{configCobranzaOperaFormAction.diasList}" filterMatchMode="startsWith"  required="true" requiredMessage="Debe seleccionar el día para la asistencia de dicho horario">
             <f:selectItem itemLabel="Seleccione una opción" itemValue="#{null}" />
             <f:selectItems  value="#{comboAction.diasItems}" />
-            </p:selectOneMenu>
+            </p:selectCheckboxMenu>
             
-			<p:outputLabel value="Tipo de Cobranza" for="tipo" />
+            <p:outputLabel value="Tipo de Cobranza" for="tipo" />
             <p:selectOneMenu id="tipo"  value="#{configCobranzaOperaFormAction.idtipocobranza}" required="true" >
             <f:selectItem itemLabel="Seleccione una opción" itemValue="#{null}" />
             <f:selectItems  value="#{comboAction.tipoCobranzaItems}" />
@@ -29,12 +35,11 @@
             <f:selectItems  value="#{comboAction.tipoClienteItems}" />
             </p:selectOneMenu>
             
-		    <f:facet name="footer">
-            <p:commandButton id="btn" value="Guardar" update="panel" action="#{configCobranzaOperaFormAction.insertar}" ajax="false" icon="ui-icon-check"/>
+            <p:commandButton id="btn" value="Guardar" action="#{configCobranzaOperaFormAction.insertar}" ajax="false" icon="ui-icon-check"/>
             <p:commandButton value="Regresar" action="#{configCobranzaOperaSearchAction.listar}" immediate="true" ajax = "false"  icon="ui-icon-circle-arrow-w"/>
-            </f:facet>				
-		</p:panelGrid>	
-	</p:panel>	            
-</h:form>
+            			
+		</h:panelGrid>	
+	</p:panel>
+	</h:form>
 	</ui:define>
 </ui:composition>

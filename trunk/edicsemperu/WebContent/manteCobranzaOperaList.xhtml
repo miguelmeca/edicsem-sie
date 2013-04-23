@@ -224,17 +224,12 @@
 					</p:selectOneMenu>
 					
 					<h:outputText value="#{message['cobranza.programar.cita']}" />
+					<h:panelGroup id="outCita" >
 					<p:selectBooleanCheckbox value="#{seguimientoCobranzaOpera.programarLlamada}" >
 						<p:ajax update="outCita" />
-					</p:selectBooleanCheckbox>
-					<p:outputPanel id="outCita" >
-					<p:fieldset legend="Programar Cita" rendered="#{seguimientoCobranzaOpera.programarLlamada==true}" >
-						<h:panelGrid columns="2" cellpadding="3" >
-						<h:outputText value="#{message['operadora.fechaProgramada']}" />
-						<p:calendar value="#{seguimientoCobranzaOpera.fechaProgramada}" pattern="dd/mm/yyyy HH:mm" locale="pe"/>
-					</h:panelGrid>
-					</p:fieldset>
-					</p:outputPanel>
+					</p:selectBooleanCheckbox> 
+						<p:calendar value="#{seguimientoCobranzaOpera.fechaProgramada}" rendered="#{seguimientoCobranzaOpera.programarLlamada==true}" pattern="dd/mm/yyyy HH:mm" locale="pe"/>
+					</h:panelGroup>
 					<f:facet name="footer">
 						<p:commandButton id="btn" value="#{message['cobranza.guardar']}" update="listaPersonas, message"
 						action="#{seguimientoCobranzaOpera.insertar}" ajax="false" icon="ui-icon-comment" />

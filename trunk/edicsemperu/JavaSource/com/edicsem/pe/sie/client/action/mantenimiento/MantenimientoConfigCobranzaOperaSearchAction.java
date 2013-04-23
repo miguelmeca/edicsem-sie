@@ -51,7 +51,7 @@ public class MantenimientoConfigCobranzaOperaSearchAction extends BaseMantenimie
 	/*GETs Y SETs*/
 	
 	public String getViewList() {
-		return Constants.MANT_CONFIG_COBRANZA_OPERA;
+		return Constants.MANT_CONFIG_COBRANZA_OPERA_LIST;
 	}
 
 	/**
