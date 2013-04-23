@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -20,7 +21,6 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 @ManagedBean(name="configCobranzaOperaFormAction")
 @SessionScoped
 public class MantenimientoConfigCobranzaFormAction extends BaseMantenimientoAbstractAction {
-    /*Se crean los objetos de las entidades proveedor*/	
 	private ConfigCobranzaOperaSie objConfig;
 	/*variables*/
 	private String mensaje;
@@ -29,6 +29,153 @@ public class MantenimientoConfigCobranzaFormAction extends BaseMantenimientoAbst
 	/*variable boolean necesaria*/
 	private boolean newRecord =false;
 	
+	@ManagedProperty(value = "#{configCobranzaOperaSearchAction}")
+	private MantenimientoConfigCobranzaOperaSearchAction mantenimientoConfigSearch;
+	
+	@EJB
+	private ConfigCobranzaService objConfigService;
+	
+	public static Log log = LogFactory.getLog(MantenimientoConfigCobranzaFormAction.class);
+	
+	public MantenimientoConfigCobranzaFormAction() {
+		log.info("inicializando mi constructor 'MantenimientoConfigCobranzaFormAction'");
+		init();
+	}
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#init()
+	 */
+	public void init() {
+		log.info("init()");
+	} 
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
+	 */ 
+	public String agregar() {
+		log.info("agregar config ");
+		objConfig = new ConfigCobranzaOperaSie();
+		diasList= new ArrayList<String>();
+		idtipocobranza=0;
+		idtipocliente=0;
+		setNewRecord(true);
+		return getViewMant();
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
+	 */
+	public String update() throws Exception {
+		log.info("update()");
+		diasList= new ArrayList<String>();
+		String[] diass=objConfig.getDias().split(",");
+		for (int i = 0; i < diass.length; i++) {
+			diasList.add(diass[i]);
+		}
+		idtipocliente = objConfig.getTbTipoCliente().getIdtipocliente();
+		idtipocobranza= objConfig.getTbTipoCobranza().getIdtipocobranza();
+		setNewRecord(false);
+		return getViewMant();
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
+	 */
+	public String insertar() throws Exception {
+		log.info("insertar()");
+		String paginaRetorno="";
+		mensaje=null;
+		try {
+			if (isNewRecord()){
+				String dias="";
+				for (int i = 0; i < diasList.size(); i++) {
+					if(i==0){
+						dias=""+diasList.get(i);
+					}else{
+						dias+=","+diasList.get(i);
+					}
+				}
+				objConfig.setDias(dias);
+				objConfigService.insertConfigCobranza(objConfig, idtipocobranza,idtipocliente);
+				mensaje ="Se registró la configuracion correctamente";
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
+			}else {
+				objConfigService.updateConfigCobranza(objConfig, idtipocobranza,idtipocliente);
+				mensaje ="Se atualizó la configuracion correctamente";
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
+			}
+			objConfig = new ConfigCobranzaOperaSie();
+			paginaRetorno =mantenimientoConfigSearch.listar();
+		}catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+		}
+		
+		FacesContext.getCurrentInstance().addMessage(null, msg);	
+		return paginaRetorno;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewMant()
+	 */
+	public String getViewMant() {
+		return Constants.MANT_CONFIG_COBRANZA_OPERA_FORM;
+	}
+	
+	/**
+	 * @return the newRecord
+	 */
+	public boolean isNewRecord() {
+		return newRecord;
+	}
+
+	/**
+	 * @param newRecord the newRecord to set
+	 */
+	public void setNewRecord(boolean newRecord) {
+		this.newRecord = newRecord;
+	}
+
+	/**
+	 * @return the mantenimientoConfigSearch
+	 */
+	public MantenimientoConfigCobranzaOperaSearchAction getMantenimientoConfigSearch() {
+		return mantenimientoConfigSearch;
+	}
+	/**
+	 * @param mantenimientoConfigSearch the mantenimientoConfigSearch to set
+	 */
+	public void setMantenimientoConfigSearch(MantenimientoConfigCobranzaOperaSearchAction mantenimientoConfigSearch) {
+		this.mantenimientoConfigSearch = mantenimientoConfigSearch;
+	}
+	/**
+	 * @return the mensaje
+	 */
+	public String getMensaje() {
+		return mensaje;
+	}
+
+	/**
+	 * @param mensaje the mensaje to set
+	 */
+	public void setMensaje(String mensaje) {
+		this.mensaje = mensaje;
+	}
+	/**
+	 * @return the objConfig
+	 */
+	public ConfigCobranzaOperaSie getObjConfig() {
+		return objConfig;
+	}
+	/**
+	 * @param objConfig the objConfig to set
+	 */
+	public void setObjConfig(ConfigCobranzaOperaSie objConfig) {
+		this.objConfig = objConfig;
+	}
+
 	/**
 	 * @return the idtipocobranza
 	 */
@@ -64,119 +211,5 @@ public class MantenimientoConfigCobranzaFormAction extends BaseMantenimientoAbst
 	 */
 	public void setDiasList(List<String> diasList) {
 		this.diasList = diasList;
-	}
-	@ManagedProperty(value = "#{mantenimientoProveedorSearchAction}")
-	private MantenimientoConfigCobranzaOperaSearchAction mantenimientoConfigSearch;
-	
-	@EJB
-	private ConfigCobranzaService objConfigService;
-	
-	public static Log log = LogFactory.getLog(MantenimientoProveedorFormAction.class);
-	
-	public MantenimientoConfigCobranzaFormAction() {
-		log.info("inicializando mi constructor");
-		init();
-	}
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#init()
-	 */
-	public void init() {
-		log.info("init()");
-	} 
-	
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
-	 */ 
-	public String agregar() {
-		log.info("agregar");
-		objConfig = new ConfigCobranzaOperaSie();
-		setNewRecord(true);
-		return getViewMant();
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
-	 */
-	public String update() throws Exception {
-		log.info("update()");
-		setNewRecord(false);
-		return getViewMant();
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
-	 */
-	public String insertar() throws Exception {
-		String paginaRetorno="";
-		mensaje=null;
-		try {
-			if (isNewRecord()) {
-				objConfigService.insertConfigCobranza(objConfig);
-				mensaje ="Se registró la configuracion correctamente";
-				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
-			}else {
-				objConfigService.updateConfigCobranza(objConfig);
-				mensaje ="Se atualizó la configuracion correctamente";
-				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
-			}
-			objConfig = new ConfigCobranzaOperaSie();
-			paginaRetorno =mantenimientoConfigSearch.listar();
-		}catch (Exception e) {
-			e.printStackTrace();
-			mensaje = e.getMessage();
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-			log.error(e.getMessage());
-		}
-
-		FacesContext.getCurrentInstance().addMessage(null, msg);	
-		return paginaRetorno;
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewMant()
-	 */
-	public String getViewMant() {
-		return Constants.MANT_PROVEEDOR_FORM_PAGE;
-	}
-
-	/**
-	 * @return the newRecord
-	 */
-	public boolean isNewRecord() {
-		return newRecord;
-	}
-
-	/**
-	 * @param newRecord the newRecord to set
-	 */
-	public void setNewRecord(boolean newRecord) {
-		this.newRecord = newRecord;
-	}
-
-	/**
-	 * @return the mensaje
-	 */
-	public String getMensaje() {
-		return mensaje;
-	}
-
-	/**
-	 * @param mensaje the mensaje to set
-	 */
-	public void setMensaje(String mensaje) {
-		this.mensaje = mensaje;
-	}
-	/**
-	 * @return the objConfig
-	 */
-	public ConfigCobranzaOperaSie getObjConfig() {
-		return objConfig;
-	}
-	/**
-	 * @param objConfig the objConfig to set
-	 */
-	public void setObjConfig(ConfigCobranzaOperaSie objConfig) {
-		this.objConfig = objConfig;
 	}
 }
