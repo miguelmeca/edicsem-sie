@@ -36,9 +36,6 @@ public class TipoCobranzaSie   implements Serializable {
 	private Integer idtipocobranza;
 
 	private String descripcion;
-
-    @Temporal( TemporalType.DATE)
-	private Date fechaexpira;
     
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
@@ -75,14 +72,6 @@ public class TipoCobranzaSie   implements Serializable {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
-	}
-
-	public Date getFechaexpira() {
-		return fechaexpira;
-	}
-
-	public void setFechaexpira(Date fechaexpira) {
-		this.fechaexpira = fechaexpira;
 	}
 
 	public Timestamp getFechacreacion() {
