@@ -9,11 +9,11 @@
 	<script language="JavaScript" type="text/javascript">
 		window.history.forward(-1);
 	</script>
-		<h1 class="title ui-widget-header ui-corner-all">Asignar Permisos a los Empleados</h1>
+		<h1 class="title ui-widget-header ui-corner-all">#{message['permiso.personal.panel']}</h1>
 		<h:form id="formPermisos">
 			<p:messages id="message" showDetail="true" />
 			<p:panel>
-				<p:fieldset legend="Busqueda de Empleado">
+				<p:fieldset legend="#{message['permiso.busqueda.empleado']}">
 					<h:panelGrid columns="6">
 					
 					<p:outputLabel value="#{message['permiso.personal.cargo']}" for="cargo"/>
@@ -28,18 +28,26 @@
 					<f:selectItems  value="#{comboAction.empleadoxcargo}" />
 					</p:selectOneMenu>
 					
-					<p:commandButton action="#{permiso.agregarListas}" value="Ver Permisos" ajax="false" update="formPermisos"/>
+					<p:commandButton action="#{permiso.agregarListas}" value="#{message['permiso.ver.permiso']}" ajax="false" update="formPermisos"/>
 					
 					</h:panelGrid>
 					
 				<p:spacer width="40px" /> 
 				
-				<p:pickList id="pojoPickList1" value="#{permiso.permisosString}" var="p"  
-				itemLabel="#{p}" itemValue="#{p}" />
+				<p:pickList id="pojoPickList1" value="#{permiso.permisos}" var="e" effect="bounce"  
+                    itemValue="#{e}" itemLabel="#{e.nombrePermiso}" converter="permisoConverter"  
+                    showSourceControls="true" showTargetControls="true" showCheckbox="true"  
+                    addLabel="Agregar" addAllLabel="Agregar todos" removeLabel="Quitar" removeAllLabel="Quitar todos"
+                    moveBottomLabel="mover al final" moveDownLabel="Mover abajo" moveTopLabel="mover primero" moveUpLabel="Mover Arriba"
+                    showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" >  
+                    <f:facet name="sourceCaption">Permisos</f:facet>
+                    <f:facet name="targetCaption">Seleccionados</f:facet> 
+                    <p:column> #{e.nombrePermiso}</p:column>
+                </p:pickList>
 				<br/> 
 				<h:panelGrid columns="3" >
 				<p:spacer/>
-				<p:commandButton  action="#{permiso.insertar}" value="Registrar Permisos" ajax="false" update="formPermisos" icon="ui-icon ui-icon-disk" />
+				<p:commandButton  action="#{permiso.insertar}" value="#{message['permiso.registrar']}" ajax="false" update="formPermisos" icon="ui-icon ui-icon-disk" />
 				</h:panelGrid>
 		   	</p:fieldset>
 			</p:panel>

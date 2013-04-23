@@ -8,15 +8,33 @@
 	<ui:define name="body">
 		<h1 class="title ui-widget-header ui-corner-all">#{message['generar.lista.panel']}</h1>
 		<h:form id="formGenerarCobranza">
-			<p:messages id="message" showDetail="true" />
+			<p:messages id="message" showDetail="true" closable="true" />
 			<p:panel header="#{message['panel.generar.cobranza']}">
 				<h:panelGrid columns="2" cellpadding="4" >
+				<h:outputText value="#{message['generar.tipo.cobranza']}" />
+				<p:selectOneMenu  value="#{cobranza.tipoCobranza}" required="true" >
+					<f:selectItem itemLabel="Seleccione una opción" itemValue="#{null}" />
+					<f:selectItems  value="#{comboAction.tipoCobranzaItems}" />
+				</p:selectOneMenu>
+				
 				<h:outputText value="#{message['generar.lista.empleados']}" />
-					
-				<p:pickList  value="#{cobranza.teleoperadorasString}" var="p" itemLabel="#{p}" itemValue="#{p}" />
-					
-				<p:commandButton actionListener="#{cobranza.insertar}" value="#{message['generar.listar.generar']}"
-				onclick="statusDialogCob.show();" update="message"/>
+				<p:spacer/>
+			 
+				<p:pickList id="pojoPickList" value="#{cobranza.teleoperadoras}" var="e" effect="bounce"  
+                    itemValue="#{e}" itemLabel="#{e.nombresCompletos}" converter="teleoperadoraConverter"  
+                    showSourceControls="true" showTargetControls="true" showCheckbox="true"  
+                    addLabel="Agregar" addAllLabel="Agregar todos" removeLabel="Quitar" removeAllLabel="Quitar todos"
+                    moveBottomLabel="mover al final" moveDownLabel="Mover abajo" moveTopLabel="mover primero" moveUpLabel="Mover Arriba"
+                    showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" >  
+                    <f:facet name="sourceCaption">teleoperadoras</f:facet>
+                    <f:facet name="targetCaption">Seleccionados</f:facet> 
+                    <p:column> #{e.nombresCompletos}</p:column>
+                </p:pickList>
+                <p:spacer/>
+                <f:facet name="footer">
+				<p:commandButton action="#{cobranza.insertar}" value="#{message['generar.listar.generar']}"
+				 update="message"/>
+				 </f:facet>
 				</h:panelGrid>
 			</p:panel>
 		</h:form>
