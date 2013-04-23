@@ -1,54 +1,62 @@
 package com.edicsem.pe.sie.client.converter;
 
-import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
+import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.primefaces.component.picklist.PickList;
+import org.primefaces.model.DualListModel;
 
 import com.edicsem.pe.sie.entity.PermisoSie;
-import com.edicsem.pe.sie.service.facade.PermisoService;
 
 @FacesConverter(value = "permisoConverter")
 public class PermisoConverter implements Converter {
-	@EJB
-	private PermisoService service;
+	
 	private static Log log = LogFactory.getLog(PermisoConverter.class);
 	
-	public Object getAsObject(FacesContext fc, UIComponent uic, String string) {
-		log.info("Converter String "+string);
-		if (string.trim().equals("")) {  
-            return null;  
-        }
+	public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
+		PermisoSie p =null;
+		if (value.trim().equals("")) {  
+           return null;  
+       }
 		else {  
-            try {
-            	PermisoSie p = service.findPermiso(string);
-            	return p;
-            }catch(NumberFormatException e) {
-            	log.info("***** ERROR "+ e.getMessage()+" cause "+e.getCause());
-                throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid  permiso "));  
-            }  
-            
-         }
+           try {
+           	 final DualListModel<PermisoSie> dualList;
+                    dualList = (DualListModel<PermisoSie>) ((PickList)uic).getValue();
+                   p = getObjectFromList(dualList.getSource(),Integer.valueOf(value));
+                    if(p==null){
+                        p = getObjectFromList(dualList.getTarget(),Integer.valueOf(value));
+                    }
+                   
+                return p;
+           }catch(Exception e) {
+           	log.info("Mensaje: "+ e.getMessage()+" cause: "+e.getCause());
+           }
+        }
+		return p;
 	}
-
-	public String getAsString(FacesContext fc, UIComponent uic, Object o) {
-		log.info("getAsString");
-		if (o == null || o.equals("")) {  
-            return "";  
-        }
-		else {  
-		PermisoSie p = new PermisoSie();
-		p = (PermisoSie) o;
-		log.info(" nombre "+p.getNombrePermiso());
-		//return p.getNombrePermiso();
-		return String.valueOf(((PermisoSie) o).getNombrePermiso());
+		
+	private PermisoSie getObjectFromList(final List<?> list, final Integer identifier) {
+		for(final Object object:list){
+			final PermisoSie p = (PermisoSie) object;
+			if(p.getIdpermiso().equals(identifier)){
+				return p;
+			}
 		}
+		return null;
 	}
 	
+	public String getAsString(FacesContext fc, UIComponent uic, Object o) {
+		if (o == null || o.equals("")) {  
+           return "";  
+       }
+		else {
+			return String.valueOf(((PermisoSie) o).getIdpermiso()); 
+		}
+	}
 }

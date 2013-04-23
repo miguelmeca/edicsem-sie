@@ -26,12 +26,9 @@ public class PermisoAction extends BaseMantenimientoAbstractAction {
 	private String mensaje;
 	private boolean editMode;
 	private DualListModel<PermisoSie> permisos;
-	private DualListModel<String> permisosString;
 	private Log log = LogFactory.getLog(PermisoAction.class);
 	private List<PermisoSie> source;  
-    private List<PermisoSie> target;  
-    private List<String> sources;  
-    private List<String> targets; 
+    private List<PermisoSie> target;
     private int idempleado;
     
 	@EJB
@@ -46,35 +43,40 @@ public class PermisoAction extends BaseMantenimientoAbstractAction {
 
 	public void init() {
 		log.info("init()");
-		sources = new ArrayList<String>();
-		targets = new ArrayList<String>();
-		permisosString= new DualListModel<String>(sources, targets);
 		source = new ArrayList<PermisoSie>();
 		target = new ArrayList<PermisoSie>();
 		permisos = new DualListModel<PermisoSie>(source, target);
 	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
+	 */
+	public String agregar() {
+		source = new ArrayList<PermisoSie>();
+		target = new ArrayList<PermisoSie>();
+		permisos = new DualListModel<PermisoSie>(source, target);
+		source = new ArrayList<PermisoSie>();
+		target = new ArrayList<PermisoSie>();
+		permisos = new DualListModel<PermisoSie>(source, target);
+		return getViewMant();
+	}
 	
 	public String agregarListas() {
-		log.info("agregarrr ()");
+		log.info("agregar ()");
+		permisos = new DualListModel<PermisoSie>(source, target);
+		target= objPermisoService.listarPermisosXEmpleado(idempleado);
+		source= objPermisoService.listarPermiso();
 		
-		permisosString = new DualListModel<String>(new ArrayList<String>(), new ArrayList<String>());
-		log.info("listarPermisosXEmpleado()mmm");
-		targets= objPermisoService.listarPermisosXEmpleado(idempleado);
-		log.info("targets()"+targets.size());
-		sources= objPermisoService.listarPermiso();
-		log.info("sources()"+sources.size());
-		
-		for (int i = 0; i < targets.size(); i++) {
-			for (int j = 0; j < sources.size(); j++) {
-				log.info("aqui   "+targets.get(i)+" -  "+sources.get(j));
-				if(targets.get(i).equalsIgnoreCase(sources.get(j))){
-					log.info("* desc * "+targets.get(i));
-					sources.remove(j);
-					log.info(sources.size()+"  sources())   " ); 
+		for (int i = 0; i < target.size(); i++) {
+			for (int j = 0; j < source.size(); j++) {
+				log.info("aqui   "+target.get(i)+" -  "+source.get(j));
+				if(target.get(i).getNombrePermiso().equalsIgnoreCase(source.get(j).getNombrePermiso())){
+					source.remove(j);
 				}
 			}
 		}
-		permisosString = new DualListModel<String>(sources, targets);
+		log.info(source.size()+"  sources())   " ); 
+		permisos = new DualListModel<PermisoSie>(source, target);
 		
 		return getViewList();
 	}
@@ -87,19 +89,19 @@ public class PermisoAction extends BaseMantenimientoAbstractAction {
 		
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("Entering my method 'insertar()' :D  " );
+				log.info("Entering my method 'insertar()'" );
 			}
-			log.info(" *************** INSERTAR *********" +targets.size() );
-			log.info("xxx "+permisosString.getTarget());
-			 
-			objDetPermisoService.insertDetPermisoEmpleado(permisosString.getTarget(),idempleado);
-			log.info(" "+targets);
+			log.info(" *************** INSERTAR *********" +target.size() );
+			List<String> lstPermiso=new ArrayList<String>();
+			for (int i = 0; i < permisos.getTarget().size(); i++) {
+				lstPermiso.add(permisos.getTarget().get(i).getNombrePermiso());
+			}
+			objDetPermisoService.insertDetPermisoEmpleado(lstPermiso,idempleado);
 			
 			mensaje = Constants.MESSAGE_REGISTRO_TITULO;
 			msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 					Constants.MESSAGE_INFO_TITULO, mensaje);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
-			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -110,6 +112,13 @@ public class PermisoAction extends BaseMantenimientoAbstractAction {
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 		return listar();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewMant()
+	 */
+	public String getViewMant() {
+		return Constants.ASIGNAR_PERMISOS_FORM_PAGE;
 	}
 	
 	/* (non-Javadoc)
@@ -201,69 +210,6 @@ public class PermisoAction extends BaseMantenimientoAbstractAction {
 	 */
 	public void setPermisos(DualListModel<PermisoSie> permisos) {
 		this.permisos = permisos;
-	}
-
-	/**
-	 * @return the permisosString
-	 */
-	public DualListModel<String> getPermisosString() {
-		return permisosString;
-	}
-
-	/**
-	 * @param permisosString the permisosString to set
-	 */
-	public void setPermisosString(DualListModel<String> permisosString) {
-		this.permisosString = permisosString;
-	}
-
-	/**
-	 * @return the sources
-	 */
-	public List<String> getSources() {
-		return sources;
-	}
-
-	/**
-	 * @param sources the sources to set
-	 */
-	public void setSources(List<String> sources) {
-		this.sources = sources;
-	}
-
-	/**
-	 * @return the targets
-	 */
-	public List<String> getTargets() {
-		return targets;
-	}
-
-	/**
-	 * @param targets the targets to set
-	 */
-	public void setTargets(List<String> targets) {
-		this.targets = targets;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
-	 */
-	public String agregar() {
-
-		sources = new ArrayList<String>();
-		targets = new ArrayList<String>();
-		permisosString= new DualListModel<String>(sources, targets);
-		source = new ArrayList<PermisoSie>();
-		target = new ArrayList<PermisoSie>();
-		permisos = new DualListModel<PermisoSie>(source, target);
-		return getViewMant();
-	}
-
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewMant()
-	 */
-	public String getViewMant() {
-		return Constants.ASIGNAR_PERMISOS_FORM_PAGE;
 	}
 
 }

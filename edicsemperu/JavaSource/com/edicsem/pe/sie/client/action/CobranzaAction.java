@@ -13,11 +13,14 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
 
 import com.edicsem.pe.sie.entity.CobranzaSie;
+import com.edicsem.pe.sie.entity.ConfigCobranzaOperaSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.service.facade.CobranzaOperaService;
+import com.edicsem.pe.sie.service.facade.ConfigCobranzaService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
@@ -37,19 +40,20 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
     //picklist
 
 	private DualListModel<EmpleadoSie> teleoperadoras;
-	private DualListModel<String> teleoperadorasString;
-	private List<EmpleadoSie> source;  
-    private List<EmpleadoSie> target;  
-    private List<String> sources; 
-    private List<String> targets;
+	//private DualListModel<String> teleoperadorasString;
+    private List<EmpleadoSie> sources; 
+    private List<EmpleadoSie> targets;
+    private int tipoCobranza;
     
 	@EJB
 	private CobranzaOperaService objCobranzaOperaService;
 	@EJB
 	private EmpleadoSieService objEmpleadoService;
+	@EJB
+	private  ConfigCobranzaService objConfigCobranzaService;
 	
 	public CobranzaAction() {
-		log.info("inicializando constructor cobranzaAction");
+		log.info("inicializando constructor 'CobranzaAction'");
 		init();
 	}
 	
@@ -59,31 +63,27 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 	public void init() {
 		log.info("init() ");
 		empleadoList = new ArrayList<String>();
-		sources = new ArrayList<String>();
-		targets = new ArrayList<String>();
-		teleoperadorasString= new DualListModel<String>(sources, targets);
-		source = new ArrayList<EmpleadoSie>();
-		target = new ArrayList<EmpleadoSie>();
-		teleoperadoras = new DualListModel<EmpleadoSie>(source, target);
+		sources = new ArrayList<EmpleadoSie>();
+		targets = new ArrayList<EmpleadoSie>();
+		//teleoperadorasString= new DualListModel<String>(sources, targets);
+		teleoperadoras = new DualListModel<EmpleadoSie>(sources, targets);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
 	 */
 	public String agregar() {
-		sources = new ArrayList<String>();
-		targets = new ArrayList<String>();
-		source = new ArrayList<EmpleadoSie>();
-		target = new ArrayList<EmpleadoSie>();
-		teleoperadoras = new DualListModel<EmpleadoSie>(source, target);
+		sources = new ArrayList<EmpleadoSie>();
+		targets = new ArrayList<EmpleadoSie>();
+		teleoperadoras = new DualListModel<EmpleadoSie>(sources, targets);
 		List<EmpleadoSie> lstEmpleados = objEmpleadoService.listarEmpleadosXCargo(7);
 		for (int i = 0; i < lstEmpleados.size(); i++) {
 			log.info(" "+lstEmpleados.get(i).getNombresCompletos() );
-			sources.add(lstEmpleados.get(i).getNombresCompletos());
+			sources.add(lstEmpleados.get(i));
 		}
 		log.info("sources()"+sources.size());
-		
-		teleoperadorasString = new DualListModel<String>(sources, targets);
+		teleoperadoras = new DualListModel<EmpleadoSie>(sources, targets);  
+		//teleoperadorasString = new DualListModel<String>(sources, targets);
 		
 		return getViewList();
 	}
@@ -92,28 +92,39 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
 	 */
 	public String insertar() throws Exception {
+		log.info("insertar() " +empleadoList.size());
 		mensaje=null;
 		RequestContext context = RequestContext.getCurrentInstance();
+		context.execute("statusDialogCob.show()");
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()' " );
 			}
 			dhoy =  DateUtil.getToday().getTime();
 			//Validar si se registro las listas en el dia ( si es turno mañana)
-			
-			int cantContratos =objCobranzaOperaService.verificargeneracionDiaria();
-			if(cantContratos>0){
-				log.info(" se genero anteriormente la lista de cobranzas" );
-				mensaje="Ya se registro una lista anteriormente";
-				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
-				
+			List<ConfigCobranzaOperaSie> configList = objConfigCobranzaService.buscarConfigCobranza(tipoCobranza);
+			log.info("tamano config --> "+configList.size() );
+			if(configList.size()>0){
+					
+				int cantContratos =objCobranzaOperaService.verificargeneracionDiaria();
+				if(cantContratos>0){
+					log.info(" se genero anteriormente la lista de cobranzas" );
+					mensaje="Ya se registro una lista anteriormente";
+					msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
+					
+				}else{
+					for (int i = 0; i < teleoperadoras.getTarget().size(); i++) {
+						empleadoList.add(teleoperadoras.getTarget().get(i).getNombresCompletos());
+					}
+					/** Insertamos las listas de cobranzas para cada teleoperadora asignada */
+					objCobranzaOperaService.insertCobranzaOpera(empleadoList,configList);
+					mensaje="Se generó la lista correctamente";
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+				}
 			}else{
-				/** Insertamos las listas de cobranzas para cada teleoperadora asignada */
-				objCobranzaOperaService.insertCobranzaOpera(teleoperadorasString.getTarget());
-				mensaje="Se generó la lista correctamente";
-				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+				mensaje="El día de hoy no está configurado para generar listas de cobranza";
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
 			}
-			context.execute("statusDialogCob.hide()");
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -122,8 +133,23 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 			log.error(e.getMessage());
 		}
 		FacesContext.getCurrentInstance().addMessage(null, msg);
+		context.execute("statusDialogCob.hide()");
 		return getViewList();
 	}
+	
+	public void onTransfer(TransferEvent event) {  
+        StringBuilder builder = new StringBuilder();  
+        for(Object item : event.getItems()) {  
+            builder.append(((EmpleadoSie) item).getNombresCompletos()).append("<br />");  
+        }
+          
+        FacesMessage msg = new FacesMessage();  
+        msg.setSeverity(FacesMessage.SEVERITY_INFO);  
+        msg.setSummary("Items Transferred");  
+        msg.setDetail(builder.toString());  
+          
+        FacesContext.getCurrentInstance().addMessage(null, msg);  
+    }
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewList()
@@ -180,76 +206,6 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 	public void setTeleoperadoras(DualListModel<EmpleadoSie> teleoperadoras) {
 		this.teleoperadoras = teleoperadoras;
 	}
-
-	/**
-	 * @return the teleoperadorasString
-	 */
-	public DualListModel<String> getTeleoperadorasString() {
-		return teleoperadorasString;
-	}
-
-	/**
-	 * @param teleoperadorasString the teleoperadorasString to set
-	 */
-	public void setTeleoperadorasString(DualListModel<String> teleoperadorasString) {
-		this.teleoperadorasString = teleoperadorasString;
-	}
-
-	/**
-	 * @return the source
-	 */
-	public List<EmpleadoSie> getSource() {
-		return source;
-	}
-
-	/**
-	 * @param source the source to set
-	 */
-	public void setSource(List<EmpleadoSie> source) {
-		this.source = source;
-	}
-
-	/**
-	 * @return the target
-	 */
-	public List<EmpleadoSie> getTarget() {
-		return target;
-	}
-
-	/**
-	 * @param target the target to set
-	 */
-	public void setTarget(List<EmpleadoSie> target) {
-		this.target = target;
-	}
-
-	/**
-	 * @return the sources
-	 */
-	public List<String> getSources() {
-		return sources;
-	}
-
-	/**
-	 * @param sources the sources to set
-	 */
-	public void setSources(List<String> sources) {
-		this.sources = sources;
-	}
-
-	/**
-	 * @return the targets
-	 */
-	public List<String> getTargets() {
-		return targets;
-	}
-
-	/**
-	 * @param targets the targets to set
-	 */
-	public void setTargets(List<String> targets) {
-		this.targets = targets;
-	}
 	
 	/**
 	 * @return the cobranzaList
@@ -277,6 +233,48 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 	 */
 	public void setEmpleadoList(List<String> empleadoList) {
 		this.empleadoList = empleadoList;
+	}
+
+	/**
+	 * @return the tipoCobranza
+	 */
+	public int getTipoCobranza() {
+		return tipoCobranza;
+	}
+
+	/**
+	 * @param tipoCobranza the tipoCobranza to set
+	 */
+	public void setTipoCobranza(int tipoCobranza) {
+		this.tipoCobranza = tipoCobranza;
+	}
+
+	/**
+	 * @return the sources
+	 */
+	public List<EmpleadoSie> getSources() {
+		return sources;
+	}
+
+	/**
+	 * @param sources the sources to set
+	 */
+	public void setSources(List<EmpleadoSie> sources) {
+		this.sources = sources;
+	}
+
+	/**
+	 * @return the targets
+	 */
+	public List<EmpleadoSie> getTargets() {
+		return targets;
+	}
+
+	/**
+	 * @param targets the targets to set
+	 */
+	public void setTargets(List<EmpleadoSie> targets) {
+		this.targets = targets;
 	}
 
 }

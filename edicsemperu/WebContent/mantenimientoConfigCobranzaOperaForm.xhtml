@@ -11,34 +11,34 @@
 	        <p:messages showDetail="true"/>	
 			<h:panelGrid columns="2" cellpadding="5">						
 			
-			<p:outputLabel  value="Descripcion" for="desc" />
+			<h:outputText  value="Descripcion" />
 			<p:inputText id="desc" maxlength="20" value="#{configCobranzaOperaFormAction.objConfig.descripcion}" required="true" />
 			
-			<p:outputLabel  value="Dias programados" for="dp" />
+			<h:outputText value="Dias programados" />
 			<p:spinner id="dp" value="#{configCobranzaOperaFormAction.objConfig.diasProgramados}" required="true" />
 			
-			<p:outputLabel  value="Dias" for="fech" />
-            <p:selectCheckboxMenu id="fech"  value="#{configCobranzaOperaFormAction.diasList}" filterMatchMode="startsWith"  required="true" requiredMessage="Debe seleccionar el día para la asistencia de dicho horario">
+			<h:outputText  value="Dias" />
+            <p:selectCheckboxMenu value="#{configCobranzaOperaFormAction.diasList}" filterMatchMode="startsWith"  required="true" requiredMessage="Debe seleccionar el día para la asistencia de dicho horario">
             <f:selectItem itemLabel="Seleccione una opción" itemValue="#{null}" />
             <f:selectItems  value="#{comboAction.diasItems}" />
             </p:selectCheckboxMenu>
             
-            <p:outputLabel value="Tipo de Cobranza" for="tipo" />
-            <p:selectOneMenu id="tipo"  value="#{configCobranzaOperaFormAction.idtipocobranza}" required="true" >
+            <h:outputText value="Tipo de Cobranza" />
+            <p:selectOneMenu  value="#{configCobranzaOperaFormAction.idtipocobranza}" required="true" >
             <f:selectItem itemLabel="Seleccione una opción" itemValue="#{null}" />
             <f:selectItems  value="#{comboAction.tipoCobranzaItems}" />
             </p:selectOneMenu>
             
-            <p:outputLabel value="Tipo Cliente" for="tipocli" />
-            <p:selectOneMenu id="tipocli" value="#{configCobranzaOperaFormAction.idtipocliente}" required="true" >
+            <h:outputText value="Tipo Cliente"  />
+            <p:selectOneMenu   value="#{configCobranzaOperaFormAction.idtipocliente}" required="true" >
             <f:selectItem itemLabel="Seleccione una opción" itemValue="#{null}" />
             <f:selectItems  value="#{comboAction.tipoClienteItems}" />
             </p:selectOneMenu>
             
             <p:commandButton id="btn" value="Guardar" action="#{configCobranzaOperaFormAction.insertar}" ajax="false" icon="ui-icon-check"/>
             <p:commandButton value="Regresar" action="#{configCobranzaOperaSearchAction.listar}" immediate="true" ajax = "false"  icon="ui-icon-circle-arrow-w"/>
-            			
-		</h:panelGrid>	
+            
+		</h:panelGrid>
 	</p:panel>
 	</h:form>
 	</ui:define>

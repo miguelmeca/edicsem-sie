@@ -22,11 +22,9 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 @SessionScoped
 public class MantenimientoConfigCobranzaFormAction extends BaseMantenimientoAbstractAction {
 	private ConfigCobranzaOperaSie objConfig;
-	/*variables*/
 	private String mensaje;
 	private int idtipocobranza, idtipocliente;
 	private List<String> diasList;
-	/*variable boolean necesaria*/
 	private boolean newRecord =false;
 	
 	@ManagedProperty(value = "#{configCobranzaOperaSearchAction}")
@@ -52,7 +50,7 @@ public class MantenimientoConfigCobranzaFormAction extends BaseMantenimientoAbst
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
 	 */ 
 	public String agregar() {
-		log.info("agregar config ");
+		log.info("agregar ");
 		objConfig = new ConfigCobranzaOperaSie();
 		diasList= new ArrayList<String>();
 		idtipocobranza=0;
@@ -85,16 +83,17 @@ public class MantenimientoConfigCobranzaFormAction extends BaseMantenimientoAbst
 		String paginaRetorno="";
 		mensaje=null;
 		try {
-			if (isNewRecord()){
-				String dias="";
-				for (int i = 0; i < diasList.size(); i++) {
-					if(i==0){
-						dias=""+diasList.get(i);
-					}else{
-						dias+=","+diasList.get(i);
-					}
+			String dias="";
+			for (int i = 0; i < diasList.size(); i++) {
+				if(i==0){
+					dias=""+diasList.get(i);
+				}else{
+					dias+=","+diasList.get(i);
 				}
-				objConfig.setDias(dias);
+			}
+			objConfig.setDias(dias);
+			
+			if (isNewRecord()){
 				objConfigService.insertConfigCobranza(objConfig, idtipocobranza,idtipocliente);
 				mensaje ="Se registró la configuracion correctamente";
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
