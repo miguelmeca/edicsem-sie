@@ -9,8 +9,8 @@ import com.edicsem.pe.sie.entity.TipoClienteSie;
 @Local
 public interface TipoClienteDAO {
 	
-	public abstract List listarTipoCliente();
 	public abstract void insertTipoCliente(TipoClienteSie objTipoClienteSie);
 	public abstract void updateTipoCliente(TipoClienteSie objTipoClienteSie);
 	public abstract TipoClienteSie findTipoCliente(int id);
+	public abstract List listarTipoCliente();
 }
