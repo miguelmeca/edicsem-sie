@@ -40,31 +40,7 @@ public class ConfigCobranzaOperaSie   implements Serializable {
 	private String dias;
 	
 	private String fechas;
-
-	public Integer getDiasProgramados() {
-		return diasProgramados;
-	}
-
-	public void setDiasProgramados(Integer diasProgramados) {
-		this.diasProgramados = diasProgramados;
-	}
-
-	public String getDias() {
-		return dias;
-	}
-
-	public void setDias(String dias) {
-		this.dias = dias;
-	}
-
-	public String getFechas() {
-		return fechas;
-	}
-
-	public void setFechas(String fechas) {
-		this.fechas = fechas;
-	}
-
+	
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
 
@@ -90,6 +66,31 @@ public class ConfigCobranzaOperaSie   implements Serializable {
     
     public ConfigCobranzaOperaSie() {
     }
+
+
+	public Integer getDiasProgramados() {
+		return diasProgramados;
+	}
+
+	public void setDiasProgramados(Integer diasProgramados) {
+		this.diasProgramados = diasProgramados;
+	}
+
+	public String getDias() {
+		return dias;
+	}
+
+	public void setDias(String dias) {
+		this.dias = dias;
+	}
+
+	public String getFechas() {
+		return fechas;
+	}
+
+	public void setFechas(String fechas) {
+		this.fechas = fechas;
+	}
 
 	public Integer getIdconfigcob() {
 		return idconfigcob;
