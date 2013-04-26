@@ -50,7 +50,6 @@ public class ProductoDAOImpl implements ProductoDAO {
 	 * com.edicsem.pe.sie.model.dao.ProductoDAO#updateProducto(com.edicsem.pe
 	 * .sie.entity.TbProductoSie)
 	 */
-
 	public void updateProducto(ProductoSie producto) {
 		try {
 			if (log.isInfoEnabled()) {
@@ -68,7 +67,6 @@ public class ProductoDAOImpl implements ProductoDAO {
 	 * @see
 	 * com.edicsem.pe.sie.model.dao.ProductoDAO#findProducto(java.lang.String)
 	 */
-
 	public ProductoSie findProducto(int id) {
 
 		ProductoSie producto = new ProductoSie();
@@ -97,8 +95,6 @@ public class ProductoDAOImpl implements ProductoDAO {
 		}
 		return lista;
 	}
-
-	
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.ProductoDAO#listarProductosXTipo(int)
@@ -117,7 +113,6 @@ public class ProductoDAOImpl implements ProductoDAO {
 		return lista;
 	}
 
-
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.ProductoDAO#listarProductoxEmpresas(int)
 	 */
@@ -135,7 +130,9 @@ public class ProductoDAOImpl implements ProductoDAO {
 		return lista;
 	}
 
-
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ProductoDAO#verificarTipoProducto(int)
+	 */
 	public boolean verificarTipoProducto(int tipoProducto) {
 		boolean bandera = true;
 		List lista = null;
@@ -156,7 +153,9 @@ public class ProductoDAOImpl implements ProductoDAO {
 		return bandera;
 	}
 
-
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ProductoDAO#buscarXcodigoProducto(java.lang.String)
+	 */
 	public ProductoSie buscarXcodigoProducto(String codProducto) {
 	
 		ProductoSie p = new ProductoSie();
@@ -164,13 +163,10 @@ public class ProductoDAOImpl implements ProductoDAO {
 			if (log.isInfoEnabled()) {
 				log.info("buscar Codigo de Producto" +"  "+ codProducto );
 			}
-
-Query q = em.createQuery("select p from ProductoSie p where p.tbEstadoGeneral.idestadogeneral = 5 AND p.codproducto like  '"+ codProducto + "'");
+		Query q = em.createQuery("select p from ProductoSie p where p.tbEstadoGeneral.idestadogeneral = 5 " +
+				" AND p.codproducto like  '"+ codProducto + "'");
 			if (q.getResultList().size() == 1) {
-
 				p = (ProductoSie) q.getResultList().get(0);
-				// casteado tiene columnas pero no se ah mencionado cuales son p=(ProductoSie) q.getResultList().get(0);
-				
 			}
 			log.info("Aquita PRODUCTO-->"+ p.getCodproducto());
 		} catch (Exception e) {
@@ -178,20 +174,55 @@ Query q = em.createQuery("select p from ProductoSie p where p.tbEstadoGeneral.id
 		}
 		return p;
 	}
-
 	
-	
-	
-	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ProductoDAO#listarCodigosProductos()
+	 */
 	public List<String> listarCodigosProductos() {
 		List lista = null;
 		try {
-			Query q = em.createQuery("SELECT e.codproducto FROM ProductoSie ");
+			Query q = em.createQuery("SELECT p.codproducto FROM ProductoSie p ");
 			lista = q.getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return lista;
-	}	
+	}
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ProductoDAO#findProductoporDescripcion(java.lang.String)
+	 */
+	public ProductoSie findProductoporDescripcion(String descripcion) {
+		ProductoSie p = null;
+		try {
+			Query q = em.createQuery("SELECT p FROM ProductoSie p where p.descripcionproducto like '"+descripcion+"'");
+			if(q.getResultList().size()>0){
+				p = (ProductoSie) q.getResultList().get(0);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return p;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ProductoDAO#buscarUltimocodigoProductoXDescripcion(java.lang.String)
+	 */
+	public String buscarUltimocodigoProductoXDescripcion(String codProducto) {
+		String p = "";
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("buscar Codigo de Producto " + codProducto );
+			}
+			Query q = em.createQuery("select p.codproducto from ProductoSie p where p.tbEstadoGeneral.idestadogeneral = 5 " +
+				" and p.descripcionproducto like  '"+ codProducto + "%'");
+			if (q.getResultList().size() == 1) {
+				p =  (String) q.getResultList().get(q.getResultList().size()-1);
+			}
+			log.info("codigo producto -->"+ p );
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return p;
+	}
 }

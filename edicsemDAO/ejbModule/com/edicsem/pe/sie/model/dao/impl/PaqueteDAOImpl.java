@@ -90,23 +90,21 @@ public class PaqueteDAOImpl implements PaqueteDAO {
 			e.printStackTrace();
 		}
 	}
-
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.PaqueteDAO#buscarXcodigoPaquete(java.lang.String)
+	 */
 	public PaqueteSie buscarXcodigoPaquete(String codPaquete) {
-		PaqueteSie p = new PaqueteSie();
+		PaqueteSie p = null;
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("buscar codPaquete en la IMPLEMENTACION DAO" + codPaquete );
 			}
-
-Query q = em.createQuery("select p from  PaqueteSie p where p.tbEstadoGeneral.idestadogeneral = 60 AND p.codpaquete like  '"+ codPaquete + "'");
+			Query q = em.createQuery("select p from  PaqueteSie p where " +
+					" p.tbEstadoGeneral.idestadogeneral = 60 AND p.codpaquete like  '"+ codPaquete + "'");
 			if (q.getResultList().size() == 1) {
-
 				p = (PaqueteSie) q.getResultList().get(0);
-				// casteado tiene columnas pero no se ah mencionado cuales son p=(ContratoSie) q.getResultList().get(0);
-				
 			}
-			log.info("Aquita COD-PAQUETE-->"+ p.getCodpaquete()); 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

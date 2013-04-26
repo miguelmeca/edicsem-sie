@@ -23,7 +23,6 @@ public class DetallePaqueteDAOImpl implements DetPaqueteDAO {
 	@PersistenceContext(name = "edicsemJPASie")
 	private EntityManager em;
 	private static Log log = LogFactory.getLog(DetallePaqueteDAOImpl.class);
-	 
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.DetPaqueteDAO#findDetPaquete(int)
@@ -48,7 +47,7 @@ public class DetallePaqueteDAOImpl implements DetPaqueteDAO {
 		List lista = null;
 		try {
 			log.info("Antes del QUERY DAOIMPL");
-			Query q = em.createQuery("select p from DetPaqueteSie p where p.tbEstadoGeneral.idestadogeneral =  71  AND p.tbPaquete.idpaquete = "+ paquete);
+			Query q = em.createQuery("select p from DetPaqueteSie p where p.tbEstadoGeneral.idestadogeneral =  106 AND p.tbPaquete.idpaquete = "+ paquete);
 			lista = q.getResultList();
 			log.info("dspues de la lista tamaño lista DetPaqueteSie --> " + lista.size());
 		} catch (Exception e) {
@@ -67,8 +66,7 @@ public class DetallePaqueteDAOImpl implements DetPaqueteDAO {
 			}
 			em.persist(p);
 		} catch (Exception e) {
-			//e.printStackTrace();
-			System.out.println("DAOIMPL" +e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -94,7 +92,7 @@ public class DetallePaqueteDAOImpl implements DetPaqueteDAO {
 		
 		List lista = null;
 		try {
-			Query q = em.createQuery("select p from DetPaqueteSie p where p.tbEstadoGeneral.idestadogeneral =  71 AND p.tbPaquete.idpaquete = "+ parametroObtenido);
+			Query q = em.createQuery("select p from DetPaqueteSie p where p.tbEstadoGeneral.idestadogeneral =  106 AND p.tbPaquete.idpaquete = "+ parametroObtenido);
 			lista = q.getResultList();
 			log.info("tamaño lista de productos que tiene este paquete --> " + lista.size());
 			if(lista.size()>0){ //hay uno o mas productos el paquete retornados.
@@ -119,11 +117,9 @@ public class DetallePaqueteDAOImpl implements DetPaqueteDAO {
 			log.info("DAOIMPL ELIMINAR ");
 			DetPaqueteSie bean= findDetPaquete(id);
 			em.remove(bean);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	/* (non-Javadoc)
@@ -137,18 +133,15 @@ public class DetallePaqueteDAOImpl implements DetPaqueteDAO {
 				log.info("buscar Codigo Paquete" +"  "+ codPaquete );
 			}
 			Query q = em.createQuery("select p from DetPaqueteSie p inner join p.tbPaquete q" +
-		" where q.codpaquete like  '"+ codPaquete + "'");
+			" where q.codpaquete like  '"+ codPaquete + "' and p.tbEstadoGeneral.idestadogeneral =  106 " );
 			if (q.getResultList().size() >= 1) {	
 				p =  q.getResultList();
-				// casteado tiene columnas pero no se ah mencionado cuales son p=(ContratoSie) q.getResultList().get(0);
-				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return p;
 	}	
-	
 	
 }
 
