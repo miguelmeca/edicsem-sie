@@ -11,43 +11,28 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.primefaces.context.RequestContext;
 
-import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.DetPaqueteSie;
 import com.edicsem.pe.sie.entity.PaqueteSie;
 import com.edicsem.pe.sie.service.facade.DetallePaqueteService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.PaqueteService;
-import com.edicsem.pe.sie.util.FaceMessage.FaceMessage;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name = "mantenimientoPaqueteBiblicoFormAction")
 @SessionScoped
-public class MantenimientoPaqueteBiblicoFormAction extends 
-		BaseMantenimientoAbstractAction {
-
+public class MantenimientoPaqueteBiblicoFormAction extends BaseMantenimientoAbstractAction {
 	
-	
-
 	// PAQUETE BIBLICO
 	public String mensaje;
-	private PaqueteSie nuevo;
-
 	private PaqueteSie objPaqueteSie;
 	private DetPaqueteSie objDetPaqueteSie;
 	private boolean newRecord = false;
-	private boolean editMode;
-	private int idc, idEstadoGeneral;
-	public String idpaquete, codpaquete;
 	private List<PaqueteSie> lista;
-	
 	
 	@ManagedProperty(value = "#{mantenimientoPaqueteBiblicoSearchAction}")
 	private MantenimientoPaqueteBiblicoSearchAction mantenimientoPaqueteBiblicoSearchAction;
-	
-
 	
 	private Log log = LogFactory.getLog(MantenimientoPaqueteBiblicoFormAction.class);
 	
@@ -60,38 +45,25 @@ public class MantenimientoPaqueteBiblicoFormAction extends
 	@EJB
 	private EstadogeneralService objEstadoGeneralService;
 	
-	
-	
 	public MantenimientoPaqueteBiblicoFormAction() {
 		init();
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction
-	 * #init()
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#init()
 	 */
 	public void init() {
-
-		
-		//PAQUETE BIBLICO
 		log.info("Inicializando el Constructor de 'MantenimientoPaqueteBiblicoFormhAction'");	
 		objDetPaqueteSie = new DetPaqueteSie();		
 		objPaqueteSie = new PaqueteSie();
-		nuevo = new PaqueteSie();
-		
-		
 	}
-
-
 	
-	//AGREGAR Y UPDATE
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
+	 */
 	public String agregar() {
 		log.info("agregar()");
-	
-		editMode = true;
+		objDetPaqueteSie = new DetPaqueteSie();	
 		objPaqueteSie = new PaqueteSie();
 		setNewRecord(true);
 		return getViewList();
@@ -101,38 +73,26 @@ public class MantenimientoPaqueteBiblicoFormAction extends
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
 	 */
 	public String update() throws Exception {
-		log.info("update()  " );
-
-log.info(" id cargo " +objPaqueteSie.getIdpaquete() + " codigo paquete "+ objPaqueteSie.getCodpaquete());		
-
-
-objPaqueteSie = objPaqueteService.findPaquete(objPaqueteSie.getIdpaquete());
-setIdpaquete(objPaqueteSie.getIdpaquete().toString());
-setIdEstadoGeneral(objPaqueteSie.getTbEstadoGeneral().getIdestadogeneral());
-		
-		
+		log.info("update()  " );	
 		setNewRecord(false);
-		editMode = false;
 		return getViewList();
 	}
 	
-	//insertar nuevo Paquete Biblico
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
+	 */
 	public String insertar() {
+		log.info("insertar()");
 		String paginaRetorno="";
 		mensaje =null;
-		log.info("insertar()");
 		
-		objPaqueteSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(60));
 		try {
-			
-			log.info("aqui validadndo si existe o no" + objPaqueteSie.getCodpaquete());
+			log.info("Validar si existe el codigo " + objPaqueteSie.getCodpaquete());
 			
 			lista = mantenimientoPaqueteBiblicoSearchAction.getDetPaqueteList();
 			int error = 0;
 			if(isNewRecord()){
 			for (int i = 0; i < lista.size(); i++) {
-
-				
 				if (lista.get(i).getCodpaquete().equalsIgnoreCase(objPaqueteSie.getCodpaquete()) ) {
 					log.info("Error ... Ya se encuentra un paquete biblico");
 					mensaje ="Ya se encuentra un paquete biblico con el mismo nombre";
@@ -143,130 +103,59 @@ setIdEstadoGeneral(objPaqueteSie.getTbEstadoGeneral().getIdestadogeneral());
 				}
 			}
 			if (error == 0) {
-						
-			if(isNewRecord()){
-				log.info("insertando... "  );
-			
-				objPaqueteService.insertPaquete(objPaqueteSie);
-				setNewRecord(false);
-				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-						Constants.MESSAGE_REGISTRO_TITULO, mensaje);
-				mensaje ="Se registró el paquete correctamente";
-			}
-			else{
-				
-
-objPaqueteSie.setIdpaquete(Integer.parseInt(getIdpaquete()));
-objPaqueteSie.setCodpaquete(objPaqueteSie.getCodpaquete().trim());
-objPaqueteSie.setDescripcionpaquete(objPaqueteSie.getDescripcionpaquete().trim());
-objPaqueteSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(getIdEstadoGeneral()));
-log.info("actualizando..... ");	
-msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-		Constants.MESSAGE_REGISTRO_TITULO, mensaje);
-	objPaqueteService.updatePaquete(objPaqueteSie);
-				mensaje="Se actualizó el factor";
-				log.info("actualizado");
-			}
+				if(isNewRecord()){
+					objPaqueteService.insertPaquete(objPaqueteSie);
+					mensaje ="Se registró el paquete correctamente";
+				}
+				else{
+					objPaqueteService.updatePaquete(objPaqueteSie);
+					mensaje="Se actualizó el Paquete correctamente";
+				}
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
 			}else {
 				log.info("mensaje de error");
-				msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
-						Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
-		
-		} 	FacesContext.getCurrentInstance().addMessage(null, msg);
-
-}catch (Exception e) {
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN,Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			}
+		}catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
-			FacesContext.getCurrentInstance().addMessage(null, msg);
+			
 		}
-	
 		objPaqueteSie = new  PaqueteSie();
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return mantenimientoPaqueteBiblicoSearchAction.listar();
 	}
-
-	
-	
-	
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewList()
 	 */
 	public String updateDeshabilitarPaquete() throws Exception {
 		mensaje =null;
-
-//		objCargoEmpleadoSie = new CargoEmpleadoSie();
 		objPaqueteSie = new PaqueteSie();
-		int parametroObtenido;
-		PaqueteSie c = new PaqueteSie();
-//		CargoEmpleadoSie c = new CargoEmpleadoSie();
 
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'updateDESHABILITAR()'");
 			
-			}	
-			parametroObtenido = getIdc();
-			log.info(" ------>>>>>>aqui cactura el parametro ID "+ parametroObtenido);
-			
-			if(verificarPaquetesicontieneProductos(parametroObtenido)){
-					
-					c = objPaqueteService.findPaquete(parametroObtenido);
-					log.info(" ------Android>" + c.getCodpaquete() + " "+ c.getDescripcionpaquete());
-					
-//					
-					
-				
-					objPaqueteSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(61));
-					objPaqueteSie.setIdpaquete(c.getIdpaquete());
-					objPaqueteSie.setCodpaquete(c.getCodpaquete());
-					objPaqueteSie.setDescripcionpaquete(c.getDescripcionpaquete());
-
-					
-					log.info("-----ID estado general>>>"	+ objPaqueteSie.getTbEstadoGeneral().getIdestadogeneral());
-					log.info("actualizando ESTADO..... ");
-
-
-					objPaqueteService.updatePaquete(objPaqueteSie);
-					log.info("actualizando..... ");	
-					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-		Constants.MESSAGE_DESHABILITAR_TITULO, mensaje);
-					mensaje ="Se deshabilito correctamente";
-			}	
-		
-			else {
-				
-	
-				
-				FaceMessage.FaceMessageError("ALERTA", "Primero Elimine los productos de este paquete y luego prosiga eliminar dicho paquete");
-					
-			}	
-			
+			}
+			objPaqueteSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(61));
+			objPaqueteService.updatePaquete(objPaqueteSie);
+			msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_DESHABILITAR_TITULO, mensaje);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
-			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-//		objCargoEmpleadoSie = new CargoEmpleadoSie();
 		objPaqueteSie = new PaqueteSie();
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return mantenimientoPaqueteBiblicoSearchAction.listar();
 	}
-
 	
-	
-	
-	
-
-	
-
 	private boolean verificarPaquetesicontieneProductos(int parametroObtenido) {
-		// TODO Auto-generated method stub
 		return objDetallePaqueteService.verificarPaquetesicontieneProductos(parametroObtenido);
 	}
 
@@ -283,13 +172,7 @@ msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
 	}
-
-	/**
-	 * @return the detPaqueteList
-	 */
-
 	
-
 	/**
 	 * @return the objPaqueteSie
 	 */
@@ -331,47 +214,7 @@ msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 	public void setNewRecord(boolean newRecord) {
 		this.newRecord = newRecord;
 	}
-
-	/**
-	 * @return the editMode
-	 */
-	public boolean isEditMode() {
-		return editMode;
-	}
-
-	/**
-	 * @param editMode the editMode to set
-	 */
-	public void setEditMode(boolean editMode) {
-		this.editMode = editMode;
-	}
-
-	/**
-	 * @return the log
-	 */
-	public Log getLog() {
-		return log;
-	}
-
-	/**
-	 * @param log the log to set
-	 */
-	public void setLog(Log log) {
-		this.log = log;
-	}
-
-	/**
-	 * @return the mantenimientoPagoVentaSearchAction
-	 */
 	
-	
-	/**
-	 * @return
-	 */
-	public int getIdc() {
-		log.info("IDC *** " + idc);
-		return idc;
-	}
 
 	/**
 	 * @return the mantenimientoPaqueteBiblicoSearchAction
@@ -387,71 +230,5 @@ msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 			MantenimientoPaqueteBiblicoSearchAction mantenimientoPaqueteBiblicoSearchAction) {
 		this.mantenimientoPaqueteBiblicoSearchAction = mantenimientoPaqueteBiblicoSearchAction;
 	}
-
-	/**
-	 * @param idc
-	 */
-	public void setIdc(int idc) {
-		this.idc = idc;
-	}
-
-	/**
-	 * @return the idEstadoGeneral
-	 */
-	public int getIdEstadoGeneral() {
-		return idEstadoGeneral;
-	}
-
-	/**
-	 * @param idEstadoGeneral the idEstadoGeneral to set
-	 */
-	public void setIdEstadoGeneral(int idEstadoGeneral) {
-		this.idEstadoGeneral = idEstadoGeneral;
-	}
-
-	/**
-	 * @return the idpaquete
-	 */
-	public String getIdpaquete() {
-		return idpaquete;
-	}
-
-	/**
-	 * @param idpaquete the idpaquete to set
-	 */
-	public void setIdpaquete(String idpaquete) {
-		this.idpaquete = idpaquete;
-	}
-
-	/**
-	 * @return the codpaquete
-	 */
-	public String getCodpaquete() {
-		return codpaquete;
-	}
-
-	/**
-	 * @param codpaquete the codpaquete to set
-	 */
-	public void setCodpaquete(String codpaquete) {
-		this.codpaquete = codpaquete;
-	}
-
-	/**
-	 * @return the nuevo
-	 */
-	public PaqueteSie getNuevo() {
-		return nuevo;
-	}
-
-	/**
-	 * @param nuevo the nuevo to set
-	 */
-	public void setNuevo(PaqueteSie nuevo) {
-		this.nuevo = nuevo;
-	}
-
-
-
 	
 }
