@@ -963,61 +963,29 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	
 	<!--  Mantenimiento Detalle Paquete Biblico -->
 	<h:form id="formDetPaqueteBiblico">
-	 
 		<p:dialog header="Registro/Modificacion Detalle Paquete Biblico" widgetVar="DetPaqueteBiblico" showEffect="fade"
 			hideEffect="explode" modal="true" position="center" width="450" resizable="false" >
-			<p:fieldset  >
+			<p:fieldset>
 			<h:panelGrid id="display" columns="3"  >
-			
-			 
-			 
-			 
-			 
-			<h:outputText value="producto" />
-							
-				<p:selectOneMenu
-						value="#{mantenimientoDetallePaqueteBiblicoSearchAction.idproducto}"
-						>
-						<f:selectItems value="#{comboAction.productoPaqueteItems}" />
-					</p:selectOneMenu>
-							
+				<h:outputText value="producto" />
+				<p:selectOneMenu value="#{mantenimientoDetallePaqueteBiblicoSearchAction.idproducto}">
+					<f:selectItems value="#{comboAction.productoPaqueteItems}" />
+				</p:selectOneMenu>
+				<p:spacer/>
 				
-				<p:spacer></p:spacer>
-				
-				<h:outputText value="#{message['Detallepaquetebiblico.cantidad']}"
-				 for="cantidad"		
-				/>
-									
-			
-			
-			<p:spinner value="#{mantenimientoDetallePaqueteBiblicoSearchAction.objDetPaqueteSie.cantidad}" 
-		min="1"  id="cantidad" 
-		 required="true" requiredMessage="#{message['Detalleaquetebiblico.cantidad.validation']}" 
-		 >
-		
-				<p:ajax update="msgCantidad" event="keyup" />
-		 
-		 	     
-		 </p:spinner>	
-				 <p:message  for="cantidad" id="msgCantidad" display="icon"/>
-				 
-				 
-				
-			
-				</h:panelGrid>
+				<h:outputText value="#{message['Detallepaquetebiblico.cantidad']}" for="cantidad" />
+				<p:spinner value="#{mantenimientoDetallePaqueteBiblicoSearchAction.objDetPaqueteSie.cantidad}" 
+				min="1"  id="cantidad" required="true" requiredMessage="#{message['Detalleaquetebiblico.cantidad.validation']}" >
+					<p:ajax update="msgCantidad" event="keyup" />
+				</p:spinner>	
+				<p:message  for="cantidad" id="msgCantidad" display="icon"/>
+			</h:panelGrid>
 			</p:fieldset>
-			<p:commandButton
-				id="savedetpaquete" 
-				value="Grabar" 
-				icon="ui-icon-disk"
+			<p:commandButton id="savedetpaquete"  value="Grabar" icon="ui-icon-disk"
 				action="#{mantenimientoDetallePaqueteBiblicoSearchAction.insertar}" 
-				
-				ajax="false"
-				update="panel" />
-				
+				ajax="false" update="panel" />
 		</p:dialog>
 	</h:form>
-	
 	
 	<!--  Confirmation deshabilita Det Sancion Cargo -->
 	<h:form id="detSancionCargoDeshabilita" >
@@ -1035,35 +1003,23 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:confirmDialog>
 	</h:form>
 	
-	<!--	  INICIO DESACTIVAR PRUDCTO DEL DETALLE PAQUETE BIBLICO   -->
-
+	<!--	  DESACTIVAR PRODUCTO DEL DETALLE PAQUETE BIBLICO   -->
 	<h:form>
-
 		<p:confirmDialog id="confirmDeshabilitarProDetPACK"
 			message="Los Cambios se efectuaran despues de hacer clic nuevamente en el paquete?" width="325"
-			height="100" showEffect="explode" hideEffect="explode"
-			header="Confirmar" severity="alert" widgetVar="confirmationPaqueteProDetPACK"
-			position="center">
-
+			height="100" showEffect="explode" hideEffect="explode" header="Confirmar" 
+			severity="alert" widgetVar="confirmationPaqueteProDetPACK" position="center">
+			
 			<p:commandButton type="submit" value="Si"
-				action="#{mantenimientoDetallePaqueteBiblicoSearchAction.updateDeshabilitarDetProdPaquete}"
-				update="panel"
-				oncomplete="confirmationPaqueteProDetPACK.hide()" ajax="false">
-			</p:commandButton>
+				action="#{mantenimientoDetallePaqueteBiblicoSearchAction.eliminaDetProdPaquete}"
+				update="panel" oncomplete="confirmationPaqueteProDetPACK.hide()" ajax="false" />
 
 			<p:commandButton value="No" onclick="confirmationPaqueteProDetPACK.hide()"
 				type="button" />
-
 		</p:confirmDialog>
-
 	</h:form>
-
-	<!-- 	FIN DESACTICAR PRUDCTO DEL DETALLE PAQUETE BIBLICO (ESTADOS)  -->
-	
-	
 	
 	<h:form>
-
 		<p:confirmDialog id="confirmHorarioPersonal12"
 			message="Esta seguro de deshabilitar dicho horario?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
@@ -1076,7 +1032,6 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			</p:commandButton>
 			<p:commandButton value="No" onclick="confirmDeshabilitarHorario.hide()" />
 		</p:confirmDialog>
-
 	</h:form>
 
 <!--  Mantenimiento Horario Punto Venta-->
@@ -1252,11 +1207,9 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			header="Confirmar" severity="alert" widgetVar="confirmationPaquete"
 			position="center">
 
-			<p:commandButton type="submit" value="Si"
+			<p:commandButton type="submit" value="Si" update=":frmPaqueBibliList:pack"
 				action="#{mantenimientoPaqueteBiblicoFormAction.updateDeshabilitarPaquete}"
-				update=":frmPaqueBibliList:pack"
-				oncomplete="confirmationPaquete.hide()" ajax="false">
-			</p:commandButton>
+				oncomplete="confirmationPaquete.hide()" ajax="false" />
 
 			<p:commandButton value="No" onclick="confirmationPaquete.hide()" type="button" />
 		</p:confirmDialog>
@@ -1293,25 +1246,6 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:dialog>
 	</h:form>
 	
-	<!--	  INICIO DESACTIVAR	TIPO PRODUCTO  -->
-	<h:form>
-		<p:confirmDialog id="confirmDeshabilitartipoProducto"
-			message="Esta seguro de deshabilitar este tipo de producto?" width="325"
-			height="100" showEffect="explode" hideEffect="explode"
-			header="Confirm" severity="alert" widgetVar="confirmationTipoProd"
-			position="center">
-
-			<p:commandButton type="submit" value="Si"
-				action="#{mantenimientoTipoProductoFormAction.updateDeshabilitar}"
-				update=":frmTipoProdFormList:tipoProductoTable"
-				oncomplete="confirmationTipoProd.hide()" ajax="false">
-			</p:commandButton>
-
-			<p:commandButton value="No" onclick="confirmationTipoProd.hide()" type="button" />
-
-		</p:confirmDialog>
-	</h:form>
-	
 	<!--	  INICIO DESACTIVAR	 TELEFONO DE EMPLEADO  -->
 	<h:form>
 		<p:confirmDialog id="confirmDeshabilitarTelEmp"
@@ -1322,50 +1256,34 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 			<p:commandButton type="submit" value="Si"
 				action="#{mantenimientoEmpleadoFormAction.telefonoElimina}"
-				update="@all"
-				oncomplete="confirmation.hide()" ajax="false">
+				update="@all" oncomplete="confirmation.hide()" ajax="false">
 			</p:commandButton>
 
 			<p:commandButton value="No" onclick="confirmation3.hide()"
 				type="button" />
 
 		</p:confirmDialog>
-
 	</h:form>
-
-	<!-- 	FIN DESACTIVAR (TELEFONO DE EMPLEADO)  -->
 	
-		<!--	  INICIO DESACTIVAR	 CONTRATO DE EMPLEADO  -->
-
-<h:form>
-
+	<!--	  INICIO DESACTIVAR	 CONTRATO DE EMPLEADO  -->
+	<h:form>
 		<p:confirmDialog id="confirmDeshabilitarConEmp"
 			message="Confirma que desea eliminar dicho contrato?" width="325"
-			height="100" showEffect="explode" hideEffect="explode"
-			header="Confirm" severity="alert" widgetVar="confirmationConEmp"
-			position="center">
+			height="100" showEffect="explode" hideEffect="explode" position="center"
+			header="Confirm" severity="alert" widgetVar="confirmationConEmp" >
 
-			<p:commandButton type="submit" value="Si"
+			<p:commandButton type="submit" value="Si" update="@all"
 				action="#{mantenimientoEmpleadoFormAction.contratoElimina}"
-				update="@all"
 				oncomplete="confirmation.hide()" ajax="false">
 			</p:commandButton>
 
 			<p:commandButton value="No" onclick="confirmation3.hide()"
 				type="button" />
-
 		</p:confirmDialog>
-
 	</h:form>
-
-	<!-- 	FIN DESACTIVAR (CONTRATO DE EMPLEADO)  -->
-
-
-
+	
 	<!--	  DESACTIVAR EMPLEADO	   -->
-
 	<h:form>
-
 		<p:confirmDialog id="confirmDeshabilitarEmp"
 			message="Esta seguro de deshabilitar dicho empleado?" width="325"
 			height="100" showEffect="explode" hideEffect="explode"
@@ -1380,12 +1298,8 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 			<p:commandButton value="No" onclick="desactivarEmp.hide()"
 				type="button" />
-
 		</p:confirmDialog>
-
 	</h:form>
-
-	<!-- 	FIN DESACTIVAR EMPLEADO  -->
 	
 <!-- UBIGEOEMPLEADO -->
 	
@@ -1761,9 +1675,10 @@ function validarEspaciosLetrasNumeros(e) { // 1
  <!--	  INICIO ELIMINAR TIPO DE PRODUCTO  -->
 	<h:form>
 	<p:confirmDialog id="confirmTipoProducto" message="esta seguro de eliminar este Tipo de Producto?" 
-	width="325" height="100" showEffect="explode" hideEffect="explode" header="Confirmacion" severity="alert" widgetVar="confirmationTipoProducto" position="center">
+	width="325" height="100" showEffect="explode" hideEffect="explode" header="Confirmacion" severity="alert" 
+	widgetVar="confirmationTipoProducto" position="center">
 	
-	<p:commandButton type="submit" value="Si" action="#{mantenimientoTipoProductoFormAction.Eliminar}" 
+	<p:commandButton type="submit" value="Si" action="#{mantenimientoTipoProductoFormAction.delete}" 
 	oncomplete="confirmationTipoProducto.hide()" update=":frmTipoProdFormList" ajax="false" />
 	
 	<p:commandButton value="No" onclick="confirmationTipoProducto.hide()" type="button" />

@@ -39,7 +39,6 @@ public class MantenimientoTipoProductoFormAction extends
 	private TipoProductoSie objTipoProductoSie;
 	private TipoProductoSie selectedTipoProducto;
 	private boolean newRecord = false;
-	private boolean editMode;
 	private List<TipoProductoSie> lista;
 	
 	@ManagedProperty(value = "#{tipoProductoSearch}")
@@ -56,60 +55,59 @@ public class MantenimientoTipoProductoFormAction extends
 	@EJB
 	private ProductoService objProductoService;
 
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#init()
+	 */
 	public void init() {
 		log.info("init()");
-		// Colocar valores inicializados
 		objTipoProductoSie = new TipoProductoSie();
 		nuevo = new TipoProductoSie();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
+	 */
 	public String agregar() {
 		log.info("agregar()");
-		editMode = true;
 		objTipoProductoSie = new TipoProductoSie();
 		codtipoproductoUpdate=null;
 		setNewRecord(true);
 		return getViewList();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#update()
+	 */
 	public String update() throws Exception {
 		log.info("update()" + objTipoProductoSie.getIdtipoproducto());
 		objTipoProductoSie = objTipoProductoService.findTipoProducto(objTipoProductoSie.getIdtipoproducto());
-		log.info(" id tipoproducto " + objTipoProductoSie.getIdtipoproducto() + " cod "+ objTipoProductoSie.getCodtipoproducto());		
 		setIdtipoproducto(objTipoProductoSie.getIdtipoproducto().toString());
-		
 		codtipoproductoUpdate = objTipoProductoSie.getCodtipoproducto();
-	
 		objTipoProductoSie.setNombretipoproducto(objTipoProductoSie.getNombretipoproducto());
-		//setIdEstadoGeneral(c.getTbEstadoGeneral().getIdestadogeneral());
 		setNewRecord(false);
-		editMode = false;
 		return getViewList();
-
 	}
 
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
+	 */
 	public String insertar() {
-		
+		log.info("insertar()");
 		String paginaRetorno="";
 		mensaje =null;
-		log.info("insertar()");
 		
-		objTipoProductoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(72));
 		HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 		EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 		try {
 
 			log.info("aqui validadndo si existe o no" + objTipoProductoSie.getCodtipoproducto());
 			lista = mantenimientoTipoProductoSearch.getTipoProdList();
-			
-		int error =0;
-			
+			int error =0;
 			
 			for (int i = 0; i < lista.size(); i++) {
 				if (codtipoproductoUpdate!=null) {
 					if (lista.get(i).getCodtipoproducto().equalsIgnoreCase(objTipoProductoSie.getCodtipoproducto())&&
-							(!codtipoproductoUpdate.equalsIgnoreCase(objTipoProductoSie.getCodtipoproducto()))){
-					
+						(!codtipoproductoUpdate.equalsIgnoreCase(objTipoProductoSie.getCodtipoproducto()))){
 						log.info("Error ... Ya se encuentra un tipo de producto igual");
 						mensaje ="Ya se encuentra un tipo de producto igual con el mismo nombre";
 						error = 1;
@@ -121,7 +119,6 @@ public class MantenimientoTipoProductoFormAction extends
 						mensaje ="Ya se encuentra un tipo de producto igual con el mismo nombre";
 						msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 								Constants.MESSAGE_INFO_TITULO, mensaje);
-						mensaje ="Se registró el paquete correctamente";
 						error = 1;
 						break;
 					}
@@ -130,137 +127,55 @@ public class MantenimientoTipoProductoFormAction extends
 				if (isNewRecord()) {
 					objTipoProductoSie.setUsuariocreacion(sessionUsuario.getUsuario());
 					objTipoProductoService.insertTipoProducto(objTipoProductoSie);
-					setNewRecord(false);
-					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_REGISTRO_TITULO, mensaje);
 					mensaje ="Se registró el paquete correctamente";
-			} else {
-					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_REGISTRO_TITULO, mensaje);	
+				} else {
 					objTipoProductoSie.setUsuariomodifica(sessionUsuario.getUsuario());
 					objTipoProductoSie.setFechamodifica(new Timestamp(DateUtil.getToday().getTime().getTime()));
-					objTipoProductoService.updateTipoProducto(objTipoProductoSie);				
-					log.info("actualizando..... ");
-			}
+					objTipoProductoService.updateTipoProducto(objTipoProductoSie);
+					mensaje ="Se actualizó el paquete correctamente";
+				}
+				paginaRetorno= mantenimientoTipoProductoSearch.listar();
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_REGISTRO_TITULO, mensaje);	
+				
 			} else {
 					log.info("mensaje de error");
 					mensaje ="Ya se encuentra un tipo de producto igual con el mismo nombre";
 					msg = new FacesMessage(mensaje);
 				}
-				    FacesContext.getCurrentInstance().addMessage(null, msg);
 			}catch (Exception e) {
-
 					e.printStackTrace();
 					mensaje = e.getMessage();
 					msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
 							Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 					log.error(e.getMessage());
-					FacesContext.getCurrentInstance().addMessage(null, msg);
-				}
+			}
 		objTipoProductoSie = new TipoProductoSie();
-		return mantenimientoTipoProductoSearch.listar();
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		return paginaRetorno;
 	}
-			
-			
-			
-			
-			
-//
-//	public String updateDeshabilitar() throws Exception {
-//
-//		objTipoProductoSie = new TipoProductoSie();
-//		int parametroObtenido;
-//		TipoProductoSie tp = new TipoProductoSie();
-//
-//		try {
-//			if (log.isInfoEnabled()) {
-//				log.info("Entering my method 'updateDESHABILITAR()'");
-//			}
-//
-//			parametroObtenido = getIdc();
-//			log.info(" ------>>>>>>aqui cactura el parametro ID "+ parametroObtenido);
-//			
-//				//if(verificar(parametroObtenido)){//true - no hay empleado con cargo, tonce procede
-//					
-//					tp = objTipoProductoService.findTipoProducto(parametroObtenido);
-//					
-//					//objCargoEmpleadoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(2));
-//					//objCargoEmpleadoSie.setIdcargoempleado(c.getIdcargoempleado());
-//					//objCargoEmpleadoSie.setDescripcion(c.getDescripcion());
-//
-//					objTipoProductoService.updateTipoProducto(objTipoProductoSie);
-//					log.info("actualizando..... ");	
-//				//}	
-//				
-//				//else {
-//					
-//					//FaceMessage.FaceMessageError("ALERTA", "El cargo no se puede elminar ya que se encontraron usuarios con ese cargo");
-//				//}	
-//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			descripcion = e.getMessage();
-//			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-//					Constants.MESSAGE_ERROR_FATAL_TITULO, descripcion);
-//			log.error(e.getMessage());
-//			FacesContext.getCurrentInstance().addMessage(null, msg);
-//		}
-//		objTipoProductoSie = new TipoProductoSie();
-//		return mantenimientoTipoProductoSearch.listar();
-//	}
-//	
-//	
-//	
 	
-	
-	
-	public String Eliminar() throws Exception {
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#delete()
+	 */
+	public String delete() throws Exception {
 		mensaje =null;
 		objTipoProductoSie = new TipoProductoSie();
-		int parametroObtenido;
-		
-		TipoProductoSie c = new TipoProductoSie();
 		
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("Entrando a mi metodo Eliimar Tipo de Producto");
+				log.info("Entrando a mi metodo Eliminar Tipo de Producto");
 			}
-			
-			parametroObtenido = getIdc();
-log.info(" ------>>>>>>aqui cactura el parametro ID "+ parametroObtenido);
-			
-if(verificarTipoProducto(parametroObtenido)){
-	
-	c = objTipoProductoService.findTipoProducto(parametroObtenido);
-	
-	
-	objTipoProductoSie.setIdtipoproducto(c.getIdtipoproducto());
-	objTipoProductoSie.setCodtipoproducto(c.getCodtipoproducto());
-	objTipoProductoSie.setNombretipoproducto(c.getNombretipoproducto());
-	objTipoProductoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(73));
-
-	
-
-objTipoProductoService.eliminarTipoProducto(parametroObtenido);
-	
-	log.info("actualizando..... ");	
-	msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-			Constants.MESSAGE_DESHABILITAR_TITULO, mensaje);
-	mensaje ="WDF";
-}			
-			
-			
-else {
-	
-	
-	FaceMessage.FaceMessageError("No se puede Eliminar, por que dicho Tipo de Producto Pertenece a un Producto","");
-		return Constants.MANT_TIPO_PRODUCTO_FORM_LIST_PAGE;	
-
-}	
-FacesContext.getCurrentInstance().addMessage(null, msg);		
-			
-			
-			
-			
-			
+			if(verificarTipoProducto(objTipoProductoSie.getIdtipoproducto())){
+//				objTipoProductoSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(73));
+				objTipoProductoService.eliminarTipoProducto(objTipoProductoSie.getIdtipoproducto());
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+						Constants.MESSAGE_DESHABILITAR_TITULO, mensaje);
+			}
+			else {
+				FaceMessage.FaceMessageError("No se puede Eliminar, por que dicho Tipo de Producto Pertenece a un Producto","");
+				return Constants.MANT_TIPO_PRODUCTO_FORM_LIST_PAGE;	
+			}
+			FacesContext.getCurrentInstance().addMessage(null, msg);		
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -276,10 +191,10 @@ FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
 	private boolean verificarTipoProducto(int tipoProducto) {
-//entra para verificar si este tipo de producto pertenece  aun producto registrado
+		// verificar si este tipo de producto pertenece  a un producto registrado
 		return objProductoService.verificarTipoProducto(tipoProducto);
 	}
-
+	
 	/**
 	 * @return the idEstadoGeneral
 	 */
@@ -301,7 +216,7 @@ FacesContext.getCurrentInstance().addMessage(null, msg);
 		log.info("id--->" +idc );
 		return idc;
 	}
-
+	
 	/**
 	 * @param idc the idc to set
 	 */
@@ -377,20 +292,6 @@ FacesContext.getCurrentInstance().addMessage(null, msg);
 	 */
 	public void setNewRecord(boolean newRecord) {
 		this.newRecord = newRecord;
-	}
-
-	/**
-	 * @return the editMode
-	 */
-	public boolean isEditMode() {
-		return editMode;
-	}
-
-	/**
-	 * @param editMode the editMode to set
-	 */
-	public void setEditMode(boolean editMode) {
-		this.editMode = editMode;
 	}
 
 	/**

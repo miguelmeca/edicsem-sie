@@ -9,83 +9,50 @@
 	<script language="JavaScript" type="text/javascript">
 		window.history.forward(-1);
 	</script>
-		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento
-			Tipo de Productos</h1>
-			
+		<h1 class="title ui-widget-header ui-corner-all">#{message['tipo.producto.mantenimiento']}</h1>
 		<h:form id="frmTipoProdFormList" prependId="false">
-	<p:messages showDetail="true"/> 	
-		
-			
-			<p:dataTable value="#{tipoProductoSearch.tipoProdList}" var="tipoProducto"
-				id="tipoProductoTable" paginator="true" rows="15"
-       paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-	   rowsPerPageTemplate="5,10,15" widgetVar="table"
-	   emptyMessage="No se encontro registros">
-			
-				<p:column headerText="Código">
-				  
-						<h:outputText value="#{tipoProducto.codtipoproducto}" />
-											 
-				</p:column>	
-					<f:facet name="header">  </f:facet>
-				<p:column headerText="Tipo de Producto"  id="tipoProducto" filterBy="#{tipoProducto.nombretipoproducto}" sortBy="tipoProducto.nombretipoproducto" >
-				  
-						<h:outputText value="#{tipoProducto.nombretipoproducto}" />
-											 
-				</p:column>																							
-        		
-        		<!--********** BOTON EDITAR **********-->
-		
-	<p:column headerText="Editar">
-	<center>
-<p:commandButton oncomplete="DialogTipoProd.show()"
-action="#{mantenimientoTipoProductoFormAction.update}"
-update=":NuevoModificaTipoProd:display" title="Editar tipo"
-icon="ui-icon ui-icon-pencil">
-			                    
-<f:setPropertyActionListener value="#{tipoProducto}" 
-target="#{mantenimientoTipoProductoFormAction.objTipoProductoSie}" />
-			 
-			</p:commandButton>
+			<p:messages showDetail="true" />
+			<p:dataTable value="#{tipoProductoSearch.tipoProdList}"
+				var="tipoProducto" id="tipoProductoTable" paginator="true" rows="15"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" widgetVar="table" emptyMessage="#{message['rsltd.empty']}">
+				<f:facet name="header">#{message['tipo.producto.mantenimiento']}
+				</f:facet>
+				<p:column headerText="#{message['tipo.producto.codigo']}">
+					<h:outputText value="#{tipoProducto.codtipoproducto}" />
+				</p:column>
+				<p:column headerText="#{message['tipo.producto.descripcion']}" id="tipoProducto"
+					filterBy="#{tipoProducto.nombretipoproducto}" sortBy="tipoProducto.nombretipoproducto">
+					<h:outputText value="#{tipoProducto.nombretipoproducto}" />
+				</p:column>
+				<p:column headerText="#{message['btn.editar']}">
+					<center>
+					<p:commandButton oncomplete="DialogTipoProd.show()" icon="ui-icon ui-icon-pencil"
+					action="#{mantenimientoTipoProductoFormAction.update}"
+					update=":NuevoModificaTipoProd:display" title="Editar tipo" >
+						<f:setPropertyActionListener value="#{tipoProducto}"
+						target="#{mantenimientoTipoProductoFormAction.objTipoProductoSie}" />
+					</p:commandButton>
 					</center>
-	</p:column>
- 
- <!--**********FIN EDITAR**********-->
- 
- 
- <!--**********INICIO 	DESACTIVAR**********-->
-
-<p:column headerText="Desactivar">
-<center>	
-<p:commandButton id="showConfirmTipoProducto" 				  
-				 icon="ui-icon-trash" title="Desactivar tipo"
-				 onclick="confirmationTipoProducto.show()"> 
-	 							
-<f:setPropertyActionListener
-		 value="#{tipoProducto.idtipoproducto}"
-		 target="#{mantenimientoTipoProductoFormAction.idc}" 
-/>
-</p:commandButton>
-</center>				
-		</p:column>
-		
-		<!-- Fin de Eliminar -->
-
-<f:facet name="footer">
-<div align="left">		
-		<!--********** BOTON NUEVO **********-->
-		
-		
-		<p:commandButton value="Nuevo Tipo de Producto"  update=":NuevoModificaTipoProd:display" 
-				icon="ui-icon-star" id="nuevoT"
-				action="#{mantenimientoTipoProductoFormAction.agregar}"
-				oncomplete="DialogTipoProd.show()" 	title="Ingresar Nuevo Tipo de Producto"	>
-</p:commandButton>
-<p:tooltip for="nuevoT"/>
-</div>
-</f:facet>
+				</p:column>
+				<p:column headerText="#{message['btn.desactivar']}">
+					<center>
+						<p:commandButton id="showConfirmTipoProducto" icon="ui-icon-trash"
+						title="Desactivar tipo" onclick="confirmationTipoProducto.show()">
+						<f:setPropertyActionListener value="#{tipoProducto}"
+							target="#{mantenimientoTipoProductoFormAction.objTipoProductoSie}" />
+						</p:commandButton>
+					</center>
+				</p:column>
+				<f:facet name="footer">
+					<div align="left">
+					<p:commandButton value="#{message['tipo.producto.nuevo']}" update=":NuevoModificaTipoProd:display" 
+					icon="ui-icon-star" id="nuevoT" action="#{mantenimientoTipoProductoFormAction.agregar}"
+					oncomplete="DialogTipoProd.show()" title="#{message['tipo.producto.nuevo.title']}" />
+					<p:tooltip for="nuevoT" />
+					</div>
+				</f:facet>
 			</p:dataTable>
-			
 		</h:form>
 	</ui:define>
 </ui:composition>
