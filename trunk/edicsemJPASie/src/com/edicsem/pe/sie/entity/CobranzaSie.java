@@ -82,7 +82,7 @@ public class CobranzaSie   implements Serializable {
 	private Time horapago;
 
 	private String lugarpago;
-
+	
 	//bi-directional many-to-one association to ClienteSie
     @ManyToOne
 	@JoinColumn(name="idcliente" , insertable = false, updatable = false)
@@ -111,6 +111,9 @@ public class CobranzaSie   implements Serializable {
 	@Transient
 	private String nuevo;
 
+	@Transient
+	private String model;
+	
     public CobranzaSie() {
     }
 	
@@ -356,6 +359,14 @@ public class CobranzaSie   implements Serializable {
 
 	public void setLugarpago(String lugarpago) {
 		this.lugarpago = lugarpago;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
 	}
 	
 }
