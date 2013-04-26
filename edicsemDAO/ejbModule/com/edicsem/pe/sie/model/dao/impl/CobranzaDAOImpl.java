@@ -70,7 +70,7 @@ public class CobranzaDAOImpl implements CobranzaDAO{
 		CobranzaSie obj= new CobranzaSie();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("buscar Contrato");
+				log.info("buscar Cobranza");
 			} 
 		obj=	em.find(CobranzaSie.class, id);
 		} catch (Exception e) {
