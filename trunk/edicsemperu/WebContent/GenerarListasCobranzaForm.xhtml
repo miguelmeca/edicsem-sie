@@ -19,8 +19,9 @@
 				
 				<h:outputText value="#{message['generar.lista.empleados']}" />
 				<p:spacer/>
-			 
-				<p:pickList id="pojoPickList" value="#{cobranza.teleoperadoras}" var="e" effect="bounce"  
+				
+                </h:panelGrid>
+				<p:pickList id="pojoPickList" value="#{cobranza.teleoperadoras}" var="e" effect="blind"  
                     itemValue="#{e}" itemLabel="#{e.nombresCompletos}" converter="teleoperadoraConverter"  
                     showSourceControls="true" showTargetControls="true" showCheckbox="true"  
                     addLabel="Agregar" addAllLabel="Agregar todos" removeLabel="Quitar" removeAllLabel="Quitar todos"
@@ -30,13 +31,38 @@
                     <f:facet name="targetCaption">Seleccionados</f:facet> 
                     <p:column> #{e.nombresCompletos}</p:column>
                 </p:pickList>
-                <p:spacer/>
-                <f:facet name="footer">
 				<p:commandButton action="#{cobranza.insertar}" value="#{message['generar.listar.generar']}"
-				 update="message" icon="ui-icon-disk" iconPos="rigth" />
-				 </f:facet>
-				</h:panelGrid>
+				onclick="statusDialogCob.show()" update="message, selectCob" icon="ui-icon-disk" iconPos="rigth" />
+				
 			</p:panel>
+			<p:fieldset id="selectCob"  legend="Asignar Cobranza Restantes" style="margin-top:30px" >
+			<p:panelGrid columns="2" >
+				<p:dataTable var="d" value="#{cobranza.cobranzaModel}" paginator="true" rows="5" 
+				selection="#{cobranza.selectedCob}" style="width:50%" >
+					<f:facet name="header">Cobranzas por asignar</f:facet>
+					<p:column selectionMode="multiple" style="width:2%" />
+					<p:column headerText="Cliente" style="width:30%"> #{d.tbCliente.nombresCompletos}  
+					</p:column>
+					<p:column headerText="Tipo de Cliente" style="width:5%"> #{d.tbCliente.tbTipoCliente.descripcion}
+					</p:column>
+					<p:column headerText="Codigo Contrato" style="width:5%"> #{d.tbContrato.codcontrato}
+					</p:column>
+					<p:column headerText="Cuota" style="width:5%"> #{d.numletra}
+					</p:column>
+                </p:dataTable>
+                <h:panelGrid columns="2" >
+	                <h:outputText value="Teleoperador(a)" />
+					<p:selectOneMenu  value="#{cobranza.operadorasignado}"  >
+						<f:selectItem itemLabel="Seleccione una teleoperador(a)" itemValue="#{null}" />
+						<f:selectItems  value="#{cobranza.lstEmpleados}" var="l" itemLabel="#{l.nombresCompletos}" itemValue="#{l.idempleado}"  />
+					</p:selectOneMenu>
+				</h:panelGrid>
+				<f:facet name="footer">
+					<p:commandButton action="#{cobranza.asignarcobranzarestante}" value="#{message['generar.listar.generar']}"
+					 update="message, selectCob" icon="ui-icon-disk" iconPos="rigth" />
+				</f:facet>
+            </p:panelGrid>
+            </p:fieldset>
 		</h:form>
 	</ui:define>
 </ui:composition>
