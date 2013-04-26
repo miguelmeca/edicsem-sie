@@ -142,6 +142,7 @@ public class Constants {
 	public static final String MANT_CONFIG_COBRANZA_OPERA_LIST = "mantenimientoConfigCobranzaOperaList";
 	public static final String MANT_CONFIG_COBRANZA_OPERA_FORM = "mantenimientoConfigCobranzaOperaForm";
 	
+	public static final String MIGRAR_PRODUCTO_PAQUETE = "migracionProductos";
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
 	public static final String COD_ESTADO_TB_CARGO_EMPLEADO = "CE";
