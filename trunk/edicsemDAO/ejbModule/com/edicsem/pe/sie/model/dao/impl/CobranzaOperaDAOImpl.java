@@ -74,7 +74,7 @@ public class CobranzaOperaDAOImpl implements CobranzaOperaDAO{
 		try {
 			Query q = em.createQuery("select p from CobranzaOperadoraSie p where " +
 					" DATE(p.fechaexpira) <= DATE('"+DateUtil.getToday().getTime()+"')  " +
-					" and p.tbEmpleado.usuario like '"+usuario+"'");
+					" and p.tbEmpleado.usuario like '"+usuario+"' and p.tbEstadoGeneral.idestadogeneral = 108 ");
 			lista =  q.getResultList(); 
 			log.info("tamaño lista CobranzaOperadora --> " + lista.size()+"  ");
 		} catch (Exception e) {
@@ -93,7 +93,7 @@ public class CobranzaOperaDAOImpl implements CobranzaOperaDAO{
 			//Las listas son repartidas en dos turnos
 			//Verificar si ya se generó lista anteriormente
 			Query q = em.createQuery("select p from CobranzaOperadoraSie p where " +
-					" DATE(p.fechacreacion) = DATE('"+DateUtil.getToday().getTime()+"')");
+					" DATE(p.fechacreacion) = DATE('"+DateUtil.getToday().getTime()+"') and p.tbEstadoGeneral.idestadogeneral = 108");
 			lista =  q.getResultList();
 			tamano=lista.size();
 			log.info("tamaño lista CobranzaOperadora --> " + lista.size()+"  ");
