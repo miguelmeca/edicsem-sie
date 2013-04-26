@@ -1,7 +1,6 @@
 package com.edicsem.pe.sie.client.action;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -16,6 +15,8 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
 
+import com.edicsem.pe.sie.client.dataModel.CobranzaDataModel;
+import com.edicsem.pe.sie.entity.CobranzaOperadoraSie;
 import com.edicsem.pe.sie.entity.CobranzaSie;
 import com.edicsem.pe.sie.entity.ConfigCobranzaOperaSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
@@ -23,7 +24,6 @@ import com.edicsem.pe.sie.service.facade.CobranzaOperaService;
 import com.edicsem.pe.sie.service.facade.ConfigCobranzaService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
 import com.edicsem.pe.sie.util.constants.Constants;
-import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
 @ManagedBean(name = "cobranza")
@@ -36,15 +36,18 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 	private boolean editMode;
     private List<CobranzaSie> cobranzaList;
     private List<String> empleadoList;
-    private Date dhoy;
-    //picklist
-
+    //picklist  
 	private DualListModel<EmpleadoSie> teleoperadoras;
-	//private DualListModel<String> teleoperadorasString;
     private List<EmpleadoSie> sources; 
     private List<EmpleadoSie> targets;
     private int tipoCobranza;
-    
+    //Asignar cobranzas restantes
+    private CobranzaSie[] selectedCob;
+	private CobranzaDataModel cobranzaModel;
+	private int operadorasignado;
+	private List<EmpleadoSie> lstEmpleados;
+	private List<CobranzaSie> lstcob;
+	
 	@EJB
 	private CobranzaOperaService objCobranzaOperaService;
 	@EJB
@@ -65,7 +68,6 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 		empleadoList = new ArrayList<String>();
 		sources = new ArrayList<EmpleadoSie>();
 		targets = new ArrayList<EmpleadoSie>();
-		//teleoperadorasString= new DualListModel<String>(sources, targets);
 		teleoperadoras = new DualListModel<EmpleadoSie>(sources, targets);
 	}
 
@@ -76,15 +78,14 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 		sources = new ArrayList<EmpleadoSie>();
 		targets = new ArrayList<EmpleadoSie>();
 		teleoperadoras = new DualListModel<EmpleadoSie>(sources, targets);
-		List<EmpleadoSie> lstEmpleados = objEmpleadoService.listarEmpleadosXCargo(7);
+		lstEmpleados = objEmpleadoService.listarEmpleadosXCargo(7);
 		for (int i = 0; i < lstEmpleados.size(); i++) {
 			log.info(" "+lstEmpleados.get(i).getNombresCompletos() );
 			sources.add(lstEmpleados.get(i));
 		}
 		log.info("sources()"+sources.size());
 		teleoperadoras = new DualListModel<EmpleadoSie>(sources, targets);  
-		//teleoperadorasString = new DualListModel<String>(sources, targets);
-		
+		cobranzaModel = new CobranzaDataModel(lstcob);
 		return getViewList();
 	}
 	
@@ -95,12 +96,12 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 		log.info("insertar() " +empleadoList.size());
 		mensaje=null;
 		RequestContext context = RequestContext.getCurrentInstance();
-		context.execute("statusDialogCob.show()");
+		//Lista de cobranza restante, por asignar a las teleoperadoras
+		lstcob =null;
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("Entering my method 'insertar()' " );
 			}
-			dhoy =  DateUtil.getToday().getTime();
 			//Validar si se registro las listas en el dia ( si es turno mañana)
 			List<ConfigCobranzaOperaSie> configList = objConfigCobranzaService.buscarConfigCobranza(tipoCobranza);
 			log.info("tamano config --> "+configList.size() );
@@ -117,8 +118,11 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 						empleadoList.add(teleoperadoras.getTarget().get(i).getNombresCompletos());
 					}
 					/** Insertamos las listas de cobranzas para cada teleoperadora asignada */
-					objCobranzaOperaService.insertCobranzaOpera(empleadoList,configList);
+					lstcob = objCobranzaOperaService.insertCobranzaOpera(empleadoList,configList);
 					mensaje="Se generó la lista correctamente";
+					if(lstcob!=null){
+						cobranzaModel = new CobranzaDataModel(lstcob);
+					}
 					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 				}
 			}else{
@@ -128,13 +132,35 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
-			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
 		}
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		context.execute("statusDialogCob.hide()");
 		return getViewList();
+	}
+	
+	/**
+	 * Metodo para asignar las Cobranzas restantes 
+	 */
+	public String asignarcobranzarestante(){
+		log.info("asignarcobranzarestante()  "+selectedCob.length);
+		for (int i = 0; i < selectedCob.length; i++) {
+			CobranzaOperadoraSie cobranzaopera = new CobranzaOperadoraSie();
+			cobranzaopera.setTbCobranza(selectedCob[i]);
+			cobranzaopera.setTbEmpleado(objEmpleadoService.buscarEmpleado(operadorasignado));
+			objCobranzaOperaService.insertCobranzaOpera(cobranzaopera);
+		}
+		log.info("a remover ");
+		for (int i = 0; i < lstcob.size(); i++) {
+			for (int j = 0; j < selectedCob.length; j++) {
+				if(lstcob.get(i).getIdcobranza()==selectedCob[j].getIdcobranza()){
+					lstcob.remove(i);
+				}
+			}
+		}
+		cobranzaModel = new CobranzaDataModel(lstcob);
+		return null;
 	}
 	
 	public void onTransfer(TransferEvent event) {  
@@ -275,6 +301,58 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 	 */
 	public void setTargets(List<EmpleadoSie> targets) {
 		this.targets = targets;
+	}
+
+	public CobranzaDataModel getCobranzaModel() {
+		return cobranzaModel;
+	}
+
+	public void setCobranzaModel(CobranzaDataModel cobranzaModel) {
+		this.cobranzaModel = cobranzaModel;
+	}
+
+	public CobranzaSie[] getSelectedCob() {
+		return selectedCob;
+	}
+
+	public void setSelectedCob(CobranzaSie[] selectedCob) {
+		this.selectedCob = selectedCob;
+	}
+
+	public int getOperadorasignado() {
+		return operadorasignado;
+	}
+
+	public void setOperadorasignado(int operadorasignado) {
+		this.operadorasignado = operadorasignado;
+	}
+
+	/**
+	 * @return the lstEmpleados
+	 */
+	public List<EmpleadoSie> getLstEmpleados() {
+		return lstEmpleados;
+	}
+
+	/**
+	 * @param lstEmpleados the lstEmpleados to set
+	 */
+	public void setLstEmpleados(List<EmpleadoSie> lstEmpleados) {
+		this.lstEmpleados = lstEmpleados;
+	}
+
+	/**
+	 * @return the lstcob
+	 */
+	public List<CobranzaSie> getLstcob() {
+		return lstcob;
+	}
+
+	/**
+	 * @param lstcob the lstcob to set
+	 */
+	public void setLstcob(List<CobranzaSie> lstcob) {
+		this.lstcob = lstcob;
 	}
 
 }
