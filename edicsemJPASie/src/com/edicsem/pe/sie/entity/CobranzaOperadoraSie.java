@@ -58,6 +58,11 @@ public class CobranzaOperadoraSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idtipo_llamada")
 	private TipoLlamadaSie tbTipoLlamada;
+    
+    //bi-directional many-to-one association to EstadoGeneralSie
+    @ManyToOne
+	@JoinColumn(name="idestadogeneral")
+	private EstadoGeneralSie tbEstadoGeneral;
 
     public CobranzaOperadoraSie() {
     }
@@ -130,6 +135,14 @@ public class CobranzaOperadoraSie implements Serializable {
 
 	public void setFechaexpira(Timestamp fechaexpira) {
 		this.fechaexpira = fechaexpira;
+	}
+
+	public EstadoGeneralSie getTbEstadoGeneral() {
+		return tbEstadoGeneral;
+	}
+
+	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
+		this.tbEstadoGeneral = tbEstadoGeneral;
 	}
 	
 }

@@ -225,6 +225,10 @@ public class EstadoGeneralSie implements Serializable {
 	@OneToMany(mappedBy="tbEstadoGeneral")
 	private Set<ConfigCobranzaOperaSie> tbConfigCobranza;
 	
+	//bi-directional many-to-one association to CobranzaOperadoraSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<CobranzaOperadoraSie> tbCobranzaOpera;
+	
 	public EstadoGeneralSie() {
     }
 
@@ -659,6 +663,14 @@ public class EstadoGeneralSie implements Serializable {
 
 	public void setTbConfigCobranza(Set<ConfigCobranzaOperaSie> tbConfigCobranza) {
 		this.tbConfigCobranza = tbConfigCobranza;
+	}
+
+	public Set<CobranzaOperadoraSie> getTbCobranzaOpera() {
+		return tbCobranzaOpera;
+	}
+
+	public void setTbCobranzaOpera(Set<CobranzaOperadoraSie> tbCobranzaOpera) {
+		this.tbCobranzaOpera = tbCobranzaOpera;
 	}
 	
 }
