@@ -11,6 +11,7 @@ import com.edicsem.pe.sie.entity.ConfigCobranzaOperaSie;
 @Local
 public interface CobranzaOperaService {
 	
+	public abstract void insertCobranzaOpera(CobranzaOperadoraSie cobranzaopera);
 	public abstract List<CobranzaSie> insertCobranzaOpera(List<String> empleadoList,List<ConfigCobranzaOperaSie> configList);
 	public abstract void updateCobranzaOpera(CobranzaOperadoraSie cobranzaopera);
 	public abstract CobranzaOperadoraSie findCobranzaOpera (int id);
