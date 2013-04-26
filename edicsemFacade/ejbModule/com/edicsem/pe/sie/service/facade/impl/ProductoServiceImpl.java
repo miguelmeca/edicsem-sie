@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.service.facade.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -7,8 +8,13 @@ import javax.ejb.Stateless;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.edicsem.pe.sie.beans.ProductoDTO;
+import com.edicsem.pe.sie.entity.DetPaqueteSie;
+import com.edicsem.pe.sie.entity.PaqueteSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
+import com.edicsem.pe.sie.model.dao.DetPaqueteDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
+import com.edicsem.pe.sie.model.dao.PaqueteDAO;
 import com.edicsem.pe.sie.model.dao.ProductoDAO;
 import com.edicsem.pe.sie.model.dao.TipoProductoDAO;
 import com.edicsem.pe.sie.service.facade.ProductoService;
@@ -22,6 +28,10 @@ public class ProductoServiceImpl implements ProductoService {
 	private TipoProductoDAO objTipoProductoDao;
 	@EJB
 	private EstadoGeneralDAO objestadoDao;
+	@EJB
+	private PaqueteDAO objPaqueteDao;
+	@EJB
+	private DetPaqueteDAO objDetPaqueteDao;
 	
 	public static Log log = LogFactory.getLog(EmpleadoSieServiceImpl.class);
 
@@ -48,14 +58,13 @@ public class ProductoServiceImpl implements ProductoService {
 	 * @see com.edicsem.pe.sie.service.facade.ProductoService#findProducto(java.lang.String)
 	 */
 	public ProductoSie findProducto(int id) {
-	return 	objProductoDao.findProducto(id);
+		return objProductoDao.findProducto(id);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ProductoService#listarProductos()
 	 */
 	public List listarProductos() {
-		log.info("dentro del servicio ");
 		return objProductoDao.listarProductos();
 	}
 
@@ -88,14 +97,99 @@ public class ProductoServiceImpl implements ProductoService {
 		return objProductoDao.buscarXcodigoProducto(codProducto);
 	}
 	
-	
-
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ProductoService#listarCodigosProductos()
 	 */
 	public List listarCodigosProductos() {
 		return objProductoDao.listarCodigosProductos();
 	}
-
-
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.ProductoService#migrarProducto(java.util.List, java.lang.String)
+	 */
+	public void migrarProducto(List<ProductoDTO> listaProducto,String usuarioCreacion) {
+		for (int i = 0; i < listaProducto.size(); i++) {
+			String codigo = listaProducto.get(i).getCodproducto();
+			String descripcion = listaProducto.get(i).getDescripcionproducto();
+			ProductoSie pro = new ProductoSie();
+			PaqueteSie paq = null;
+			if(descripcion.contains("-")||descripcion.contains("+")||descripcion.contains(",")){
+				//Es paquete
+				paq = objPaqueteDao.buscarXcodigoPaquete(codigo);
+				if(paq==null){
+					log.info("insert paquete ");
+					paq = new PaqueteSie();
+					paq.setCodpaquete(codigo);
+					paq.setTbEstadoGeneral(objestadoDao.findEstadoGeneral(60));
+					objPaqueteDao.insertPaquete(paq);
+					List<DetPaqueteSie>  lstDetPAquete= new ArrayList<DetPaqueteSie>();
+					DetPaqueteSie det = new DetPaqueteSie();
+					//insertar detalle de paquete
+					String[] arrDescripcion = null;
+					if(descripcion.contains("-")){
+						arrDescripcion = descripcion.split("-");
+					}else if(descripcion.contains("+")){
+						arrDescripcion = descripcion.split("\\+");
+					}else if(descripcion.contains(",")){
+						arrDescripcion = descripcion.split(",");
+					}
+					for (int j = 0; j < arrDescripcion.length; j++) {
+						pro = objProductoDao.findProductoporDescripcion(arrDescripcion[j].trim());
+						if(pro==null){
+							pro= new ProductoSie();
+							pro.setDescripcionproducto(arrDescripcion[j].trim());
+							log.info("--> "+arrDescripcion[j].trim());
+							pro.getDescripcionproducto().replace("'", "");
+							//buscar ultimo de codigo producto
+							String codig= objProductoDao.buscarUltimocodigoProductoXDescripcion(pro.getDescripcionproducto().substring(0, 2));
+							if(codig.equals("")){
+								codig=pro.getDescripcionproducto().substring(0, 2)+"-001";
+							}else{
+								//selecciona los ultimos 3 digitos para el producto
+								log.info("codig1 "+codig.substring(codig.length()-2, codig.length()));
+								codig=codig.substring(codig.length()-2, codig.length());
+								log.info("codig "+codig);
+								int c = Integer.parseInt(codig);
+								log.info(""+c);
+								for (int k = 0; k < (c+"").length(); k++) {
+									codig="0";
+								}
+								codig = pro.getDescripcionproducto().substring(0, 2)+"-"+codig+c;
+								log.info(""+codig);
+							}
+							pro.setCodproducto(codig);
+							pro.setUsuariocreacion(usuarioCreacion);
+							pro.setTbTipoProducto(objTipoProductoDao.findTipoProducto(1));
+							pro.setTbEstadoGeneral(objestadoDao.findEstadoGeneral(5));
+							objProductoDao.insertProducto(pro);
+						}
+						det.setUsuariocreacion(usuarioCreacion);
+						det.setTbPaquete(paq);
+						det.setTbProducto(pro);
+						lstDetPAquete.add(det);
+					}
+					for (int j = 0; j < lstDetPAquete.size(); j++) {
+						lstDetPAquete.get(j).setUsuariocreacion(usuarioCreacion);
+						lstDetPAquete.get(j).setTbEstadoGeneral(objestadoDao.findEstadoGeneral(106));
+						objDetPaqueteDao.insertDetPaquete(lstDetPAquete.get(j));
+					}
+				}else{
+					//si existe el paquete
+					log.info("Si existe el paquete ");
+				}
+//				Biblia - Blanca
+//				Biblia - Niños - LEXUS C/CAJA
+//				Biblia LUJO FAMILIAR - REZA  NEGRA 
+				
+			}else{
+				//Es producto
+				pro.setCodproducto(codigo);
+				pro.setDescripcionproducto(descripcion);
+				pro.setUsuariocreacion(usuarioCreacion);
+				pro.setTbTipoProducto(objTipoProductoDao.findTipoProducto(1));
+				pro.setTbEstadoGeneral(objestadoDao.findEstadoGeneral(5));
+				objProductoDao.insertProducto(pro);
+			}
+		}
+	}
 }

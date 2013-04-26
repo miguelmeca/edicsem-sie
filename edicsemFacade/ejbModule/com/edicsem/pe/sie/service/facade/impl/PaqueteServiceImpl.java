@@ -9,21 +9,25 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.PaqueteSie;
+import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
 import com.edicsem.pe.sie.model.dao.PaqueteDAO;
 import com.edicsem.pe.sie.service.facade.PaqueteService;
 
 @Stateless
 public class PaqueteServiceImpl implements PaqueteService {
-
 	
 	public static Log log = LogFactory.getLog(CargoEmpleadoServiceImpl.class);
+	
 	@EJB
 	private  PaqueteDAO objDetPaqueteDao;
-
+	@EJB
+	private  EstadoGeneralDAO objEstadoDao;
+	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.PaqueteService#insertPaquete(com.edicsem.pe.sie.entity.PaqueteSie)
 	 */
 	public void insertPaquete(PaqueteSie p) {
+		p.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(60));
 		objDetPaqueteDao.insertPaquete(p);
 	}
 
@@ -38,7 +42,6 @@ public class PaqueteServiceImpl implements PaqueteService {
 	 * @see com.edicsem.pe.sie.service.facade.PaqueteService#findPaquete(int)
 	 */
 	public PaqueteSie findPaquete(int id) {
-		log.info("en el  service" +id);
 		return objDetPaqueteDao.findPaquete(id);
 	}
 
@@ -46,7 +49,6 @@ public class PaqueteServiceImpl implements PaqueteService {
 	 * @see com.edicsem.pe.sie.service.facade.PaqueteService#listarPaquetes()
 	 */
 	public List listarPaquetes() {
-		log.info("En el servicio ");
 		return objDetPaqueteDao.listarPaquetes();
 	}
 
