@@ -1426,7 +1426,19 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
-				
+	<!-- borrar -->
+	
+	<h:form id="fr">
+		<p:dialog header="Cobranza " widgetVar="cobDialog" resizable="false" 
+			showEffect="fade" hideEffect="explode" modal="true" width="300"
+			position="center">
+			<p:dataList id="displayMulti"  
+                    value="#{cobranza.selectedCob}" var="selectedCar">  
+            codigo : #{selectedCar.tbContrato.codcontrato}, cli #{selectedCar.tbCliente.nombresCompletos}  
+        </p:dataList>
+        </p:dialog>
+        </h:form>
+        
 <!--	  DESACTIVAR PROVEEDOR	   -->
 <h:form>
 	<p:confirmDialog id="confirmDeshabilitarPro" message="Esta seguro de deshabilitar dicho proveedor?" width="325" height="100" showEffect="explode" 
