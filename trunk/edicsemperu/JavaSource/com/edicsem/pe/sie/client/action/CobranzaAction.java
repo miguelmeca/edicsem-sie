@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
 
@@ -146,30 +147,31 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 	public String asignarcobranzarestante(){
 		log.info("asignarcobranzarestante()  "+selectedCob.length);
 		for (int i = 0; i < selectedCob.length; i++) {
-			CobranzaOperadoraSie cobranzaopera = new CobranzaOperadoraSie();
-			cobranzaopera.setTbCobranza(selectedCob[i]);
-			cobranzaopera.setTbEmpleado(objEmpleadoService.buscarEmpleado(operadorasignado));
-			objCobranzaOperaService.insertCobranzaOpera(cobranzaopera);
+			log.info(""+selectedCob[i].getTbCliente().getNombresCompletos());
+//			CobranzaOperadoraSie cobranzaopera = new CobranzaOperadoraSie();
+//			cobranzaopera.setTbCobranza(selectedCob[i]);
+//			cobranzaopera.setTbEmpleado(objEmpleadoService.buscarEmpleado(operadorasignado));
+//			objCobranzaOperaService.insertCobranzaOpera(cobranzaopera);
 		}
-		log.info("a remover ");
-		for (int i = 0; i < lstcob.size(); i++) {
-			for (int j = 0; j < selectedCob.length; j++) {
-				if(lstcob.get(i).getIdcobranza()==selectedCob[j].getIdcobranza()){
-					lstcob.remove(i);
-				}
-			}
-		}
-		cobranzaModel = new CobranzaDataModel(lstcob);
+//		log.info("a remover ");
+//		for (int i = 0; i < lstcob.size(); i++) {
+//			for (int j = 0; j < selectedCob.length; j++) {
+//				if(lstcob.get(i).getIdcobranza()==selectedCob[j].getIdcobranza()){
+//					lstcob.remove(i);
+//				}
+//			}
+//		}
+//		cobranzaModel = new CobranzaDataModel(lstcob);
 		return null;
 	}
-	
+
 	public void onTransfer(TransferEvent event) {  
         StringBuilder builder = new StringBuilder();  
         for(Object item : event.getItems()) {  
             builder.append(((EmpleadoSie) item).getNombresCompletos()).append("<br />");  
         }
           
-        FacesMessage msg = new FacesMessage();  
+        FacesMessage msg = new FacesMessage();
         msg.setSeverity(FacesMessage.SEVERITY_INFO);  
         msg.setSummary("Items Transferred");  
         msg.setDetail(builder.toString());  
@@ -316,6 +318,7 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 	}
 
 	public void setSelectedCob(CobranzaSie[] selectedCob) {
+		log.info("tamañito "+selectedCob.length);
 		this.selectedCob = selectedCob;
 	}
 

@@ -294,18 +294,19 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 								sis.setCalificacionCliente(getCellValueAsString(data.get(69)));
 								
 								if(contrato!=null){
-									//Si el contrato existe se debe actualizar el contrato
+									//Si el contrato existe, se debe actualizar el contrato
 									sisMigUpdate.add(sis);
 									sheetData.add(data);
 								}else{
 									if(palabra.length==3){
-										//Si el cliente tiene un nombre, un apellido paterno y un apellido materno
+										//Si el cliente tiene 1 nombre, 1 apellido paterno y 1 apellido materno
 										sis.setNombrecliente(palabra[0]);
 										sis.setApepatcliente(palabra[1]);
 										sis.setApematcliente(palabra[2]);
 										sistMig.add(sis);
 										sheetData.add(data);
 									}else{
+										//sino se deberá registrar manualmente
 										listaContratosManual.add(data);
 									}
 								}
@@ -315,6 +316,7 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 						}
 					}
 				}
+				
 				log.info(" tamano total "+sistMig.size());
 				if(mensaje==null){
 					mensaje=  "Cargó exitosamente el archivo "+nombreArchivo;

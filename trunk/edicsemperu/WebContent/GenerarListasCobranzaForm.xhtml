@@ -24,34 +24,36 @@
 				<p:pickList id="pojoPickList" value="#{cobranza.teleoperadoras}" var="e" effect="blind"  
                     itemValue="#{e}" itemLabel="#{e.nombresCompletos}" converter="teleoperadoraConverter"  
                     showSourceControls="true" showTargetControls="true" showCheckbox="true"  
-                    addLabel="Agregar" addAllLabel="Agregar todos" removeLabel="Quitar" removeAllLabel="Quitar todos"
-                    moveBottomLabel="mover al final" moveDownLabel="Mover abajo" moveTopLabel="mover primero" moveUpLabel="Mover Arriba"
+                    addLabel="#{message['btn.add']}" addAllLabel="#{message['btn.add.all']}"  
+                    removeLabel="#{message['btn.remove']}" removeAllLabel="#{message['btn.remove.all']}"
+                    moveBottomLabel="#{message['btn.move']}" moveDownLabel="#{message['btn.move.down']}" 
+                    moveTopLabel="#{message['btn.move.top']}" moveUpLabel="#{message['btn.move.up']}"
                     showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" >  
-                    <f:facet name="sourceCaption">teleoperadoras</f:facet>
-                    <f:facet name="targetCaption">Seleccionados</f:facet> 
+                    <f:facet name="sourceCaption">#{message['asignar.teleoperadores']}</f:facet>
+                    <f:facet name="targetCaption">#{message['asignar.seleccionados']}</f:facet> 
                     <p:column> #{e.nombresCompletos}</p:column>
                 </p:pickList>
 				<p:commandButton action="#{cobranza.insertar}" value="#{message['generar.listar.generar']}"
 				onclick="statusDialogCob.show()" update="message, selectCob" icon="ui-icon-disk" iconPos="rigth" />
 				
 			</p:panel>
-			<p:fieldset id="selectCob"  legend="Asignar Cobranza Restantes" style="margin-top:30px" >
-			<p:panelGrid columns="2" >
+			<p:fieldset id="selectCob"  legend="#{message['asignar.cobranza.restante']}" style="margin-top:30px" >
+			<h:panelGrid columns="2" >
 				<p:dataTable var="d" value="#{cobranza.cobranzaModel}" paginator="true" rows="5" 
 				selection="#{cobranza.selectedCob}" style="width:50%" >
-					<f:facet name="header">Cobranzas por asignar</f:facet>
+					<f:facet name="header">#{message['asignar.cobranza.por.asignar']}</f:facet>
 					<p:column selectionMode="multiple" style="width:2%" />
-					<p:column headerText="Cliente" style="width:30%"> #{d.tbCliente.nombresCompletos}  
+					<p:column headerText="#{message['asignar.cliente']}" style="width:30%"> #{d.tbCliente.nombresCompletos}  
 					</p:column>
-					<p:column headerText="Tipo de Cliente" style="width:5%"> #{d.tbCliente.tbTipoCliente.descripcion}
+					<p:column headerText="#{message['asignar.tipo.cliente']}" style="width:5%"> #{d.tbCliente.tbTipoCliente.descripcion}
 					</p:column>
-					<p:column headerText="Codigo Contrato" style="width:5%"> #{d.tbContrato.codcontrato}
+					<p:column headerText="#{message['asignar.codigo.contrato']}"  style="width:5%"> #{d.tbContrato.codcontrato}
 					</p:column>
-					<p:column headerText="Cuota" style="width:5%"> #{d.numletra}
+					<p:column headerText="#{message['asignar.cuota']}" style="width:5%"> #{d.numletra}
 					</p:column>
                 </p:dataTable>
                 <h:panelGrid columns="2" >
-	                <h:outputText value="Teleoperador(a)" />
+	                <h:outputText value="#{message['asignar.teleoperador']}" />
 					<p:selectOneMenu  value="#{cobranza.operadorasignado}"  >
 						<f:selectItem itemLabel="Seleccione una teleoperador(a)" itemValue="#{null}" />
 						<f:selectItems  value="#{cobranza.lstEmpleados}" var="l" itemLabel="#{l.nombresCompletos}" itemValue="#{l.idempleado}"  />
@@ -59,9 +61,9 @@
 				</h:panelGrid>
 				<f:facet name="footer">
 					<p:commandButton action="#{cobranza.asignarcobranzarestante}" value="#{message['generar.listar.generar']}"
-					 update="message, selectCob" icon="ui-icon-disk" iconPos="rigth" />
+					 update=":fr:displayMulti" icon="ui-icon-disk" iconPos="rigth" onclick="cobDialog.show()" />
 				</f:facet>
-            </p:panelGrid>
+            </h:panelGrid>
             </p:fieldset>
 		</h:form>
 	</ui:define>
