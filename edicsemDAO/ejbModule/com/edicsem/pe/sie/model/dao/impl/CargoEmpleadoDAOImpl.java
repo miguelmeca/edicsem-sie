@@ -25,15 +25,13 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 	 * @see com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO#insertarCargoEmpleado(com.edicsem.pe.sie.entity.CargoEmpleadoSie)
 	 */
 	public void insertarCargoEmpleado(CargoEmpleadoSie cargoempleado) {
-		log.info("apunto de insertar cargo empleado Empleado"+ cargoempleado.getDescripcion()+
-				" - ");
 		try {
-			em.persist(cargoempleado);
-
 			if (log.isInfoEnabled()) {
-				log.info("apunto de insertar cargo empleado Empleado");
+				log.info("insertarCargoEmpleado");
 			}
 			
+			em.persist(cargoempleado);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -46,13 +44,9 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 		
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("modificar Cargo empleado");
+				log.info("modificar Cargo empleado "+cargoempleado.getDescripcion());
 			}
-			//CargoEmpleadoSie bean= buscarCargoEmpleado(cargoempleado.getIdcargoempleado());
-			log.info("bean" + cargoempleado.getDescripcion() + " " + cargoempleado.getIdcargoempleado());
-			
 			em.merge(cargoempleado);
-			log.info("--- ");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -75,7 +69,6 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 	 * @see com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO#buscarCargoEmpleado(int)
 	 */
 	public CargoEmpleadoSie buscarCargoEmpleado(int id) {
-		log.info("buscar CargoEmpleado " +id);
 		CargoEmpleadoSie cargoempleado = new CargoEmpleadoSie();
 		try {
 			if (log.isInfoEnabled()) {
@@ -93,7 +86,7 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 	 * @see com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO#listarCargoEmpleado()
 	 */
 	public List listarCargoEmpleado() {
-		log.info("***************** listar cargoEmpleado");
+		log.info("listarCargoEmpleado()");
 		List lista = null;
 		try {
 			Query q = em.createQuery("select c from CargoEmpleadoSie c where c.tbEstadoGeneral.idestadogeneral = "+ 1);
@@ -109,7 +102,7 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 	 * @see com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO#listarCargosXEmpleado(int)
 	 */
 	public List listarCargosXEmpleado(int idEmpleado){
-		log.info("listar cargos X empleado");
+		log.info("listarCargosXEmpleado()");
 		List lista = null;
 		try {
 			Query q = em.createQuery("select c from CargoEmpleadoSie c inner join c.tbContratoEmpleado d   " +

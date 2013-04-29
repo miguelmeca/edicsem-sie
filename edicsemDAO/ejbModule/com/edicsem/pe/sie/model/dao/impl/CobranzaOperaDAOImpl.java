@@ -72,8 +72,9 @@ public class CobranzaOperaDAOImpl implements CobranzaOperaDAO{
 	public List listarCobranzasOpera(String usuario) {
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from CobranzaOperadoraSie p where " +
-					" DATE(p.fechaexpira) <= DATE('"+DateUtil.getToday().getTime()+"')  " +
+			Query q = em.createQuery("select p from CobranzaOperadoraSie p where  DATE(p.fechacreacion) " +
+					"<= DATE('"+DateUtil.getToday().getTime()+"')  and " +
+					" DATE(p.fechaexpira) >= DATE('"+DateUtil.getToday().getTime()+"')  " +
 					" and p.tbEmpleado.usuario like '"+usuario+"' and p.tbEstadoGeneral.idestadogeneral = 108 ");
 			lista =  q.getResultList(); 
 			log.info("tamaño lista CobranzaOperadora --> " + lista.size()+"  ");
@@ -82,7 +83,7 @@ public class CobranzaOperaDAOImpl implements CobranzaOperaDAO{
 		}
 		return lista;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.CobranzaOperaDAO#verificargeneracionDiaria()
 	 */
