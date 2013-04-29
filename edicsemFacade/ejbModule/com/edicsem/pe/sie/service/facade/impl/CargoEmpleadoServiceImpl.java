@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
  
 import com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO;
+import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 @Stateless
 public class CargoEmpleadoServiceImpl implements CargoEmpleadoService{
@@ -17,11 +18,14 @@ public class CargoEmpleadoServiceImpl implements CargoEmpleadoService{
 	public static Log log = LogFactory.getLog(CargoEmpleadoServiceImpl.class);
 	@EJB
 	private CargoEmpleadoDAO objCargoEmpleadoDao;
+	@EJB
+	private EstadoGeneralDAO objEstadoDao;
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.DemoService#insertDemo(com.edicsem.pe.sie.entity.Usuario)
 	 */
 	public void insertarCargoEmpleado(CargoEmpleadoSie cargoempleado) {
+		cargoempleado.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(1));
 		objCargoEmpleadoDao.insertarCargoEmpleado(cargoempleado);
 	}
 
