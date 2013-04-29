@@ -143,8 +143,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		header="Generando listas de cobranza" draggable="false" closable="false">
 		<p:graphicImage value="/images/ajaxloadingbar.gif" />
 	</p:dialog>
-	<f:loadBundle var="message"
-		basename="com.edicsem.pe.sie.client.properties.ApplicationResources" />
+	<f:loadBundle var="message" basename="com.edicsem.pe.sie.client.properties.ApplicationResources" />
 		
 	<p:layout fullPage="true">
 		<p:layoutUnit position="north" size="110">
@@ -1096,45 +1095,30 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:dialog>
 	</h:form>
 	
-
 	<h:form id="formCarEmpList">
 		<p:dialog header="Detalle CargoEmpleado" widgetVar="carDialog" resizable="false" 
 			showEffect="fade" hideEffect="explode" modal="true" width="450"
 			position="center">
 			<h:panelGrid id="display" columns="2" cellpadding="2"
 				style="margin:0 auto;">
-
-				<h:outputText value="Codigo de Cargo" />
-				<h:panelGroup>
-					<h:outputText
-						value="#{mantenimientoCargoEmpleadoFormAction.selectedCargoEmpleado.idcargoempleado}"
-						style="font-weight:bold"
-						rendered="#{!mantenimientoCargoEmpleadoFormAction.editMode}" />
-
-				</h:panelGroup>
-
+				
 				<h:outputText value="Descripcion" />
 				<h:panelGroup>
-					<h:outputText
-						value="#{mantenimientoCargoEmpleadoFormAction.selectedCargoEmpleado.descripcion}"
-						style="font-weight:bold"
-						rendered="#{!mantenimientoCargoEmpleadoFormAction.editMode}" />
+					<h:outputText value="#{mantenimientoCargoEmpleadoFormAction.objCargoEmpleadoSie.descripcion}"
+					style="font-weight:bold"/>
 				</h:panelGroup>
-
+				
 				<h:outputText value="Estado de Cargo" id="EstCar" />
 				<h:panelGroup>
-					<h:outputText
-						value="#{mantenimientoCargoEmpleadoFormAction.selectedCargoEmpleado.tbEstadoGeneral.idestadogeneral}"
-						style="font-weight:bold"
-						rendered="#{!mantenimientoCargoEmpleadoFormAction.editMode}" />
+					<h:outputText value="#{mantenimientoCargoEmpleadoFormAction.objCargoEmpleadoSie.tbEstadoGeneral.idestadogeneral}"
+						style="font-weight:bold"/>
 				</h:panelGroup>
 
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
 
-	<!--EN UN SOLO PUPAP NUEVO Y EDITAR CARGO EMPLEADO	  -->
-
+	<!-- NUEVO Y EDITAR CARGO EMPLEADO -->
 	<h:form id="NuevoModificaCargoEmpleado">
 		<p:dialog header="Registro / Modificacion de Cargo Empleado" widgetVar="carDialogNuevo"
 			showEffect="fade" hideEffect="explode" modal="true" width="500" resizable="false" 
@@ -1148,7 +1132,6 @@ function validarEspaciosLetrasNumeros(e) { // 1
 						required="true" label="descripcion"
 						requiredMessage="#{message['Cargoempleado.descripcion.validation']}"
 						style="font-weight:bold" title="nombre del cargo de empleado" />
-					<pe:keyFilter for="descripcion2" mask="alpha"/>  
 				</h:panelGroup>
 				<p:spacer height="30px" />
 				
@@ -1162,25 +1145,22 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:dialog>
 	</h:form>
 	
-	<!--	  INICIO DESACTIVAR	CARGO EMPLEADO   -->
+	<!--	 DESACTIVAR	CARGO EMPLEADO   -->
 	<h:form>
 		<p:confirmDialog id="confirmDeshabilitar1"
 			message="Esta seguro de deshabilitar este Cargo Empleado?" width="325"
-			height="100" showEffect="explode" hideEffect="explode"
-			header="Confirmar" severity="alert" widgetVar="confirmation24"
-			position="center">
-
+			height="100" showEffect="explode" hideEffect="explode" position="center"
+			header="Confirmar" severity="alert" widgetVar="confirmationUpdateCargo">
+			
 			<p:commandButton type="submit" value="Si"
 				action="#{mantenimientoCargoEmpleadoFormAction.updateDeshabilitar}"
-				oncomplete="confirmation24.hide()" ajax="false"
-				update=":manteCargoEmpleado:listaPersonas">
-			</p:commandButton>
-
-			<p:commandButton value="No" onclick="confirmation24.hide()" type="button" />
+				oncomplete="confirmationUpdateCargo.hide()" ajax="false"
+				update=":manteCargoEmpleado:listaPersonas" />
+			<p:commandButton value="No" onclick="confirmationUpdateCargo.hide()" type="button" />
 		</p:confirmDialog>
 	</h:form>
 	
-	<!--	  INICIO DESACTIVAR	Horario P.Venta   -->
+	<!--	 DESACTIVAR	Horario P.Venta   -->
 	<h:form>
 		<p:confirmDialog id="confirmDeshabilitarHpv"
 			message="Esta seguro de deshabilitar este horario?" width="325"
@@ -1233,9 +1213,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				<h:outputText value="#{message['nombre.tipoProducto']}" />
 				<p:inputText id="nombre2" maxlength="50" style="font-weight:bold" 
 					value="#{mantenimientoTipoProductoFormAction.objTipoProductoSie.nombretipoproducto}"
-					required="true" label="tipoProducto"
-					requiredMessage="#{message['nombre.tipoProducto.validation']}" />
-					<pe:keyFilter for="nombre2" mask="alphanum"/>
+					required="true" label="tipoProducto" requiredMessage="#{message['nombre.tipoProducto.validation']}" />
 				<h:panelGroup>
 					<p:spacer height="20px"/>
 					<p:commandButton id="btn" value="Guardar" update="display"
@@ -1452,32 +1430,17 @@ function validarEspaciosLetrasNumeros(e) { // 1
 
 <!--	  INICIO DESACTIVAR	 EMPRESA  -->
 <h:form>
-<p:confirmDialog id="confirmDeshabilitarEmpresa"
-			     message="esta seguro de eliminar esta empresa?" 
-			     width="325"
-				 height="100" showEffect="explode" hideEffect="explode"
-			     header="Confirm" severity="alert" widgetVar="confirmationEmpresa"
-				 position="center">
-
-<p:commandButton type="submit"
-				 value="Si"
-				 action="#{empresaForm.Eliminarempresa}" 
-				 oncomplete="confirmationEmpresa.hide()"
-				 update=":frmEmpresaEmpleFormList" 		
-				 		
-	             ajax="false"
-/>
-
-<p:commandButton value="No" onclick="confirmationEmpresa.hide()"
-					type="button" />
-
-		</p:confirmDialog>
-
-	</h:form>
-
-	<!-- 	FIN DESACTICAR EMPRESA (ESTADOS)  -->
-		<!--	  INICIO DESACTIVAR	 Lista de CARGO EMPLEADOS  -->
-
+	<p:confirmDialog id="confirmDeshabilitarEmpresa" message="esta seguro de eliminar esta empresa?" 
+		width="325" height="100" showEffect="explode" hideEffect="explode"
+		header="Confirm" severity="alert" widgetVar="confirmationEmpresa" position="center">
+	<p:commandButton type="submit" value="Si" action="#{empresaForm.Eliminarempresa}" 
+		oncomplete="confirmationEmpresa.hide()" update=":frmEmpresaEmpleFormList" ajax="false"/>
+	<p:commandButton value="No" onclick="confirmationEmpresa.hide()"
+	type="button" />
+	</p:confirmDialog>
+</h:form>
+	
+	<!--	  INICIO DESACTIVAR	 Lista de CARGO EMPLEADOS  -->
 	<h:form>
 	<p:confirmDialog id="confirmDeshabilitarCargo" position="center"
 		message="esta seguro de DERIVAR estos Cargos?" 
@@ -1619,9 +1582,8 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			showEffect="fade" hideEffect="explode" modal="true" width="400"
 			position="center">
 
-			<h:panelGrid id="display" columns="3" cellpadding="2"
-				style="margin:0 auto;">
-
+			<h:panelGrid id="display" columns="3" cellpadding="2">
+			
 				<h:outputText value="#{message['Metames.fechainicial']}" for="fechainicial"/>
 				<p:calendar  value="#{metaMesSearchAction.date1}" id="fechainicial" maxlength="10"
 				required="true" pattern="dd/MM/yyyy" requiredMessage="#{message['Metames.fechainicial.validation']}" />
@@ -1630,7 +1592,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				<h:outputText value="#{message['Metames.fechafinal']}" for="fechafinal"  />				
 				<p:calendar value="#{metaMesSearchAction.date2}" id="fechafinal" required="true" 
 				pattern="dd/MM/yyyy" maxlength="10" requiredMessage="#{message['Metames.fechafinal.validation']}"/>
-				<p:message for="fechafinal" /> 
+				<p:message for="fechafinal" />
 				
 				<h:panelGroup>
 					<p:spacer height="20px"/>
@@ -1705,14 +1667,11 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			height="100" showEffect="explode" hideEffect="explode"
 			header="Confirm" severity="alert" widgetVar="confirmationTelCli" >
 
-			<p:commandButton type="submit" value="Si"
+			<p:commandButton type="submit" value="Si" update="@all"
 				action="#{MantenimientoClienteFormAction.telefonoElimina}"
-				update="@all"
-				oncomplete="confirmationTelCli.hide()" ajax="false">
-			</p:commandButton>
+				oncomplete="confirmationTelCli.hide()" ajax="false" />
 
-			<p:commandButton value="No" onclick="confirmationTelCli.hide()"
-				type="button" />
+			<p:commandButton value="No" onclick="confirmationTelCli.hide()" type="button" />
 
 		</p:confirmDialog>
 	</h:form>
@@ -1727,8 +1686,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				action="#{MantenimientoClienteFormAction.domicilioElimina}"
 				oncomplete="confirmationDomiCli.hide()" ajax="false" />
 
-			<p:commandButton value="No" onclick="confirmationDomiCli.hide()"
-				type="button" />
+			<p:commandButton value="No" onclick="confirmationDomiCli.hide()" type="button" />
 		</p:confirmDialog>
 	</h:form>
 	

@@ -40,7 +40,7 @@
 			<p:fieldset id="selectCob"  legend="#{message['asignar.cobranza.restante']}" style="margin-top:30px" >
 			<h:panelGrid columns="2" >
 				<p:dataTable var="d" value="#{cobranza.cobranzaModel}" paginator="true" rows="5" 
-				selection="#{cobranza.selectedCob}" style="width:50%" >
+				selection="#{cobranza.selectedCob}" style="width:50%" emptyMessage="#{message['rsltd.empty']}">
 					<f:facet name="header">#{message['asignar.cobranza.por.asignar']}</f:facet>
 					<p:column selectionMode="multiple" style="width:2%" />
 					<p:column headerText="#{message['asignar.cliente']}" style="width:30%"> #{d.tbCliente.nombresCompletos}  

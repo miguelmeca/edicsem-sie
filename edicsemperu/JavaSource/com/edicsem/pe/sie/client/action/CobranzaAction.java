@@ -12,12 +12,10 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
 
 import com.edicsem.pe.sie.client.dataModel.CobranzaDataModel;
-import com.edicsem.pe.sie.entity.CobranzaOperadoraSie;
 import com.edicsem.pe.sie.entity.CobranzaSie;
 import com.edicsem.pe.sie.entity.ConfigCobranzaOperaSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
