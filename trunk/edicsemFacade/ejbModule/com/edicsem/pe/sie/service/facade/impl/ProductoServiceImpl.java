@@ -108,11 +108,17 @@ public class ProductoServiceImpl implements ProductoService {
 	 * @see com.edicsem.pe.sie.service.facade.ProductoService#migrarProducto(java.util.List, java.lang.String)
 	 */
 	public void migrarProducto(List<ProductoDTO> listaProducto,String usuarioCreacion) {
+		int  insertPaq=0;
+		int insertPro=0;
 		for (int i = 0; i < listaProducto.size(); i++) {
 			String codigo = listaProducto.get(i).getCodproducto();
-			String descripcion = listaProducto.get(i).getDescripcionproducto();
-			ProductoSie pro = new ProductoSie();
+			String descripcion = listaProducto.get(i).getDescripcionproducto().toUpperCase();
+			ProductoSie pro = null;
 			PaqueteSie paq = null;
+			descripcion.replace("'", "");
+			descripcion.replace("(", "");
+			descripcion.replace(")", "");
+			descripcion.replace("\"", "");
 			if(descripcion.contains("-")||descripcion.contains("+")||descripcion.contains(",")){
 				//Es paquete
 				paq = objPaqueteDao.buscarXcodigoPaquete(codigo);
@@ -120,9 +126,11 @@ public class ProductoServiceImpl implements ProductoService {
 					log.info("insert paquete ");
 					paq = new PaqueteSie();
 					paq.setCodpaquete(codigo);
+					paq.setDescripcionpaquete(descripcion.trim().toUpperCase());
 					paq.setTbEstadoGeneral(objestadoDao.findEstadoGeneral(60));
+					insertPaq+=1;
 					objPaqueteDao.insertPaquete(paq);
-					List<DetPaqueteSie>  lstDetPAquete= new ArrayList<DetPaqueteSie>();
+					List<DetPaqueteSie> lstDetPAquete= new ArrayList<DetPaqueteSie>();
 					DetPaqueteSie det = new DetPaqueteSie();
 					//insertar detalle de paquete
 					String[] arrDescripcion = null;
@@ -135,32 +143,35 @@ public class ProductoServiceImpl implements ProductoService {
 					}
 					for (int j = 0; j < arrDescripcion.length; j++) {
 						pro = objProductoDao.findProductoporDescripcion(arrDescripcion[j].trim());
+						int cant=0;
 						if(pro==null){
 							pro= new ProductoSie();
-							pro.setDescripcionproducto(arrDescripcion[j].trim());
+							
+							pro.setDescripcionproducto(arrDescripcion[j].trim().toUpperCase());
 							log.info("--> "+arrDescripcion[j].trim());
-							pro.getDescripcionproducto().replace("'", "");
 							//buscar ultimo de codigo producto
-							String codig= objProductoDao.buscarUltimocodigoProductoXDescripcion(pro.getDescripcionproducto().substring(0, 2));
+							String codig= objProductoDao.buscarUltimocodigoProductoXDescripcion(pro.getDescripcionproducto().substring(0, 3).toUpperCase());
 							if(codig.equals("")){
-								codig=pro.getDescripcionproducto().substring(0, 2)+"-001";
+								codig=pro.getDescripcionproducto().substring(0, 3)+"-001";
 							}else{
 								//selecciona los ultimos 3 digitos para el producto
-								log.info("codig1 "+codig.substring(codig.length()-2, codig.length()));
-								codig=codig.substring(codig.length()-2, codig.length());
+								log.info("codig1 "+codig.substring(codig.length()-3, codig.length()));
+								codig=codig.substring(codig.length()-3, codig.length());
 								log.info("codig "+codig);
 								int c = Integer.parseInt(codig);
+								c=c+1;
 								log.info(""+c);
 								for (int k = 0; k < (c+"").length(); k++) {
 									codig="0";
 								}
-								codig = pro.getDescripcionproducto().substring(0, 2)+"-"+codig+c;
+								codig = pro.getDescripcionproducto().substring(0, 3)+"-"+codig+c;
 								log.info(""+codig);
 							}
 							pro.setCodproducto(codig);
 							pro.setUsuariocreacion(usuarioCreacion);
 							pro.setTbTipoProducto(objTipoProductoDao.findTipoProducto(1));
 							pro.setTbEstadoGeneral(objestadoDao.findEstadoGeneral(5));
+							insertPro+=1;
 							objProductoDao.insertProducto(pro);
 						}
 						det.setUsuariocreacion(usuarioCreacion);
@@ -177,19 +188,24 @@ public class ProductoServiceImpl implements ProductoService {
 					//si existe el paquete
 					log.info("Si existe el paquete ");
 				}
-//				Biblia - Blanca
-//				Biblia - Niños - LEXUS C/CAJA
-//				Biblia LUJO FAMILIAR - REZA  NEGRA 
-				
 			}else{
 				//Es producto
-				pro.setCodproducto(codigo);
-				pro.setDescripcionproducto(descripcion);
-				pro.setUsuariocreacion(usuarioCreacion);
-				pro.setTbTipoProducto(objTipoProductoDao.findTipoProducto(1));
-				pro.setTbEstadoGeneral(objestadoDao.findEstadoGeneral(5));
-				objProductoDao.insertProducto(pro);
+				//Buscamos el producto
+				pro = objProductoDao.findProductoporDescripcion(descripcion);
+				if(pro!=null){
+					log.info("Si existe el producto ");
+				}else{
+					pro= new ProductoSie();
+					pro.setCodproducto(codigo);
+					pro.setDescripcionproducto(descripcion);
+					pro.setUsuariocreacion(usuarioCreacion);
+					pro.setTbTipoProducto(objTipoProductoDao.findTipoProducto(1));
+					pro.setTbEstadoGeneral(objestadoDao.findEstadoGeneral(5));
+					insertPro+=1;
+					objProductoDao.insertProducto(pro);
+				}
 			}
 		}
+		log.info("Mensaje : se insertaron "+insertPaq +" paquetes, y se insertaron "+insertPro+" productos ");
 	}
 }

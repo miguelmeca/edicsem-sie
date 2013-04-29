@@ -50,12 +50,11 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	private UbigeoDAO objUbigeoDao;
 	@EJB
 	private TipoCasaDAO objTipoCasaDao;
-	   
+	
 	public static Log log = LogFactory.getLog(EmpleadoSieServiceImpl.class);
 		
 	public void insertarEmpleado(EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, int codigoTipoDocumento, int codigoCargoEmpleado,
 		String idUbigeo, int tipo, int idCargo, int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int idEmpresa, int idTipoPago, int codigoEmpleado, List<ContratoEmpleadoSie> contratoEmpleadoList, List<TelefonoPersonaSie> TelefonoPersonaList){
-		log.info("inicio del método insertar empleado");
 		/**Inserta el empleado**/
 		objEmpleado.setTbTipoDocumentoIdentidad(objTipoDocDao.buscarTipoDocumento(TipoDocumento));
 		/**Estado del empleado: habilitado(3)**/
@@ -84,8 +83,6 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 			objContrato.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
 			objContratoEmpleadoDao.insertContratoEmpleado(objContrato);
 		}
-		/**fin Inseta Contrato(s)**/
-		log.info("insertando..... ");
 	}
 	
 	/* (non-Javadoc)
@@ -93,33 +90,24 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	 */
 	public void actualizarEmpleado(EmpleadoSie objEmpleado, DomicilioPersonaSie objDomicilio, int codigoTipoDocumento, int codigoCargoEmpleado,
 	String idUbigeo, int tipo, int idCargo, int DomicilioPersona, int TelefonoPersona, int TipoDocumento, int idEmpresa, int idTipoPago, int codigoEmpleado, List<ContratoEmpleadoSie> contratoEmpleadoList, List<TelefonoPersonaSie> TelefonoPersonaList, List<TelefonoPersonaSie> TelefonoDeshabilitado, List<ContratoEmpleadoSie> ContratoDeshabilitado) {			
-			try {
-				if (log.isInfoEnabled()) {
-					log.info("inicio del método insertar empleado");
+			objEmpleado.setTbTipoDocumentoIdentidad(objTipoDocDao.buscarTipoDocumento(TipoDocumento));
+			objEmpleadoDao.actualizarEmpleado(objEmpleado);
+			/**Actualiza telefono(s)**/
+			for (TelefonoPersonaSie objTelefono : TelefonoPersonaList) {
+				log.info("bien!! por agregar ");
+				if(objTelefono.getItem().equalsIgnoreCase("Por Agregar")){
+				objTelefono.setIdempleado(objEmpleado);
+				objTelefono.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
+				objTelefonoDao.insertarTelefonoEmpleado(objTelefono);
 				}
-				/**Actualiza el empleado**/
-				
-				objEmpleado.setTbTipoDocumentoIdentidad(objTipoDocDao.buscarTipoDocumento(TipoDocumento));
-				
-				objEmpleadoDao.actualizarEmpleado(objEmpleado);
-				/**Actualiza telefono(s)**/
-				log.info("bien!! :d ");
-				for (TelefonoPersonaSie objTelefono : TelefonoPersonaList) {
-					log.info("bien!! por agregar ");
-					if(objTelefono.getItem().equalsIgnoreCase("Por Agregar")){
-					objTelefono.setIdempleado(objEmpleado);
-					objTelefono.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
-					objTelefonoDao.insertarTelefonoEmpleado(objTelefono);
-					}
-				}
-				for (TelefonoPersonaSie objTelefono :  TelefonoDeshabilitado) {
-					log.info("deshabilitar ");
-					objTelefono.setIdempleado(objEmpleado);
-					objTelefono.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(18));
-					objTelefonoDao.actualizarTelefonoEmpleado(objTelefono);
-				}
-				 log.info(" tipo casa "+ tipo);
-				/**Actualiza el domicilio**/
+			}
+			for (TelefonoPersonaSie objTelefono :  TelefonoDeshabilitado) {
+				log.info("deshabilitar ");
+				objTelefono.setIdempleado(objEmpleado);
+				objTelefono.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(18));
+				objTelefonoDao.actualizarTelefonoEmpleado(objTelefono);
+			}
+			/**Actualiza el domicilio**/
 				objDomicilio.setIddomiciliopersona(objDomicilio.getIddomiciliopersona());
 				objDomicilio.setIdempleado(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
 				objDomicilio.setTbUbigeo(objUbigeoDao.findUbigeo(Integer.parseInt(idUbigeo)));
@@ -128,19 +116,15 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 				objDomicilio.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(15));
 				objDomicilioDao.actualizarDomicilioEmpleado(objDomicilio);
 				/**Actualiza Contrato(s)**/
-				for (ContratoEmpleadoSie objContrato : contratoEmpleadoList) {
-					if(objContrato.getTipo()!=null && objContrato.getTipo().equalsIgnoreCase("Por Agregar")){
-						objContrato.setTbEmpresa(objEmpresaDao.findEmpresa(objContrato.getEmpresa()));
-						objContrato.setTbEmpleado1(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
-						objContrato.setTbCargoempleado(objCargoEmpDao.buscarCargoEmpleado(idCargo));
-						objContrato.setTbTipoPago(objTipoPagoDao.findTipoPago(idTipoPago));
-						objContrato.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
-						objContratoEmpleadoDao.insertContratoEmpleado(objContrato);
-					}
+			for (ContratoEmpleadoSie objContrato : contratoEmpleadoList) {
+				if(objContrato.getTipo()!=null && objContrato.getTipo().equalsIgnoreCase("Por Agregar")){
+					objContrato.setTbEmpresa(objEmpresaDao.findEmpresa(objContrato.getEmpresa()));
+					objContrato.setTbEmpleado1(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
+					objContrato.setTbCargoempleado(objCargoEmpDao.buscarCargoEmpleado(idCargo));
+					objContrato.setTbTipoPago(objTipoPagoDao.findTipoPago(idTipoPago));
+					objContrato.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
+					objContratoEmpleadoDao.insertContratoEmpleado(objContrato);
 				}
-				log.info("actualizando..... ");
-			   }catch (Exception e) {
-				e.printStackTrace();
 			}
 	}
 	
@@ -178,7 +162,6 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 	 * @see com.edicsem.pe.sie.service.facade.EmpleadoSieService#listarEmpleadoxEmpresas(int)
 	 */
 	public List listarEmpleadoxEmpresas(int parametroObtenido) {
-		log.info("dentro del servicio listar Empleado x Empresas ");
 		return objEmpleadoDao.listarEmpleadoxEmpresas(parametroObtenido);
 	}
 	

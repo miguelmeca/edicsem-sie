@@ -54,12 +54,13 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 		Calendar hoy = new GregorianCalendar();
 		boolean isvalidate=true;
 		List<CobranzaSie> puntualtmp = new ArrayList<CobranzaSie>(),regulartmp= new ArrayList<CobranzaSie>(),morosotmp= new ArrayList<CobranzaSie>(), extremotmp= new ArrayList<CobranzaSie>();
-		
+		List<Integer> arrTipoCliente= new ArrayList<Integer>();
 		//Buscar sólo los tipo de clientes admitidos para ésta fecha
 		for (int i = 0; i < configList.size(); i++) {
-			configList.get(i).getTbTipoCliente().getIdtipocliente();//1, 2, 3, 4
+			if(!arrTipoCliente.contains(configList.get(i).getTbTipoCliente().getIdtipocliente()))
+			arrTipoCliente.add(configList.get(i).getTbTipoCliente().getIdtipocliente());
 		}
-		
+		log.info("Arreglo de Tipo De Cliente "+arrTipoCliente);
 		/** Lógica para dividir la lista de deudores divididas por tipo de cliente
 		 *  entre la cantidad de teleoperadoras */
 		//Listas nuevas: lunes, miércoles y viernes
@@ -67,11 +68,9 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 		//moroso una vez cada semana
 		List<Integer> listaContrato= new ArrayList<Integer>();
 		for (int i = 0; i < cobranzaList.size(); i++) {
-			
-			if(cobranzaList.get(i).getTbCliente().getTbTipoCliente().getIdtipocliente()==1){
+			if(arrTipoCliente.contains(1) && cobranzaList.get(i).getTbCliente().getTbTipoCliente().getIdtipocliente()==1){
 				// Puntual
 				if(puntualtmp.size()>0){
-					log.info(" >0 ");
 					for (int j = 0; j < puntualtmp.size(); j++) {
 						isvalidate=false;
 						if(listaContrato.contains(cobranzaList.get(i).getIdcontrato())){
@@ -87,12 +86,10 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 				}else {
 					listaContrato.add(cobranzaList.get(i).getIdcontrato());
 					puntualtmp.add(cobranzaList.get(i));
-					log.info(" tamaño  "+listaContrato);
 				}
-			}else if(cobranzaList.get(i).getTbCliente().getTbTipoCliente().getIdtipocliente()==2){
+			}else if(arrTipoCliente.contains(2) && cobranzaList.get(i).getTbCliente().getTbTipoCliente().getIdtipocliente()==2){
 				// Regular
 				if(regulartmp.size()>0){
-					log.info(" >0 ");
 					for (int j = 0; j < regulartmp.size(); j++) {
 						isvalidate=false;
 						if(listaContrato.contains(cobranzaList.get(i).getIdcontrato())){
@@ -108,12 +105,10 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 				}else {
 					listaContrato.add(cobranzaList.get(i).getIdcontrato());
 					regulartmp.add(cobranzaList.get(i));
-					log.info(" tamaño  "+listaContrato);
 				}
-			}else if(cobranzaList.get(i).getTbCliente().getTbTipoCliente().getIdtipocliente()==3){
+			}else if(arrTipoCliente.contains(3) && cobranzaList.get(i).getTbCliente().getTbTipoCliente().getIdtipocliente()==3){
 				// Moroso
 				if(morosotmp.size()>0){
-					log.info(" >0 ");
 					for (int j = 0; j < morosotmp.size(); j++) {
 						isvalidate=false;
 						if(listaContrato.contains(cobranzaList.get(i).getIdcontrato())){
@@ -129,12 +124,10 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 				}else {
 					listaContrato.add(cobranzaList.get(i).getIdcontrato());
 					morosotmp.add(cobranzaList.get(i));
-					log.info(" tamaño  "+listaContrato);
 				}
-			}else if(cobranzaList.get(i).getTbCliente().getTbTipoCliente().getIdtipocliente()==4){
+			}else if(arrTipoCliente.contains(4) && cobranzaList.get(i).getTbCliente().getTbTipoCliente().getIdtipocliente()==4){
 				// Extremo
 				if(extremotmp.size()>0){
-					log.info(" >0 ");
 					for (int j = 0; j < extremotmp.size(); j++) {
 						isvalidate=false;
 						if(listaContrato.contains(cobranzaList.get(i).getIdcontrato())){
@@ -150,12 +143,8 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 				}else {
 					listaContrato.add(cobranzaList.get(i).getIdcontrato());
 					extremotmp.add(cobranzaList.get(i));
-					log.info(" tamaño  "+listaContrato);
 				}
 			}
-		}
-		for (int i = 0; i < puntualtmp.size(); i++) {
-			log.info("contrato  "+puntualtmp.get(i).getIdcontrato()+""+puntualtmp.get(i).getTbCliente().getNombresCompletos()+" "+puntualtmp.get(i).getFechaVencimientoString());
 		}
 		log.info("tamano " +  puntualtmp.size()+" - "+regulartmp.size()+" - "+morosotmp.size()+" - "+extremotmp.size());
 		BigDecimal p = new BigDecimal(puntualtmp.size()/empleadoList.size());
@@ -174,6 +163,7 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 		int valor=0;
 		int valori=0;
 		for (int i = 0; i < configList.size(); i++) {
+			hoy = new GregorianCalendar();
 			hoy.add(Calendar.DAY_OF_MONTH, configList.get(i).getDiasProgramados());
 			if(configList.get(i).getTbTipoCliente().getIdtipocliente()==1){
 				for (int j = 0; j < empleadoList.size(); j++) {
@@ -200,25 +190,26 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 				for (int k = valori; k< puntualtmp.size(); k++) {
 					cobranzaSinAsignarTmp.add(puntualtmp.get(k));
 				}
+				if(p.intValue()==0)
+					for (int n = 0; n< puntualtmp.size(); n++) {
+						cobranzaSinAsignarTmp.add(puntualtmp.get(n));
+					}
 			}
 		}
 		valori=0;
 		for (int k = 0; k < configList.size(); k++) {
+			hoy = new GregorianCalendar();
 			hoy.add(Calendar.DAY_OF_MONTH, configList.get(k).getDiasProgramados());
 			if(configList.get(k).getTbTipoCliente().getIdtipocliente()==2){
 			for (int j = 0; j < empleadoList.size(); j++) {
-				log.info(" -- empleado -- "+ empleadoList.get(j));
 				valor=0;
 				for (int i = valori; i < regulartmp.size(); i++) {
-					
 					if(valor<r.intValue()){
-						log.info(" -- regular -- "+ regulartmp.get(i).getIdcontrato());
 						CobranzaOperadoraSie cobranzaopera= new CobranzaOperadoraSie();
 						CobranzaSie cobranza = objCobranzaDao.findCobranza(regulartmp.get(i).getIdcobranza());
 						cobranzaopera.setTbEmpleado(objEmpleadoDao.buscarEmpleado(empleadoList.get(j)));
 						cobranzaopera.setTbCobranza(cobranza);
 						cobranzaopera.setFechaexpira(new Timestamp(hoy.getTime().getTime()));
-						log.info("--> " +cobranzaopera.getTbEmpleado().getNombresCompletos()+", "+cobranzaopera.getTbCobranza().getTbCliente().getIdcliente());
 						cobranzaopera.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(108));
 						objCobranzaOperaDao.insertCobranzaOpera(cobranzaopera);
 						valor=valor + 1;
@@ -232,25 +223,28 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 			for (int n = valori; n< regulartmp.size(); n++) {
 				cobranzaSinAsignarTmp.add(regulartmp.get(n));
 			}
+			//Los que restan, serán asignados 
+			if(r.intValue()==0)
+				for (int n = 0; n< regulartmp.size(); n++) {
+					cobranzaSinAsignarTmp.add(regulartmp.get(n));
+				}
 			}
 		}
 		valori=0;
 		for (int k = 0; k < configList.size(); k++) {
+			hoy = new GregorianCalendar();
 			hoy.add(Calendar.DAY_OF_MONTH, configList.get(k).getDiasProgramados());
 			if(configList.get(k).getTbTipoCliente().getIdtipocliente()==2){
 				for (int j = 0; j < empleadoList.size(); j++) {
-					log.info(" -- empleado -- "+ empleadoList.get(j));
 					valor=0;
 					for (int i = valori; i < morosotmp.size(); i++) {
 						
 						if(valor<m.intValue()){
-							log.info(" -- moroso -- "+ morosotmp.get(i).getIdcontrato());
 							CobranzaOperadoraSie cobranzaopera= new CobranzaOperadoraSie();
 							CobranzaSie cobranza = objCobranzaDao.findCobranza(morosotmp.get(i).getIdcobranza());
 							cobranzaopera.setTbEmpleado(objEmpleadoDao.buscarEmpleado(empleadoList.get(j)));
 							cobranzaopera.setTbCobranza(cobranza);
 							cobranzaopera.setFechaexpira(new Timestamp(hoy.getTime().getTime()));
-							log.info("--> " +cobranzaopera.getTbEmpleado().getNombresCompletos()+", "+cobranzaopera.getTbCobranza().getTbCliente().getIdcliente());
 							cobranzaopera.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(108));
 							objCobranzaOperaDao.insertCobranzaOpera(cobranzaopera);
 							valor=valor + 1;
@@ -263,25 +257,27 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 				for (int n = valori; n< morosotmp.size(); n++) {
 					cobranzaSinAsignarTmp.add(morosotmp.get(n));
 				}
+				if(m.intValue()==0)
+					for (int n = 0; n< morosotmp.size(); n++) {
+						cobranzaSinAsignarTmp.add(morosotmp.get(n));
+					}
 			}
 		}
 		valori=0;
 		for (int k = 0; k < configList.size(); k++) {
+			hoy = new GregorianCalendar();
 			hoy.add(Calendar.DAY_OF_MONTH, configList.get(k).getDiasProgramados());
 			if(configList.get(k).getTbTipoCliente().getIdtipocliente()==2){
 				for (int j = 0; j < empleadoList.size(); j++) {
-					log.info(" -- empleado -- "+ empleadoList.get(j));
 					valor=0;
 					for (int i = valori; i < extremotmp.size(); i++) {
 						
 						if(valor<x.intValue()){
-							log.info(" -- extremo -- "+ extremotmp.get(i).getIdcontrato());
 							CobranzaOperadoraSie cobranzaopera= new CobranzaOperadoraSie();
 							CobranzaSie cobranza = objCobranzaDao.findCobranza(extremotmp.get(i).getIdcobranza());
 							cobranzaopera.setTbEmpleado(objEmpleadoDao.buscarEmpleado(empleadoList.get(j)));
 							cobranzaopera.setFechaexpira(new Timestamp(hoy.getTime().getTime()));
 							cobranzaopera.setTbCobranza(cobranza);
-							log.info("--> " +cobranzaopera.getTbEmpleado().getNombresCompletos()+", "+cobranzaopera.getTbCobranza().getTbCliente().getIdcliente());
 							cobranzaopera.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(108));
 							objCobranzaOperaDao.insertCobranzaOpera(cobranzaopera);
 							valor=valor + 1;
@@ -294,6 +290,10 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 				for (int n = valori; n< extremotmp.size(); n++) {
 					cobranzaSinAsignarTmp.add(extremotmp.get(n));
 				}
+				if(x.intValue()==0)
+					for (int n = 0; n< extremotmp.size(); n++) {
+						cobranzaSinAsignarTmp.add(extremotmp.get(n));
+					}
 			}
 		}
 		log.info(" -->>> "+cobranzaSinAsignarTmp.size());

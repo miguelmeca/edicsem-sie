@@ -406,9 +406,7 @@ public class ContratoServiceImpl implements ContratoService {
 				cli.setFecnacimiento(s.getFecnacimiento());
 				
 				String [ ] telTraba = s.getTelftrabajo().trim().split("([\\s-+(]+)");
-				for (int j = 0; j < telTraba.length; j++) {
-				log.info(" tlf " + telTraba[j] );
-				}
+				
 				if(telTraba.length==1){
 				cli.setTelftrabajo(telTraba[0]);
 				}
