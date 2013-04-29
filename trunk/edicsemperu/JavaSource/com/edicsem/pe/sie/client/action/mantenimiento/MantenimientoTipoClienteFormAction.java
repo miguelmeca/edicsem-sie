@@ -108,14 +108,14 @@ public class MantenimientoTipoClienteFormAction extends BaseMantenimientoAbstrac
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewList()
 	 */
 	public String getViewList() {
-		return Constants.MANT_LUGAR_FORM_LIST_PAGE;
+		return Constants.MANT_TIPO_CLIENTE_FORM_LIST_PAGE;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewMant()
 	 */
 	public String getViewMant() {
-		return Constants.MANT_LUGAR_FORM_LIST_PAGE;
+		return Constants.MANT_TIPO_CLIENTE_FORM_LIST_PAGE;
 	}
 
 	/**

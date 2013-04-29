@@ -106,10 +106,11 @@ public class MigracionProducto extends BaseMantenimientoAbstractAction implement
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
 	 */
 	public String insertar() throws Exception {
+		mensaje =null;
+		log.info("insertar()");
 		RequestContext context = RequestContext.getCurrentInstance();
 		HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 		EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
-		log.info("insertar()");
 		
 		if(sisPro.size()==0){
 			mensaje = "Debe subir el excel a importar";
@@ -128,7 +129,7 @@ public class MigracionProducto extends BaseMantenimientoAbstractAction implement
 		
 		return getViewMant();
 	}
-
+	
 	public String handleFileUpload(FileUploadEvent event) throws ParseException {
 	    log.info("handleFileUpload");
 	    mensaje=null;
