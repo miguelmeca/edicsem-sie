@@ -195,7 +195,7 @@ public class ProductoDAOImpl implements ProductoDAO {
 	public ProductoSie findProductoporDescripcion(String descripcion) {
 		ProductoSie p = null;
 		try {
-			Query q = em.createQuery("SELECT p FROM ProductoSie p where p.descripcionproducto like '"+descripcion+"'");
+			Query q = em.createQuery("SELECT p FROM ProductoSie p where UPPER(p.descripcionproducto) like UPPER('"+descripcion+"')");
 			if(q.getResultList().size()>0){
 				p = (ProductoSie) q.getResultList().get(0);
 			}
@@ -215,7 +215,7 @@ public class ProductoDAOImpl implements ProductoDAO {
 				log.info("buscar Codigo de Producto " + codProducto );
 			}
 			Query q = em.createQuery("select p.codproducto from ProductoSie p where p.tbEstadoGeneral.idestadogeneral = 5 " +
-				" and p.descripcionproducto like  '"+ codProducto + "%'");
+				" and UPPER(p.descripcionproducto) like '"+ codProducto + "%'");
 			if (q.getResultList().size() == 1) {
 				p =  (String) q.getResultList().get(q.getResultList().size()-1);
 			}
