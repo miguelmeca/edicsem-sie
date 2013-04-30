@@ -80,7 +80,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 			objContrato.setTbEmpresa(objEmpresaDao.findEmpresa(objContrato.getEmpresa()));
 			objContrato.setTbCargoempleado(objCargoEmpDao.buscarCargoEmpleado(idCargo));
 			objContrato.setTbTipoPago(objTipoPagoDao.findTipoPago(idTipoPago));
-			objContrato.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
+			objContrato.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(19));
 			objContratoEmpleadoDao.insertContratoEmpleado(objContrato);
 		}
 	}
@@ -122,7 +122,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 					objContrato.setTbEmpleado1(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
 					objContrato.setTbCargoempleado(objCargoEmpDao.buscarCargoEmpleado(idCargo));
 					objContrato.setTbTipoPago(objTipoPagoDao.findTipoPago(idTipoPago));
-					objContrato.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(17));
+					objContrato.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(19));
 					objContratoEmpleadoDao.insertContratoEmpleado(objContrato);
 				}
 			}

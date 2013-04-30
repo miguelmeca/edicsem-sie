@@ -60,7 +60,7 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 			if(!arrTipoCliente.contains(configList.get(i).getTbTipoCliente().getIdtipocliente()))
 			arrTipoCliente.add(configList.get(i).getTbTipoCliente().getIdtipocliente());
 		}
-		log.info("Arreglo de Tipo De Cliente "+arrTipoCliente);
+		log.info("Arreglo de Tipo De Cliente "+arrTipoCliente+" tam "+empleadoList.size() );
 		/** Lógica para dividir la lista de deudores divididas por tipo de cliente
 		 *  entre la cantidad de teleoperadoras */
 		//Listas nuevas: lunes, miércoles y viernes

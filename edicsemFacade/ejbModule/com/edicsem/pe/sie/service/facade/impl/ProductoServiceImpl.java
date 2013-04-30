@@ -115,10 +115,11 @@ public class ProductoServiceImpl implements ProductoService {
 			String descripcion = listaProducto.get(i).getDescripcionproducto().toUpperCase();
 			ProductoSie pro = null;
 			PaqueteSie paq = null;
-			descripcion.replace("'", "");
-			descripcion.replace("(", "");
-			descripcion.replace(")", "");
-			descripcion.replace("\"", "");
+			descripcion = descripcion.replace("'", "");
+			descripcion = descripcion.replace("(", "");
+			descripcion = descripcion.replace(")", "");
+			descripcion = descripcion.replace("\"", "");
+			log.info("aca ");
 			if(descripcion.contains("-")||descripcion.contains("+")||descripcion.contains(",")){
 				//Es paquete
 				paq = objPaqueteDao.buscarXcodigoPaquete(codigo);
@@ -142,16 +143,32 @@ public class ProductoServiceImpl implements ProductoService {
 						arrDescripcion = descripcion.split(",");
 					}
 					for (int j = 0; j < arrDescripcion.length; j++) {
-						pro = objProductoDao.findProductoporDescripcion(arrDescripcion[j].trim());
-						int cant=0;
+						String des="";
+						int cant=1;
+						log.info("producto "+arrDescripcion[j].trim());
+						log.info("Ver cantidAD "+arrDescripcion[j].trim().substring(0, 2));
+						if(arrDescripcion[j].trim().substring(0, 2).trim().matches("([0-9])")){
+							log.info("Producto  cantida "+cant+" desc "+des);
+							cant = Integer.parseInt(arrDescripcion[j].trim().substring(0, 2).trim());
+							des=arrDescripcion[j].substring(2, arrDescripcion[j].length()).trim().toUpperCase();
+						}else{
+							des=arrDescripcion[j].trim().toUpperCase();
+							log.info("Des "+des);
+						}
+						des = des.replace("'", "");
+						des = des.replace("(", "");
+						des = des.replace(")", "");
+						des = des.replace("\"", "");
+						pro = objProductoDao.findProductoporDescripcion(des);
+						
 						if(pro==null){
 							pro= new ProductoSie();
-							
-							pro.setDescripcionproducto(arrDescripcion[j].trim().toUpperCase());
-							log.info("--> "+arrDescripcion[j].trim());
+							pro.setDescripcionproducto(des.toUpperCase());
+							log.info("--> "+des.trim());
 							//buscar ultimo de codigo producto
-							String codig= objProductoDao.buscarUltimocodigoProductoXDescripcion(pro.getDescripcionproducto().substring(0, 3).toUpperCase());
+							String codig= objProductoDao.buscarUltimocodigoProducto(pro.getDescripcionproducto().substring(0, 3).toUpperCase());
 							if(codig.equals("")){
+								log.info("-->nuevo");
 								codig=pro.getDescripcionproducto().substring(0, 3)+"-001";
 							}else{
 								//selecciona los ultimos 3 digitos para el producto
@@ -160,7 +177,7 @@ public class ProductoServiceImpl implements ProductoService {
 								log.info("codig "+codig);
 								int c = Integer.parseInt(codig);
 								c=c+1;
-								log.info(""+c);
+								log.info("cccccc  "+c);
 								for (int k = 0; k < (c+"").length(); k++) {
 									codig="0";
 								}
@@ -177,6 +194,7 @@ public class ProductoServiceImpl implements ProductoService {
 						det.setUsuariocreacion(usuarioCreacion);
 						det.setTbPaquete(paq);
 						det.setTbProducto(pro);
+						det.setCantidad(cant);
 						lstDetPAquete.add(det);
 					}
 					for (int j = 0; j < lstDetPAquete.size(); j++) {
@@ -191,6 +209,7 @@ public class ProductoServiceImpl implements ProductoService {
 			}else{
 				//Es producto
 				//Buscamos el producto
+				
 				pro = objProductoDao.findProductoporDescripcion(descripcion);
 				if(pro!=null){
 					log.info("Si existe el producto ");
