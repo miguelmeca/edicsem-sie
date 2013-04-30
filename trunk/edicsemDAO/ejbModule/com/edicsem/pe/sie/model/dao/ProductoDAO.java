@@ -20,5 +20,5 @@ public interface ProductoDAO {
 	public abstract boolean verificarTipoProducto(int tipoProducto);
 	public abstract ProductoSie buscarXcodigoProducto (String codProducto);
 	public abstract List  listarCodigosProductos();
-	public abstract String buscarUltimocodigoProductoXDescripcion(String codProducto);
+	public abstract String buscarUltimocodigoProducto(String codProducto);
 }

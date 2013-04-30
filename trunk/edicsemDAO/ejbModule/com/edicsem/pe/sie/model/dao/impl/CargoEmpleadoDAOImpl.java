@@ -107,7 +107,7 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 		try {
 			Query q = em.createQuery("select c from CargoEmpleadoSie c inner join c.tbContratoEmpleado d   " +
 					" where d.tbEmpleado1.idempleado= "+ idEmpleado +" and c.tbEstadoGeneral.idestadogeneral = "+ 1+
-					" and d.tbEstadoGeneral.idestadogeneral = "+17);
+					" and d.tbEstadoGeneral.idestadogeneral = "+19);
 			lista = q.getResultList();
 			log.info(" tamaño de lista de cargo X empleado--->" + lista.size());
 		} catch (Exception e) {
