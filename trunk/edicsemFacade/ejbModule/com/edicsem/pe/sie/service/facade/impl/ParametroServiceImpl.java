@@ -30,7 +30,7 @@ public class ParametroServiceImpl implements ParametroService{
 	 * @see com.edicsem.pe.sie.service.facade.ParametroService#insertarParametro(com.edicsem.pe.sie.entity.ParametroSistemaSie)
 	 */
 	public void insertarParametro(ParametroSistemaSie parametro) {
-		parametro.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(29));
+		parametro.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(30));
 		objParametroDao.insertarParametro(parametro);
 	}
 	

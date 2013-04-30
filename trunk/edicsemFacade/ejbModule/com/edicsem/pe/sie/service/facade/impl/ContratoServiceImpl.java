@@ -135,7 +135,7 @@ public class ContratoServiceImpl implements ContratoService {
 			objcobranza.setCantcuotas(""+ contrato.getNumcuotas());
 			objcobranza.setIdcliente(cliente.getIdcliente());
 			objcobranza.setIdcontrato(contrato.getIdcontrato());
-			objcobranza.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(27));
+			objcobranza.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(28));
 			objcobranza.setTbContrato(objContratoDao.findContrato(contrato.getIdcontrato()));
 			objcobranza.setTbCliente(cliente);
 			objCobranzaDao.insertCobranza(objcobranza);
@@ -150,7 +150,7 @@ public class ContratoServiceImpl implements ContratoService {
 			d.setTbCargoempleado(objCargoDao.buscarCargoEmpleado(detidEmpleadosList.get(i).getCargo()));
 			log.info("contrato ************************** ---> !  "+contrato.getIdcontrato());
 			d.setTbContrato(objContratoDao.findContrato(contrato.getIdcontrato()));
-			d.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(31));
+			d.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(32));
 			objDetContratoEmpleadoDao.insertDetContratoEmpleado(d);
 		}
 	}
@@ -670,7 +670,7 @@ public class ContratoServiceImpl implements ContratoService {
 			cob.setDiasretraso(s.getDiasRetraso());
 			cob.setIdcliente(cli.getIdcliente());
 			cob.setIdcontrato(con.getIdcontrato());
-			cob.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(27));
+			cob.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(28));
 			cob.setTbContrato(objContratoDao.findContrato(con.getIdcontrato()));
 			cob.setTbCliente(cli);
 			
@@ -972,7 +972,7 @@ public class ContratoServiceImpl implements ContratoService {
 			cob.setDiasretraso(s.getDiasRetraso());
 			cob.setIdcliente(cli.getIdcliente());
 			cob.setIdcontrato(con.getIdcontrato());
-			cob.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(27));
+			cob.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(28));
 			cob.setTbContrato(con);
 			cob.setTbCliente(cli);
 			

@@ -59,7 +59,7 @@ public class SeguimientoContratoServiceImpl implements SeguimientoContratoServic
 				if(cobranzaList.get(j).getNuevo()!=null){
 					if(cobranzaList.get(j).getNuevo().equalsIgnoreCase("N")){
 					log.info("update "+cobranzaList.get(j).getNumletra()+" "+cobranzaList.get(j).getImpinicial());
-					s.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(27));
+					s.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(28));
 					objCobranzaDao.insertCobranza(cobranzaList.get(j));
 					}
 				}

@@ -27,7 +27,7 @@ public class ContratoEmpleadoServiceImpl implements ContratoEmpleadoService {
 	 * @see com.edicsem.pe.sie.service.facade.ContratoEmpleadoService#insertContratoEmpleado(com.edicsem.pe.sie.entity.ContratoEmpleadoSie)
 	 */
 	public void insertContratoEmpleado(ContratoEmpleadoSie contrato) {
-		contrato.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(66));
+		contrato.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(19));
 		objContratoEmpleadoDao.insertContratoEmpleado(contrato);
 	}
 
@@ -43,7 +43,6 @@ public class ContratoEmpleadoServiceImpl implements ContratoEmpleadoService {
 	 * @see com.edicsem.pe.sie.service.facade.ContratoEmpleadoService#findContratoEmpleado(int)
 	 */
 	public ContratoEmpleadoSie findContratoEmpleado(int id) {
-		log.info("en el servicio"+ id);
 		return objContratoEmpleadoDao.findContratoEmpleado(id);
 	}
 

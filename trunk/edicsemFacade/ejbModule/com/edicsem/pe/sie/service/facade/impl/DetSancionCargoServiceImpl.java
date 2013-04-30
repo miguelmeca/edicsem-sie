@@ -27,7 +27,7 @@ public class DetSancionCargoServiceImpl implements DetSancionCargoService {
 	 * @see com.edicsem.pe.sie.service.facade.DetSancionCargoService#insertDetSancionCargo(com.edicsem.pe.sie.entity.DetSancionCargoSie)
 	 */
 	public void insertDetSancionCargo(DetSancionCargoSie d) {
-		d.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(33));
+		d.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(34));
 		objDetSancionCargoDao.insertDetSancionCargo(d);
 	}
 
