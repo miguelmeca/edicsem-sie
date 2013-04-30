@@ -49,10 +49,10 @@ public class ParametroDAOImpl implements ParametroDAO{
 	 */
 	public void eliminarParametro(int id) {
 		try {
-			em.remove(id);
 			if (log.isInfoEnabled()) {
 				log.info("apunto de eliminar parametro");
-			}			
+			}
+			em.remove(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -81,7 +81,7 @@ public class ParametroDAOImpl implements ParametroDAO{
 	public List listarParametros() {
 		List lista = null;
 		try {
-			Query q = em.createQuery("select p from ParametroSistemaSie p where p.tbEstadoGeneral.idestadogeneral = "+29);
+			Query q = em.createQuery("select p from ParametroSistemaSie p where p.tbEstadoGeneral.idestadogeneral = "+30);
 			lista = q.getResultList();
 			log.info("tamaño lista parametro --> " + lista.size());
 		} catch (Exception e) {

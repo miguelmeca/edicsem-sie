@@ -74,7 +74,7 @@ public class ContratoEmpleadoDAOImpl implements ContratoEmpleadoDAO{
 			if (log.isInfoEnabled()) {
 				log.info("buscar ContratoEmpleado"+id);
 			} 
-		contrato=	em.find(ContratoEmpleadoSie.class, id);
+		contrato =	em.find(ContratoEmpleadoSie.class, id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -87,7 +87,7 @@ public class ContratoEmpleadoDAOImpl implements ContratoEmpleadoDAO{
 	public List listarContrato() {
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from ContratoEmpleadoSie p ");
+			Query q = em.createQuery("select p from ContratoEmpleadoSie p where  p.tbEstadoGeneral.idestadogeneral = 19 ");
 			lista =  q.getResultList(); 
 			log.info("tamaño lista Contrato --> " + lista.size());
 		} catch (Exception e) {

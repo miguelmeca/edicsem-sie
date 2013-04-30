@@ -133,7 +133,7 @@ public class CobranzaDAOImpl implements CobranzaDAO{
 			Query q = em.createQuery("select a from CobranzaSie a inner join a.tbContrato b " +
 					" inner join b.tbDetContratoEmpleados c where c.tbEmpleado.idempleado = "+ idEmpleado+ 
 					" and DATE(c.tbContrato.fechaentrega) between DATE('" + fechaInicio +"') " +
-					" and DATE('" + fechaFin +"')  and a.tbEstadoGeneral.idestadogeneral = 27 "+
+					" and DATE('" + fechaFin +"')  and a.tbEstadoGeneral.idestadogeneral = 28 "+
 					" and DATE(a.fecvencimiento) between DATE('" + fechaInicio +"') " +
 					" and DATE('" + fechaFin +"') ");
 			lista =  q.getResultList();

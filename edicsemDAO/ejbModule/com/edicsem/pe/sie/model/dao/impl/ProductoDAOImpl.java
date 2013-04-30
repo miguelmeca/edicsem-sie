@@ -206,16 +206,16 @@ public class ProductoDAOImpl implements ProductoDAO {
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.ProductoDAO#buscarUltimocodigoProductoXDescripcion(java.lang.String)
+	 * @see com.edicsem.pe.sie.model.dao.ProductoDAO#buscarUltimocodigoProducto(java.lang.String)
 	 */
-	public String buscarUltimocodigoProductoXDescripcion(String codProducto) {
+	public String buscarUltimocodigoProducto(String codProducto) {
 		String p = "";
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("buscar Codigo de Producto " + codProducto );
 			}
 			Query q = em.createQuery("select p.codproducto from ProductoSie p where p.tbEstadoGeneral.idestadogeneral = 5 " +
-				" and UPPER(p.descripcionproducto) like '"+ codProducto + "%'");
+				" and UPPER(p.codproducto) like '"+ codProducto + "%'");
 			if (q.getResultList().size() == 1) {
 				p =  (String) q.getResultList().get(q.getResultList().size()-1);
 			}
