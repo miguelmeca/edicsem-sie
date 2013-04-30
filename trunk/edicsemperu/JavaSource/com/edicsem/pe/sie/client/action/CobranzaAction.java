@@ -92,7 +92,8 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
 	 */
 	public String insertar() throws Exception {
-		log.info("insertar() " +empleadoList.size());
+		log.info("insertar() " );
+		empleadoList = new ArrayList<String>();
 		mensaje=null;
 		RequestContext context = RequestContext.getCurrentInstance();
 		//Lista de cobranza restante, por asignar a las teleoperadoras
