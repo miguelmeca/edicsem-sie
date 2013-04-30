@@ -36,6 +36,10 @@ public class CobranzaOperadoraSie implements Serializable {
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
 	
+	private String usuariomodifica;
+	
+	private Timestamp fechamodifica;
+	
 	private Timestamp fechaprogramada;
 	
 	private Timestamp fechaexpira;
@@ -143,6 +147,22 @@ public class CobranzaOperadoraSie implements Serializable {
 
 	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
 		this.tbEstadoGeneral = tbEstadoGeneral;
+	}
+
+	public String getUsuariomodifica() {
+		return usuariomodifica;
+	}
+
+	public void setUsuariomodifica(String usuariomodifica) {
+		this.usuariomodifica = usuariomodifica;
+	}
+
+	public Timestamp getFechamodifica() {
+		return fechamodifica;
+	}
+
+	public void setFechamodifica(Timestamp fechamodifica) {
+		this.fechamodifica = fechamodifica;
 	}
 	
 }
