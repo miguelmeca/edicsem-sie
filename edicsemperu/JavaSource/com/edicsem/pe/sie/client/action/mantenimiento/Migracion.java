@@ -108,15 +108,14 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 		}
 	}
 	
-
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
 	 */
 	public String insertar() throws Exception {
+		log.info("insertar()");
 		RequestContext context = RequestContext.getCurrentInstance();
 		HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 		EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
-		log.info("insertar()");
 		
 		if(sistMig.size()==0){
 			mensaje = "Debe subir el excel a importar";
@@ -127,10 +126,11 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 				mensaje=  "Se realizó la migración exitosamente";
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO,mensaje);
 			}else{
-				context.execute("statusDialogSI.hide()");
+				
 				msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,Constants.MESSAGE_INFO_TITULO,mensaje);
 			}
 		}
+		context.execute("statusDialogSI.hide()");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
 		return getViewMant();

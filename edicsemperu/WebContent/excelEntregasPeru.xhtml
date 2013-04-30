@@ -12,7 +12,7 @@
 	<p:fileUpload fileUploadListener="#{FileUploadEntregasPeru.handleFileUpload}" label="#{message['migracion.cargar.archivo']}" 
 	uploadLabel="#{message['migracion.cargar.archivo']}" cancelLabel="#{message['migracion.cancelar.archivo']}"
 	allowTypes="/(\.|\/)(XLS|xls)$/" description="#{message['miracion.select.archivo']}"  multiple="false" customUI="true" 
-	update="datatableentrega, message" />
+	update="datatableentrega, message" sizeLimit="20480"/>
 	
 	<p:dataTable id="datatableentrega" var="c" value="#{FileUploadEntregasPeru.leadsNuevos}"  paginator="true" rows="15"
 	rowsPerPageTemplate="5,10,15"   emptyMessage="#{message['rsltd.empty']}"
