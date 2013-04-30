@@ -12,7 +12,7 @@
 		<p:fileUpload fileUploadListener="#{migracion.handleFileUpload}" label="#{message['migracion.cargar.archivo']}"
 		uploadLabel="#{message['migracion.cargar.archivo']}" cancelLabel="#{message['migracion.cancelar.archivo']}" 
 		allowTypes="/(\.|\/)(xls)$/" description="#{message['miracion.select.archivo']}" multiple="false" customUI="true" 
-		update="datatablesi, message"/>
+		update="datatablesi, message" sizeLimit="20480"/>
 		
 		<p:dataTable id="datatablesi" var="c" value="#{migracion.sistMig}"  paginator="true" rows="15"
 		 rowsPerPageTemplate="5,10,15"  emptyMessage="#{message['rsltd.empty']}"
