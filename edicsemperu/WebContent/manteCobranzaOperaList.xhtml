@@ -12,11 +12,11 @@
 			<p:messages id="message" showDetail="true" />
 			
 			<p:fieldset legend="#{message['cobranza.lista']}">
-				<p:dataTable id="listaPersonas" var="p"
-					value="#{seguimientoCobranzaOpera.cobranzaOperaList}"
+				<p:dataTable id="listaPersonas" var="p" value="#{seguimientoCobranzaOpera.cobranzaOperaList}"
 					widgetVar="cobranzatable" emptyMessage="#{message['rsltd.empty']}"
 					filteredValue="#{seguimientoCobranzaOpera.filtrarCobranza}"
-					paginator="true" rows="10"  rowsPerPageTemplate="5,10,15"  
+					paginator="true" rows="10"  rowsPerPageTemplate="5,10,15" 
+					rowStyleClass="#{p.tbEstadoGeneral.idestadogeneral == 109 ? 'verdeLimon':null }"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 					<f:facet name="header">
 						<p:outputPanel>
@@ -53,6 +53,7 @@
 						<f:facet name="header">
 							<h:outputText value="#{message['cobranza.lista.tipo']}" />
 						</f:facet>
+						<h:outputText value="#{p.tbCobranza.tbCliente.tbTipoCliente.descripcion}" />
 					</p:column>
 					<p:column headerText="#{message['cobranza.seleccionar']}">
 						<p:commandButton value="#{message['cobranza.mostrar']}" ajax="false"
@@ -206,10 +207,9 @@
 			<p:fieldset legend="#{message['cobranza.registro']}" style="margin-top:20px"   >
 				<h:panelGrid columns="2" cellpadding="4">
 					<p:outputLabel value="#{message['operadora.tipollamada']}" for="tipo" />
-					<p:selectOneMenu id="tipo" filter="true" required="true"
-						value="#{seguimientoCobranzaOpera.tipollamada}"
+					<p:selectOneMenu id="tipo" filter="true" value="#{seguimientoCobranzaOpera.tipollamada}"
 						requiredMessage="#{message['operadora.tipollamada.validation']}">
-						<f:selectItem itemValue="#{null}" itemLabel="Seleccione una opción" />
+						<f:selectItem itemValue="#{null}" itemLabel=" Ninguna " />
 						<f:selectItems value="#{comboAction.tipollamada}" />
 					</p:selectOneMenu>
 					
@@ -219,7 +219,7 @@
 						rows="3" cols="50" maxlength="500" required="true" label="Correo" autoResize="false" />
 					
 					<p:outputLabel value="#{message['operadora.incidencia']}" for="incidencia" />
-					<p:selectOneMenu id="incidencia" filter="true" required="true"
+					<p:selectOneMenu id="incidencia" filter="true" 
 						value="#{seguimientoCobranzaOpera.idincidencia}" >
 						<f:selectItem itemValue="#{null}" itemLabel="Seleccione una incidencia" />
 						<f:selectItems value="#{comboAction.incidenteitems}" />
@@ -252,7 +252,10 @@
 			</p:fieldset>
 			<p:fieldset legend="#{message['cobranza.historico.refinanciado']}" style="margin-top:20px"   >
 				<h:panelGrid columns="2">
-				<h:panelGrid columns="2" cellpadding="4">
+				<p:selectBooleanCheckbox value="#{seguimientoCobranzaOpera.refinanciar}" >
+					<p:ajax update="outRefi" />
+				</p:selectBooleanCheckbox> 
+				<h:panelGrid columns="2" cellpadding="4" id="outRefi" rendered="#{seguimientoCobranzaOpera.refinanciar==true}">
 					<h:outputText value="#{message['cobranza.primera.cuota']}" />
 					<p:inputText value="#{seguimientoCobranzaOpera.objRefinanPago.impapagar}" required="true"/>
 					<h:outputText value="#{message['cobranza.fecha.programada']}" />

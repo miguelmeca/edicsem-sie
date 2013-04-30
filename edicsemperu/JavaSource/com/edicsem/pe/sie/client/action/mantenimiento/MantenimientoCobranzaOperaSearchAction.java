@@ -36,6 +36,7 @@ import com.edicsem.pe.sie.service.facade.CobranzaService;
 import com.edicsem.pe.sie.service.facade.ContratoService;
 import com.edicsem.pe.sie.service.facade.DetProductoContratoService;
 import com.edicsem.pe.sie.service.facade.EmpleadoSieService;
+import com.edicsem.pe.sie.service.facade.EstadogeneralService;
 import com.edicsem.pe.sie.service.facade.HistoricoObservacionesService;
 import com.edicsem.pe.sie.service.facade.IncidenciaService;
 import com.edicsem.pe.sie.service.facade.ParametroService;
@@ -63,7 +64,7 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private Date fechoy;
 	private int tipollamada; 
 	private boolean editMode;
-	private boolean programarLlamada;
+	private boolean programarLlamada, refinanciar;
 	private Date fechaProgramada;
 	private String mensaje;
 	private boolean newRecord =false;
@@ -105,6 +106,8 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private ParametroService objParametroService;
 	@EJB
 	private RefinanciarPagoService objRefinanciarPagoService;
+	@EJB
+	private EstadogeneralService objEstadoService;
 	
 	public static Log log = LogFactory.getLog(MantenimientoCobranzaOperaSearchAction.class);
 	
@@ -135,11 +138,18 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 		objCobranzaOpera = new CobranzaOperadoraSie();
 		objcliente = new ClienteSie();
 		objtelefono = new TelefonoPersonaSie();
-		lstHistorico = new ArrayList<HistoricoObservacionesSie>(); 
+		lstHistorico = new ArrayList<HistoricoObservacionesSie>();
+		detallePagos= new ArrayList<CobranzaSie>();
+		objContrato= new ContratoSie();
 		detallePagosRefinan = new ArrayList<CobranzaSie>();
+		productoContratoList = new ArrayList<DetProductoContratoSie>();
+		listatelefono = new ArrayList<TelefonoPersonaSie>();
+		totalacumulado =new BigDecimal(0);
+		fechaProgramada= null;
 		idcontrato=0;
 		idincidencia=0;
 		objRefinanPago = new RefinanciarPagoSie();
+		refinanciar=false;
 		cobranzaOperaList = objCobranzaOperaService.listarCobranzasOpera(sessionUsuario.getUsuario());
 		if (cobranzaOperaList == null) {
 			cobranzaOperaList = new ArrayList<CobranzaOperadoraSie>();
@@ -267,17 +277,23 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 				}
 				if(fechaProgramada!=null){
 					objCobranzaOpera.setFechaprogramada(new Timestamp(fechaProgramada.getTime()));
+					objCobranzaOpera.setTbEstadoGeneral(objEstadoService.findEstadogeneral(109));
+				}else{
+					//No mostrar 
+					objCobranzaOpera.setTbEstadoGeneral(objEstadoService.findEstadogeneral(110));
 				}
 				//Actualizar la Cobranza de la operadora
+				objCobranzaOpera.setUsuariomodifica(sessionUsuario.getUsuario());
+				objCobranzaOpera.setFechamodifica(new Timestamp(DateUtil.getToday().getTime().getTime()));
 				objCobranzaOperaService.updateCobranzaOpera(objCobranzaOpera);
 				mensaje =Constants.MESSAGE_REGISTRO_TITULO;
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_REGISTRO_TITULO, mensaje);	
 				//Insertando la refinanciacion acordada
-				if(objRefinanPago!=null){
+				if(refinanciar){
 					objRefinanciarPagoService.insertRefinanPago(objRefinanPago);
 				}
 			}else{
-				//No seleciono ningun contrato
+				//No selecciono ningun contrato
 				mensaje = Constants.MESSAGE_ERROR_ID_COBRANZA;
 				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_REGISTRO_TITULO, mensaje);
 			}
@@ -288,7 +304,7 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 			log.error(e.getMessage());
 		}
 		FacesContext.getCurrentInstance().addMessage(null, msg);
-		return getViewList();
+		return listar();
 	}
 	
 	/*GETs Y SETs*/
@@ -679,5 +695,13 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	 */
 	public void setFechaProgramRest(Date fechaProgramRest) {
 		this.fechaProgramRest = fechaProgramRest;
+	}
+
+	public boolean isRefinanciar() {
+		return refinanciar;
+	}
+
+	public void setRefinanciar(boolean refinanciar) {
+		this.refinanciar = refinanciar;
 	}
 }
