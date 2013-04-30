@@ -334,7 +334,7 @@ public class ContratoServiceImpl implements ContratoService {
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.ContratoService#insertMigracion(java.util.List, java.lang.String)
+	 * @see com.edicsem.pe.sie.service.facade.ContratoService#insertMigracion(java.util.List, java.util.List, java.lang.String)
 	 */
 	public String insertMigracion(List<SistemaIntegradoDTO> sistMig, List<SistemaIntegradoDTO> sisMigUpdate, String usuariocreacion) {
 		log.info("insertMigracion()");
@@ -806,9 +806,34 @@ public class ContratoServiceImpl implements ContratoService {
 					mensaje="No se encontró la empresa '"+s.getEmpresa()+"' en la base de datos, por favor consultar al administrador";
 					break;
 				}
-				//insertar contrato
+				//actualizar contrato
 				con.setUsuariomodifica(usuariocreacion);
 				objContratoDao.updateContrato(con);
+				//actualizar el historial
+				HistoricoObservacionesSie h = null;
+				List<HistoricoObservacionesSie> lstHistoObs = null;
+				lstHistoObs = objHistorialDao.listarHistorial(con.getIdcontrato());
+				if(lstHistoObs.size()>0){
+					h= lstHistoObs.get(lstHistoObs.size()-1);
+					if(s.getHistoria().contains(h.getObservacion())){
+						String[] corta = s.getHistoria().split(h.getObservacion());
+						if(corta.length>1){
+							h = new HistoricoObservacionesSie();
+							h.setObservacion(corta[2]);
+							h.setTbContrato(con);
+							h.setUsuariocreacion(usuariocreacion);
+							h.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(98));
+							objHistorialDao.insertHistoricoObservaciones(h);
+						}
+					}
+				}else if(s.getHistoria()!=null||s.getHistoria().trim().equals("")){
+					h = new HistoricoObservacionesSie();
+					h.setObservacion(s.getHistoria());
+					h.setTbContrato(con);
+					h.setUsuariocreacion(usuariocreacion);
+					h.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(98));
+					objHistorialDao.insertHistoricoObservaciones(h);
+				}
 				//buscando domicilio
 				dom = new DomicilioPersonaSie();
 				dom.setDomicilio(s.getDireccion());
