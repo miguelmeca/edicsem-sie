@@ -75,8 +75,8 @@ public class CobranzaOperaDAOImpl implements CobranzaOperaDAO{
 			Query q = em.createQuery("select p from CobranzaOperadoraSie p where  DATE(p.fechacreacion) " +
 					"<= DATE('"+DateUtil.getToday().getTime()+"')  and " +
 					" DATE(p.fechaexpira) >= DATE('"+DateUtil.getToday().getTime()+"')  " +
-					" and p.tbEmpleado.usuario like '"+usuario+"' and p.tbEstadoGeneral.idestadogeneral = 108 " +
-					" or p.tbEstadoGeneral.idestadogeneral = 109 order by p.fechamodifica");
+					" and p.tbEmpleado.usuario like '"+usuario+"' and p.tbEstadoGeneral.idestadogeneral between  108 " +
+					" and 109 order by p.fechaprogramada desc");
 			lista =  q.getResultList();
 			log.info("tamaño lista CobranzaOperadora --> " + lista.size()+"  ");
 		} catch (Exception e) {
