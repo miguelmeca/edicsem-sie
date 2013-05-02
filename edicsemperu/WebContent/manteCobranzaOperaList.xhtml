@@ -55,6 +55,12 @@
 						</f:facet>
 						<h:outputText value="#{p.tbCobranza.tbCliente.tbTipoCliente.descripcion}" />
 					</p:column>
+					<p:column filterBy="#{p.fechaProgramadaString}">
+						<f:facet name="header">
+							<h:outputText value="#{message['cobranza.lista.hora.programada']}" />
+						</f:facet>
+						<h:outputText value="#{p.fechaProgramadaString}" />
+					</p:column>
 					<p:column headerText="#{message['cobranza.seleccionar']}">
 						<p:commandButton value="#{message['cobranza.mostrar']}" ajax="false"
 							action="#{seguimientoCobranzaOpera.mostrar}">
@@ -218,6 +224,9 @@
 						requiredMessage="#{message['operadora.observacion.validation']}"
 						rows="3" cols="50" maxlength="500" required="true" label="Correo" autoResize="false" />
 					
+					<h:outputText value="#{message['operadora.volver.llamar']}" />
+					<p:calendar value="#{seguimientoCobranzaOpera.objCobranzaOpera.fechaprogramada}" pattern="dd/mm/yyyy HH:mm" locale="pe"/>
+					
 					<p:outputLabel value="#{message['operadora.incidencia']}" for="incidencia" />
 					<p:selectOneMenu id="incidencia" filter="true" 
 						value="#{seguimientoCobranzaOpera.idincidencia}" >
@@ -225,6 +234,13 @@
 						<f:selectItems value="#{comboAction.incidenteitems}" />
 					</p:selectOneMenu>
 					
+					<f:facet name="footer">
+						<p:commandButton id="btn" value="#{message['cobranza.guardar']}" update="listaPersonas, message"
+						action="#{seguimientoCobranzaOpera.insertar}" ajax="false" icon="ui-icon-comment" />
+					</f:facet>
+				</h:panelGrid>
+			</p:fieldset>
+			<p:fieldset legend="Cita con Cliente" style="margin-top:20px"   >
 					<h:outputText value="#{message['cobranza.programar.cita']}" />
 					<h:panelGroup id="outCita" >
 					<p:selectBooleanCheckbox value="#{seguimientoCobranzaOpera.programarLlamada}" >
@@ -232,12 +248,8 @@
 					</p:selectBooleanCheckbox> 
 						<p:calendar value="#{seguimientoCobranzaOpera.fechaProgramada}" rendered="#{seguimientoCobranzaOpera.programarLlamada==true}" pattern="dd/mm/yyyy HH:mm" locale="pe"/>
 					</h:panelGroup>
-					<f:facet name="footer">
-						<p:commandButton id="btn" value="#{message['cobranza.guardar']}" update="listaPersonas, message"
-						action="#{seguimientoCobranzaOpera.insertar}" ajax="false" icon="ui-icon-comment" />
-					</f:facet>
-				</h:panelGrid>
 			</p:fieldset>
+			
 			<p:fieldset legend="#{message['cobranza.historico.observaciones']}" style="margin-top:20px"   >
 				<h:panelGrid >
 					<p:dataTable value="#{seguimientoCobranzaOpera.lstHistorico}" var="k" paginator="true" rows="3"  >
@@ -247,7 +259,7 @@
 							<div  class="ui-messages-info-detail"  >#{k.observacion} </div>
 						</div>
 						</p:column>
-						</p:dataTable>
+					</p:dataTable>
 				</h:panelGrid>
 			</p:fieldset>
 			<p:fieldset legend="#{message['cobranza.historico.refinanciado']}" style="margin-top:20px"   >

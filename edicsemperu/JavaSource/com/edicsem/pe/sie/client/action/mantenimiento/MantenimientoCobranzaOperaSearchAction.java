@@ -66,9 +66,9 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private boolean editMode;
 	private boolean programarLlamada, refinanciar;
 	private Date fechaProgramada;
+	
 	private String mensaje;
 	private boolean newRecord =false;
-	private int ide;
 	private int idcontrato;
 	private int idincidencia;
 	private ContratoSie objContrato;
@@ -252,31 +252,30 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 				if(idincidencia!=0){
 				IncidenciaSie in = objIncidenciaService.findIncidencia(idincidencia);
 				
-				//Enviar mensaje dependiendo del incidente encontrado
-				if(in.getUsuariosenviomsj()!=null){
-					String[] usuario = in.getUsuariosenviomsj().split(",");
-					for (int j = 0; j < usuario.length; j++) {
-						EmpleadoSie emp = objEmpleadoService.buscarEmpleadosPorUsuario(usuario[j]);
-						
-						if(SMTPConfig.sendMail(in.getDescripcion(),objCobranzaOpera.getObservaciones(),emp.getCorreo())){
-							  log.info("envío Correcto");
-						}else {
-						       log.info("envío Fallido, será enviado al administrador del sistema ");
-						       objParametroService.buscarPorDescripcion(Constants.PARAM_ADMINISTRADOR_SISTEMA);
-						       mensaje ="El siguiente correo no pudo ser enviado satisfactoriamente, por favor corregir dicho error: \n";
-						       mensaje +="Para: "+emp.getCorreo();
-						       mensaje +="De: "+sessionUsuario.getCorreo();
-						       mensaje +="Mensaje : "+ objCobranzaOpera.getObservaciones();
-						       
-						       if(SMTPConfig.sendMail(in.getDescripcion(),mensaje,emp.getCorreo())){
-						    	   mensaje=null;
-						       }
+					//Enviar mensaje dependiendo del incidente encontrado
+					if(in.getUsuariosenviomsj()!=null){
+						String[] usuario = in.getUsuariosenviomsj().split(",");
+						for (int j = 0; j < usuario.length; j++) {
+							EmpleadoSie emp = objEmpleadoService.buscarEmpleadosPorUsuario(usuario[j]);
+							
+							if(SMTPConfig.sendMail(in.getDescripcion(),objCobranzaOpera.getObservaciones(),emp.getCorreo())){
+								  log.info("envío Correcto");
+							}else {
+								log.info("envío Fallido, será enviado al administrador del sistema ");
+							       objParametroService.buscarPorDescripcion(Constants.PARAM_ADMINISTRADOR_SISTEMA);
+							       mensaje ="El siguiente correo no pudo ser enviado satisfactoriamente, por favor corregir dicho error: \n";
+							       mensaje +="Para: "+emp.getCorreo();
+							       mensaje +="De: "+sessionUsuario.getCorreo();
+							       mensaje +="Mensaje : "+ objCobranzaOpera.getObservaciones();
+							       
+							       if(SMTPConfig.sendMail(in.getDescripcion(),mensaje,emp.getCorreo())){
+							    	   mensaje=null;
+							       }
+							}
 						}
 					}
 				}
-				}
-				if(fechaProgramada!=null){
-					objCobranzaOpera.setFechaprogramada(new Timestamp(fechaProgramada.getTime()));
+				if(objCobranzaOpera.getFechaprogramada()!=null){
 					objCobranzaOpera.setTbEstadoGeneral(objEstadoService.findEstadogeneral(109));
 				}else{
 					//No mostrar 
@@ -366,20 +365,6 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	 */
 	public void setNewRecord(boolean newRecord) {
 		this.newRecord = newRecord;
-	}
-
-	/**
-	 * @return the ide
-	 */
-	public int getIde() {
-		return ide;
-	}
-
-	/**
-	 * @param ide the ide to set
-	 */
-	public void setIde(int ide) {
-		this.ide = ide;
 	}
 
 	/**
