@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -44,6 +46,10 @@ public class UbigeoSie implements Serializable {
 	@OneToMany(mappedBy="tbUbigeo")
 	private Set<PuntoVentaSie> tbPuntoVentas;
 	
+	//bi-directional many-to-one association to ZonificacionSie
+    @ManyToOne
+	@JoinColumn(name="idzonificacion")
+	private ZonificacionSie tbZonificacion;
 
 	public UbigeoSie() {
     }
@@ -103,5 +109,12 @@ public class UbigeoSie implements Serializable {
 	public void setTbPuntoVentas(Set<PuntoVentaSie> tbPuntoVentas) {
 		this.tbPuntoVentas = tbPuntoVentas;
 	}
-	
+
+	public ZonificacionSie getTbZonificacion() {
+		return tbZonificacion;
+	}
+
+	public void setTbZonificacion(ZonificacionSie tbZonificacion) {
+		this.tbZonificacion = tbZonificacion;
+	}
 }

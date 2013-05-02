@@ -40,6 +40,10 @@ public class TipoClienteSie implements Serializable {
 	@OneToMany(mappedBy="tbTipoCliente")
 	private Set<ClienteSie> tbCliente;
 	
+	//bi-directional many-to-one association to ConfigNotificacionSie
+	@OneToMany(mappedBy="tbTipoCliente")
+	private Set<ConfigNotificacionSie> tbConfigNotifica;
+	
     public TipoClienteSie() {
     }
 
@@ -105,6 +109,14 @@ public class TipoClienteSie implements Serializable {
 
 	public void setTbCliente(Set<ClienteSie> tbCliente) {
 		this.tbCliente = tbCliente;
+	}
+
+	public Set<ConfigNotificacionSie> getTbConfigNotifica() {
+		return tbConfigNotifica;
+	}
+
+	public void setTbConfigNotifica(Set<ConfigNotificacionSie> tbConfigNotifica) {
+		this.tbConfigNotifica = tbConfigNotifica;
 	}
 
 }

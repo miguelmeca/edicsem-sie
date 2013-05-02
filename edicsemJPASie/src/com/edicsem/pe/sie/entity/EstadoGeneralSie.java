@@ -229,6 +229,18 @@ public class EstadoGeneralSie implements Serializable {
 	@OneToMany(mappedBy="tbEstadoGeneral")
 	private Set<CobranzaOperadoraSie> tbCobranzaOpera;
 	
+	//bi-directional many-to-one association to ZonificacionSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<ZonificacionSie> tbZonificacion;
+	
+	//bi-directional many-to-one association to NotificacionSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<NotificacionSie> tbNotifica;
+	
+	//bi-directional many-to-one association to ConfigNotificacionSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<ConfigNotificacionSie> tbConfigNotifica;
+	
 	public EstadoGeneralSie() {
     }
 
@@ -671,6 +683,30 @@ public class EstadoGeneralSie implements Serializable {
 
 	public void setTbCobranzaOpera(Set<CobranzaOperadoraSie> tbCobranzaOpera) {
 		this.tbCobranzaOpera = tbCobranzaOpera;
+	}
+
+	public Set<ZonificacionSie> getTbZonificacion() {
+		return tbZonificacion;
+	}
+
+	public void setTbZonificacion(Set<ZonificacionSie> tbZonificacion) {
+		this.tbZonificacion = tbZonificacion;
+	}
+
+	public Set<NotificacionSie> getTbNotifica() {
+		return tbNotifica;
+	}
+
+	public void setTbNotifica(Set<NotificacionSie> tbNotifica) {
+		this.tbNotifica = tbNotifica;
+	}
+
+	public Set<ConfigNotificacionSie> getTbConfigNotifica() {
+		return tbConfigNotifica;
+	}
+
+	public void setTbConfigNotifica(Set<ConfigNotificacionSie> tbConfigNotifica) {
+		this.tbConfigNotifica = tbConfigNotifica;
 	}
 	
 }
