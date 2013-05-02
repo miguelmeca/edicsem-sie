@@ -85,6 +85,10 @@
 		<class>com.edicsem.pe.sie.entity.RefinanciarPagoSie</class>
 		<class>com.edicsem.pe.sie.entity.ConfigCobranzaOperaSie</class>
 		<class>com.edicsem.pe.sie.entity.TipoCobranzaSie</class>
+		<class>com.edicsem.pe.sie.entity.ZonificacionSie</class>
+		<class>com.edicsem.pe.sie.entity.NotificacionSie</class>
+		<class>com.edicsem.pe.sie.entity.ConfigNotificacionSie</class>
+		<class>com.edicsem.pe.sie.entity.TipoRefinanciaSie</class>
 		<properties>
 			<property name="eclipselink.jdbc.driver" value="org.postgresql.Driver" />
 			<property name="eclipselink.jdbc.url" value="jdbc:postgres://localhost:5432/bd_sie" />
@@ -94,6 +98,5 @@
 			<property name="jboss.entity.manager.factory.jndi.name"
 				value="java:/sieSoftJPAEntityManagerFactory" />
 		</properties>
-		
 	</persistence-unit>
 </persistence>

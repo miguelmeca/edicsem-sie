@@ -2,6 +2,7 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,8 +14,10 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.edicsem.pe.sie.util.constants.Constants;
+import com.edicsem.pe.sie.util.constants.DateUtil;
 
 
 /**
@@ -40,7 +43,7 @@ public class CobranzaOperadoraSie implements Serializable {
 	
 	private Timestamp fechamodifica;
 	
-	private Timestamp fechaprogramada;
+	private Date fechaprogramada;
 	
 	private Timestamp fechaexpira;
 
@@ -67,6 +70,9 @@ public class CobranzaOperadoraSie implements Serializable {
     @ManyToOne
 	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
+    
+    @Transient
+    private String fechaProgramadaString;
 
     public CobranzaOperadoraSie() {
     }
@@ -125,14 +131,6 @@ public class CobranzaOperadoraSie implements Serializable {
 		this.fechacreacion = fechacreacion;
 	}
 
-	public Timestamp getFechaprogramada() {
-		return fechaprogramada;
-	}
-
-	public void setFechaprogramada(Timestamp fechaprogramada) {
-		this.fechaprogramada = fechaprogramada;
-	}
-
 	public Timestamp getFechaexpira() {
 		return fechaexpira;
 	}
@@ -163,6 +161,23 @@ public class CobranzaOperadoraSie implements Serializable {
 
 	public void setFechamodifica(Timestamp fechamodifica) {
 		this.fechamodifica = fechamodifica;
+	}
+
+	public String getFechaProgramadaString() {
+		fechaProgramadaString = DateUtil.formatoString(getFechaprogramada(), "dd/MM/yyyy HH:mm");
+		return fechaProgramadaString;
+	}
+
+	public void setFechaProgramadaString(String fechaProgramadaString) {
+		this.fechaProgramadaString = fechaProgramadaString;
+	}
+
+	public Date getFechaprogramada() {
+		return fechaprogramada;
+	}
+
+	public void setFechaprogramada(Date fechaprogramada) {
+		this.fechaprogramada = fechaprogramada;
 	}
 	
 }
