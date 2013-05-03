@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Configuracion Refinanciación</h1>
+		<h:form id="manteProList" prependId="false">
+			<p:messages showDetail="true" />
+			<p:dataTable value="#{configTipoRefinanSearchAction.configList}" var="p"
+			id="listaPersonas" paginator="true" rows="10" rowsPerPageTemplate="5,10,15" widgetVar="table"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			emptyMessage="#{message['rsltd.empty']}">
+				<f:facet name="header">Mantenimiento Configuracion </f:facet>
+				<f:facet name="header">
+		            <p:outputPanel>
+		                <h:outputText value="Buscar en todos los campos:" />
+		                <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px" />
+		            </p:outputPanel>
+	            </f:facet>
+				<p:column sortBy="#{p.descripcion}" filterBy="#{p.descripcion}" headerText="Descripcion" filterMatchMode="contains" >
+					<f:facet name="header">
+						<h:outputText value="Descripcion" />
+					</f:facet>
+					<h:outputText value="#{p.descripcion}" />
+				</p:column>
+				<p:column sortBy="#{p.tbTipoCliente.descripcion}" filterBy="#{p.tbTipoCliente.descripcion}" headerText="Tipo de Cliente " filterMatchMode="contains" >
+					<f:facet name="header">
+						<h:outputText value="Tipo de Cliente" />
+					</f:facet>
+					<h:outputText value="#{p.tbTipoCliente.descripcion}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Aumento cuotas Restantes" />
+					</f:facet>
+					<h:outputText value="#{p.aumentocuotarest}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Mínimo Primera Cuota" />
+					</f:facet>
+					<h:outputText value="#{p.minmontocuotamora}" />
+				</p:column>
+				<p:column headerText="Editar">
+					<p:commandButton value="Editar" ajax="false" action="#{configRefinanciaFormAction.update}">
+						<f:setPropertyActionListener value="#{p}" target="#{configRefinanciaFormAction.objConfig}" />
+					</p:commandButton>
+				</p:column>
+				<p:column headerText="Deshabilitar">
+					<p:commandButton value="Deshabilitar" icon="ui-icon ui-icon-close" onclick="confirmationConfigRefi.show()" >
+						<f:setPropertyActionListener value="#{p}" target="#{configRefinanciaFormAction.objConfig}" />
+					</p:commandButton>
+				</p:column>
+				<f:facet name="footer">
+					<div align="left">
+						<p:commandButton id="btnNuevo" value="#{message['config.cobranza.nuevo']}" title="#{message['config.cobranza.tittle']}" 
+						action="#{configRefinanciaFormAction.agregar}" icon="ui-icon-star" />
+						<p:tooltip for="btnNuevo" />
+					</div>
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

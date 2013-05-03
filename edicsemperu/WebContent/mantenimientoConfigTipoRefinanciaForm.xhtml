@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/layout/template.xhtml">
+	<ui:define name="body">
+	<h:form id="form">
+	<p:panel header="Registrar Configuracion Tipo Refinanciación"  id="panel">
+	        <p:messages showDetail="true"/>	
+			<h:panelGrid columns="2" cellpadding="5">						
+			
+			<h:outputText  value="Descripcion" />
+			<p:inputText maxlength="20" value="#{configRefinanciaFormAction.objConfig.descripcion}" required="true"/>
+			
+			<h:outputText value="N° de Cuotas con mora" />
+			<p:spinner value="#{configRefinanciaFormAction.objConfig.cuotaconmora}" required="true" />
+			
+			<h:outputText value="Monto mínimo de cuotas con mora" />
+			<p:spinner value="#{configRefinanciaFormAction.objConfig.minmontocuotamora}" required="true" />
+			
+			<h:outputText value="Aumento a las Cuotas restantes" />
+			<p:spinner value="#{configRefinanciaFormAction.objConfig.aumentocuotarest}" required="true" />
+			
+            <h:outputText value="Tipo Cliente"  />
+            <p:selectOneMenu   value="#{configRefinanciaFormAction.idtipocliente}" required="true" >
+            <f:selectItem itemLabel="Seleccione una opción" itemValue="#{null}" />
+            <f:selectItems  value="#{comboAction.tipoClienteItems}" />
+            </p:selectOneMenu>
+            
+            <h:outputText value="fecha Inicio Vigencia" />
+			<p:calendar value="#{configRefinanciaFormAction.objConfig.fechainicio}" required="true" pattern="dd/mm/yyyy" locale="pe" />
+			
+			<h:outputText value="fecha Fin Vigencia" />
+			<p:calendar value="#{configRefinanciaFormAction.objConfig.fechafin}" required="true" pattern="dd/mm/yyyy" locale="pe" />
+			
+            <p:commandButton id="btn" value="Guardar" action="#{configRefinanciaFormAction.insertar}" ajax="false" icon="ui-icon-check"/>
+            <p:commandButton value="Regresar" action="#{configTipoRefinanSearchAction.listar}" immediate="true" ajax = "false"  icon="ui-icon-circle-arrow-w"/>
+            
+		</h:panelGrid>
+	</p:panel>
+	</h:form>
+	</ui:define>
+</ui:composition>

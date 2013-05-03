@@ -49,6 +49,7 @@ import com.edicsem.pe.sie.entity.TipoLlamadaSie;
 import com.edicsem.pe.sie.entity.TipoPagoSie;
 import com.edicsem.pe.sie.entity.TipoProductoSie;
 import com.edicsem.pe.sie.entity.TipoPuntoVentaSie;
+import com.edicsem.pe.sie.entity.TipoRefinanciaSie;
 import com.edicsem.pe.sie.entity.TurnoSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.service.facade.AlmacenService;
@@ -81,6 +82,7 @@ import com.edicsem.pe.sie.service.facade.TipoLLamadaService;
 import com.edicsem.pe.sie.service.facade.TipoPagoService;
 import com.edicsem.pe.sie.service.facade.TipoProductoService;
 import com.edicsem.pe.sie.service.facade.TipoPuntoVentaService;
+import com.edicsem.pe.sie.service.facade.TipoRefinanciaService;
 import com.edicsem.pe.sie.service.facade.TurnoService;
 import com.edicsem.pe.sie.service.facade.UbigeoService;
 import com.edicsem.pe.sie.util.constants.Constants;
@@ -96,6 +98,7 @@ public class ComboAction {
 	private int idGrupo;
 	private String idProvincia, idDepartamento;
 	private int idCargo, idFactor, tipoImporte,idEmpresa;
+	private int idtipocliente;
 	private Map<String, Integer> tipoitems = new HashMap<String, Integer>();
 	private Map<String, Integer> productositems = new HashMap<String, Integer>();
 	private Map<String, Integer> tipoalmacenitems = new HashMap<String, Integer>();
@@ -111,6 +114,7 @@ public class ComboAction {
 	private Map<String, Integer> criterioComisionitems = new HashMap<String, Integer>();
 	private Map<String, Integer> tipoEventoVentaitems = new HashMap<String, Integer>();
 	private Map<String, Integer> incidenteitems = new HashMap<String, Integer>();
+	private Map<String, Integer> tiporefinaitems = new HashMap<String, Integer>();
 	private int tipoVenta;
 	private int tipoProducto,tipoAlmacen;
 	private int cargoEmpleado;
@@ -165,6 +169,8 @@ public class ComboAction {
 	private TipoClienteService objTipoClienteService;
 	@EJB
 	private TipoCobranzaService objTipoCobranzaService;
+	@EJB
+	private TipoRefinanciaService objTipoRefinaService;
 	@EJB
 	private CargoEmpleadoService objCargoEmpleadoService;
 	@EJB
@@ -1889,6 +1895,57 @@ public class ComboAction {
 	 */
 	public void setTipoCobranzaItems(Map<String, Integer> tipoCobranzaItems) {
 		this.tipoCobranzaItems = tipoCobranzaItems;
+	}
+
+	/**
+	 * @return the tiporefinaitems
+	 */
+	public Map<String, Integer> getTiporefinaitems() {
+		tiporefinaitems = new HashMap<String, Integer>();
+		List lista = new ArrayList<TipoRefinanciaSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getTiporefinaitems()'");
+			}
+			lista = objTipoRefinaService.listarTipoRefinanciaXTipoCliente(idtipocliente);
+			
+			for (int i = 0; i < lista.size(); i++) {
+				TipoRefinanciaSie entidad = new TipoRefinanciaSie();
+				entidad = (TipoRefinanciaSie) lista.get(i);
+				tiporefinaitems.put(entidad.getDescripcion(),
+						entidad.getIdtiporefin());
+			}
+			tiporefinaitems = sortByComparator(tiporefinaitems);
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return tiporefinaitems;
+	}
+
+	/**
+	 * @param tiporefinaitems the tiporefinaitems to set
+	 */
+	public void setTiporefinaitems(Map<String, Integer> tiporefinaitems) {
+		this.tiporefinaitems = tiporefinaitems;
+	}
+
+	/**
+	 * @return the idtipocliente
+	 */
+	public int getIdtipocliente() {
+		return idtipocliente;
+	}
+
+	/**
+	 * @param idtipocliente the idtipocliente to set
+	 */
+	public void setIdtipocliente(int idtipocliente) {
+		this.idtipocliente = idtipocliente;
 	}
 	
 }

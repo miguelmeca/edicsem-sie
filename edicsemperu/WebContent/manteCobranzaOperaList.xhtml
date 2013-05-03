@@ -96,7 +96,7 @@
 						<h:outputText value="#{message['cobranza.cargo']}" />
 						<h:outputText value="#{seguimientoCobranzaOpera.objcliente.cargotrabajo}" />
 						<h:outputText value="#{message['cobranza.lista.tipo']}" />
-						<h:outputText value="#{seguimientoCobranzaOpera.objcliente.tbTipoCliente.descripcion}" />
+						<h:outputText value="#{seguimientoCobranzaOpera.objcliente.tbTipoCliente.descripcion}" style="font-weight:bold"/>
 						<h:outputText value="#{message['cobranza.telefonos']}" />
 						<p:spacer/>
 						</h:panelGrid>
@@ -264,10 +264,17 @@
 			</p:fieldset>
 			<p:fieldset legend="#{message['cobranza.historico.refinanciado']}" style="margin-top:20px"   >
 				<h:panelGrid columns="2">
-				<p:selectBooleanCheckbox value="#{seguimientoCobranzaOpera.refinanciar}" >
-					<p:ajax update="outRefi" />
-				</p:selectBooleanCheckbox> 
-				<h:panelGrid columns="2" cellpadding="4" id="outRefi" rendered="#{seguimientoCobranzaOpera.refinanciar==true}">
+				<h:outputText value="Promoción de Refinanciación" />
+				<p:selectOneMenu filter="true" value="#{seguimientoCobranzaOpera.idtiporefinan}" >
+					<f:selectItem itemValue="#{null}" itemLabel="Seleccione una refinanciación" />
+					<f:selectItems value="#{comboAction.tiporefinaitems}" />
+				</p:selectOneMenu>
+				<h:outputText value="#{message['cobranza.fecha.cuotas.restantes']}" />
+				<p:calendar value="#{seguimientoCobranzaOpera.fechaProgramRest}" required="true"/>
+				
+				<p:commandButton value="#{message['cobranza.guardar']}" update="listaRefinancio" 
+					action ="#{seguimientoCobranzaOpera.registrarRefinanciacion}" ajax="false"  />
+					 <p:spacer/>
 					<h:outputText value="#{message['cobranza.primera.cuota']}" />
 					<p:inputText value="#{seguimientoCobranzaOpera.objRefinanPago.impapagar}" required="true"/>
 					<h:outputText value="#{message['cobranza.fecha.programada']}" />
@@ -277,13 +284,8 @@
 					<p:inputText value="#{seguimientoCobranzaOpera.cantcuotasrest}" required="true"/>
 					<h:outputText value="#{message['cobranza.monto']}" />
 					<p:inputText value="#{seguimientoCobranzaOpera.montoRestantes}" required="true"/>
-					<h:outputText value="#{message['cobranza.fecha.cuotas.restantes']}" />
-					<p:calendar value="#{seguimientoCobranzaOpera.fechaProgramRest}" required="true"/>
 					
-					<p:commandButton value="#{message['cobranza.guardar']}" update="listaRefinancio, message"
-					action="#{seguimientoCobranzaOpera.registrarRefinanciacion}" ajax="false" />
 				</h:panelGrid>
-				
 				<p:dataTable value="#{seguimientoCobranzaOpera.detallePagosRefinan}" var="p" id="listaRefinancio"
 						rowStyleClass="#{seguimientoCobranzaOpera.fechoy le  p.fecvencimiento  ? null: (empty p.fecpago? 'colorRojo' : 'colorVerde')}"
 						widgetVar="pagostable" emptyMessage="#{message['rsltd.empty']}">
@@ -307,7 +309,6 @@
 							<h:outputText value="#{p.fechaVencimientoString}" />
 						</p:column>
 					</p:dataTable>
-				</h:panelGrid>
 			</p:fieldset>
 			</h:panelGrid>
 		</h:form>
