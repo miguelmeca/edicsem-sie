@@ -3,6 +3,7 @@ package com.edicsem.pe.sie.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,15 +32,17 @@ public class TipoRefinanciaSie   implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_TIPO_REFINANCIA_IDTIPOREFIN_GENERATOR")
 	private Integer idtiporefin;
 	
+	private String descripcion;
+	
 	private Integer cuotaconmora;
 	
-	private Integer aumentocuotarest;
+	private BigDecimal aumentocuotarest;
 	
-	private BigDecimal minprimeracuota;
+	private BigDecimal minmontocuotamora;
 	
-	private Timestamp fechainicio;
+	private Date fechainicio;
 	
-	private Timestamp fechafin;
+	private Date fechafin;
 	
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
@@ -49,7 +52,12 @@ public class TipoRefinanciaSie   implements Serializable {
 	private String usuariocreacion;
 
 	private String usuariomodifica;
-
+	
+	//bi-directional many-to-one association to TipoClienteSie
+    @ManyToOne
+	@JoinColumn(name="idtipocliente")
+	private TipoClienteSie tbTipoCliente;
+    
 	//bi-directional many-to-one association to EstadoGeneralSie
     @ManyToOne
 	@JoinColumn(name="idestadogeneral")
@@ -109,29 +117,41 @@ public class TipoRefinanciaSie   implements Serializable {
 	public void setCuotaconmora(Integer cuotaconmora) {
 		this.cuotaconmora = cuotaconmora;
 	}
-	public Integer getAumentocuotarest() {
-		return aumentocuotarest;
+	public TipoClienteSie getTbTipoCliente() {
+		return tbTipoCliente;
 	}
-	public void setAumentocuotarest(Integer aumentocuotarest) {
-		this.aumentocuotarest = aumentocuotarest;
+	public void setTbTipoCliente(TipoClienteSie tbTipoCliente) {
+		this.tbTipoCliente = tbTipoCliente;
 	}
-	public BigDecimal getMinprimeracuota() {
-		return minprimeracuota;
+	public String getDescripcion() {
+		return descripcion;
 	}
-	public void setMinprimeracuota(BigDecimal minprimeracuota) {
-		this.minprimeracuota = minprimeracuota;
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
-	public Timestamp getFechainicio() {
+	public BigDecimal getMinmontocuotamora() {
+		return minmontocuotamora;
+	}
+	public void setMinmontocuotamora(BigDecimal minmontocuotamora) {
+		this.minmontocuotamora = minmontocuotamora;
+	}
+	public Date getFechainicio() {
 		return fechainicio;
 	}
-	public void setFechainicio(Timestamp fechainicio) {
+	public void setFechainicio(Date fechainicio) {
 		this.fechainicio = fechainicio;
 	}
-	public Timestamp getFechafin() {
+	public Date getFechafin() {
 		return fechafin;
 	}
-	public void setFechafin(Timestamp fechafin) {
+	public void setFechafin(Date fechafin) {
 		this.fechafin = fechafin;
+	}
+	public BigDecimal getAumentocuotarest() {
+		return aumentocuotarest;
+	}
+	public void setAumentocuotarest(BigDecimal aumentocuotarest) {
+		this.aumentocuotarest = aumentocuotarest;
 	}
 	
 }
