@@ -12,6 +12,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.edicsem.pe.sie.client.action.ComboAction;
 import com.edicsem.pe.sie.client.action.SMTPConfig;
 import com.edicsem.pe.sie.entity.ClienteSie;
 import com.edicsem.pe.sie.entity.CobranzaOperadoraSie;
@@ -30,6 +32,7 @@ import com.edicsem.pe.sie.entity.HistoricoObservacionesSie;
 import com.edicsem.pe.sie.entity.IncidenciaSie;
 import com.edicsem.pe.sie.entity.RefinanciarPagoSie;
 import com.edicsem.pe.sie.entity.TelefonoPersonaSie;
+import com.edicsem.pe.sie.entity.TipoRefinanciaSie;
 import com.edicsem.pe.sie.service.facade.ClienteService;
 import com.edicsem.pe.sie.service.facade.CobranzaOperaService;
 import com.edicsem.pe.sie.service.facade.CobranzaService;
@@ -43,6 +46,7 @@ import com.edicsem.pe.sie.service.facade.ParametroService;
 import com.edicsem.pe.sie.service.facade.RefinanciarPagoService;
 import com.edicsem.pe.sie.service.facade.TelefonoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.TipoLLamadaService;
+import com.edicsem.pe.sie.service.facade.TipoRefinanciaService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
@@ -67,6 +71,7 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private boolean programarLlamada, refinanciar;
 	private Date fechaProgramada;
 	
+	private int idtiporefinan;
 	private String mensaje;
 	private boolean newRecord =false;
 	private int idcontrato;
@@ -108,6 +113,11 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private RefinanciarPagoService objRefinanciarPagoService;
 	@EJB
 	private EstadogeneralService objEstadoService;
+	@EJB
+	private TipoRefinanciaService objTipoRefinanService;
+	
+	@ManagedProperty(value = "#{comboAction}")
+	private ComboAction comboManager;
 	
 	public static Log log = LogFactory.getLog(MantenimientoCobranzaOperaSearchAction.class);
 	
@@ -150,6 +160,7 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 		idincidencia=0;
 		objRefinanPago = new RefinanciarPagoSie();
 		refinanciar=false;
+		idtiporefinan=0;
 		cobranzaOperaList = objCobranzaOperaService.listarCobranzasOpera(sessionUsuario.getUsuario());
 		if (cobranzaOperaList == null) {
 			cobranzaOperaList = new ArrayList<CobranzaOperadoraSie>();
@@ -183,11 +194,13 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 		objContrato = objContratoService.findContrato(idcontrato);
 	    // mostramos los datos del cliente
 		objcliente = objClienteService.findCliente(objCobranzaOpera.getTbCobranza().getIdcliente());
+		comboManager.setIdtipocliente(objcliente.getTbTipoCliente().getIdtipocliente());
 		log.info("listartelefonos x idcliente "+totalacumulado);
 		listatelefono = objTelefonoService.listarTelefonoEmpleadosXidcliente(objcliente.getIdcliente());
 		if (listatelefono == null) {
 			listatelefono = new ArrayList<TelefonoPersonaSie>();
 		}
+		idtiporefinan=0;
 		//productos del contrato
 		productoContratoList =objProductoContratoService.listarDetProductoContratoXContrato(idcontrato);
 		//Mostramos el historial
@@ -200,8 +213,43 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	 * Registrar la refinanciacion
 	 */
 	public void registrarRefinanciacion(){
-		log.info("registrarRefinanciacion");
+		log.info("registrarRefinanciacion "+ idtiporefinan);
+		List<CobranzaSie> listFaltaPagar= new ArrayList<CobranzaSie>();
 		detallePagosRefinan= new ArrayList<CobranzaSie>();
+		TipoRefinanciaSie objTipoRefina = objTipoRefinanService.findTipoRefinancia(idtiporefinan);
+		if(idtiporefinan !=0){
+			//seleccionar solo las que se adeuden
+			for (int i = 0; i < detallePagos.size() ; i++) {
+				if(detallePagos.get(i).getFecpago()==null){
+					listFaltaPagar.add(detallePagos.get(i));
+				}
+			}
+//			if(listFaltaPagar.size()<objTipoRefina.getCuotaconmora()){
+//				mensaje="La cantidad de cuotas a refinanciar es menor a las cuotas de la promocion exige";
+//			}else{
+				//primeras cuotas con mora
+			Calendar c = new GregorianCalendar();
+				for (int i = 0; i < objTipoRefina.getCuotaconmora(); i++) {
+					CobranzaSie objCob = new CobranzaSie();
+					objCob.setNumletra(listFaltaPagar.get(i).getNumletra());
+					objCob.setImpinicial(listFaltaPagar.get(i).getImportemasmora());
+					objCob.setFecvencimiento(c.getTime());
+					detallePagosRefinan.add(objCob);
+				}
+				//cuotas Restantes
+				for (int i = objTipoRefina.getCuotaconmora(); i < listFaltaPagar.size() ; i++) {
+					CobranzaSie objCob = new CobranzaSie();
+					objCob.setNumletra(listFaltaPagar.get(i).getNumletra());
+					objCob.setImpinicial(listFaltaPagar.get(i).getImpinicial().add(objTipoRefina.getAumentocuotarest()));
+					
+					c.setTime(fechaProgramRest);
+					c.add(Calendar.MONTH, i);
+					objCob.setFecvencimiento(c.getTime());
+					detallePagosRefinan.add(objCob);
+				}
+//			}
+		}
+		else{
 		/*Primera cuota*/
 		CobranzaSie cob = new CobranzaSie();
 		cob.setImpinicial(objRefinanPago.getImpapagar());
@@ -235,6 +283,7 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 		objRefinanPago.setAntiguoPago(antiguoPago);
 		objRefinanPago.setRefinanciadoPago(refinanPago);
 		objRefinanPago.setTbContrato(objContrato);
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -688,5 +737,33 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 
 	public void setRefinanciar(boolean refinanciar) {
 		this.refinanciar = refinanciar;
+	}
+
+	/**
+	 * @return the comboManager
+	 */
+	public ComboAction getComboManager() {
+		return comboManager;
+	}
+
+	/**
+	 * @param comboManager the comboManager to set
+	 */
+	public void setComboManager(ComboAction comboManager) {
+		this.comboManager = comboManager;
+	}
+
+	/**
+	 * @return the idtiporefinan
+	 */
+	public int getIdtiporefinan() {
+		return idtiporefinan;
+	}
+
+	/**
+	 * @param idtiporefinan the idtiporefinan to set
+	 */
+	public void setIdtiporefinan(int idtiporefinan) {
+		this.idtiporefinan = idtiporefinan;
 	}
 }

@@ -1179,6 +1179,21 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:confirmDialog>
 	</h:form>
 	
+	<!--	 DESACTIVAR	CONFIG. TIPO REFINANCIAR   -->
+	<h:form>
+		<p:confirmDialog id="confirmDeshabilitar1"
+			message="Esta seguro de deshabilitar ésta configuración?" width="325"
+			height="100" showEffect="explode" hideEffect="explode" position="center"
+			header="Confirmar" severity="alert" widgetVar="confirmationConfigRefi">
+			
+			<p:commandButton type="submit" value="Si"
+				action="#{configRefinanciaFormAction.delete}"
+				oncomplete="confirmationConfigRefi.hide()" ajax="false"
+				update=":manteCargoEmpleado:listaPersonas" />
+			<p:commandButton value="No" onclick="confirmationConfigRefi.hide()" type="button" />
+		</p:confirmDialog>
+	</h:form>
+	
 	<!--	  INICIO DESACTIVAR	PAQUETE BIBLICO   -->
 	<h:form>
 		<p:confirmDialog id="confirmDeshabilitar1"
