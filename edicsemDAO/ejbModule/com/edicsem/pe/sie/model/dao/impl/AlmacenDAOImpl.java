@@ -59,16 +59,16 @@ public class AlmacenDAOImpl implements AlmacenDAO{
 		PuntoVentaSie almacen= new PuntoVentaSie();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("buscar Almacen"+ id);
-			} 
-		almacen=	em.find(PuntoVentaSie.class, id);
+				log.info("buscar Almacen "+ id);
+			}
+			almacen = em.find(PuntoVentaSie.class, id);
 		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return almacen;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.AlmacenDAO#listarAlmacenes()
 	 */
@@ -90,7 +90,8 @@ public class AlmacenDAOImpl implements AlmacenDAO{
 	public List listarPuntoVenta(int tipo) {
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from PuntoVentaSie p where p.tbTipoPuntoVenta.idtipopuntoventa =  '"+tipo +"' and p.tbEstadoGeneral.idestadogeneral = "+ 13 );
+			Query q = em.createQuery("select p from PuntoVentaSie p where p.tbTipoPuntoVenta.idtipopuntoventa = "+tipo +
+					" and p.tbEstadoGeneral.idestadogeneral = "+ 13 );
 			lista =  q.getResultList(); 						
 		   log.info("tamaño lista PuntoVenta DAOIMPL --> " + lista.size()+"  ");
 		} catch (Exception e) {
@@ -99,30 +100,25 @@ public class AlmacenDAOImpl implements AlmacenDAO{
 		return lista;
 	}
 
-
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.AlmacenDAO#buscarIdpuntoVenta(java.lang.String)
+	 */
 	public PuntoVentaSie buscarIdpuntoVenta(String puntoVenta) {	
-
 		PuntoVentaSie p = new PuntoVentaSie();
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("buscar puntoVenta en la IMPLEMENTACION DAO" + puntoVenta );
+				log.info("buscar puntoVenta por descripcion " + puntoVenta );
 			}
-
-Query q = em.createQuery("select p from  PuntoVentaSie p where p.tbEstadoGeneral.idestadogeneral = 13 AND p.descripcion like  '"+ puntoVenta + "'");
+			Query q = em.createQuery("select p from  PuntoVentaSie p where p.tbEstadoGeneral.idestadogeneral = 13 " +
+					" and p.descripcion like  '"+ puntoVenta + "'");
 			if (q.getResultList().size() == 1) {
-
 				p = (PuntoVentaSie) q.getResultList().get(0);
-				// casteado tiene columnas pero no se ah mencionado cuales son p=(ContratoSie) q.getResultList().get(0);
-				
 			}
 			log.info("Aquita PUNTO-VENTA-->"+ p.getDescripcion()); 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return p;	
-		
+		return p;
 	}
-	
-	
 	
 }
