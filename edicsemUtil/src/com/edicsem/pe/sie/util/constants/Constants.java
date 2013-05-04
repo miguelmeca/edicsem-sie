@@ -144,6 +144,8 @@ public class Constants {
 	
 	public static final String MANT_CONFIG_TIPO_REFINAN_LIST = "mantenimientoConfigTipoRefinanciaList";
 	public static final String MANT_CONFIG_TIPO_REFINAN_FORM = "mantenimientoConfigTipoRefinanciaForm";
+
+	public static final String MANT_CONFIG_NOTIFICACION_LIST = "mantenimientoConfigNotificacionList";
 	
 	public static final String MIGRAR_PRODUCTO_PAQUETE = "migracionProductos";
 	//constantes de tablas con la TB_ESTADO_GENERAL
