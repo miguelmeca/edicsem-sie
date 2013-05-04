@@ -1,8 +1,5 @@
 package com.edicsem.pe.sie.client.action.mantenimiento;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -13,33 +10,36 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.edicsem.pe.sie.entity.TipoRefinanciaSie;
+import com.edicsem.pe.sie.entity.ConfigNotificacionSie;
+import com.edicsem.pe.sie.service.facade.CalificacionEquifaxService;
+import com.edicsem.pe.sie.service.facade.ConfigNotificacionService;
 import com.edicsem.pe.sie.service.facade.EstadogeneralService;
-import com.edicsem.pe.sie.service.facade.TipoRefinanciaService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
-@ManagedBean(name="configRefinanciaFormAction")
+@ManagedBean(name="configNotificaFormAction")
 @SessionScoped
-public class MantenimientoConfigRefinanciaFormAction extends BaseMantenimientoAbstractAction {
-	private TipoRefinanciaSie objConfig;
-	private String mensaje, descripcionUpdate;
+public class MantenimientoConfigNotificaFormAction extends BaseMantenimientoAbstractAction {
+	private String mensaje;
 	private int idtipocliente;
+	private int idCalificacion;
 	private boolean newRecord =false;
-	private List<String> lista ;
+	private ConfigNotificacionSie objConfig;
 	
 	@ManagedProperty(value = "#{configTipoRefinanSearchAction}")
 	private MantenimientoConfigRefinanciaSearchAction mantenimientoConfigSearch;
 	
 	@EJB
-	private TipoRefinanciaService objConfigService;
+	private ConfigNotificacionService objConfigService;
+	@EJB
+	private CalificacionEquifaxService objCalificacionService;
 	@EJB
 	private EstadogeneralService objEstadoService;
 	
-	public static Log log = LogFactory.getLog(MantenimientoConfigRefinanciaFormAction.class);
+	public static Log log = LogFactory.getLog(MantenimientoConfigNotificaFormAction.class);
 	
-	public MantenimientoConfigRefinanciaFormAction() {
-		log.info("inicializando mi constructor 'MantenimientoConfigRefinanciaFormAction'");
+	public MantenimientoConfigNotificaFormAction() {
+		log.info("inicializando mi constructor 'MantenimientoConfigNotificaFormAction'");
 		init();
 	}
 	
@@ -55,10 +55,8 @@ public class MantenimientoConfigRefinanciaFormAction extends BaseMantenimientoAb
 	 */ 
 	public String agregar() {
 		log.info("agregar ");
-		objConfig = new TipoRefinanciaSie();
+		objConfig = new ConfigNotificacionSie();
 		idtipocliente=0;
-		descripcionUpdate="";
-		lista  = new ArrayList<String>();
 		setNewRecord(true);
 		return getViewMant();
 	}
@@ -68,7 +66,6 @@ public class MantenimientoConfigRefinanciaFormAction extends BaseMantenimientoAb
 	 */
 	public String update() throws Exception {
 		log.info("update()");
-		descripcionUpdate = objConfig.getDescripcion();
 		idtipocliente = objConfig.getTbTipoCliente().getIdtipocliente();
 		setNewRecord(false);
 		return getViewMant();
@@ -78,47 +75,23 @@ public class MantenimientoConfigRefinanciaFormAction extends BaseMantenimientoAb
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
 	 */
 	public String insertar() throws Exception {
-		log.info("insertar() " +mantenimientoConfigSearch.getConfigList().size());
+		log.info("insertar() " );
 		String paginaRetorno=null;
 		mensaje=null;
 		
-		for (int i = 0; i < mantenimientoConfigSearch.getConfigList().size(); i++) {
-			log.info("add " +mantenimientoConfigSearch.getConfigList().get(i).getDescripcion());
-			lista.add(mantenimientoConfigSearch.getConfigList().get(i).getDescripcion());
-		}
-		if(!isNewRecord()){
-			for (int i = 0; i < mantenimientoConfigSearch.getConfigList().size(); i++) {
-				log.info("up "+descripcionUpdate+" des "+mantenimientoConfigSearch.getConfigList().get(i).getDescripcion());
-				if(descripcionUpdate.equalsIgnoreCase(mantenimientoConfigSearch.getConfigList().get(i).getDescripcion())){
-				lista.remove(i);
-				break;
-				}
-			}
-		}
 		try {
-			if(objConfig.getFechainicio().after(objConfig.getFechafin())){
-				mensaje="La fecha de Inicio no puede ser mayor a la fecha fin";
-				msg = new FacesMessage(FacesMessage.SEVERITY_WARN,Constants.MESSAGE_INFO_TITULO, mensaje);
+			if (isNewRecord()){
+				objConfigService.insertConfigNotificacion(objConfig);
+				mensaje ="Se registró la configuración correctamente";
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
+			}else {
+				objConfigService.updateConfigNotificacion(objConfig);
+				mensaje ="Se atualizó la configuración correctamente";
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
 			}
-			else if(lista.contains(objConfig.getDescripcion())){
-				log.info(" contain ");
-				mensaje="Dicha descripción ya se encuentra registrada con otra configuración";
-				msg = new FacesMessage(FacesMessage.SEVERITY_WARN,Constants.MESSAGE_INFO_TITULO, mensaje);
-			}
-			else{
-				if (isNewRecord()){
-					objConfig.setDescripcion(objConfig.getDescripcion().trim());
-					objConfigService.insertTipoRefinancia(objConfig, idtipocliente);
-					mensaje ="Se registró la configuración correctamente";
-					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
-				}else {
-					objConfigService.updateTipoRefinancia(objConfig,idtipocliente);
-					mensaje ="Se atualizó la configuración correctamente";
-					msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
-				}
-				objConfig = new TipoRefinanciaSie();
+				objConfig = new ConfigNotificacionSie();
 				paginaRetorno =mantenimientoConfigSearch.listar();
-			}
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
@@ -138,7 +111,7 @@ public class MantenimientoConfigRefinanciaFormAction extends BaseMantenimientoAb
 		log.info("delete()");
 		idtipocliente = objConfig.getTbTipoCliente().getIdtipocliente();
 		objConfig.setTbEstadoGeneral(objEstadoService.findEstadogeneral(22));
-		objConfigService.updateTipoRefinancia(objConfig,idtipocliente);
+		objConfigService.updateConfigNotificacion(objConfig);
 		mensaje ="Se deshabilitó la configuración correctamente";
 		msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
 		FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -194,20 +167,6 @@ public class MantenimientoConfigRefinanciaFormAction extends BaseMantenimientoAb
 	}
 
 	/**
-	 * @return the objConfig
-	 */
-	public TipoRefinanciaSie getObjConfig() {
-		return objConfig;
-	}
-
-	/**
-	 * @param objConfig the objConfig to set
-	 */
-	public void setObjConfig(TipoRefinanciaSie objConfig) {
-		this.objConfig = objConfig;
-	}
-
-	/**
 	 * @return the mantenimientoConfigSearch
 	 */
 	public MantenimientoConfigRefinanciaSearchAction getMantenimientoConfigSearch() {
@@ -222,11 +181,31 @@ public class MantenimientoConfigRefinanciaFormAction extends BaseMantenimientoAb
 		this.mantenimientoConfigSearch = mantenimientoConfigSearch;
 	}
 
-	public String getDescripcionUpdate() {
-		return descripcionUpdate;
+	/**
+	 * @return the idCalificacion
+	 */
+	public int getIdCalificacion() {
+		return idCalificacion;
 	}
 
-	public void setDescripcionUpdate(String descripcionUpdate) {
-		this.descripcionUpdate = descripcionUpdate;
+	/**
+	 * @param idCalificacion the idCalificacion to set
+	 */
+	public void setIdCalificacion(int idCalificacion) {
+		this.idCalificacion = idCalificacion;
+	}
+
+	/**
+	 * @return the objConfig
+	 */
+	public ConfigNotificacionSie getObjConfig() {
+		return objConfig;
+	}
+
+	/**
+	 * @param objConfig the objConfig to set
+	 */
+	public void setObjConfig(ConfigNotificacionSie objConfig) {
+		this.objConfig = objConfig;
 	}
 }

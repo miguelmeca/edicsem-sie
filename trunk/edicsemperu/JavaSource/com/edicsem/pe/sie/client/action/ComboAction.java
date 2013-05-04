@@ -19,6 +19,7 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.edicsem.pe.sie.entity.CalificacionEquifaxSie;
 import com.edicsem.pe.sie.entity.CargoEmpleadoSie;
 import com.edicsem.pe.sie.entity.ContratoEmpleadoSie;
 import com.edicsem.pe.sie.entity.CriterioComisionSie;
@@ -53,6 +54,7 @@ import com.edicsem.pe.sie.entity.TipoRefinanciaSie;
 import com.edicsem.pe.sie.entity.TurnoSie;
 import com.edicsem.pe.sie.entity.UbigeoSie;
 import com.edicsem.pe.sie.service.facade.AlmacenService;
+import com.edicsem.pe.sie.service.facade.CalificacionEquifaxService;
 import com.edicsem.pe.sie.service.facade.CargoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.ContratoEmpleadoService;
 import com.edicsem.pe.sie.service.facade.CriterioComisionService;
@@ -146,6 +148,7 @@ public class ComboAction {
 	private Map<String, Integer> importeItems = new HashMap<String, Integer>();
 	private Map<String, Integer> tipoPagoItems = new HashMap<String, Integer>();
 	private Map<String, Integer> turnoItems = new HashMap<String, Integer>();
+	private Map<String, Integer> calificacionItems = new HashMap<String, Integer>();
 	
 	@EJB
 	private TurnoService objTurnoService;
@@ -213,6 +216,8 @@ public class ComboAction {
 	private TipoEventoVentaService objTipoEventoVentaService;
 	@EJB
 	private IncidenciaService objIncidenteService;
+	@EJB
+	private CalificacionEquifaxService objCalificacionService;
 	
 	public ComboAction() {
 		log.info("inicializando constructor");
@@ -1946,6 +1951,43 @@ public class ComboAction {
 	 */
 	public void setIdtipocliente(int idtipocliente) {
 		this.idtipocliente = idtipocliente;
+	}
+
+	/**
+	 * @return the calificacionItems
+	 */
+	public Map<String, Integer> getCalificacionItems() {
+		calificacionItems = new HashMap<String, Integer>();
+		List lista = new ArrayList<CalificacionEquifaxSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getCalificacionItems()'");
+			}
+			lista = objCalificacionService.listarCalificacionEquifax();
+			
+			for (int i = 0; i < lista.size(); i++) {
+				CalificacionEquifaxSie entidad = new CalificacionEquifaxSie();
+				entidad = (CalificacionEquifaxSie) lista.get(i);
+				calificacionItems.put(entidad.getDescripcion(),
+						entidad.getIdcalificacion());
+			}
+			calificacionItems = sortByComparator(calificacionItems);
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return calificacionItems;
+	}
+
+	/**
+	 * @param calificacionItems the calificacionItems to set
+	 */
+	public void setCalificacionItems(Map<String, Integer> calificacionItems) {
+		this.calificacionItems = calificacionItems;
 	}
 	
 }
