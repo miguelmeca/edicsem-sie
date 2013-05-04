@@ -110,4 +110,12 @@ public class NotificacionSie  implements Serializable {
 	public void setIdnotifica(Integer idnotifica) {
 		this.idnotifica = idnotifica;
 	}
+
+	public Set<ConfigNotificacionSie> getTbConfigNotifica() {
+		return tbConfigNotifica;
+	}
+
+	public void setTbConfigNotifica(Set<ConfigNotificacionSie> tbConfigNotifica) {
+		this.tbConfigNotifica = tbConfigNotifica;
+	}
 }

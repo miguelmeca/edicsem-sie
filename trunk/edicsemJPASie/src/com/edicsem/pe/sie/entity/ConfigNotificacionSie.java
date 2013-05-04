@@ -30,8 +30,6 @@ public class ConfigNotificacionSie  implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_CONFIG_NOTIFICACION_IDCONFIGNOTIFICA_GENERATOR")
 	private Integer idconfignotifica;
 	
-	private String descripcion;
-	
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
 
@@ -46,6 +44,11 @@ public class ConfigNotificacionSie  implements Serializable {
 	@JoinColumn(name="idtipocliente")
 	private TipoClienteSie tbTipoCliente;
     
+    //bi-directional many-to-one association to CalificacionEquifaxSie
+    @ManyToOne
+	@JoinColumn(name="idcalificacion")
+	private CalificacionEquifaxSie tbCalificacion;
+    
     //bi-directional many-to-one association to NotificacionSie
     @ManyToOne
 	@JoinColumn(name="idtipocobranza")
@@ -58,14 +61,6 @@ public class ConfigNotificacionSie  implements Serializable {
   	
     public ConfigNotificacionSie() {
     }
-
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
 
 	public Timestamp getFechacreacion() {
 		return this.fechacreacion;
@@ -129,5 +124,19 @@ public class ConfigNotificacionSie  implements Serializable {
 
 	public void setTbNotifica(NotificacionSie tbNotifica) {
 		this.tbNotifica = tbNotifica;
+	}
+
+	/**
+	 * @return the tbCalificacion
+	 */
+	public CalificacionEquifaxSie getTbCalificacion() {
+		return tbCalificacion;
+	}
+
+	/**
+	 * @param tbCalificacion the tbCalificacion to set
+	 */
+	public void setTbCalificacion(CalificacionEquifaxSie tbCalificacion) {
+		this.tbCalificacion = tbCalificacion;
 	}
 }
