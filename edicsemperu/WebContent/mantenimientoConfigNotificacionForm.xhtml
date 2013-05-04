@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/layout/template.xhtml">
+	<ui:define name="body">
+	<h:form id="form">
+	<p:panel header="Registrar Configuración Notificación" id="panel">
+	<p:messages showDetail="true"/>
+		<h:panelGrid columns="2" cellpadding="5">
+			
+            <h:outputText value="Calificación Equifax" />
+            <p:selectOneMenu  value="#{configNotificaFormAction.idCalificacion}" required="true" >
+            <f:selectItem itemLabel="Seleccione una opción" itemValue="#{null}" />
+            <f:selectItems  value="#{comboAction.calificacionItems}" />
+            </p:selectOneMenu>
+            
+            <h:outputText value="Tipo Cliente"  />
+            <p:selectOneMenu   value="#{configNotificaFormAction.idtipocliente}" required="true" >
+            <f:selectItem itemLabel="Seleccione una opción" itemValue="#{null}" />
+            <f:selectItems  value="#{comboAction.tipoClienteItems}" />
+            </p:selectOneMenu>
+            
+            <p:commandButton id="btn" value="Guardar" action="#{configNotificaFormAction.insertar}" ajax="false" icon="ui-icon-check"/>
+            <p:commandButton value="Regresar" action="#{configNotificaFormAction.listar}" immediate="true" ajax = "false"  icon="ui-icon-circle-arrow-w"/>
+            
+		</h:panelGrid>
+	</p:panel>
+	</h:form>
+	</ui:define>
+</ui:composition>

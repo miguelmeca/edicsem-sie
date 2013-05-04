@@ -918,6 +918,28 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			</p:fieldset>
 		</p:dialog>
 	</h:form>
+				
+	<!--  Mantenimiento Notificacion  -->
+	<h:form id="formNotificacion">
+	  <p:messages id="msgs"/>
+		<p:dialog header="Registro/Modificacion Notificación" widgetVar="NotificacionDialog" showEffect="fade"
+			hideEffect="explode" modal="true" position="center" width="500" resizable="false" >
+			<p:fieldset>
+			<h:panelGrid id="display" columns="2" >
+			<h:outputText value="#{message['notificacion.descripcion']}" for="descripcion"/>
+			<p:inputText value="#{configNotificaSearchAction.objNotifica.descripcion}"
+				id="descripcion" maxlength="50" required="true"
+				title="Máximo de 50 caracteres"
+				requiredMessage="#{message['Paquetebiblico.descripcion.validation']}" />
+			<p:message for="descripcion" display="icon"/>
+			
+			<p:commandButton value="Grabar" icon="ui-icon-disk" ajax="false" 
+			action="#{configNotificaSearchAction.insertar}" update="panel" />
+			
+			</h:panelGrid>
+			</p:fieldset>
+		</p:dialog>
+	</h:form>
 	
 	<!--  Verificar Cliente -->
 	<h:form>
@@ -1210,8 +1232,23 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:confirmDialog>
 	</h:form>
 
+	<!--	  INICIO DESACTIVAR	PAQUETE BIBLICO   -->
+	<h:form>
+		<p:confirmDialog id="confirmDeshabilitarNotifica"
+			message="Esta seguro de deshabilitar esta Notificación?" width="325"
+			height="100" showEffect="explode" hideEffect="explode"
+			header="Confirmar" severity="alert" widgetVar="confirmationNotifica"
+			position="center">
+
+			<p:commandButton type="submit" value="Si" update=":frmPaqueBibliList:pack"
+				action="#{configNotificaSearchAction.delete}"
+				oncomplete="confirmationNotifica.hide()" ajax="false" />
+
+			<p:commandButton value="No" onclick="confirmationNotifica.hide()" type="button" />
+		</p:confirmDialog>
+	</h:form>
 	
-		<!--EN UN SOLO PUPAP NUEVO Y EDITAR TIPO PRODUCTO	  -->
+	<!--EN UN SOLO PUPAP NUEVO Y EDITAR TIPO PRODUCTO	  -->
 	<h:form id="NuevoModificaTipoProd">
 		<p:dialog header="Ingrese Nuevo Tipo de Producto" widgetVar="DialogTipoProd"
 			showEffect="fade" hideEffect="explode" modal="true" width="300"
