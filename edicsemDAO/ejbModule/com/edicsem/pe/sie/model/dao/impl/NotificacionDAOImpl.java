@@ -75,7 +75,7 @@ public class NotificacionDAOImpl implements NotificacionDAO{
 	public List listarNotificacion() {
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from NotificacionSie p where p.tbEstadoGeneral.idestadogeneral = "+ 111);
+			Query q = em.createQuery("select p from NotificacionSie p where p.tbEstadoGeneral.idestadogeneral = "+ 112);
 			lista =  q.getResultList(); 
 		   log.info("tamaño lista Notificacion --> " + lista.size()+"  ");
 		} catch (Exception e) {

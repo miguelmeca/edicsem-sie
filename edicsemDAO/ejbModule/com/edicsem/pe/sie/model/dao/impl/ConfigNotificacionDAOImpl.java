@@ -75,7 +75,23 @@ public class ConfigNotificacionDAOImpl implements ConfigNotificacionDAO{
 	public List listarConfigNotificacion() {
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from ConfigNotificacionSie p where p.tbEstadoGeneral.idestadogeneral = "+ 113);
+			Query q = em.createQuery("select p from ConfigNotificacionSie p where p.tbEstadoGeneral.idestadogeneral = "+ 114);
+			lista =  q.getResultList(); 
+		   log.info("tamaño lista config notificacion  --> " + lista.size()+"  ");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.ConfigNotificacionDAO#listarConfigNotificacionXNotificacion(int)
+	 */
+	public List listarConfigNotificacionXNotificacion(int idnotifica) {
+		List  lista = null;
+		try {
+			Query q = em.createQuery("select p from ConfigNotificacionSie p where " +
+					"p.tbEstadoGeneral.idestadogeneral = "+ 113 +" and p.tbNotifica.idnotifica = "+idnotifica);
 			lista =  q.getResultList(); 
 		   log.info("tamaño lista config notificacion  --> " + lista.size()+"  ");
 		} catch (Exception e) {

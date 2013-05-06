@@ -21,7 +21,7 @@ public class CobranzaOperaDAOImpl implements CobranzaOperaDAO{
 	@PersistenceContext(name="edicsemJPASie")
 	private EntityManager em;
 	private static Log log = LogFactory.getLog(CobranzaOperaDAOImpl.class);
-
+	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.CobranzaDAO#insertCobranza(com.edicsem.pe.sie.entity.CobranzaSie)
 	 */
@@ -104,5 +104,23 @@ public class CobranzaOperaDAOImpl implements CobranzaOperaDAO{
 		}
 		return tamano;
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.CobranzaOperaDAO#listarCobranzasOperaPagada(java.lang.String)
+	 */
+	public List listarCobranzasOperaPagada(String usuario) {
+		List  lista = null;
+		try {
+			Query q = em.createQuery("select p from CobranzaOperadoraSie p where   "+
+					" DATE(p.fechacreacion) <=  DATE(p.tbCobranza.fecpago)  and " +
+					" DATE(p.fechaexpira) >= DATE(p.tbCobranza.fecpago)  and" +
+					" p.tbEmpleado.usuario like '"+usuario+"' and p.tbEstadoGeneral.idestadogeneral between  108 " +
+					" and 110 ");
+			lista =  q.getResultList();
+			log.info("tamaño lista CobranzasOpera Pagadas --> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 }
