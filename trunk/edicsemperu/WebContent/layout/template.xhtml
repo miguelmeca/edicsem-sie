@@ -1008,6 +1008,37 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:dialog>
 	</h:form>
 	
+	<!--  Mantenimiento Configuraacion Notificacion -->
+	<h:form id="formConfigNotifica">
+		<p:dialog header="Registro/Modificación Configuración Notificación" widgetVar="ConfigNotifica" showEffect="fade"
+			hideEffect="explode" modal="true" position="center" width="450" resizable="false" >
+			<p:fieldset>
+			<p:messages id="msj" showDetail="true"/>
+			<h:panelGrid columns="2" cellpadding="5" id="display" >
+			
+            <h:outputText value="Calificación Equifax" />
+            <p:selectOneMenu  value="#{configNotificaFormAction.idCalificacion}" required="true" >
+	            <f:selectItem itemLabel="Seleccione una opción" itemValue="#{null}" />
+	            <f:selectItems  value="#{comboAction.calificacionItems}" />
+            </p:selectOneMenu>
+            
+            <h:outputText value="Tipo Cliente"  />
+            <p:selectOneMenu value="#{configNotificaFormAction.idtipocliente}" required="true" >
+	            <f:selectItem itemLabel="Seleccione una opción" itemValue="#{null}" />
+	            <f:selectItems value="#{comboAction.tipoClienteItems}" />
+            </p:selectOneMenu>
+            
+            <p:commandButton value="Guardar" action="#{configNotificaFormAction.insertar}" 
+            icon="ui-icon-check" update="msj, display" />
+            
+            <p:commandButton value="Regresar" action="#{configNotificaFormAction.listar}" 
+            immediate="true" ajax = "false"  icon="ui-icon-circle-arrow-w" />
+            
+            </h:panelGrid>
+			</p:fieldset>
+		</p:dialog>
+	</h:form>
+	
 	<!--  Confirmation deshabilita Det Sancion Cargo -->
 	<h:form id="detSancionCargoDeshabilita" >
 		<p:confirmDialog message="Esta seguro de deshabilitar la sanción para dicho cargo?" width="325"
@@ -1216,6 +1247,21 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:confirmDialog>
 	</h:form>
 	
+	<!--	  INICIO DESACTIVAR	NOTIFICACION   -->
+	<h:form>
+		<p:confirmDialog  message="Esta seguro de deshabilitar esta notificación?" width="325"
+			height="100" showEffect="explode" hideEffect="explode" position="center"
+			header="Confirmar" severity="alert" widgetVar="confirmationNotificacion" >
+			
+			<p:commandButton type="submit" value="Si" update=":frmPaqueBibliList:pack"
+				action="#{configNotificaSearchAction.delete}"
+				oncomplete="confirmationNotificacion.hide()" ajax="false" />
+				
+			<p:commandButton value="No" onclick="confirmationNotificacion.hide()" type="button" />
+			
+		</p:confirmDialog>
+	</h:form>
+	
 	<!--	  INICIO DESACTIVAR	PAQUETE BIBLICO   -->
 	<h:form>
 		<p:confirmDialog id="confirmDeshabilitar1"
@@ -1232,7 +1278,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:confirmDialog>
 	</h:form>
 
-	<!--	  INICIO DESACTIVAR	PAQUETE BIBLICO   -->
+	<!--	  INICIO DESACTIVAR	NOTIFICACION   -->
 	<h:form>
 		<p:confirmDialog id="confirmDeshabilitarNotifica"
 			message="Esta seguro de deshabilitar esta Notificación?" width="325"

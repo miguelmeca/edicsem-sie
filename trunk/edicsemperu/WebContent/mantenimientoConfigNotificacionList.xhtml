@@ -12,7 +12,7 @@
 			id="listaPersonas" paginator="true" rows="10" rowsPerPageTemplate="5,10,15" widgetVar="table"
 			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 			emptyMessage="#{message['rsltd.empty']}">
-				<f:facet name="header">Mantenimiento Configuracion </f:facet>
+				<f:facet name="header">Mantenimiento Notificación </f:facet>
 				<f:facet name="header">
 		            <p:outputPanel>
 		                <h:outputText value="Buscar en todos los campos:" />
@@ -26,9 +26,9 @@
 					<h:outputText value="#{p.descripcion}" />
 				</p:column>
 				<p:column headerText="#{message['paquete.mostrar.detail']}">
-				<p:commandButton  action="#{mantenimientoDetallePaqueteBiblicoSearchAction.listar}"	
-				update=":frmPaqueBibliList:fldDetalle" icon="ui-icon-search" title="Muestra las configuraciones de dicha notificacion" >
-				<f:setPropertyActionListener value="#{pb}" target="#{mantenimientoPaqueteBiblicoFormAction.objPaqueteSie}" />
+				<p:commandButton  action="#{configNotificaFormAction.listar}"	
+				update=":formNotificacion:display" icon="ui-icon-search" title="Muestra las configuraciones de dicha notificacion" >
+				<f:setPropertyActionListener value="#{p}" target="#{configNotificaFormAction.objNotificacion}" />
 				</p:commandButton>
 				</p:column>
 				<p:column headerText="Editar">
@@ -38,19 +38,49 @@
 					</p:commandButton>
 				</p:column>
 				<p:column headerText="Deshabilitar">
-					<p:commandButton value="Deshabilitar" icon="ui-icon-trash"	onclick="confirmationPaquete.show()" >
+					<p:commandButton value="Deshabilitar" icon="ui-icon-trash"	onclick="confirmationNotificacion.show()" >
 						<f:setPropertyActionListener value="#{p}" target="#{configNotificaSearchAction.objNotifica}" />
 					</p:commandButton>
 				</p:column>
 				<f:facet name="footer">
 					<div align="left">
-					<p:commandButton id="btnNuevo" value="#{message['config.cobranza.nuevo']}" 
+					<p:commandButton id="btnNuevo" value="Nueva Notificación" 
 					title="#{message['config.cobranza.tittle']}" action="#{configNotificaSearchAction.agregar}" 
 					icon="ui-icon-star" update=":formNotificacion:display" oncomplete="NotificacionDialog.show()"/>
 					<p:tooltip for="btnNuevo" />
 					</div>
 				</f:facet>
 			</p:dataTable>
-		</h:form>
+			
+		<p:fieldset id="fldDetalle" legend="Detalles de la Notificación #{configNotificaFormAction.objNotificacion.descripcion}"  
+		rendered="#{mantenimientoPaqueteBiblicoSearchAction.objPaqueteSie.idpaquete!=0}" style="margin-top:30px" >
+		<p:dataTable value="#{configNotificaFormAction.lstConfigNotifica}" var="c" id="formdetalleform" emptyMessage="#{message['rsltd.empty']}" >
+		<p:column headerText="Notificación" >
+			<h:outputText value="#{c.tbNotifica.descripcion}" />
+		</p:column>
+		<p:column headerText="Calificación Equifax" >
+			<h:outputText value="#{c.tbCalificacion.descripcion}" />
+		</p:column>
+		<p:column headerText="Tipo de Cliente" >
+			<h:outputText value="#{c.tbTipoCliente.descripcion}" />
+		</p:column>
+		<p:column headerText="Editar">
+			<p:commandButton  oncomplete="ConfigNotifica.show()" action="#{configNotificaFormAction.update}" 
+			update=":formDetPaqueteBiblico:display" icon="ui-icon ui-icon-pencil" >
+				<f:setPropertyActionListener value="#{c}" target="#{configNotificaFormAction.objConfig}" />
+			</p:commandButton>
+		</p:column>
+		<p:column headerText="Eliminar Configuración">
+		<p:commandButton icon="ui-icon ui-icon-close" onclick="confirmationPaqueteProDetPACK.show()">
+			<f:setPropertyActionListener value="#{c}" target="#{configNotificaFormAction.objConfig}" />							
+		</p:commandButton>
+		</p:column>
+		<f:facet name="footer">
+			<p:commandButton value="Agregar nueva configuración" update=":formConfigNotifica:display" icon="ui-icon-star"
+			action="#{configNotificaFormAction.agregar}" oncomplete="ConfigNotifica.show()" title="Ingresar Nueva Configuración"/>
+		</f:facet>
+	</p:dataTable>
+	</p:fieldset>
+	</h:form>
 	</ui:define>
 </ui:composition>

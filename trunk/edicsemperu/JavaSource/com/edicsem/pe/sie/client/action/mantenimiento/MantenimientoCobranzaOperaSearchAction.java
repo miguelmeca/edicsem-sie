@@ -70,7 +70,6 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private boolean editMode;
 	private boolean programarLlamada, refinanciar;
 	private Date fechaProgramada;
-	
 	private int idtiporefinan;
 	private String mensaje;
 	private boolean newRecord =false;
@@ -324,10 +323,12 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 						}
 					}
 				}
-				if(objCobranzaOpera.getFechaprogramada()!=null){
+				//Volver a llamar
+				if(fechaProgramada!=null){
+					objCobranzaOpera.setFechaprogramada(new Timestamp(fechaProgramada.getTime()));
 					objCobranzaOpera.setTbEstadoGeneral(objEstadoService.findEstadogeneral(109));
 				}else{
-					//No mostrar 
+					//No mostrar (Llamada finalizada)
 					objCobranzaOpera.setTbEstadoGeneral(objEstadoService.findEstadogeneral(110));
 				}
 				//Actualizar la Cobranza de la operadora
