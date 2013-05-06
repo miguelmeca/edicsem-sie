@@ -171,7 +171,33 @@ public class CobranzaDAOImpl implements CobranzaDAO{
 			Query q = em.createQuery("select p from CobranzaSie p  where " +
 					" p.tbContrato.idcontrato  = '" +idcontrato+"'");
 			if(q.getResultList().size()>0){
-			cobranza = q.getResultList();
+				cobranza = q.getResultList();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cobranza;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.CobranzaDAO#listarCobranzasporParametro(int, int, int, int, java.util.Date, java.util.Date)
+	 */
+	public List listarCobranzasporParametro(int idTipocliente,int idCalificacion, int cuotasxpagar, int diasRetrazo,
+		Date fechaEntregaDesde, Date fechaEntregaHasta) {
+		List cobranza=null;
+		String query="";
+		try {
+			query +=	"select p from CobranzaSie p  where 1==1  ";
+		if(idTipocliente!=0)
+			query+=" and p.tbCliente.tbTipoCliente.idtipocliente = " +idTipocliente;
+		if(idCalificacion!=0)
+			query+=" and p.tbCliente.idcalificacion = " +idCalificacion;
+		if(fechaEntregaDesde!=null &&fechaEntregaHasta!=null )
+			query+=" and p.tbContrato.fechaentrega between "+fechaEntregaDesde+" and "+fechaEntregaHasta ;
+			
+			Query q = em.createQuery(query);
+			if(q.getResultList().size()>0){
+				cobranza = q.getResultList();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

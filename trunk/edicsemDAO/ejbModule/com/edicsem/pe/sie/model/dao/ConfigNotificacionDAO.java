@@ -14,5 +14,5 @@ public interface ConfigNotificacionDAO {
 	public abstract void updateConfigNotificacion(ConfigNotificacionSie n);
 	public abstract ConfigNotificacionSie findConfigNotificacion(int id);
 	public abstract List  listarConfigNotificacion();
-	
+	public abstract List listarConfigNotificacionXNotificacion(int idnotifica);
 }

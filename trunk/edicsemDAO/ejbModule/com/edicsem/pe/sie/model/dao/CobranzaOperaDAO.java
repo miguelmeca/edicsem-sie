@@ -11,4 +11,5 @@ public interface CobranzaOperaDAO {
 	public abstract CobranzaOperadoraSie findCobranzaOpera (int id);
 	public abstract List  listarCobranzasOpera(String usuario);
 	public abstract int verificargeneracionDiaria();
+	public abstract List listarCobranzasOperaPagada(String usuario);
 }

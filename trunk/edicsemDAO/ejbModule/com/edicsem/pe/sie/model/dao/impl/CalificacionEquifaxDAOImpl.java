@@ -74,7 +74,7 @@ public class CalificacionEquifaxDAOImpl implements CalificacionEquifaxDAO{
 	public List listarCalificacionEquifax() {
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from CalificacionEquifaxSie p where p.tbEstadoGeneral.idestadogeneral = "+ 13);
+			Query q = em.createQuery("select p from CalificacionEquifaxSie p where p.tbEstadoGeneral.idestadogeneral = "+ 115);
 			lista =  q.getResultList(); 
 		   log.info("tamaño lista calificacion --> " + lista.size()+"  ");
 		} catch (Exception e) {
