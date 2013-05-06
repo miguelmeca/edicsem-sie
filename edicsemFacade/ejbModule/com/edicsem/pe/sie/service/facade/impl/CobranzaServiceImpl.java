@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.service.facade.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -55,6 +56,15 @@ public class CobranzaServiceImpl implements CobranzaService {
 	}
 	
 	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.CobranzaService#listarCobranzasporParametro(int, int, int, int, java.util.Date, java.util.Date)
+	 */
+	public List listarCobranzasporParametro(int idTipocliente,int idCalificacion, int cuotasxpagar, int diasRetrazo,
+			Date fechaEntregaDesde, Date fechaEntregaHasta) {
+		return  objCobranzaDao.listarCobranzasporParametro(idTipocliente,idCalificacion,cuotasxpagar, diasRetrazo,
+			 fechaEntregaDesde, fechaEntregaHasta) ;
+	}
+	
+	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.CobranzaService#calcularEfectividad(int, java.lang.String, java.lang.String)
 	 */
 	public List calcularEfectividad(int idEmpleado,String fechaInicio, String fechaFin) {
@@ -81,7 +91,7 @@ public class CobranzaServiceImpl implements CobranzaService {
 				cobranza = objCobranzaDao.buscarCobranzaXcodigo(numDoc,s.getFechaVencimiento(), s.getMontoTotalPagado());
 				if(cobranza==null){
 					mensaje="Solucionar cobranza del número de Documento "+numDoc+" el pago de "+ s.getMontoTotalPagado()+" que venció el " +s.getFechaVencimientoString();
-				break;
+					break;
 				}else{
 					log.info(" cobranza "+cobranza.getTbCliente().getNombresCompletos());
 					cobranza.setFecpago(s.getFecpago());
