@@ -126,12 +126,12 @@ public class MantenimientoConfigNotificacionSearchAction extends BaseMantenimien
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#delete()
 	 */
 	public String delete() throws Exception {
-		objNotifica.setTbEstadoGeneral(objEstadoService.findEstadogeneral(112));
+		objNotifica.setTbEstadoGeneral(objEstadoService.findEstadogeneral(113));
 		objNotificacionService.updateNotificacion(objNotifica);
 		mensaje ="Se deshabilitó la notificación correctamente";
 		msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
 		FacesContext.getCurrentInstance().addMessage(null, msg);
-		return getViewList();
+		return listar();
 	}
 	
 	/* (non-Javadoc)

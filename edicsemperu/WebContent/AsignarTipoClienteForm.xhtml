@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+	<script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
+		<h1 class="title ui-widget-header ui-corner-all">Consulta Cliente</h1>
+		<h:form id="formConsultaCliente">
+		<p:messages showDetail="true"/>
+		<p:panel>
+		<p:fieldset  legend="Consutar Cliente">
+		<h:panelGrid columns="2" >
+			<h:outputText value="Tipo de Cliente" />
+			<p:selectOneMenu style="width:165px" value="#{asignarTipoClienteForm.idTipocliente}" >
+				<f:selectItems value="#{comboAction.tipoClienteItems}" />
+			</p:selectOneMenu>
+			<h:outputText value="Dias retrazo" />
+			<p:spinner value="#{asignarTipoClienteForm.diasRetrazo}" />
+			<h:outputText value="Nro de Cuotas por pagar" />
+			<p:spinner value="#{asignarTipoClienteForm.cuotasxpagar}" />
+			<h:outputText value="Fecha de Entrega" />
+			<h:outputText value="Desde" />
+			<p:spinner value="#{asignarTipoClienteForm.fechaEntregaDesde}" />
+			<h:outputText value="Hasta" />
+			<p:calendar value="#{asignarTipoClienteForm.fechaEntregaHasta}" />
+			<h:outputText value="Calificación Equifax" />
+			<p:selectOneMenu style="width:165px" value="#{asignarTipoClienteForm.idCalificacion}" >
+				<f:selectItems value="#{comboAction.calificacionItems}" />
+			</p:selectOneMenu>
+			<p:inputText value="#{contratoForm.apePatCliente}"  />
+			
+			<p:commandButton value="Buscar" action="#{contratoForm.consultar}" update="message" 
+			ajax="false" icon="ui-icon-search"/>
+			</h:panelGrid>
+			</p:fieldset>
+				<h:panelGrid  rendered="#{contratoForm.tamanoLista>1}" style="margin-top:30px"  >
+					<p:dataTable value="#{asignarTipoClienteForm.cobranzaList}" paginator="true" sortMode="multiple" rowsPerPageTemplate="5,10,15"  rows="5"
+					var="c" style="width:800px" emptyMessage="#{message['rsltd.empty']}" >
+						
+						<f:facet name="header">
+							<h:outputLabel value="#{message['rsltd.datatable']}" />
+						</f:facet>
+						
+						<p:column headerText="Código Contrato" sortBy="#{c.tbContrato.codcontrato}" >
+		                    <h:outputText value="#{c.tbContrato.codcontrato}" />
+		                </p:column>
+		                
+						<p:column headerText="#{message['consulta.contrato.nombreCompleto']}" sortBy="#{c.tbCliente.nombresCompletos}" >
+		                    <h:outputText value="#{c.tbCliente.nombresCompletos}" />
+		                </p:column>
+		                
+		                <p:column headerText="#{message['consulta.contrato.fecEntrega']}" sortBy="#{c.fechaCreacionString}"  >
+		                    <h:outputText value="#{c.tbContrato.fechaEntregaString}" />
+		                </p:column>
+		                
+		                <p:column headerText="#{message['consulta.contrato.numDoc']}" sortBy="#{c.tbCliente.numdocumento}" >
+		                    <h:outputText value="#{c.tbCliente.numdocumento}" />
+		                </p:column>
+		                
+		                <p:column headerText="Cantidad de Cuotas" sortBy="#{c.cantcuotas}" >
+		                    <h:outputText value="#{c.cantcuotas}" />
+		                </p:column>
+		                
+		                <p:column headerText="Ultima cuota por pagar" sortBy="#{c.numletra}" >
+		                    <h:outputText value="#{c.numletra}" />
+		                </p:column>
+					</p:dataTable>
+				</h:panelGrid>
+			</p:panel>
+			<div align="center"  style="margin-top:30px" >
+		     	<p:commandLink action="#{contratoForm.ReportingPagos}" ajax="false" title="#{message['reporte.exportar.pagos.pdf']}">
+					<h:graphicImage value="/images/Reporting_pdf.png" style="width:40px;height:40px"/>
+					<f:setPropertyActionListener target="#{contratoForm.contentType}" value="pdf"/>
+				</p:commandLink>
+				<p:commandLink action="#{contratoForm.ReportingPagos}" ajax="false" title="#{message['reporte.exportar.pagos.xls']}">
+					<h:graphicImage value="/images/excel_icon.PNG" style="width:40px;height:40px"/>
+					<f:setPropertyActionListener target="#{contratoForm.contentType}" value="xls"/>
+				</p:commandLink>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

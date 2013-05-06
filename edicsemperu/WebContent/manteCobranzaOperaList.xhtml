@@ -224,12 +224,14 @@
 						requiredMessage="#{message['operadora.observacion.validation']}"
 						rows="3" cols="50" maxlength="500" required="true" label="Correo" autoResize="false" />
 					
+					<h:outputText value="Promesa de pago" />
+					<p:calendar value="#{seguimientoCobranzaOpera.objCobranzaOpera.fechapromesapago}" pattern="dd/mm/yyyy" locale="pe"/>
+					
 					<h:outputText value="#{message['operadora.volver.llamar']}" />
-					<p:calendar value="#{seguimientoCobranzaOpera.objCobranzaOpera.fechaprogramada}" pattern="dd/mm/yyyy HH:mm" locale="pe"/>
+					<p:calendar value="#{seguimientoCobranzaOpera.fechaProgramada}" pattern="dd/mm/yyyy HH:mm" locale="pe"/>
 					
 					<p:outputLabel value="#{message['operadora.incidencia']}" for="incidencia" />
-					<p:selectOneMenu id="incidencia" filter="true" 
-						value="#{seguimientoCobranzaOpera.idincidencia}" >
+					<p:selectOneMenu id="incidencia" filter="true" value="#{seguimientoCobranzaOpera.idincidencia}" >
 						<f:selectItem itemValue="#{null}" itemLabel="Seleccione una incidencia" />
 						<f:selectItems value="#{comboAction.incidenteitems}" />
 					</p:selectOneMenu>
