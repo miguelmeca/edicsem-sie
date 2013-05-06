@@ -50,6 +50,10 @@ public class CalificacionEquifaxSie  implements Serializable {
 	@JoinColumn(name="idestadogeneral")
 	private EstadoGeneralSie tbEstadoGeneral;
     
+    //bi-directional many-to-one association to ClienteSie
+  	@OneToMany(mappedBy="tbCalificacion")
+  	private Set<ClienteSie> tbCliente;
+  	
     //bi-directional many-to-one association to ConfigNotificacionSie
   	@OneToMany(mappedBy="tbCalificacion")
   	private Set<ConfigNotificacionSie> tbConfigNotifica;
@@ -127,6 +131,14 @@ public class CalificacionEquifaxSie  implements Serializable {
 
 	public void setTbConfigNotifica(Set<ConfigNotificacionSie> tbConfigNotifica) {
 		this.tbConfigNotifica = tbConfigNotifica;
+	}
+	
+	public Set<ClienteSie> getTbCliente() {
+		return tbCliente;
+	}
+	
+	public void setTbCliente(Set<ClienteSie> tbCliente) {
+		this.tbCliente = tbCliente;
 	}
 	
 }

@@ -93,6 +93,11 @@ public class ClienteSie implements Serializable {
 	@JoinColumn(name="idtipocliente")
 	private TipoClienteSie tbTipoCliente;
     
+    //bi-directional many-to-one association to CalificacionEquifaxSie
+    @ManyToOne
+	@JoinColumn(name="idcalificacion")
+	private CalificacionEquifaxSie tbCalificacion;
+    
 	//bi-directional many-to-one association to EstadoGeneralSie
     @ManyToOne
 	@JoinColumn(name="idestadogeneral")
@@ -408,5 +413,13 @@ public class ClienteSie implements Serializable {
 
 	public void setTbTipoCliente(TipoClienteSie tbTipoCliente) {
 		this.tbTipoCliente = tbTipoCliente;
+	}
+	
+	public CalificacionEquifaxSie getTbCalificacion() {
+		return tbCalificacion;
+	}
+	
+	public void setTbCalificacion(CalificacionEquifaxSie tbCalificacion) {
+		this.tbCalificacion = tbCalificacion;
 	}
 }

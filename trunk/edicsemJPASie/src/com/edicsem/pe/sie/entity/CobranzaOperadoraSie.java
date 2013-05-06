@@ -43,7 +43,9 @@ public class CobranzaOperadoraSie implements Serializable {
 	
 	private Timestamp fechamodifica;
 	
-	private Date fechaprogramada;
+	private Timestamp fechaprogramada;
+	
+	private Date fechapromesapago;
 	
 	private Timestamp fechaexpira;
 
@@ -172,11 +174,19 @@ public class CobranzaOperadoraSie implements Serializable {
 		this.fechaProgramadaString = fechaProgramadaString;
 	}
 
-	public Date getFechaprogramada() {
+	public Date getFechapromesapago() {
+		return fechapromesapago;
+	}
+
+	public void setFechapromesapago(Date fechapromesapago) {
+		this.fechapromesapago = fechapromesapago;
+	}
+
+	public Timestamp getFechaprogramada() {
 		return fechaprogramada;
 	}
 
-	public void setFechaprogramada(Date fechaprogramada) {
+	public void setFechaprogramada(Timestamp fechaprogramada) {
 		this.fechaprogramada = fechaprogramada;
 	}
 	
