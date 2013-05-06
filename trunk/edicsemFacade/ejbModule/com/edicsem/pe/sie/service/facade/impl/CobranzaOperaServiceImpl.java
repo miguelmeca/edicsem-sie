@@ -327,4 +327,11 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 	public int verificargeneracionDiaria() {
 		return objCobranzaOperaDao.verificargeneracionDiaria();
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.CobranzaOperaService#listarCobranzasOperaPagada(java.lang.String)
+	 */
+	public List listarCobranzasOperaPagada(String usuario) {
+		return objCobranzaOperaDao.listarCobranzasOperaPagada(usuario);
+	}
 }

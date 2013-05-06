@@ -22,7 +22,7 @@ public class CalificacionEquifaxServiceImpl implements CalificacionEquifaxServic
 	 * @see com.edicsem.pe.sie.service.facade.CalificacionEquifaxService#insertCalificacion(com.edicsem.pe.sie.entity.CalificacionEquifaxSie)
 	 */
 	public void insertCalificacion(CalificacionEquifaxSie c) {
-		c.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(13));
+		c.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(115));
 		objCalificacionDao.insertCalificacion(c);
 	}
 	

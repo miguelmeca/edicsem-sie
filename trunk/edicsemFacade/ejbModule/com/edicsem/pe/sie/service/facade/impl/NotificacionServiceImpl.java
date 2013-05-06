@@ -22,7 +22,7 @@ public class NotificacionServiceImpl implements NotificacionService {
 	 * @see com.edicsem.pe.sie.service.facade.NotificacionService#insertNotificacion(com.edicsem.pe.sie.entity.NotificacionSie)
 	 */
 	public void insertNotificacion(NotificacionSie n) {
-		n.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(111));
+		n.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(112));
 		objNotificacionDao.insertNotificacion(n);
 	}
 	
