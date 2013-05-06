@@ -51,7 +51,7 @@ public class ConfigNotificacionSie  implements Serializable {
     
     //bi-directional many-to-one association to NotificacionSie
     @ManyToOne
-	@JoinColumn(name="idtipocobranza")
+	@JoinColumn(name="idnotifica")
 	private NotificacionSie tbNotifica;
     
 	//bi-directional many-to-one association to EstadoGeneralSie
