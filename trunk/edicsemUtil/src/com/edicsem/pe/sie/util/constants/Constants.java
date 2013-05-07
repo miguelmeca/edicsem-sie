@@ -148,6 +148,9 @@ public class Constants {
 	public static final String MANT_CONFIG_NOTIFICACION_LIST = "mantenimientoConfigNotificacionList";
 	
 	public static final String MIGRAR_PRODUCTO_PAQUETE = "migracionProductos";
+
+	public static final String REPORTE_LLAMADA_OPERADORA = "ReporteTrabajoOperadoraList";
+	
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
 	public static final String COD_ESTADO_TB_CARGO_EMPLEADO = "CE";
