@@ -7,6 +7,7 @@
 	xmlns:p="http://primefaces.org/ui">
 <f:view>
 	<h:head>
+	<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/principal.css" />
 		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/default.css" />
         <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/syntaxhighlighter/syntaxhighlighter.css" />
 		<style type="text/css">
@@ -35,10 +36,10 @@
 	</p:dialog>
 	<f:loadBundle var="message" basename="com.edicsem.pe.sie.client.properties.ApplicationResources"/>
 	
-	<h:form>
-	<div></div>
-		<div id="midiv" style="background-image: url(images/intranet_login.jpg); width: 505px; height: 300px;">
-			<br /> <br /> <br /> <br /> <br /> <br /><br />
+	<h:form >
+	<div id="login">
+	<div id="div1">
+			<br /> <br />  
 			<div align="center">
 				<table>
 					<tr>
@@ -77,8 +78,13 @@
 					
 				</h:panelGrid>
 			</div>
+		</div> 
+		<div  id="ex5"  >
+			<img  alt="ee"  src="images/edicsem.png" style="width: 180px;" />
+		</div> 
 		</div>
 	</h:form>
+		
 <p:growl id="msg" showDetail="true" life="10000"  />
 </f:view>
 </html>
