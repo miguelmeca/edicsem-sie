@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+	<script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
+		<h1 class="title ui-widget-header ui-corner-all">Reporte Trabajo Operadora</h1>
+		<h:form id="formConsultaTrabajoOperadora">
+		<p:messages id="message" showDetail="true"/>
+		<p:panel>
+		<p:spacer height="30px" />
+			<p:dataTable value="#{reporteTrabajoOperadora.lstTrabajoOperadora}" id="tableOpera"  paginator="true" rows="10"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15"
+					var="c" style="width:800px" emptyMessage="#{message['rsltd.empty']}" >
+					<f:facet name="header">
+						<h:outputLabel value="#{message['rsltd.datatable']}" />
+					</f:facet>
+					<p:column headerText="Empleado"  >
+		                <h:outputText value="#{c.nombreCompleto}" />
+		            </p:column>
+		            <p:column headerText="Cantidad Total "  >
+		                 <h:outputText value="#{c.cantidaTotal}" />
+		            </p:column>
+		            <p:column headerText="Total de Cobranza Realizada"  >
+		                 <h:outputText value="#{c.cantidadRealizada}" />
+		            </p:column>
+		            <p:column headerText="Cobranza Postergada"  >
+		                <h:outputText value="#{c.cantidadPostergada}" />
+		            </p:column>
+		            <p:column headerText="Promesa de Pago"  >
+		                 <h:outputText value="#{c.cantPromesaPago}" />
+		            </p:column>
+		            <p:column headerText="Paga otra fecha"  >
+		                 <h:outputText value="#{c.cantOtraFecha}" />
+		            </p:column>
+		            <p:column headerText="Ultima Hora Modificó"  >
+		                 <h:outputText value="#{c.ultimaActualizacion}" />
+		            </p:column>
+		    </p:dataTable>
+		     <p:poll interval="60"  listener="#{reporteTrabajoOperadora.listar}" update="tableOpera" />
+		    
+		    </p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

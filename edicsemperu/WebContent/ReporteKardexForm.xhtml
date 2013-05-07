@@ -58,7 +58,7 @@
 		<p:spacer height="30px" />
 		<p:dataTable value="#{reporteKardex.lstkardex}"  paginator="true" rows="10"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="5,10,15" var="p" style="width:1000px" emptyMessage="No se encontraron resultados" >
+				rowsPerPageTemplate="5,10,15" var="p" style="width:1000px" emptyMessage="#{message['rsltd.empty']}" >
 			<f:facet name="header">  
          #{message['kardex.listadoKardex']}
         </f:facet>
