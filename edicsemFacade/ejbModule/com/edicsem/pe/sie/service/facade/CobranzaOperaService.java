@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.service.facade;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -18,4 +19,5 @@ public interface CobranzaOperaService {
 	public abstract List  listarCobranzasOpera(String usuario);
 	public abstract int verificargeneracionDiaria();
 	public abstract List listarCobranzasOperaPagada(String usuario);
+	public abstract List listarCobranzasOperaFechaActual(Date dhoy);
 }
