@@ -11,7 +11,7 @@
 			<p:messages showDetail="true" escape="false" closable="true" />
 			<p:dataTable value="#{almacenSearch.almacenList}" var="al" id="almacenTable" paginator="true" 
 			rows="10"  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-	   		rowsPerPageTemplate="5,10,15" widgetVar="table" emptyMessage="No se encontraron registros">	
+	   		rowsPerPageTemplate="5,10,15" widgetVar="table" emptyMessage="#{message['rsltd.empty']}">	
 
 				<p:column headerText="#{message['punto.descripcion']}" >
 					<h:outputText value="#{al.descripcion}" />

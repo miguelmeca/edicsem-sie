@@ -30,7 +30,7 @@
 				<p:dataTable value="#{reporteCliente.lstClientesReporting}"  paginator="true" rows="10"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				rowsPerPageTemplate="5,10,15"
-					var="c" style="width:800px" emptyMessage="No se encontraron resultados" >
+					var="c" style="width:800px" emptyMessage="#{message['rsltd.empty']}" >
 					<f:facet name="header">
 						<h:outputLabel value="#{message['rsltd.datatable']}" />
 					</f:facet>
