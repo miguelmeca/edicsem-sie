@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.model.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -118,6 +119,23 @@ public class CobranzaOperaDAOImpl implements CobranzaOperaDAO{
 					" and 110 ");
 			lista =  q.getResultList();
 			log.info("tamaño lista CobranzasOpera Pagadas --> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.CobranzaOperaDAO#listarCobranzasOperaFechaActual(java.util.Date)
+	 */
+	public List listarCobranzasOperaFechaActual(Date dhoy) {
+		List  lista = null;
+		try {
+			Query q = em.createQuery("select p from CobranzaOperadoraSie p where   "+
+					" DATE(p.fechacreacion) <= DATE('" + dhoy+"') and " +
+					" DATE(p.fechaexpira) >=  DATE('" + dhoy+"') order by p.tbEmpleado.idempleado asc " );
+			lista =  q.getResultList();
+			log.info("tamaño lista CobranzasOpera Actuales --> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

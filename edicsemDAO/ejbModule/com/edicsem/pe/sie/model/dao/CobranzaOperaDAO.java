@@ -1,5 +1,6 @@
 package com.edicsem.pe.sie.model.dao;
 
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 import com.edicsem.pe.sie.entity.CobranzaOperadoraSie;
@@ -12,4 +13,5 @@ public interface CobranzaOperaDAO {
 	public abstract List  listarCobranzasOpera(String usuario);
 	public abstract int verificargeneracionDiaria();
 	public abstract List listarCobranzasOperaPagada(String usuario);
+	public abstract List listarCobranzasOperaFechaActual(Date dhoy);
 }
