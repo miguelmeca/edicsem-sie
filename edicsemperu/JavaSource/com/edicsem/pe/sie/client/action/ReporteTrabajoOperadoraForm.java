@@ -82,8 +82,10 @@ public class ReporteTrabajoOperadoraForm extends BaseMantenimientoAbstractAction
 						obj.setCantidaTotal(0);
 						obj.setCantOtraFecha(0);
 					}
+				}
 					obj.setNombreCompleto(lstCobranzaOpera.get(i).getTbEmpleado().getNombresCompletos());
 					obj.setIdEmpleado(lstCobranzaOpera.get(i).getTbEmpleado().getIdempleado());
+					//Si paga fecha diferente a la fecha de expiracion
 					if(lstCobranzaOpera.get(i).getFechapromesapago()!=null){
 						if( lstCobranzaOpera.get(i).getFechacreacion().before(lstCobranzaOpera.get(i).getFechapromesapago())&&
 							lstCobranzaOpera.get(i).getFechaexpira().after(lstCobranzaOpera.get(i).getFechapromesapago())||
@@ -98,24 +100,24 @@ public class ReporteTrabajoOperadoraForm extends BaseMantenimientoAbstractAction
 						obj.setCantidadPostergada(obj.getCantidadPostergada()+1);
 						obj.setCantidaTotal(obj.getCantidaTotal()+1);
 					}
+					if(lstCobranzaOpera.get(i).getTbEstadoGeneral().getIdestadogeneral()==108){
+						obj.setCantidaTotal(obj.getCantidaTotal()+1);
+					}
+					if(lstCobranzaOpera.get(i).getTbEstadoGeneral().getIdestadogeneral()==110){
+						obj.setCantidaTotal(obj.getCantidaTotal()+1);
+					}
 					if(lstCobranzaOpera.get(i).getFechamodifica() != null){
+						obj.setCantidadRealizada(obj.getCantidadRealizada()+1);
 						if(obj.getUltimaActualizacion()==null){
 							obj.setUltimaActualizacion(new Time(lstCobranzaOpera.get(i).getFechamodifica().getTime()));
 						}else if(new Time(lstCobranzaOpera.get(i).getFechamodifica().getTime()).after(obj.getUltimaActualizacion())){
 							obj.setUltimaActualizacion(new Time(lstCobranzaOpera.get(i).getFechamodifica().getTime()));
 						}
 					}
-					if(lstCobranzaOpera.get(i).getTbEstadoGeneral().getIdestadogeneral()==108){
-						obj.setCantidaTotal(obj.getCantidaTotal()+1);
-					}if(lstCobranzaOpera.get(i).getTbEstadoGeneral().getIdestadogeneral()==110){
-						obj.setCantidadRealizada(obj.getCantidadRealizada()+1);
-						obj.setCantidaTotal(obj.getCantidaTotal()+1);
+					if(lstCobranzaOpera.size()-1==i){
+						lstTrabajoOperadora.add(obj);
 					}
 				}
-				if(lstCobranzaOpera.size()-1==i){
-					lstTrabajoOperadora.add(obj);
-				}
-			}
 			cantLista=lstTrabajoOperadora.size();
 		} catch (Exception e) {
 			e.printStackTrace();

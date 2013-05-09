@@ -66,8 +66,8 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private List<TelefonoPersonaSie> listatelefono;
 	private List<DetProductoContratoSie> productoContratoList;
 	private Date fechoy;
-	private int tipollamada; 
-	private boolean editMode;
+	private int tipollamada;
+	private int idRefi;
 	private boolean programarLlamada, refinanciar;
 	private Date fechaProgramada;
 	private int idtiporefinan;
@@ -82,21 +82,22 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private int cantcuotasrest;
 	private BigDecimal montoRestantes;
 	private Date fechaProgramRest;
+	private BigDecimal totalacumulafoRefi;
 	
 	HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 	EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 	
-	@EJB 
+	@EJB
 	private ContratoService objContratoService;
-	@EJB 
+	@EJB
 	private CobranzaOperaService objCobranzaOperaService;
-	@EJB 
+	@EJB
 	private CobranzaService objCobranzaService;
-	@EJB 
+	@EJB
 	private ClienteService objClienteService;
-	@EJB 
+	@EJB
 	private TelefonoEmpleadoService objTelefonoService;
-	@EJB 
+	@EJB
 	private TipoLLamadaService objTipoLLamadaService;
 	@EJB
 	private DetProductoContratoService objProductoContratoService;
@@ -154,12 +155,13 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 		productoContratoList = new ArrayList<DetProductoContratoSie>();
 		listatelefono = new ArrayList<TelefonoPersonaSie>();
 		totalacumulado =new BigDecimal(0);
-		fechaProgramada= null;
+		fechaProgramada= new Date();
 		idcontrato=0;
 		idincidencia=0;
 		objRefinanPago = new RefinanciarPagoSie();
 		refinanciar=false;
 		idtiporefinan=0;
+		idRefi=1;
 		cobranzaOperaList = objCobranzaOperaService.listarCobranzasOpera(sessionUsuario.getUsuario());
 		if (cobranzaOperaList == null) {
 			cobranzaOperaList = new ArrayList<CobranzaOperadoraSie>();
@@ -190,6 +192,9 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 					}
 				}
 			}
+		idRefi=1;
+		fechaProgramada= new Date();
+		fechaProgramRest = new Date();
 		objContrato = objContratoService.findContrato(idcontrato);
 	    // mostramos los datos del cliente
 		objcliente = objClienteService.findCliente(objCobranzaOpera.getTbCobranza().getIdcliente());
@@ -223,11 +228,9 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 					listFaltaPagar.add(detallePagos.get(i));
 				}
 			}
-//			if(listFaltaPagar.size()<objTipoRefina.getCuotaconmora()){
-//				mensaje="La cantidad de cuotas a refinanciar es menor a las cuotas de la promocion exige";
-//			}else{
 				//primeras cuotas con mora
 			Calendar c = new GregorianCalendar();
+			log.info("pagar cuotas con mora "+objTipoRefina.getCuotaconmora());
 				for (int i = 0; i < objTipoRefina.getCuotaconmora(); i++) {
 					CobranzaSie objCob = new CobranzaSie();
 					objCob.setNumletra(listFaltaPagar.get(i).getNumletra());
@@ -236,18 +239,20 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 					detallePagosRefinan.add(objCob);
 				}
 				//cuotas Restantes
+				log.info("pagar cuotas con mora "+listFaltaPagar.size());
+				log.info("Fecha prog rest "+fechaProgramRest);
 				for (int i = objTipoRefina.getCuotaconmora(); i < listFaltaPagar.size() ; i++) {
+					log.info("Calendar  gettime "+c.getTime());
 					CobranzaSie objCob = new CobranzaSie();
 					objCob.setNumletra(listFaltaPagar.get(i).getNumletra());
 					objCob.setImpinicial(listFaltaPagar.get(i).getImpinicial().add(objTipoRefina.getAumentocuotarest()));
-					
 					c.setTime(fechaProgramRest);
 					c.add(Calendar.MONTH, i);
+					log.info("Fecha gettime "+c.getTime());
 					objCob.setFecvencimiento(c.getTime());
 					detallePagosRefinan.add(objCob);
 				}
-//			}
-		}
+			}
 		else{
 		/*Primera cuota*/
 		CobranzaSie cob = new CobranzaSie();
@@ -283,12 +288,17 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 		objRefinanPago.setRefinanciadoPago(refinanPago);
 		objRefinanPago.setTbContrato(objContrato);
 		}
+		totalacumulafoRefi= new BigDecimal(0.0);
+		for (int i = 0; i < detallePagosRefinan.size(); i++) {
+			totalacumulafoRefi =totalacumulafoRefi.add(detallePagosRefinan.get(i).getImpinicial());
+		}
 	}
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
 	 */
 	public String insertar() throws Exception {
+		log.info("insertar()");
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 		EmpleadoSie sessionUsuario = (EmpleadoSie) session.getAttribute(Constants.USER_KEY);
 		
@@ -323,8 +333,11 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 						}
 					}
 				}
+				if(objCobranzaOpera.getFechapromesapago()!=null){
+					objCobranzaOpera.setTbEstadoGeneral(objEstadoService.findEstadogeneral(110));
+				}
 				//Volver a llamar
-				if(fechaProgramada!=null){
+				else if(fechaProgramada!=null){
 					objCobranzaOpera.setFechaprogramada(new Timestamp(fechaProgramada.getTime()));
 					objCobranzaOpera.setTbEstadoGeneral(objEstadoService.findEstadogeneral(109));
 				}else{
@@ -333,7 +346,8 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 				}
 				//Actualizar la Cobranza de la operadora
 				objCobranzaOpera.setUsuariomodifica(sessionUsuario.getUsuario());
-				objCobranzaOpera.setFechamodifica(new Timestamp(DateUtil.getToday().getTime().getTime()));
+				Calendar cal = new GregorianCalendar();
+				objCobranzaOpera.setFechamodifica(new Timestamp(cal.getTimeInMillis()));
 				objCobranzaOperaService.updateCobranzaOpera(objCobranzaOpera);
 				mensaje =Constants.MESSAGE_REGISTRO_TITULO;
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_REGISTRO_TITULO, mensaje);	
@@ -359,20 +373,6 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	/*GETs Y SETs*/
 	public String getViewList() {
 		return "manteCobranzaOperaList";
-	}
-
-	/**
-	 * @return the editMode
-	 */
-	public boolean isEditMode() {
-		return editMode;
-	}
-
-	/**
-	 * @param editMode the editMode to set
-	 */
-	public void setEditMode(boolean editMode) {
-		this.editMode = editMode;
 	}
 
 	/**
@@ -766,5 +766,33 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	 */
 	public void setIdtiporefinan(int idtiporefinan) {
 		this.idtiporefinan = idtiporefinan;
+	}
+
+	/**
+	 * @return the idRefi
+	 */
+	public int getIdRefi() {
+		return idRefi;
+	}
+
+	/**
+	 * @param idRefi the idRefi to set
+	 */
+	public void setIdRefi(int idRefi) {
+		this.idRefi = idRefi;
+	}
+
+	/**
+	 * @return the totalacumulafoRefi
+	 */
+	public BigDecimal getTotalacumulafoRefi() {
+		return totalacumulafoRefi;
+	}
+
+	/**
+	 * @param totalacumulafoRefi the totalacumulafoRefi to set
+	 */
+	public void setTotalacumulafoRefi(BigDecimal totalacumulafoRefi) {
+		this.totalacumulafoRefi = totalacumulafoRefi;
 	}
 }
