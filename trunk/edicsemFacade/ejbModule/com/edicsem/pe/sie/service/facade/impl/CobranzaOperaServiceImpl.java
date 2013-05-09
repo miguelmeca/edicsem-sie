@@ -1,7 +1,6 @@
 package com.edicsem.pe.sie.service.facade.impl;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -177,7 +176,7 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 							cobranzaopera.setTbEmpleado(objEmpleadoDao.buscarEmpleado(empleadoList.get(j)));
 							cobranzaopera.setTbCobranza(cobranza);
 							//hoy + los días programados
-							cobranzaopera.setFechaexpira(new Timestamp(hoy.getTime().getTime()));
+							cobranzaopera.setFechaexpira(hoy.getTime());
 							cobranzaopera.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(108));
 							objCobranzaOperaDao.insertCobranzaOpera(cobranzaopera);
 							valor=valor + 1;
@@ -210,7 +209,7 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 						CobranzaSie cobranza = objCobranzaDao.findCobranza(regulartmp.get(k).getIdcobranza());
 						cobranzaopera.setTbEmpleado(objEmpleadoDao.buscarEmpleado(empleadoList.get(j)));
 						cobranzaopera.setTbCobranza(cobranza);
-						cobranzaopera.setFechaexpira(new Timestamp(hoy.getTime().getTime()));
+						cobranzaopera.setFechaexpira(hoy.getTime());
 						cobranzaopera.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(108));
 						objCobranzaOperaDao.insertCobranzaOpera(cobranzaopera);
 						valor=valor + 1;
@@ -245,7 +244,7 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 							CobranzaSie cobranza = objCobranzaDao.findCobranza(morosotmp.get(k).getIdcobranza());
 							cobranzaopera.setTbEmpleado(objEmpleadoDao.buscarEmpleado(empleadoList.get(j)));
 							cobranzaopera.setTbCobranza(cobranza);
-							cobranzaopera.setFechaexpira(new Timestamp(hoy.getTime().getTime()));
+							cobranzaopera.setFechaexpira(hoy.getTime());
 							cobranzaopera.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(108));
 							objCobranzaOperaDao.insertCobranzaOpera(cobranzaopera);
 							valor=valor + 1;
@@ -277,7 +276,7 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 							CobranzaOperadoraSie cobranzaopera= new CobranzaOperadoraSie();
 							CobranzaSie cobranza = objCobranzaDao.findCobranza(extremotmp.get(k).getIdcobranza());
 							cobranzaopera.setTbEmpleado(objEmpleadoDao.buscarEmpleado(empleadoList.get(j)));
-							cobranzaopera.setFechaexpira(new Timestamp(hoy.getTime().getTime()));
+							cobranzaopera.setFechaexpira(hoy.getTime());
 							cobranzaopera.setTbCobranza(cobranza);
 							cobranzaopera.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(108));
 							objCobranzaOperaDao.insertCobranzaOpera(cobranzaopera);
