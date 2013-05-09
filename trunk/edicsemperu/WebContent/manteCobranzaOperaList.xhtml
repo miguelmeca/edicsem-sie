@@ -1,3 +1,4 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -71,11 +72,11 @@
 				</p:dataTable>
 			</p:fieldset>
 		</h:form>
-		<h:form id="parametrosList2" prependId="false">
+		<h:form id="parametrosList2" rendered="#{seguimientoCobranzaOpera.idcontrato!=0}" >
 			<h:panelGrid columns="3" cellpadding="5" >
 				<p:fieldset legend="#{message['cobranza.datos.cliente']}" style="margin-top:20px">
 					<h:panelGrid columns="2" cellpadding="5" >
-						<h:outputText value="#{message['cobranza.nombre.completo']}" />
+						<h:outputText value="#{message['cobranza.nombre']}" />
 						<h:outputText value="#{seguimientoCobranzaOpera.objcliente.nombrecliente}"  style="font-weight:bold"/>
 						<h:outputText value="#{message['cobranza.apepat']}" />
 						<h:outputText value="#{seguimientoCobranzaOpera.objcliente.apepatcliente}"  style="font-weight:bold"/>
@@ -178,8 +179,8 @@
 							<h:outputText value="#{p.fechaPagoString}" />
 						</p:column>
 					</p:dataTable>
-			        <h:outputText value="#{message['cobranza.total.apagar']}" />
-			        <p:inputText value="#{seguimientoCobranzaOpera.totalacumulado}" readonly="true" />
+			    <h:outputText value="#{message['cobranza.total.apagar']}" />
+			    <p:inputText value="#{seguimientoCobranzaOpera.totalacumulado}" readonly="true" />
 		       
 				</p:fieldset>
 				<p:fieldset legend="#{message['cobranza.productos']}" style="margin-top:20px">
@@ -209,20 +210,35 @@
 					</p:dataTable>
 				</p:fieldset>
 			</h:panelGrid>
-			<h:panelGrid columns="2" cellpadding="5">
-			<p:fieldset legend="#{message['cobranza.registro']}" style="margin-top:20px"   >
+			<p:panel header="#{message['cobranza.registro']}" id="panel" >
+			<h:panelGrid columns="3" cellpadding="5">
+			
+			<p:fieldset legend="#{message['cobranza.historico.observaciones']}" style="margin-top:30px;width:350px"   >
+				<h:panelGrid >
+					<p:dataTable value="#{seguimientoCobranzaOpera.lstHistorico}" var="k" paginator="true" rows="3"  >
+						<p:column style="width:2%" >
+						<div  class="ui-messages-info ui-corner-all">
+							<div  class="ui-messages-info-summary"  >#{k.usuariocreacion}</div>
+							<div  class="ui-messages-info-detail"  >#{k.observacion} </div>
+						</div>
+						</p:column>
+					</p:dataTable>
+				</h:panelGrid>
+			</p:fieldset>
+			
+			<p:fieldset legend="#{message['cobranza.registro']}" style="margin-top:30px"   >
 				<h:panelGrid columns="2" cellpadding="4">
 					<p:outputLabel value="#{message['operadora.tipollamada']}" for="tipo" />
-					<p:selectOneMenu id="tipo" filter="true" value="#{seguimientoCobranzaOpera.tipollamada}"
+					<p:selectOneMenu id="tipo" filter="true" value="#{seguimientoCobranzaOpera.tipollamada}" required="true"
 						requiredMessage="#{message['operadora.tipollamada.validation']}">
 						<f:selectItem itemValue="#{null}" itemLabel=" Ninguna " />
 						<f:selectItems value="#{comboAction.tipollamada}" />
+						<p:ajax update="panel" />
 					</p:selectOneMenu>
 					
 					<p:outputLabel value="#{message['operadora.observacion']}" for="observacion" />
 					<p:inputTextarea id="observacion" value="#{seguimientoCobranzaOpera.objCobranzaOpera.observaciones}"
-						requiredMessage="#{message['operadora.observacion.validation']}"
-						rows="3" cols="50" maxlength="500" required="true" label="Correo" autoResize="false" />
+						rows="3" cols="35" maxlength="500" label="Correo" autoResize="false" />
 					
 					<h:outputText value="Promesa de pago" />
 					<p:calendar value="#{seguimientoCobranzaOpera.objCobranzaOpera.fechapromesapago}" pattern="dd/mm/yyyy" locale="pe"/>
@@ -242,7 +258,8 @@
 					</f:facet>
 				</h:panelGrid>
 			</p:fieldset>
-			<p:fieldset legend="Cita con Cliente" style="margin-top:20px"   >
+			
+			<p:fieldset legend="Cita con Cliente" style="margin-top:30px" rendered="#{seguimientoCobranzaOpera.tipollamada==2}" >
 					<h:outputText value="#{message['cobranza.programar.cita']}" />
 					<h:panelGroup id="outCita" >
 					<p:selectBooleanCheckbox value="#{seguimientoCobranzaOpera.programarLlamada}" >
@@ -252,35 +269,29 @@
 					</h:panelGroup>
 			</p:fieldset>
 			
-			<p:fieldset legend="#{message['cobranza.historico.observaciones']}" style="margin-top:20px"   >
-				<h:panelGrid >
-					<p:dataTable value="#{seguimientoCobranzaOpera.lstHistorico}" var="k" paginator="true" rows="3"  >
-						<p:column style="width:2%" >
-						<div  class="ui-messages-info ui-corner-all">
-							<div  class="ui-messages-info-summary"  >#{k.usuariocreacion}</div>
-							<div  class="ui-messages-info-detail"  >#{k.observacion} </div>
-						</div>
-						</p:column>
-					</p:dataTable>
-				</h:panelGrid>
-			</p:fieldset>
-			<p:fieldset legend="#{message['cobranza.historico.refinanciado']}" style="margin-top:20px"   >
-				<h:panelGrid columns="2">
+			<p:fieldset legend="#{message['cobranza.historico.refinanciado']}" style="margin-top:30px" rendered="#{seguimientoCobranzaOpera.tipollamada==11}" >
+				<h:panelGrid columns="2" id="pgref" >
+				<p:selectOneRadio id="options" value="#{seguimientoCobranzaOpera.idRefi}">
+					<f:selectItem itemLabel="Promoción" itemValue="1" />
+					<f:selectItem itemLabel="Personalizado" itemValue="2" />
+					<p:ajax update="pgref" />
+				</p:selectOneRadio>
+				<p:spacer/>
+				<h:panelGrid rendered="#{seguimientoCobranzaOpera.idRefi==1}" cellpadding="5" >
 				<h:outputText value="Promoción de Refinanciación" />
-				<p:selectOneMenu filter="true" value="#{seguimientoCobranzaOpera.idtiporefinan}" >
+				<p:selectOneMenu filter="true" value="#{seguimientoCobranzaOpera.idtiporefinan}" required="true" >
 					<f:selectItem itemValue="#{null}" itemLabel="Seleccione una refinanciación" />
 					<f:selectItems value="#{comboAction.tiporefinaitems}" />
 				</p:selectOneMenu>
 				<h:outputText value="#{message['cobranza.fecha.cuotas.restantes']}" />
-				<p:calendar value="#{seguimientoCobranzaOpera.fechaProgramRest}" required="true"/>
-				
-				<p:commandButton value="#{message['cobranza.guardar']}" update="listaRefinancio" 
-					action ="#{seguimientoCobranzaOpera.registrarRefinanciacion}" ajax="false"  />
-					 <p:spacer/>
+				<p:calendar value="#{seguimientoCobranzaOpera.fechaProgramRest}" required="true" pattern="dd/mm/yyyy" locale="pe" />
+				</h:panelGrid>
+					
+				<h:panelGrid rendered="#{seguimientoCobranzaOpera.idRefi==2}">
 					<h:outputText value="#{message['cobranza.primera.cuota']}" />
 					<p:inputText value="#{seguimientoCobranzaOpera.objRefinanPago.impapagar}" required="true"/>
 					<h:outputText value="#{message['cobranza.fecha.programada']}" />
-					<p:calendar value="#{seguimientoCobranzaOpera.objRefinanPago.fechaprogramada}" required="true"/>
+					<p:calendar value="#{seguimientoCobranzaOpera.objRefinanPago.fechaprogramada}" pattern="dd/mm/yyyy" required="true" locale="pe"  />
 					
 					<h:outputText value="#{message['cobranza.cuotas.restantes']}" />
 					<p:inputText value="#{seguimientoCobranzaOpera.cantcuotasrest}" required="true"/>
@@ -288,31 +299,44 @@
 					<p:inputText value="#{seguimientoCobranzaOpera.montoRestantes}" required="true"/>
 					
 				</h:panelGrid>
+				<f:facet name="footer">
+					<p:commandButton value="#{message['cobranza.guardar']}" update="listaRefinancio" 
+					action ="#{seguimientoCobranzaOpera.registrarRefinanciacion}" ajax="false"  />
+				</f:facet>
+				</h:panelGrid>
+				
 				<p:dataTable value="#{seguimientoCobranzaOpera.detallePagosRefinan}" var="p" id="listaRefinancio"
-						rowStyleClass="#{seguimientoCobranzaOpera.fechoy le  p.fecvencimiento  ? null: (empty p.fecpago? 'colorRojo' : 'colorVerde')}"
-						widgetVar="pagostable" emptyMessage="#{message['rsltd.empty']}">
-						<f:facet name="header"/>
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="#{message['cobranza.cuotas']}" />
-							</f:facet>
-							<h:outputText value="#{p.numletra}" />
-						</p:column>
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="#{message['cobranza.monto']}" />
-							</f:facet>
-							<h:outputText value="#{p.impinicial}" />
-						</p:column>
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="#{message['cobranza.fec.vencimiento']}" />
-							</f:facet>
-							<h:outputText value="#{p.fechaVencimientoString}" />
-						</p:column>
-					</p:dataTable>
+					rowStyleClass="#{seguimientoCobranzaOpera.fechoy le  p.fecvencimiento  ? null: (empty p.fecpago? 'colorRojo' : 'colorVerde')}"
+					widgetVar="pagostable" emptyMessage="#{message['rsltd.empty']}">
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{message['cobranza.cuotas']}" />
+						</f:facet>
+						<h:outputText value="#{p.numletra}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{message['cobranza.monto']}" />
+						</f:facet>
+						<h:outputText value="#{p.impinicial}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{message['cobranza.fec.vencimiento']}" />
+						</f:facet>
+						<h:outputText value="#{p.fechaVencimientoString}" />
+					</p:column>
+					<p:columnGroup type="footer">
+					<p:row>  
+                    <p:column footerText="Total a pagar: " style="text-align:right"/>  
+                    <p:column footerText="#{seguimientoCobranzaOpera.totalacumulafoRefi}" />
+                    </p:row>
+                    </p:columnGroup>
+				</p:dataTable>
 			</p:fieldset>
+			
 			</h:panelGrid>
+			</p:panel>
 		</h:form>
 	</ui:define>
 </ui:composition>
