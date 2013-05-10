@@ -48,7 +48,7 @@ public class CargoEmpleadoServiceImpl implements CargoEmpleadoService{
 	 */
 	public CargoEmpleadoSie buscarCargoEmpleado(int id) {
 		log.info("buscar CargoEmpleado en el servicio" +id);
-		return objCargoEmpleadoDao.buscarCargoEmpleado(id);
+		return objCargoEmpleadoDao.findCargoEmpleado(id);
 	}
 
 	/* (non-Javadoc)

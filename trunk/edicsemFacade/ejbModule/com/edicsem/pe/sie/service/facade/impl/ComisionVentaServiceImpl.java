@@ -32,7 +32,7 @@ public class ComisionVentaServiceImpl implements ComisionVentaService {
 	 */
 	public void insertComisionVenta(ComisionVentaSie c,int idcargo,int idcriterio,int idevento){
 		if(idcargo!=0)
-		c.setTbCargoempleado(objCargoDAO.buscarCargoEmpleado(idcargo));
+		c.setTbCargoempleado(objCargoDAO.findCargoEmpleado(idcargo));
 		if(idcriterio!=0)
 		c.setTbCriterioComision(objcriterioDAO.findCriterioComision(idcriterio));
 		if(idevento!=0)
@@ -45,7 +45,7 @@ public class ComisionVentaServiceImpl implements ComisionVentaService {
 	 */
 	public void updateComisionVenta(ComisionVentaSie c,int idcargo,int idcriterio,int idevento){
 		if(idcargo!=0)
-			c.setTbCargoempleado(objCargoDAO.buscarCargoEmpleado(idcargo));
+			c.setTbCargoempleado(objCargoDAO.findCargoEmpleado(idcargo));
 			if(idcriterio!=0)
 			c.setTbCriterioComision(objcriterioDAO.findCriterioComision(idcriterio));
 			if(idevento!=0)

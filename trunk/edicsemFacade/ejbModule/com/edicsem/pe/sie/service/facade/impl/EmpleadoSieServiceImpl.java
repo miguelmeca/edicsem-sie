@@ -78,7 +78,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 		for (ContratoEmpleadoSie objContrato : contratoEmpleadoList) {
 			objContrato.setTbEmpleado1(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
 			objContrato.setTbEmpresa(objEmpresaDao.findEmpresa(objContrato.getEmpresa()));
-			objContrato.setTbCargoempleado(objCargoEmpDao.buscarCargoEmpleado(idCargo));
+			objContrato.setTbCargoempleado(objCargoEmpDao.findCargoEmpleado(idCargo));
 			objContrato.setTbTipoPago(objTipoPagoDao.findTipoPago(idTipoPago));
 			objContrato.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(19));
 			objContratoEmpleadoDao.insertContratoEmpleado(objContrato);
@@ -120,7 +120,7 @@ public class EmpleadoSieServiceImpl implements EmpleadoSieService{
 				if(objContrato.getTipo()!=null && objContrato.getTipo().equalsIgnoreCase("Por Agregar")){
 					objContrato.setTbEmpresa(objEmpresaDao.findEmpresa(objContrato.getEmpresa()));
 					objContrato.setTbEmpleado1(objEmpleadoDao.buscarEmpleado(objEmpleado.getIdempleado()));
-					objContrato.setTbCargoempleado(objCargoEmpDao.buscarCargoEmpleado(idCargo));
+					objContrato.setTbCargoempleado(objCargoEmpDao.findCargoEmpleado(idCargo));
 					objContrato.setTbTipoPago(objTipoPagoDao.findTipoPago(idTipoPago));
 					objContrato.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(19));
 					objContratoEmpleadoDao.insertContratoEmpleado(objContrato);
