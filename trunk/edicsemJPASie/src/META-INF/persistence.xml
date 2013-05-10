@@ -89,6 +89,8 @@
 		<class>com.edicsem.pe.sie.entity.NotificacionSie</class>
 		<class>com.edicsem.pe.sie.entity.ConfigNotificacionSie</class>
 		<class>com.edicsem.pe.sie.entity.TipoRefinanciaSie</class>
+		<class>com.edicsem.pe.sie.entity.ParametroActividadSie</class>
+		<class>com.edicsem.pe.sie.entity.ConfigPuntajeSie</class>
 		<properties>
 			<property name="eclipselink.jdbc.driver" value="org.postgresql.Driver" />
 			<property name="eclipselink.jdbc.url" value="jdbc:postgres://localhost:5432/bd_sie" />
