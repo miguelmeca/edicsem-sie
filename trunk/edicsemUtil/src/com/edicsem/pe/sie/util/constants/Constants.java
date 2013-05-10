@@ -142,6 +142,9 @@ public class Constants {
 	public static final String MANT_CONFIG_COBRANZA_OPERA_LIST = "mantenimientoConfigCobranzaOperaList";
 	public static final String MANT_CONFIG_COBRANZA_OPERA_FORM = "mantenimientoConfigCobranzaOperaForm";
 	
+	public static final String MANT_CONFIG_PUNTAJE_LIST = "mantenimientoConfigPuntajeList";
+	public static final String MANT_CONFIG_PUNTAJE_FORM = "mantenimientoConfigPuntajeForm";
+	
 	public static final String MANT_CONFIG_TIPO_REFINAN_LIST = "mantenimientoConfigTipoRefinanciaList";
 	public static final String MANT_CONFIG_TIPO_REFINAN_FORM = "mantenimientoConfigTipoRefinanciaForm";
 
