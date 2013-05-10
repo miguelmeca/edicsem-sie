@@ -241,6 +241,10 @@ public class EstadoGeneralSie implements Serializable {
 	@OneToMany(mappedBy="tbEstadoGeneral")
 	private Set<ConfigNotificacionSie> tbConfigNotifica;
 	
+	//bi-directional many-to-one association to ConfigPuntajeSie
+	@OneToMany(mappedBy="tbEstadoGeneral")
+	private Set<ConfigPuntajeSie> tbConfigPuntaje;
+	
 	public EstadoGeneralSie() {
     }
 
@@ -707,6 +711,14 @@ public class EstadoGeneralSie implements Serializable {
 
 	public void setTbConfigNotifica(Set<ConfigNotificacionSie> tbConfigNotifica) {
 		this.tbConfigNotifica = tbConfigNotifica;
+	}
+
+	public Set<ConfigPuntajeSie> getTbConfigPuntaje() {
+		return tbConfigPuntaje;
+	}
+
+	public void setTbConfigPuntaje(Set<ConfigPuntajeSie> tbConfigPuntaje) {
+		this.tbConfigPuntaje = tbConfigPuntaje;
 	}
 	
 }
