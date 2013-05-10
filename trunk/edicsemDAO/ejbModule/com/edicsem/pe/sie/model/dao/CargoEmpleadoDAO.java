@@ -12,7 +12,7 @@ public interface CargoEmpleadoDAO {
 	public abstract void insertarCargoEmpleado (CargoEmpleadoSie cargoempleado);
 	public abstract void actualizarCargoEmpleado (CargoEmpleadoSie cargoempleado);
 	public abstract void eliminarCargoEmpleado (int id);
-	public abstract CargoEmpleadoSie buscarCargoEmpleado (int id);
+	public abstract CargoEmpleadoSie findCargoEmpleado (int id);
 	public abstract List listarCargoEmpleado ();
 	public abstract List listarCargosXEmpleado(int idEmpleado);
 	public abstract CargoEmpleadoSie buscarCargoEmpleado(String cargo);

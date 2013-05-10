@@ -57,7 +57,7 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 	 */
 	public void eliminarCargoEmpleado(int id) {
 		try {
-			CargoEmpleadoSie bean= buscarCargoEmpleado(id);
+			CargoEmpleadoSie bean= findCargoEmpleado(id);
 			em.remove(bean);
 			
 		} catch (Exception e) {
@@ -68,7 +68,7 @@ public class CargoEmpleadoDAOImpl implements CargoEmpleadoDAO {
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.CargoEmpleadoDAO#buscarCargoEmpleado(int)
 	 */
-	public CargoEmpleadoSie buscarCargoEmpleado(int id) {
+	public CargoEmpleadoSie findCargoEmpleado(int id) {
 		CargoEmpleadoSie cargoempleado = new CargoEmpleadoSie();
 		try {
 			if (log.isInfoEnabled()) {
