@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/layout/template.xhtml">
+	<ui:define name="body">
+	<h:form>
+	<p:panel header="Registrar Configuración Puntaje"  id="panel">
+	<p:messages showDetail="true"/>	
+			<h:panelGrid columns="2" cellpadding="5">						
+			
+			<h:outputText value="Valor" />
+			<p:spinner value="#{configPuntajeFormAction.objConfig.valor}" required="true" min="1" />
+			
+			<h:outputText  value="Cargo Empleado" />
+            <p:selectOneMenu value="#{configPuntajeFormAction.idcargo}" filterMatchMode="startsWith"  required="true" >
+	            <f:selectItem itemLabel="Seleccione una opción" itemValue="#{null}" />
+	            <f:selectItems  value="#{comboAction.cargoEmpleadoItems}" />
+            </p:selectOneMenu>
+            
+            <h:outputText value="Actividad" />
+            <p:selectOneMenu  value="#{configPuntajeFormAction.idparametro}" required="true" >
+	            <f:selectItem itemLabel="Seleccione una opción" itemValue="#{null}" />
+	            <f:selectItems  value="#{comboAction.parametroActividadItems}" />
+            </p:selectOneMenu>
+            
+            <h:outputText value="Tipo Cliente"  />
+            <p:selectOneMenu   value="#{configPuntajeFormAction.idtipocliente}" required="true" >
+	            <f:selectItem itemLabel="Seleccione una opción" itemValue="#{null}" />
+	            <f:selectItems  value="#{comboAction.tipoClienteItems}" />
+            </p:selectOneMenu>
+            
+            <p:commandButton value="Guardar" action="#{configPuntajeFormAction.insertar}" 
+           	ajax="false" icon="ui-icon-check"/>
+            <p:commandButton value="Regresar" action="#{configPuntajeSearchAction.listar}" 
+            immediate="true" ajax = "false"  icon="ui-icon-circle-arrow-w"/>
+            
+		</h:panelGrid>
+	</p:panel>
+	</h:form>
+	</ui:define>
+</ui:composition>

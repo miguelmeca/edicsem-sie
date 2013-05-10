@@ -21,23 +21,25 @@
 					<f:facet name="header">
 						<h:outputLabel value="#{message['rsltd.datatable']}" />
 					</f:facet>
-					<p:column headerText="Empleado"  >
+					<p:column headerText="Empleado">
 		                <h:outputText value="#{c.nombreCompleto}" />
 		            </p:column>
-		            <p:column headerText="Cantidad Pagos"  >
+		            <p:column headerText="Cantidad Pagos">
 		                 <h:outputText value="#{c.cantidaTotal}" />
 		            </p:column>
-		            <p:column headerText="Cantidad Promesas sin Pago"  >
+		            <p:column headerText="Cantidad de Citas">
+		                 <h:outputText value="#{c.cantidaTotal}" />
+		            </p:column>
+		            <p:column headerText="Cantidad Promesas sin Pago">
 		                 <h:outputText value="#{c.cantidadRealizada}" />
 		            </p:column>
-		            <p:column headerText="Promesa de Pago"  >
+		            <p:column headerText="Promesa de Pago">
 		                 <h:outputText value="#{c.cantPromesaPago}" />
 		            </p:column>
-		            <p:column headerText="Paga otra fecha"  >
+		            <p:column headerText="Paga otra fecha">
 		                 <h:outputText value="#{c.cantOtraFecha}" />
 		            </p:column>
 		    </p:dataTable>
-		    
 		    </p:panel>
 		</h:form>
 	</ui:define>

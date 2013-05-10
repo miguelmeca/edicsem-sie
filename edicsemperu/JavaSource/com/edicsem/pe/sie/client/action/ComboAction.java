@@ -34,6 +34,7 @@ import com.edicsem.pe.sie.entity.IncidenciaSie;
 import com.edicsem.pe.sie.entity.MetaMesSie;
 import com.edicsem.pe.sie.entity.MotivoSie;
 import com.edicsem.pe.sie.entity.PaqueteSie;
+import com.edicsem.pe.sie.entity.ParametroActividadSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.entity.ProveedorSie;
 import com.edicsem.pe.sie.entity.PuntoVentaSie;
@@ -69,6 +70,7 @@ import com.edicsem.pe.sie.service.facade.IncidenciaService;
 import com.edicsem.pe.sie.service.facade.MetaMesService;
 import com.edicsem.pe.sie.service.facade.MotivoService;
 import com.edicsem.pe.sie.service.facade.PaqueteService;
+import com.edicsem.pe.sie.service.facade.ParametroActividadService;
 import com.edicsem.pe.sie.service.facade.ProductoService;
 import com.edicsem.pe.sie.service.facade.ProveedorService;
 import com.edicsem.pe.sie.service.facade.SancionService;
@@ -149,6 +151,7 @@ public class ComboAction {
 	private Map<String, Integer> tipoPagoItems = new HashMap<String, Integer>();
 	private Map<String, Integer> turnoItems = new HashMap<String, Integer>();
 	private Map<String, Integer> calificacionItems = new HashMap<String, Integer>();
+	private Map<String, Integer> parametroActividadItems = new HashMap<String, Integer>();
 	
 	@EJB
 	private TurnoService objTurnoService;
@@ -218,6 +221,8 @@ public class ComboAction {
 	private IncidenciaService objIncidenteService;
 	@EJB
 	private CalificacionEquifaxService objCalificacionService;
+	@EJB
+	private ParametroActividadService objParametroActividadService;
 	
 	public ComboAction() {
 		log.info("inicializando constructor");
@@ -1988,6 +1993,43 @@ public class ComboAction {
 	 */
 	public void setCalificacionItems(Map<String, Integer> calificacionItems) {
 		this.calificacionItems = calificacionItems;
+	}
+
+	/**
+	 * @return the parametroActividadItems
+	 */
+	public Map<String, Integer> getParametroActividadItems() {
+		parametroActividadItems = new HashMap<String, Integer>();
+		List lista = new ArrayList<ParametroActividadSie>();
+		try {
+			if (log.isInfoEnabled()) {
+				log.info("Entering my method 'getParametroActividadItems()'");
+			}
+			lista = objParametroActividadService.listarParametroActividad();
+			
+			for (int i = 0; i < lista.size(); i++) {
+				ParametroActividadSie entidad = new ParametroActividadSie();
+				entidad = (ParametroActividadSie) lista.get(i);
+				parametroActividadItems.put(entidad.getDescripcion(),
+						entidad.getIdparametroactividad());
+			}
+			parametroActividadItems = sortByComparator(parametroActividadItems);
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensaje = e.getMessage();
+			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
+					Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
+			log.error(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		return parametroActividadItems;
+	}
+
+	/**
+	 * @param parametroActividadItems the parametroActividadItems to set
+	 */
+	public void setParametroActividadItems(Map<String, Integer> parametroActividadItems) {
+		this.parametroActividadItems = parametroActividadItems;
 	}
 	
 }
