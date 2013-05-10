@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Configuracion Puntaje</h1>
+		<h:form prependId="false">
+			<p:messages showDetail="true" />
+			<p:dataTable value="#{configPuntajeSearchAction.configList}" var="p"
+				id="listaPersonas" paginator="true" rows="10"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" widgetVar="table"
+				emptyMessage="#{message['rsltd.empty']}">
+				<f:facet name="header">Mantenimiento Configuracion Puntaje</f:facet>
+				<f:facet name="header">
+					<p:outputPanel>
+						<h:outputText value="Buscar :" />
+						<p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px; align=Left; " />
+					</p:outputPanel>
+				</f:facet>
+				<p:column sortBy="#{p.valor}" filterBy="#{p.valor}" headerText="Puntaje">
+					<f:facet name="header">
+						<h:outputText value="Puntaje" />
+					</f:facet>
+					<h:outputText value="#{p.valor}" />
+				</p:column>
+				<p:column sortBy="#{p.tbTipoCliente.descripcion}" filterBy="#{p.tbTipoCliente.descripcion}" headerText="Tipo de Cliente ">
+					<f:facet name="header">
+						<h:outputText value="Tipo de Cliente" />
+					</f:facet>
+					<h:outputText value="#{p.tbTipoCliente.descripcion}" />
+				</p:column>
+				<p:column sortBy="#{p.tbCargoempleado.descripcion}" filterBy="#{p.tbCargoempleado.descripcion}" headerText="Cargo">
+					<f:facet name="header">
+						<h:outputText value="Cargo" />
+					</f:facet>
+					<h:outputText value="#{p.tbCargoempleado.descripcion}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Actividad" />
+					</f:facet>
+					<h:outputText value="#{p.tbParametroActividad.descripcion}" />
+				</p:column>
+				<p:column headerText="Editar">
+					<p:commandButton value="Editar" ajax="false" action="#{configPuntajeFormAction.update}">
+						<f:setPropertyActionListener value="#{p}" target="#{configPuntajeFormAction.objConfig}" />
+					</p:commandButton>
+				</p:column>
+				<f:facet name="footer">
+					<div align="left">
+						<p:commandButton id="btnNuevo" value="#{message['config.cobranza.nuevo']}" title="#{message['config.cobranza.tittle']}" 
+						action="#{configPuntajeFormAction.agregar}" icon="ui-icon-star" />
+						<p:tooltip for="btnNuevo" />
+					</div>
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
