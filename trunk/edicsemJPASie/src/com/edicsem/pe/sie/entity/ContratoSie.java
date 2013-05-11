@@ -71,6 +71,8 @@ public class ContratoSie implements Serializable {
 	
 	private String rutaImagenContrato;
 	
+	private Integer cantRefinancio;
+	
 	//bi-directional many-to-one association to CobranzaSie
 	@OneToMany(mappedBy="tbContrato")
 	private Set<CobranzaSie> tbCobranzas;
@@ -453,6 +455,14 @@ public class ContratoSie implements Serializable {
 
 	public void setTbRefinanciarPago(Set<RefinanciarPagoSie> tbRefinanciarPago) {
 		this.tbRefinanciarPago = tbRefinanciarPago;
+	}
+
+	public Integer getCantRefinancio() {
+		return cantRefinancio;
+	}
+
+	public void setCantRefinancio(Integer cantRefinancio) {
+		this.cantRefinancio = cantRefinancio;
 	}
 
 }
