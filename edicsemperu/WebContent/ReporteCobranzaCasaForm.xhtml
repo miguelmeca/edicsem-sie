@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/layout/template.xhtml">
+	<ui:define name="body">
+	<script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
+		<h1 class="title ui-widget-header ui-corner-all">Cobranza en Casa</h1>
+		<h:form id="formCobranzaCasa">
+		<p:messages id="message" showDetail="true"/>
+		<p:panel>
+		<p:fieldset legend="Cobranza en Casa" style="margin-top:30px">
+			<h:panelGrid columns="4" cellpadding="5" >
+				<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
+				<p:selectOneMenu id="dep" value="#{reporteCobranzaCasa.idDepartamento}" filter="true" filterMatchMode="startsWith"
+					required="true" style="width:220px"
+					requiredMessage="#{message['puntoVenta.ubigeo.departamento.validation']}" >
+					<f:selectItem itemLabel="Seleccione Departamento" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
+					<p:ajax update="prov,dist" listener="#{almacenForm.cambiar}" />
+				</p:selectOneMenu>
+				<p:message for="dep"  />
+				
+				<h:outputText value="#{message['contrato.ubigeo.provincia']}" />
+				<p:selectOneMenu id="prov" value="#{reporteCobranzaCasa.idProvincia}" filter="true" filterMatchMode="startsWith"
+					required="true" style="width:220px"
+					requiredMessage="#{message['puntoVenta.ubigeo.provincia.validation']}" >
+					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
+					<p:ajax update="dist" listener="#{almacenForm.cambiar2}" />
+				</p:selectOneMenu>
+				<p:message for="prov" />
+
+				<h:outputText value="#{message['contrato.ubigeo.distrito']}" />
+				<p:selectOneMenu id="dist" value="#{reporteCobranzaCasa.idUbigeo}" filter="true" filterMatchMode="startsWith"
+					required="true" style="width:220px"
+					requiredMessage="#{message['puntoVenta.ubigeo.distrito.validation']}" >
+					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
+					<p:ajax update="ubigeoDefecto" listener="#{almacenForm.busquedaUbigeo}" />
+				</p:selectOneMenu>
+				<p:message for="dist" />
+				
+				<h:outputText value="Letra" />
+				<p:inputText id="letra" value="#{reporteCobranzaCasa.letra}" style="font-weight:bold" maxlength="30" />
+				<pe:keyFilter for="letra" mask="alpha" />
+				
+				<h:outputText value="Plano" />
+				<p:inputText id="plano" value="#{reporteCobranzaCasa.plano}" style="font-weight:bold" maxlength="30" />
+				<pe:keyFilter for="plano" mask="num" />
+				
+				<h:outputText value="Sector" />
+				<p:inputText id="sector" value="#{reporteCobranzaCasa.sector}" style="font-weight:bold" maxlength="30" />
+				<pe:keyFilter for="sector" mask="num" />
+				
+				<p:commandButton value="Consultar" action="#{reporteKardex.consultar}" update="message" ajax="false"
+				icon="ui-icon-search"/>
+			</h:panelGrid>
+		</p:fieldset>
+		
+		<p:spacer height="30px" />
+		
+		    <div align="center"  style="margin-top:30px" >
+		     	<h:graphicImage value="/images/Reporting_pdf.png" style="width:40px;height:40px"/>
+				<p:commandLink action="#{reporteKardex.exportar}" value="#{message['reporte.exportar.pdf']}" ajax="false" 
+				disabled="#{reporteKardex.cantLista!=0? false:true}">
+				<f:setPropertyActionListener target="#{reporteKardex.contentType}" value="pdf"/>
+				</p:commandLink>
+				
+				<h:graphicImage value="/images/excel_icon.PNG" style="width:40px;height:40px"/>
+				<p:commandLink action="#{reporteKardex.exportar}" value="#{message['reporte.exportar.xls']}" ajax="false" 
+				disabled="#{reporteKardex.cantLista!=0? false:true}">
+				<f:setPropertyActionListener target="#{reporteKardex.contentType}" value="xls"/>
+				</p:commandLink>
+			</div>
+		    </p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

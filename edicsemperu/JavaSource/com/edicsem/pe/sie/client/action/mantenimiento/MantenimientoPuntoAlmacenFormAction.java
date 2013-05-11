@@ -228,13 +228,11 @@ public class MantenimientoPuntoAlmacenFormAction extends
 		comboManagerPunto.setIdProvincia(null);
 		idProvincia = null;
 		idUbigeo = null;
-		log.info("cambiar   :D  --- ");
 	}
 
 	public void cambiar2() {
 		comboManagerPunto.setIdDepartamento(getIdDepartamento());
 		comboManagerPunto.setIdProvincia(getIdProvincia());
-		log.info("cambiar 2  :D  --- ");
 	}
 	
 	public void cambioUbica() {
