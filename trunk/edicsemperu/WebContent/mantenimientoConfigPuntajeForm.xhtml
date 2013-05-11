@@ -8,11 +8,11 @@
 	<ui:define name="body">
 	<h:form>
 	<p:panel header="Registrar Configuración Puntaje"  id="panel">
-	<p:messages showDetail="true"/>	
+	<p:messages  showDetail="true"/>	
 			<h:panelGrid columns="2" cellpadding="5">						
 			
 			<h:outputText value="Valor" />
-			<p:spinner value="#{configPuntajeFormAction.objConfig.valor}" required="true" min="1" />
+			<p:spinner value="#{configPuntajeFormAction.objConfig.valor}" required="true" min="1"  />
 			
 			<h:outputText  value="Cargo Empleado" />
             <p:selectOneMenu value="#{configPuntajeFormAction.idcargo}" filterMatchMode="startsWith"  required="true" >
@@ -33,7 +33,7 @@
             </p:selectOneMenu>
             
             <p:commandButton value="Guardar" action="#{configPuntajeFormAction.insertar}" 
-           	ajax="false" icon="ui-icon-check"/>
+           	ajax="false" icon="ui-icon-check"  />
             <p:commandButton value="Regresar" action="#{configPuntajeSearchAction.listar}" 
             immediate="true" ajax = "false"  icon="ui-icon-circle-arrow-w"/>
             
