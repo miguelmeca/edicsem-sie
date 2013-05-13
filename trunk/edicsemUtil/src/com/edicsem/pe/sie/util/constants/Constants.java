@@ -203,8 +203,8 @@ public class Constants {
 	public static final String REPORTE_PAGOS_LIST = "Reporte de Pagos";
 	
 	public static final String REPORTE_KARDEX_LIST="Reporte Kardex";
-	public static final String RUTA_IMAGENES_PRODUCTO = "E:\\Producto\\Images" ;
-	public static final String RUTA_DOC_SUSTENTARIO = "E:\\Images\\Docs";
-	public static final String RUTA_IMAGEN_DEFECTO = "E:\\Producto\\Images\\bibliaXDefecto.png";
+	public static final String RUTA_IMAGENES_PRODUCTO = "C:\\proyecto-sie\\Producto" ;
+	public static final String RUTA_DOC_SUSTENTARIO = "C:\\Images\\Docs";
+	public static final String RUTA_IMAGEN_DEFECTO = "C:\\proyecto-sie\\Images\\bibliaXDefecto.png";
 	
 	}
