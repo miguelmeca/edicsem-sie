@@ -779,8 +779,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	<h:form id="formManteProdDetalle">
 		<p:dialog header="Detalle Producto" widgetVar="prodDialog" id="carDlg" resizable="false" 
 			showEffect="fade" hideEffect="explode" modal="true" width="450" position="center">
-			<h:panelGrid id="display" columns="2" cellpadding="2"
-				style="margin:0 auto;">
+			<h:panelGrid id="display" columns="2" cellpadding="2" >
 				<h:outputText value="#{message['mantenimiento.producto.tipo']}" />
 				<h:outputText value="#{productoForm.selectedProducto.tbTipoProducto.nombretipoproducto}" style="font-weight:bold" />
 				
@@ -800,8 +799,8 @@ function validarEspaciosLetrasNumeros(e) { // 1
 					style="font-weight:bold" />
 				
 				<h:outputText value="#{message['mantenimiento.producto.detalle']}" />
-				<p:inputTextarea value="#{productoForm.selectedProducto.detalleproducto}" rows="4"
-						cols="30" style="font-weight:bold" disabled="true" />
+				<p:inputTextarea value="#{productoForm.selectedProducto.detalleproducto}" rows="5"
+						cols="30" style="font-weight:bold" readonly="true" />
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>

@@ -38,7 +38,7 @@
 					value="#{productoForm.objProductoSie.descripcionproducto}"
 					requiredMessage="#{message['mantenimiento.producto.descripcion.validation']}">
 				</p:inputText>
-				<pe:keyFilter for="text1" mask="alpha"/>
+				
 				<p:message for="desc_prod" />
 				<h:outputText value="#{message['mantenimiento.producto.detalle']}" />
 				<p:inputTextarea id="detalle" size="10" autoResize="false" 
@@ -55,24 +55,28 @@
 				<p:message for="unidadProducto" rendered="#{productoForm.newRecord!=true}" />
 				
 				<h:outputText value="#{message['mantenimiento.producto.stock.minimo']}" />
+				<h:panelGroup>
 				<p:inputText id="stock_minimo_producto" size="10" required="true"
 					value="#{productoForm.objProductoSie.stkminimoproducto}"
 					requiredMessage="#{message['mantenimiento.producto.stockmin.validation']}" />
 				<pe:keyFilter for="stock_minimo_producto" mask="num"/>
+				</h:panelGroup>
 				<p:message for="stock_minimo_producto" />
 				
 				<h:outputText value="#{message['mantenimiento.producto.stock.maximo']}" />
+				<h:panelGroup>
 				<p:inputText id="stock_mximo_producto" value="#{productoForm.objProductoSie.stkmaximo}"
 					required="true" maxlength="10" size="10" 
 					requiredMessage="#{message['mantenimiento.producto.stockmax.validation']}" />
 				<pe:keyFilter for="stock_mximo_producto" mask="num"/>
+				</h:panelGroup>
 				<p:message for="stock_mximo_producto" />
 				
-				<p:outputPanel autoUpdate="true" >  
+				<p:outputPanel>
 				<p:graphicImage id="imgFotoInserta"  value="#{productoForm.image}" cache="false" style="height:90px;width:90px; align:center" >
 				 <f:param value="#{productoForm.idFoto}" />
 				</p:graphicImage>
-				</p:outputPanel>
+				 </p:outputPanel>
 				 
 				<p:commandButton value="#{message['mantenimiento.producto.inserta.imagen']}" icon="ui-icon-image"  update=":formInsertImageProduc:display"
 					oncomplete="imageProducDialog.show()" title="Ingresar imagen"/>
