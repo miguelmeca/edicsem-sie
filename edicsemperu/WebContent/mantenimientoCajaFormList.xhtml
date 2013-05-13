@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+	<script language="JavaScript" type="text/javascript">
+		window.history.forward(-1);
+	</script>
+		<h1 class="title ui-widget-header ui-corner-all">#{message['tipo.cliente.titulo']}</h1>
+		<h:form id="formManteProdLista" >
+		<p:messages id="message" showDetail="true" />
+			<p:dataTable value="#{cajaSearch.cajaList}" var="p" 
+					id="lista" paginator="true" rows="10"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" widgetVar="table"
+					emptyMessage="#{message['rsltd.empty']}">
+					<f:facet name="header">#{message['tipo.cliente.titulo']}</f:facet>
+					<f:facet name="header">
+					    <p:outputPanel>
+						 <h:outputText value="#{message['rsltd.buscar']}"/>
+						 <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px; align:Left; "/>
+						</p:outputPanel>
+					</f:facet>
+					<p:column sortBy="#{p.descripcion}" filterBy="#{p.descripcion}" headerText="#{message['mantenimiento.productoList.descripcion']}">
+						<f:facet name="header">
+							<h:outputText value="Descripción"/>
+						</f:facet>
+						<h:outputText value="#{p.descripcion}" />
+					</p:column>
+					<p:column sortBy="#{p.detalle}" filterBy="#{p.detalle}" headerText="Detalle">
+						<f:facet name="header">
+							<h:outputText value="Detalle"/>
+						</f:facet>
+						<h:outputText value="#{p.detalle}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{message['mantenimiento.productoList.modificar']}" />
+						</f:facet>
+						<p:commandButton oncomplete="cajaNuevoDialog.show()" action="#{cajaForm.update}"
+							update=":NuevoModificaCaja:display" icon="ui-icon ui-icon-pencil">
+							<f:setPropertyActionListener value="#{p}" target="#{cajaForm.objCajaSie}" />
+				        </p:commandButton>
+					</p:column>
+					<f:facet name="footer">
+						<div align="left">
+							<p:commandButton id="btnNuevo" value="Nuevo Registro Caja"  update=":NuevoModificaCaja:display" 
+							action="#{cajaForm.agregar}" oncomplete="tipoClienteNuevoDialog.show()" 
+							title="Ingresar un nuevo pago en caja" icon="ui-icon-star"/>
+							 <p:tooltip for="btnNuevo"/>
+						</div>
+					</f:facet>
+				</p:dataTable>
+				<p:blockUI block="lista" trigger="lista">
+				<p:graphicImage value="/images/ajax_loader.gif"  style="width:120px; heigth:120px"  /></p:blockUI>
+		</h:form>
+	</ui:define>
+</ui:composition>

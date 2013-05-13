@@ -12,6 +12,7 @@
 	</script>
 		<h1 class="title ui-widget-header ui-corner-all">#{message['mantenimiento.producto.panel']}</h1>
 		<h:form id="formManteProducto" >
+		<p:panel  header="#{message['mantenimiento.producto.panel']}">
 			<p:messages id="message" showDetail="true" closable="true" />
 			<h:panelGrid columns="3" cellpadding="5"  >
 			
@@ -72,22 +73,21 @@
 				</h:panelGroup>
 				<p:message for="stock_mximo_producto" />
 				
-				<p:outputPanel>
 				<p:graphicImage id="imgFotoInserta"  value="#{productoForm.image}" cache="false" style="height:90px;width:90px; align:center" >
 				 <f:param value="#{productoForm.idFoto}" />
 				</p:graphicImage>
-				 </p:outputPanel>
 				 
-				<p:commandButton value="#{message['mantenimiento.producto.inserta.imagen']}" icon="ui-icon-image"  update=":formInsertImageProduc:display"
+				<p:commandButton value="#{message['mantenimiento.producto.inserta.imagen']}" icon="ui-icon-image"  
 					oncomplete="imageProducDialog.show()" title="Ingresar imagen"/>
-				<p:spacer/> 
+				<p:spacer/>
 				
 				<p:commandButton value="Registrar" action="#{productoForm.insertar}"  ajax = "false" 
 					icon="ui-icon ui-icon-disk" />
                      
-                <p:commandButton value="Regresar" action="#{productoSearch.listar}" immediate="true" ajax= "false" update="message"
+                <p:commandButton value="Regresar" action="#{productoSearch.listar}" immediate="true" ajax= "false" 
                     icon="ui-icon-circle-arrow-w" />
 		</h:panelGrid>
+		</p:panel>
 		</h:form>
 	</ui:define>
 </ui:composition>

@@ -143,7 +143,7 @@
 					<p:inputText mask="999-9999" value="#{contratoForm.objClienteSie.telftrabajo}" readonly="true" size="30"/>
 					
 					<h:outputText value="#{message['contrato.cliente.tipo']}" />
-					<p:inputText value="#{contratoForm.objClienteSie.tipoClienteString}" readonly="true" size="30" style="font-weight:bold" />
+					<p:inputText value="#{contratoForm.objClienteSie.tbTipoCliente.descripcion}" readonly="true" size="30" style="font-weight:bold" />
 					
 					</h:panelGrid>
 					</p:fieldset>
@@ -262,7 +262,6 @@
 					<h:graphicImage value="/images/Reporting_pdf.png" style="width:40px;height:40px"/>
 					<f:setPropertyActionListener target="#{contratoForm.contentType}" value="pdf"/>
 				</p:commandLink>
-				&bnps;&bnps;&bnps;
 				<p:commandLink action="#{contratoForm.ReportingPagos}" ajax="false" title="#{message['reporte.exportar.pagos.xls']}">
 					<h:graphicImage value="/images/excel_icon.PNG" style="width:40px;height:40px"/>
 					<f:setPropertyActionListener target="#{contratoForm.contentType}" value="xls"/>

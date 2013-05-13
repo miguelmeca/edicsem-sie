@@ -342,14 +342,11 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			showEffect="fade" hideEffect="explode" modal="true" 
 			position="center">
 			<h:panelGrid id="display"  >
-			<h:outputText value="#{message['mantenimiento.producto.imagen']}" />
 			
-			<h:panelGroup>
 			<p:fileUpload fileUploadListener="#{productoForm.cargarImagenInsertar}" immediate="true"
-				label="Cargar Imagen" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" oncomplete="imageProducDialog.hide()"
+				label="Cargar Imagen" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
 				description="Images" multiple="false" customUI="true" required="true">
 			</p:fileUpload>
-			</h:panelGroup>
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
@@ -540,6 +537,38 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			<p:commandButton value="No" onclick="confirmationMotivo.hide()"/>
 
 		</p:confirmDialog>
+	</h:form>
+	
+	<!--  Mantenimiento CAJA (Registrar , actualizar)-->
+	<h:form id="NuevoModifiCaja">
+		<p:dialog header="Registro/ Modificación Caja" widgetVar="cajaNuevoDialog" showEffect="fade"
+			hideEffect="explode" modal="true" width="600" position="center">
+			<p:messages id="message"   showDetail="true" escape="false" closable="true" />
+			<h:panelGrid id="display" columns="2"  >
+				
+				<h:outputText value="#{message['mantenimiento.descripcion']}" />
+				<p:inputText value="#{cajaForm.objCajaSie.descripcion}" required="true"
+						style="font-weight:bold" maxlength="15" />
+						
+				<h:outputText value="Detalle" />
+				<p:inputText value="#{cajaForm.objCajaSie.detalle}" required="true"
+						style="font-weight:bold" maxlength="50" />
+						
+				<h:outputText value="Fecha de Pago" />
+				<p:calendar value="#{cajaForm.objCajaSie.fechapago}" required="true"
+						style="font-weight:bold" pattern="dd/mm/yyyy" />
+						
+				<h:outputText value="Monto" />
+				<p:inputText value="#{cajaForm.objCajaSie.monto}" required="true"
+						style="font-weight:bold" maxlength="30" />
+						
+				<f:facet name="footer">
+					<p:commandButton value="Guardar" update="message"
+						action="#{cajaForm.insertar}"  icon="ui-icon ui-icon-disk" />
+					<p:commandButton value="Cancelar" onclick="cajaNuevoDialog.hide()" icon="ui-icon ui-icon-close"/>
+				</f:facet>
+			</h:panelGrid>
+		</p:dialog>
 	</h:form>
 	
 	<!-- Eliminar Producto  -->
@@ -984,16 +1013,16 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	<!--  Mantenimiento Detalle Paquete Biblico -->
 	<h:form id="formDetPaqueteBiblico">
 		<p:dialog header="Registro/Modificacion Detalle Paquete Biblico" widgetVar="DetPaqueteBiblico" showEffect="fade"
-			hideEffect="explode" modal="true" position="center" width="450" resizable="false" >
+			hideEffect="explode" modal="true" position="center" width="550" resizable="false" >
 			<p:fieldset>
 			<h:panelGrid id="display" columns="3"  >
-				<h:outputText value="producto" />
+				<h:outputText value="#{message['Detallepaquetebiblico.producto']}" />
 				<p:selectOneMenu value="#{mantenimientoDetallePaqueteBiblicoSearchAction.idproducto}">
 					<f:selectItems value="#{comboAction.productoPaqueteItems}" />
 				</p:selectOneMenu>
 				<p:spacer/>
 				
-				<h:outputText value="#{message['Detallepaquetebiblico.cantidad']}" for="cantidad" />
+				<h:outputText value="#{message['Detallepaquetebiblico.cantidad']}" />
 				<p:spinner value="#{mantenimientoDetallePaqueteBiblicoSearchAction.objDetPaqueteSie.cantidad}" 
 				min="1"  id="cantidad" required="true" requiredMessage="#{message['Detalleaquetebiblico.cantidad.validation']}" >
 					<p:ajax update="msgCantidad" event="keyup" />
@@ -1293,7 +1322,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:confirmDialog>
 	</h:form>
 	
-	<!--EN UN SOLO PUPAP NUEVO Y EDITAR TIPO PRODUCTO	  -->
+	<!-- NUEVO Y EDITAR TIPO PRODUCTO	-->
 	<h:form id="NuevoModificaTipoProd">
 		<p:dialog header="Ingrese Nuevo Tipo de Producto" widgetVar="DialogTipoProd"
 			showEffect="fade" hideEffect="explode" modal="true" width="300"

@@ -103,7 +103,7 @@ public class MantenimientoContratoFormAction extends
 	private BigDecimal totalacumulado;
 	private int idGrupo;
 	private List<DetGrupoEmpleadoSie> detgrupoList;
-	private int estadoRefinan,existContrato, idLugar;
+	private int estadoRefinan, idLugar;
 	
 	//Consultar
 	private String numDniCliente,codigoContrato,apePatCliente,apeMatCliente,nombreCliente;
@@ -183,7 +183,6 @@ public class MantenimientoContratoFormAction extends
 		totalacumulado= new BigDecimal(0);
 		precioMensual=0.0;
 		cuotasNuevas=1;
-		existContrato=0;
 		ContentType="";
 	}
 	
@@ -789,14 +788,12 @@ public class MantenimientoContratoFormAction extends
 			}
 			fechaMensual = DateUtil.addToDate(cobranzaList.get(cobranzaList.size()-1).getFecvencimiento(), Calendar.MONTH,1);
 			mensaje = "Consulto realizada";
-			setExistContrato(1);
 		}
 		else if(contratoXClienteList.size()==0){
 			mensaje = "Consulto realizada, no se encontraron datos";
 			objClienteSie = new ClienteSie();
 			objDomicilioSie = new DomicilioPersonaSie();
 			cobranzaList = new ArrayList<CobranzaSie>();
-			setExistContrato(0);
 		}
 		log.info(" lista x consultaaa "+contratoXClienteList.size()+" MENSAJE "+ mensaje);
 		
@@ -842,7 +839,6 @@ public class MantenimientoContratoFormAction extends
 			totalacumulado = totalacumulado.add(cobranzaList.get(i).getImportemasmora());
 			}
 		}
-		setExistContrato(1);
 		fechaMensual = DateUtil.addToDate(cobranzaList.get(cobranzaList.size()-1).getFecvencimiento(), Calendar.MONTH,1);
 		return null;
 	}
@@ -1986,14 +1982,6 @@ public class MantenimientoContratoFormAction extends
 	 */
 	public void setContentType(String contentType) {
 		ContentType = contentType;
-	}
-
-	public int getExistContrato() {
-		return existContrato;
-	}
-
-	public void setExistContrato(int existContrato) {
-		this.existContrato = existContrato;
 	}
 
 	/**
