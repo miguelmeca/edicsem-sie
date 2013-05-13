@@ -150,6 +150,8 @@ public class Constants {
 
 	public static final String MANT_CONFIG_NOTIFICACION_LIST = "mantenimientoConfigNotificacionList";
 	
+	public static final String MANT_CAJA_FORM_LIST_PAGE = "mantenimientoCajaFormList";
+	
 	public static final String MIGRAR_PRODUCTO_PAQUETE = "migracionProductos";
 
 	public static final String REPORTE_LLAMADA_OPERADORA = "ReporteTrabajoOperadoraList";
@@ -205,6 +207,6 @@ public class Constants {
 	public static final String REPORTE_KARDEX_LIST="Reporte Kardex";
 	public static final String RUTA_IMAGENES_PRODUCTO = "C:\\proyecto-sie\\Producto" ;
 	public static final String RUTA_DOC_SUSTENTARIO = "C:\\Images\\Docs";
-	public static final String RUTA_IMAGEN_DEFECTO = "C:\\proyecto-sie\\Images\\bibliaXDefecto.png";
+	public static final String RUTA_IMAGEN_DEFECTO = "C:\\proyecto-sie\\Images\\noDisponible.jpg";
 	
 	}
