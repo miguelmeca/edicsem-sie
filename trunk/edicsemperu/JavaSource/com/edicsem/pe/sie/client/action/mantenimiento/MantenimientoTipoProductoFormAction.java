@@ -117,8 +117,6 @@ public class MantenimientoTipoProductoFormAction extends
 				else if ( lista.get(i).getCodtipoproducto().equalsIgnoreCase(objTipoProductoSie.getCodtipoproducto())) {
 						log.info("Error ... Ya se encuentra un cargo igual");
 						mensaje ="Ya se encuentra un tipo de producto igual con el mismo nombre";
-						msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-								Constants.MESSAGE_INFO_TITULO, mensaje);
 						error = 1;
 						break;
 					}
@@ -135,12 +133,12 @@ public class MantenimientoTipoProductoFormAction extends
 					mensaje ="Se actualizó el paquete correctamente";
 				}
 				paginaRetorno= mantenimientoTipoProductoSearch.listar();
-				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_REGISTRO_TITULO, mensaje);	
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);	
 				
 			} else {
 					log.info("mensaje de error");
 					mensaje ="Ya se encuentra un tipo de producto igual con el mismo nombre";
-					msg = new FacesMessage(mensaje);
+					msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);	
 				}
 			}catch (Exception e) {
 					e.printStackTrace();

@@ -83,6 +83,7 @@ public class MantenimientoDetallePaqueteBiblicoSearchAction extends BaseMantenim
 		log.info("agregar()");
 		objPaqueteSie = new PaqueteSie();
 		objDetPaqueteSie = new DetPaqueteSie();
+		idproducto=0;
 		objDetPaqueteSie.setCantidad(1);
 		setNewRecord(true);
 		return getViewList();
@@ -93,7 +94,6 @@ public class MantenimientoDetallePaqueteBiblicoSearchAction extends BaseMantenim
 	 */
 	public String update() throws Exception {
 	log.info("update()  " );
-	
 	setIdDetPaquete(objDetPaqueteSie.getIdDetPaquete());
 	setIdproducto(objDetPaqueteSie.getTbProducto().getIdproducto());
 	setCantidad(objDetPaqueteSie.getCantidad());
@@ -106,6 +106,7 @@ public class MantenimientoDetallePaqueteBiblicoSearchAction extends BaseMantenim
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#insertar()
 	 */
 	public String insertar() {
+	log.info("insertar()");
 	mensaje =null;
 	HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 	EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
@@ -113,26 +114,31 @@ public class MantenimientoDetallePaqueteBiblicoSearchAction extends BaseMantenim
 	
 	try {
 		int error = 0;
+		if(mantenimientoPaqueteFormAction.getObjPaqueteSie().getIdpaquete()==null){
+			mensaje=Constants.MESSAGE_ERROR_FATAL_TITULO_DETALLE;
+			error = 1;
+		}
+		log.info("producto " +idproducto);
 		lista = getDetPaqueteBiblicoList();
-		if (error == 0) ;	
-		if (isNewRecord()) {
+		if (isNewRecord() && error ==0) {
 			for (int i = 0; i < lista.size(); i++) {
-				if (lista.get(i).getTbProducto().getIdproducto().equals(objDetPaqueteSie.getTbProducto().getIdproducto())) {
+				if (lista.get(i).getTbProducto().getIdproducto().equals(idproducto)) {
 					log.info("Error ... Ya se encuentra un producto igual");
-					mensaje ="Ya se encuentra un Producto con el mismo nombre en el Paquete";
+					mensaje ="Ya se encuentra el Producto en el Paquete";
 					paginaRetorno =listar();
 					error = 1;
 					break;
 				}
 			}
 		}
-		
 		if (error == 0) {
 			if(isNewRecord()){
+				//buscar si existe el producto en dicho paquete
+				objDetPaqueteSie.setTbPaquete(mantenimientoPaqueteFormAction.getObjPaqueteSie());
 				objDetPaqueteSie.setTbProducto(objProductoService.findProducto(idproducto));
 				objDetallePaqueteService.insertDetPaquete(objDetPaqueteSie);
 				setNewRecord(false);
-				mensaje ="Se registró el producto correctamente";
+				mensaje ="Se registró el producto en el paquete correctamente";
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_INFO_TITULO, mensaje);
 			}
 			else{
@@ -154,7 +160,7 @@ public class MantenimientoDetallePaqueteBiblicoSearchAction extends BaseMantenim
 		e.printStackTrace();
 		mensaje = e.getMessage();
 		msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
-				Constants.MESSAGE_ERROR_FATAL_TITULO_DETALLE, mensaje);
+				Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 		log.error(e.getMessage());
 	}
 		FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -168,8 +174,8 @@ public class MantenimientoDetallePaqueteBiblicoSearchAction extends BaseMantenim
 			log.info("Entering my method 'eliminaDetProdPaquete()'");
 		}
 		objDetallePaqueteService.eliminarDetPaquete(objDetPaqueteSie.getIdDetPaquete());
-		msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_DESHABILITAR_TITULO, mensaje);
 		mensaje ="Se elimino el producto del paquete correctamente";
+		msg = new FacesMessage(FacesMessage.SEVERITY_INFO,Constants.MESSAGE_DESHABILITAR_TITULO, mensaje);
 		
 	} catch (Exception e) {
 		e.printStackTrace();	

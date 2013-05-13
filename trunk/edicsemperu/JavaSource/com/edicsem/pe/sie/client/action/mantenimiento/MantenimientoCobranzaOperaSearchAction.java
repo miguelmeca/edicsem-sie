@@ -84,6 +84,11 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	private Date fechaProgramRest;
 	private BigDecimal totalacumulafoRefi;
 	
+	//Consultar
+	private String numDniCliente,codigoContrato,apePatCliente,apeMatCliente,nombreCliente;
+	private int tamanoLista, radio,idtipodoc;
+	private List<ContratoSie> contratoXClienteList;
+	
 	HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 	EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 	
@@ -131,12 +136,28 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	 */
 	public void init() {
 		log.info("init()");
+		tamanoLista=0;
 		objCobranza = new CobranzaSie();
 		objCobranzaOpera = new CobranzaOperadoraSie();
 		objcliente = new ClienteSie();
 		objtelefono = new TelefonoPersonaSie();
 		lstHistorico = new ArrayList<HistoricoObservacionesSie>();
 		idcontrato=0;
+		detallePagos= new ArrayList<CobranzaSie>();
+		objContrato= new ContratoSie();
+		detallePagosRefinan = new ArrayList<CobranzaSie>();
+		productoContratoList = new ArrayList<DetProductoContratoSie>();
+		listatelefono = new ArrayList<TelefonoPersonaSie>();
+		contratoXClienteList = new ArrayList<ContratoSie>();
+		totalacumulado =new BigDecimal(0);
+		fechaProgramada= new Date();
+		idcontrato=0;
+		radio=1;
+		idincidencia=0;
+		objRefinanPago = new RefinanciarPagoSie();
+		refinanciar=false;
+		idtiporefinan=0;
+		idRefi=1;
 	}
 	
 	/* (non-Javadoc)
@@ -175,7 +196,9 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	 */
 	public String mostrar() throws Exception {
 		log.info("mostrar()");
-		idcontrato = objCobranzaOpera.getTbCobranza().getTbContrato().getIdcontrato();
+		if(idcontrato==0){
+			idcontrato = objCobranzaOpera.getTbCobranza().getTbContrato().getIdcontrato();
+		}
 		// comenzamos a mostrar el detalles
 		log.info("listarDetalleDePagos 'MantenimientoCobranzasPorCuotasSearchAction' ");
 		detallePagos = objCobranzaService.listarCobranzasXidcontrato(idcontrato);
@@ -197,7 +220,7 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 		fechaProgramRest = new Date();
 		objContrato = objContratoService.findContrato(idcontrato);
 	    // mostramos los datos del cliente
-		objcliente = objClienteService.findCliente(objCobranzaOpera.getTbCobranza().getIdcliente());
+		objcliente = objClienteService.findCliente(objContrato.getTbCliente().getIdcliente());
 		comboManager.setIdtipocliente(objcliente.getTbTipoCliente().getIdtipocliente());
 		log.info("listartelefonos x idcliente "+totalacumulado);
 		listatelefono = objTelefonoService.listarTelefonoEmpleadosXidcliente(objcliente.getIdcliente());
@@ -210,7 +233,49 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 		//Mostramos el historial
 		lstHistorico = objHistoricoService.listarHistorial(idcontrato);
 		
-		return getViewList();
+		return null;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#consultar()
+	 */
+	public String consultar() throws Exception {
+		log.info("consultar() ");
+		contratoXClienteList = objContratoService.listarClientePorParametro(numDniCliente, codigoContrato, nombreCliente, apePatCliente, apeMatCliente);
+		objcliente = new ClienteSie();
+		detallePagos = new ArrayList<CobranzaSie>();
+		objContrato = new ContratoSie();
+		productoContratoList = new ArrayList<DetProductoContratoSie>();
+		totalacumulado= new BigDecimal(0);
+		lstHistorico = new ArrayList<HistoricoObservacionesSie>();
+		objCobranzaOpera = new CobranzaOperadoraSie();
+		if(contratoXClienteList.size()==1){
+			log.info("consultar() == 1 ");
+			objcliente = objClienteService.findCliente(contratoXClienteList.get(0).getTbCliente().getIdcliente());
+			log.info("  " + objcliente.getIdcliente()+"  "+objcliente.getNombresCompletos());
+			listatelefono = objTelefonoService.listarTelefonoEmpleadosXidcliente(objcliente.getIdcliente());
+			productoContratoList =objProductoContratoService.listarDetProductoContratoXContrato(contratoXClienteList.get(0).getIdcontrato());
+			objContrato = objContratoService.findContrato(contratoXClienteList.get(0).getIdcontrato());
+			detallePagos = objCobranzaService.listarCobranzasXidcontrato(contratoXClienteList.get(0).getIdcontrato());
+			for (int i = 0; i < detallePagos.size(); i++) {
+				if(detallePagos.get(i).getFecpago()==null){
+				totalacumulado = totalacumulado.add(detallePagos.get(i).getImportemasmora());
+				}
+			}
+			lstHistorico = objHistoricoService.listarHistorial(contratoXClienteList.get(0).getIdcontrato());
+			//Mostrar el registro de la última llamada
+			
+			mensaje = "Consulto realizada";
+		}
+		else if(contratoXClienteList.size()==0){
+			mensaje = "Consulto realizada, no se encontraron datos";
+		}
+		log.info(" lista x consultaaa "+contratoXClienteList.size()+" MENSAJE "+ mensaje);
+		
+		msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				Constants.MESSAGE_INFO_TITULO, mensaje);
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		return null;
 	}
 	
 	/**
@@ -794,5 +859,132 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 	 */
 	public void setTotalacumulafoRefi(BigDecimal totalacumulafoRefi) {
 		this.totalacumulafoRefi = totalacumulafoRefi;
+	}
+
+	/**
+	 * @return the numDniCliente
+	 */
+	public String getNumDniCliente() {
+		return numDniCliente;
+	}
+
+	/**
+	 * @param numDniCliente the numDniCliente to set
+	 */
+	public void setNumDniCliente(String numDniCliente) {
+		this.numDniCliente = numDniCliente;
+	}
+
+	/**
+	 * @return the codigoContrato
+	 */
+	public String getCodigoContrato() {
+		return codigoContrato;
+	}
+
+	/**
+	 * @param codigoContrato the codigoContrato to set
+	 */
+	public void setCodigoContrato(String codigoContrato) {
+		this.codigoContrato = codigoContrato;
+	}
+
+	/**
+	 * @return the apePatCliente
+	 */
+	public String getApePatCliente() {
+		return apePatCliente;
+	}
+
+	/**
+	 * @param apePatCliente the apePatCliente to set
+	 */
+	public void setApePatCliente(String apePatCliente) {
+		this.apePatCliente = apePatCliente;
+	}
+
+	/**
+	 * @return the apeMatCliente
+	 */
+	public String getApeMatCliente() {
+		return apeMatCliente;
+	}
+
+	/**
+	 * @param apeMatCliente the apeMatCliente to set
+	 */
+	public void setApeMatCliente(String apeMatCliente) {
+		this.apeMatCliente = apeMatCliente;
+	}
+
+	/**
+	 * @return the nombreCliente
+	 */
+	public String getNombreCliente() {
+		return nombreCliente;
+	}
+
+	/**
+	 * @param nombreCliente the nombreCliente to set
+	 */
+	public void setNombreCliente(String nombreCliente) {
+		this.nombreCliente = nombreCliente;
+	}
+
+	/**
+	 * @return the tamanoLista
+	 */
+	public int getTamanoLista() {
+		tamanoLista = contratoXClienteList.size();
+		return tamanoLista;
+	}
+
+	/**
+	 * @param tamanoLista the tamanoLista to set
+	 */
+	public void setTamanoLista(int tamanoLista) {
+		this.tamanoLista = tamanoLista;
+	}
+
+	/**
+	 * @return the radio
+	 */
+	public int getRadio() {
+		return radio;
+	}
+
+	/**
+	 * @param radio the radio to set
+	 */
+	public void setRadio(int radio) {
+		this.radio = radio;
+	}
+
+	/**
+	 * @return the idtipodoc
+	 */
+	public int getIdtipodoc() {
+		return idtipodoc;
+	}
+
+	/**
+	 * @param idtipodoc the idtipodoc to set
+	 */
+	public void setIdtipodoc(int idtipodoc) {
+		this.idtipodoc = idtipodoc;
+	}
+
+	/**
+	 * @return the contratoXClienteList
+	 */
+	public List<ContratoSie> getContratoXClienteList() {
+		return contratoXClienteList;
+	}
+
+	/**
+	 * @param contratoXClienteList the contratoXClienteList to set
+	 */
+	public void setContratoXClienteList(List<ContratoSie> contratoXClienteList) {
+		this.contratoXClienteList = contratoXClienteList;
 	}
 }

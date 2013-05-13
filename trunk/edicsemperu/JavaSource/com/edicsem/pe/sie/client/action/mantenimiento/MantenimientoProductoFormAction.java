@@ -88,7 +88,7 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 	 * #update()
 	 */
 	public String update() throws Exception {
-		log.info("update()"+ objProductoSie.getRutaimagenproducto() );
+		log.info("update()* "+ objProductoSie.getRutaimagenproducto() );
 		TipoProducto = objProductoSie.getTbTipoProducto().getIdtipoproducto();
 		if(objProductoSie.getRutaimagenproducto()!=null){
 			//Si no se encuentra la ruta se muestra imagen por defecto
@@ -105,7 +105,7 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 				setImage( new DefaultStreamedContent(stream));
 			}
 		}else{
-			log.info("imagen nula ");
+			log.info("imagen nula * ");
 			setImage(null);
 		}
 		
@@ -134,18 +134,19 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 			imageOutput = new FileImageOutputStream(new File(newFileName));
 			
 			objProductoSie.setRutaimagenproducto(newFileName);
-			log.info(" Ruta " + objProductoSie.getRutaimagenproducto()   );
+			log.info(" Ruta " + objProductoSie.getRutaimagenproducto());
 			
 			foto = event.getFile().getContents();
 			imageOutput.write(foto, 0, foto.length);
 			imageOutput.close();
 			event.getFile().getInputstream().close();
 			idFoto+=1;
-			context.update(":formManteProducto:imgFotoInserta");
+			context.execute("imageProducDialog.hide()");
+			context.update("formManteProducto:imgFotoInserta");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return productoSearch.getViewMant();
+		return null;
 	}
 	
 	/*
