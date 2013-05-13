@@ -101,8 +101,8 @@ target="#{MantenimientoHorarioPuntoVentaSearchAction.idc}"
 </p:column>			  
 			  
 </p:dataTable>
-<p:blockUI block="punto" trigger="punto">cargando<br />
-				<p:graphicImage   value="/images/ajax_loader.gif"  style="width:60px; heigth:60px"  /></p:blockUI>
+<p:blockUI block="punto" trigger="punto">
+<p:graphicImage value="/images/ajax_loader.gif"  style="width:120px; heigth:120px"  /></p:blockUI>
 </p:fieldset>
 	<p:fieldset legend="Visualizar Horario" style="margin-top:20px">
     <p:schedule  value="#{MantenimientoHorarioPuntoVentaSearchAction.eventModel}" draggable="false" resizable="false"  locale="pe" view="agendaWeek"   />  

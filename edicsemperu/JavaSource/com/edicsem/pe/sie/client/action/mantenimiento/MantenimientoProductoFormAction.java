@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -90,8 +91,19 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 		log.info("update()"+ objProductoSie.getRutaimagenproducto() );
 		TipoProducto = objProductoSie.getTbTipoProducto().getIdtipoproducto();
 		if(objProductoSie.getRutaimagenproducto()!=null){
-			InputStream stream = new FileInputStream(objProductoSie.getRutaimagenproducto());
-			setImage( new DefaultStreamedContent(stream));
+			//Si no se encuentra la ruta se muestra imagen por defecto
+			
+			File outputFile = new File(objProductoSie.getRutaimagenproducto());
+			if (!outputFile.exists()){
+				log.info("imagen nula ");
+				String rutaDefecto = Constants.RUTA_IMAGEN_DEFECTO;
+				InputStream stream = new FileInputStream(rutaDefecto);
+				setImage( new DefaultStreamedContent(stream));
+			}else{
+				log.info("imagen not null");
+				InputStream stream = new FileInputStream(objProductoSie.getRutaimagenproducto());
+				setImage( new DefaultStreamedContent(stream));
+			}
 		}else{
 			log.info("imagen nula ");
 			setImage(null);
@@ -103,6 +115,7 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 
 	public String cargarImagenInsertar(FileUploadEvent event) {
 		log.info("cargarImagenInsertar** " + event.getFile().getFileName() );
+		RequestContext context = RequestContext.getCurrentInstance();
 		String photo = event.getFile().getFileName();
 		FileImageOutputStream imageOutput;
 		String newFileName = Constants.RUTA_IMAGENES_PRODUCTO + File.separator + photo;
@@ -128,11 +141,10 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 			imageOutput.close();
 			event.getFile().getInputstream().close();
 			idFoto+=1;
-			
+			context.update(":formManteProducto:imgFotoInserta");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 		return productoSearch.getViewMant();
 	}
 	
