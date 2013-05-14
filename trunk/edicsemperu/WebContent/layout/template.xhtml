@@ -539,33 +539,109 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:confirmDialog>
 	</h:form>
 	
-	<!--  Mantenimiento CAJA (Registrar , actualizar)-->
-	<h:form id="NuevoModifiCaja">
-		<p:dialog header="Registro/ Modificación Caja" widgetVar="cajaNuevoDialog" showEffect="fade"
-			hideEffect="explode" modal="true" width="600" position="center">
+	<!--  Mantenimiento CAJA ENTRADA (Registrar , actualizar)-->
+	<h:form id="NuevoModificaEntradaCaja">
+		<p:dialog header="Registro/ Modificación Caja" widgetVar="cajaNuevoEntradaDialog" showEffect="fade"
+			hideEffect="explode" modal="true" position="center" resizable="false" >
 			<p:messages id="message"   showDetail="true" escape="false" closable="true" />
-			<h:panelGrid id="display" columns="2"  >
+			<h:panelGrid id="display" columns="2" cellpadding="5" >
+				<h:outputText value="Empleado" />
+				<p:selectOneMenu value="#{cajaForm.idEmpleado}" required="true" >
+					<f:selectItem itemLabel="Seleccione Empleado" itemValue="#{null}" />
+					<f:selectItems value="#{comboAction.empleadoItems}" />
+				</p:selectOneMenu>
 				
 				<h:outputText value="#{message['mantenimiento.descripcion']}" />
 				<p:inputText value="#{cajaForm.objCajaSie.descripcion}" required="true"
-						style="font-weight:bold" maxlength="15" />
+						style="font-weight:bold" maxlength="50" size="40" />
 						
 				<h:outputText value="Detalle" />
-				<p:inputText value="#{cajaForm.objCajaSie.detalle}" required="true"
-						style="font-weight:bold" maxlength="50" />
+				<p:inputTextarea value="#{cajaForm.objCajaSie.detalle}" 
+						style="font-weight:bold" maxlength="300" cols="40" rows="5" />
 						
 				<h:outputText value="Fecha de Pago" />
 				<p:calendar value="#{cajaForm.objCajaSie.fechapago}" required="true"
-						style="font-weight:bold" pattern="dd/mm/yyyy" />
+						style="font-weight:bold" pattern="dd/mm/yyyy" locale="pe" />
 						
 				<h:outputText value="Monto" />
-				<p:inputText value="#{cajaForm.objCajaSie.monto}" required="true"
-						style="font-weight:bold" maxlength="30" />
+				<p:spinner value="#{cajaForm.objCajaSie.monto}" required="true" />
+				
+				<f:facet name="footer">
+					<p:commandButton value="Guardar" update="message" action="#{cajaForm.insertar}"  
+					icon="ui-icon ui-icon-disk" />
+					<p:commandButton value="Cancelar" onclick="cajaNuevoEntradaDialog.hide()" 
+					icon="ui-icon ui-icon-close"/>
+				</f:facet>
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+	
+	<!--  Mantenimiento CAJA SALIDA GASTO (Registrar , actualizar)-->
+	<h:form id="NuevoModificaCaja">
+		<p:dialog header="Registro/ Modificación Caja" widgetVar="cajaNuevoDialog" showEffect="fade"
+			hideEffect="explode" modal="true" width="600" position="center" resizable="false" >
+			<p:messages id="message"   showDetail="true" escape="false" closable="true" />
+			<h:panelGrid id="display" columns="2" cellpadding="5" >
+				
+				<h:outputText value="#{message['mantenimiento.descripcion']}" />
+				<p:inputText value="#{cajaForm.objCajaSie.descripcion}" required="true"
+						style="font-weight:bold" maxlength="50" size="40" />
 						
+				<h:outputText value="Detalle" />
+				<p:inputTextarea value="#{cajaForm.objCajaSie.detalle}" 
+						style="font-weight:bold" maxlength="300" cols="40" rows="5" />
+						
+				<h:outputText value="Fecha de Pago" />
+				<p:calendar value="#{cajaForm.objCajaSie.fechapago}" required="true"
+						style="font-weight:bold" pattern="dd/mm/yyyy" locale="pe" />
+						
+				<h:outputText value="Monto" />
+				<p:spinner value="#{cajaForm.objCajaSie.monto}" required="true" />
+				
+				<h:outputText value="Número de Comprobante" />
+				<p:inputMask mask="9999999999" value="#{cajaForm.objCajaSie.numcomprobante}" />
+				
 				<f:facet name="footer">
 					<p:commandButton value="Guardar" update="message"
 						action="#{cajaForm.insertar}"  icon="ui-icon ui-icon-disk" />
 					<p:commandButton value="Cancelar" onclick="cajaNuevoDialog.hide()" icon="ui-icon ui-icon-close"/>
+				</f:facet>
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+	
+	<!--  Mantenimiento DETALLE CAJA -->
+	<h:form id="DetalleCaja">
+		<p:dialog header="Detalle Caja" widgetVar="cajaDetalleDialog" showEffect="fade"
+			hideEffect="explode" modal="true" position="center" resizable="false" >
+			<p:messages id="message"   showDetail="true" escape="false" closable="true" />
+			<h:panelGrid id="display" columns="2" cellpadding="5" >
+				<h:outputText value="Empleado" />
+				<p:dataTable value="#{cajaForm.cajaList}" var="p" id="lista" paginator="true" rows="10"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" widgetVar="table"
+					emptyMessage="#{message['rsltd.empty']}">
+					<f:facet name="header">Movimiento Caja</f:facet>
+					<p:column sortBy="#{p.empleadocreacion}" filterBy="#{p.empleadocreacion}" headerText="Empleado">
+						<h:outputText value="#{p.empleadocreacion}" />
+					</p:column>
+					<p:column sortBy="#{p.tipoPago}" filterBy="#{p.tipoPago}" headerText="Tipo de Movimiento">
+						<h:outputText value="#{p.tipoPago}" />
+					</p:column>
+					<p:column sortBy="#{p.monto}" filterBy="#{p.monto}" headerText="Monto">
+						<h:outputText value="#{p.monto}" />
+					</p:column>
+					<p:columnGroup type="footer">
+						<p:row>
+		                    <p:column footerText="Saldo Total  S/." style="text-align:right"/>  
+		                    <p:column footerText="#{cajaForm.saldoTotalEmpleado}" />
+	                    </p:row>
+                    </p:columnGroup>
+				</p:dataTable>
+				
+				<f:facet name="footer">
+					<p:commandButton value="Cerrar" onclick="cajaDetalleDialog.hide()" 
+					icon="ui-icon ui-icon-close"/>
 				</f:facet>
 			</h:panelGrid>
 		</p:dialog>

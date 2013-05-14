@@ -8,23 +8,21 @@
 	<script language="JavaScript" type="text/javascript">
 		window.history.forward(-1);
 	</script>
-		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Caja </h1>
-		<h:form>
+		<h1 class="title ui-widget-header ui-corner-all">Movimiento Caja de los Empleados</h1>
+		<h:form >
 		<p:messages id="message" showDetail="true" />
-			<p:dataTable value="#{cajaSearch.cajaList}" var="p" 
-					id="lista" paginator="true" rows="10"
-					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="5,10,15" widgetVar="table"
-					emptyMessage="#{message['rsltd.empty']}">
-					<f:facet name="header">Mantenimiento Caja </f:facet>
+			<p:dataTable value="#{cajaSearch.cajaActualList}" var="p" id="lista" paginator="true" rows="10"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" widgetVar="table" emptyMessage="#{message['rsltd.empty']}">
+					<f:facet name="header">Movimiento Caja</f:facet>
 					<f:facet name="header">
 					    <p:outputPanel>
-						 <h:outputText value="#{message['rsltd.buscar']}"/>
-						 <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px; align:Left; "/>
+					    <h:outputText value="#{message['rsltd.buscar']}"/>
+					    <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px; align:Left; "/>
 						</p:outputPanel>
 					</f:facet>
-					<p:column sortBy="#{p.empleadocreacion}" filterBy="#{p.empleadocreacion}" headerText="Empleado">
-						<h:outputText value="#{p.empleadocreacion}" />
+					<p:column sortBy="#{p.tbEmpleado.nombresCompletos}" filterBy="#{p.tbEmpleado.nombresCompletos}" headerText="Empleado">
+						<h:outputText value="#{p.tbEmpleado.nombresCompletos}" />
 					</p:column>
 					<p:column sortBy="#{p.tipoPago}" filterBy="#{p.tipoPago}" headerText="Tipo de Movimiento">
 						<h:outputText value="#{p.tipoPago}" />
@@ -32,26 +30,24 @@
 					<p:column sortBy="#{p.descripcion}" filterBy="#{p.descripcion}" headerText="#{message['mantenimiento.productoList.descripcion']}">
 						<h:outputText value="#{p.descripcion}" />
 					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="#{message['mantenimiento.productoList.modificar']}" />
-						</f:facet>
-						<p:commandButton oncomplete="cajaNuevoDialog.show()" action="#{cajaForm.update}"
-							update=":NuevoModificaCaja:display" icon="ui-icon ui-icon-pencil">
-							<f:setPropertyActionListener value="#{p}" target="#{cajaForm.objCajaSie}" />
+					<p:column headerText="Ver Detalle" >
+						<p:commandButton oncomplete="cajaDetalleDialog.show()" action="#{cajaForm.consultar}"
+							update=":DetalleCaja:display" icon="ui-icon ui-icon-pencil">
+							<f:setPropertyActionListener value="#{p.tbEmpleado.idempleado}" target="#{cajaForm.idEmpleado}" />
 				        </p:commandButton>
 					</p:column>
 					<p:columnGroup type="footer">
-						<p:row>  
+						<p:row>
+							<p:column />
 		                    <p:column footerText="Saldo Total  S/." style="text-align:right"/>  
 		                    <p:column footerText="#{cajaSearch.saldoTotal}" />
 	                    </p:row>
                     </p:columnGroup>
 					<f:facet name="footer">
 						<div align="left">
-							<p:commandButton id="btnNuevo" value="Nuevo Registro Caja"  update=":NuevoModificaCaja:display" 
-							action="#{cajaForm.agregar}" oncomplete="cajaNuevoDialog.show()" 
-							title="Ingresar un nuevo pago en caja" icon="ui-icon-star"/>
+							<p:commandButton id="btnNuevo" value="Nueva Entrada Caja"  update=":NuevoModificaEntradaCaja:display" 
+							action="#{cajaForm.agregar}" oncomplete="cajaNuevoEntradaDialog.show()" 
+							title="Ingresar un nuevo depósito en caja" icon="ui-icon-star"/>
 							 <p:tooltip for="btnNuevo"/>
 						</div>
 					</f:facet>
