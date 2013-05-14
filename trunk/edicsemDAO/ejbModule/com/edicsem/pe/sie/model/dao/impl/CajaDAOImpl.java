@@ -68,14 +68,29 @@ public class CajaDAOImpl implements CajaDAO{
 		}
 		return c;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.CajaDAO#listarCaja()
 	 */
 	public List listarCaja() {
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from CajaSie p ");
+			Query q = em.createQuery("select p from CajaSie p  order by p.fechacreacion desc");
+			lista =  q.getResultList(); 
+		   log.info("tamaño lista caja --> " + lista.size()+"  ");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.CajaDAO#listarCajaPorEmpleado(int)
+	 */
+	public List listarCajaPorEmpleado(int idempleado) {
+		List  lista = null;
+		try {
+			Query q = em.createQuery("select p from CajaSie p  where p.tbEmpleado.idempleado = "+idempleado );
 			lista =  q.getResultList(); 
 		   log.info("tamaño lista caja --> " + lista.size()+"  ");
 		} catch (Exception e) {
