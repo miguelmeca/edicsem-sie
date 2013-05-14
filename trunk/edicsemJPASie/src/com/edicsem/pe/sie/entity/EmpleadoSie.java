@@ -142,6 +142,10 @@ public class EmpleadoSie implements Serializable {
   	@OneToMany(mappedBy="tbEmpleado")
   	private Set<DetTurnoEmplSie> tbDetTurnoEmpl;
   	
+  	//bi-directional many-to-one association to CajaSie
+  	@OneToMany(mappedBy="tbEmpleado")
+  	private Set<CajaSie> tbcaja;
+  	
 	public EmpleadoSie() {
     }
 
@@ -436,6 +440,14 @@ public class EmpleadoSie implements Serializable {
 
 	public void setContrasenacorreo(String contrasenacorreo) {
 		this.contrasenacorreo = contrasenacorreo;
+	}
+
+	public Set<CajaSie> getTbcaja() {
+		return tbcaja;
+	}
+
+	public void setTbcaja(Set<CajaSie> tbcaja) {
+		this.tbcaja = tbcaja;
 	}
 
 }

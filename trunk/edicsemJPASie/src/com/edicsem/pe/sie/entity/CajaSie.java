@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -40,7 +42,11 @@ public class CajaSie implements Serializable {
 	
 	private String numcomprobante;
 	
+	private Integer idtipo;
+	
 	private BigDecimal monto;
+	
+	private BigDecimal saldo;
 
     @Temporal( TemporalType.DATE)
 	private Date fechapago;
@@ -49,13 +55,24 @@ public class CajaSie implements Serializable {
 	private Timestamp fechacreacion;
 
 	private Timestamp fechamodifica;
-
+	
 	private String usuariocreacion;
-
+	
 	private String usuariomodifica;
+	
+	 //bi-directional many-to-one association to EmpleadoSie
+    @ManyToOne
+	@JoinColumn(name="idempleado")
+	private EmpleadoSie tbEmpleado;
 	
 	@Transient
 	private String fechaCreacionString;
+	
+	@Transient
+	private String tipoPago;
+	
+	@Transient
+	private String empleadocreacion;
 	
     public CajaSie() {
     }
@@ -147,6 +164,50 @@ public class CajaSie implements Serializable {
 
 	public void setMonto(BigDecimal monto) {
 		this.monto = monto;
+	}
+
+	public String getTipoPago() {
+		if(idtipo==1)
+			tipoPago="Entrada";
+		else
+			tipoPago="Gasto";
+		return tipoPago;
+	}
+
+	public void setTipoPago(String tipoPago) {
+		this.tipoPago = tipoPago;
+	}
+
+	public Integer getIdtipo() {
+		return idtipo;
+	}
+
+	public void setIdtipo(Integer idtipo) {
+		this.idtipo = idtipo;
+	}
+
+	public BigDecimal getSaldo() {
+		return saldo;
+	}
+
+	public void setSaldo(BigDecimal saldo) {
+		this.saldo = saldo;
+	}
+
+	public EmpleadoSie getTbEmpleado() {
+		return tbEmpleado;
+	}
+
+	public void setTbEmpleado(EmpleadoSie tbEmpleado) {
+		this.tbEmpleado = tbEmpleado;
+	}
+
+	public String getEmpleadocreacion() {
+		return empleadocreacion;
+	}
+
+	public void setEmpleadocreacion(String empleadocreacion) {
+		this.empleadocreacion = empleadocreacion;
 	}
 	
 }
