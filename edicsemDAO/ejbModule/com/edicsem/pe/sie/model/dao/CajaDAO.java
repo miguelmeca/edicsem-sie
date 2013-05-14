@@ -13,5 +13,6 @@ public interface CajaDAO {
 	public abstract void updateCaja(CajaSie c);
 	public abstract CajaSie findCaja (int id);
 	public abstract List  listarCaja();
+	public abstract List listarCajaPorEmpleado(int idempleado);
 	
 }

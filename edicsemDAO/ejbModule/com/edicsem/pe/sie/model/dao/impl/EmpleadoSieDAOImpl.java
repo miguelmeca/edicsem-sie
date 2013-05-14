@@ -209,7 +209,7 @@ public class EmpleadoSieDAOImpl implements EmpleadoSieDAO{
 				 obj = (EmpleadoSie) lista.get(0);
 			}
 			
-			log.info("BUSQUEDA DE EMPLEADO en el DAOIMPLE --> " + lista.size());
+			log.info("BUSQUEDA X USUARIO en el DAOIMPLE --> " + lista.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
