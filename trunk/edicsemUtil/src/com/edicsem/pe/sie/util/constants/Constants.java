@@ -156,6 +156,8 @@ public class Constants {
 
 	public static final String REPORTE_LLAMADA_OPERADORA = "ReporteTrabajoOperadoraList";
 	
+	public static final String MOV_CAJA_FORM_LIST_PAGE = "movimientoCajaFormList";
+	
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
 	public static final String COD_ESTADO_TB_CARGO_EMPLEADO = "CE";
