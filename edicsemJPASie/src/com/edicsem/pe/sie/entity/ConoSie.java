@@ -2,6 +2,7 @@ package com.edicsem.pe.sie.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -17,24 +19,20 @@ import com.edicsem.pe.sie.util.constants.Constants;
 
 
 /**
- * The persistent class for the tb_zonificacion database table.
+ * The persistent class for the tb_cono_zonifica database table.
  * 
  */
 @Entity
-@Table(name="tb_zonificacion", schema = Constants.ESQUEMA_SIE_POSTGRE)
-public class ZonificacionSie  implements Serializable {
+@Table(name="tb_cono_zonifica", schema = Constants.ESQUEMA_SIE_POSTGRE)
+public class ConoSie  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_ZONIFICACION_IDZONIFICA_GENERATOR", sequenceName="SIE.TB_ZONIFICACION_IDZONIFICASEQ", initialValue=1, allocationSize =1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_ZONIFICACION_IDZONIFICA_GENERATOR")
-	private Integer idzonifica;
+	@SequenceGenerator(name="TB_CONO_ZONIFICA_IDZONIFICACION_GENERATOR", sequenceName="SIE.TB_CONO_ZONIFICA_IDZONIFICACION_SEQ", initialValue=1, allocationSize =1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_CONO_ZONIFICA_IDZONIFICACION_GENERATOR")
+	private Integer idcono;
 	
-	private String codplano;
-	
-	private String codsector;
-	
-	private String codletra;
+	private String descripcion;
 	
 	@Column(columnDefinition="DEFAULT LOCALTIMESTAMP", nullable =  false ,insertable =  false )
 	private Timestamp fechacreacion;
@@ -44,15 +42,27 @@ public class ZonificacionSie  implements Serializable {
 	private String usuariocreacion;
 
 	private String usuariomodifica;
-	
-	//bi-directional many-to-one association to UbigeoSie
+
+	//bi-directional many-to-one association to EstadoGeneralSie
     @ManyToOne
-	@JoinColumn(name="idubigeo")
-	private UbigeoSie tbUbigeo;
+	@JoinColumn(name="idestadogeneral")
+	private EstadoGeneralSie tbEstadoGeneral;
     
-    public ZonificacionSie() {
+    //bi-directional many-to-one association to UbigeoSie
+  	@OneToMany(mappedBy="tbConoZonifica")
+  	private Set<UbigeoSie> tbUbigeo;
+  	
+    public ConoSie() {
     }
-    
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
 	public Timestamp getFechacreacion() {
 		return this.fechacreacion;
 	}
@@ -85,43 +95,27 @@ public class ZonificacionSie  implements Serializable {
 		this.usuariomodifica = usuariomodifica;
 	}
 
-	public Integer getIdzonifica() {
-		return idzonifica;
+	public EstadoGeneralSie getTbEstadoGeneral() {
+		return this.tbEstadoGeneral;
 	}
 
-	public void setIdzonifica(Integer idzonifica) {
-		this.idzonifica = idzonifica;
+	public void setTbEstadoGeneral(EstadoGeneralSie tbEstadoGeneral) {
+		this.tbEstadoGeneral = tbEstadoGeneral;
 	}
 
-	public UbigeoSie getTbUbigeo() {
+	public Set<UbigeoSie> getTbUbigeo() {
 		return tbUbigeo;
 	}
 
-	public void setTbUbigeo(UbigeoSie tbUbigeo) {
+	public void setTbUbigeo(Set<UbigeoSie> tbUbigeo) {
 		this.tbUbigeo = tbUbigeo;
 	}
 
-	public String getCodplano() {
-		return codplano;
+	public Integer getIdcono() {
+		return idcono;
 	}
 
-	public void setCodplano(String codplano) {
-		this.codplano = codplano;
-	}
-
-	public String getCodsector() {
-		return codsector;
-	}
-
-	public void setCodsector(String codsector) {
-		this.codsector = codsector;
-	}
-
-	public String getCodletra() {
-		return codletra;
-	}
-
-	public void setCodletra(String codletra) {
-		this.codletra = codletra;
+	public void setIdcono(Integer idcono) {
+		this.idcono = idcono;
 	}
 }

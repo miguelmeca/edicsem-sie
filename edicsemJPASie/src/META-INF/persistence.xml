@@ -85,13 +85,14 @@
 		<class>com.edicsem.pe.sie.entity.RefinanciarPagoSie</class>
 		<class>com.edicsem.pe.sie.entity.ConfigCobranzaOperaSie</class>
 		<class>com.edicsem.pe.sie.entity.TipoCobranzaSie</class>
-		<class>com.edicsem.pe.sie.entity.ZonificacionSie</class>
+		<class>com.edicsem.pe.sie.entity.ConoSie</class>
 		<class>com.edicsem.pe.sie.entity.NotificacionSie</class>
 		<class>com.edicsem.pe.sie.entity.ConfigNotificacionSie</class>
 		<class>com.edicsem.pe.sie.entity.TipoRefinanciaSie</class>
 		<class>com.edicsem.pe.sie.entity.ParametroActividadSie</class>
 		<class>com.edicsem.pe.sie.entity.ConfigPuntajeSie</class>
 		<class>com.edicsem.pe.sie.entity.CajaSie</class>
+		<class>com.edicsem.pe.sie.entity.ZonificacionSie</class>
 		<properties>
 			<property name="eclipselink.jdbc.driver" value="org.postgresql.Driver" />
 			<property name="eclipselink.jdbc.url" value="jdbc:postgres://localhost:5432/bd_sie" />

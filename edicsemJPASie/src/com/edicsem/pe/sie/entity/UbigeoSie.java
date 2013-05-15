@@ -47,9 +47,13 @@ public class UbigeoSie implements Serializable {
 	private Set<PuntoVentaSie> tbPuntoVentas;
 	
 	//bi-directional many-to-one association to ZonificacionSie
+	@OneToMany(mappedBy="tbUbigeo")
+	private Set<ZonificacionSie> tbZonificacion;
+	
+	//bi-directional many-to-one association to ConoSie
     @ManyToOne
-	@JoinColumn(name="idzonificacion")
-	private ZonificacionSie tbZonificacion;
+	@JoinColumn(name="idcono")
+	private ConoSie tbConoZonifica;
 
 	public UbigeoSie() {
     }
@@ -110,11 +114,19 @@ public class UbigeoSie implements Serializable {
 		this.tbPuntoVentas = tbPuntoVentas;
 	}
 
-	public ZonificacionSie getTbZonificacion() {
+	public ConoSie getTbConoZonifica() {
+		return tbConoZonifica;
+	}
+
+	public void setTbConoZonifica(ConoSie tbConoZonifica) {
+		this.tbConoZonifica = tbConoZonifica;
+	}
+
+	public Set<ZonificacionSie> getTbZonificacion() {
 		return tbZonificacion;
 	}
 
-	public void setTbZonificacion(ZonificacionSie tbZonificacion) {
+	public void setTbZonificacion(Set<ZonificacionSie> tbZonificacion) {
 		this.tbZonificacion = tbZonificacion;
 	}
 }
