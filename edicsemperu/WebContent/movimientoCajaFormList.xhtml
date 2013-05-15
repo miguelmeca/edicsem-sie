@@ -36,13 +36,6 @@
 							<f:setPropertyActionListener value="#{p.tbEmpleado.idempleado}" target="#{cajaForm.idEmpleado}" />
 				        </p:commandButton>
 					</p:column>
-					<p:columnGroup type="footer">
-						<p:row>
-							<p:column />
-		                    <p:column footerText="Saldo Total  S/." style="text-align:right"/>  
-		                    <p:column footerText="#{cajaSearch.saldoTotal}" />
-	                    </p:row>
-                    </p:columnGroup>
 					<f:facet name="footer">
 						<div align="left">
 							<p:commandButton id="btnNuevo" value="Nueva Entrada Caja"  update=":NuevoModificaEntradaCaja:display" 
