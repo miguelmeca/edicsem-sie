@@ -6,9 +6,10 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.LogFactory;
+
 import com.edicsem.pe.sie.entity.UbigeoSie;
-import com.edicsem.pe.sie.model.dao.UbigeoDAO; 
+import com.edicsem.pe.sie.model.dao.UbigeoDAO;
 import com.edicsem.pe.sie.service.facade.UbigeoService;
 @Stateless
 public class UbigeoServiceImpl implements UbigeoService{
@@ -18,14 +19,12 @@ public class UbigeoServiceImpl implements UbigeoService{
 	@EJB
 	private UbigeoDAO objUbigeoDao;
 	
-	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.UbigeoService#insertUbigeo(com.edicsem.pe.sie.entity.UbigeoSie)
 	 */
 	public void insertUbigeo(UbigeoSie ubigeo) {
 		objUbigeoDao.insertUbigeo(ubigeo);
 	}
-
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.UbigeoService#updateUbigeo(com.edicsem.pe.sie.entity.UbigeoSie)

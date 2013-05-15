@@ -9,7 +9,6 @@ import com.edicsem.pe.sie.entity.UbigeoSie;
 @Local
 public interface UbigeoService {
 	
-
 	public abstract void insertUbigeo(UbigeoSie ubigeo);
 	public abstract void updateUbigeo(UbigeoSie ubigeo);
 	public abstract void eliminarUbigeo(int id);
@@ -18,4 +17,5 @@ public interface UbigeoService {
 	public abstract List  listarUbigeoProvincias( String idDepartamento);
 	public abstract List  listarUbigeoDistritos( String idDepartamento, String idProvincia);
 	public abstract String findDepaProv(String idDepartamento, String idProvincia);
+	
 }
