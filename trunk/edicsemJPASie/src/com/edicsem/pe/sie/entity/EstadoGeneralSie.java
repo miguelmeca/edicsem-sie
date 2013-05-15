@@ -229,9 +229,9 @@ public class EstadoGeneralSie implements Serializable {
 	@OneToMany(mappedBy="tbEstadoGeneral")
 	private Set<CobranzaOperadoraSie> tbCobranzaOpera;
 	
-	//bi-directional many-to-one association to ZonificacionSie
+	//bi-directional many-to-one association to ConoSie
 	@OneToMany(mappedBy="tbEstadoGeneral")
-	private Set<ZonificacionSie> tbZonificacion;
+	private Set<ConoSie> tbZonificacion;
 	
 	//bi-directional many-to-one association to NotificacionSie
 	@OneToMany(mappedBy="tbEstadoGeneral")
@@ -689,11 +689,11 @@ public class EstadoGeneralSie implements Serializable {
 		this.tbCobranzaOpera = tbCobranzaOpera;
 	}
 
-	public Set<ZonificacionSie> getTbZonificacion() {
+	public Set<ConoSie> getTbZonificacion() {
 		return tbZonificacion;
 	}
 
-	public void setTbZonificacion(Set<ZonificacionSie> tbZonificacion) {
+	public void setTbZonificacion(Set<ConoSie> tbZonificacion) {
 		this.tbZonificacion = tbZonificacion;
 	}
 
