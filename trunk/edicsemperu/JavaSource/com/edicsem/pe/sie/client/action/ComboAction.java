@@ -152,6 +152,9 @@ public class ComboAction {
 	private Map<String, Integer> turnoItems = new HashMap<String, Integer>();
 	private Map<String, Integer> calificacionItems = new HashMap<String, Integer>();
 	private Map<String, Integer> parametroActividadItems = new HashMap<String, Integer>();
+	private Map<String, String> planoItems= new HashMap<String, String>();
+	private Map<String, String> letraItems= new HashMap<String, String>();
+	private Map<String, Integer> sectorItems= new HashMap<String, Integer>();
 	
 	@EJB
 	private TurnoService objTurnoService;
@@ -2030,6 +2033,51 @@ public class ComboAction {
 	 */
 	public void setParametroActividadItems(Map<String, Integer> parametroActividadItems) {
 		this.parametroActividadItems = parametroActividadItems;
+	}
+
+	/**
+	 * @return the sectorItems
+	 */
+	public Map<String, Integer> getSectorItems() {
+		sectorItems = sortByComparator(sectorItems);
+		return sectorItems;
+	}
+
+	/**
+	 * @param sectorItems the sectorItems to set
+	 */
+	public void setSectorItems(Map<String, Integer> sectorItems) {
+		this.sectorItems = sectorItems;
+	}
+
+	/**
+	 * @return the planoItems
+	 */
+	public Map<String, String> getPlanoItems() {
+		planoItems = sortByComparator(planoItems);
+		return planoItems;
+	}
+
+	/**
+	 * @param planoItems the planoItems to set
+	 */
+	public void setPlanoItems(Map<String, String> planoItems) {
+		this.planoItems = planoItems;
+	}
+
+	/**
+	 * @return the letraItems
+	 */
+	public Map<String, String> getLetraItems() {
+		letraItems = sortByComparator(letraItems);
+		return letraItems;
+	}
+
+	/**
+	 * @param letraItems the letraItems to set
+	 */
+	public void setLetraItems(Map<String, String> letraItems) {
+		this.letraItems = letraItems;
 	}
 	
 }

@@ -22,7 +22,9 @@ import org.apache.commons.logging.LogFactory;
 import com.edicsem.pe.sie.beans.ReporteParams;
 import com.edicsem.pe.sie.client.report.service.ReporteExecutionService;
 import com.edicsem.pe.sie.entity.ClienteSie;
+import com.edicsem.pe.sie.entity.ZonificacionSie;
 import com.edicsem.pe.sie.service.facade.ClienteService;
+import com.edicsem.pe.sie.service.facade.ZonificacionService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
@@ -33,19 +35,25 @@ public class ReporteCobranzaCasaForm extends BaseMantenimientoAbstractAction{
 	private List<ClienteSie> lstCliente;
 	public static Log log = LogFactory.getLog(ReporteCobranzaCasaForm.class);
 	private String idDepartamento, idProvincia, idUbigeo;
-	private String letra, plano, sector;
 	private String ContentType, mensaje;
 	private int stockActual,cantLista;
+	private int radio;
+	private List<String> letraList;
+	private List<String> planoList;
+	private List<String> sectorList;
 	
 	@EJB
 	private ClienteService objClienteService;
-	
 	@EJB
 	private ReporteExecutionService objReporteService;
+	@EJB
+	private ZonificacionService objZonificacionService;
 	
 	@ManagedProperty(value = "#{comboAction}")
 	private ComboAction comboManager;
-	
+	private Map<String, String> planoItems= new HashMap<String, String>();
+	private Map<String, String> letraItems= new HashMap<String, String>();
+	private Map<String, Integer> sectorItems= new HashMap<String, Integer>();
 	public ReporteCobranzaCasaForm(){
 		
 	}
@@ -55,6 +63,7 @@ public class ReporteCobranzaCasaForm extends BaseMantenimientoAbstractAction{
 	 */
 	public void init() {
 		cantLista=0;
+		idUbigeo="0";
 		ContentType="";
 	}
 	
@@ -87,21 +96,74 @@ public class ReporteCobranzaCasaForm extends BaseMantenimientoAbstractAction{
 		comboManager.setIdProvincia(getIdProvincia());
 	}
 	
+	public void buscarZonificacionXDistrito() {
+		log.info("buscarZonificacionXDistrito() ");
+
+		 planoItems= new HashMap<String, String>();
+		List<ZonificacionSie> lista = objZonificacionService.listarZonificacionXDistrito(idUbigeo);
+		
+		for (int i = 0; i < lista.size(); i++) {
+			ZonificacionSie entidad = new ZonificacionSie();
+			entidad = (ZonificacionSie) lista.get(i);
+			planoItems.put(entidad.getCodplano(),entidad.getCodplano());
+			comboManager.setPlanoItems(planoItems);
+		}
+	}
+	
+	public void buscarZonificacionXPlano() {
+		letraItems= new HashMap<String, String>();
+		sectorItems= new HashMap<String, Integer>();
+		planoList= new ArrayList<String>();
+		sectorList= new ArrayList<String>();
+		log.info("buscarZonificacionXPlano() ");
+		log.info("buscarZonificacionXPlano() "+idUbigeo);
+		log.info("buscarZonificacionXPlano() "+planoList.size()+" "+letraList.size());
+		if(planoList.size()>0){
+			List<ZonificacionSie> lista = objZonificacionService.listarZonificacionXPlano(idUbigeo,planoList);
+			
+			for (int i = 0; i < lista.size(); i++) {
+				ZonificacionSie entidad = new ZonificacionSie();
+				entidad = (ZonificacionSie) lista.get(i);
+				letraItems.put(entidad.getCodletra(),entidad.getCodletra());
+				comboManager.setLetraItems(letraItems);
+			}
+			
+		}
+		if(letraList.size()>0){
+			List<ZonificacionSie> lista = objZonificacionService.listarZonificacionXPlanoXLetra(idUbigeo,planoList, letraList);
+			
+			for (int i = 0; i < lista.size(); i++) {
+				ZonificacionSie entidad = new ZonificacionSie();
+				entidad = (ZonificacionSie) lista.get(i);
+				sectorItems.put(entidad.getCodsector(),entidad.getIdzonifica());
+				comboManager.setSectorItems(sectorItems);
+			}
+		}
+	}
+	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#consultar()
 	 */
 	public String consultar() {
+		log.info("consultar() ");
 		setLstCliente(new ArrayList<ClienteSie>());
 		mensaje =null;
 		stockActual=0;
 		try {
-			
+			objZonificacionService.listarZonificacion();
 			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewMant()
+	 */
+	public String getViewMant() {
+		return Constants.REPORTE_COBRANZA_CASA;
 	}
 	
 	public void exportar() {
@@ -198,48 +260,6 @@ public class ReporteCobranzaCasaForm extends BaseMantenimientoAbstractAction{
 		this.stockActual = stockActual;
 	}
 	
-	/**
-	 * @return the letra
-	 */
-	public String getLetra() {
-		return letra;
-	}
-
-	/**
-	 * @param letra the letra to set
-	 */
-	public void setLetra(String letra) {
-		this.letra = letra;
-	}
-
-	/**
-	 * @return the plano
-	 */
-	public String getPlano() {
-		return plano;
-	}
-
-	/**
-	 * @param plano the plano to set
-	 */
-	public void setPlano(String plano) {
-		this.plano = plano;
-	}
-
-	/**
-	 * @return the sector
-	 */
-	public String getSector() {
-		return sector;
-	}
-
-	/**
-	 * @param sector the sector to set
-	 */
-	public void setSector(String sector) {
-		this.sector = sector;
-	}
-
 	public List<ClienteSie> getLstCliente() {
 		return lstCliente;
 	}
@@ -303,4 +323,55 @@ public class ReporteCobranzaCasaForm extends BaseMantenimientoAbstractAction{
 	public void setComboManager(ComboAction comboManager) {
 		this.comboManager = comboManager;
 	}
+
+	/**
+	 * @return the letraList
+	 */
+	public List<String> getLetraList() {
+		return letraList;
+	}
+
+	/**
+	 * @param letraList the letraList to set
+	 */
+	public void setLetraList(List<String> letraList) {
+		this.letraList = letraList;
+	}
+
+	/**
+	 * @return the planoList
+	 */
+	public List<String> getPlanoList() {
+		return planoList;
+	}
+
+	/**
+	 * @param planoList the planoList to set
+	 */
+	public void setPlanoList(List<String> planoList) {
+		this.planoList = planoList;
+	}
+
+	/**
+	 * @return the sectorList
+	 */
+	public List<String> getSectorList() {
+		return sectorList;
+	}
+
+	/**
+	 * @param sectorList the sectorList to set
+	 */
+	public void setSectorList(List<String> sectorList) {
+		this.sectorList = sectorList;
+	}
+
+	public int getRadio() {
+		return radio;
+	}
+
+	public void setRadio(int radio) {
+		this.radio = radio;
+	}
+	
 }
