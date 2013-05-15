@@ -63,7 +63,6 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 	 * @see com.edicsem.pe.sie.model.dao.UbigeoDAO#eliminarUbigeo(int)
 	 */
 	public void eliminarUbigeo(int id) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -132,7 +131,6 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 	 * com.edicsem.pe.sie.model.dao.UbigeoDAO#listarUbigeoDistritos(java.lang
 	 * .String, java.lang.String)
 	 */
-
 	public List listarUbigeoDistritos(String idDepartamento, String idProvincia) {
 		List lista = null;
 		try {
@@ -234,4 +232,5 @@ public class UbigeoDAOImpl implements UbigeoDAO {
 		}
 		return obj;
 	}
+	
 }
