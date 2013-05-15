@@ -576,7 +576,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		</p:dialog>
 	</h:form>
 	
-	<!--  Mantenimiento CAJA SALIDA GASTO (Registrar , actualizar)-->
+	<!--  Mantenimiento CAJA SALIDA GASTO (Registrar )-->
 	<h:form id="NuevoModificaCaja">
 		<p:dialog header="Registro/ Modificación Caja" widgetVar="cajaNuevoDialog" showEffect="fade"
 			hideEffect="explode" modal="true" width="600" position="center" resizable="false" >
@@ -602,8 +602,8 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				<p:inputMask mask="9999999999" value="#{cajaForm.objCajaSie.numcomprobante}" />
 				
 				<f:facet name="footer">
-					<p:commandButton value="Guardar" update="message"
-						action="#{cajaForm.insertar}"  icon="ui-icon ui-icon-disk" />
+					<p:commandButton value="Guardar" action="#{cajaForm.insertar}"  icon="ui-icon ui-icon-disk" 
+					oncomplete="cajaNuevoDialog.hide()" ajax="false" />
 					<p:commandButton value="Cancelar" onclick="cajaNuevoDialog.hide()" icon="ui-icon ui-icon-close"/>
 				</f:facet>
 			</h:panelGrid>

@@ -29,6 +29,7 @@ public class MantenimientoCajaSearchAction extends BaseMantenimientoAbstractActi
 	private List<CajaSie> cajaActualList;
 	HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 	EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
+	private BigDecimal saldoTotal;
 	
 	@EJB
 	private CajaService objCajaService;
@@ -64,7 +65,7 @@ public class MantenimientoCajaSearchAction extends BaseMantenimientoAbstractActi
 			cajaList.set(i, cajaList.get(i));
 		}
 		if(cajaList.size()>=1){
-			saldoTotal =cajaList.get(cajaList.size()-1).getSaldo();
+			setSaldoTotal(cajaList.get(cajaList.size()-1).getSaldo());
 		}
 		return getViewList();
 	}
@@ -94,7 +95,7 @@ public class MantenimientoCajaSearchAction extends BaseMantenimientoAbstractActi
 				empleados.add(cajaList.get(i).getTbEmpleado().getIdempleado());
 			}
 		}if(cajaList.size()>=1){
-			saldoTotal =cajaList.get(cajaList.size()-1).getSaldo();
+			setSaldoTotal(cajaList.get(cajaList.size()-1).getSaldo());
 		}
 		
 		return getViewMant();
@@ -134,6 +135,14 @@ public class MantenimientoCajaSearchAction extends BaseMantenimientoAbstractActi
 
 	public void setCajaActualList(List<CajaSie> cajaActualList) {
 		this.cajaActualList = cajaActualList;
+	}
+
+	public BigDecimal getSaldoTotal() {
+		return saldoTotal;
+	}
+
+	public void setSaldoTotal(BigDecimal saldoTotal) {
+		this.saldoTotal = saldoTotal;
 	}
 	
 }

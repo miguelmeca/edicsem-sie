@@ -11,11 +11,9 @@
 		<h1 class="title ui-widget-header ui-corner-all">Mantenimiento Caja </h1>
 		<h:form>
 		<p:messages id="message" showDetail="true" />
-			<p:dataTable value="#{cajaSearch.cajaList}" var="p" 
-					id="lista" paginator="true" rows="10"
-					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="5,10,15" widgetVar="table"
-					emptyMessage="#{message['rsltd.empty']}">
+			<p:dataTable value="#{cajaSearch.cajaList}" var="p" id="lista" paginator="true" rows="10"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" widgetVar="table" emptyMessage="#{message['rsltd.empty']}">
 					<f:facet name="header">Mantenimiento Caja </f:facet>
 					<f:facet name="header">
 					    <p:outputPanel>
@@ -32,19 +30,19 @@
 					<p:column sortBy="#{p.descripcion}" filterBy="#{p.descripcion}" headerText="#{message['mantenimiento.productoList.descripcion']}">
 						<h:outputText value="#{p.descripcion}" />
 					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="#{message['mantenimiento.productoList.modificar']}" />
-						</f:facet>
-						<p:commandButton oncomplete="cajaNuevoDialog.show()" action="#{cajaForm.update}"
-							update=":NuevoModificaCaja:display" icon="ui-icon ui-icon-pencil">
-							<f:setPropertyActionListener value="#{p}" target="#{cajaForm.objCajaSie}" />
-				        </p:commandButton>
+					<p:column sortBy="#{p.monto}" filterBy="#{p.monto}" headerText="Monto">
+						<h:outputText value="#{p.monto}" />
+					</p:column>
+					<p:column sortBy="#{p.saldo}" filterBy="#{p.saldo}" headerText="Saldo">
+						<h:outputText value="#{p.saldo}" />
 					</p:column>
 					<p:columnGroup type="footer">
-						<p:row>  
-		                    <p:column footerText="Saldo Total  S/." style="text-align:right"/>  
-		                    <p:column footerText="#{cajaSearch.saldoTotal}" />
+						<p:row>
+							<p:column />
+							<p:column />
+							<p:column />
+							<p:column footerText="Saldo Total  S/." style="text-align:right"/>
+							<p:column footerText="#{cajaSearch.saldoTotal}" />
 	                    </p:row>
                     </p:columnGroup>
 					<f:facet name="footer">

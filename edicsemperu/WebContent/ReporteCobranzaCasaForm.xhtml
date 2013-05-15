@@ -15,15 +15,24 @@
 		<h:form id="formCobranzaCasa">
 		<p:messages id="message" showDetail="true"/>
 		<p:panel>
-		<p:fieldset legend="Cobranza en Casa" style="margin-top:30px">
+		<p:fieldset id="fi" legend="Busqueda Cobranza en Casa" style="margin-top:30px">
 			<h:panelGrid columns="4" cellpadding="5" >
+			<p:selectOneRadio  value="#{reporteCobranzaCasa.radio}" >  
+		        <f:selectItem itemLabel="Por Cono" itemValue="1" />
+		        <f:selectItem itemLabel="Por Distrito" itemValue="2" />
+		        <p:ajax update="fi" />
+	        </p:selectOneRadio>
+	        <h:panelGrid columns="3" rendered="#{reporteCobranzaCasa.radio==1}" >
+	        
+			</h:panelGrid>
+			
 				<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
 				<p:selectOneMenu id="dep" value="#{reporteCobranzaCasa.idDepartamento}" filter="true" filterMatchMode="startsWith"
 					required="true" style="width:220px"
 					requiredMessage="#{message['puntoVenta.ubigeo.departamento.validation']}" >
 					<f:selectItem itemLabel="Seleccione Departamento" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.ubigeoDeparItems}" />
-					<p:ajax update="prov,dist" listener="#{almacenForm.cambiar}" />
+					<p:ajax update="prov,dist" listener="#{reporteCobranzaCasa.cambiar}" />
 				</p:selectOneMenu>
 				<p:message for="dep"  />
 				
@@ -33,40 +42,44 @@
 					requiredMessage="#{message['puntoVenta.ubigeo.provincia.validation']}" >
 					<f:selectItem itemLabel="Seleccione Provincia" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.ubigeoProvinItems}" />
-					<p:ajax update="dist" listener="#{almacenForm.cambiar2}" />
+					<p:ajax update="dist" listener="#{reporteCobranzaCasa.cambiar2}" />
 				</p:selectOneMenu>
 				<p:message for="prov" />
-
+				
 				<h:outputText value="#{message['contrato.ubigeo.distrito']}" />
-				<p:selectOneMenu id="dist" value="#{reporteCobranzaCasa.idUbigeo}" filter="true" filterMatchMode="startsWith"
-					required="true" style="width:220px"
-					requiredMessage="#{message['puntoVenta.ubigeo.distrito.validation']}" >
+				<p:selectOneMenu id="dist" value="#{reporteCobranzaCasa.idUbigeo}" filter="true" filterMatchMode="startsWith" >
 					<f:selectItem itemLabel="Seleccione Distrito" itemValue="#{null}" />
 					<f:selectItems value="#{comboAction.ubigeoDistriItems}" />
-					<p:ajax update="ubigeoDefecto" listener="#{almacenForm.busquedaUbigeo}" />
+					<p:ajax update="pl" listener="#{reporteCobranzaCasa.buscarZonificacionXDistrito}" />
 				</p:selectOneMenu>
 				<p:message for="dist" />
 				
-				<h:outputText value="Letra" />
-				<p:inputText id="letra" value="#{reporteCobranzaCasa.letra}" style="font-weight:bold" maxlength="30" />
-				<pe:keyFilter for="letra" mask="alpha" />
-				
 				<h:outputText value="Plano" />
-				<p:inputText id="plano" value="#{reporteCobranzaCasa.plano}" style="font-weight:bold" maxlength="30" />
-				<pe:keyFilter for="plano" mask="num" />
+				<p:selectCheckboxMenu id="pl" value="#{reporteCobranzaCasa.planoList}" filter="true" filterMatchMode="startsWith" >
+					<f:selectItems value="#{comboAction.planoItems}" />
+					<p:ajax update="let" listener="#{reporteCobranzaCasa.buscarZonificacionXPlano}" />
+				</p:selectCheckboxMenu>
+				<p:spacer/>
+				
+				<h:outputText value="Letra" />
+				<p:selectCheckboxMenu id="let" value="#{reporteCobranzaCasa.letraList}" filter="true" filterMatchMode="startsWith" >
+					<f:selectItems value="#{comboAction.letraItems}" />
+				</p:selectCheckboxMenu>
+				<p:spacer/>
 				
 				<h:outputText value="Sector" />
-				<p:inputText id="sector" value="#{reporteCobranzaCasa.sector}" style="font-weight:bold" maxlength="30" />
-				<pe:keyFilter for="sector" mask="num" />
+				<p:selectCheckboxMenu id="se" value="#{reporteCobranzaCasa.sectorList}" filter="true" filterMatchMode="startsWith" >
+					<f:selectItems value="#{comboAction.sectorItems}" />
+				</p:selectCheckboxMenu>
 				
-				<p:commandButton value="Consultar" action="#{reporteKardex.consultar}" update="message" ajax="false"
-				icon="ui-icon-search"/>
+				<f:facet name="footer">
+					<p:commandButton value="Consultar" action="#{reporteKardex.consultar}" 
+					update="message" ajax="false" icon="ui-icon-search" />
+				</f:facet>
 			</h:panelGrid>
 		</p:fieldset>
 		
-		<p:spacer height="30px" />
-		
-		    <div align="center"  style="margin-top:30px" >
+		<div align="center"  style="margin-top:30px" >
 		     	<h:graphicImage value="/images/Reporting_pdf.png" style="width:40px;height:40px"/>
 				<p:commandLink action="#{reporteKardex.exportar}" value="#{message['reporte.exportar.pdf']}" ajax="false" 
 				disabled="#{reporteKardex.cantLista!=0? false:true}">
@@ -78,8 +91,8 @@
 				disabled="#{reporteKardex.cantLista!=0? false:true}">
 				<f:setPropertyActionListener target="#{reporteKardex.contentType}" value="xls"/>
 				</p:commandLink>
-			</div>
-		    </p:panel>
+		</div>
+		</p:panel>
 		</h:form>
 	</ui:define>
 </ui:composition>

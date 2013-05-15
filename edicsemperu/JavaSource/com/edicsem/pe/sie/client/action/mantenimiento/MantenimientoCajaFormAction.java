@@ -62,6 +62,7 @@ public class MantenimientoCajaFormAction extends BaseMantenimientoAbstractAction
 	 */
 	public String agregar() {
 		log.info("agregar()");
+		idEmpleado=0;
 		objCajaSie = new CajaSie();
 		objCajaSie.setMonto(new BigDecimal(1.0));
 		setNewRecord(true);
@@ -124,6 +125,7 @@ public class MantenimientoCajaFormAction extends BaseMantenimientoAbstractAction
 					BigDecimal resta =saldoActual.subtract(objCajaSie.getMonto());
 					if(resta.doubleValue()<0.0){
 						mensaje="Su saldo no es suficiente para registrar gastos : "+saldoActual.doubleValue();
+						msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
 					}else{
 						objCajaSie.setSaldo(resta);
 					}
@@ -134,15 +136,11 @@ public class MantenimientoCajaFormAction extends BaseMantenimientoAbstractAction
 					objCajaSie.setUsuariocreacion(sessionUsuario.getUsuario());
 					objCajaService.insertCaja(objCajaSie, idEmpleado);
 					mensaje =Constants.MESSAGE_REGISTRO_TITULO;
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 					objCajaSie = new CajaSie();
+					paginaRetorno = cajaSearch.listar();
 				}
-			} else {
-				objCajaService.updateCaja(objCajaSie);
-				paginaRetorno = cajaSearch.listar();
-				mensaje =Constants.MESSAGE_ACTUALIZO_TITULO;
 			}
-			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
