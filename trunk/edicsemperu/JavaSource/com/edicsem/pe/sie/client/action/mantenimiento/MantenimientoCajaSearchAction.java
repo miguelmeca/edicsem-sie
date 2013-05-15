@@ -27,7 +27,6 @@ public class MantenimientoCajaSearchAction extends BaseMantenimientoAbstractActi
 	private Log log = LogFactory.getLog(MantenimientoCajaSearchAction.class);
 	private List<CajaSie> cajaList;
 	private List<CajaSie> cajaActualList;
-	private BigDecimal saldoTotal;
 	HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 	EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 	
@@ -94,6 +93,8 @@ public class MantenimientoCajaSearchAction extends BaseMantenimientoAbstractActi
 				cajaActualList.add(obj);
 				empleados.add(cajaList.get(i).getTbEmpleado().getIdempleado());
 			}
+		}if(cajaList.size()>=1){
+			saldoTotal =cajaList.get(cajaList.size()-1).getSaldo();
 		}
 		
 		return getViewMant();
@@ -125,14 +126,6 @@ public class MantenimientoCajaSearchAction extends BaseMantenimientoAbstractActi
 	 */
 	public void setCajaList(List<CajaSie> cajaList) {
 		this.cajaList = cajaList;
-	}
-
-	public BigDecimal getSaldoTotal() {
-		return saldoTotal;
-	}
-
-	public void setSaldoTotal(BigDecimal saldoTotal) {
-		this.saldoTotal = saldoTotal;
 	}
 
 	public List<CajaSie> getCajaActualList() {
