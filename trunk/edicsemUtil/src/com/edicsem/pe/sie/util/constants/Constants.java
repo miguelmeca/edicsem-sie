@@ -159,6 +159,10 @@ public class Constants {
 	public static final String MOV_CAJA_FORM_LIST_PAGE = "movimientoCajaFormList";
 	
 	public static final String REPORTE_COBRANZA_CASA = "ReporteCobranzaCasaForm";
+
+	public static final String MANT_RESPONDER_LLAMADA_FORM = "ResponderLlamadaClienteForm";
+	
+	public static final String ASIGNAR_TIPO_CLIENTE_FORM = "AsignarTipoClienteForm";
 	
 	//constantes de tablas con la TB_ESTADO_GENERAL
 	
@@ -170,8 +174,6 @@ public class Constants {
 	public static final String COD_ESTADO_TB_PUNTO_ALMACEN =  "PA";
 	public static final String COD_ESTADO_TB_DET_CONTRATO_PRODUCTO ="PRC0";
 	public static final String COD_ESTADO_TB_CONTRATO = "CON";
-	
-	public static final String NOMBRE_GERENTE = "GABRIEL ANTONIO ROJAS SACIN";
 	
 	public static final String CARGO_EXPOSITOR = "EXPOSITOR";
 	public static final String CARGO_CERRADOR = "CERRADOR";

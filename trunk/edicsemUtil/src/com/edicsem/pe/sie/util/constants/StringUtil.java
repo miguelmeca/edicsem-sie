@@ -234,7 +234,19 @@ public class StringUtil {
         return retorno;
     
     }
-
+	
+    public static String stringtoList(List<String> lista){
+    	String cadena="";
+    	for (int i = 0;  i < lista.size(); i++) {
+			if(i==0){
+				cadena = "'"+lista.get(i)+"'";
+			}else{
+				cadena = cadena +",'"+ lista.get(i)+"'";
+			}
+		}
+    	return cadena;
+    }
+    
     /**
      * Realiza la conversion de String a un documento xml
      * @param s
@@ -262,4 +274,5 @@ public class StringUtil {
           }
           return (tmpX!=null?"":msgerror);
       }
+    
 }
