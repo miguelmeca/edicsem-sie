@@ -26,7 +26,7 @@ public class ZonificacionSie  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_ZONIFICACION_IDZONIFICA_GENERATOR", sequenceName="SIE.TB_ZONIFICACION_IDZONIFICASEQ", initialValue=1, allocationSize =1)
+	@SequenceGenerator(name="TB_ZONIFICACION_IDZONIFICA_GENERATOR", sequenceName="SIE.TB_ZONIFICACION_IDZONIFICA_SEQ", initialValue=1, allocationSize =1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_ZONIFICACION_IDZONIFICA_GENERATOR")
 	private Integer idzonifica;
 	
@@ -52,38 +52,6 @@ public class ZonificacionSie  implements Serializable {
     
     public ZonificacionSie() {
     }
-    
-	public Timestamp getFechacreacion() {
-		return this.fechacreacion;
-	}
-
-	public void setFechacreacion(Timestamp fechacreacion) {
-		this.fechacreacion = fechacreacion;
-	}
-
-	public Timestamp getFechamodifica() {
-		return this.fechamodifica;
-	}
-
-	public void setFechamodifica(Timestamp fechamodifica) {
-		this.fechamodifica = fechamodifica;
-	}
-
-	public String getUsuariocreacion() {
-		return this.usuariocreacion;
-	}
-
-	public void setUsuariocreacion(String usuariocreacion) {
-		this.usuariocreacion = usuariocreacion;
-	}
-
-	public String getUsuariomodifica() {
-		return this.usuariomodifica;
-	}
-
-	public void setUsuariomodifica(String usuariomodifica) {
-		this.usuariomodifica = usuariomodifica;
-	}
 
 	public Integer getIdzonifica() {
 		return idzonifica;
@@ -91,14 +59,6 @@ public class ZonificacionSie  implements Serializable {
 
 	public void setIdzonifica(Integer idzonifica) {
 		this.idzonifica = idzonifica;
-	}
-
-	public UbigeoSie getTbUbigeo() {
-		return tbUbigeo;
-	}
-
-	public void setTbUbigeo(UbigeoSie tbUbigeo) {
-		this.tbUbigeo = tbUbigeo;
 	}
 
 	public String getCodplano() {
@@ -124,4 +84,45 @@ public class ZonificacionSie  implements Serializable {
 	public void setCodletra(String codletra) {
 		this.codletra = codletra;
 	}
+
+	public Timestamp getFechacreacion() {
+		return fechacreacion;
+	}
+
+	public void setFechacreacion(Timestamp fechacreacion) {
+		this.fechacreacion = fechacreacion;
+	}
+
+	public Timestamp getFechamodifica() {
+		return fechamodifica;
+	}
+
+	public void setFechamodifica(Timestamp fechamodifica) {
+		this.fechamodifica = fechamodifica;
+	}
+
+	public String getUsuariocreacion() {
+		return usuariocreacion;
+	}
+
+	public void setUsuariocreacion(String usuariocreacion) {
+		this.usuariocreacion = usuariocreacion;
+	}
+
+	public String getUsuariomodifica() {
+		return usuariomodifica;
+	}
+
+	public void setUsuariomodifica(String usuariomodifica) {
+		this.usuariomodifica = usuariomodifica;
+	}
+
+	public UbigeoSie getTbUbigeo() {
+		return tbUbigeo;
+	}
+
+	public void setTbUbigeo(UbigeoSie tbUbigeo) {
+		this.tbUbigeo = tbUbigeo;
+	}
+    
 }
