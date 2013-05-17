@@ -28,8 +28,8 @@ public class ConoSie  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_CONO_ZONIFICA_IDZONIFICACION_GENERATOR", sequenceName="SIE.TB_CONO_ZONIFICA_IDZONIFICACION_SEQ", initialValue=1, allocationSize =1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_CONO_ZONIFICA_IDZONIFICACION_GENERATOR")
+	@SequenceGenerator(name="TB_CONO_ZONIFICA_IDCONO_GENERATOR", sequenceName="SIE.TB_CONO_ZONIFICA_IDCONO_SEQ", initialValue=1, allocationSize =1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_CONO_ZONIFICA_IDCONO_GENERATOR")
 	private Integer idcono;
 	
 	private String descripcion;
