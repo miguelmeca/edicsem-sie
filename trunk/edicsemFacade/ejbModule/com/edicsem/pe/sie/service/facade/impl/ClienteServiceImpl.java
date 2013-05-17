@@ -19,8 +19,6 @@ import com.edicsem.pe.sie.model.dao.ClienteDAO;
 import com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO;
 import com.edicsem.pe.sie.model.dao.EstadoGeneralDAO;
 import com.edicsem.pe.sie.model.dao.TelefonoEmpleadoDAO;
-import com.edicsem.pe.sie.model.dao.TipoCasaDAO;
-import com.edicsem.pe.sie.model.dao.UbigeoDAO;
 import com.edicsem.pe.sie.service.facade.ClienteService;
 
 
@@ -32,15 +30,11 @@ public class ClienteServiceImpl implements ClienteService {
 	@EJB
 	private  ClienteDAO objClienteDao;
 	@EJB
-	private UbigeoDAO objUbigeoDao;	
-	@EJB
 	private EstadoGeneralDAO objEstadoGeneralDao;	
 	@EJB
 	private TelefonoEmpleadoDAO objTelefonoEmpleadoDAO;	
 	@EJB
-	private DomicilioEmpleadoDAO objDomicilioEmpleadoDao;	
-	@EJB
-	private TipoCasaDAO objTipoCasaDao;	
+	private DomicilioEmpleadoDAO objDomicilioEmpleadoDao;
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.service.facade.ClienteService#insertCliente(com.edicsem.pe.sie.entity.ClienteSie)
@@ -332,4 +326,5 @@ public class ClienteServiceImpl implements ClienteService {
 	public List listarClientesXTipo(int tipoCliente) {
 		return objClienteDao.listarClientesXTipo(tipoCliente);
 	}
+	
 }

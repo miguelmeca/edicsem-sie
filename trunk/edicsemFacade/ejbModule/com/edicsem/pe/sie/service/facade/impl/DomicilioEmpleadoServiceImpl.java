@@ -10,13 +10,12 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO;
-import com.edicsem.pe.sie.model.dao.impl.DomicilioEmpleadoDAOImpl;
 import com.edicsem.pe.sie.service.facade.DomicilioEmpleadoService;
 @Stateless
 public class DomicilioEmpleadoServiceImpl implements DomicilioEmpleadoService{
-	//llamo a mi EJB y redirecciono todo al DAO
 	
 	private static Log log = LogFactory.getLog(DomicilioEmpleadoServiceImpl.class);
+	
 	@EJB
 	private DomicilioEmpleadoDAO objDomicilioEmpleadoDao;
 	
@@ -35,8 +34,6 @@ public class DomicilioEmpleadoServiceImpl implements DomicilioEmpleadoService{
 	 * @see com.edicsem.pe.sie.service.facade.DemoService#updateDemo(com.edicsem.pe.sie.entity.Usuario)
 	 */
 	public void actualizarDomicilioEmpleado(DomicilioPersonaSie domicilioempleado) {
-		
-		
 		objDomicilioEmpleadoDao.actualizarDomicilioEmpleado(domicilioempleado);
 	}
 
@@ -65,18 +62,26 @@ public class DomicilioEmpleadoServiceImpl implements DomicilioEmpleadoService{
     public DomicilioPersonaSie buscarDomicilioXIdempleado(int id) { 
 		return objDomicilioEmpleadoDao.buscarDomicilioXIdempleado(id); 
 	}
-		
     
+    /* (non-Javadoc)
+     * @see com.edicsem.pe.sie.service.facade.DomicilioEmpleadoService#listarDomicilioCliente(int)
+     */
     public List listarDomicilioCliente(int id) {
 		return objDomicilioEmpleadoDao.listarDomicilioCliente(id);
 	}
     
-    
-    
+    /* (non-Javadoc)
+     * @see com.edicsem.pe.sie.service.facade.DomicilioEmpleadoService#buscarDomicilioXIdcliente(int)
+     */
     public DomicilioPersonaSie buscarDomicilioXIdcliente(int id) {
-    	log.info("Dentro del Servicio DomicilioPersonaSie--->  ");
-	
     	return objDomicilioEmpleadoDao.buscarDomicilioXIdcliente(id); 
 	}
-   
+    
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.service.facade.DomicilioEmpleadoService#listarClientesXZonificacion(java.lang.String, java.util.List, java.util.List, java.util.List)
+	 */
+	public List listarClientesXZonificacion(String idUbigeo,List<String> planoList, List<String> letraList,List<String> sectorList) {
+		return objDomicilioEmpleadoDao.listarClientesXZonificacion(idUbigeo, planoList, letraList, sectorList);
+	}
+    
 }
