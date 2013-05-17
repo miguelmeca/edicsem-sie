@@ -187,18 +187,19 @@ public class CobranzaDAOImpl implements CobranzaDAO{
 		List cobranza=null;
 		String query="";
 		try {
-			query +=	"select p from CobranzaSie p  where 1==1  ";
+			query +=	"select p from CobranzaSie p  where 1=1  ";
 		if(idTipocliente!=0)
 			query+=" and p.tbCliente.tbTipoCliente.idtipocliente = " +idTipocliente;
 		if(idCalificacion!=0)
-			query+=" and p.tbCliente.idcalificacion = " +idCalificacion;
+			query+=" and p.tbCliente.tbCalificacion.idcalificacion = " +idCalificacion;
 		if(fechaEntregaDesde!=null &&fechaEntregaHasta!=null )
-			query+=" and p.tbContrato.fechaentrega between "+fechaEntregaDesde+" and "+fechaEntregaHasta ;
+			query+=" and DATE(p.tbContrato.fechaentrega) between DATE('"+fechaEntregaDesde+"') and DATE('"+fechaEntregaHasta+"')" ;
 			
 			Query q = em.createQuery(query);
 			if(q.getResultList().size()>0){
 				cobranza = q.getResultList();
 			}
+			log.info("listarCobranzasporParametro  "+cobranza.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

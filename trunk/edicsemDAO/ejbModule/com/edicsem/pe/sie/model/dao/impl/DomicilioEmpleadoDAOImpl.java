@@ -13,6 +13,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO;
+import com.edicsem.pe.sie.util.constants.StringUtil;
 
 @Stateless
 public class DomicilioEmpleadoDAOImpl implements DomicilioEmpleadoDAO{
@@ -25,19 +26,12 @@ public class DomicilioEmpleadoDAOImpl implements DomicilioEmpleadoDAO{
 	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#insertDemo(com.edicsem.pe.sie.entity.Usuario)
 	 */
 	public void insertarDomicilioEmpleado(DomicilioPersonaSie domiciliopersona) {
-		log.info("apunto de insertar domicilio"+ domiciliopersona.getDomicilio()+
-				" - " + domiciliopersona.getReferencia());
 		try {
-			
-			
-			log.info("antes del Persist");
+			log.info("insert domicilio");
 			em.persist(domiciliopersona);
-			
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 
 	/* (non-Javadoc)
@@ -46,7 +40,7 @@ public class DomicilioEmpleadoDAOImpl implements DomicilioEmpleadoDAO{
 	public void actualizarDomicilioEmpleado(DomicilioPersonaSie domiciliopersona) {
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("apunto de actualizar domicilio del Empleado");
+				log.info("actualizar domicilio");
 			}
 			em.merge(domiciliopersona);
 		} catch (Exception e) {
@@ -65,33 +59,29 @@ public class DomicilioEmpleadoDAOImpl implements DomicilioEmpleadoDAO{
 	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#findDemo(java.lang.String)
 	 */
 	public DomicilioPersonaSie buscarDomicilioEmpleado(int id) {
-		// TODO Auto-generated method stub
-				DomicilioPersonaSie domiciliopersona= new DomicilioPersonaSie();
-				try {
-				if (log.isInfoEnabled()) {
+		DomicilioPersonaSie domiciliopersona= new DomicilioPersonaSie();
+		try {
+			if (log.isInfoEnabled()) {
 				log.info("buscar DomicilioPersona"+id);
-				} 
-				domiciliopersona=	em.find(DomicilioPersonaSie.class, id);
-				log.info(" DomicilioPersona " +domiciliopersona);
-				} catch (Exception e) {
-				e.printStackTrace();
-				}
-				return domiciliopersona;
+			} 
+			domiciliopersona=	em.find(DomicilioPersonaSie.class, id);
+			log.info(" DomicilioPersona " +domiciliopersona);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return domiciliopersona;
 	}
-
-	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.model.dao.DemoDAO#listarUsuarios(com.edicsem.pe.sie.entity.Usuario)
-	 */
 	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO#listarDomicilioEmpleados()
 	 */
-	
 	public List listarDomicilioEmpleados() {
-		// TODO Auto-generated method stub
 		return null;
 	}	
 	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO#buscarDomicilioXIdempleado(int)
+	 */
 	public DomicilioPersonaSie buscarDomicilioXIdempleado(int id) {
 		log.info(" buscarDomicilioXIdempleado "+ id);
 		DomicilioPersonaSie domicilio =new DomicilioPersonaSie();
@@ -105,10 +95,12 @@ public class DomicilioEmpleadoDAOImpl implements DomicilioEmpleadoDAO{
 		return domicilio;
 	}
 	
-	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO#listarDomicilioCliente(int)
+	 */
 	public List listarDomicilioCliente(int id) {
-		log.info(" idcliente "+ id);	
-	List<DomicilioPersonaSie> domiciliocliente =new ArrayList<DomicilioPersonaSie>();
+		log.info(" idcliente "+ id);
+		List<DomicilioPersonaSie> domiciliocliente =new ArrayList<DomicilioPersonaSie>();
 		try {
 			Query q = em.createQuery("select d from DomicilioPersonaSie d where d.idcliente = "+ id + " AND d.tbEstadoGeneral.idestadogeneral = 15" );
 			domiciliocliente = q.getResultList();
@@ -119,23 +111,41 @@ public class DomicilioEmpleadoDAOImpl implements DomicilioEmpleadoDAO{
 		}
 		return domiciliocliente;
 	}
-
-
-
-
+	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO#buscarDomicilioXIdcliente(int)
+	 */
 	public DomicilioPersonaSie buscarDomicilioXIdcliente(int id) {
 		log.info(" buscarDomicilioXIdcliente "+ id);
 		DomicilioPersonaSie domicilio =new DomicilioPersonaSie();
 		try {
 			Query q = em.createQuery("select d from DomicilioPersonaSie d where d.idcliente.idcliente = "+ id);
 			domicilio = (DomicilioPersonaSie) q.getResultList().get(0);
-			//log.info("Domicilio x idempleado  --> " + domicilio.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return domicilio;
 	}
 	
-	
-	
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.model.dao.DomicilioEmpleadoDAO#listarClientesXZonificacion(java.lang.String, java.util.List, java.util.List, java.util.List)
+	 */
+	public List listarClientesXZonificacion(String idUbigeo,List<String> planoList, List<String> letraList,List<String> sectorList)  {
+		List  lista = null;
+		String letra="", plano="", sector="";
+		letra = StringUtil.stringtoList(letraList);
+		plano = StringUtil.stringtoList(planoList);
+		sector = StringUtil.stringtoList(sectorList);
+		log.info("Plano "+ plano+" Letra "+letra+"  sector "+sector);
+		try {
+			Query q = em.createQuery("select p from DomicilioPersonaSie p where p.tbUbigeo.idubigeo = "+idUbigeo+" and " +
+					" p.planoDomicilio in ("+plano+") and p.letraDomicilio in ("+letra+") " +
+					" and p.sectorDomicilio in ("+sector+")");
+			lista =  q.getResultList();
+			log.info("tamaño lista domicilio  X Zonificacion --> " + lista.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 }

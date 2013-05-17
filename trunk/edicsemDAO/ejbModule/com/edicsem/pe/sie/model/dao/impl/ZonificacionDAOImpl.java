@@ -12,6 +12,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.entity.ZonificacionSie;
 import com.edicsem.pe.sie.model.dao.ZonificacionDAO;
+import com.edicsem.pe.sie.util.constants.StringUtil;
 
 /**
  * @author karen
@@ -90,7 +91,7 @@ public class ZonificacionDAOImpl implements ZonificacionDAO{
 	public List listarZonificacionXDistrito(String idUbigeo) {
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from ZonificacionSie p where p.idubigeo = "+idUbigeo);
+			Query q = em.createQuery("select p from ZonificacionSie p where p.tbUbigeo.idubigeo = "+idUbigeo);
 			lista =  q.getResultList();
 		   log.info("tamaño lista zonificacion X Distrito --> " + lista.size()+"  ");
 		} catch (Exception e) {
@@ -103,11 +104,12 @@ public class ZonificacionDAOImpl implements ZonificacionDAO{
 	 * @see com.edicsem.pe.sie.model.dao.ZonificacionDAO#listarZonificacionXPlano(java.lang.String, java.util.List)
 	 */
 	public List listarZonificacionXPlano(String idUbigeo,List<String> planoList) {
-		log.info(" Lista de planos "+ planoList);
+		String plano="";
+		plano =StringUtil.stringtoList(planoList);
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from ZonificacionSie p where p.idubigeo like '"+idUbigeo+"' and " +
-					" p.codPlano in "+planoList);
+			Query q = em.createQuery("select p from ZonificacionSie p where p.tbUbigeo.idubigeo = "+idUbigeo+" and " +
+					" p.codplano in ("+plano+")");
 			lista =  q.getResultList();
 		   log.info("tamaño lista zonificacion X Plano --> " + lista.size());
 		} catch (Exception e) {
@@ -122,9 +124,12 @@ public class ZonificacionDAOImpl implements ZonificacionDAO{
 	public List listarZonificacionXPlanoXLetra(String idUbigeo,List<String> planoList, List<String> letraList) {
 		log.info(" Lista de planos "+ planoList);
 		List  lista = null;
+		String letra="",plano="";
+		letra = StringUtil.stringtoList(letraList);
+		plano =StringUtil.stringtoList(planoList);
 		try {
-			Query q = em.createQuery("select p from ZonificacionSie p where p.idubigeo like '"+idUbigeo+"' and " +
-					" p.codPlano in "+planoList+" and p.codLetra in "+letraList);
+			Query q = em.createQuery("select p from ZonificacionSie p where p.tbUbigeo.idubigeo = "+idUbigeo+" and " +
+					" p.codplano in ("+plano+") and p.codletra in ("+letra+")");
 			lista =  q.getResultList();
 		   log.info("tamaño lista zonificacion X Letra --> " + lista.size());
 		} catch (Exception e) {
