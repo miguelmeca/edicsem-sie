@@ -31,12 +31,13 @@ public class AsignarTipoClienteFormAction extends BaseMantenimientoAbstractActio
 	public static Log log = LogFactory.getLog(AsignarTipoClienteFormAction.class);
 	
 	//Consultar
-	private int idTipocliente, idCalificacion, cuotasxpagar,diasRetrazo;
+	private int idTipocliente, idCalificacion, cuotasxpagar,diasRetrazo, tamanoLista;
 	private List<CobranzaSie> cobranzaList;
 	private Date fechaEntregaDesde, fechaEntregaHasta;
 	private boolean newRecord;
 	private CobranzaDataModel cobranzaModel;
 	private CobranzaSie[] selectedCob;
+	private String contentType;
 	
 	@EJB
 	private CobranzaService objCobranzaService;
@@ -66,6 +67,9 @@ public class AsignarTipoClienteFormAction extends BaseMantenimientoAbstractActio
 	public String agregar() {
 		log.info("agregar()))");
 		setNewRecord(true);
+		idCalificacion=0;
+		setTamanoLista(0);
+		cobranzaList= new ArrayList<CobranzaSie>();
 		cobranzaModel = new CobranzaDataModel(cobranzaList);
 		return getViewMant();
 	}
@@ -124,13 +128,15 @@ public class AsignarTipoClienteFormAction extends BaseMantenimientoAbstractActio
 	 */
 	public String consultar() throws Exception {
 		log.info("consultar() ");
+		setTamanoLista(0);
 		setNewRecord(true);
 		cobranzaList = objCobranzaService.listarCobranzasporParametro(idTipocliente, idCalificacion, 
 						cuotasxpagar,diasRetrazo, fechaEntregaDesde, fechaEntregaHasta);
 		if(cobranzaList!=null){
+			setTamanoLista(cobranzaList.size());
 			cobranzaModel = new CobranzaDataModel(cobranzaList);
 		}
-		if(cobranzaList.size()==0){
+		if(cobranzaList==null){
 			cobranzaList=new ArrayList<CobranzaSie>();
 		}
 		log.info(cobranzaModel.getRowCount()+" lista x consultaaa "+cobranzaList.size()+" MENSAJE "+ mensaje);
@@ -138,6 +144,13 @@ public class AsignarTipoClienteFormAction extends BaseMantenimientoAbstractActio
 		msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewMant()
+	 */
+	public String getViewMant() {
+		return Constants.ASIGNAR_TIPO_CLIENTE_FORM;
 	}
 	
 	/**
@@ -306,6 +319,28 @@ public class AsignarTipoClienteFormAction extends BaseMantenimientoAbstractActio
 	 */
 	public void setSelectedCob(CobranzaSie[] selectedCob) {
 		this.selectedCob = selectedCob;
+	}
+
+	public int getTamanoLista() {
+		return tamanoLista;
+	}
+
+	public void setTamanoLista(int tamanoLista) {
+		this.tamanoLista = tamanoLista;
+	}
+
+	/**
+	 * @return the contentType
+	 */
+	public String getContentType() {
+		return contentType;
+	}
+
+	/**
+	 * @param contentType the contentType to set
+	 */
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
 	}
 	
 }

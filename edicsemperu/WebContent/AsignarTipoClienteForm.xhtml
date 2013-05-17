@@ -9,7 +9,7 @@
 	<script language="JavaScript" type="text/javascript">
 		window.history.forward(-1);
 	</script>
-		<h1 class="title ui-widget-header ui-corner-all">Consulta Cliente</h1>
+		<h1 class="title ui-widget-header ui-corner-all">Asignar Tipo de Cliente </h1>
 		<h:form id="formConsultaCliente">
 		<p:messages showDetail="true"/>
 		<p:panel>
@@ -24,23 +24,23 @@
 			<h:outputText value="Nro de Cuotas por pagar" />
 			<p:spinner value="#{asignarTipoClienteForm.cuotasxpagar}" />
 			<h:outputText value="Fecha de Entrega" />
+			<p:spacer/>
 			<h:outputText value="Desde" />
-			<p:spinner value="#{asignarTipoClienteForm.fechaEntregaDesde}" />
+			<p:calendar value="#{asignarTipoClienteForm.fechaEntregaDesde}" locale="pe" pattern="dd/mm/yyyy" />
 			<h:outputText value="Hasta" />
-			<p:calendar value="#{asignarTipoClienteForm.fechaEntregaHasta}" />
+			<p:calendar value="#{asignarTipoClienteForm.fechaEntregaHasta}" locale="pe" pattern="dd/mm/yyyy" />
 			<h:outputText value="Calificación Equifax" />
 			<p:selectOneMenu style="width:165px" value="#{asignarTipoClienteForm.idCalificacion}" >
+				<f:selectItem itemLabel="Seleccione Calificación" itemValue="0" />
 				<f:selectItems value="#{comboAction.calificacionItems}" />
 			</p:selectOneMenu>
-			<p:inputText value="#{contratoForm.apePatCliente}"  />
-			
-			<p:commandButton value="Buscar" action="#{contratoForm.consultar}" update="message" 
+			<p:commandButton value="Buscar" action="#{asignarTipoClienteForm.consultar}" update="message" 
 			ajax="false" icon="ui-icon-search"/>
 			</h:panelGrid>
 			</p:fieldset>
-				<h:panelGrid  rendered="#{contratoForm.tamanoLista>1}" style="margin-top:30px"  >
-					<p:dataTable value="#{asignarTipoClienteForm.cobranzaList}" paginator="true" sortMode="multiple" rowsPerPageTemplate="5,10,15"  rows="5"
-					var="c" style="width:800px" emptyMessage="#{message['rsltd.empty']}" >
+				<h:panelGrid  rendered="#{asignarTipoClienteForm.tamanoLista>1}" style="margin-top:30px"  >
+					<p:dataTable value="#{asignarTipoClienteForm.cobranzaModel}" paginator="true" sortMode="multiple" 
+					rowsPerPageTemplate="5,10,15"  rows="5" var="c" style="width:800px" emptyMessage="#{message['rsltd.empty']}" >
 						
 						<f:facet name="header">
 							<h:outputLabel value="#{message['rsltd.datatable']}" />
@@ -66,20 +66,20 @@
 		                    <h:outputText value="#{c.cantcuotas}" />
 		                </p:column>
 		                
-		                <p:column headerText="Ultima cuota por pagar" sortBy="#{c.numletra}" >
+		                <p:column headerText="Primera cuota por pagar" sortBy="#{c.numletra}" >
 		                    <h:outputText value="#{c.numletra}" />
 		                </p:column>
 					</p:dataTable>
 				</h:panelGrid>
 			</p:panel>
 			<div align="center"  style="margin-top:30px" >
-		     	<p:commandLink action="#{contratoForm.ReportingPagos}" ajax="false" title="#{message['reporte.exportar.pagos.pdf']}">
+		     	<p:commandLink action="#{asignarTipoClienteForm.ReportingPagos}" ajax="false" title="#{message['reporte.exportar.pagos.pdf']}">
 					<h:graphicImage value="/images/Reporting_pdf.png" style="width:40px;height:40px"/>
-					<f:setPropertyActionListener target="#{contratoForm.contentType}" value="pdf"/>
+					<f:setPropertyActionListener target="#{asignarTipoClienteForm.contentType}" value="pdf"/>
 				</p:commandLink>
-				<p:commandLink action="#{contratoForm.ReportingPagos}" ajax="false" title="#{message['reporte.exportar.pagos.xls']}">
+				<p:commandLink action="#{asignarTipoClienteForm.ReportingPagos}" ajax="false" title="#{message['reporte.exportar.pagos.xls']}">
 					<h:graphicImage value="/images/excel_icon.PNG" style="width:40px;height:40px"/>
-					<f:setPropertyActionListener target="#{contratoForm.contentType}" value="xls"/>
+					<f:setPropertyActionListener target="#{asignarTipoClienteForm.contentType}" value="xls"/>
 				</p:commandLink>
 			</div>
 		</h:form>

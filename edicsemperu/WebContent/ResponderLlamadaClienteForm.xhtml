@@ -20,8 +20,8 @@
 	        <f:selectItem itemLabel="Nombres Completos" itemValue="3" />
 	        <p:ajax update="fi" />
         </p:selectOneRadio>
-        <h:panelGrid columns="3" rendered="#{seguimientoCobranzaOpera.radio==1}" >
-        <h:outputText value="#{message['contrato.tipo.documento']}" />
+	        <h:panelGrid columns="3" rendered="#{seguimientoCobranzaOpera.radio==1}" cellpadding="5"  >
+	        <h:outputText value="#{message['contrato.tipo.documento']}" />
 			<p:selectOneMenu id="tipoDoc" style="width:165px" value="#{seguimientoCobranzaOpera.idtipodoc}" required="true" 
 				requiredMessage="#{message['contrato.tipo.documento.validation']}" >
 				<f:selectItems value="#{comboAction.tipoDocumentoitems}" />
@@ -41,7 +41,7 @@
 			</h:panelGroup>
 			
 			</h:panelGrid>
-			<h:panelGrid columns="3" rendered="#{seguimientoCobranzaOpera.radio==2}"  >
+			<h:panelGrid columns="3" rendered="#{seguimientoCobranzaOpera.radio==2}" cellpadding="5" >
 			<h:outputText value="Código Contrato: " />
 			<p:inputText id="cod" value="#{seguimientoCobranzaOpera.codigoContrato}" required="true"/>
 			<p:message for="cod"  />

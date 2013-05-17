@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -11,7 +10,6 @@
 		<h1 class="title ui-widget-header ui-corner-all">#{message['cobranza.seguimiento']}</h1>
 		<h:form id="parametrosList" prependId="false">
 			<p:messages id="message" showDetail="true" />
-			
 			<p:fieldset legend="#{message['cobranza.lista']}">
 				<p:dataTable id="listaPersonas" var="p" value="#{seguimientoCobranzaOpera.cobranzaOperaList}"
 					widgetVar="cobranzatable" emptyMessage="#{message['rsltd.empty']}"
@@ -71,8 +69,7 @@
 					</p:column>
 				</p:dataTable>
 			</p:fieldset>
-		</h:form>
-		<h:form id="parametrosList2" rendered="#{seguimientoCobranzaOpera.idcontrato!=0}" >
+		<p:fieldset id="parametrosList2" rendered="#{seguimientoCobranzaOpera.idcontrato!=0}" >
 			<h:panelGrid columns="3" cellpadding="5" >
 				<p:fieldset legend="#{message['cobranza.datos.cliente']}" style="margin-top:20px">
 					<h:panelGrid columns="2" cellpadding="5" >
@@ -98,14 +95,22 @@
 						<h:outputText value="#{seguimientoCobranzaOpera.objcliente.cargotrabajo}" />
 						<h:outputText value="#{message['cobranza.lista.tipo']}" />
 						<h:outputText value="#{seguimientoCobranzaOpera.objcliente.tbTipoCliente.descripcion}" style="font-weight:bold"/>
+						
+						<h:outputText value="Calificación Equifax" rendered="#{seguimientoCobranzaOpera.objcliente.tbCalificacion!=null}" />
+						<c:if test="#{seguimientoCobranzaOpera.objcliente.tbCalificacion.idcalificacion==1 or seguimientoCobranzaOpera.objcliente.tbCalificacion.idcalificacion==2  or seguimientoCobranzaOpera.objcliente.tbCalificacion.idcalificacion==7 }">
+							<img src="#{request.contextPath}/images/1.png"  style="height: 55px; width: 55px  " />
+						</c:if>
+						<c:if test="#{seguimientoCobranzaOpera.objcliente.tbCalificacion.idcalificacion==3 or seguimientoCobranzaOpera.objcliente.tbCalificacion.idcalificacion==4}">
+							<img src="#{request.contextPath}/images/2.png"  style="height: 55px; width: 55px  " />
+						</c:if>
+						<c:if test="#{seguimientoCobranzaOpera.objcliente.tbCalificacion.idcalificacion==5 or seguimientoCobranzaOpera.objcliente.tbCalificacion.idcalificacion==6}">
+							<img src="#{request.contextPath}/images/3.png"  style="height: 55px; width: 55px  " />
+						</c:if>
 						<h:outputText value="#{message['cobranza.telefonos']}" />
-						<p:spacer/>
 						</h:panelGrid>
-						<p:dataTable
-							value="#{seguimientoCobranzaOpera.listatelefono}" var="t"
+						<p:dataTable value="#{seguimientoCobranzaOpera.listatelefono}" var="t"
 							rowStyleClass="#{t.operadorTelefonico eq 'Claro' ? 'colorRojo': (t.operadorTelefonico eq 'Movistar' ? 'colorCeleste': 'color3') }"
-							id="DetalleTelefono"  widgetVar="telefonotable" 
-							emptyMessage="#{message['rsltd.empty']}">
+							id="DetalleTelefono"  widgetVar="telefonotable" emptyMessage="#{message['rsltd.empty']}">
 							<f:facet name="header"/>
 							<p:column>
 								<f:facet name="header">
@@ -133,7 +138,7 @@
 							</p:column>
 						</p:dataTable>
 				</p:fieldset>
-
+				
 				<p:fieldset legend="#{message['cobranza.pagos']}" style="margin-top:20px">
 					<h:panelGrid columns="2"  cellpadding="4" >
 						<h:outputText value="#{message['cobranza.empresa']}" />
@@ -143,11 +148,9 @@
 						<h:outputText value="#{message['cobranza.empresa.telefonos']}" />
 						<h:outputText value="#{seguimientoCobranzaOpera.objContrato.tbEmpresa.numtelefono}" style="font-weight:bold" />
 					</h:panelGrid>
-					<p:dataTable value="#{seguimientoCobranzaOpera.detallePagos}" var="p"
+					<p:dataTable value="#{seguimientoCobranzaOpera.detallePagos}" var="p" id="DetallePagos"
 						rowStyleClass="#{seguimientoCobranzaOpera.fechoy le  p.fecvencimiento  ? null: (empty p.fecpago? 'colorRojo' : 'colorVerde')}"
-						id="DetallePagos"  widgetVar="pagostable"
-						emptyMessage="#{message['rsltd.empty']}">
-						<f:facet name="header"/>
+						widgetVar="pagostable" emptyMessage="#{message['rsltd.empty']}">
 						<p:column>
 							<f:facet name="header">
 								<h:outputText value="#{message['cobranza.cuotas']}" />
@@ -181,7 +184,6 @@
 					</p:dataTable>
 			    <h:outputText value="#{message['cobranza.total.apagar']}" />
 			    <p:inputText value="#{seguimientoCobranzaOpera.totalacumulado}" readonly="true" />
-		       
 				</p:fieldset>
 				<p:fieldset legend="#{message['cobranza.productos']}" style="margin-top:20px">
 					<p:dataTable
@@ -297,7 +299,6 @@
 					<p:inputText value="#{seguimientoCobranzaOpera.cantcuotasrest}" required="true"/>
 					<h:outputText value="#{message['cobranza.monto']}" />
 					<p:inputText value="#{seguimientoCobranzaOpera.montoRestantes}" required="true"/>
-					
 				</h:panelGrid>
 				<f:facet name="footer">
 					<p:commandButton value="#{message['cobranza.guardar']}" update="listaRefinancio" 
@@ -327,16 +328,16 @@
 						<h:outputText value="#{p.fechaVencimientoString}" />
 					</p:column>
 					<p:columnGroup type="footer">
-					<p:row>  
+					<p:row>
                     <p:column footerText="Total a pagar: " style="text-align:right"/>  
                     <p:column footerText="#{seguimientoCobranzaOpera.totalacumulafoRefi}" />
                     </p:row>
                     </p:columnGroup>
 				</p:dataTable>
 			</p:fieldset>
-			
 			</h:panelGrid>
 			</p:panel>
+			</p:fieldset>
 		</h:form>
 	</ui:define>
 </ui:composition>

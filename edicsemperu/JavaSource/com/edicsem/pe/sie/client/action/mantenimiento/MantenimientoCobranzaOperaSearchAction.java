@@ -153,11 +153,20 @@ public class MantenimientoCobranzaOperaSearchAction extends BaseMantenimientoAbs
 		fechaProgramada= new Date();
 		idcontrato=0;
 		radio=1;
+		idtipodoc=1;
 		idincidencia=0;
 		objRefinanPago = new RefinanciarPagoSie();
 		refinanciar=false;
 		idtiporefinan=0;
 		idRefi=1;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#agregar()
+	 */
+	public String agregar() {
+		
+		return Constants.MANT_RESPONDER_LLAMADA_FORM;
 	}
 	
 	/* (non-Javadoc)

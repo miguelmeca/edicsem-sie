@@ -12,7 +12,7 @@
 	<h1 class="title ui-widget-header ui-corner-all" >Mantenimiento Paquete Biblico</h1>
 	<h:form id="frmPaqueBibliList">
 	<p:messages showDetail="true" closable="true"/>
-    <p:fieldset>
+    <p:fieldset  style="margin-top:20px">
 	<p:dataTable  value="#{mantenimientoPaqueteBiblicoSearchAction.detPaqueteList}" var="pb" paginator="true" rows="10"
        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 	   rowsPerPageTemplate="5,10,15" widgetVar="table" emptyMessage="#{message['rsltd.empty']}">	
@@ -52,8 +52,8 @@
     	</f:facet>
 	</p:dataTable>
 	</p:fieldset>
-	<p:spacer height="20"/>
-	<p:fieldset id="fldDetalle" legend="Detalles del Paquete Biblico #{mantenimientoPaqueteBiblicoFormAction.objPaqueteSie.codpaquete}"  rendered="#{mantenimientoPaqueteBiblicoSearchAction.objPaqueteSie.idpaquete!=0}">
+	<p:fieldset id="fldDetalle" legend="Detalles del Paquete Biblico #{mantenimientoPaqueteBiblicoFormAction.objPaqueteSie.codpaquete}"
+	 style="margin-top:20px" rendered="#{mantenimientoPaqueteBiblicoSearchAction.objPaqueteSie.idpaquete!=0}">
 	<p:dataTable value="#{mantenimientoDetallePaqueteBiblicoSearchAction.detPaqueteBiblicoList}" 
 	var="c"	id="formdetalleform" emptyMessage="#{message['rsltd.empty']}" >
 		<p:column headerText="Codigo de Producto" >
