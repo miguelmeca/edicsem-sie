@@ -21,9 +21,9 @@ import org.apache.commons.logging.LogFactory;
 
 import com.edicsem.pe.sie.beans.ReporteParams;
 import com.edicsem.pe.sie.client.report.service.ReporteExecutionService;
-import com.edicsem.pe.sie.entity.ClienteSie;
+import com.edicsem.pe.sie.entity.DomicilioPersonaSie;
 import com.edicsem.pe.sie.entity.ZonificacionSie;
-import com.edicsem.pe.sie.service.facade.ClienteService;
+import com.edicsem.pe.sie.service.facade.DomicilioEmpleadoService;
 import com.edicsem.pe.sie.service.facade.ZonificacionService;
 import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
@@ -32,18 +32,21 @@ import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractActio
 @SessionScoped
 public class ReporteCobranzaCasaForm extends BaseMantenimientoAbstractAction{
 	
-	private List<ClienteSie> lstCliente;
+	private List<DomicilioPersonaSie> lstDomicilio;
 	public static Log log = LogFactory.getLog(ReporteCobranzaCasaForm.class);
 	private String idDepartamento, idProvincia, idUbigeo;
 	private String ContentType, mensaje;
-	private int stockActual,cantLista;
+	private int cantLista;
 	private int radio;
 	private List<String> letraList;
 	private List<String> planoList;
 	private List<String> sectorList;
+	private Map<String, String> planoItems= new HashMap<String, String>();
+	private Map<String, String> letraItems= new HashMap<String, String>();
+	private Map<String, String> sectorItems= new HashMap<String, String>();
 	
 	@EJB
-	private ClienteService objClienteService;
+	private DomicilioEmpleadoService objDomicilioService;
 	@EJB
 	private ReporteExecutionService objReporteService;
 	@EJB
@@ -51,9 +54,7 @@ public class ReporteCobranzaCasaForm extends BaseMantenimientoAbstractAction{
 	
 	@ManagedProperty(value = "#{comboAction}")
 	private ComboAction comboManager;
-	private Map<String, String> planoItems= new HashMap<String, String>();
-	private Map<String, String> letraItems= new HashMap<String, String>();
-	private Map<String, Integer> sectorItems= new HashMap<String, Integer>();
+	
 	public ReporteCobranzaCasaForm(){
 		
 	}
@@ -77,6 +78,10 @@ public class ReporteCobranzaCasaForm extends BaseMantenimientoAbstractAction{
 		comboManager.setUbigeoDeparItems(null);
 		comboManager.setUbigeoProvinItems(null);
 		comboManager.setUbigeoDistriItems(null);
+		planoList = new ArrayList<String>();
+		letraList = new ArrayList<String>();
+		sectorList = new ArrayList<String>();
+		lstDomicilio = new ArrayList<DomicilioPersonaSie>();
 		idDepartamento="15";
 		idProvincia="01";
 		idUbigeo="0";
@@ -98,7 +103,7 @@ public class ReporteCobranzaCasaForm extends BaseMantenimientoAbstractAction{
 	
 	public void buscarZonificacionXDistrito() {
 		log.info("buscarZonificacionXDistrito() ");
-
+		log.info("buscarZonificacionXDistrito() "+idUbigeo);
 		 planoItems= new HashMap<String, String>();
 		List<ZonificacionSie> lista = objZonificacionService.listarZonificacionXDistrito(idUbigeo);
 		
@@ -108,34 +113,31 @@ public class ReporteCobranzaCasaForm extends BaseMantenimientoAbstractAction{
 			planoItems.put(entidad.getCodplano(),entidad.getCodplano());
 			comboManager.setPlanoItems(planoItems);
 		}
+		planoList= new ArrayList<String>();
+		sectorList= new ArrayList<String>();
 	}
 	
 	public void buscarZonificacionXPlano() {
-		letraItems= new HashMap<String, String>();
-		sectorItems= new HashMap<String, Integer>();
-		planoList= new ArrayList<String>();
-		sectorList= new ArrayList<String>();
 		log.info("buscarZonificacionXPlano() ");
-		log.info("buscarZonificacionXPlano() "+idUbigeo);
-		log.info("buscarZonificacionXPlano() "+planoList.size()+" "+letraList.size());
+		letraItems= new HashMap<String, String>();
+		sectorItems= new HashMap<String, String>();
+		sectorList= new ArrayList<String>();
+		log.info("buscarZonificacionXPlano() "+idUbigeo +" "+planoList.size()+" "+letraList.size());
 		if(planoList.size()>0){
 			List<ZonificacionSie> lista = objZonificacionService.listarZonificacionXPlano(idUbigeo,planoList);
-			
 			for (int i = 0; i < lista.size(); i++) {
 				ZonificacionSie entidad = new ZonificacionSie();
 				entidad = (ZonificacionSie) lista.get(i);
 				letraItems.put(entidad.getCodletra(),entidad.getCodletra());
 				comboManager.setLetraItems(letraItems);
 			}
-			
 		}
 		if(letraList.size()>0){
 			List<ZonificacionSie> lista = objZonificacionService.listarZonificacionXPlanoXLetra(idUbigeo,planoList, letraList);
-			
 			for (int i = 0; i < lista.size(); i++) {
 				ZonificacionSie entidad = new ZonificacionSie();
 				entidad = (ZonificacionSie) lista.get(i);
-				sectorItems.put(entidad.getCodsector(),entidad.getIdzonifica());
+				sectorItems.put(entidad.getCodsector(),entidad.getCodsector());
 				comboManager.setSectorItems(sectorItems);
 			}
 		}
@@ -146,11 +148,12 @@ public class ReporteCobranzaCasaForm extends BaseMantenimientoAbstractAction{
 	 */
 	public String consultar() {
 		log.info("consultar() ");
-		setLstCliente(new ArrayList<ClienteSie>());
+		lstDomicilio = new ArrayList<DomicilioPersonaSie>();
 		mensaje =null;
-		stockActual=0;
 		try {
-			objZonificacionService.listarZonificacion();
+			lstDomicilio = objDomicilioService.listarClientesXZonificacion(idUbigeo, planoList, letraList, sectorList);
+			cantLista = lstDomicilio.size();
+			mensaje = "Consulta Realizada";
 			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (Exception e) {
@@ -158,7 +161,7 @@ public class ReporteCobranzaCasaForm extends BaseMantenimientoAbstractAction{
 		}
 		return null;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewMant()
 	 */
@@ -245,29 +248,7 @@ public class ReporteCobranzaCasaForm extends BaseMantenimientoAbstractAction{
 	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
 	}
-
-	/**
-	 * @return the stockActual
-	 */
-	public int getStockActual() {
-		return stockActual;
-	}
-
-	/**
-	 * @param stockActual the stockActual to set
-	 */
-	public void setStockActual(int stockActual) {
-		this.stockActual = stockActual;
-	}
 	
-	public List<ClienteSie> getLstCliente() {
-		return lstCliente;
-	}
-
-	public void setLstCliente(List<ClienteSie> lstCliente) {
-		this.lstCliente = lstCliente;
-	}
-
 	/**
 	 * @return the idDepartamento
 	 */
@@ -372,6 +353,20 @@ public class ReporteCobranzaCasaForm extends BaseMantenimientoAbstractAction{
 
 	public void setRadio(int radio) {
 		this.radio = radio;
+	}
+
+	/**
+	 * @return the lstDomicilio
+	 */
+	public List<DomicilioPersonaSie> getLstDomicilio() {
+		return lstDomicilio;
+	}
+
+	/**
+	 * @param lstDomicilio the lstDomicilio to set
+	 */
+	public void setLstDomicilio(List<DomicilioPersonaSie> lstDomicilio) {
+		this.lstDomicilio = lstDomicilio;
 	}
 	
 }

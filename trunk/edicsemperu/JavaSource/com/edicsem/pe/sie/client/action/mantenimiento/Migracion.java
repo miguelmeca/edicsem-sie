@@ -335,11 +335,11 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 				e.printStackTrace();
 	    }finally {
 	    	if (fis != null) {
-			try {
-				fis.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+				try {
+					fis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 	    }
 		log.info("cantidad registros pase Manual " +listaContratosManual.size() +" Cantidad registros subido a BD"+ sistMig.size());

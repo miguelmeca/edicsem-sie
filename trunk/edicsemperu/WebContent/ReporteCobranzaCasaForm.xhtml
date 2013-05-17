@@ -16,15 +16,7 @@
 		<p:messages id="message" showDetail="true"/>
 		<p:panel>
 		<p:fieldset id="fi" legend="Busqueda Cobranza en Casa" style="margin-top:30px">
-			<h:panelGrid columns="4" cellpadding="5" >
-			<p:selectOneRadio  value="#{reporteCobranzaCasa.radio}" >  
-		        <f:selectItem itemLabel="Por Cono" itemValue="1" />
-		        <f:selectItem itemLabel="Por Distrito" itemValue="2" />
-		        <p:ajax update="fi" />
-	        </p:selectOneRadio>
-	        <h:panelGrid columns="3" rendered="#{reporteCobranzaCasa.radio==1}" >
-	        
-			</h:panelGrid>
+			<h:panelGrid columns="3" cellpadding="5" >
 			
 				<h:outputText value="#{message['contrato.ubigeo.departamento']}" />
 				<p:selectOneMenu id="dep" value="#{reporteCobranzaCasa.idDepartamento}" filter="true" filterMatchMode="startsWith"
@@ -55,41 +47,71 @@
 				<p:message for="dist" />
 				
 				<h:outputText value="Plano" />
-				<p:selectCheckboxMenu id="pl" value="#{reporteCobranzaCasa.planoList}" filter="true" filterMatchMode="startsWith" >
+				<p:selectCheckboxMenu id="pl" label="Seleccione Plano" value="#{reporteCobranzaCasa.planoList}" filter="true" filterMatchMode="startsWith" >
 					<f:selectItems value="#{comboAction.planoItems}" />
 					<p:ajax update="let" listener="#{reporteCobranzaCasa.buscarZonificacionXPlano}" />
 				</p:selectCheckboxMenu>
 				<p:spacer/>
 				
 				<h:outputText value="Letra" />
-				<p:selectCheckboxMenu id="let" value="#{reporteCobranzaCasa.letraList}" filter="true" filterMatchMode="startsWith" >
+				<p:selectCheckboxMenu id="let" label="Seleccione Letra" value="#{reporteCobranzaCasa.letraList}" filter="true" filterMatchMode="startsWith" >
 					<f:selectItems value="#{comboAction.letraItems}" />
+					<p:ajax update="se" listener="#{reporteCobranzaCasa.buscarZonificacionXPlano}" />
 				</p:selectCheckboxMenu>
 				<p:spacer/>
 				
 				<h:outputText value="Sector" />
-				<p:selectCheckboxMenu id="se" value="#{reporteCobranzaCasa.sectorList}" filter="true" filterMatchMode="startsWith" >
+				<p:selectCheckboxMenu id="se" label="Seleccione Sector" value="#{reporteCobranzaCasa.sectorList}" filter="true" filterMatchMode="startsWith" >
 					<f:selectItems value="#{comboAction.sectorItems}" />
 				</p:selectCheckboxMenu>
 				
 				<f:facet name="footer">
-					<p:commandButton value="Consultar" action="#{reporteKardex.consultar}" 
+					<p:commandButton value="Consultar" action="#{reporteCobranzaCasa.consultar}" 
 					update="message" ajax="false" icon="ui-icon-search" />
 				</f:facet>
 			</h:panelGrid>
 		</p:fieldset>
 		
+		<p:dataTable value="#{reporteCobranzaCasa.lstDomicilio}"  paginator="true" rows="10"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" var="c"  emptyMessage="#{message['rsltd.empty']}" >
+			<f:facet name="header">
+				<h:outputLabel value="#{message['rsltd.datatable']}" />
+			</f:facet>
+			<p:column headerText="Cliente" >
+		         <h:outputText value="#{c.idcliente.nombresCompletos}" />
+		    </p:column>
+		    <p:column headerText="Domicilio" >
+		         <h:outputText value="#{c.domicilio}" />
+		    </p:column>
+		    <p:column headerText="Distrito" >
+		         <h:outputText value="#{c.tbUbigeo.nombre}" />
+		    </p:column>
+		    <p:column headerText="Plano" >
+		         <h:outputText value="#{c.planoDomicilio}" />
+		    </p:column>
+		     <p:column headerText="Letra" >
+		         <h:outputText value="#{c.letraDomicilio}" />
+		    </p:column>
+		     <p:column headerText="Sector" >
+		         <h:outputText value="#{c.sectorDomicilio}" />
+		    </p:column>
+		     <p:column headerText="Ubicacion" >
+		         <h:outputText value="#{c.desUbigeo}" />
+		    </p:column>
+		</p:dataTable>
+		
 		<div align="center"  style="margin-top:30px" >
 		     	<h:graphicImage value="/images/Reporting_pdf.png" style="width:40px;height:40px"/>
-				<p:commandLink action="#{reporteKardex.exportar}" value="#{message['reporte.exportar.pdf']}" ajax="false" 
-				disabled="#{reporteKardex.cantLista!=0? false:true}">
-				<f:setPropertyActionListener target="#{reporteKardex.contentType}" value="pdf"/>
+				<p:commandLink action="#{reporteCobranzaCasa.exportar}" value="#{message['reporte.exportar.pdf']}" ajax="false" 
+				disabled="#{reporteCobranzaCasa.cantLista!=0? false:true}">
+				<f:setPropertyActionListener target="#{reporteCobranzaCasa.contentType}" value="pdf"/>
 				</p:commandLink>
 				
 				<h:graphicImage value="/images/excel_icon.PNG" style="width:40px;height:40px"/>
-				<p:commandLink action="#{reporteKardex.exportar}" value="#{message['reporte.exportar.xls']}" ajax="false" 
-				disabled="#{reporteKardex.cantLista!=0? false:true}">
-				<f:setPropertyActionListener target="#{reporteKardex.contentType}" value="xls"/>
+				<p:commandLink action="#{reporteCobranzaCasa.exportar}" value="#{message['reporte.exportar.xls']}" ajax="false" 
+				disabled="#{reporteCobranzaCasa.cantLista!=0? false:true}">
+				<f:setPropertyActionListener target="#{reporteCobranzaCasa.contentType}" value="xls"/>
 				</p:commandLink>
 		</div>
 		</p:panel>

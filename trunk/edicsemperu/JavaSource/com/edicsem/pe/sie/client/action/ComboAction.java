@@ -154,7 +154,7 @@ public class ComboAction {
 	private Map<String, Integer> parametroActividadItems = new HashMap<String, Integer>();
 	private Map<String, String> planoItems= new HashMap<String, String>();
 	private Map<String, String> letraItems= new HashMap<String, String>();
-	private Map<String, Integer> sectorItems= new HashMap<String, Integer>();
+	private Map<String, String> sectorItems= new HashMap<String, String>();
 	
 	@EJB
 	private TurnoService objTurnoService;
@@ -1976,7 +1976,7 @@ public class ComboAction {
 			for (int i = 0; i < lista.size(); i++) {
 				CalificacionEquifaxSie entidad = new CalificacionEquifaxSie();
 				entidad = (CalificacionEquifaxSie) lista.get(i);
-				calificacionItems.put(entidad.getDescripcion(),
+				calificacionItems.put(entidad.getCalificacion(),
 						entidad.getIdcalificacion());
 			}
 			calificacionItems = sortByComparator(calificacionItems);
@@ -2038,7 +2038,7 @@ public class ComboAction {
 	/**
 	 * @return the sectorItems
 	 */
-	public Map<String, Integer> getSectorItems() {
+	public Map<String, String> getSectorItems() {
 		sectorItems = sortByComparator(sectorItems);
 		return sectorItems;
 	}
@@ -2046,7 +2046,7 @@ public class ComboAction {
 	/**
 	 * @param sectorItems the sectorItems to set
 	 */
-	public void setSectorItems(Map<String, Integer> sectorItems) {
+	public void setSectorItems(Map<String, String> sectorItems) {
 		this.sectorItems = sectorItems;
 	}
 
