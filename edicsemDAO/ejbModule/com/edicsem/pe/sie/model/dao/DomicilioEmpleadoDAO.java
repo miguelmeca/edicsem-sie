@@ -16,12 +16,7 @@ public interface DomicilioEmpleadoDAO {
 	public abstract List listarDomicilioEmpleados ();
 	public abstract DomicilioPersonaSie buscarDomicilioXIdempleado(int id);
 	public abstract List listarDomicilioCliente (int id);
-	
 	public abstract DomicilioPersonaSie buscarDomicilioXIdcliente(int id);
-	
-	
-	
-
-	
+	public abstract List listarClientesXZonificacion(String idUbigeo,List<String> planoList, List<String> letraList,List<String> sectorList);
 	
 }
