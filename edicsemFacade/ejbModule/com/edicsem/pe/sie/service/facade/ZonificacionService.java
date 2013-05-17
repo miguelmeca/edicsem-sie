@@ -15,4 +15,5 @@ public interface ZonificacionService {
 	public abstract List listarZonificacionXDistrito(String idUbigeo);
 	public abstract List listarZonificacionXPlano(String idUbigeo,List<String> planoList);
 	public abstract List listarZonificacionXPlanoXLetra(String idUbigeo,List<String> planoList, List<String> letraList);
+	
 }

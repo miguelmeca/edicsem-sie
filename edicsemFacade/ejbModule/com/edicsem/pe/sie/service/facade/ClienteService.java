@@ -17,5 +17,3 @@ public interface ClienteService {
 	public abstract List  listarClientes();
 	public abstract List  listarClientesXTipo(int tipoCliente);
 }
-
-//, List<TelefonoPersonaSie> TelefonoPersonaList,int tipo,DomicilioPersonaSie objDomicilio,String idUbigeo
