@@ -46,6 +46,8 @@ public class EmpleadoSie implements Serializable {
 	
 	private String genero;
 	
+	private int canthijos;
+	
 	@Transient
 	private int cargo;
 	
@@ -448,6 +450,14 @@ public class EmpleadoSie implements Serializable {
 
 	public void setTbcaja(Set<CajaSie> tbcaja) {
 		this.tbcaja = tbcaja;
+	}
+
+	public int getCanthijos() {
+		return canthijos;
+	}
+
+	public void setCanthijos(int canthijos) {
+		this.canthijos = canthijos;
 	}
 
 }
