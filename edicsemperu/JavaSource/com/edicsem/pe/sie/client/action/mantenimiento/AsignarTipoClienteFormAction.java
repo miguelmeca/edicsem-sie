@@ -145,6 +145,10 @@ public class AsignarTipoClienteFormAction extends BaseMantenimientoAbstractActio
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return null;
 	}
+	
+	public void ReportingPagos(){
+		
+	}
 
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction#getViewMant()
