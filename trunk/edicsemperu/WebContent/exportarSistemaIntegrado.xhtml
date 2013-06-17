@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
+	<ui:define name="body">
+		<h1 class="title ui-widget-header ui-corner-all">#{message['migracion.panel']}</h1>
+		<h:form >
+		<p:messages id="message" showDetail="true" closable="true" />
+		
+		<p:dataTable id="datatablesi" var="c" value="#{migracion.sistMig}"  paginator="true" rows="15"
+		 rowsPerPageTemplate="5,10,15"  emptyMessage="#{message['rsltd.empty']}"
+		 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
+	         
+	        <p:column headerText="#{message['migracion.codigo']}"  >
+			<h:outputText value="#{c.codContrato}"/>
+			</p:column>
+			
+	        <p:column headerText="#{message['migracion.nombre']}"  >
+			<h:outputText value="#{c.nombrecliente}"/>
+			</p:column>
+			
+	    	<p:column  headerText="#{message['migracion.apePat']}" >
+	        <h:outputText value="#{c.apepatcliente}"/>
+	        </p:column>
+	        
+	        <p:column  headerText="#{message['migracion.apeMat']}" >
+	        <h:outputText value="#{c.apematcliente}"/>
+	        </p:column>
+	        
+	        <p:column  headerText="#{message['migracion.numDoc']}"  >
+	        <h:outputText value="#{c.numdocumento}"/>
+	        </p:column>
+	        
+	        <p:column  headerText="#{message['migracion.fecNac']}" >
+	        <h:outputText value="#{c.fechaNacimientoString}"/>
+	        </p:column>
+	        
+	        <p:column  headerText="#{message['migracion.numTel']}" >
+	        <h:outputText value="#{c.numTelefono}"/>
+	        </p:column>
+	    </p:dataTable>
+	    
+	    <p:commandButton value="Exportar" title="Exportar Sistema Integrado" action="#{migracion.insertar}" 
+	    	ajax="false" update="message" onclick="statusDialogSI.show();" />
+	    	
+		</h:form>
+	</ui:define>
+</ui:composition>
