@@ -29,4 +29,5 @@ public interface ContratoService {
 	public abstract List listarContratoEntregaLetraObsequio(String numDocumento,String codigoContrato,String nombreCliente, String apePat,String apeMat);
 	public abstract Integer findcantContratoFacturado(Integer idEmpleado, Integer cargo, String fechaInicio, String fechaFin );
 	public abstract Integer findcantContratoEntregado(Integer idEmpleado, Integer cargo, String fechaInicio, String fechaFin );
+	public List<SistemaIntegradoDTO> exportarSistIntegrado();
 }
