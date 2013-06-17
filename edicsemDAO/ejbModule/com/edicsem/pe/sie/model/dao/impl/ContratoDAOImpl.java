@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.edicsem.pe.sie.beans.SistemaIntegradoDTO;
 import com.edicsem.pe.sie.entity.ContratoSie;
 import com.edicsem.pe.sie.model.dao.ContratoDAO;
 import com.edicsem.pe.sie.util.constants.DateUtil;
@@ -28,7 +29,6 @@ public class ContratoDAOImpl implements ContratoDAO{
 	/* (non-Javadoc)
 	 * @see com.edicsem.pe.sie.model.dao.ContratoDAO#insertContrato(com.edicsem.pe.sie.entity.ContratoSie)
 	 */
-	
 	public void insertContrato(ContratoSie contrato) {
 		try {
 			if (log.isInfoEnabled()) {
@@ -79,7 +79,7 @@ public class ContratoDAOImpl implements ContratoDAO{
 	public List listarContratos() {
 		List  lista = null;
 		try {
-			Query q = em.createQuery("select p from ContratoSie p ");
+			Query q = em.createQuery("select p from ContratoSie p  where p.tbEstadoGeneralEntrega.idestadogeneral = 25 ");
 			lista =  q.getResultList(); 
 			log.info("tamaño lista Contrato --> " + lista.size()+"  ");
 		} catch (Exception e) {

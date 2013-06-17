@@ -22,4 +22,5 @@ public interface ContratoDAO {
 	public abstract boolean verificarNumContrato(int numContrato);
 	public abstract Integer findcantContratoFacturado(int idEmpleado, int cargo, String fechaInicio, String fechaFin);
 	public abstract Integer findcantContratoEntregado(int idEmpleado, int cargo, String fechaInicio, String fechaFin);
+	
 }
