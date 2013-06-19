@@ -15,8 +15,14 @@
 			<p:dataTable value="#{tipoProductoSearch.tipoProdList}"
 				var="tipoProducto" id="tipoProductoTable" paginator="true" rows="15"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="5,10,15" widgetVar="table" emptyMessage="#{message['rsltd.empty']}">
+				rowsPerPageTemplate="5,10,15" widgetVar="tableTipoProd" emptyMessage="#{message['rsltd.empty']}">
 				<f:facet name="header">#{message['tipo.producto.mantenimiento']}
+				</f:facet>
+				<f:facet name="header">
+				<p:outputPanel>
+					<h:outputText value="Buscar :"/>
+					<p:inputText onkeyup="tableTipoProd.filter()" style="width:150px; align:Left; "/>
+				</p:outputPanel>
 				</f:facet>
 				<p:column headerText="#{message['tipo.producto.codigo']}">
 					<h:outputText value="#{tipoProducto.codtipoproducto}" />

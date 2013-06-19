@@ -951,10 +951,7 @@ public class MantenimientoContratoFormAction extends
 		return getViewMant();
 	}
 	
-	public String onFlowProcess(FlowEvent event) {
-	    log.info("Current wizard step:" + event.getOldStep());  
-	    log.info("Next step:" + event.getNewStep());  
-	    log.info("skip :"+skip);	
+	public String onFlowProcess(FlowEvent event) {	
 	     if(skip) {  
 	            skip = true;   //reset in case user goes back  
 	            return "confirm";  

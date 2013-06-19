@@ -9,8 +9,8 @@
 	<h:form id="frmEntregasperuForm" enctype="multipart/form-data" >
 	<p:messages id="message" showDetail="true" closable="true" />
 	
-	<p:fileUpload fileUploadListener="#{FileUploadEntregasPeru.handleFileUpload}" label="#{message['migracion.cargar.archivo']}" 
-	uploadLabel="#{message['migracion.cargar.archivo']}" cancelLabel="#{message['migracion.cancelar.archivo']}"
+	<p:fileUpload fileUploadListener="#{FileUploadEntregasPeru.handleFileUpload}" label="#{message['migracion.select.archivo']}"
+	uploadLabel="#{message['migracion.cargar.archivo']}" cancelLabel="#{message['migracion.cancelar.archivo']}" 
 	allowTypes="/(\.|\/)(XLS|xls)$/" description="#{message['miracion.select.archivo']}"  multiple="false" customUI="true" 
 	update="datatableentrega, message" sizeLimit="20480"/>
 	

@@ -6,50 +6,53 @@
 	xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
 	<ui:define name="body">
 		<h1 class="title ui-widget-header ui-corner-all">#{message['punto.titulo']}</h1>
-
+		
 		<h:form id="frmAlmacenFormList" prependId="false">
 			<p:messages showDetail="true" escape="false" closable="true" />
 			<p:dataTable value="#{almacenSearch.almacenList}" var="al" id="almacenTable" paginator="true" 
 			rows="10"  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-	   		rowsPerPageTemplate="5,10,15" widgetVar="table" emptyMessage="#{message['rsltd.empty']}">	
-
-				<p:column headerText="#{message['punto.descripcion']}" >
-					<h:outputText value="#{al.descripcion}" />
-				</p:column>
-
-				<p:column headerText="#{message['punto.tipo']}" >
-					<h:outputText value="#{al.tbTipoPuntoVenta.descripcion}" />
-				</p:column>
-
-				<p:column headerText="#{message['punto.editar']}">
-				<center>
-					<p:commandButton title="Editar datos"
-						action="#{almacenForm.update}"	icon="ui-icon ui-icon-pencil" ajax="false" >
-						<f:setPropertyActionListener value="#{al}"
-							target="#{almacenForm.objAlmacenSie}" />
-					</p:commandButton>
-					</center>
-				</p:column>
-				
-				<p:column headerText="#{message['punto.deshabilitar']}">
-				<center>	<p:commandButton id="showConfirmDeshabilitarAlmacen"  icon="ui-icon ui-icon-close"
-						onclick="confirmationAlmacen.show()" title="Deshabilitar" >
-						<f:setPropertyActionListener value="#{al.idpuntoventa}"
-							target="#{almacenForm.ide}" />
-					</p:commandButton>
-					</center>
-				</p:column>
-
-				<f:facet name="footer">
-					<div align="left">
-						<p:commandButton value="#{message['punto.nuevo']}" icon="ui-icon-star" id="nuevop"
-							action="#{almacenForm.agregar}"	title="#{message['punto.nuevo.tittle']}">
-							<f:setPropertyActionListener value="#{true}"
-							target="#{almacenForm.defectoUbigeo}" />
+	   		rowsPerPageTemplate="5,10,15" widgetVar="tableAlmacen" emptyMessage="#{message['rsltd.empty']}">	
+		   	<f:facet name="header">
+		   	<p:outputPanel>
+			   	<h:outputText value="Buscar en todos los campos:" />
+			   	<p:inputText id="globalFilter" onkeyup="tableAlmacen.filter()" style="width:150px; align:Left; "/>
+			</p:outputPanel>
+			</f:facet>
+			<p:column sortBy="#{al.descripcion}" filterBy="#{al.descripcion}" headerText="#{message['punto.descripcion']}" filterMatchMode="contains" >
+				<h:outputText value="#{al.descripcion}" />
+			</p:column>
+			
+			<p:column sortBy="#{al.tbTipoPuntoVenta.descripcion}" filterBy="#{al.tbTipoPuntoVenta.descripcion}" headerText="#{message['punto.tipo']}" filterMatchMode="contains" >
+				<h:outputText value="#{al.tbTipoPuntoVenta.descripcion}" />
+			</p:column>
+			
+			<p:column headerText="#{message['punto.editar']}">
+			<center>
+				<p:commandButton title="Editar datos"
+					action="#{almacenForm.update}"	icon="ui-icon ui-icon-pencil" ajax="false" >
+					<f:setPropertyActionListener value="#{al}"
+						target="#{almacenForm.objAlmacenSie}" />
+				</p:commandButton>
+				</center>
+			</p:column>
+			
+			<p:column headerText="#{message['punto.deshabilitar']}">
+			<center><p:commandButton id="showConfirmDeshabilitarAlmacen"  icon="ui-icon ui-icon-close"
+				onclick="confirmationAlmacen.show()" title="Deshabilitar" >
+				<f:setPropertyActionListener value="#{al.idpuntoventa}" target="#{almacenForm.ide}" />
+			</p:commandButton>
+			</center>
+			</p:column>
+			
+			<f:facet name="footer">
+				<div align="left">
+					<p:commandButton value="#{message['punto.nuevo']}" icon="ui-icon-star" id="nuevop"
+						action="#{almacenForm.agregar}"	title="#{message['punto.nuevo.tittle']}">
+						<f:setPropertyActionListener value="#{true}" target="#{almacenForm.defectoUbigeo}" />
 						</p:commandButton>
-						<p:tooltip for="nuevop"/>
-					</div>
-				</f:facet>
+					<p:tooltip for="nuevop"/>
+				</div>
+			</f:facet>
 			</p:dataTable>
 		</h:form>
 	</ui:define>

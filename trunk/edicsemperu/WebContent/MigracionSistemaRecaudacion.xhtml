@@ -9,7 +9,8 @@
 		<h:form id="frmMigracionForm" enctype="multipart/form-data"  >
 		<p:messages id="message" showDetail="true" closable="true" />
 		
-		<p:fileUpload fileUploadListener="#{recaudacion.handleFileUpload}" label="Cargar archivo" cancelLabel="Cancelar" uploadLabel="cambiar de archivo"
+		<p:fileUpload fileUploadListener="#{recaudacion.handleFileUpload}" label="#{message['migracion.select.archivo']}"
+		uploadLabel="#{message['migracion.cargar.archivo']}" cancelLabel="#{message['migracion.cancelar.archivo']}" 
 		allowTypes="/(\.|\/)(xls)$/" description="Seleccione archivo" multiple="false" customUI="true" 
 		update="datatablesr, message"/>
 		

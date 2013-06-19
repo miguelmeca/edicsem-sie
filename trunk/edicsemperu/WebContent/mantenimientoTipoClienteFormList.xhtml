@@ -9,18 +9,18 @@
 		window.history.forward(-1);
 	</script>
 		<h1 class="title ui-widget-header ui-corner-all">#{message['tipo.cliente.titulo']}</h1>
-		<h:form id="formManteProdLista" >
+		<h:form id="formManteTipoClienteList" >
 		<p:messages id="message" showDetail="true" />
 			<p:dataTable value="#{tipoClienteSearch.tipoClienteList}" var="p" 
 					id="lista" paginator="true" rows="10"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="5,10,15" widgetVar="table"
+					rowsPerPageTemplate="5,10,15" widgetVar="tableTipoCli"
 					emptyMessage="#{message['rsltd.empty']}">
 					<f:facet name="header">#{message['tipo.cliente.titulo']}</f:facet>
 					<f:facet name="header">
 					    <p:outputPanel>
 						 <h:outputText value="#{message['rsltd.buscar']}"/>
-						 <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px; align:Left; "/>
+						 <p:inputText id="globalFilter" onkeyup="tableTipoCli.filter()" style="width:150px; align:Left; "/>
 						</p:outputPanel>
 					</f:facet>
 					<p:column sortBy="#{p.descripcion}" filterBy="#{p.descripcion}" headerText="#{message['mantenimiento.productoList.descripcion']}">
