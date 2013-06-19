@@ -62,4 +62,8 @@
     <param-name>org.primefaces.extensions.DELIVER_UNCOMPRESSED_RESOURCES</param-name>
     <param-value>false</param-value>
 </context-param>
+<mime-mapping>        
+        <extension>png</extension>
+        <mime-type>image/png</mime-type>
+    </mime-mapping>
 </web-app>

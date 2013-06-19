@@ -613,35 +613,33 @@ function validarEspaciosLetrasNumeros(e) { // 1
 	<!--  Mantenimiento DETALLE CAJA -->
 	<h:form id="DetalleCaja">
 		<p:dialog header="Detalle Caja" widgetVar="cajaDetalleDialog" showEffect="fade"
-			hideEffect="explode" modal="true" position="center" resizable="false" >
-			<p:messages id="message"   showDetail="true" escape="false" closable="true" />
+		hideEffect="explode" modal="true" position="center" resizable="false" >
 			<h:panelGrid id="display" columns="2" cellpadding="5" >
+				<p:messages id="message"   showDetail="true" escape="false" closable="true" />
 				<h:outputText value="Empleado" />
-				<p:dataTable value="#{cajaForm.cajaList}" var="p" id="lista" paginator="true" rows="10"
-					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="5,10,15" widgetVar="table"
-					emptyMessage="#{message['rsltd.empty']}">
-					<f:facet name="header">Movimiento Caja</f:facet>
-					<p:column sortBy="#{p.empleadocreacion}" filterBy="#{p.empleadocreacion}" headerText="Empleado">
-						<h:outputText value="#{p.empleadocreacion}" />
-					</p:column>
-					<p:column sortBy="#{p.tipoPago}" filterBy="#{p.tipoPago}" headerText="Tipo de Movimiento">
-						<h:outputText value="#{p.tipoPago}" />
-					</p:column>
-					<p:column sortBy="#{p.monto}" filterBy="#{p.monto}" headerText="Monto">
-						<h:outputText value="#{p.monto}" />
-					</p:column>
-					<p:columnGroup type="footer">
-						<p:row>
-		                    <p:column footerText="Saldo Total  S/." style="text-align:right"/>  
-		                    <p:column footerText="#{cajaForm.saldoTotalEmpleado}" />
-	                    </p:row>
-                    </p:columnGroup>
+				<p:dataTable value="#{cajaForm.cajaList}" var="p" id="listaD" paginator="true" rows="10"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" widgetVar="table" emptyMessage="#{message['rsltd.empty']}" filteredValue="#{cajaForm.filteredcajaList}" >
+				<f:facet name="header">Movimiento Caja</f:facet>
+				<p:column headerText="Empleado" >
+					<h:outputText value="#{p.empleadocreacion}" />
+				</p:column>
+				<p:column headerText="Tipo de Movimiento" >
+					<h:outputText value="#{p.tipoPago}" />
+				</p:column>
+				<p:column headerText="Monto" >
+					<h:outputText value="#{p.monto}" />
+				</p:column>
+				<p:columnGroup type="footer">
+					<p:row>
+		            <p:column footerText="Saldo Total  S/." style="text-align:right" />  
+		            <p:column footerText="#{cajaForm.saldoTotalEmpleado}" />
+	                </p:row>
+                </p:columnGroup>
 				</p:dataTable>
 				
 				<f:facet name="footer">
-					<p:commandButton value="Cerrar" onclick="cajaDetalleDialog.hide()" 
-					icon="ui-icon ui-icon-close"/>
+				<p:commandButton value="Cerrar" onclick="cajaDetalleDialog.hide()" icon="ui-icon ui-icon-close" />
 				</f:facet>
 			</h:panelGrid>
 		</p:dialog>

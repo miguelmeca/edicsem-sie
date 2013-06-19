@@ -40,7 +40,7 @@ import com.edicsem.pe.sie.util.constants.Constants;
 import com.edicsem.pe.sie.util.constants.DateUtil;
 import com.edicsem.pe.sie.util.mantenimiento.util.BaseMantenimientoAbstractAction;
 
-@ManagedBean(name = "migracion")
+@ManagedBean(name = "exportacion")
 @SessionScoped
 public class ExportacionSistemaIntegrado extends BaseMantenimientoAbstractAction implements Serializable {
 	
@@ -80,10 +80,6 @@ public class ExportacionSistemaIntegrado extends BaseMantenimientoAbstractAction
 		HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 		EmpleadoSie sessionUsuario = (EmpleadoSie)session.getAttribute(Constants.USER_KEY);
 		
-		if(sistMig.size()==0){
-			mensaje = "Debe subir el excel a importar";
-			msg = new FacesMessage(FacesMessage.SEVERITY_WARN,Constants.MESSAGE_INFO_TITULO,mensaje);
-		}else{
 			//mensaje = objContratoService.insertMigracion(sistMig, sisMigUpdate, sessionUsuario.getUsuario());
 			if(mensaje ==null){
 				mensaje=  "Se realizó la migración exitosamente";
@@ -92,7 +88,7 @@ public class ExportacionSistemaIntegrado extends BaseMantenimientoAbstractAction
 				
 				msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,Constants.MESSAGE_INFO_TITULO,mensaje);
 			}
-		}
+		
 		context.execute("statusDialogSI.hide()");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		

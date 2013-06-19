@@ -50,6 +50,11 @@
 	    	<p:commandButton value="#{message['migracion.subirbd']}" action="#{migracion.insertar}" 
 	    	ajax="false" update="message" onclick="statusDialogSI.show();" />
 	    	
+	    	<p:commandButton value="Exportar Sistema Integrado" action="#{migracion.exportar}" 
+	    	ajax="false" update="message"  >
+	    		<f:setPropertyActionListener target="#{migracion.contentType}" value="xls"/>
+	    	</p:commandButton>
+	    	
 		</h:form>
 	</ui:define>
 </ui:composition>

@@ -2,11 +2,14 @@ package com.edicsem.pe.sie.client.action.mantenimiento;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import com.edicsem.pe.sie.entity.EmpresaSie;
 import com.edicsem.pe.sie.entity.ProductoSie;
 import com.edicsem.pe.sie.service.facade.ProductoService;
@@ -47,6 +50,7 @@ public class MantenimientoProductoSearchAction extends BaseMantenimientoAbstract
 		if (productoList == null) {
 			productoList = new ArrayList<ProductoSie>();
 		}
+		//productoForm.setImage(new DefaultStreamedContent());
 		return getViewList();
 	}
 	
@@ -90,6 +94,5 @@ public class MantenimientoProductoSearchAction extends BaseMantenimientoAbstract
 	public void setProductoList(List<ProductoSie> productoList) {
 		this.productoList = productoList;
 	}
- 
 
 }
