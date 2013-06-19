@@ -670,7 +670,7 @@ public class ContratoServiceImpl implements ContratoService {
 			cob.setDiasretraso(s.getDiasRetraso());
 			cob.setIdcliente(cli.getIdcliente());
 			cob.setIdcontrato(con.getIdcontrato());
-			cob.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(28));
+			cob.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(27));
 			cob.setTbContrato(objContratoDao.findContrato(con.getIdcontrato()));
 			cob.setTbCliente(cli);
 			
@@ -696,6 +696,7 @@ public class ContratoServiceImpl implements ContratoService {
 		}
 		
 		//  *************** Contratos a actualizar  ***********************************
+		int contCob=0;
 		for (int i = 0; i < sisMigUpdate.size(); i++) {
 			con = objContratoDao.buscarXcodigoContrato(sisMigUpdate.get(i).getCodContrato());
 			SistemaIntegradoDTO s = sistMig.get(i);
@@ -960,26 +961,35 @@ public class ContratoServiceImpl implements ContratoService {
 				objDomicilioDao.insertarDomicilioEmpleado(dom);
 			}
 			//buscar cobranza
-			CobranzaSie cob = new CobranzaSie();
-			cob.setCantcuotas(s.getCantCuotas().toString());
-			cob.setFecpago(s.getFehaPago());
-			cob.setNumletra(s.getNumLetra());
-			cob.setFecvencimiento(s.getFechaVencimiento());
-			cob.setRegistroreniec(s.getRegistroReniec());
-			cob.setImpinicial(new BigDecimal(s.getImporteInicial()));
-			cob.setImpcobrado(new BigDecimal(s.getImporteCobrado()));
-			cob.setImportemasmora(new BigDecimal(s.getImportemasmora()));
-			cob.setDiasretraso(s.getDiasRetraso());
-			cob.setIdcliente(cli.getIdcliente());
-			cob.setIdcontrato(con.getIdcontrato());
-			cob.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(28));
-			cob.setTbContrato(con);
-			cob.setTbCliente(cli);
+			List<CobranzaSie> cobAntlst = objCobranzaDao.buscarCobranzaXcodigoContrato(con.getIdcontrato());
 			
-			//actualizar cobranza
-			cob.setUsuariomodifica(usuariocreacion);
-			objCobranzaDao.updateCobranza(cob);
-			
+				CobranzaSie cob = cobAntlst.get(contCob);
+				cob.setCantcuotas(s.getCantCuotas().toString());
+				cob.setFecpago(s.getFehaPago());
+				cob.setNumletra(s.getNumLetra());
+				cob.setFecvencimiento(s.getFechaVencimiento());
+				cob.setRegistroreniec(s.getRegistroReniec());
+				cob.setImpinicial(new BigDecimal(s.getImporteInicial()));
+				cob.setImpcobrado(new BigDecimal(s.getImporteCobrado()));
+				cob.setImportemasmora(new BigDecimal(s.getImportemasmora()));
+				cob.setDiasretraso(s.getDiasRetraso());
+				cob.setIdcliente(cli.getIdcliente());
+				cob.setIdcontrato(con.getIdcontrato());
+				cob.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(27));
+				cob.setTbContrato(con);
+				cob.setTbCliente(cli);
+				//actualizar cobranza
+				cob.setUsuariomodifica(usuariocreacion);
+				objCobranzaDao.updateCobranza(cob);
+				
+			//Las cobranzas que no estan dentro del detalle de pagos e deshabilitaran de la base de datos
+			if(contCob<cobAntlst.size()){
+				for (int j = contCob; j < cobAntlst.size(); j++) {
+					CobranzaSie cob2 = cobAntlst.get(j);
+					cob2.setTbEstadoGeneral(objEstadoGeneralDao.findEstadoGeneral(28));
+				}
+			}
+				
 			if(con.getCodcontrato()!=codigoContr){
 				for (int j2 = 0; j2 < telList.size(); j2++) {
 					objTelefonoDao.insertarTelefonoEmpleado(telList.get(j2));
@@ -988,11 +998,14 @@ public class ContratoServiceImpl implements ContratoService {
 					objDomicilioDao.insertarDomicilioEmpleado(domList.get(g));
 				}
 				codigoContr=  con.getCodcontrato();
+				contCob=0;
+			}else{
+				contCob+=1;
 			}
 		}
 		
 		} catch (Exception e) {
-			mensaje ="Mensaje: "+e.getMessage()+"Error en el contrato "+con.getCodcontrato()+", Causa: "+e.getMessage();
+			mensaje ="Mensaje: "+e.getMessage()+" Error en el contrato "+con.getCodcontrato()+", Causa: "+e.getMessage();
 		}
 		
 		return mensaje;
