@@ -13,12 +13,12 @@
 		<p:messages id="message" showDetail="true" />
 			<p:dataTable value="#{cajaSearch.cajaActualList}" var="p" id="lista" paginator="true" rows="10"
 			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-			rowsPerPageTemplate="5,10,15" widgetVar="table" emptyMessage="#{message['rsltd.empty']}">
+			rowsPerPageTemplate="5,10,15" widgetVar="table" emptyMessage="#{message['rsltd.empty']}"  >
 					<f:facet name="header">Movimiento Caja</f:facet>
 					<f:facet name="header">
 					    <p:outputPanel>
 					    <h:outputText value="#{message['rsltd.buscar']}"/>
-					    <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px; align:Left; "/>
+					    <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px;"/>
 						</p:outputPanel>
 					</f:facet>
 					<p:column sortBy="#{p.tbEmpleado.nombresCompletos}" filterBy="#{p.tbEmpleado.nombresCompletos}" headerText="Empleado">
@@ -30,12 +30,7 @@
 					<p:column sortBy="#{p.descripcion}" filterBy="#{p.descripcion}" headerText="#{message['mantenimiento.productoList.descripcion']}">
 						<h:outputText value="#{p.descripcion}" />
 					</p:column>
-					<p:column headerText="Ver Detalle" >
-						<p:commandButton oncomplete="cajaDetalleDialog.show()" action="#{cajaForm.consultar}"
-							update=":DetalleCaja:display" icon="ui-icon ui-icon-pencil">
-							<f:setPropertyActionListener value="#{p.tbEmpleado.idempleado}" target="#{cajaForm.idEmpleado}" />
-				        </p:commandButton>
-					</p:column>
+				
 					<f:facet name="footer">
 						<div align="left">
 							<p:commandButton id="btnNuevo" value="Nueva Entrada Caja"  update=":NuevoModificaEntradaCaja:display" 

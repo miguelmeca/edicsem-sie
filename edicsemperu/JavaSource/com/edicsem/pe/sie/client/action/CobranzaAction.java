@@ -145,6 +145,7 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 	 */
 	public String asignarcobranzarestante(){
 		log.info("asignarcobranzarestante()  "+selectedCob.length);
+		RequestContext context = RequestContext.getCurrentInstance();
 		for (int i = 0; i < selectedCob.length; i++) {
 			log.info(""+selectedCob[i].getTbCliente().getNombresCompletos());
 //			CobranzaOperadoraSie cobranzaopera = new CobranzaOperadoraSie();
@@ -161,6 +162,7 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 //			}
 //		}
 //		cobranzaModel = new CobranzaDataModel(lstcob);
+		context.execute("cobDialog.hide()");
 		return null;
 	}
 

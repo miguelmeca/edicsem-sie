@@ -251,7 +251,7 @@ public class MantenimientoProductoFormAction extends BaseMantenimientoAbstractAc
 		log.info(" getImage() "+ image);
 		if(foto!=null){
 			log.info(" foto!=null" );
-		image =  new DefaultStreamedContent(new ByteArrayInputStream(foto));
+			image =  new DefaultStreamedContent(new ByteArrayInputStream(foto));
 		}
 		return image;
 	}

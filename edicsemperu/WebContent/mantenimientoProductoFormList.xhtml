@@ -12,15 +12,14 @@
 		<h:form id="formManteProdLista" >
 		<p:messages id="message" showDetail="true" />
 			<p:dataTable value="#{productoSearch.productoList}" var="p" 
-					id="listaProductos" paginator="true" rows="10"
-					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="5,10,15" widgetVar="table"
-					emptyMessage="No se encontro registros">
+				id="listaProductos" paginator="true" rows="10"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" widgetVar="tableProd" emptyMessage="#{message['rsltd.empty']}">
 					<f:facet name="header">Mantenimiento Producto </f:facet>
 					<f:facet name="header">
 					    <p:outputPanel>
-						 <h:outputText value="Buscar :"/>
-						 <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px; align=Left; "/>
+						<h:outputText value="#{message['rsltd.buscar']}"/>
+						<p:inputText id="globalFilter" onkeyup="tableProd.filter()" style="width:150px" />
 						</p:outputPanel>
 					</f:facet>
 					<p:column sortBy="#{p.codproducto}" id="codigo" filterBy="#{p.codproducto}" headerText="Codigo" >
@@ -55,7 +54,7 @@
 					<f:facet name="footer">
 						<div align="left">
 							 <p:commandButton id="btnNuevo" value="#{message['mantenimiento.productoList.nuevo']}"  action="#{productoForm.agregar}"  
-							 title="#{message['manteninimento.producto.tittle']}" icon="ui-icon-star"/>
+							 title="#{message['manteninimento.producto.tittle']}" icon="ui-icon-star" />
 							 <p:tooltip for="btnNuevo"/>
 						</div>
 					</f:facet>

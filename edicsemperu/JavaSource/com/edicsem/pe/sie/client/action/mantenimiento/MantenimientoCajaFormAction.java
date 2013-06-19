@@ -31,6 +31,7 @@ public class MantenimientoCajaFormAction extends BaseMantenimientoAbstractAction
 	private boolean newRecord = false;
 	private int idEmpleado;
 	private List<CajaSie> cajaList;
+	private List<CajaSie> filteredcajaList;
 	private BigDecimal saldoTotalEmpleado;
 	
 	@ManagedProperty(value = "#{cajaSearch}")
@@ -261,6 +262,14 @@ public class MantenimientoCajaFormAction extends BaseMantenimientoAbstractAction
 	 */
 	public String getViewMant() {
 		return Constants.MOV_CAJA_FORM_LIST_PAGE;
+	}
+
+	public List<CajaSie> getFilteredcajaList() {
+		return filteredcajaList;
+	}
+
+	public void setFilteredcajaList(List<CajaSie> filteredcajaList) {
+		this.filteredcajaList = filteredcajaList;
 	}
 	
 }

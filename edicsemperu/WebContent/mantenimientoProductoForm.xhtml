@@ -44,9 +44,9 @@
 				<h:outputText value="#{message['mantenimiento.producto.detalle']}" />
 				<p:inputTextarea id="detalle" size="10" autoResize="false" 
 					value="#{productoForm.objProductoSie.detalleproducto}"
-					rows="8" cols="50" required="true" maxlength="120"
+					rows="8" cols="50" maxlength="120"
 					requiredMessage="#{message['mantenimiento.producto.detalle.validation']}" />
-				<p:message for="detalle" />
+				<p:spacer/>
 				
 				<h:outputText value="#{message['mantenimiento.producto.unidad']}" rendered="#{productoForm.newRecord!=true}" />
 				<p:inputText id="unidadProducto" size="10" readonly="true" 
@@ -81,10 +81,10 @@
 					oncomplete="imageProducDialog.show()" title="Ingresar imagen"/>
 				<p:spacer/>
 				
-				<p:commandButton value="Registrar" action="#{productoForm.insertar}"  ajax = "false" 
+				<p:commandButton value="Registrar" action="#{productoForm.insertar}"  ajax="false" 
 					icon="ui-icon ui-icon-disk" />
                      
-                <p:commandButton value="Regresar" action="#{productoSearch.listar}" immediate="true" ajax= "false" 
+                <p:commandButton value="Regresar" action="#{productoSearch.listar}"  ajax= "false" 
                     icon="ui-icon-circle-arrow-w" />
 		</h:panelGrid>
 		</p:panel>

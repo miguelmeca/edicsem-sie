@@ -10,15 +10,20 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
@@ -32,7 +37,9 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
+import com.edicsem.pe.sie.beans.ReporteParams;
 import com.edicsem.pe.sie.beans.SistemaIntegradoDTO;
+import com.edicsem.pe.sie.client.report.service.ReporteExecutionService;
 import com.edicsem.pe.sie.entity.ContratoSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
 import com.edicsem.pe.sie.service.facade.ContratoService;
@@ -49,10 +56,13 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 	private List<SistemaIntegradoDTO> sistMig, sisMigUpdate;
 	List<List<HSSFCell>> listaContratosManual;
 	private String mensaje ;
+	private String ContentType;
 	
 	@EJB
 	private ContratoService objContratoService;
-		  
+	@EJB
+	private ReporteExecutionService objReporteService;
+	
 	public Migracion() {
 	
 	}
@@ -135,7 +145,28 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 		
 		return getViewMant();
 	}
-
+	
+	public void exportar() {
+		log.info("exportand  ");
+		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+		ReporteParams parametros = new ReporteParams();
+		
+		try {
+			parametros.setJasperFileName(Constants.REPORTE_EXPORTACION_JASPER);
+			SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy_hhmmss");
+			Map criteria = new HashMap();
+			criteria.put(Constants.REPORTE_TITULO, Constants.REPORTE_EXPORTACION_SI_LIST+"_"+ sdf.format(new Date(System.currentTimeMillis())));
+			parametros.setQueryParams(criteria);
+			
+			HttpServletResponse response = (HttpServletResponse)context.getResponse();
+			objReporteService.executeReporte(parametros, response, ContentType);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			FacesContext.getCurrentInstance().responseComplete(); 
+		}
+	}
+	
 	public String handleFileUpload(FileUploadEvent event) throws ParseException {
 	    log.info("handleFileUpload");
 	    mensaje=null;
@@ -405,6 +436,13 @@ public class Migracion extends BaseMantenimientoAbstractAction implements Serial
 		public void setSisMigUpdate(List<SistemaIntegradoDTO> sisMigUpdate) {
 			this.sisMigUpdate = sisMigUpdate;
 		}
-		
+
+		public String getContentType() {
+			return ContentType;
+		}
+
+		public void setContentType(String contentType) {
+			ContentType = contentType;
+		}
 		
 }
