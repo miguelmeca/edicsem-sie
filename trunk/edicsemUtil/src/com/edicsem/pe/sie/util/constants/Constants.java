@@ -193,6 +193,7 @@ public class Constants {
 	public static final String RUTA_REPORTE = "E:\\Sie\\Reporte\\";
 	public static final String REPORTE_CLIENTE_JASPER = "Reporte/report6.jasper";
 	public static final String REPORTE_KARDEX_JASPER = "Reporte/reportKardex.jasper";
+	public static final String REPORTE_EXPORTACION_JASPER = "Reporte/reportExportacionSI.jasper";
 	public static final String REPORTE_PAGOS_CONTRATO_JASPER = "Reporte/reportPagos.jasper";
 	public static final String REPORTE_TITULO ="titulo";
 	
@@ -214,5 +215,8 @@ public class Constants {
 	public static final String RUTA_IMAGENES_PRODUCTO = "C:\\proyecto-sie\\Producto" ;
 	public static final String RUTA_DOC_SUSTENTARIO = "C:\\Images\\Docs";
 	public static final String RUTA_IMAGEN_DEFECTO = "C:\\proyecto-sie\\Images\\noDisponible.jpg";
+	
+	//Reporte de Exportacion Sistemas Integrados
+	public static final String REPORTE_EXPORTACION_SI_LIST="Reporte Sistema Integrado";
 	
 	}
