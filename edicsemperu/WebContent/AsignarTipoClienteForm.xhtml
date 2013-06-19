@@ -40,12 +40,11 @@
 			</p:fieldset>
 				<h:panelGrid  rendered="#{asignarTipoClienteForm.tamanoLista>1}" style="margin-top:30px"  >
 					<p:dataTable value="#{asignarTipoClienteForm.cobranzaModel}" paginator="true" sortMode="multiple" 
-					rowsPerPageTemplate="5,10,15"  rows="5" var="c" emptyMessage="#{message['rsltd.empty']}" widgetVar="table">
+					rowsPerPageTemplate="5,10,15"  rows="5" var="c" emptyMessage="#{message['rsltd.empty']}" widgetVar="tableAsigTipoCli">
 						<f:facet name="header">
 						<p:outputPanel>
 							<h:outputText value="#{message['buscar']}" />
-							<p:inputText id="globalFilter" onkeyup="table.filter()"
-								style="width:150px; align:Left; " />
+							<p:inputText id="globalFilter" onkeyup="tableAsigTipoCli.filter()" style="width:150px; align:Left; " />
 						</p:outputPanel>
 						</f:facet>
 						<f:facet name="header">

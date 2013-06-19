@@ -619,7 +619,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 				<h:outputText value="Empleado" />
 				<p:dataTable value="#{cajaForm.cajaList}" var="p" id="listaD" paginator="true" rows="10"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="5,10,15" widgetVar="table" emptyMessage="#{message['rsltd.empty']}" filteredValue="#{cajaForm.filteredcajaList}" >
+				rowsPerPageTemplate="5,10,15" widgetVar="tableDetMovCaja" emptyMessage="#{message['rsltd.empty']}" filteredValue="#{cajaForm.filteredcajaList}" >
 				<f:facet name="header">Movimiento Caja</f:facet>
 				<p:column headerText="Empleado" >
 					<h:outputText value="#{p.empleadocreacion}" />

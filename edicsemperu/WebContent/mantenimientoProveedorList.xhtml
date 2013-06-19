@@ -6,54 +6,36 @@
   xmlns:p="http://primefaces.org/ui" template="/layout/template.xhtml">
    <ui:define name="body">
     <h1 class="title ui-widget-header ui-corner-all">Mantenimiento Proveedores</h1>
-     <h:form id="manteProList" prependId="false">
+     <h:form id="manteProveeList" prependId="false">
 	<p:messages showDetail="true"/>
 	  <p:dataTable value="#{mantenimientoProveedorSearchAction.proveedorList}" var="p"
-	   id="listaPersonas" paginator="true" rows="10"
+	   id="listaProveedor" paginator="true" rows="10"
        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-	   rowsPerPageTemplate="5,10,15" widgetVar="table"
+	   rowsPerPageTemplate="5,10,15" widgetVar="tableProv"
 	   emptyMessage="No se encontro registros">
 	   <f:facet name="header">Mantenimiento Proveedor </f:facet>
 	   <f:facet name="header">
 	    <p:outputPanel>
 		 <h:outputText value="Buscar :"/>
-		 <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px; align=Left; "/>
+		 <p:inputText id="globalFilter" onkeyup="tableProv.filter()" style="width:150px; align:Left; "/>
 		</p:outputPanel>
 	   </f:facet>
-       <p:column sortBy="#{p.codproveedor}" id="codigo" filterBy="#{p.codproveedor}" headerText="Codigo" >
-	    <f:facet name="header">
-		 <h:outputText value="Codigo" />
-		</f:facet>
+       <p:column sortBy="#{p.codproveedor}" filterBy="#{p.codproveedor}" headerText="Codigo" >
 		<h:outputText value="#{p.codproveedor}" />
 	   </p:column>
-	   <p:column>
-		<f:facet name="header">
-		 <h:outputText value="Empresa" />
-		</f:facet>
+	   <p:column sortBy="#{p.nombreempresa}"  filterBy="#{p.nombreempresa}" headerText="Empresa">
 		<h:outputText value="#{p.nombreempresa}" />
 	   </p:column>
-	     <p:column>
-		<f:facet name="header">
-		 <h:outputText value="Contacto" />
-		</f:facet>
+	   <p:column sortBy="#{p.personacontacto}"  filterBy="#{p.personacontacto}" headerText="Contacto">
 		<h:outputText value="#{p.personacontacto}" />
 	   </p:column>
-	   <p:column>
-		<f:facet name="header">
-		 <h:outputText value="Tipo de Doc." />
-		</f:facet>
+	   <p:column sortBy="#{p.tbTipoDocumentoIdentidad.descripcion}" filterBy="#{p.tbTipoDocumentoIdentidad.descripcion}" headerText="Tipo de Doc." >
 		<h:outputText value="#{p.tbTipoDocumentoIdentidad.descripcion}" />
 	   </p:column>
-	   <p:column>
-		<f:facet name="header">
-		 <h:outputText value="Nro. de Doc." />
-		</f:facet>
+	   <p:column sortBy="#{p.numdocumentoproveedor}" filterBy="#{p.numdocumentoproveedor}" headerText="Nro. de Doc." >
 	    <h:outputText value="#{p.numdocumentoproveedor}" />
 	   </p:column>
-	   <p:column>
-		<f:facet name="header">
-		 <h:outputText value="Direccion" />
-		</f:facet>
+	   <p:column sortBy="#{p.direccion}" filterBy="#{p.direccion}" headerText="Dirección"  >
 		<h:outputText value="#{p.direccion}" />
 	   </p:column>
 	   <p:column headerText="Editar">

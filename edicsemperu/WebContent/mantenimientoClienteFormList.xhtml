@@ -13,16 +13,15 @@
 		<h:form id="frmClienteFormList" prependId="false">
 		<p:messages id="message" showDetail="true"/>
 			<p:dataTable value="#{MantenimientoClienteSearchAction.clienteList}"  
-				var="c" paginator="true" rows="10" id="listaClientes"
-					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="5,10,15" widgetVar="table"
-					emptyMessage="#{message['rsltd.empty']}"
-					filteredValue="#{MantenimientoClienteSearchAction.filteredClienteSie}">
-					
+			var="c" paginator="true" rows="10" id="listaClientes"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" widgetVar="tableCli" emptyMessage="#{message['rsltd.empty']}"
+			filteredValue="#{MantenimientoClienteSearchAction.filteredClienteSie}">
+				
 			<f:facet name="header">
 	            <p:outputPanel>
 	                <h:outputText value="Buscar en todos los campos:" />
-	                <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px" />
+	                <p:inputText id="globalFilter" onkeyup="tableCli.filter()" style="width:150px" />
 	            </p:outputPanel>
             </f:facet>
 					
