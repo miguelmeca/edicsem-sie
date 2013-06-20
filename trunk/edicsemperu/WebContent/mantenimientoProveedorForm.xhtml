@@ -6,7 +6,7 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/layout/template.xhtml">
 	<ui:define name="body">
-		<h:form id="form">
+	<h:form id="form">
 	<p:panel header="Registrar Proveedor"  id="panel">
 	        <p:messages showDetail="true"/>	
 			<p:panelGrid columns="2" cellpadding="5">						
@@ -25,7 +25,7 @@
             <p:selectOneMenu id="tipo" requiredMessage="#{message['proveedor.tipoDoc.validation']}" value="#{mantenimientoProveedorFormAction.tipoDocumento}" required="true" styleClass="required" title="El tipo es obligatorio!" >
             <f:selectItem itemLabel="Seleccione una opción" itemValue="#{null}" />
             <f:selectItems  value="#{comboAction.tipoDocumentoitems}" />
-            <p:ajax update="nrodoc"></p:ajax>
+            <p:ajax update="nrodoc"/>
             </p:selectOneMenu>
             <h:outputText value="#{message['proveedor.nrodoc']}"  />
 			<h:panelGroup id="nrodoc" >
@@ -43,9 +43,9 @@
 		    <f:facet name="footer">
             <p:commandButton id="btn" value="Guardar" update="panel" action="#{mantenimientoProveedorFormAction.insertar}" ajax="false" icon="ui-icon-check"/>
             <p:commandButton value="Regresar" action="#{mantenimientoProveedorSearchAction.listar}" immediate="true" ajax = "false"  icon="ui-icon-circle-arrow-w"/>
-            </f:facet>				
-		</p:panelGrid>	
-	</p:panel>	            
-</h:form>
+            </f:facet>
+		</p:panelGrid>
+	</p:panel>
+	</h:form>
 	</ui:define>
 </ui:composition>

@@ -16,6 +16,7 @@ import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
 
 import com.edicsem.pe.sie.client.dataModel.CobranzaDataModel;
+import com.edicsem.pe.sie.entity.CobranzaOperadoraSie;
 import com.edicsem.pe.sie.entity.CobranzaSie;
 import com.edicsem.pe.sie.entity.ConfigCobranzaOperaSie;
 import com.edicsem.pe.sie.entity.EmpleadoSie;
@@ -46,7 +47,16 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 	private int operadorasignado;
 	private List<EmpleadoSie> lstEmpleados;
 	private List<CobranzaSie> lstcob;
+	List<ConfigCobranzaOperaSie> configList;
 	
+	public List<ConfigCobranzaOperaSie> getConfigList() {
+		return configList;
+	}
+
+	public void setConfigList(List<ConfigCobranzaOperaSie> configList) {
+		this.configList = configList;
+	}
+
 	@EJB
 	private CobranzaOperaService objCobranzaOperaService;
 	@EJB
@@ -103,7 +113,7 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 				log.info("Entering my method 'insertar()' " );
 			}
 			//Validar si se registro las listas en el dia ( si es turno mañana)
-			List<ConfigCobranzaOperaSie> configList = objConfigCobranzaService.buscarConfigCobranza(tipoCobranza);
+			configList = objConfigCobranzaService.buscarConfigCobranza(tipoCobranza);
 			log.info("tamano config --> "+configList.size() );
 			if(configList.size()>0){
 					
@@ -117,13 +127,18 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 					for (int i = 0; i < teleoperadoras.getTarget().size(); i++) {
 						empleadoList.add(teleoperadoras.getTarget().get(i).getNombresCompletos());
 					}
-					/** Insertamos las listas de cobranzas para cada teleoperadora asignada */
-					lstcob = objCobranzaOperaService.insertCobranzaOpera(empleadoList,configList);
-					mensaje="Se generó la lista correctamente";
-					if(lstcob!=null){
-						cobranzaModel = new CobranzaDataModel(lstcob);
+					if(empleadoList.size()==0){
+						mensaje="Debe seleccionar teleoperadores para asignar listas ";
+						msg = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.MESSAGE_INFO_TITULO, mensaje);
+					}else{
+						/** Insertamos las listas de cobranzas para cada teleoperadora asignada */
+						lstcob = objCobranzaOperaService.insertCobranzaOpera(empleadoList,configList);
+						mensaje="Se generó la lista correctamente";
+						if(lstcob!=null){
+							cobranzaModel = new CobranzaDataModel(lstcob);
+						}
+						msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 					}
-					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
 				}
 			}else{
 				mensaje="El día de hoy no está configurado para generar listas de cobranza";
@@ -148,20 +163,23 @@ public class CobranzaAction extends BaseMantenimientoAbstractAction {
 		RequestContext context = RequestContext.getCurrentInstance();
 		for (int i = 0; i < selectedCob.length; i++) {
 			log.info(""+selectedCob[i].getTbCliente().getNombresCompletos());
-//			CobranzaOperadoraSie cobranzaopera = new CobranzaOperadoraSie();
-//			cobranzaopera.setTbCobranza(selectedCob[i]);
-//			cobranzaopera.setTbEmpleado(objEmpleadoService.buscarEmpleado(operadorasignado));
-//			objCobranzaOperaService.insertCobranzaOpera(cobranzaopera);
+			CobranzaOperadoraSie cobranzaopera = new CobranzaOperadoraSie();
+			cobranzaopera.setTbCobranza(selectedCob[i]);
+			cobranzaopera.setTbEmpleado(objEmpleadoService.buscarEmpleado(operadorasignado));
+			objCobranzaOperaService.insertCobranzaOpera(cobranzaopera,configList );
 		}
-//		log.info("a remover ");
-//		for (int i = 0; i < lstcob.size(); i++) {
-//			for (int j = 0; j < selectedCob.length; j++) {
-//				if(lstcob.get(i).getIdcobranza()==selectedCob[j].getIdcobranza()){
-//					lstcob.remove(i);
-//				}
-//			}
-//		}
-//		cobranzaModel = new CobranzaDataModel(lstcob);
+		log.info("a remover ");
+		for (int i = 0; i < lstcob.size(); i++) {
+			for (int j = 0; j < selectedCob.length; j++) {
+				if(lstcob.get(i).getIdcobranza()==selectedCob[j].getIdcobranza()){
+					lstcob.remove(i);
+				}
+			}
+		}
+		mensaje="Se asignó correctamente los clientes";
+		msg = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.MESSAGE_INFO_TITULO, mensaje);
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		cobranzaModel = new CobranzaDataModel(lstcob);
 		context.execute("cobDialog.hide()");
 		return null;
 	}
