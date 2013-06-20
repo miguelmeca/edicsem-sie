@@ -36,13 +36,22 @@ public class CobranzaOperaServiceImpl implements CobranzaOperaService {
 	private EmpleadoSieDAO objEmpleadoDao;
 	@EJB
 	private EstadoGeneralDAO objEstadoDao;
-
+	
 	/* (non-Javadoc)
-	 * @see com.edicsem.pe.sie.service.facade.CobranzaOperaService#insertCobranzaOpera(com.edicsem.pe.sie.entity.CobranzaOperadoraSie)
+	 * @see com.edicsem.pe.sie.service.facade.CobranzaOperaService#insertCobranzaOpera(com.edicsem.pe.sie.entity.CobranzaOperadoraSie, java.util.List)
 	 */
-	public void insertCobranzaOpera(CobranzaOperadoraSie cobranzaopera) {
+	public void insertCobranzaOpera(CobranzaOperadoraSie cobranzaopera, List<ConfigCobranzaOperaSie> configList) {
 		cobranzaopera.setTbEstadoGeneral(objEstadoDao.findEstadoGeneral(108));
-		objCobranzaOperaDao.insertCobranzaOpera(cobranzaopera);
+		Calendar hoy = new GregorianCalendar();
+		
+		for (int i = 0; i < configList.size(); i++) {
+			if(configList.get(i).getTbTipoCliente().getIdtipocliente()==cobranzaopera.getTbCobranza().getTbCliente().getTbTipoCliente().getIdtipocliente()){
+				hoy = new GregorianCalendar();
+				hoy.add(Calendar.DAY_OF_MONTH, configList.get(i).getDiasProgramados());
+				cobranzaopera.setFechaexpira(hoy.getTime());
+				objCobranzaOperaDao.insertCobranzaOpera(cobranzaopera);
+			}
+		}
 	}
 	
 	/* (non-Javadoc)
