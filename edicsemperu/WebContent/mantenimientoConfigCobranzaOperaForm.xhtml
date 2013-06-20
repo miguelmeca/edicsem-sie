@@ -6,16 +6,16 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/layout/template.xhtml">
 	<ui:define name="body">
-	<h:form id="form">
-	<p:panel header="Registrar Configuracion Cobranza Operadora"  id="panel">
+	<h:form id="formConfigCobOpera">
+	<p:panel header="Registrar Configuracion Cobranza Operadora" >
 	        <p:messages showDetail="true"/>	
 			<h:panelGrid columns="2" cellpadding="5">						
 			
-			<h:outputText  value="Descripcion" />
+			<h:outputText  value="Descripción" />
 			<p:inputText id="desc" maxlength="20" value="#{configCobranzaOperaFormAction.objConfig.descripcion}" required="true" />
 			
-			<h:outputText value="Dias programados" />
-			<p:spinner id="dp" value="#{configCobranzaOperaFormAction.objConfig.diasProgramados}" required="true" />
+			<h:outputText value="Dias Vigentes" />
+			<p:spinner id="dp" value="#{configCobranzaOperaFormAction.objConfig.diasProgramados}" required="true" min="1" />
 			
 			<h:outputText  value="Dias" />
             <p:selectCheckboxMenu value="#{configCobranzaOperaFormAction.diasList}" filterMatchMode="startsWith"  required="true" requiredMessage="Debe seleccionar el día para la asistencia de dicho horario">

@@ -9,24 +9,21 @@
 		window.history.forward(-1);
 	</script>
 		<h1 class="title ui-widget-header ui-corner-all">mantenimiento Lugar Venta</h1>
-		<h:form id="formManteProdLista" >
+		<h:form id="formManteLugarLista" >
 		<p:messages id="message" showDetail="true" />
 			<p:dataTable value="#{lugarSearch.lugarList}" var="p" 
 					id="lista" paginator="true" rows="10"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="5,10,15" widgetVar="table"
+					rowsPerPageTemplate="5,10,15" widgetVar="tableLugar"
 					emptyMessage="#{message['rsltd.empty']}">
 					<f:facet name="header">Mantenimiento Lugar de Venta </f:facet>
 					<f:facet name="header">
 					    <p:outputPanel>
 						 <h:outputText value="Buscar :"/>
-						 <p:inputText id="globalFilter" onkeyup="table.filter()" style="width:150px; align:Left; "/>
+						 <p:inputText id="globalFilter" onkeyup="tableLugar.filter()" style="width:150px; align:Left; "/>
 						</p:outputPanel>
 					</f:facet>
 					<p:column sortBy="#{p.descripcion}" filterBy="#{p.descripcion}" headerText="#{message['mantenimiento.productoList.descripcion']}">
-						<f:facet name="header">
-							<h:outputText value="#{message['mantenimiento.productoList.descripcion']}"/>
-						</f:facet>
 						<h:outputText value="#{p.descripcion}" />
 					</p:column>
 					<p:column>

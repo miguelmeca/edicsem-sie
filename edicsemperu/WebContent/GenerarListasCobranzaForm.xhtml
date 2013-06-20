@@ -39,7 +39,7 @@
 			</p:panel>
 			<p:fieldset id="selectCob"  legend="#{message['asignar.cobranza.restante']}" style="margin-top:30px" >
 			<h:panelGrid columns="2" >
-				<p:dataTable var="d" value="#{cobranza.cobranzaModel}" paginator="true" rows="5" 
+				<p:dataTable var="d" value="#{cobranza.cobranzaModel}" paginator="true" rows="5" rowKey="#{d.tbCliente.idcliente}"
 				selection="#{cobranza.selectedCob}" style="width:50%" emptyMessage="#{message['rsltd.empty']}">
 					<f:facet name="header">#{message['asignar.cobranza.por.asignar']}</f:facet>
 					<p:column selectionMode="multiple" style="width:2%" />
@@ -51,6 +51,10 @@
 					</p:column>
 					<p:column headerText="#{message['asignar.cuota']}" style="width:5%"> #{d.numletra}
 					</p:column>
+					<f:facet name="footer">
+						<p:commandButton  value="View" icon="ui-icon-search"  
+	                    update=":fr:displayMulti" oncomplete="cobDialog.show()"/> 
+                    </f:facet>
                 </p:dataTable>
                 <h:panelGrid columns="2" >
 	                <h:outputText value="#{message['asignar.teleoperador']}" />
@@ -61,7 +65,7 @@
 				</h:panelGrid>
 				<f:facet name="footer">
 					<p:commandButton action="#{cobranza.asignarcobranzarestante}" value="#{message['generar.listar.generar']}"
-					 update=":fr:displayMulti" icon="ui-icon-disk" iconPos="rigth" onclick="cobDialog.show()" />
+					 update="message,selectCob" icon="ui-icon-disk" iconPos="rigth" onclick="cobDialog.show()" />
 				</f:facet>
             </h:panelGrid>
             </p:fieldset>

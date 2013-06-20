@@ -174,7 +174,6 @@ public class MantenimientoClienteFormAction extends
 		idDepartamento24="15";
 		idProvincia24="01";
 		idUbigeo=0;
-		
 		editMode = false;
 		return  getViewMant();
 	}
@@ -207,8 +206,8 @@ public class MantenimientoClienteFormAction extends
 //			Constants.MESSAGE_ERROR_TELEFONO_CLIENTE,mensaje);
 //			FacesContext.getCurrentInstance().addMessage(null, msg);				
 			}
-			}
-			}
+		}
+	}
 	
 	/*********************ELIMINAR TELEFONO DE LA LISTA***********************************/
 	
@@ -345,14 +344,13 @@ public class MantenimientoClienteFormAction extends
 		idProvincia = null;
 		idUbigeo1 = null;
 		log.info("cambiar   :D  --- ");
-		}
+	}
 	
 	public void cambiar2() {
 		comboManager.setIdDepartamento(getIdDepartamento());
 		comboManager.setIdProvincia(getIdProvincia());
 		log.info("cambiar 2  :D  --- ");
-		}
-	
+	}
 	
 	/**********************NEW DOMICILIO**************************/
 	
@@ -362,14 +360,13 @@ public class MantenimientoClienteFormAction extends
 		idProvincia24 = null;
 		idUbigeo = 0;
 		log.info("cambiar   :D  --- ");
-		}
+	}
 	
 	public void cambiar24() {
 		comboManager.setIdDepartamento(getIdDepartamento24());
 		comboManager.setIdProvincia(getIdProvincia24());
 		log.info("cambiar 2  :D  --- ");
-		}
-
+	}
 	
 	//UBIGEO....
 	
@@ -407,9 +404,9 @@ public class MantenimientoClienteFormAction extends
 			log.info("ubigeo distrito " + ubigeoDefecto);
 		break;
 			}
-			}
+		}
 			log.info("ubigeo ------> :D   " + ubigeoDefecto);
-			} 
+	} 
 	
 	public void ingresarUbigeo() {
 			// enviamos el nombre completo del depa- provincia-distrito
@@ -444,12 +441,10 @@ public class MantenimientoClienteFormAction extends
 			log.info("ubigeo distrito " + ubigeoDefecto);
 		break;
 			}
-			}
-			log.info("ubigeo ------> :D   " + ubigeoDefecto);
-			}
+		}
+		log.info("ubigeo ------> :D   " + ubigeoDefecto);
+	}
 	
-		
-
 	public void busquedaUbigeo24(){
 			log.info("busquedaUbigeo");
 			UbigeoSie ubigeo = objUbigeoService.findUbigeo(getIdUbigeo());
@@ -673,12 +668,10 @@ public class MantenimientoClienteFormAction extends
 		try {
 			if (log.isInfoEnabled()) {
 			}
-			log.info("busca el Id-Estado");
-			objClienteSie.setTbEstadoGeneral(objEstadoGeneralService.findEstadogeneral(23));
 			
 			log.info("busca el Id-DNI");
 			objClienteSie.setTbTipoDocumentoIdentidad(objTipoDocService.buscarTipoDocumento(TipoDocumento));
-						
+			
 			log.info("busca el Id-Ubigeo");
 			objDomicilio.setTbUbigeo(objUbigeoService.findUbigeo(Integer.parseInt(idUbigeo1)));
 			
@@ -690,27 +683,23 @@ public class MantenimientoClienteFormAction extends
 			log.info("Domicilio-FISICO--------->"+ "  "+ DomicilioPersonaDeshabilitado.size());
 			log.info("Domicilio-TEMPORAL------->"+ "	"+ DomicilioPersonaList.size());
 			objClienteService.updateCliente(objClienteSie,objDomicilio,idUbigeo1, idUbigeo, tipo, Tipocasanuevo,TelefonoPersona,TelefonoPersonaList, TelefonoDeshabilitado, DomicilioPersonaList, DomicilioPersonaDeshabilitado);
-
-			mensaje = "";
+			
+			mensaje = Constants.MESSAGE_ACTUALIZO_TITULO;
 			msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-			Constants.MESSAGE_REGISTRO_TITULO, mensaje);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
+			Constants.MESSAGE_INFO_TITULO, mensaje);
 	} catch (Exception e) {
 			e.printStackTrace();
 			mensaje = e.getMessage();
 			msg = new FacesMessage(FacesMessage.SEVERITY_FATAL,
 			Constants.MESSAGE_ERROR_FATAL_TITULO, mensaje);
 			log.error(e.getMessage());
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-			}
+	}
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 		return getViewList();
 	}	
 	
 	/*********************** METODO WIZAR ****************************************/
 	public String onFlowProcess(FlowEvent event) {
-		log.info("Current wizard step:" + event.getOldStep());
-		log.info("Next step:" + event.getNewStep());
-		log.info("skip :" + skip);
 		if (skip) {
 			skip = true; // reset in case user goes back
 			return "confirm";
@@ -718,9 +707,6 @@ public class MantenimientoClienteFormAction extends
 			return event.getNewStep();
 		}
 	}
-
-	/************************** FIN WIZAR *********************************/
-
 	
 	public void limpiarDatosTelefono() {
 		nuevoTelef = new TelefonoPersonaSie();

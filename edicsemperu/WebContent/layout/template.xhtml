@@ -183,7 +183,7 @@ function validarEspaciosLetrasNumeros(e) { // 1
 		<p:layoutUnit position="west"  resizable="true" collapsible="true"
 			header="#{message['login.opciones.menu']}" >
 			<h:form>
-				<p:menu model="#{login.mimenu}" position="center"  style="width:100%"/>
+				<p:panelMenu model="#{login.mimenu}" position="center" />
 			</h:form>
 		</p:layoutUnit>
 		<p:layoutUnit id="center" position="center" scrollable="true">
@@ -1611,11 +1611,11 @@ function validarEspaciosLetrasNumeros(e) { // 1
 			showEffect="fade" hideEffect="explode" modal="true" width="300"
 			position="center">
 			<p:dataList id="displayMulti"  
-                    value="#{cobranza.selectedCob}" var="selectedCar">  
-            codigo : #{selectedCar.tbContrato.codcontrato}, cli #{selectedCar.tbCliente.nombresCompletos}  
+                    value="#{cobranza.selectedCob}" var="s">  
+            codigo : #{s.tbContrato.codcontrato}, cli #{s.tbCliente.nombresCompletos}  
         </p:dataList>
         </p:dialog>
-        </h:form>
+    </h:form>
         
 <!--	  DESACTIVAR PROVEEDOR	   -->
 <h:form>

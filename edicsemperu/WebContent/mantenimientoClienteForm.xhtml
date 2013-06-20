@@ -15,22 +15,26 @@
 				nextLabel="#{message['btn.siguiente']}"
 				backLabel="#{message['btn.atraz']}">
 				<p:tab title="#{message['cliente.tabcliente']}">
-					<p:spacer height="20"></p:spacer>
+					<p:spacer height="20"/>
 					<p:panel header="#{message['datos.personales']}">
 					<h:panelGrid id="display" columns="6" cellpadding="3">
 						<h:outputText value="#{message['cliente.nombre']}" for="nombre" />
+						<h:panelGroup>
 						<p:inputText id="nombre" required="true" label="nombre" size="30"
 							value="#{MantenimientoClienteFormAction.objClienteSie.nombrecliente}"
 							requiredMessage="#{message['cliente.nombre.validation']}" />
 						<pe:keyFilter for="nombre" mask="alpha" />
-
+						</h:panelGroup>
+						
 						<h:outputText value="#{message['cliente.apellidopaterno']}" for="apellidopaterno" />
+						<h:panelGroup>
 						<p:inputText id="apellidopaterno" maxlength="45" size="30"
 							value="#{MantenimientoClienteFormAction.objClienteSie.apepatcliente}"
 							required="true" label="apellidopaterno"
 							requiredMessage="#{message['cliente.apellidopaterno.validation']}" />
 						<pe:keyFilter for="nombre" mask="alpha" />
-
+						</h:panelGroup>
+						
 						<h:outputText value="#{message['cliente.apellidomaterno']}" for="apellidomaterno" />
 						<p:inputText id="apellidomaterno" maxlength="45" size="30"
 							value="#{MantenimientoClienteFormAction.objClienteSie.apematcliente}"
