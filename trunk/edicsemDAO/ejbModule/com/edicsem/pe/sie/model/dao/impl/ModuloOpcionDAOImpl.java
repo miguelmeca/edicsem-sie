@@ -74,8 +74,8 @@ public class ModuloOpcionDAOImpl implements ModuloOpcionDAO{
 	public List<String> listarModuloOpcion() {
 		List<String>  lista = null;
 		try {
-			Query q = em.createQuery("select DISTINCT(p.nombremodulo) from ModuloOpcionSie p ");
-			lista =  q.getResultList(); 						
+			Query q = em.createQuery("select DISTINCT(p.nombremodulo) from ModuloOpcionSie p order by p.nombremodulo asc ");
+			lista =  q.getResultList();
 		   log.info("tamaño lista ModuloOpcion DAOIMPL --> " + lista.size()+"  ");
 		} catch (Exception e) {
 			e.printStackTrace();
